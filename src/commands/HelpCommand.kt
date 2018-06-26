@@ -7,7 +7,7 @@ class HelpCommand : Command() {
 
     override fun execute(args: List<String>) {
         if (args.isEmpty()){
-            print(getDescription())
+            println(getDescription())
         }
     }
 

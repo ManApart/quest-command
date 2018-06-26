@@ -1,8 +1,8 @@
 package commands
 
 class CommandParser {
-    val commands = loadCommands()
-    val unknownCommand = UnknownCommand()
+    private val commands = loadCommands()
+    private val unknownCommand = UnknownCommand()
 
     private fun loadCommands(): Array<Command> {
         val commands = mutableListOf<Command>()
@@ -18,11 +18,25 @@ class CommandParser {
             unknownCommand.execute(listOf(line))
         }
         val command = findCommand(args[0])
-        command.execute(args)
+
+        val trimmedArgs = if (args.size > 1) {
+            args.subList(1, args.size - 1)
+        } else {
+            listOf()
+        }
+        command.execute(trimmedArgs)
     }
 
     private fun findCommand(alias: String): Command {
-        //TODO - Ignore case contains
-        return commands.firstOrNull { it.getAliases().contains(alias)} ?: unknownCommand
+        return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) } ?: unknownCommand
+    }
+
+    private fun containsIgnoreCase(textList: Array<String>, matchText: String): Boolean {
+        textList.forEach {
+            if (it.toLowerCase() == matchText.toLowerCase()) {
+                return true
+            }
+        }
+        return false
     }
 }

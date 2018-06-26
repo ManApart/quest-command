@@ -10,6 +10,6 @@ class UnknownCommand : Command() {
     }
 
     override fun execute(args: List<String>) {
-        print("Unknown command: ${args.joinToString(" ")}")
+        println("Unknown command: ${args.joinToString(" ")}")
     }
 }

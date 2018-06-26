@@ -12,7 +12,7 @@ class ExitCommand : Command() {
     }
 
     override fun execute(args: List<String>) {
-        print("Exiting")
+        println("Exiting")
         exitProcess(0)
     }
 }
