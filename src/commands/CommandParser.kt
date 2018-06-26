@@ -7,6 +7,7 @@ class CommandParser {
     private fun loadCommands(): Array<Command> {
         val commands = mutableListOf<Command>()
         commands.add(HelpCommand())
+        commands.add(ExitCommand())
 
         return commands.toTypedArray()
     }
@@ -14,12 +15,14 @@ class CommandParser {
     fun parseCommand(line: String) {
         val args = line.split(" ")
         if (args.isEmpty()) {
-            unknownCommand.execute(arrayOf(line))
+            unknownCommand.execute(listOf(line))
         }
         val command = findCommand(args[0])
+        command.execute(args)
     }
 
     private fun findCommand(alias: String): Command {
+        //TODO - Ignore case contains
         return commands.firstOrNull { it.getAliases().contains(alias)} ?: unknownCommand
     }
 }

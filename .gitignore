@@ -47,3 +47,4 @@ target/
 bin/
 Sample Data/
 *.iml
+out/

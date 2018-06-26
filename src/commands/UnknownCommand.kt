@@ -9,7 +9,7 @@ class UnknownCommand : Command() {
         return "Called when no other command is present"
     }
 
-    override fun execute(args: Array<String>) {
+    override fun execute(args: List<String>) {
         print("Unknown command: ${args.joinToString(" ")}")
     }
 }

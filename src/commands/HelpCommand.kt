@@ -5,7 +5,7 @@ class HelpCommand : Command() {
         return arrayOf("Help")
     }
 
-    override fun execute(args: Array<String>) {
+    override fun execute(args: List<String>) {
         if (args.isEmpty()){
             print(getDescription())
         }
