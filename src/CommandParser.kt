@@ -1,4 +1,4 @@
-package commands
+import commands.*
 
 class CommandParser {
     private val commands = loadCommands()
@@ -13,7 +13,7 @@ class CommandParser {
     }
 
     fun parseCommand(line: String) {
-        val args = line.split(" ")
+        val args: List<String> = line.split(" ").map{ it.toLowerCase().trim()}
         if (args.isEmpty()) {
             unknownCommand.execute(listOf(line))
         }
@@ -32,8 +32,9 @@ class CommandParser {
     }
 
     private fun containsIgnoreCase(textList: Array<String>, matchText: String): Boolean {
+        val match = matchText.toLowerCase().trim()
         textList.forEach {
-            if (it.toLowerCase() == matchText.toLowerCase()) {
+            if (it.toLowerCase().trim() == match) {
                 return true
             }
         }

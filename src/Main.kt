@@ -1,5 +1,3 @@
-import commands.CommandParser
-
 fun main(args: Array<String>) {
     println("Hello World!")
     val commandParser = CommandParser()
