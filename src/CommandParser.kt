@@ -20,11 +20,7 @@ class CommandParser {
         }
         val command = findCommand(args[0])
 
-        val trimmedArgs = if (args.size > 1) {
-            args.subList(1, args.size - 1)
-        } else {
-            listOf()
-        }
+        val trimmedArgs = if (args.size > 1) args.subList(1, args.size) else args
         command.execute(trimmedArgs)
     }
 

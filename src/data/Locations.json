@@ -1,0 +1,19 @@
+{
+  "name": "World",
+  "locations": [
+    {
+      "name": "Kanbara",
+      "locations": [
+        {
+          "name": "Gate"
+        },
+        {
+          "name": "Pub"
+        },
+        {
+          "name": "Mapmaker Manor"
+        }
+      ]
+    }
+  ]
+}

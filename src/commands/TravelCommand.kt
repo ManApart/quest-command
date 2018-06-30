@@ -13,15 +13,19 @@ class TravelCommand : Command() {
     }
 
     override fun execute(args: List<String>) {
+        println("Input args ${args.joinToString(", ")}")
         //TODO  - append player location
-//        val found = GameState.locations.findLocation(args)
-//
-//        if (found.getPath() == args) {
-            println("Posting travel start event")
+
+        val found = GameState.world.findLocation(args)
+        val argPath = "world " + args.joinToString(" ")
+        val foundPath = found.getPath().joinToString(" ").toLowerCase()
+
+        if (foundPath == argPath) {
+            println("Posting travel start event ${found.name}")
             EventManager.postEvent(TravelStartEvent())
-//        } else {
-//            println("Found ${found.getPath()} instead of ${args.joinToString(" ")}")
-//        }
+        } else {
+            println("Found $foundPath instead of $argPath")
+        }
 
     }
 }
