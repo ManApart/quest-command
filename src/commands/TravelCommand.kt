@@ -1,5 +1,6 @@
 package commands
 
+import events.TravelStartEvent
 import gameState.GameState
 
 class TravelCommand : Command() {
@@ -16,7 +17,8 @@ class TravelCommand : Command() {
         val found = GameState.world.findLocation(args)
 
         if (found.getPath() == args) {
-            //TODO create travel event
+            println("Posting travel start event")
+            EventManager.postEvent(TravelStartEvent())
         } else {
             println("Found ${found.getPath()} instead of ${args.joinToString(" ")}")
         }

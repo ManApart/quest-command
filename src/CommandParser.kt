@@ -8,6 +8,7 @@ class CommandParser {
         val commands = mutableListOf<Command>()
         commands.add(HelpCommand())
         commands.add(ExitCommand())
+        commands.add(TravelCommand())
 
         return commands.toTypedArray()
     }

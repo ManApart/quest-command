@@ -1,16 +1,15 @@
 import events.Event
 import events.EventListener
 import java.lang.reflect.ParameterizedType
-import java.util.HashMap
-import java.util.ArrayList
-import kotlin.reflect.KClass
+import java.util.*
 
 
 object EventManager {
-    private val listenerMap = HashMap<KClass<*>, ArrayList<EventListener<*>>>()
+    private val listenerMap = HashMap<Class<*>, ArrayList<EventListener<*>>>()
 
     fun <E : Event> registerListener(listener: EventListener<E>) {
         val listenerClass = getListenedForClass(listener)
+        println("Regersiting $listenerClass")
         if (!listenerMap.containsKey(listenerClass)) {
             listenerMap[listenerClass] = ArrayList()
         }
@@ -25,18 +24,14 @@ object EventManager {
     }
 
     fun <E : Event> postEvent(event: E) {
-        val eventClass = event::class as KClass<*>
+        val eventClass = event.javaClass
         if (listenerMap.containsKey(eventClass)) {
-            val listenerList = listenerMap[eventClass]
-            for (i in listenerList?.indices!!) {
-                val listener = listenerList[i] as EventListener<E>
-                listener.handle(event)
-            }
+            listenerMap[eventClass]?.forEach { (it as EventListener<E>).handle(event)  }
         }
     }
 
-    private fun getListenedForClass(listener: EventListener<*>): KClass<*> {
-        return (listener.javaClass.genericInterfaces[0] as ParameterizedType).actualTypeArguments[0] as KClass<*>
+    private fun getListenedForClass(listener: EventListener<*>): Class<*> {
+        return (listener.javaClass.genericInterfaces[0] as ParameterizedType).actualTypeArguments[0] as Class<*>
     }
 
 }
