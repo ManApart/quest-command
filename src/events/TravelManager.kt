@@ -9,7 +9,7 @@ class TravelManager {
             EventManager.registerListener(this)
         }
         override fun handle(event: TravelStartEvent) {
-            println("Travel Start")
+            println("You start travelling to ")
         }
     }
 
