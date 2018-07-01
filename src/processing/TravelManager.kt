@@ -3,6 +3,7 @@ package processing
 import events.ArriveEvent
 import events.EventListener
 import events.TravelStartEvent
+import gameState.GameState
 
 class TravelManager {
     init {
@@ -17,6 +18,7 @@ class TravelManager {
 
         override fun handle(event: TravelStartEvent) {
             println("You leave ${event.currentLocation} travelling towards ${event.destination}")
+            EventManager.postEvent(ArriveEvent(event.destination))
         }
 
         override fun getPriority(): Int {
@@ -30,7 +32,8 @@ class TravelManager {
         }
 
         override fun handle(event: ArriveEvent) {
-            println("You arrive at $event.")
+            GameState.player.location = event.destination
+            println("You arrive at ${event.destination}")
         }
 
         override fun getPriority(): Int {

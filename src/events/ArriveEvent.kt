@@ -1,4 +1,6 @@
 package events
 
-class ArriveEvent : Event {
+import gameState.Location
+
+class ArriveEvent(val destination: Location)  : Event {
 }
