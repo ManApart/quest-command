@@ -9,6 +9,10 @@ class UnknownCommand : Command() {
         return "Called when no other command is present"
     }
 
+    override fun getManual(): String {
+        return "This is the manual for an Unknown Command"
+    }
+
     override fun execute(args: List<String>) {
         println("Unknown command: ${args.joinToString(" ")}")
     }

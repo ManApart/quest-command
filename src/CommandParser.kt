@@ -1,20 +1,18 @@
 import commands.*
 
 class CommandParser {
-    private val commands = loadCommands()
+    val commands = loadCommands()
     private val unknownCommand = UnknownCommand()
     private val filteredWords = listOf("to", "with")
 
     private fun loadCommands(): List<Command> {
         val commands = mutableListOf<Command>()
-        val help = HelpCommand()
-        commands.add(help)
+        commands.add(HelpCommand())
         commands.add(ExitCommand())
         commands.add(TravelCommand())
+        commands.add(MapCommand())
 
-        val commandList = commands.toList()
-        help.setCommands(commandList)
-        return commandList
+        return commands.toList()
     }
 
     fun parseCommand(line: String) {
@@ -22,10 +20,8 @@ class CommandParser {
         if (args.isEmpty()) {
             unknownCommand.execute(listOf(line))
         } else {
-
             val command = findCommand(args[0])
-
-            val trimmedArgs = if (args.size > 1) args.subList(1, args.size) else listOf()
+            val trimmedArgs = removeFirstItem(args)
             command.execute(trimmedArgs)
         }
     }
@@ -36,7 +32,7 @@ class CommandParser {
         return  cleanedString.split(" ").map { it.trim()}.filter { it.isNotEmpty() }
     }
 
-    private fun findCommand(alias: String): Command {
+    fun findCommand(alias: String): Command {
         return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) } ?: unknownCommand
     }
 
@@ -49,4 +45,13 @@ class CommandParser {
         }
         return false
     }
+
+}
+
+fun removeFirstItem(list: List<String>) : List<String> {
+    return if (list.size > 1) list.subList(1, list.size) else listOf()
+}
+
+fun removeFirstItem(list: Array<String>) : Array<String> {
+    return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
 }

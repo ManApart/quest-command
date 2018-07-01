@@ -8,10 +8,10 @@ class LocationTest {
     private val innerChild = Location("inner")
     private val twoNames = Location("two names")
     private val childOfTwoNames = Location("child")
-    private val outerChild1 = Location("outer", listOf(innerChild, twoNames))
+    private val outerChild1 = Location("outer", locations = listOf(innerChild, twoNames))
     //Command parser converts all args to lower case
     private val outerChild2 = Location("outerSolo")
-    private val parent = Location("Parent", listOf(outerChild1, outerChild2))
+    private val parent = Location("Parent", locations = listOf(outerChild1, outerChild2))
 
     @Test
     fun findLocationParent(){

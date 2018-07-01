@@ -1,6 +1,6 @@
 package gameState
 
-class Location(val name: String, private val locations: List<Location> = listOf()) {
+class Location(val name: String, val description: String = "", val locations: List<Location> = listOf()) {
     private var parent: Location = this
 
     init {
@@ -45,5 +45,9 @@ class Location(val name: String, private val locations: List<Location> = listOf(
             path.addAll(0, parent.getPath())
         }
         return path
+    }
+
+    fun getParent() : Location{
+        return parent
     }
 }

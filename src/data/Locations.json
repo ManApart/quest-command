@@ -3,6 +3,7 @@
   "locations": [
     {
       "name": "Kanbara",
+      "description": "The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia",
       "locations": [
         {
           "name": "Gate"
@@ -16,7 +17,8 @@
       ]
     },
     {
-      "name": "An Open Field"
+      "name": "An Open Field",
+      "description": "The waist high grasses stretch into the distance. They don't obscure your view, but as they drift in the wind they give you the sensation of floating on a calm sea."
     }
   ]
 }

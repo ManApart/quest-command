@@ -13,6 +13,7 @@ object EventManager {
             listenerMap[listenerClass] = ArrayList()
         }
         listenerMap[listenerClass]?.add(listener)
+        listenerMap[listenerClass] = ArrayList(listenerMap[listenerClass]?.sortedWith(compareBy { it.getPriority() }))
     }
 
     fun <E : Event> unRegisterListener(listener: EventListener<E>) {
