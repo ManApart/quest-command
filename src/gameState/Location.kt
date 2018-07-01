@@ -35,7 +35,7 @@ class Location(val name: String, val locations: List<Location> = listOf()) {
 
     private fun locationMatches(args: List<String>): Boolean {
         val nameList = name.toLowerCase().trim().split(" ")
-        val argList = args.subList(0, nameList.size)
+        val argList = args.subList(0, Math.min(args.size, nameList.size))
         return nameList.toTypedArray() contentEquals argList.toTypedArray()
     }
 

@@ -7,6 +7,7 @@ class LocationTest {
 
     private val innerChild = Location("inner")
     private val twoNames = Location("two names")
+    private val childOfTwoNames = Location("child")
     private val outerChild1 = Location("outer", listOf(innerChild, twoNames))
     //Command parser converts all args to lower case
     private val outerChild2 = Location("outerSolo")
@@ -38,7 +39,15 @@ class LocationTest {
 
     @Test
     fun findLocationTwoNames(){
-        val args = listOf("outer", "two names")
+        val args = listOf("outer", "two", "names")
+        val found = parent.findLocation(args)
+
+        Assert.assertEquals(twoNames, found)
+    }
+
+    @Test
+    fun findLocationTwoNamesChild(){
+        val args = listOf("outer", "two", "names", "child")
         val found = parent.findLocation(args)
 
         Assert.assertEquals(twoNames, found)

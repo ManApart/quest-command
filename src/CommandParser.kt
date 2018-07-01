@@ -3,6 +3,7 @@ import commands.*
 class CommandParser {
     private val commands = loadCommands()
     private val unknownCommand = UnknownCommand()
+    private val filteredWords = listOf("to", "with")
 
     private fun loadCommands(): Array<Command> {
         val commands = mutableListOf<Command>()

@@ -4,9 +4,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 
 object GameState {
-    val player = Player()
-
     val world = loadLocations()
+    val player = Player()
 
     private fun loadLocations(): Location {
         val path = "/resource/data/Locations.json"
@@ -14,4 +13,5 @@ object GameState {
         val json = this::class.java.classLoader.getResource("data/Locations.json").readText()
         return jacksonObjectMapper().readValue(json)
     }
+
 }
