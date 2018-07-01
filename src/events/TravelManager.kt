@@ -1,15 +1,17 @@
 package events
 
 class TravelManager {
-    val startHandler = TravelHandler(this)
-    val arrivalHandler = ArrivalHandler(this)
+    init {
+        TravelHandler(this)
+        ArrivalHandler(this)
+    }
 
     class TravelHandler(private val travelManager: TravelManager) : EventListener<TravelStartEvent> {
         init {
             EventManager.registerListener(this)
         }
         override fun handle(event: TravelStartEvent) {
-            println("You start travelling to ")
+            println("You leave ${event.currentLocation} travelling towards ${event.destination}")
         }
     }
 

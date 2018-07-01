@@ -5,24 +5,35 @@ class CommandParser {
     private val unknownCommand = UnknownCommand()
     private val filteredWords = listOf("to", "with")
 
-    private fun loadCommands(): Array<Command> {
+    private fun loadCommands(): List<Command> {
         val commands = mutableListOf<Command>()
-        commands.add(HelpCommand())
+        val help = HelpCommand()
+        commands.add(help)
         commands.add(ExitCommand())
         commands.add(TravelCommand())
 
-        return commands.toTypedArray()
+        val commandList = commands.toList()
+        help.setCommands(commandList)
+        return commandList
     }
 
     fun parseCommand(line: String) {
-        val args: List<String> = line.split(" ").map{ it.toLowerCase().trim()}
+        val args: List<String> = cleanLine(line)
         if (args.isEmpty()) {
             unknownCommand.execute(listOf(line))
-        }
-        val command = findCommand(args[0])
+        } else {
 
-        val trimmedArgs = if (args.size > 1) args.subList(1, args.size) else args
-        command.execute(trimmedArgs)
+            val command = findCommand(args[0])
+
+            val trimmedArgs = if (args.size > 1) args.subList(1, args.size) else listOf()
+            command.execute(trimmedArgs)
+        }
+    }
+
+    private fun cleanLine(line: String) : List<String>{
+        var cleanedString = line.toLowerCase()
+        filteredWords.forEach { cleanedString = cleanedString.replace(it, "") }
+        return  cleanedString.split(" ").map { it.trim()}.filter { it.isNotEmpty() }
     }
 
     private fun findCommand(alias: String): Command {

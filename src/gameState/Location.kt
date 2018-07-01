@@ -1,6 +1,6 @@
 package gameState
 
-class Location(val name: String, val locations: List<Location> = listOf()) {
+class Location(val name: String, private val locations: List<Location> = listOf()) {
     private var parent: Location = this
 
     init {
@@ -8,7 +8,7 @@ class Location(val name: String, val locations: List<Location> = listOf()) {
     }
 
     override fun toString(): String {
-        return "Location: $name"
+        return name
     }
 
     private fun setParent(parent: Location) {

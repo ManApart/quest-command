@@ -8,7 +8,7 @@ class ExitCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Exit the program"
+        return "Exit:\n\tExit - Exit the program."
     }
 
     override fun execute(args: List<String>) {

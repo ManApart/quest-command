@@ -1,5 +1,5 @@
 package gameState
 
 class Player {
-    private var location = GameState.world.findLocation(listOf("open field"))
+    var location = GameState.world.findLocation(listOf("an open field"))
 }

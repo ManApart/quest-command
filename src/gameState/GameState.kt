@@ -8,8 +8,6 @@ object GameState {
     val player = Player()
 
     private fun loadLocations(): Location {
-        val path = "/resource/data/Locations.json"
-        println("parsing resources $path")
         val json = this::class.java.classLoader.getResource("data/Locations.json").readText()
         return jacksonObjectMapper().readValue(json)
     }
