@@ -11,6 +11,8 @@ class CommandParser {
         commands.add(ExitCommand())
         commands.add(TravelCommand())
         commands.add(MapCommand())
+        commands.add(ItemCommand())
+        commands.add(InventoryCommand())
 
         return commands.toList()
     }
@@ -28,7 +30,7 @@ class CommandParser {
 
     private fun cleanLine(line: String) : List<String>{
         var cleanedString = line.toLowerCase()
-        filteredWords.forEach { cleanedString = cleanedString.replace(it, "") }
+        filteredWords.forEach { cleanedString = cleanedString.replace(" $it ", "") }
         return  cleanedString.split(" ").map { it.trim()}.filter { it.isNotEmpty() }
     }
 

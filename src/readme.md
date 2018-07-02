@@ -8,3 +8,4 @@ avoid all state in commands, allow state to be handled by events and gamestate
 
 ## TODO
 * find a way to allow auto complete with tab
+* some locations can only be accessed from other locations etc
