@@ -2,8 +2,11 @@ package processing
 
 import events.ArriveEvent
 import events.EventListener
+import events.StatChangeEvent
 import events.TravelStartEvent
 import gameState.GameState
+import gameState.Soul
+import gameState.Stat
 
 class TravelManager {
     init {
@@ -17,8 +20,15 @@ class TravelManager {
         }
 
         override fun handle(event: TravelStartEvent) {
-            println("You leave ${event.currentLocation} travelling towards ${event.destination}")
-            EventManager.postEvent(ArriveEvent(event.destination))
+            when {
+                event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
+                GameState.player.soul.getCurrent(Stat.StatType.STAMINA) == 0 -> println("You're too tired to do any traveling.")
+                else -> {
+                    println("You leave ${event.currentLocation} travelling towards ${event.destination}")
+                    EventManager.postEvent(StatChangeEvent("The journey", Stat.StatType.STAMINA, -1))
+                    EventManager.postEvent(ArriveEvent(event.destination))
+                }
+            }
         }
 
         override fun getPriority(): Int {

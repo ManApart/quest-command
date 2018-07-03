@@ -7,12 +7,14 @@ class CommandParser {
 
     private fun loadCommands(): List<Command> {
         val commands = mutableListOf<Command>()
-        commands.add(HelpCommand())
         commands.add(ExitCommand())
-        commands.add(TravelCommand())
-        commands.add(MapCommand())
-        commands.add(ItemCommand())
+        commands.add(HelpCommand())
         commands.add(InventoryCommand())
+        commands.add(ItemCommand())
+        commands.add(MapCommand())
+        commands.add(RestCommand())
+        commands.add(StatusCommand())
+        commands.add(TravelCommand())
 
         return commands.toList()
     }
