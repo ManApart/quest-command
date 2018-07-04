@@ -2,6 +2,7 @@ package gameState
 
 import events.ArriveEvent
 import events.EventListener
+import processing.ItemManager
 
 object ScopeManager {
     private val targets = mutableListOf<Target>()
@@ -32,6 +33,27 @@ object ScopeManager {
         targets.clear()
         addTarget(GameState.player)
         addTargets(GameState.player.items)
+    }
+
+
+    fun targetExists(name: String) : Boolean{
+        return targets.firstOrNull { it.toString().toLowerCase() == name.toLowerCase() } != null
+    }
+
+    fun targetExists(name: List<String>) : Boolean{
+        if (name.isEmpty()) return false
+
+        val fullName = name.joinToString(" ").toLowerCase()
+        return targets.firstOrNull { fullName.contains(it.toString().toLowerCase()) } != null
+    }
+
+    fun getTarget(name: String) : Target {
+        return targets.first { it.toString().toLowerCase() == name.toLowerCase() }
+    }
+
+    fun getTarget(name: List<String>) : Target {
+        val fullName = name.joinToString(" ").toLowerCase()
+        return targets.first { fullName.contains(it.toString().toLowerCase()) }
     }
 
 }

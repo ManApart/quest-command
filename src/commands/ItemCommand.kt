@@ -1,6 +1,10 @@
 package commands
 
+import events.UseItemEvent
 import gameState.GameState
+import gameState.ScopeManager
+import processing.EventManager
+import processing.ItemManager
 
 class ItemCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -17,13 +21,22 @@ class ItemCommand : Command() {
     }
 
     override fun execute(args: List<String>) {
-        val itemName = args.joinToString(" ")
-        if (args.isNotEmpty() && GameState.itemExists(itemName)){
-            val item = GameState.getItem(itemName)
-            val description = if (item.description.isNotBlank()) item.description else "Not much to say."
-            println("${item.name}: $description")
+        val argsString = args.joinToString(" ")
+        if (args.isEmpty()) {
+            println("${args.joinToString(" ")} not found!")
         } else {
-            println("${args.joinToString(" ") } not found!")
+            if (ItemManager.itemExists(args)) {
+                val firstItem = ItemManager.getItem(args)
+                val remainingArgs = argsString.substring(argsString.indexOf(firstItem.name.toLowerCase())).split(" ")
+                if (ScopeManager.targetExists(remainingArgs)) {
+                    val target = ScopeManager.getTarget(remainingArgs)
+                    println("posting event $firstItem, $target")
+                    EventManager.postEvent(UseItemEvent(firstItem, target))
+                } else {
+                    val description = if (firstItem.description.isNotBlank()) firstItem.description else "Not much to say."
+                    println("${firstItem.name}: $description")
+                }
+            }
         }
     }
 }

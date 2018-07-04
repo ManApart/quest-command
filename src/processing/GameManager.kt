@@ -17,9 +17,9 @@ object GameManager {
     }
 
     private fun newPlayer() {
-        GameState.player.items.add(GameState.getItem("Brown Pants"))
-        GameState.player.items.add(GameState.getItem("Old Shirt"))
-        GameState.player.items.add(GameState.getItem("Rusty Dagger"))
+        GameState.player.items.add(ItemManager.getItem("Brown Pants"))
+        GameState.player.items.add(ItemManager.getItem("Old Shirt"))
+        GameState.player.items.add(ItemManager.getItem("Rusty Dagger"))
     }
 
 }

@@ -6,7 +6,7 @@ class Player : Target{
     val soul = Soul()
 
     override fun toString(): String {
-        return "Your Self"
+        return "Player"
     }
 
 

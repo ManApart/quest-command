@@ -4,7 +4,7 @@ import utility.ReflectionTools
 object CommandParser {
     val commands = loadCommands()
     private val unknownCommand = UnknownCommand()
-    private val filteredWords = listOf("to", "with")
+    private val filteredWords = listOf("to", "with", "on")
 
     private fun loadCommands(): List<Command> {
         return ReflectionTools.getAllCommands().map { it.newInstance() }.toList()
@@ -23,7 +23,7 @@ object CommandParser {
 
     private fun cleanLine(line: String): List<String> {
         var cleanedString = line.toLowerCase()
-        filteredWords.forEach { cleanedString = cleanedString.replace(" $it ", "") }
+        filteredWords.forEach { cleanedString = cleanedString.replace(" $it ", " ") }
         return cleanedString.split(" ").map { it.trim() }.filter { it.isNotEmpty() }
     }
 
