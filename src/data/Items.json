@@ -10,6 +10,9 @@
   {
     "name": "Rusty Dagger",
     "description": "It once held a cutting edge, but those days are little remembered.",
+    "properties": {
+      "damage": "2"
+    },
     "tags": [
       "Weapon",
       "Sharp",
