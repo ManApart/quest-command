@@ -2,7 +2,6 @@ package gameState
 
 import events.ArriveEvent
 import events.EventListener
-import processing.ItemManager
 
 object ScopeManager {
     private val targets = mutableListOf<Target>()

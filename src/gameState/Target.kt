@@ -1,3 +1,5 @@
 package gameState
 
-interface Target
+interface Target {
+    val tags : Tags
+}

@@ -4,7 +4,7 @@ import commands.Command
 import events.Event
 import events.EventListener
 import org.reflections.Reflections
-
+import processing.use.Use
 
 
 object ReflectionTools {
@@ -18,6 +18,12 @@ object ReflectionTools {
     fun getAllEvents() : List<Class<out Event>> {
         val reflections = Reflections("events")
         val allClasses = reflections.getSubTypesOf(Event::class.java)
+        return allClasses.toList()
+    }
+
+    fun getAllUses() : List<Class<out Use>> {
+        val reflections = Reflections("processing.use")
+        val allClasses = reflections.getSubTypesOf(Use::class.java)
         return allClasses.toList()
     }
 

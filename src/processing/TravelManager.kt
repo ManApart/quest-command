@@ -16,7 +16,7 @@ object TravelManager {
                 GameState.player.soul.getCurrent(Stat.StatType.STAMINA) == 0 -> println("You're too tired to do any traveling.")
                 else -> {
                     println("You leave ${event.currentLocation} travelling towards ${event.destination}")
-                    EventManager.postEvent(StatChangeEvent("The journey", Stat.StatType.STAMINA, -1))
+                    EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.StatType.STAMINA, -1))
                     EventManager.postEvent(ArriveEvent(event.destination))
                 }
             }

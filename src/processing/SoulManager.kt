@@ -8,7 +8,7 @@ object SoulManager {
 
     class RestHandler : EventListener<RestEvent>() {
         override fun handle(event: RestEvent) {
-            EventManager.postEvent(StatChangeEvent("Resting", Stat.StatType.STAMINA, event.hoursRested))
+            EventManager.postEvent(StatChangeEvent(GameState.player, "Resting", Stat.StatType.STAMINA, event.hoursRested))
         }
     }
 
@@ -16,7 +16,7 @@ object SoulManager {
         override fun handle(event: StatChangeEvent) {
             val change = if (event.amount > 0) "increases" else "decreases"
             println("${event.source} $change your ${event.type} by ${Math.abs(event.amount)}")
-            GameState.player.soul.incStat(event.type, event.amount)
+            event.target.soul.incStat(event.type, event.amount)
         }
 
     }

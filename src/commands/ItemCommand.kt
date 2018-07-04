@@ -30,7 +30,6 @@ class ItemCommand : Command() {
                 val remainingArgs = argsString.substring(firstItem.name.length).split(" ")
                 if (ScopeManager.targetExists(remainingArgs)) {
                     val target = ScopeManager.getTarget(remainingArgs)
-                    println("posting event $firstItem, $target")
                     EventManager.postEvent(UseItemEvent(firstItem, target))
                 } else {
                     val description = if (firstItem.description.isNotBlank()) firstItem.description else "Not much to say."

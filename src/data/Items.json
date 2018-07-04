@@ -9,6 +9,11 @@
   },
   {
     "name": "Rusty Dagger",
-    "description": "It once held a cutting edge, but those days are little remembered."
+    "description": "It once held a cutting edge, but those days are little remembered.",
+    "tags": [
+      "Weapon",
+      "Sharp",
+      "Short"
+    ]
   }
 ]

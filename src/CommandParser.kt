@@ -16,8 +16,12 @@ object CommandParser {
             unknownCommand.execute(listOf(line))
         } else {
             val command = findCommand(args[0])
-            val trimmedArgs = removeFirstItem(args)
-            command.execute(trimmedArgs)
+            if (command == unknownCommand){
+                unknownCommand.execute(listOf(line))
+            } else {
+                val trimmedArgs = removeFirstItem(args)
+                command.execute(trimmedArgs)
+            }
         }
     }
 
@@ -28,7 +32,7 @@ object CommandParser {
     }
 
     fun findCommand(alias: String): Command {
-        return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) } ?: unknownCommand
+        return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) }?: unknownCommand
     }
 
     private fun containsIgnoreCase(textList: Array<String>, matchText: String): Boolean {

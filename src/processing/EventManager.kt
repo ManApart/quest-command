@@ -9,6 +9,7 @@ import java.util.*
 
 object EventManager {
     private val listenerMap = HashMap<Class<*>, ArrayList<EventListener<*>>>()
+//    private val allListeners = mutableListOf<EventListener<Event>>()
 
     init {
         registerListeners()
