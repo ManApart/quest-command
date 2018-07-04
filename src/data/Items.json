@@ -18,5 +18,15 @@
       "Sharp",
       "Short"
     ]
+  },
+  {
+    "name": "Apple",
+    "description": "It glistens and smells of spring blossoms.",
+    "properties": {
+      "amount": "1"
+    },
+    "tags": [
+      "Food"
+    ]
   }
 ]

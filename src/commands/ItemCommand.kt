@@ -6,9 +6,10 @@ import gameState.ScopeManager
 import processing.EventManager
 import processing.ItemManager
 
+//TODO - refactor to just use target on target instead of being item based?
 class ItemCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Item", "I")
+        return arrayOf("Item", "I", "Use")
     }
 
     override fun getDescription(): String {

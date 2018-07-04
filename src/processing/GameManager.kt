@@ -20,6 +20,8 @@ object GameManager {
         GameState.player.items.add(ItemManager.getItem("Brown Pants"))
         GameState.player.items.add(ItemManager.getItem("Old Shirt"))
         GameState.player.items.add(ItemManager.getItem("Rusty Dagger"))
+        GameState.player.items.add(ItemManager.getItem("Apple"))
+        GameState.player.items.add(ItemManager.getItem("Apple"))
     }
 
 }

@@ -12,11 +12,6 @@ class DamageCreature : Use {
     }
 
     override fun execute(event: UseItemEvent) {
-        val amount = if (event.source.properties.hasProperty("Damage")){
-            -event.source.properties.getInt("Damage")
-        } else {
-            -1
-        }
-        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, Stat.StatType.HEALTH, amount))
+        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, Stat.StatType.HEALTH, -event.source.properties.getInt("Damage", 1)))
     }
 }

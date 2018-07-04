@@ -1,6 +1,7 @@
 package commands
 
 import gameState.GameState
+import gameState.Item
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -18,8 +19,21 @@ class InventoryCommand : Command() {
     }
 
     override fun execute(args: List<String>) {
-        if (args.isEmpty()){
-            println("You have ${GameState.player.items.joinToString(", ")} in your inventory")
+        if (args.isEmpty()) {
+            val itemCounts = HashMap<Item, Int>()
+            GameState.player.items.forEach {
+                itemCounts[it] = itemCounts[it]?.plus(1) ?: 1
+            }
+
+            val itemList = itemCounts.entries.joinToString(", ") {
+                if (it.value == 1){
+                    it.key.name
+                } else {
+                    "${it.value}x ${it.key}"
+                }
+            }
+
+            println("You have $itemList in your inventory")
         }
     }
 }

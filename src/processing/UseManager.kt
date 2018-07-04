@@ -15,7 +15,12 @@ object UseManager {
     class UseItemHandler() : EventListener<UseItemEvent>() {
         override fun handle(event: UseItemEvent) {
             println("You use ${event.source} on ${event.target}")
-            uses.filter { it.matches(event) }.forEach { it.execute(event) }
+            val filteredUses = uses.filter { it.matches(event) }
+            if (filteredUses.isEmpty()){
+                println("Nothing happens.")
+            } else {
+                filteredUses.forEach { it.execute(event) }
+            }
         }
     }
 }

@@ -11,18 +11,14 @@ class Properties(properties: Map<String, String> = HashMap()) {
         return parsed
     }
 
-    fun hasProperty(key: String): Boolean {
-        return properties.containsKey(key.toLowerCase())
-    }
-
-    fun getInt(key: String): Int {
+    fun getInt(key: String, default: Int = 0): Int {
         if (properties.containsKey(key.toLowerCase())) {
             return Integer.parseInt(properties[key.toLowerCase()])
         }
-        return 0
+        return default
     }
 
-    fun getString(key: String): String {
-        return properties[key.toLowerCase()] ?: ""
+    fun getString(key: String, default: String = ""): String {
+        return properties[key.toLowerCase()] ?: default
     }
 }
