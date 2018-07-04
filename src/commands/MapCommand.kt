@@ -17,8 +17,9 @@ class MapCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tMap - Describe your current position." +
-                "\n\tMap here *<location> - List locations at your current position (or given location)." +
-                "\n\tMap nearby *<location> - List locations near your current position (or given location)."
+                "\n\tMap <location> - List locations at the given location (or given location)." +
+                "\n\tMap here *<location> - List locations at your current location (or given location)." +
+                "\n\tMap nearby *<location> - List locations near your current location (or given location)."
     }
 
     override fun execute(args: List<String>) {

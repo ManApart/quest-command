@@ -8,12 +8,6 @@ object GameState {
     val player = Player()
     private val items = loadItems()
 
-    init {
-        player.items.add(getItem("Brown Pants"))
-        player.items.add(getItem("Old Shirt"))
-        player.items.add(getItem("Rusty Dagger"))
-    }
-
     private fun loadLocations(): Location {
         val json = this::class.java.classLoader.getResource("data/Locations.json").readText()
         return jacksonObjectMapper().readValue(json)

@@ -10,7 +10,6 @@ import gameState.Stat
 object TravelManager {
 
     class TravelHandler : EventListener<TravelStartEvent>() {
-
         override fun handle(event: TravelStartEvent) {
             when {
                 event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
