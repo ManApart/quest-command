@@ -27,7 +27,7 @@ class ItemCommand : Command() {
         } else {
             if (ItemManager.itemExists(args)) {
                 val firstItem = ItemManager.getItem(args)
-                val remainingArgs = argsString.substring(argsString.indexOf(firstItem.name.toLowerCase())).split(" ")
+                val remainingArgs = argsString.substring(firstItem.name.length).split(" ")
                 if (ScopeManager.targetExists(remainingArgs)) {
                     val target = ScopeManager.getTarget(remainingArgs)
                     println("posting event $firstItem, $target")
