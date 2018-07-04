@@ -3,6 +3,7 @@ package commands
 import events.MapEvent
 import gameState.GameState
 import gameState.Location
+import processing.EventManager
 import removeFirstItem
 
 class MapCommand : Command() {

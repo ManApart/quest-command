@@ -1,6 +1,7 @@
 package commands
 
 import events.RestEvent
+import processing.EventManager
 
 class RestCommand : Command() {
     override fun getAliases(): Array<String> {

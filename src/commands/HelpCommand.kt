@@ -1,5 +1,6 @@
 package commands
 
+import CommandParser
 import removeFirstItem
 
 class HelpCommand : Command() {
@@ -31,12 +32,12 @@ class HelpCommand : Command() {
 
     private fun printCommands() {
         var descriptions = ""
-        GameManager.commandParser.commands.forEach { if (it != this) descriptions += it.getDescription() + "\n" }
+        CommandParser.commands.forEach { if (it != this) descriptions += it.getDescription() + "\n" }
         print(descriptions)
     }
 
     private fun printManual(commandName: String) {
-        val command = GameManager.commandParser.findCommand(commandName)
+        val command = CommandParser.findCommand(commandName)
         println(getTitle(command) + command.getManual())
     }
 

@@ -1,29 +1,17 @@
 package processing
 
-import EventManager
 import events.EventListener
 import events.MapEvent
 import gameState.Location
 
-class MapManager {
-    init {
-        MapHandler(this)
-    }
+object MapManager {
 
-    class MapHandler(private val manager: MapManager) : EventListener<MapEvent> {
-        override fun getPriority(): Int {
-            return 0
-        }
-
-        init {
-            EventManager.registerListener(this)
-        }
-
+    class MapHandler : EventListener<MapEvent>() {
         override fun handle(event: MapEvent) {
             when (event.type) {
-                MapEvent.Type.INFO -> manager.getInfo(event.target)
-                MapEvent.Type.CHILDREN -> manager.getChildren(event.target)
-                MapEvent.Type.SIBLINGS -> manager.getSiblings(event.target)
+                MapEvent.Type.INFO -> MapManager.getInfo(event.target)
+                MapEvent.Type.CHILDREN -> MapManager.getChildren(event.target)
+                MapEvent.Type.SIBLINGS -> MapManager.getSiblings(event.target)
             }
         }
     }

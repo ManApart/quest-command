@@ -1,0 +1,4 @@
+package processing
+
+object GameManager {
+}

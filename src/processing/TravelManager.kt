@@ -5,19 +5,11 @@ import events.EventListener
 import events.StatChangeEvent
 import events.TravelStartEvent
 import gameState.GameState
-import gameState.Soul
 import gameState.Stat
 
-class TravelManager {
-    init {
-        TravelHandler(this)
-        ArrivalHandler(this)
-    }
+object TravelManager {
 
-    class TravelHandler(private val travelManager: TravelManager) : EventListener<TravelStartEvent> {
-        init {
-            EventManager.registerListener(this)
-        }
+    class TravelHandler : EventListener<TravelStartEvent>() {
 
         override fun handle(event: TravelStartEvent) {
             when {
@@ -30,24 +22,12 @@ class TravelManager {
                 }
             }
         }
-
-        override fun getPriority(): Int {
-            return 0
-        }
     }
 
-    class ArrivalHandler(private val travelManager: TravelManager) : EventListener<ArriveEvent> {
-        init {
-            EventManager.registerListener(this)
-        }
-
+    class ArrivalHandler() : EventListener<ArriveEvent>() {
         override fun handle(event: ArriveEvent) {
             GameState.player.location = event.destination
             println("You arrive at ${event.destination}")
-        }
-
-        override fun getPriority(): Int {
-            return 0
         }
     }
 

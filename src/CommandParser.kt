@@ -1,22 +1,13 @@
 import commands.*
+import utility.ReflectionTools
 
-class CommandParser {
+object CommandParser {
     val commands = loadCommands()
     private val unknownCommand = UnknownCommand()
     private val filteredWords = listOf("to", "with")
 
     private fun loadCommands(): List<Command> {
-        val commands = mutableListOf<Command>()
-        commands.add(ExitCommand())
-        commands.add(HelpCommand())
-        commands.add(InventoryCommand())
-        commands.add(ItemCommand())
-        commands.add(MapCommand())
-        commands.add(RestCommand())
-        commands.add(StatusCommand())
-        commands.add(TravelCommand())
-
-        return commands.toList()
+        return ReflectionTools.getAllCommands().map { it.newInstance() }.toList()
     }
 
     fun parseCommand(line: String) {
@@ -30,10 +21,10 @@ class CommandParser {
         }
     }
 
-    private fun cleanLine(line: String) : List<String>{
+    private fun cleanLine(line: String): List<String> {
         var cleanedString = line.toLowerCase()
         filteredWords.forEach { cleanedString = cleanedString.replace(" $it ", "") }
-        return  cleanedString.split(" ").map { it.trim()}.filter { it.isNotEmpty() }
+        return cleanedString.split(" ").map { it.trim() }.filter { it.isNotEmpty() }
     }
 
     fun findCommand(alias: String): Command {
@@ -52,10 +43,10 @@ class CommandParser {
 
 }
 
-fun removeFirstItem(list: List<String>) : List<String> {
+fun removeFirstItem(list: List<String>): List<String> {
     return if (list.size > 1) list.subList(1, list.size) else listOf()
 }
 
-fun removeFirstItem(list: Array<String>) : Array<String> {
+fun removeFirstItem(list: Array<String>): Array<String> {
     return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
 }

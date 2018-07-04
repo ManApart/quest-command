@@ -2,6 +2,7 @@ import events.Event
 import events.EventListener
 import org.junit.Assert
 import org.junit.Test
+import processing.EventManager
 
 class EventManagerTest {
     private val resultList = mutableListOf<String>()
@@ -9,7 +10,7 @@ class EventManagerTest {
     private val second = TestListener(this, 1, "second")
 
     class TestEvent : Event
-    class TestListener(private val parent: EventManagerTest, private val priorityLevel: Int, private val id: String) : EventListener<TestEvent> {
+    class TestListener(private val parent: EventManagerTest, private val priorityLevel: Int, private val id: String) : EventListener<TestEvent>() {
         override fun getPriority(): Int {
             return priorityLevel
         }

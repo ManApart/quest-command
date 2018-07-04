@@ -2,6 +2,7 @@ package commands
 
 import events.TravelStartEvent
 import gameState.GameState
+import processing.EventManager
 
 class TravelCommand : Command() {
     override fun getAliases(): Array<String> {

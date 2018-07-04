@@ -1,4 +1,0 @@
-package processing
-
-class SystemManager {
-}

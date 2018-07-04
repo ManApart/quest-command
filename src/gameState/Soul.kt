@@ -2,6 +2,7 @@ package gameState
 
 import events.StatMaxedEvent
 import events.StatMinnedEvent
+import processing.EventManager
 
 class Soul {
     private val stats = listOf(

@@ -1,7 +1,10 @@
 package events
 
-interface EventListener<T : Event> {
+abstract class EventListener<T : Event> {
 
-    fun getPriority() : Int
-    fun handle(event: T)
+    abstract fun handle(event: T)
+    open fun getPriority() : Int {
+        return 0
+    }
+
 }
