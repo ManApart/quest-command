@@ -2,7 +2,7 @@ package gameState
 
 class Player : Target, Creature{
     var location = GameState.world.findLocation(listOf("an open field"))
-    val items = mutableListOf<Item>()
+    override val inventory: Inventory = Inventory()
     override val soul = Soul()
     override val tags = Tags(listOf("Creature"))
 

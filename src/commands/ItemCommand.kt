@@ -1,7 +1,6 @@
 package commands
 
 import events.UseItemEvent
-import gameState.GameState
 import gameState.ScopeManager
 import processing.EventManager
 import processing.ItemManager
@@ -9,16 +8,16 @@ import processing.ItemManager
 //TODO - refactor to just use target on target instead of being item based?
 class ItemCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Item", "I", "Use")
+        return arrayOf("Item", "I", "Action")
     }
 
     override fun getDescription(): String {
-        return "Item:\n\tUse and manage Items"
+        return "Item:\n\tAction and manage Items"
     }
 
     override fun getManual(): String {
         return "\n\tItem <item> - Describe an item" +
-                "\n\tItem <item> on <target> - Use an item on a target. X"
+                "\n\tItem <item> on <target> - Action an item on a target."
     }
 
     override fun execute(args: List<String>) {

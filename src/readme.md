@@ -11,9 +11,6 @@ an open world rpg with intense levels of interactivity, experienced through the 
 ## TODO
 * find a way to allow auto complete with tab
 * some locations can only be accessed from other locations etc
-* use dagger on self could test use interface and drop health (even if it's kinda dark)
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
 
 * Inventory management be event based
-* Eating food removes it from inventory
-* Inventory command lists count of identical items

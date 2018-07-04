@@ -4,11 +4,11 @@ import gameState.GameState
 
 object GameManager {
 
-    fun saveGame(){
+    fun saveGame() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun loadGame(){
+    fun loadGame() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -17,11 +17,13 @@ object GameManager {
     }
 
     private fun newPlayer() {
-        GameState.player.items.add(ItemManager.getItem("Brown Pants"))
-        GameState.player.items.add(ItemManager.getItem("Old Shirt"))
-        GameState.player.items.add(ItemManager.getItem("Rusty Dagger"))
-        GameState.player.items.add(ItemManager.getItem("Apple"))
-        GameState.player.items.add(ItemManager.getItem("Apple"))
+        with(GameState.player.inventory.items) {
+            add(ItemManager.getItem("Brown Pants"))
+            add(ItemManager.getItem("Old Shirt"))
+            add(ItemManager.getItem("Rusty Dagger"))
+            add(ItemManager.getItem("Apple"))
+            add(ItemManager.getItem("Apple"))
+        }
     }
 
 }

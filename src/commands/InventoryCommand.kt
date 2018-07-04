@@ -1,7 +1,11 @@
 package commands
 
+import events.PickupItemEvent
+import events.DropItemEvent
 import gameState.GameState
 import gameState.Item
+import processing.EventManager
+import processing.ItemManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -20,20 +24,36 @@ class InventoryCommand : Command() {
 
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
-            val itemCounts = HashMap<Item, Int>()
-            GameState.player.items.forEach {
-                itemCounts[it] = itemCounts[it]?.plus(1) ?: 1
-            }
+            listInventory()
+        } else if (args.size > 1){
+            val itemArgs = args.subList(1, args.size)
+            if (ItemManager.itemExists(itemArgs)){
+                val item = ItemManager.getItem(itemArgs)
 
-            val itemList = itemCounts.entries.joinToString(", ") {
-                if (it.value == 1){
-                    it.key.name
-                } else {
-                    "${it.value}x ${it.key}"
+                if (args[0] == "add"){
+                    EventManager.postEvent(PickupItemEvent(GameState.player, item))
+                } else if (args[0] == "drop"){
+                    EventManager.postEvent(DropItemEvent(GameState.player, item))
                 }
             }
 
-            println("You have $itemList in your inventory")
         }
+    }
+
+    private fun listInventory() {
+        val itemCounts = HashMap<Item, Int>()
+        GameState.player.inventory.items.forEach {
+            itemCounts[it] = itemCounts[it]?.plus(1) ?: 1
+        }
+
+        val itemList = itemCounts.entries.joinToString(", ") {
+            if (it.value == 1) {
+                it.key.name
+            } else {
+                "${it.value}x ${it.key}"
+            }
+        }
+
+        println("You have $itemList in your inventory")
     }
 }

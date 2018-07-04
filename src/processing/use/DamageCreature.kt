@@ -6,7 +6,7 @@ import gameState.Creature
 import gameState.Stat
 import processing.EventManager
 
-class DamageCreature : Use {
+class DamageCreature : Action {
     override fun matches(event: UseItemEvent): Boolean {
         return event.target is Creature && event.source.tags.has("Weapon")
     }

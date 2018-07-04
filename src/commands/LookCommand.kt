@@ -1,6 +1,6 @@
 package commands
 
-import gameState.Item
+import gameState.GameState
 import gameState.ScopeManager
 
 class LookCommand : Command() {
@@ -19,7 +19,7 @@ class LookCommand : Command() {
 
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
-            val targets = ScopeManager.getTargets().filter { it !is Item }
+            val targets = ScopeManager.getTargets().filter { !GameState.player.inventory.items.contains(it) }
             println("You find yourself surrounded by ${targets.joinToString(", ")}")
         } else if (args[0] == "items") {
             val targets = ScopeManager.getTargets()

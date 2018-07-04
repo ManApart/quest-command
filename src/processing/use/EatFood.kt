@@ -7,13 +7,13 @@ import gameState.GameState
 import gameState.Stat
 import processing.EventManager
 
-class EatFood : Use {
+class EatFood : Action {
     override fun matches(event: UseItemEvent): Boolean {
         return event.source.tags.has("Food")
     }
 
     override fun execute(event: UseItemEvent) {
         EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, Stat.StatType.HEALTH, event.source.properties.getInt("Amount")))
-        GameState.player.items.remove(event.source)
+        GameState.player.inventory.items.remove(event.source)
     }
 }

@@ -31,9 +31,8 @@ object ScopeManager {
     private fun resetTargets() {
         targets.clear()
         addTarget(GameState.player)
-        addTargets(GameState.player.items)
+        addTargets(GameState.player.inventory.items)
     }
-
 
     fun targetExists(name: String) : Boolean{
         return targets.firstOrNull { it.toString().toLowerCase() == name.toLowerCase() } != null
@@ -53,6 +52,10 @@ object ScopeManager {
     fun getTarget(name: List<String>) : Target {
         val fullName = name.joinToString(" ").toLowerCase()
         return targets.first { fullName.contains(it.toString().toLowerCase()) }
+    }
+
+    fun removeTarget(target: Target){
+        targets.remove(target)
     }
 
 }

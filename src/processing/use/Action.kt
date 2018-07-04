@@ -2,7 +2,7 @@ package processing.use
 
 import events.UseItemEvent
 
-interface Use {
+interface Action {
     fun matches(event: UseItemEvent) : Boolean
     fun execute(event: UseItemEvent)
 }
