@@ -9,7 +9,7 @@ import java.util.*
 
 object EventManager {
     private val listenerMap = HashMap<Class<*>, ArrayList<EventListener<*>>>()
-//    private val allListeners = mutableListOf<EventListener<Event>>()
+    private val eventQueue = mutableListOf<Event>()
 
     init {
         registerListeners()
@@ -37,12 +37,38 @@ object EventManager {
             listenerMap[listenerClass]?.remove(listener)
         }
     }
+//
+//    fun <E : Event> postEvent(event: E) {
+//        val eventClass = event.javaClass
+//        listenerMap[eventClass]?.forEach { (it as EventListener<E>).handle(event) }
+//        listenerMap[Event::class.java]?.forEach { (it as EventListener<Event>).handle(event) }
+//    }
 
+    /**
+     * Posted events will be executed in a FIFO manner
+     */
     fun <E : Event> postEvent(event: E) {
-        val eventClass = event.javaClass
-        if (listenerMap.containsKey(eventClass)) {
-            listenerMap[eventClass]?.forEach { (it as EventListener<E>).handle(event) }
+        eventQueue.add(event)
+    }
+
+    /**
+     * Called by the main method to execute the queue of events
+     */
+    fun executeEvents() {
+        val eventCopy = eventQueue.toList()
+        eventQueue.clear()
+        eventCopy.forEach { event ->
+            executeEvent(event)
         }
+        if (eventQueue.isNotEmpty()) {
+            executeEvents()
+        }
+    }
+
+    private fun <E : Event> executeEvent(event: E) {
+        val eventClass = event.javaClass
+        listenerMap[eventClass]?.forEach { (it as EventListener<E>).handle(event) }
+        listenerMap[Event::class.java]?.forEach { (it as EventListener<Event>).handle(event) }
     }
 
     private fun getListenedForClass(listener: EventListener<*>): Class<*> {
