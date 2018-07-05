@@ -21,17 +21,19 @@ object MapManager {
     }
 
     private fun getChildren(target: Location) {
-        if (target.locations.isNotEmpty()) {
-            val children = target.locations.joinToString(", ")
+        val locations = target.locations.filter { !it.restricted }
+        if (locations.isNotEmpty()) {
+            val children = locations.joinToString(", ")
             println("${target.name} is made up of $children")
         } else {
-            println("${target.name} doesn't have any smaller locations")
+            println("${target.name} doesn't have any known smaller locations")
         }
     }
 
     private fun getSiblings(target: Location) {
-        if (target.getParent() != target && target.getParent().locations.isNotEmpty()) {
-            val siblings = target.getParent().locations.filter{it != target}.joinToString(", ")
+        val locations = target.getParent().locations.filter { !it.restricted }
+        if (target.getParent() != target && locations.size > 1) {
+            val siblings = locations.filter{it != target}.joinToString(", ")
             println("${target.name} is neighbored by $siblings")
         } else {
             println("${target.name} has no known neighbors")

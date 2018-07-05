@@ -5,6 +5,7 @@ import gameState.Location
 
 object LocationParsing {
     fun findLocation(source: Location, args: List<String>): Location {
+        if (source.name.toLowerCase() == args.joinToString(" ").toLowerCase()) return source
         val found = findLocation(args)
         if (found == GameState.world){
             val args2 = (pathAsString(GameState.player.location) + " " + args.joinToString(" ")).split(" ")

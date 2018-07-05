@@ -14,7 +14,7 @@ object TravelManager {
         override fun execute(event: TravelStartEvent) {
             when {
                 event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
-                isMovingToRestricted(event.currentLocation, event.destination) -> println("You're unable to go directly to ${event.destination}")
+                isMovingToRestricted(event.currentLocation, event.destination) -> println("Could not find ${event.destination.name}")
                 GameState.player.soul.getCurrent(Stat.StatType.STAMINA) == 0 -> println("You're too tired to do any traveling.")
                 else -> {
                     if (event.currentLocation.contains(event.destination)){
