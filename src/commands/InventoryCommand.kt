@@ -41,14 +41,14 @@ class InventoryCommand : Command() {
     }
 
     private fun listInventory() {
-        val itemCounts = HashMap<Item, Int>()
+        val itemCounts = HashMap<String, Int>()
         GameState.player.inventory.items.forEach {
-            itemCounts[it] = itemCounts[it]?.plus(1) ?: 1
+            itemCounts[it.name] = itemCounts[it.name]?.plus(1) ?: 1
         }
 
         val itemList = itemCounts.entries.joinToString(", ") {
             if (it.value == 1) {
-                it.key.name
+                it.key
             } else {
                 "${it.value}x ${it.key}"
             }

@@ -1,6 +1,6 @@
 package gameState
 
-class Location(val name: String, val description: String = "", val restricted: Boolean = false, val locations: List<Location> = listOf()) {
+class Location(val name: String, val description: String = "", val restricted: Boolean = false, val locations: List<Location> = listOf(), val items: List<String> = listOf()) {
     private var parent: Location = this
 
     init {
@@ -26,10 +26,11 @@ class Location(val name: String, val description: String = "", val restricted: B
 
     private fun findChildLocation(args: List<String>): Location {
         val child = locations.firstOrNull { location -> location.locationMatches(args) }
+        val childNameWordCount = child?.name?.split(" ")?.size ?: 0
         return when {
             child == null -> this
-            args.size == 1 -> child
-            else -> child.findChildLocation(args.subList(1, args.size))
+            args.size == childNameWordCount -> child
+            else -> child.findChildLocation(args.subList(childNameWordCount, args.size))
         }
     }
 

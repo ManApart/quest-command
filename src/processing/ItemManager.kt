@@ -24,11 +24,15 @@ object ItemManager {
     }
 
     fun getItem(name: String) : Item {
-        return items.first { it.name.toLowerCase() == name.toLowerCase() }
+        return items.first { it.name.toLowerCase() == name.toLowerCase() }.copy()
     }
 
     fun getItem(name: List<String>) : Item {
         val fullName = name.joinToString(" ").toLowerCase()
-        return items.first { fullName.contains(it.name.toLowerCase()) }
+        return items.first { fullName.contains(it.name.toLowerCase()) }.copy()
+    }
+
+    fun getItems(names: List<String>) : List<Item> {
+        return names.map { getItem(it) }.toList()
     }
 }

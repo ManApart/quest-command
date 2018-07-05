@@ -2,6 +2,7 @@ package gameState
 
 import events.ArriveEvent
 import events.EventListener
+import processing.ItemManager
 
 object ScopeManager {
     private val targets = mutableListOf<Target>()
@@ -13,6 +14,7 @@ object ScopeManager {
     class ArrivalHandler() : EventListener<ArriveEvent>() {
         override fun execute(event: ArriveEvent) {
             ScopeManager.resetTargets()
+            addTargets(ItemManager.getItems(event.destination.items))
         }
     }
 

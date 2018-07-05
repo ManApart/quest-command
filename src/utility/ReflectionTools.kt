@@ -28,7 +28,7 @@ object ReflectionTools {
     }
 
     fun getAllEventListeners() : List<Class<out EventListener<*>>> {
-        val reflections = Reflections("processing")
+        val reflections = Reflections()
         val allClasses = reflections.getSubTypesOf(EventListener::class.java)
         return allClasses.toList()
     }

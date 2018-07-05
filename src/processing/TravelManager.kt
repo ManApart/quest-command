@@ -17,7 +17,11 @@ object TravelManager {
                 isMovingToRestricted(event.currentLocation, event.destination) -> println("You're unable to go directly to ${event.destination}")
                 GameState.player.soul.getCurrent(Stat.StatType.STAMINA) == 0 -> println("You're too tired to do any traveling.")
                 else -> {
-                    println("You leave ${event.currentLocation} travelling towards ${event.destination}")
+                    if (event.currentLocation.contains(event.destination)){
+                        println("You start travelling towards ${event.destination}")
+                    } else {
+                        println("You leave ${event.currentLocation} travelling towards ${event.destination}")
+                    }
                     EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.StatType.STAMINA, -1))
                     EventManager.postEvent(ArriveEvent(event.destination))
                 }
