@@ -2,7 +2,7 @@ package gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
 
-class Item(val name: String, val description: String, override val tags: Tags, val properties: Properties) : Target{
+class Item(override val name: String, val description: String, override val tags: Tags, val properties: Properties) : Target{
     override fun toString(): String {
         return name
     }

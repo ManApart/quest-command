@@ -6,6 +6,7 @@ import gameState.GameState
 import gameState.Item
 import processing.EventManager
 import processing.ItemManager
+import processing.TargetManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -41,19 +42,7 @@ class InventoryCommand : Command() {
     }
 
     private fun listInventory() {
-        val itemCounts = HashMap<String, Int>()
-        GameState.player.inventory.items.forEach {
-            itemCounts[it.name] = itemCounts[it.name]?.plus(1) ?: 1
-        }
-
-        val itemList = itemCounts.entries.joinToString(", ") {
-            if (it.value == 1) {
-                it.key
-            } else {
-                "${it.value}x ${it.key}"
-            }
-        }
-
+        val itemList = TargetManager.targetsToString(GameState.player.inventory.items)
         println("You have $itemList in your inventory")
     }
 }
