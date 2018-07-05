@@ -21,7 +21,9 @@ object ScopeManager {
     }
 
     fun addTarget(target: Target) {
-        targets.add(target)
+        if (!targets.contains(target)){
+            targets.add(target)
+        }
     }
 
     fun addTargets(targets: List<Target>) {
@@ -42,6 +44,13 @@ object ScopeManager {
         return targets.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
     }
 
+    fun targetExistsOutsideInventory(name: List<String>) : Boolean{
+        if (name.isEmpty()) return false
+
+        val fullName = name.joinToString(" ").toLowerCase()
+        return targets.filter { !GameState.player.inventory.items.contains(it) }.firstOrNull { fullName.contains(it.toString().toLowerCase()) } != null
+    }
+
     fun targetExists(name: List<String>) : Boolean{
         if (name.isEmpty()) return false
 
@@ -56,6 +65,11 @@ object ScopeManager {
     fun getTarget(name: List<String>) : Target {
         val fullName = name.joinToString(" ").toLowerCase()
         return targets.first { fullName.contains(it.toString().toLowerCase()) }
+    }
+
+    fun getTargetExcludingInventory(name: List<String>) : Target {
+        val fullName = name.joinToString(" ").toLowerCase()
+        return targets.filter { !GameState.player.inventory.items.contains(it) }.first { fullName.contains(it.toString().toLowerCase()) }
     }
 
     fun removeTarget(target: Target){

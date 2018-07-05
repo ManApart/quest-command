@@ -13,6 +13,7 @@ object InventoryManager {
             ScopeManager.addTarget(event.item)
         }
     }
+
     class PickupHandler : EventListener<PickupItemEvent>() {
         override fun execute(event: PickupItemEvent) {
             println("${event.source} picked up ${event.item}")

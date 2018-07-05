@@ -31,7 +31,7 @@
       "description": "The waist high grasses stretch into the distance. They don't obscure your view, but as they drift in the wind they give you the sensation of floating on a calm sea.",
       "locations": [
         {
-          "name": "Tree",
+          "name": "Apple Tree",
           "description": "The tree's leaves rustle in the wind, dusting it with the smell of apples.",
           "activators": [
             "Apple Tree"
