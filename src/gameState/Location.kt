@@ -1,6 +1,6 @@
 package gameState
 
-class Location(val name: String, val description: String = "", val restricted: Boolean = false, val locations: List<Location> = listOf(), val items: List<String> = listOf()) {
+class Location(val name: String, val description: String = "", val restricted: Boolean = false, val activators: List<String> = listOf(), val items: List<String> = listOf(), val locations: List<Location> = listOf()) {
     private var parent: Location = this
 
     init {

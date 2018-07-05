@@ -33,15 +33,23 @@
         {
           "name": "Tree",
           "description": "The tree's leaves rustle in the wind, dusting it with the smell of apples.",
-          "locations": [
-            {
-              "name": "Tree Branches",
-              "restricted": true
-            }
+          "activators": [
+            "Apple Tree"
           ],
           "items": [
             "Apple",
             "Apple"
+          ],
+          "locations": [
+            {
+              "name": "Tree Branches",
+              "restricted": true,
+              "items": [
+                "Apple",
+                "Apple",
+                "Apple"
+              ]
+            }
           ]
         }
       ]

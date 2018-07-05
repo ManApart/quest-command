@@ -3,10 +3,9 @@ package commands
 import events.PickupItemEvent
 import events.DropItemEvent
 import gameState.GameState
-import gameState.Item
+import gameState.targetsToString
 import processing.EventManager
 import processing.ItemManager
-import processing.TargetManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -42,7 +41,7 @@ class InventoryCommand : Command() {
     }
 
     private fun listInventory() {
-        val itemList = TargetManager.targetsToString(GameState.player.inventory.items)
+        val itemList = targetsToString(GameState.player.inventory.items)
         println("You have $itemList in your inventory")
     }
 }

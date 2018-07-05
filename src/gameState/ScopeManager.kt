@@ -2,6 +2,7 @@ package gameState
 
 import events.ArriveEvent
 import events.EventListener
+import processing.ActivatorManager
 import processing.ItemManager
 
 object ScopeManager {
@@ -15,6 +16,7 @@ object ScopeManager {
         override fun execute(event: ArriveEvent) {
             ScopeManager.resetTargets()
             addTargets(ItemManager.getItems(event.destination.items))
+            addTargets(ActivatorManager.getActivators(event.destination.activators))
         }
     }
 
@@ -37,7 +39,7 @@ object ScopeManager {
     }
 
     fun targetExists(name: String) : Boolean{
-        return targets.firstOrNull { it.toString().toLowerCase() == name.toLowerCase() } != null
+        return targets.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
     }
 
     fun targetExists(name: List<String>) : Boolean{
@@ -48,7 +50,7 @@ object ScopeManager {
     }
 
     fun getTarget(name: String) : Target {
-        return targets.first { it.toString().toLowerCase() == name.toLowerCase() }
+        return targets.first { it.name.toLowerCase() == name.toLowerCase() }
     }
 
     fun getTarget(name: List<String>) : Target {

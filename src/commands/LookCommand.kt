@@ -2,7 +2,7 @@ package commands
 
 import gameState.GameState
 import gameState.ScopeManager
-import processing.TargetManager
+import gameState.targetsToString
 
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -21,7 +21,7 @@ class LookCommand : Command() {
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
             val targets = ScopeManager.getTargets().filter { !GameState.player.inventory.items.contains(it) }
-            val targetList = TargetManager.targetsToString(targets)
+            val targetList = targetsToString(targets)
             println("You find yourself surrounded by $targetList")
         } else if (args[0] == "items") {
             val targets = ScopeManager.getTargets()

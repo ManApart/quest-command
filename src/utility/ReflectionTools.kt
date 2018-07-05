@@ -15,6 +15,10 @@ object ReflectionTools {
         return allClasses.toList()
     }
 
+    fun getEvent(className: String): Class<out Event> {
+        return getAllEvents().first { className == it.name.substring(it.name.lastIndexOf(".")+1) }
+    }
+
     fun getAllEvents() : List<Class<out Event>> {
         val reflections = Reflections("events")
         val allClasses = reflections.getSubTypesOf(Event::class.java)

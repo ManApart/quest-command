@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Apple Tree",
+    "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
+    "trigger": {
+      "callingEvent": "ClimbEvent"
+    },
+    "triggeredEvent": {
+      "className": "ArriveEvent",
+      "params": [
+        "an open field tree tree branches"
+      ]
+    }
+  }
+]

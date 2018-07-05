@@ -12,3 +12,4 @@ an open world rpg with intense levels of interactivity, experienced through the 
 * find a way to allow auto complete with tab
 * some locations can only be accessed from other locations etc
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
+* Do more work at startup instead of lazy init
