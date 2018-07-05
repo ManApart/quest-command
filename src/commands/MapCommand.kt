@@ -1,5 +1,6 @@
 package commands
 
+import commands.parsing.LocationParsing
 import events.MapEvent
 import gameState.GameState
 import gameState.Location
@@ -27,6 +28,7 @@ class MapCommand : Command() {
             args.isEmpty() -> currentLocation()
             args[0] == "here" -> subLocations(removeFirstItem(args))
             args[0] == "nearby" -> surroundingLocations(removeFirstItem(args))
+            else -> println("Unknown args: ${args.joinToString(" ")}. Did you mean 'map here' or 'map nearby'?")
         }
     }
 
@@ -36,18 +38,29 @@ class MapCommand : Command() {
     }
 
     private fun subLocations(args: List<String>){
-        EventManager.postEvent(MapEvent(findLocation(args), MapEvent.Type.CHILDREN))
+        val target = findLocation(args)
+        if (target != GameState.world){
+            EventManager.postEvent(MapEvent(target, MapEvent.Type.CHILDREN))
+        } else {
+            println("Could not find ${args.joinToString(" ")} on the map.")
+        }
+
     }
 
     private fun surroundingLocations(args: List<String>){
-        EventManager.postEvent(MapEvent(findLocation(args), MapEvent.Type.SIBLINGS))
+        val target = findLocation(args)
+        if (target != GameState.world){
+            EventManager.postEvent(MapEvent(target, MapEvent.Type.SIBLINGS))
+        } else {
+            println("Could not find ${args.joinToString(" ")} on the map.")
+        }
     }
 
     private fun findLocation(args: List<String>): Location {
         return if (args.isEmpty()) {
             GameState.player.location
         } else {
-            GameState.world.findLocation(args)
+            LocationParsing.findLocation(GameState.player.location, args)
         }
     }
 }
