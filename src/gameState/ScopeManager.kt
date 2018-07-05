@@ -11,7 +11,7 @@ object ScopeManager {
     }
 
     class ArrivalHandler() : EventListener<ArriveEvent>() {
-        override fun handle(event: ArriveEvent) {
+        override fun execute(event: ArriveEvent) {
             ScopeManager.resetTargets()
         }
     }

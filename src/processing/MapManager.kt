@@ -7,7 +7,7 @@ import gameState.Location
 object MapManager {
 
     class MapHandler : EventListener<MapEvent>() {
-        override fun handle(event: MapEvent) {
+        override fun execute(event: MapEvent) {
             when (event.type) {
                 MapEvent.Type.INFO -> MapManager.getInfo(event.target)
                 MapEvent.Type.CHILDREN -> MapManager.getChildren(event.target)

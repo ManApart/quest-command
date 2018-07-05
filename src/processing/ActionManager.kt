@@ -13,7 +13,7 @@ object ActionManager {
     }
 
     class UseItemHandler() : EventListener<UseItemEvent>() {
-        override fun handle(event: UseItemEvent) {
+        override fun execute(event: UseItemEvent) {
             println("You use ${event.source} on ${event.target}")
             val filteredUses = actions.filter { it.matches(event) }
             if (filteredUses.isEmpty()){

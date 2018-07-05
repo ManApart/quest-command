@@ -9,10 +9,20 @@
           "name": "Gate"
         },
         {
-          "name": "Pub"
+          "name": "Wall"
         },
         {
-          "name": "Mapmaker Manor"
+          "name": "City",
+          "restricted": true,
+          "description": "The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia",
+          "locations": [
+            {
+              "name": "Pub"
+            },
+            {
+              "name": "Mapmaker Manor"
+            }
+          ]
         }
       ]
     },

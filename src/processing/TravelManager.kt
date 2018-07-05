@@ -5,14 +5,16 @@ import events.EventListener
 import events.StatChangeEvent
 import events.TravelStartEvent
 import gameState.GameState
+import gameState.Location
 import gameState.Stat
 
 object TravelManager {
 
     class TravelHandler : EventListener<TravelStartEvent>() {
-        override fun handle(event: TravelStartEvent) {
+        override fun execute(event: TravelStartEvent) {
             when {
                 event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
+                isMovingToRestricted(event.currentLocation, event.destination) -> println("You're unable to go directly to ${event.destination}")
                 GameState.player.soul.getCurrent(Stat.StatType.STAMINA) == 0 -> println("You're too tired to do any traveling.")
                 else -> {
                     println("You leave ${event.currentLocation} travelling towards ${event.destination}")
@@ -23,8 +25,13 @@ object TravelManager {
         }
     }
 
+    private fun isMovingToRestricted(source: Location, destination: Location) : Boolean {
+        val destinationRestrictionLocation = destination.getRestrictedParent()
+        return !destinationRestrictionLocation.contains(source)
+    }
+
     class ArrivalHandler() : EventListener<ArriveEvent>() {
-        override fun handle(event: ArriveEvent) {
+        override fun execute(event: ArriveEvent) {
             GameState.player.location = event.destination
             println("You arrive at ${event.destination}")
         }

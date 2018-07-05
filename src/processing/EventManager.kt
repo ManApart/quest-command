@@ -28,7 +28,7 @@ object EventManager {
             listenerMap[listenerClass] = ArrayList()
         }
         listenerMap[listenerClass]?.add(listener)
-        listenerMap[listenerClass] = ArrayList(listenerMap[listenerClass]?.sortedWith(compareBy { it.getPriority() }))
+//        listenerMap[listenerClass] = ArrayList(listenerMap[listenerClass]?.sortedWith(compareBy { it.getPriority() }))
     }
 
     fun <E : Event> unRegisterListener(listener: EventListener<E>) {
@@ -37,12 +37,6 @@ object EventManager {
             listenerMap[listenerClass]?.remove(listener)
         }
     }
-//
-//    fun <E : Event> postEvent(event: E) {
-//        val eventClass = event.javaClass
-//        listenerMap[eventClass]?.forEach { (it as EventListener<E>).handle(event) }
-//        listenerMap[Event::class.java]?.forEach { (it as EventListener<Event>).handle(event) }
-//    }
 
     /**
      * Posted events will be executed in a FIFO manner
@@ -66,9 +60,17 @@ object EventManager {
     }
 
     private fun <E : Event> executeEvent(event: E) {
-        val eventClass = event.javaClass
-        listenerMap[eventClass]?.forEach { (it as EventListener<E>).handle(event) }
-        listenerMap[Event::class.java]?.forEach { (it as EventListener<Event>).handle(event) }
+        val listeners = mutableListOf<EventListener<*>>()
+        listenerMap[event.javaClass]?.forEach {
+            (it as EventListener<E>).event = event
+            listeners.add(it)
+        }
+        listenerMap[Event::class.java]?.forEach {
+            (it as EventListener<Event>).event = event
+            listeners.add(it)
+        }
+        listeners.sortBy { it.getPriority() }
+        listeners.forEach { it.execute() }
     }
 
     private fun getListenedForClass(listener: EventListener<*>): Class<*> {

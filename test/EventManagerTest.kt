@@ -15,7 +15,7 @@ class EventManagerTest {
             return priorityLevel
         }
 
-        override fun handle(event: TestEvent) {
+        override fun execute(event: TestEvent) {
             parent.resultList.add(id)
         }
 
@@ -27,6 +27,7 @@ class EventManagerTest {
         EventManager.registerListener(second)
 
         EventManager.postEvent(TestEvent())
+        EventManager.executeEvents()
 
         EventManager.unRegisterListener(first)
         EventManager.unRegisterListener(second)
@@ -42,6 +43,7 @@ class EventManagerTest {
         EventManager.registerListener(first)
 
         EventManager.postEvent(TestEvent())
+        EventManager.executeEvents()
 
         EventManager.unRegisterListener(first)
         EventManager.unRegisterListener(second)
