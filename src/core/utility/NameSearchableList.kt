@@ -11,6 +11,9 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     fun exists(name: String) : Boolean{
+        if (name.isBlank()){
+            return false
+        }
         return getOrNull(name) != null
     }
 

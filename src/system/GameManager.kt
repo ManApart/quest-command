@@ -1,6 +1,7 @@
 package system
 
 import core.gameState.GameState
+import travel.ArriveEvent
 
 object GameManager {
 

@@ -1,6 +1,7 @@
 package travel
 
 import core.commands.Command
+import core.commands.removeExcludedWords
 import core.gameState.GameState
 import system.EventManager
 
@@ -24,7 +25,8 @@ class TravelCommand : Command() {
     }
 
     override fun execute(args: List<String>) {
-        val found = LocationParsing.findLocation(GameState.player.location, args)
+        val cleanedArgs = removeExcludedWords(args, listOf("to"))
+        val found = LocationParsing.findLocation(GameState.player.location, cleanedArgs)
 
         if (found != GameState.world) {
             EventManager.postEvent(TravelStartEvent(destination = found))

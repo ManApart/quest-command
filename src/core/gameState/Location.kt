@@ -61,11 +61,6 @@ class Location(override val name: String, val description: String = "", val rest
     private fun locationMatches(args: List<String>): Boolean {
         return name.toLowerCase().split(" ").contains(args[0])
     }
-//    private fun locationMatches(args: List<String>): Boolean {
-//        val nameList = name.toLowerCase().trim().split(" ")
-//        val argList = args.subList(0, Math.min(args.size, nameList.size))
-//        return nameList.toTypedArray() contentEquals argList.toTypedArray()
-//    }
 
     fun getPath(): List<String> {
         val path = mutableListOf(name)

@@ -5,7 +5,6 @@ import core.utility.ReflectionTools
 object CommandParser {
     val commands = loadCommands()
     private val unknownCommand = UnknownCommand()
-    private val filteredWords = listOf("to", "with", "on")
 
     private fun loadCommands(): List<Command> {
         return ReflectionTools.getAllCommands().map { it.newInstance() }.toList()
@@ -27,9 +26,7 @@ object CommandParser {
     }
 
     private fun cleanLine(line: String): List<String> {
-        var cleanedString = line.toLowerCase()
-        filteredWords.forEach { cleanedString = cleanedString.replace(" $it ", " ") }
-        return cleanedString.split(" ").map { it.trim() }.filter { it.isNotEmpty() }
+        return line.toLowerCase().split(" ").map { it.trim() }.filter { it.isNotEmpty() }
     }
 
     fun findCommand(alias: String): Command {
@@ -54,4 +51,8 @@ fun removeFirstItem(list: List<String>): List<String> {
 
 fun removeFirstItem(list: Array<String>): Array<String> {
     return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
+}
+
+fun removeExcludedWords(list: List<String>, excludedWords: List<String>) : List<String> {
+    return list.subtract(excludedWords).toList()
 }

@@ -9,7 +9,7 @@ import system.EventManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Inventory", "b", "bag", "backpack")
+        return arrayOf("Bag", "b", "backpack")
     }
 
     override fun getDescription(): String {

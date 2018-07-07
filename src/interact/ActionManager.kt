@@ -11,12 +11,11 @@ object ActionManager {
         return ReflectionTools.getAllUses().map { it.newInstance() }.toList()
     }
 
-    class UseItemHandler() : EventListener<UseItemEvent>() {
-        override fun execute(event: UseItemEvent) {
-            println("You interact ${event.source} on ${event.target}")
+    class UseHandler() : EventListener<UseEvent>() {
+        override fun execute(event: UseEvent) {
             val filteredUses = actions.filter { it.matches(event) }
             if (filteredUses.isEmpty()){
-                println("Nothing happens.")
+                println("You use ${event.source} on ${event.target} but nothing happens.")
             } else {
                 filteredUses.forEach { it.execute(event) }
             }
