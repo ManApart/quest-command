@@ -23,28 +23,6 @@ class InventoryCommand : Command() {
                 "\n\tInventory equip <item> - equip an item X"
     }
 
-//    override fun execute(args: List<String>) {
-//        if (args.isEmpty()) {
-//            listInventory()
-//        } else if (args.size > 1){
-//            val itemArgs = args.subList(1, args.size)
-//            if (ItemManager.itemExists(itemArgs)){
-//                val item = ItemManager.getItem(itemArgs)
-//
-//                if (args[0] == "add" || args[0] == "pickup"){
-//                    EventManager.postEvent(PickupItemEvent(GameState.player, item))
-//                } else if (args[0] == "drop"){
-//                    EventManager.postEvent(DropItemEvent(GameState.player, item))
-//                } else {
-//                    println("Unknown command: ${args.joinToString(" ")}")
-//                }
-//            } else {
-//                println("Unable to find ${args.joinToString(" ")}")
-//            }
-//
-//        }
-//    }
-
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
             listInventory()
