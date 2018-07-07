@@ -1,41 +1,37 @@
 package explore.map
 
 import core.events.EventListener
+import core.gameState.GameState
 import core.gameState.Location
 
 object MapManager {
 
     class MapHandler : EventListener<MapEvent>() {
         override fun execute(event: MapEvent) {
-            when (event.type) {
-                MapEvent.Type.INFO -> getInfo(event.target)
-                MapEvent.Type.CHILDREN -> getChildren(event.target)
-                MapEvent.Type.SIBLINGS -> getSiblings(event.target)
+            if (GameState.player.location == event.target){
+                println("You are in ${event.target.name}.")
             }
+            println("${event.target.name} ${getChildren(event.target)} and ${getSiblings(event.target)}.")
         }
     }
 
-    private fun getInfo(target: Location) {
-        println("You are in ${target.name}. ${target.description}")
-    }
-
-    private fun getChildren(target: Location) {
+    private fun getChildren(target: Location) : String {
         val locations = target.locations.filter { !it.restricted }
-        if (locations.isNotEmpty()) {
+        return if (locations.isNotEmpty()) {
             val children = locations.joinToString(", ")
-            println("${target.name} is made up of $children")
+            "is made up of $children"
         } else {
-            println("${target.name} doesn't have any known smaller locations")
+            "doesn't have any known smaller locations"
         }
     }
 
-    private fun getSiblings(target: Location) {
+    private fun getSiblings(target: Location) : String {
         val locations = target.getParent().locations.filter { !it.restricted }
-        if (target.getParent() != target && locations.size > 1) {
+        return if (target.getParent() != target && locations.size > 1) {
             val siblings = locations.filter{it != target}.joinToString(", ")
-            println("${target.name} is neighbored by $siblings")
+            "is neighbored by $siblings"
         } else {
-            println("${target.name} has no known neighbors")
+            "has no known neighbors"
         }
     }
 }

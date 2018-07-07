@@ -21,17 +21,18 @@ class LookCommand : Command() {
 
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
+            println(GameState.player.location.description)
             if (ScopeManager.getTargets().size > 1){
                 val targetList = targetsToString(ScopeManager.getTargets().filterNot { it == GameState.player })
-                println("You find yourself surrounded by $targetList")
+                println("You find yourself surrounded by $targetList.")
             } else {
-                println("You don't see anything of use")
+                println("You don't see anything of use.")
             }
         } else if (ScopeManager.targetExists(args)) {
             val target = ScopeManager.getTarget(args)
             println(target.description)
         } else {
-            println("Couldn't find ${args.joinToString(" ")}")
+            println("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 }

@@ -12,9 +12,6 @@ an open world rpg with intense levels of interact, experienced through the comma
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
 * Group commands in help manual
 * Skill check for climb
-* Partial match for targets. If a single word matches, use it (tree vs apple tree)
-  * Scope Manager, Inventory, Travel
-  * Can we make this code generic and not duplicate?
 * Hide player from scope display
 
 

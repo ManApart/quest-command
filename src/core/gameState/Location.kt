@@ -1,6 +1,9 @@
 package core.gameState
 
-class Location(val name: String, val description: String = "", val restricted: Boolean = false, val activators: List<String> = listOf(), val items: List<String> = listOf(), val locations: List<Location> = listOf()) {
+import core.utility.NameSearchableList
+import core.utility.Named
+
+class Location(override val name: String, val description: String = "", val restricted: Boolean = false, val activators: List<String> = listOf(), val items: List<String> = listOf(), val locations: NameSearchableList<Location> = NameSearchableList()) : Named {
     private var parent: Location = this
 
     init {
@@ -26,19 +29,43 @@ class Location(val name: String, val description: String = "", val restricted: B
 
     private fun findChildLocation(args: List<String>): Location {
         val child = locations.firstOrNull { location -> location.locationMatches(args) }
-        val childNameWordCount = child?.name?.split(" ")?.size ?: 0
-        return when {
-            child == null -> this
-            args.size == childNameWordCount -> child
-            else -> child.findChildLocation(args.subList(childNameWordCount, args.size))
+        return if (child == null) {
+            this
+        } else {
+            val childNameWordCount = findOverlap(child.name, args)
+            if (args.size == childNameWordCount) {
+                child
+            } else {
+                child.findChildLocation(args.subList(childNameWordCount, args.size))
+            }
         }
     }
 
-    private fun locationMatches(args: List<String>): Boolean {
-        val nameList = name.toLowerCase().trim().split(" ")
-        val argList = args.subList(0, Math.min(args.size, nameList.size))
-        return nameList.toTypedArray() contentEquals argList.toTypedArray()
+    private fun findOverlap(name: String, args: List<String>): Int {
+        var wordCount = 0
+        var remainingWords = name.toLowerCase()
+        for (i in 0 until args.size){
+            when {
+                remainingWords.isBlank() -> return wordCount
+                remainingWords.contains(args[i]) -> {
+                    remainingWords = remainingWords.substring(remainingWords.indexOf(args[i]))
+                    wordCount++
+                }
+                else -> return wordCount
+            }
+        }
+
+        return wordCount
     }
+
+    private fun locationMatches(args: List<String>): Boolean {
+        return name.toLowerCase().split(" ").contains(args[0])
+    }
+//    private fun locationMatches(args: List<String>): Boolean {
+//        val nameList = name.toLowerCase().trim().split(" ")
+//        val argList = args.subList(0, Math.min(args.size, nameList.size))
+//        return nameList.toTypedArray() contentEquals argList.toTypedArray()
+//    }
 
     fun getPath(): List<String> {
         val path = mutableListOf(name)
@@ -65,7 +92,7 @@ class Location(val name: String, val description: String = "", val restricted: B
             return true
         } else {
             locations.forEach {
-                if (it.contains(target)){
+                if (it.contains(target)) {
                     return true
                 }
             }

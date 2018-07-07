@@ -1,9 +1,13 @@
 package core.utility
 
-class NameSearchableList<N : Named> : ArrayList<N>() {
+class NameSearchableList<N : Named>() : ArrayList<N>() {
 
-    fun getAll(): List<N> {
-        return toList()
+    constructor(items: N) : this() {
+        add(items)
+    }
+
+    constructor(items: List<N>) : this() {
+        addAll(items)
     }
 
     fun exists(name: String) : Boolean{

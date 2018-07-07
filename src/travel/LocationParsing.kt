@@ -6,24 +6,12 @@ import core.gameState.Location
 object LocationParsing {
     fun findLocation(source: Location, args: List<String>): Location {
         if (source.name.toLowerCase() == args.joinToString(" ").toLowerCase()) return source
-        val found = findLocation(args)
+        val found = GameState.world.findLocation(args)
         if (found == GameState.world){
-            val args2 = (pathAsString(GameState.player.location) + " " + args.joinToString(" ")).split(" ")
-            return findLocation(args2)
+            val playerRelativeArgs = (pathAsString(GameState.player.location) + " " + args.joinToString(" ")).split(" ")
+            return GameState.world.findLocation(playerRelativeArgs)
         }
         return found
-    }
-
-    private fun findLocation(args: List<String>) : Location {
-        val found = GameState.world.findLocation(args)
-        val argPath = args.joinToString(" ")
-        val foundPath = pathAsString(found)
-
-        return if (foundPath == argPath) {
-            found
-        } else {
-            GameState.world
-        }
     }
 
     private fun pathAsString(location: Location): String {

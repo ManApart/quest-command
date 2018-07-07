@@ -1,18 +1,20 @@
 package gameState
 
 import core.gameState.Location
+import core.utility.NameSearchableList
 import org.junit.Assert
 import org.junit.Test
 
 class LocationTest {
 
     private val innerChild = Location("inner")
-    private val twoNames = Location("two names")
-    private val childOfTwoNames = Location("child")
-    private val outerChild1 = Location("outer", locations = listOf(innerChild, twoNames))
+    private val childOfTwoNames = Location("two child")
+    private val twoNames = Location("two names", locations = NameSearchableList(childOfTwoNames))
+    private val outerChild1 = Location("outer", locations = NameSearchableList(listOf(innerChild, twoNames)))
     //Command parser converts all args to lower case
     private val outerChild2 = Location("outerSolo")
-    private val parent = Location("Parent", locations = listOf(outerChild1, outerChild2))
+    private val outSide = Location("out side")
+    private val parent = Location("Parent", locations = NameSearchableList(listOf(outerChild1, outerChild2, outSide)))
 
     @Test
     fun findLocationParent(){
@@ -28,6 +30,14 @@ class LocationTest {
         val found = parent.findLocation(args)
 
         Assert.assertEquals(outerChild2, found)
+    }
+
+    @Test
+    fun findLocationWhoseNameSharesLettersWithAnotherName(){
+        val args = listOf("out", "side")
+        val found = parent.findLocation(args)
+
+        Assert.assertEquals(outSide, found)
     }
 
     @Test
@@ -47,11 +57,27 @@ class LocationTest {
     }
 
     @Test
-    fun findLocationTwoNamesChild(){
-        val args = listOf("outer", "two", "names", "child")
+    fun findLocationTwoNamesPartial(){
+        val args = listOf("outer", "two")
         val found = parent.findLocation(args)
 
         Assert.assertEquals(twoNames, found)
+    }
+
+    @Test
+    fun findLocationTwoNamesChild(){
+        val args = listOf("outer", "two", "names", "two", "child")
+        val found = parent.findLocation(args)
+
+        Assert.assertEquals(childOfTwoNames, found)
+    }
+
+    @Test
+    fun findLocationTwoNamesChildPartial(){
+        val args = listOf("outer", "two", "names", "two")
+        val found = parent.findLocation(args)
+
+        Assert.assertEquals(childOfTwoNames, found)
     }
 
 
