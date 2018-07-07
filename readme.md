@@ -10,9 +10,8 @@ an open world rpg with intense levels of interact, experienced through the comma
 * find a way to allow auto complete with tab
 * some locations can only be accessed from other locations etc
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
-* Group commands in help manual
 * Skill check for climb
-* Hide player from scope display
+* Change item command to inventory command
 
 
 
@@ -32,3 +31,11 @@ context free gramer, tokenizers, lexers, (yacc, lex)
 Command ideas
 * Search - skill based, finds scope that's hidden
 * Look (examine) object for its description
+
+
+
+Explore:
+    Travel, Climb ...
+System:
+    Save, Load
+

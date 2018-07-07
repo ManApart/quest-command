@@ -17,6 +17,10 @@ class RestCommand : Command() {
                 "\n\tRest <amount> - Rest for a set amount of time."
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Character")
+    }
+
     override fun execute(args: List<String>) {
         when {
             args.isEmpty() -> rest(1)

@@ -2,6 +2,7 @@ package system
 
 import core.commands.Command
 import core.commands.CommandParser
+import core.commands.UnknownCommand
 import core.commands.removeFirstItem
 
 class HelpCommand : Command() {
@@ -13,13 +14,14 @@ class HelpCommand : Command() {
     override fun execute(args: List<String>) {
         when {
             args.isEmpty() -> println(getDescription())
-            args[0] == "commands" -> printCommands()
-            else -> printManual(args[0])
+            args[0] == "commands" -> printCommandGroups()
+            else -> printTopic(args)
         }
     }
 
     override fun getDescription(): String {
-        return "Help: \n\tHelp Commands - Return a list of other commands that can be called." +
+        return "Help: \n\tHelp Commands - Return a list of other types of commands that can be called." +
+                "\n\tHelp <Command Group> - Return the list of commands within a group of commands" +
                 "\n\tHelp <Command> - Return the manual for that command" +
                 "\nNotes:" +
                 "\n\tNames in brackets are params. EX: 'Travel <location>' should be typed as 'Travel Kanbara'" +
@@ -31,10 +33,47 @@ class HelpCommand : Command() {
         return getDescription()
     }
 
-    private fun printCommands() {
-        var descriptions = ""
-        CommandParser.commands.forEach { if (it != this) descriptions += it.getDescription() + "\n" }
-        print(descriptions)
+    override fun getCategory(): List<String> {
+        return listOf("System")
+    }
+
+    private fun printCommandGroups() {
+        val groups = HashMap<String, MutableList<String>>()
+        CommandParser.commands.forEach { command ->
+            run {
+                if (!groups.containsKey(command.getCategory()[0])) {
+                    groups[command.getCategory()[0]] = ArrayList()
+                }
+                groups[command.getCategory()[0]]?.add(command.getAliases()[0])
+            }
+        }
+        var groupList = ""
+        groups.forEach { groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n" }
+        println("Help <Group Name> to learn about one of the following topics: $groupList")
+    }
+
+    private fun printTopic(args: List<String>) {
+        if (args.size == 1 && CommandParser.findCommand(args[0]) !is UnknownCommand) {
+            printManual(args[0])
+        } else if (isCommandGroup(args)) {
+            printCommandGroup(args)
+        }
+    }
+
+    private fun isCommandGroup(args: List<String>): Boolean {
+        return CommandParser.commands.map { it.getCategory().map { it.toLowerCase() } }.contains(args)
+    }
+
+    private fun printCommandGroup(args: List<String>) {
+        val commands: List<Command> = mutableListOf()
+        var description = ""
+        //TODO - handle sub-categories
+        CommandParser.commands.forEach { command ->
+            if (command.getCategory().map { it.toLowerCase() }.toTypedArray() contentEquals args.toTypedArray()) {
+                description += command.getDescription() + "\n"
+            }
+        }
+        println(description)
     }
 
     private fun printManual(commandName: String) {
@@ -42,7 +81,7 @@ class HelpCommand : Command() {
         println(getTitle(command) + command.getManual())
     }
 
-    private fun getTitle(command: Command) : String{
+    private fun getTitle(command: Command): String {
         val title = command.getAliases()[0]
         val aliases = removeFirstItem(command.getAliases()).joinToString(", ")
         return "$title ($aliases):"

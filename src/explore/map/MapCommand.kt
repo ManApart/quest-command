@@ -19,6 +19,10 @@ class MapCommand : Command() {
         return "\n\tMap *<location> - List your current location (or given location) and the surrounding areas."
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Explore")
+    }
+
     override fun execute(args: List<String>) {
         when{
             args.isEmpty() -> currentLocation()

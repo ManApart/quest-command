@@ -21,6 +21,10 @@ class InventoryCommand : Command() {
                 "\n\tInventory equip <item> - equip an item X"
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Inventory")
+    }
+
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
             listInventory()

@@ -16,6 +16,10 @@ class DropItemCommand : core.commands.Command() {
         return "\n\tDrop <item> - Drop an item an item from your inventory"
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Inventory")
+    }
+
     override fun execute(args: List<String>) {
         if (args.size == 1) {
             dropItem(args)

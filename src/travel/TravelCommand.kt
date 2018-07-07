@@ -17,7 +17,10 @@ class TravelCommand : Command() {
         return "\n\tTravel to <location> - Start traveling to a location." +
                 "\n\tTravel - Continue traveling to a goal location. X" +
                 "\n\tTravel goal - Remember what the travel location goal is. X"
+    }
 
+    override fun getCategory(): List<String> {
+        return listOf("Travel")
     }
 
     override fun execute(args: List<String>) {

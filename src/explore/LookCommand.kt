@@ -19,6 +19,10 @@ class LookCommand : Command() {
                 "\n\tLook <target> - Look at a specific target."
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Explore")
+    }
+
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
             println(GameState.player.location.description)

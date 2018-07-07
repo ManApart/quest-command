@@ -18,6 +18,10 @@ class PickupItemCommand : core.commands.Command() {
         return "\n\tPickup <item> - pickup an item"
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Inventory")
+    }
+
     override fun execute(args: List<String>) {
         if (args.size == 1) {
             pickupItem(args)

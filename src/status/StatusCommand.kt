@@ -18,6 +18,10 @@ class StatusCommand : Command() {
                 "\n\tStatus <target> - Get the status of a target."
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Character")
+    }
+
     override fun execute(args: List<String>) {
         getPlayerStatus()
     }

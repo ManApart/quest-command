@@ -20,6 +20,10 @@ class ClimbCommand : Command() {
                 "\n\tClimb down <target> - Climb down the target"
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Travel")
+    }
+
     override fun execute(args: List<String>) {
         var argsString = args.joinToString(" ")
         if (args.isEmpty()) {

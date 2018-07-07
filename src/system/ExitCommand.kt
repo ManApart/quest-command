@@ -16,6 +16,10 @@ class ExitCommand : Command() {
         return "\n\tExit - Exit the program."
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("System")
+    }
+
     override fun execute(args: List<String>) {
         //TODO - move to event / system manager
         println("Exiting")

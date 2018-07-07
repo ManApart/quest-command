@@ -19,6 +19,10 @@ class ItemCommand : Command() {
                 "\n\tItem <item> on <target> - Action an item on a target."
     }
 
+    override fun getCategory(): List<String> {
+        return listOf("Inventory")
+    }
+
     override fun execute(args: List<String>) {
         val argsString = args.joinToString(" ")
         if (args.isEmpty()) {
