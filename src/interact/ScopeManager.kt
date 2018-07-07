@@ -4,11 +4,12 @@ import travel.ArriveEvent
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Target
+import core.utility.NameSearchableList
 import system.ActivatorManager
 import system.ItemManager
 
 object ScopeManager {
-    private val targets = mutableListOf<Target>()
+    private val targets = NameSearchableList<Target>()
 
     init {
         resetTargets()
@@ -32,6 +33,10 @@ object ScopeManager {
         ScopeManager.targets.addAll(targets)
     }
 
+    fun removeTarget(target: Target){
+        targets.remove(target)
+    }
+
     fun getTargets(): List<Target> {
         return targets.toList()
     }
@@ -42,27 +47,19 @@ object ScopeManager {
     }
 
     fun targetExists(name: String) : Boolean{
-        return targets.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
+        return targets.exists(name)
     }
 
     fun targetExists(name: List<String>) : Boolean{
-        if (name.isEmpty()) return false
-
-        val fullName = name.joinToString(" ").toLowerCase()
-        return targets.firstOrNull { fullName.contains(it.toString().toLowerCase()) } != null
+        return targets.exists(name)
     }
 
     fun getTarget(name: String) : Target {
-        return targets.first { it.name.toLowerCase() == name.toLowerCase() }
+        return targets.get(name)
     }
 
     fun getTarget(name: List<String>) : Target {
-        val fullName = name.joinToString(" ").toLowerCase()
-        return targets.first { fullName.contains(it.toString().toLowerCase()) }
-    }
-
-    fun removeTarget(target: Target){
-        targets.remove(target)
+        return targets.get(name)
     }
 
 }

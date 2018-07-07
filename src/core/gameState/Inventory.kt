@@ -1,21 +1,15 @@
 package core.gameState
 
+import core.utility.NameSearchableList
+
 class Inventory {
-    val items = mutableListOf<Item>()
+    val items = NameSearchableList<Item>()
 
     fun itemExists(name: List<String>) : Boolean{
-        if (name.isEmpty()) return false
-
-        val fullName = name.joinToString(" ").toLowerCase()
-        return items.firstOrNull { fullName.contains(it.name.toLowerCase()) } != null
-    }
-
-    fun getItem(name: String) : Item {
-        return items.first { it.name.toLowerCase() == name.toLowerCase() }
+       return items.exists(name)
     }
 
     fun getItem(name: List<String>) : Item {
-        val fullName = name.joinToString(" ").toLowerCase()
-        return items.first { fullName.contains(it.name.toLowerCase()) }
+        return items.get(name)
     }
 }

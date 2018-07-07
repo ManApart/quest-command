@@ -2,7 +2,7 @@ package core.gameState
 
 import core.events.Event
 
-class Activator(override val name: String, val description: String = "", private val triggers: List<Trigger> = listOf(), tags: List<String> = listOf()) : Target {
+class Activator(override val name: String, override val description: String = "", private val triggers: List<Trigger> = listOf(), tags: List<String> = listOf()) : Target {
     override val tags = Tags(tags)
 
     fun evaluateAndExecute(event: Event){

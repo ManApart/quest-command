@@ -1,7 +1,9 @@
 package core.gameState
 
-interface Target {
-    val name: String
+import core.utility.Named
+
+interface Target : Named {
+    val description: String
     val tags : Tags
 }
 

@@ -13,6 +13,10 @@ an open world rpg with intense levels of interact, experienced through the comma
 * Group commands in help manual
 * Skill check for climb
 * Partial match for targets. If a single word matches, use it (tree vs apple tree)
+  * Scope Manager, Inventory, Travel
+  * Can we make this code generic and not duplicate?
+* Hide player from scope display
+
 
 
 Validation tools that:
@@ -29,5 +33,5 @@ context free gramer, tokenizers, lexers, (yacc, lex)
 
 
 Command ideas
-* Search
+* Search - skill based, finds scope that's hidden
 * Look (examine) object for its description
