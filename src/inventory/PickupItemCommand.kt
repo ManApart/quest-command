@@ -28,8 +28,8 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupItem(itemArgs: List<String>) {
-        if (ScopeManager.targetExistsOutsideInventory(itemArgs) && ScopeManager.getTargetExcludingInventory(itemArgs) is Item) {
-            val item = ScopeManager.getTargetExcludingInventory(itemArgs) as Item
+        if (ScopeManager.targetExists(itemArgs) && ScopeManager.getTarget(itemArgs) is Item) {
+            val item = ScopeManager.getTarget(itemArgs) as Item
             EventManager.postEvent(PickupItemEvent(GameState.player, item))
         } else {
             println("Couldn't find ${itemArgs.joinToString(" ")}")

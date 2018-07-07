@@ -11,8 +11,6 @@ an open world rpg with intense levels of interact, experienced through the comma
 * some locations can only be accessed from other locations etc
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
 * Group commands in help manual
-* climb down
-* Scope manager don't include inventory
 * Skill check for climb
 * Partial match for targets. If a single word matches, use it (tree vs apple tree)
 

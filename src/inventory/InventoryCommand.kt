@@ -24,16 +24,8 @@ class InventoryCommand : Command() {
     override fun execute(args: List<String>) {
         if (args.isEmpty()) {
             listInventory()
-        } else if (args.size > 1) {
-            val itemArgs = args.subList(1, args.size)
-            if (args[0] == "add" || args[0] == "pickup") {
-                pickupItem(itemArgs)
-            } else if (args[0] == "drop") {
-                dropItem(itemArgs)
-            } else {
-                println("Unknown command: ${args.joinToString(" ")}")
-            }
-
+        } else {
+            println("Unknown command: ${args.joinToString(" ")}")
         }
     }
 
@@ -42,21 +34,4 @@ class InventoryCommand : Command() {
         println("You have $itemList in your inventory")
     }
 
-    private fun pickupItem(itemArgs: List<String>) {
-        if (ScopeManager.targetExistsOutsideInventory(itemArgs) && ScopeManager.getTargetExcludingInventory(itemArgs) is Item) {
-            val item = ScopeManager.getTargetExcludingInventory(itemArgs) as Item
-            EventManager.postEvent(PickupItemEvent(GameState.player, item))
-        } else {
-            println("Couldn't find ${itemArgs.joinToString(" ")}")
-        }
-    }
-
-    private fun dropItem(itemArgs: List<String>) {
-        if (GameState.player.inventory.itemExists(itemArgs)) {
-            val item = GameState.player.inventory.getItem(itemArgs)
-            EventManager.postEvent(DropItemEvent(GameState.player, item))
-        } else {
-            println("Couldn't find ${itemArgs.joinToString(" ")}")
-        }
-    }
 }
