@@ -4,17 +4,17 @@ Managers subscribe to events, update the gamestate and print to the console
 
 avoid all state in commands, allow state to be handled by events and gamestate
 
-an open world rpg with intense levels of use, experienced through the command prompt
+an open world rpg with intense levels of interact, experienced through the command prompt
 
 ## TODO
 * find a way to allow auto complete with tab
 * some locations can only be accessed from other locations etc
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
 * Group commands in help manual
-* componitize packages (command, event, manager)
-* Break out pickup/drop item from inventory
 * climb down
 * Scope manager don't include inventory
+* Skill check for climb
+* Partial match for targets. If a single word matches, use it (tree vs apple tree)
 
 
 Validation tools that:

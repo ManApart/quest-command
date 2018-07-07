@@ -22,7 +22,7 @@ object TravelManager {
                         println("You leave ${event.currentLocation} travelling towards ${event.destination}")
                     }
                     EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.StatType.STAMINA, -1))
-                    EventManager.postEvent(ArriveEvent(event.destination))
+                    EventManager.postEvent(ArriveEvent(destination =  event.destination))
                 }
             }
         }
@@ -35,8 +35,10 @@ object TravelManager {
 
     class ArrivalHandler() : EventListener<ArriveEvent>() {
         override fun execute(event: ArriveEvent) {
-            GameState.player.location = event.destination
-            println("You arrive at ${event.destination}")
+            if (event.origin != event.destination){
+                GameState.player.location = event.destination
+                println("You arrive at ${event.destination}")
+            }
         }
     }
 

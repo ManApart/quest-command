@@ -1,4 +1,4 @@
-package use
+package interact
 
 import core.events.Event
 import core.gameState.Item

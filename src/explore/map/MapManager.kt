@@ -1,4 +1,4 @@
-package travel
+package explore.map
 
 import core.events.EventListener
 import core.gameState.Location

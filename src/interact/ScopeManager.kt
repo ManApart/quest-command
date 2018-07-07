@@ -1,4 +1,4 @@
-package use
+package interact
 
 import travel.ArriveEvent
 import core.events.EventListener

@@ -2,9 +2,10 @@ package core.gameState
 
 import core.events.Event
 
-class Trigger(val callingEvent: String) {
-
-    fun matches(event: Event): Boolean {
-        return event::class.simpleName == callingEvent
+class Trigger(private val condition: TriggerCondition, private val event: TriggeredEvent){
+    fun evaluateAndExecute(event: Event){
+        if (condition.matches(event)){
+            this.event.execute(event)
+        }
     }
 }

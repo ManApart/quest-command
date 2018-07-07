@@ -8,7 +8,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     fun execute(event: Event) {
         when (className) {
-            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(GameState.world.findLocation(params[0].split(" "))))
+            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = GameState.world.findLocation(params[0].split(" "))))
         }
     }
 }

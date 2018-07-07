@@ -3,7 +3,7 @@ package inventory
 import core.gameState.GameState
 import core.gameState.Item
 import system.EventManager
-import use.ScopeManager
+import interact.ScopeManager
 
 class PickupItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {

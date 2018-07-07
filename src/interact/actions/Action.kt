@@ -1,6 +1,6 @@
-package use.actions
+package interact.actions
 
-import use.UseItemEvent
+import interact.UseItemEvent
 
 interface Action {
     fun matches(event: UseItemEvent) : Boolean

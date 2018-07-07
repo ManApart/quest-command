@@ -1,6 +1,6 @@
 import core.commands.CommandParser
-import use.ScopeManager
-import use.ActionManager
+import interact.ScopeManager
+import interact.ActionManager
 import system.EventManager
 import system.GameManager
 import system.ItemManager

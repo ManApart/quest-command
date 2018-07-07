@@ -6,7 +6,7 @@ import system.EventManager
 
 class TravelCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Travel", "t")
+        return arrayOf("Travel", "t", "go")
     }
 
     override fun getDescription(): String {
@@ -24,7 +24,7 @@ class TravelCommand : Command() {
         val found = LocationParsing.findLocation(GameState.player.location, args)
 
         if (found != GameState.world) {
-            EventManager.postEvent(TravelStartEvent(GameState.player.location, found))
+            EventManager.postEvent(TravelStartEvent(destination = found))
         }else {
             println("Could not find ${args.joinToString(" ")}")
         }

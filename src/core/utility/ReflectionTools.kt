@@ -4,7 +4,9 @@ import core.commands.Command
 import core.events.Event
 import core.events.EventListener
 import org.reflections.Reflections
-import use.actions.Action
+import interact.actions.Action
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.memberProperties
 
 
 object ReflectionTools {
@@ -26,7 +28,7 @@ object ReflectionTools {
     }
 
     fun getAllUses() : List<Class<out Action>> {
-        val reflections = Reflections("use.actions")
+        val reflections = Reflections("interact.actions")
         val allClasses = reflections.getSubTypesOf(Action::class.java)
         return allClasses.toList()
     }
@@ -36,4 +38,9 @@ object ReflectionTools {
         val allClasses = reflections.getSubTypesOf(EventListener::class.java)
         return allClasses.toList()
     }
+
+    fun <R: Any> getProperty(instance: Any, propertyName: String) : R {
+        return instance.javaClass.kotlin.memberProperties.first { it.name == propertyName }.get(instance) as R
+    }
+
 }

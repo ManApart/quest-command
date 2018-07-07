@@ -1,12 +1,10 @@
-package inventory
+package interact
 
 import core.commands.Command
-import use.UseItemEvent
-import use.ScopeManager
 import system.EventManager
 import system.ItemManager
 
-//TODO - refactor to just use target on target instead of being item based?
+//TODO - refactor to just interact target on target instead of being item based?
 class ItemCommand : Command() {
     override fun getAliases(): Array<String> {
         return arrayOf("Item", "I", "Action")

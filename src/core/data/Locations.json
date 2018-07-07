@@ -44,6 +44,9 @@
             {
               "name": "Tree Branches",
               "restricted": true,
+              "activators": [
+                "Apple Tree Branches"
+              ],
               "items": [
                 "Apple",
                 "Apple",

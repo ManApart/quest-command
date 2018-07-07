@@ -5,11 +5,11 @@ import core.gameState.GameState
 object GameManager {
 
     fun saveGame() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change body of created functions interact File | Settings | File Templates.
     }
 
     fun loadGame() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") //To change body of created functions interact File | Settings | File Templates.
     }
 
     fun newGame() {

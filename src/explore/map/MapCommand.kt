@@ -1,8 +1,7 @@
-package explore
+package explore.map
 
 import core.commands.Command
 import travel.LocationParsing
-import travel.MapEvent
 import core.gameState.GameState
 import core.gameState.Location
 import system.EventManager

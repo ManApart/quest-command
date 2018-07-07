@@ -1,10 +1,7 @@
 package inventory
 
 import core.gameState.GameState
-import core.gameState.Item
-import core.gameState.targetsToString
 import system.EventManager
-import use.ScopeManager
 
 class DropItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {

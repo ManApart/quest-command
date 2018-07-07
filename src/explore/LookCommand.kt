@@ -2,7 +2,7 @@ package explore
 
 import core.commands.Command
 import core.gameState.GameState
-import use.ScopeManager
+import interact.ScopeManager
 import core.gameState.targetsToString
 
 class LookCommand : Command() {

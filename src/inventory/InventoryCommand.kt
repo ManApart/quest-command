@@ -3,7 +3,7 @@ package inventory
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Item
-import use.ScopeManager
+import interact.ScopeManager
 import core.gameState.targetsToString
 import system.EventManager
 
@@ -18,8 +18,6 @@ class InventoryCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tInventory - list items in your inventory" +
-                "\n\tInventory pickup <item> - pickup an item" +
-                "\n\tInventory drop <item> - drop an item X" +
                 "\n\tInventory equip <item> - equip an item X"
     }
 

@@ -1,7 +1,7 @@
 package inventory
 
 import core.events.EventListener
-import use.ScopeManager
+import interact.ScopeManager
 
 object InventoryManager {
     class DropHandler : EventListener<DropItemEvent>() {

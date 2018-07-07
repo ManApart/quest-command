@@ -1,7 +1,7 @@
-package use
+package interact
 
 import core.events.EventListener
-import use.actions.Action
+import interact.actions.Action
 import core.utility.ReflectionTools
 
 object ActionManager {
@@ -13,7 +13,7 @@ object ActionManager {
 
     class UseItemHandler() : EventListener<UseItemEvent>() {
         override fun execute(event: UseItemEvent) {
-            println("You use ${event.source} on ${event.target}")
+            println("You interact ${event.source} on ${event.target}")
             val filteredUses = actions.filter { it.matches(event) }
             if (filteredUses.isEmpty()){
                 println("Nothing happens.")

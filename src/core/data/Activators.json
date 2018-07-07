@@ -2,14 +2,41 @@
   {
     "name": "Apple Tree",
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
-    "trigger": {
-      "callingEvent": "ClimbEvent"
-    },
-    "triggeredEvent": {
-      "className": "ArriveEvent",
-      "params": [
-        "an open field tree tree branches"
-      ]
-    }
+    "triggers": [
+      {
+        "condition": {
+          "callingEvent": "ClimbCompleteEvent",
+          "eventParams": {
+            "upwards": "true"
+          }
+        },
+        "event": {
+          "className": "ArriveEvent",
+          "params": [
+            "an open field apple tree tree branches"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Apple Tree Branches",
+    "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
+    "triggers": [
+      {
+        "condition": {
+          "callingEvent": "ClimbCompleteEvent",
+          "eventParams": {
+            "upwards": "false"
+          }
+        },
+        "event": {
+          "className": "ArriveEvent",
+          "params": [
+            "an open field apple tree"
+          ]
+        }
+      }
+    ]
   }
 ]
