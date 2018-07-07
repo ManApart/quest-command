@@ -1,5 +1,6 @@
 package gameState
 
+import core.gameState.Location
 import org.junit.Assert
 import org.junit.Test
 

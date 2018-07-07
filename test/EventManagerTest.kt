@@ -1,8 +1,8 @@
-import events.Event
-import events.EventListener
+import core.events.Event
+import core.events.EventListener
 import org.junit.Assert
 import org.junit.Test
-import processing.EventManager
+import system.EventManager
 
 class EventManagerTest {
     private val resultList = mutableListOf<String>()

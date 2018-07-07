@@ -1,8 +1,9 @@
-import gameState.ScopeManager
-import processing.ActionManager
-import processing.EventManager
-import processing.GameManager
-import processing.ItemManager
+import core.commands.CommandParser
+import use.ScopeManager
+import use.ActionManager
+import system.EventManager
+import system.GameManager
+import system.ItemManager
 
 fun main(args: Array<String>) {
     GameManager.newGame()
