@@ -19,7 +19,7 @@ an open world rpg with intense levels of interact, experienced through the comma
 * Apple should be roasted, roasted apple should be burnt
 * Items should be equippable
 * Inventory carrying space
-
+* Better package organization for actions
 
 
 Validation tools that:

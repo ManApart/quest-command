@@ -1,5 +1,6 @@
 package interact.actions
 
+import core.events.EventListener
 import status.StatChangeEvent
 import interact.UseEvent
 import core.gameState.Creature
@@ -9,8 +10,8 @@ import core.gameState.Stat
 import core.utility.StringFormatter
 import system.EventManager
 
-class EatFood : Action {
-    override fun matches(event: UseEvent): Boolean {
+class EatFood : EventListener<UseEvent>() {
+    override fun shouldExecute(event: UseEvent): Boolean {
         return event.source.properties.tags.has("Food") && event.source is Item
     }
 

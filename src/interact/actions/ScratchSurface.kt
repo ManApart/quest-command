@@ -1,9 +1,10 @@
 package interact.actions
 
+import core.events.EventListener
 import interact.UseEvent
 
-class ScratchSurface : Action {
-    override fun matches(event: UseEvent): Boolean {
+class ScratchSurface : EventListener<UseEvent>() {
+    override fun shouldExecute(event: UseEvent): Boolean {
         return event.target.properties.tags.has("Wood") && event.source.properties.tags.has("Sharp") && event.source.properties.values.getInt("chopDamage", 0) == 0
     }
 

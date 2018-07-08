@@ -1,13 +1,14 @@
 package interact.actions
 
+import core.events.EventListener
 import core.gameState.Activator
 import core.gameState.Stat
 import interact.UseEvent
 import status.StatChangeEvent
 import system.EventManager
 
-class ChopWood : Action {
-    override fun matches(event: UseEvent): Boolean {
+class ChopWood : EventListener<UseEvent>()  {
+    override fun shouldExecute(event: UseEvent): Boolean {
         return event.target.properties.tags.has("Wood") && event.source.properties.values.getInt("chopDamage", 0) != 0
     }
 

@@ -59,16 +59,31 @@ object EventManager {
         }
     }
 
+    fun <E : Event> getNumberOfMatchingListeners(event: E) : Int {
+        val listeners = mutableListOf<EventListener<*>>()
+        listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }
+                ?.forEach {
+                    listeners.add(it)
+                }
+        listenerMap[Event::class.java]?.filter { (it as EventListener<Event>).shouldExecute(event) }
+                ?.forEach {
+                    listeners.add(it)
+                }
+        return listeners.size
+    }
+
     private fun <E : Event> executeEvent(event: E) {
         val listeners = mutableListOf<EventListener<*>>()
-        listenerMap[event.javaClass]?.forEach {
-            (it as EventListener<E>).event = event
-            listeners.add(it)
-        }
-        listenerMap[Event::class.java]?.forEach {
-            (it as EventListener<Event>).event = event
-            listeners.add(it)
-        }
+        listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }
+                ?.forEach {
+                    (it as EventListener<E>).event = event
+                    listeners.add(it)
+                }
+        listenerMap[Event::class.java]?.filter { (it as EventListener<Event>).shouldExecute(event) }
+                ?.forEach {
+                    (it as EventListener<Event>).event = event
+                    listeners.add(it)
+                }
         listeners.sortBy { it.getPriority() }
         listeners.forEach { it.execute() }
     }

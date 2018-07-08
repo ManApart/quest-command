@@ -1,5 +1,6 @@
 package interact.actions
 
+import core.events.EventListener
 import status.StatChangeEvent
 import interact.UseEvent
 import core.gameState.Creature
@@ -7,8 +8,8 @@ import core.gameState.Item
 import core.gameState.Stat
 import system.EventManager
 
-class DamageCreature : Action {
-    override fun matches(event: UseEvent): Boolean {
+class DamageCreature : EventListener<UseEvent>() {
+    override fun shouldExecute(event: UseEvent): Boolean {
         return event.target is Creature && event.source is Item && event.source.properties.tags.has("Weapon")
     }
 
