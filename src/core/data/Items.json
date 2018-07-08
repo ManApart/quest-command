@@ -10,8 +10,24 @@
   {
     "name": "Rusty Dagger",
     "description": "It once held a cutting edge, but those days are little remembered.",
+    "weight": "1",
     "properties": {
-      "damage": "2"
+      "slashDamage": "1",
+      "stabDamage": "2"
+    },
+    "tags": [
+      "Weapon",
+      "Sharp",
+      "Small",
+      "Short"
+    ]
+  },
+  {
+    "name": "Dulled Hatchet",
+    "description": "The handle has been polished through much use.",
+    "weight": "4",
+    "properties": {
+      "chopDamage": "4"
     },
     "tags": [
       "Weapon",
@@ -22,8 +38,9 @@
   {
     "name": "Apple",
     "description": "It glistens and smells of spring blossoms.",
+    "weight": "1",
     "properties": {
-      "amount": "1"
+      "healAmount": "1"
     },
     "tags": [
       "Food"

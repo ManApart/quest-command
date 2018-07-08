@@ -5,6 +5,7 @@ import core.utility.Named
 interface Target : Named {
     val description: String
     val tags : Tags
+    val properties: Properties
 }
 
 fun targetsToString(targets: List<Target>) : String {

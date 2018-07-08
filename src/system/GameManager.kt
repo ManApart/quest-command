@@ -1,7 +1,6 @@
 package system
 
 import core.gameState.GameState
-import travel.ArriveEvent
 
 object GameManager {
 
@@ -22,7 +21,7 @@ object GameManager {
             add(ItemManager.getItem("Brown Pants"))
             add(ItemManager.getItem("Old Shirt"))
             add(ItemManager.getItem("Rusty Dagger"))
-            add(ItemManager.getItem("Apple"))
+            add(ItemManager.getItem("Dulled Hatchet"))
             add(ItemManager.getItem("Apple"))
         }
     }

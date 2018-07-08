@@ -7,6 +7,7 @@ class Player : Target, Creature {
     override val inventory: Inventory = Inventory()
     override val soul = Soul()
     override val tags = Tags(listOf("Creature"))
+    override val properties = Properties(HashMap())
 
     override fun toString(): String {
         return name
