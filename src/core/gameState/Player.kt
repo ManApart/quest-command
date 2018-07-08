@@ -5,9 +5,10 @@ class Player : Target, Creature {
     override val name = "Player"
     override val description = "Our Hero!"
     override val inventory: Inventory = Inventory()
-    override val soul = Soul()
-    override val tags = Tags(listOf("Creature"))
-    override val properties = Properties(HashMap())
+    override val soul = Soul(mutableListOf(
+            Stat(Stat.HEALTH, 10),
+            Stat(Stat.STAMINA, 10)))
+    override val properties = Properties()
 
     override fun toString(): String {
         return name

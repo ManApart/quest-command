@@ -31,7 +31,7 @@ class EatCommand : Command() {
         } else {
             if (targetExists(args)) {
                 val food = findTarget(args)
-                if (food is Item && food.tags.has("food")){
+                if (food is Item && food.properties.tags.has("food")){
                     EventManager.postEvent(UseEvent(food, GameState.player))
                 } else {
                     val description = if (food.description.isNotBlank()) food.description else "Not much to say."

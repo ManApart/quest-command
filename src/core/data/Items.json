@@ -12,38 +12,44 @@
     "description": "It once held a cutting edge, but those days are little remembered.",
     "weight": "1",
     "properties": {
-      "slashDamage": "1",
-      "stabDamage": "2"
-    },
-    "tags": [
-      "Weapon",
-      "Sharp",
-      "Small",
-      "Short"
-    ]
+      "values": {
+        "slashDamage": "1",
+        "stabDamage": "2"
+      },
+      "tags": [
+        "Weapon",
+        "Sharp",
+        "Small",
+        "Short"
+      ]
+    }
   },
   {
     "name": "Dulled Hatchet",
     "description": "The handle has been polished through much use.",
     "weight": "4",
     "properties": {
-      "chopDamage": "4"
-    },
-    "tags": [
-      "Weapon",
-      "Sharp",
-      "Short"
-    ]
+      "values": {
+        "chopDamage": "4"
+      },
+      "tags": [
+        "Weapon",
+        "Sharp",
+        "Short"
+      ]
+    }
   },
   {
     "name": "Apple",
     "description": "It glistens and smells of spring blossoms.",
     "weight": "1",
     "properties": {
-      "healAmount": "1"
-    },
-    "tags": [
-      "Food"
-    ]
+      "values": {
+        "healAmount": "1"
+      },
+      "tags": [
+        "Food"
+      ]
+    }
   }
 ]

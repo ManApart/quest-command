@@ -4,7 +4,7 @@ import interact.UseEvent
 
 class ScratchSurface : Action {
     override fun matches(event: UseEvent): Boolean {
-        return event.target.tags.has("Wood") && event.source.tags.has("Sharp") && event.source.properties.getInt("chopDamage", 0) == 0
+        return event.target.properties.tags.has("Wood") && event.source.properties.tags.has("Sharp") && event.source.properties.values.getInt("chopDamage", 0) == 0
     }
 
     override fun execute(event: UseEvent) {

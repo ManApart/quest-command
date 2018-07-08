@@ -9,11 +9,11 @@ import system.EventManager
 
 class DamageCreature : Action {
     override fun matches(event: UseEvent): Boolean {
-        return event.target is Creature && event.source is Item && event.source.tags.has("Weapon")
+        return event.target is Creature && event.source is Item && event.source.properties.tags.has("Weapon")
     }
 
     override fun execute(event: UseEvent) {
         val item = event.source as Item
-        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", -item.properties.getInt("Damage", 1)))
+        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", -item.properties.values.getInt("Damage", 1)))
     }
 }

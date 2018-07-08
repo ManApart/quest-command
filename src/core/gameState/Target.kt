@@ -4,7 +4,6 @@ import core.utility.Named
 
 interface Target : Named {
     val description: String
-    val tags : Tags
     val properties: Properties
 }
 

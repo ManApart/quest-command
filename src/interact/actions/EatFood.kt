@@ -11,13 +11,13 @@ import system.EventManager
 
 class EatFood : Action {
     override fun matches(event: UseEvent): Boolean {
-        return event.source.tags.has("Food") && event.source is Item
+        return event.source.properties.tags.has("Food") && event.source is Item
     }
 
     override fun execute(event: UseEvent) {
         val target = StringFormatter.format(event.target == GameState.player, "You eat", event.target.name +" eats")
         println("$target ${event.source}")
-        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", (event.source as Item).properties.getInt("healAmount")))
+        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", (event.source as Item).properties.values.getInt("healAmount")))
         GameState.player.inventory.items.remove(event.source)
     }
 }

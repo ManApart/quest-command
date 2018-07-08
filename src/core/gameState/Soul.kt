@@ -4,10 +4,7 @@ import status.StatMaxedEvent
 import status.StatMinnedEvent
 import system.EventManager
 
-class Soul {
-    private val stats = mutableListOf(
-            Stat(Stat.HEALTH, 10),
-            Stat(Stat.STAMINA, 10))
+class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
 
     fun incStat(type: String, amount: Int){
         if (amount != 0) {
