@@ -5,11 +5,11 @@ import status.StatMinnedEvent
 import system.EventManager
 
 class Soul {
-    private val stats = listOf(
-            Stat(Stat.StatType.HEALTH, 10),
-            Stat(Stat.StatType.STAMINA, 10))
+    private val stats = mutableListOf(
+            Stat(Stat.HEALTH, 10),
+            Stat(Stat.STAMINA, 10))
 
-    fun incStat(type: Stat.StatType, amount: Int){
+    fun incStat(type: String, amount: Int){
         if (amount != 0) {
             val stat = getStat(type)
             stat.current += amount
@@ -26,15 +26,27 @@ class Soul {
         }
     }
 
-    fun getCurrent(type: Stat.StatType) : Int {
+    fun addStat(type: String, max: Int){
+        stats.add(Stat(type, max))
+    }
+
+    fun hasStat(type: String) : Boolean {
+        return getStatOrNull(type) != null
+    }
+
+    fun getCurrent(type: String) : Int {
         return getStat(type).current
     }
 
-    fun getTotal(type: Stat.StatType) : Int {
+    fun getTotal(type: String) : Int {
         return getStat(type).max
     }
 
-    private fun getStat(type: Stat.StatType) : Stat {
-        return stats.first{ it.type == type}
+    private fun getStat(type: String) : Stat {
+        return getStatOrNull(type)!!
+    }
+
+    private fun getStatOrNull(type: String) : Stat? {
+        return stats.firstOrNull{ it.type.toLowerCase() == type.toLowerCase()}
     }
 }

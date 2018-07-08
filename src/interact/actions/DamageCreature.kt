@@ -14,6 +14,6 @@ class DamageCreature : Action {
 
     override fun execute(event: UseEvent) {
         val item = event.source as Item
-        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, Stat.StatType.HEALTH, -item.properties.getInt("Damage", 1)))
+        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", -item.properties.getInt("Damage", 1)))
     }
 }

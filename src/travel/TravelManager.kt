@@ -14,14 +14,14 @@ object TravelManager {
             when {
                 event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
                 isMovingToRestricted(event.currentLocation, event.destination) -> println("Could not find ${event.destination.name}")
-                GameState.player.soul.getCurrent(Stat.StatType.STAMINA) == 0 -> println("You're too tired to do any traveling.")
+                GameState.player.soul.getCurrent(Stat.STAMINA) == 0 -> println("You're too tired to do any traveling.")
                 else -> {
                     if (event.currentLocation.contains(event.destination)){
                         println("You start travelling towards ${event.destination}")
                     } else {
                         println("You leave ${event.currentLocation} travelling towards ${event.destination}")
                     }
-                    EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.StatType.STAMINA, -1))
+                    EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.HEALTH, -1))
                     EventManager.postEvent(ArriveEvent(destination =  event.destination))
                 }
             }

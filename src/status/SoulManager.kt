@@ -13,7 +13,7 @@ object SoulManager {
 
     class RestHandler : EventListener<RestEvent>() {
         override fun execute(event: RestEvent) {
-            EventManager.postEvent(StatChangeEvent(GameState.player, "Resting", Stat.StatType.STAMINA, event.hoursRested))
+            EventManager.postEvent(StatChangeEvent(GameState.player, "Resting", Stat.STAMINA, event.hoursRested))
         }
     }
 
@@ -29,8 +29,8 @@ object SoulManager {
     class StatMinnedHandler : EventListener<StatMinnedEvent>() {
         override fun execute(event: StatMinnedEvent) {
             when (event.stat){
-                Stat.StatType.HEALTH -> println("Oh dear, you have died!")
-                Stat.StatType.STAMINA -> println("You are completely exhausted.")
+                Stat.HEALTH -> println("Oh dear, you have died!")
+                Stat.STAMINA -> println("You are completely exhausted.")
             }
         }
     }
@@ -38,8 +38,8 @@ object SoulManager {
     class StatMaxedHandler : EventListener<StatMaxedEvent>() {
         override fun execute(event: StatMaxedEvent) {
             when (event.stat){
-                Stat.StatType.HEALTH -> println("You feel the fullness of life beating in your bosom.")
-                Stat.StatType.STAMINA -> println("You feel totally energized.")
+                Stat.HEALTH -> println("You feel the fullness of life beating in your bosom.")
+                Stat.STAMINA -> println("You feel totally energized.")
             }
         }
     }

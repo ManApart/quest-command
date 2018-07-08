@@ -17,7 +17,7 @@ class EatFood : Action {
     override fun execute(event: UseEvent) {
         val target = StringFormatter.format(event.target == GameState.player, "You eat", event.target.name +" eats")
         println("$target ${event.source}")
-        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, Stat.StatType.HEALTH, (event.source as Item).properties.getInt("healAmount")))
+        EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", (event.source as Item).properties.getInt("healAmount")))
         GameState.player.inventory.items.remove(event.source)
     }
 }
