@@ -25,6 +25,20 @@
             "an open field apple tree tree branches"
           ]
         }
+      },
+      {
+        "condition": {
+          "callingEvent": "StatMinnedEvent",
+          "eventParams": {
+            "stat": "health"
+          }
+        },
+        "event": {
+          "className": "MessageEvent",
+          "params": [
+            "Tree Reached 0 health"
+          ]
+        }
       }
     ]
   },

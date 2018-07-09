@@ -22,7 +22,9 @@ class TriggerCondition(private val callingEvent: String, private val eventParams
                 else -> entry.value
             }
 
-            if (expected != property.get(event)){
+            if (expected is String && expected.toLowerCase() != (property.get(event) as String).toLowerCase()) {
+                return false
+            }else if (expected != property.get(event)){
                return false
             }
         }

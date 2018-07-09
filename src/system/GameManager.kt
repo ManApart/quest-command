@@ -1,5 +1,6 @@
 package system
 
+import core.events.EventListener
 import core.gameState.GameState
 
 object GameManager {
@@ -24,6 +25,13 @@ object GameManager {
             add(ItemManager.getItem("Dulled Hatchet"))
             add(ItemManager.getItem("Apple"))
         }
+    }
+
+    class MessageHandler() : EventListener<MessageEvent>(){
+        override fun execute(event: MessageEvent) {
+            println(event.message)
+        }
+
     }
 
 }
