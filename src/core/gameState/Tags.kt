@@ -8,7 +8,7 @@ class Tags(tags: List<String> = listOf<String>()) {
     }
 
     fun add(tag: String){
-        tags.add(tag)
+        tags.add(tag.toLowerCase())
     }
 
     fun hasAll(tags: List<String>) : Boolean{

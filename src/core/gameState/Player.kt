@@ -1,6 +1,6 @@
 package core.gameState
 
-class Player : Target, Creature {
+class Player : Creature {
     var location = GameState.world.findLocation(listOf("an open field"))
     override val name = "Player"
     override val description = "Our Hero!"

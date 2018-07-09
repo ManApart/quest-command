@@ -22,8 +22,7 @@ an open world rpg with intense levels of interact, experienced through the comma
 * Inventory carrying space
 * Better package organization for actions
 * Jump down from location (goes to parent location)
-* Use weapon on player not doing damage
-* Stat minned / max hard coded for player. Convert to their own events (player death, any other creature death, stat maxed message for player only)
+
 
 Validation tools that:
 Check for duplicate names (across items and activators)
