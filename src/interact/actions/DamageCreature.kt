@@ -10,7 +10,7 @@ import system.EventManager
 
 class DamageCreature : EventListener<UseEvent>() {
     override fun shouldExecute(event: UseEvent): Boolean {
-        return event.target is Creature && event.source is Item && event.source.properties.tags.has("Weapon")
+        return event.target is Creature && event.target.properties.tags.has("Creature") && event.source is Item && event.source.properties.tags.has("Weapon")
     }
 
     override fun execute(event: UseEvent) {

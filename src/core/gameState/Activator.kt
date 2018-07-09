@@ -2,7 +2,11 @@ package core.gameState
 
 import core.events.Event
 
-class Activator(override val name: String, override val description: String = "", override val soul: Soul = Soul(), override val inventory: Inventory, private val triggers: List<Trigger> = listOf(), override val properties: Properties = Properties()) : Creature {
+class Activator(override val name: String, override val description: String = "", override val soul: Soul = Soul(), override val inventory: Inventory = Inventory(), private val triggers: List<Trigger> = listOf(), override val properties: Properties = Properties()) : Creature {
+
+    init {
+        soul.addStats(properties.stats)
+    }
 
     fun evaluateAndExecute(event: Event){
         triggers.forEach { it.evaluateAndExecute(event) }

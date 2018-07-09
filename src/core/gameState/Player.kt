@@ -10,6 +10,10 @@ class Player : Target, Creature {
             Stat(Stat.STAMINA, 10)))
     override val properties = Properties()
 
+    init {
+        properties.tags.add("Creature")
+    }
+
     override fun toString(): String {
         return name
     }
