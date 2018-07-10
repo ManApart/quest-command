@@ -2,8 +2,8 @@ package core.gameState
 
 import travel.ArriveEvent
 import core.events.Event
-import system.EventManager
-import system.MessageEvent
+import interact.ScopeManager
+import system.*
 
 class TriggeredEvent(private val className: String, private val params: List<String>) {
 
@@ -11,6 +11,9 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         when (className) {
             ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = GameState.world.findLocation(params[0].split(" "))))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
+            SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0]))
+            RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(ScopeManager.getTarget(params[0])))
+            SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0])))
         }
     }
 }

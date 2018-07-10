@@ -19,12 +19,14 @@
             "upwards": "true"
           }
         },
-        "event": {
-          "className": "ArriveEvent",
-          "params": [
-            "an open field apple tree tree branches"
-          ]
-        }
+        "events": [
+          {
+            "className": "ArriveEvent",
+            "params": [
+              "an open field apple tree tree branches"
+            ]
+          }
+        ]
       },
       {
         "condition": {
@@ -33,14 +35,44 @@
             "stat": "health"
           }
         },
-        "event": {
-          "className": "MessageEvent",
-          "params": [
-            "Tree Reached 0 health"
-          ]
-        }
+        "events": [
+          {
+            "className": "MessageEvent",
+            "params": [
+              "The apple tree cracks and falls to the ground."
+            ]
+          },
+          {
+            "className": "RemoveScopeEvent",
+            "params": [
+              "Apple Tree"
+            ]
+          },
+          {
+            "className": "SpawnActivatorEvent",
+            "params": [
+              "Logs"
+            ]
+          },
+          {
+            "className": "SpawnItemEvent",
+            "params": [
+              "Apple"
+            ]
+          }
+        ]
       }
     ]
+  },
+  {
+    "name": "Logs",
+    "description": "A pile of logs.",
+    "properties": {
+      "tags": [
+        "Wood",
+        "Flammable"
+      ]
+    }
   },
   {
     "name": "Apple Tree Branches",
@@ -59,12 +91,14 @@
             "upwards": "false"
           }
         },
-        "event": {
-          "className": "ArriveEvent",
-          "params": [
-            "an open field apple tree"
-          ]
-        }
+        "events": [
+          {
+            "className": "ArriveEvent",
+            "params": [
+              "an open field apple tree"
+            ]
+          }
+        ]
       }
     ]
   }

@@ -5,8 +5,8 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Target
 import core.utility.NameSearchableList
-import system.ActivatorManager
-import system.ItemManager
+import inventory.PickupItemEvent
+import system.*
 
 object ScopeManager {
     private val targets = NameSearchableList<Target>()
@@ -23,8 +23,32 @@ object ScopeManager {
         }
     }
 
+    class ItemSpawner : EventListener<ItemSpawnedEvent>() {
+        override fun execute(event: ItemSpawnedEvent) {
+            if (event.target == null) {
+                println("${event.item.name} appeared.")
+                addTarget(event.item)
+            } else {
+                EventManager.postEvent(PickupItemEvent(event.target, event.item))
+            }
+        }
+    }
+
+    class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
+        override fun execute(event: SpawnActivatorEvent) {
+            println("${event.activator.name} appeared.")
+            addTarget(event.activator)
+        }
+    }
+
+    class ScopeRemover : EventListener<RemoveScopeEvent>() {
+        override fun execute(event: RemoveScopeEvent) {
+            removeTarget(event.target)
+        }
+    }
+
     fun addTarget(target: Target) {
-        if (!targets.contains(target)){
+        if (!targets.contains(target)) {
             targets.add(target)
         }
     }
@@ -33,7 +57,7 @@ object ScopeManager {
         ScopeManager.targets.addAll(targets)
     }
 
-    fun removeTarget(target: Target){
+    fun removeTarget(target: Target) {
         targets.remove(target)
     }
 
@@ -46,19 +70,19 @@ object ScopeManager {
         addTarget(GameState.player)
     }
 
-    fun targetExists(name: String) : Boolean{
+    fun targetExists(name: String): Boolean {
         return targets.exists(name)
     }
 
-    fun targetExists(name: List<String>) : Boolean{
+    fun targetExists(name: List<String>): Boolean {
         return targets.exists(name)
     }
 
-    fun getTarget(name: String) : Target {
+    fun getTarget(name: String): Target {
         return targets.get(name)
     }
 
-    fun getTarget(name: List<String>) : Target {
+    fun getTarget(name: List<String>): Target {
         return targets.get(name)
     }
 

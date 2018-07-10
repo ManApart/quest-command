@@ -2,10 +2,12 @@ package core.gameState
 
 import core.events.Event
 
-class Trigger(private val condition: TriggerCondition, private val event: TriggeredEvent){
+class Trigger(private val condition: TriggerCondition, private val events: List<TriggeredEvent>){
     fun evaluateAndExecute(event: Event){
         if (condition.matches(event)){
-            this.event.execute(event)
+            this.events.forEach {
+                it.execute(event)
+            }
         }
     }
 }

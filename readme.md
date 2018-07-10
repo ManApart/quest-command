@@ -69,7 +69,11 @@ Any time an activator adds a new triggered event, it needs to be added to the tr
 * Inventory carrying space
 * Better package organization for actions
 * Jump down from location (goes to parent location)
-* Better Readme
+* Packages are still a mess
+* Triggered Event be a list
+* Remove activator from scope event
+* Add message for tree chop down
+* Give json inherit keywords. Spawning grabs all properties etc from inherited
 
 **Validation tools**
 * Seperate from test suite
