@@ -1,6 +1,7 @@
 package core.commands
 
 import core.utility.ReflectionTools
+import system.EventManager
 
 object CommandParser {
     val commands = loadCommands()
@@ -11,12 +12,24 @@ object CommandParser {
     }
 
     fun parseCommand(line: String) {
+        val commands = line.split("&&")
+        if (commands.size == 1){
+            parseSingleCommand(commands[0])
+        } else {
+            for (command in commands){
+                parseSingleCommand(command)
+                EventManager.executeEvents()
+            }
+        }
+    }
+
+    private fun parseSingleCommand(line: String) {
         val args: List<String> = cleanLine(line)
         if (args.isEmpty()) {
             unknownCommand.execute(listOf(line))
         } else {
             val command = findCommand(args[0])
-            if (command == unknownCommand){
+            if (command == unknownCommand) {
                 unknownCommand.execute(listOf(line))
             } else {
                 val trimmedArgs = removeFirstItem(args)
