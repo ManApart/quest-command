@@ -5,4 +5,4 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Location
 
-class ArriveEvent(val creature: Creature = GameState.player, val origin: Location = GameState.player.location, val destination: Location) : Event
+class ArriveEvent(val creature: Creature = GameState.player, val origin: Location = GameState.player.location, val destination: Location, val method: String) : Event

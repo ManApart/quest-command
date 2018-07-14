@@ -20,7 +20,6 @@ object ClimbManager {
 
     class ClimbAttemptHandler : EventListener<ClimbAttemptEvent>() {
         override fun execute(event: ClimbAttemptEvent) {
-            println("You attempt to climb ${event.target.name}")
             //TODO - skill check for success or not
             EventManager.postEvent(ClimbCompleteEvent(event.source, event.target, event.upwards, true))
             event.target.consume(event)

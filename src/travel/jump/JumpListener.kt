@@ -12,11 +12,11 @@ class JumpListener : EventListener<JumpEvent>() {
         return event.creature == GameState.player
     }
     override fun execute(event: JumpEvent) {
-        println("You jump down.")
+        println("You jump from ${event.source}")
         val damage = calculateJumpDamage(event)
 
+        EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
         EventManager.postEvent(StatChangeEvent(GameState.player, "Falling", Stat.HEALTH, damage))
-        EventManager.postEvent(ArriveEvent(destination = event.destination))
     }
 
     private fun calculateJumpDamage(event: JumpEvent): Int {
