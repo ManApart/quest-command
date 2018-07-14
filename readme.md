@@ -70,11 +70,11 @@ Location positions are always relative to their parent. The parent is always (0,
 * Items should be equippable
 * Inventory carrying space
 * Better package organization for actions
-* Jump down from location (goes to parent location)
 * Packages are still a mess
 * Give json inherit keywords. Spawning grabs all properties etc from inherited
 * Arrive event include a method of travel?
-* Travel + direction calls direction command
+* you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
+* Add falling to climbing and jump attempts
 
 **Validation tools**
 * Seperate from test suite

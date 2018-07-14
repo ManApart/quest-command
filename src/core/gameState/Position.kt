@@ -8,6 +8,10 @@ class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return "Pos: $x, $y, $z"
     }
 
+    fun add(other: Position) : Position {
+        return Position(x + other.x, y + other.y, z + other.z)
+    }
+
     /**
      * Return the direction to go in order to arrive at the other position
      * (0,0,0).getDirection(10,0,0) would return EAST
@@ -36,6 +40,13 @@ class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         }
     }
 
+    /**
+     * Floor.isDirection(below, roof) == true
+     */
+    fun isDirection(direction: Direction, other: Position): Boolean {
+        return direction == other.getDirection(this)
+    }
+
     fun getDistance(other: Position): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
@@ -53,7 +64,7 @@ class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
      * (0,0,0).getAngleXY(10,0,0) would return 90 degrees
      */
     private fun getAngleXY(other: Position): Int {
-        val dx = (other.x-x)
+        val dx = (other.x - x)
         val dy = (other.y - y)
         val rads = Math.atan2(dy.toDouble(), dx.toDouble())
         val adjustedRads = if (rads < 0)

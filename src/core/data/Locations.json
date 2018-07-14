@@ -36,6 +36,9 @@
         {
           "name": "Apple Tree",
           "description": "The tree's leaves rustle in the wind, dusting it with the smell of apples.",
+          "position": {
+            "x": -10
+          },
           "activators": [
             "Apple Tree"
           ],
@@ -46,6 +49,9 @@
           "locations": [
             {
               "name": "Tree Branches",
+              "position": {
+                "z": 10
+              },
               "restricted": true,
               "activators": [
                 "Apple Tree Branches"

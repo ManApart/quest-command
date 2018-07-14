@@ -89,6 +89,18 @@ class Location(override val name: String, private val description: String = "", 
         return name.toLowerCase().split(" ").contains(args[0])
     }
 
+    fun getTotalPosition() : Position {
+        return addParentPosition(Position())
+    }
+
+    private fun addParentPosition(position: Position) : Position {
+        val total = position.add(this.position)
+        if (parent != this) {
+            return parent.addParentPosition(total)
+        }
+        return total
+    }
+
     fun getPath(): List<String> {
         val path = mutableListOf(name)
         if (parent != this) {
