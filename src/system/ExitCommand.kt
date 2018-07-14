@@ -20,7 +20,7 @@ class ExitCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         //TODO - move to event / system manager
         println("Exiting")
         exitProcess(0)

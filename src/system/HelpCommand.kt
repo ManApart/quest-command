@@ -11,7 +11,7 @@ class HelpCommand : Command() {
         return arrayOf("Help")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> println(getDescription())
             args[0] == "commands" -> printCommandGroups()
@@ -65,7 +65,6 @@ class HelpCommand : Command() {
     }
 
     private fun printCommandGroup(args: List<String>) {
-        val commands: List<Command> = mutableListOf()
         var description = ""
         //TODO - handle sub-categories
         CommandParser.commands.forEach { command ->

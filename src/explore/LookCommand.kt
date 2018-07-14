@@ -23,9 +23,9 @@ class LookCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         if (args.isEmpty()) {
-            println(GameState.player.location.description)
+            println(GameState.player.location.getDescription())
             if (ScopeManager.getTargets().size > 1){
                 val targetList = targetsToString(ScopeManager.getTargets().filterNot { it == GameState.player })
                 println("You find yourself surrounded by $targetList.")

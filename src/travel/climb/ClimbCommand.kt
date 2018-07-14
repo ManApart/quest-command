@@ -24,7 +24,7 @@ class ClimbCommand : Command() {
         return listOf("Travel")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         var argsString = args.joinToString(" ")
         if (args.isEmpty()) {
             println("${args.joinToString(" ")} not found!")

@@ -18,7 +18,11 @@ class UnknownCommand : Command() {
         return listOf("")
     }
 
-    override fun execute(args: List<String>) {
+    fun execute(args: List<String>) {
+        execute("", args)
+    }
+
+    override fun execute(keyword: String, args: List<String>) {
         println("Unknown command: ${args.joinToString(" ")}")
     }
 }

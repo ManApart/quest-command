@@ -24,7 +24,7 @@ class EatCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         if (args.isEmpty()) {
             println("${args.joinToString(" ")} not found!")

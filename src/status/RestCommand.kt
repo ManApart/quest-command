@@ -21,7 +21,7 @@ class RestCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> rest(1)
             args.size == 1 && args[0].toIntOrNull() != null -> rest(args[0].toInt())

@@ -22,7 +22,7 @@ class PickupItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         if (args.size == 1) {
             pickupItem(args)
         } else {

@@ -6,5 +6,5 @@ abstract class Command {
     abstract fun getDescription() : String
     abstract fun getManual() : String
     abstract fun getCategory() : List<String>
-    abstract fun execute(args: List<String>)
+    abstract fun execute(keyword: String, args: List<String>)
 }

@@ -20,7 +20,7 @@ object CommandParser {
                 unknownCommand.execute(listOf(line))
             } else {
                 val trimmedArgs = removeFirstItem(args)
-                command.execute(trimmedArgs)
+                command.execute(args[0], trimmedArgs)
             }
         }
     }

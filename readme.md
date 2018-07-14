@@ -74,6 +74,7 @@ Location positions are always relative to their parent. The parent is always (0,
 * Packages are still a mess
 * Give json inherit keywords. Spawning grabs all properties etc from inherited
 * Arrive event include a method of travel?
+* Travel + direction calls direction command
 
 **Validation tools**
 * Seperate from test suite

@@ -1,7 +1,6 @@
 package explore.map
 
 import core.commands.Command
-import travel.LocationParsing
 import core.gameState.GameState
 import core.gameState.Location
 import system.EventManager
@@ -23,7 +22,7 @@ class MapCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         when{
             args.isEmpty() -> currentLocation()
             else -> targetLocation(args)
@@ -36,7 +35,7 @@ class MapCommand : Command() {
     }
 
     private fun targetLocation(args: List<String>){
-        val target = LocationParsing.findLocation(GameState.player.location, args)
+        val target = Location.findLocation(GameState.player.location, args)
         if (target != GameState.world){
             EventManager.postEvent(MapEvent(target))
         } else {

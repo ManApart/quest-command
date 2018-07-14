@@ -2,10 +2,7 @@ package inventory
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.Item
-import interact.ScopeManager
 import core.gameState.targetsToString
-import system.EventManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -25,7 +22,7 @@ class InventoryCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             listInventory()
         } else {

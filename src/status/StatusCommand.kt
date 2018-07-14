@@ -2,7 +2,6 @@ package status
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.Stat
 
 class StatusCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -22,7 +21,7 @@ class StatusCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(args: List<String>) {
+    override fun execute(keyword: String, args: List<String>) {
         getPlayerStatus()
     }
 
