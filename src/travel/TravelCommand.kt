@@ -1,6 +1,7 @@
 package travel
 
 import core.commands.Command
+import core.commands.CommandParser
 import core.commands.removeExcludedWords
 import core.gameState.GameState
 import core.gameState.Location
@@ -26,18 +27,22 @@ class TravelCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val cleanedArgs = removeExcludedWords(args, listOf("to"))
-        val found = Location.findLocation(GameState.player.location, cleanedArgs)
-
-        if (foundMatch(cleanedArgs, found)) {
-            EventManager.postEvent(TravelStartEvent(destination = found))
+        if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
+            CommandParser.parseCommand(args.joinToString(" "))
         } else {
-            println("Could not find ${args.joinToString(" ")}")
+            val cleanedArgs = removeExcludedWords(args, listOf("to"))
+            val found = Location.findLocation(GameState.player.location, cleanedArgs)
+
+            if (foundMatch(cleanedArgs, found)) {
+                EventManager.postEvent(TravelStartEvent(destination = found))
+            } else {
+                println("Could not find ${args.joinToString(" ")}")
+            }
         }
     }
 
     private fun foundMatch(args: List<String>, found: Location): Boolean {
-        if (found == GameState.world){
+        if (found == GameState.world) {
             return false
         }
         args.forEach {

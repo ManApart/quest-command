@@ -43,6 +43,10 @@ object CommandParser {
         return false
     }
 
+    inline fun <reified C : Command> getCommand() : C {
+        return commands.first { it is C } as C
+    }
+
 }
 
 fun removeFirstItem(list: List<String>): List<String> {
