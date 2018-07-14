@@ -25,6 +25,8 @@ Create a world more interactive than Skyrim by trading presentation layer for hi
 
 Any time an activator adds a new triggered event, it needs to be added to the triggered event when statement
 
+Location positions are always relative to their parent. The parent is always (0,0,0). If a location is compared with a location outside the parent, the parent locations are compared.
+
 
 ## Planning and Ideas
 
@@ -70,10 +72,8 @@ Any time an activator adds a new triggered event, it needs to be added to the tr
 * Better package organization for actions
 * Jump down from location (goes to parent location)
 * Packages are still a mess
-* Triggered Event be a list
-* Remove activator from scope event
-* Add message for tree chop down
 * Give json inherit keywords. Spawning grabs all properties etc from inherited
+* Arrive event include a method of travel?
 
 **Validation tools**
 * Seperate from test suite

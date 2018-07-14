@@ -3,7 +3,7 @@ package core.gameState
 import core.utility.NameSearchableList
 import core.utility.Named
 
-class Location(override val name: String, val description: String = "", val restricted: Boolean = false, val activators: List<String> = listOf(), val items: List<String> = listOf(), val locations: NameSearchableList<Location> = NameSearchableList()) : Named {
+class Location(override val name: String, val description: String = "", val restricted: Boolean = false, val position: Position = Position(), val activators: List<String> = listOf(), val items: List<String> = listOf(), val locations: NameSearchableList<Location> = NameSearchableList()) : Named {
     private var parent: Location = this
 
     init {
