@@ -10,6 +10,6 @@ object StringFormatter {
     }
 
     fun getSubject(target: Target) : String {
-        return format(target == GameState.player, "your", target.name + "'s")
+        return format(target == GameState.player, "Your", target.name + "'s")
     }
 }

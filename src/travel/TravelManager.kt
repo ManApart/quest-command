@@ -21,7 +21,7 @@ object TravelManager {
                     } else {
                         println("You leave ${event.currentLocation} travelling towards ${event.destination}")
                     }
-                    EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.HEALTH, -1))
+                    EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", Stat.STAMINA, -1))
                     EventManager.postEvent(ArriveEvent(destination =  event.destination))
                 }
             }

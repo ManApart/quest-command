@@ -75,6 +75,8 @@ Location positions are always relative to their parent. The parent is always (0,
 * Arrive event include a method of travel?
 * you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
 * Add falling to climbing and jump attempts
+* Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
+* f modifier to force / ignore confirmations
 
 **Validation tools**
 * Seperate from test suite

@@ -6,8 +6,10 @@ class Player : Creature {
     override val description = "Our Hero!"
     override val inventory: Inventory = Inventory()
     override val soul = Soul(mutableListOf(
-            Stat(Stat.HEALTH, 10),
-            Stat(Stat.STAMINA, 10)))
+            Stat(Stat.HEALTH, 100),
+            Stat(Stat.STAMINA, 100),
+            Stat(Stat.STRENGTH, 1),
+            Stat(Stat.AGILITY, 1)))
     override val properties = Properties()
 
     init {
