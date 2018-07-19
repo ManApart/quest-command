@@ -16,7 +16,7 @@ class ClimbCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tClimb <target> - Climb the target" +
-                "\n\tClimb <target> f - Keep climbing the target until you climbPath to the top or fall. X" +
+                "\n\tClimb <target> f - Keep climbing the target until you climbPath to the top or fall" +
                 "\n\tClimb <number> - Climb the path with that number" +
                 "\n\tClimb *up *down - Continue climbing (auto select first path in the correct direction)"
     }
@@ -26,40 +26,49 @@ class ClimbCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val argsString = args.joinToString(" ")
-        if (args.isEmpty()) {
+        val adjustedArgs = args.toMutableList()
+        val force = adjustedArgs.remove("f")
+        val up = adjustedArgs.remove("up") || adjustedArgs.remove("u")
+        val down = adjustedArgs.remove("down") || adjustedArgs.remove("d")
+
+        val argsString = adjustedArgs.joinToString(" ")
+
+        if (adjustedArgs.isEmpty() && !up && !down) {
             if (isClimbing()) {
                 val step = getStep(GameState.journey as ClimbJourney)
-                climbStep(step)
+                climbStep(step, force)
             } else {
                 println("What do you want to climb?")
             }
         } else {
-            if (isClimbing() && (isStep(args[0]) || isDirection(args[0]))) {
+            if (isClimbing()) {
                 val journey = GameState.journey as ClimbJourney
-                if (isDirection(args[0])) {
-                    climbTowardsDirection(args, journey)
-                } else if (isStep(args[0])) {
-                    val step = getStep(journey, args[0])
-                    climbStep(step)
+                if (adjustedArgs.isNotEmpty() && isStep(adjustedArgs[0])) {
+                    val step = getStep(journey, adjustedArgs[0])
+                    climbStep(step, force)
+                } else if (up || down) {
+                    climbTowardsDirection(up, journey, force)
+                } else {
+                    println("Unable to climb: ${args.joinToString(" ")}")
                 }
-            } else if (ScopeManager.targetExists(argsString)) {
-                EventManager.postEvent(ClimbStartEvent(GameState.player, ScopeManager.getTarget(argsString)))
             } else {
-                println("Unable to climb: ${args.joinToString(" ")}")
+                if (ScopeManager.targetExists(argsString)) {
+                    EventManager.postEvent(ClimbStartEvent(GameState.player, ScopeManager.getTarget(argsString), force))
+                } else {
+                    println("Unable to climb: ${args.joinToString(" ")}")
+                }
             }
         }
     }
 
-    private fun climbTowardsDirection(args: List<String>, journey: ClimbJourney) {
-        val upwards = getDirection(args[0])
+    private fun climbTowardsDirection(upwards: Boolean, journey: ClimbJourney, force: Boolean) {
         if (upwards && journey.getCurrentSegment().top) {
             EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.top))
         } else if (!upwards && journey.getCurrentSegment().bottom) {
             EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.bottom))
         } else {
             val step = getStep(journey, upwards)
-            climbStep(step)
+            climbStep(step, force)
         }
     }
 
@@ -67,20 +76,8 @@ class ClimbCommand : Command() {
         return GameState.journey != null && GameState.journey is ClimbJourney
     }
 
-    private fun isDirection(word: String): Boolean {
-        return listOf("up", "u", "down", "d").contains(word.toLowerCase())
-    }
-
     private fun isStep(word: String): Boolean {
         return word.toIntOrNull() != null
-    }
-
-    private fun getDirection(word: String): Boolean {
-        val cleaned = word.toLowerCase()
-        if (cleaned == "up" || cleaned == "u") {
-            return true
-        }
-        return false
     }
 
     private fun getStep(journey: ClimbJourney): Int {
@@ -95,16 +92,16 @@ class ClimbCommand : Command() {
         val choice = choiceWord.toInt() - 1
         val segments = journey.getHigherSegments().toMutableList()
         segments.addAll(journey.getLowerSegments())
-        return if (choice < segments.size){
+        return if (choice < segments.size) {
             segments[choice].id
         } else {
             0
         }
     }
 
-    private fun climbStep(step: Int) {
+    private fun climbStep(step: Int, force: Boolean) {
         if (step != 0) {
-            EventManager.postEvent(ClimbJourneyEvent(step))
+            EventManager.postEvent(ClimbJourneyEvent(step, force))
         } else {
             println("Couldn't find the next place to climb to!")
         }

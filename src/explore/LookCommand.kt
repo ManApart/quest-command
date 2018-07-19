@@ -6,6 +6,7 @@ import interact.ScopeManager
 import core.gameState.targetsToString
 import travel.climb.ClimbJourney
 
+//TODO - move logic into event listener
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {
         return arrayOf("Look", "ls", "Examine", "Exa")

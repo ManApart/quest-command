@@ -16,7 +16,7 @@ class StartClimbing : EventListener<ClimbStartEvent>() {
         if (climb != null) {
             val path = ClimbPathManager.getPath(climb.name)
 GameState.journey = ClimbJourney(event.target, GameState.player.location, climb.destination, climb.upwards, path)
-            EventManager.postEvent(ClimbJourneyEvent(path.getStart(climb.upwards)))
+            EventManager.postEvent(ClimbJourneyEvent(path.getStart(climb.upwards), event.force))
         }
         event.target.consume(event)
     }

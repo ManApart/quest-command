@@ -21,10 +21,6 @@ class ClimbJourney(val target: Target, origin: Location, destination: Location, 
         destination
     }
 
-    fun getLastDirection() : Boolean {
-        return lastDirectionWasUp
-    }
-
     fun hasSegment(step: Int): Boolean {
         return path.segments.firstOrNull { it.id == step } != null
     }
@@ -92,13 +88,12 @@ class ClimbJourney(val target: Target, origin: Location, destination: Location, 
         }
     }
 
-    private fun getDirection(desiredStep: Int): Boolean {
-        lastDirectionWasUp = if (step == 0) {
+    fun getDirection(desiredStep: Int): Boolean {
+        return if (step == 0) {
             (desiredStep == path.getBottom())
         } else {
             getCurrentSegment().higherSegments.contains(desiredStep)
         }
-        return lastDirectionWasUp
     }
 
     fun getDistanceTo(step: Int) : Int {
@@ -139,7 +134,9 @@ class ClimbJourney(val target: Target, origin: Location, destination: Location, 
 
     fun advance(desiredStep: Int) {
         if (hasSegment(desiredStep)) {
+            lastDirectionWasUp = getDirection(desiredStep)
             step = desiredStep
+
         } else {
             println("Couldn't advance journey to $desiredStep. This shouldn't happen!")
         }
