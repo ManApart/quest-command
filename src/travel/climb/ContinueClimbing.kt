@@ -40,7 +40,8 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val skill = GameState.player.soul.getCurrent(Stat.CLIMBING)
         val challenge = journey.getSegment(desiredStep).level
         val chance = skill / challenge.toDouble()
-        return RandomManager.isSuccess(chance)
+        return true
+//        return RandomManager.isSuccess(chance)
     }
 
 

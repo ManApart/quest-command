@@ -43,24 +43,31 @@ class LookCommand : Command() {
         val journey = GameState.journey as ClimbJourney
         val abovePaths = if (journey.getHigherSegments().isNotEmpty()) {
             var i = 0
-            "are path choices " + journey.getHigherSegments().joinToString(", "){
+            "Above you are path choices " + journey.getHigherSegments().joinToString(", "){
                 i++
                 "$i"
             }
         } else {
-            //TODO - detect if top/bottom and say there is an exit
-            "is nothing to climb on"
+            if (journey.getCurrentSegment().top){
+                "You are at the top of ${journey.target.name}"
+            } else {
+                "Above you is nothing to climb on"
+            }
         }
         val belowPaths = if (journey.getLowerSegments().isNotEmpty()) {
             var i = journey.getHigherSegments().size
-            "are path choices " + journey.getLowerSegments().joinToString(","){
+            "Below you are path choices " + journey.getLowerSegments().joinToString(","){
                 i++
                 "$i"
             }
         } else {
-            "is nothing to climb on"
+            if (journey.getCurrentSegment().bottom){
+                "You are at the bottom of ${journey.target.name}"
+            } else {
+                "Below you is nothing to climb on"
+            }
         }
-        println("You are ${journey.getCurrentDistance()}ft up. Above you $abovePaths. Below you $belowPaths")
+        println("You are ${journey.getCurrentDistance()}ft up. $abovePaths. $belowPaths.")
     }
 
     private fun describeLocation() {
