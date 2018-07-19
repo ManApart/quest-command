@@ -38,8 +38,7 @@ class ClimbCommand : Command() {
             if (isClimbing() && (isStep(args[0]) || isDirection(args[0]))) {
                 val journey = GameState.journey as ClimbJourney
                 if (isDirection(args[0])) {
-                    val step = getStep(journey, getDirection(args[0]))
-                    climbStep(step)
+                    climbTowardsDirection(args, journey)
                 } else if (isStep(args[0])) {
                     val step = getStep(journey, args[0])
                     climbStep(step)
@@ -47,8 +46,20 @@ class ClimbCommand : Command() {
             } else if (ScopeManager.targetExists(argsString)) {
                 EventManager.postEvent(ClimbStartEvent(GameState.player, ScopeManager.getTarget(argsString)))
             } else {
-                println("Unable to climbPath: ${args.joinToString(" ")}")
+                println("Unable to climb: ${args.joinToString(" ")}")
             }
+        }
+    }
+
+    private fun climbTowardsDirection(args: List<String>, journey: ClimbJourney) {
+        val upwards = getDirection(args[0])
+        if (upwards && journey.getCurrentSegment().top) {
+            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.top))
+        } else if (!upwards && journey.getCurrentSegment().bottom) {
+            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.bottom))
+        } else {
+            val step = getStep(journey, upwards)
+            climbStep(step)
         }
     }
 

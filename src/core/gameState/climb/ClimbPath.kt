@@ -1,13 +1,11 @@
 package core.gameState.climb
 
-import core.gameState.Direction
-
 class ClimbPath(val name: String, val segments: List<ClimbSegment>){
-    fun getStart(direction: Direction) : Int {
-        return if (direction == Direction.BELOW){
-            getTop()
-        } else {
+    fun getStart(upwards: Boolean) : Int {
+        return if (upwards){
             getBottom()
+        } else {
+            getTop()
         }
     }
 

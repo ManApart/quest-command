@@ -14,7 +14,7 @@ class CompleteClimb : EventListener<ClimbCompleteEvent>() {
     override fun execute(event: ClimbCompleteEvent) {
         event.target.consume(event)
         GameState.journey = null
-        if (GameState.player.location == event.origin) {
+        if (GameState.player.location == event.destination) {
             println("You climb back off ${event.target.name}")
         } else {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))

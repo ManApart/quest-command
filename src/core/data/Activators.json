@@ -14,7 +14,7 @@
     "climb": {
       "name": "Climb Tree",
       "destination": "an open field apple tree tree branches",
-      "direction": "ABOVE"
+      "upwards": true
     },
     "triggers": [
       {
@@ -75,7 +75,7 @@
     "climb": {
       "name": "Climb Tree",
       "destination": "an open field apple tree",
-      "direction": "BELOW"
+      "upwards": false
     }
   }
 ]

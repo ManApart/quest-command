@@ -6,6 +6,7 @@ import core.gameState.GameState
 import core.gameState.Stat
 import core.gameState.consume
 import core.utility.RandomManager
+import core.utility.StringFormatter
 import status.StatChangeEvent
 import system.EventManager
 import travel.jump.FallEvent
@@ -20,7 +21,8 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", Stat.STAMINA, -distance))
 
         if (isSuccessful(journey, event.desiredStep)) {
-            println("You climb $distance ft.")
+            val direction = StringFormatter.format(journey.getLastDirection(), "up", "down")
+            println("You climb $direction $distance ft.")
             if (journey.isPathEnd(event.desiredStep)) {
                 EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.getDestination(event.desiredStep)))
             } else {

@@ -7,18 +7,22 @@ import core.gameState.climb.ClimbPath
 import core.gameState.climb.ClimbSegment
 import travel.journey.Journey
 
-class ClimbJourney(val target: Target, origin: Location, destination: Location, direction: Direction, val path: ClimbPath) : Journey {
+class ClimbJourney(val target: Target, origin: Location, destination: Location, upwards: Boolean, val path: ClimbPath) : Journey {
     var step = 0
-    private var lastDirectionWasUp = true
-    val top = if (direction == Direction.BELOW) {
+    private var lastDirectionWasUp = upwards
+    val top = if (upwards) {
+        destination
+    } else {
+        origin
+    }
+    val bottom = if (upwards) {
         origin
     } else {
         destination
     }
-    val bottom = if (direction == Direction.ABOVE) {
-        origin
-    } else {
-        destination
+
+    fun getLastDirection() : Boolean {
+        return lastDirectionWasUp
     }
 
     fun hasSegment(step: Int): Boolean {
@@ -103,7 +107,11 @@ class ClimbJourney(val target: Target, origin: Location, destination: Location, 
 
     fun getCurrentDistance(): Int {
         return if (step == 0) {
-            0
+            if (lastDirectionWasUp) {
+                0
+            } else {
+                getTotalDistance()
+            }
         } else {
             getDistance(step)
         }
@@ -115,6 +123,10 @@ class ClimbJourney(val target: Target, origin: Location, destination: Location, 
             distance += getDistance(getLowerSegments(currentStep).first().id)
         }
         return distance
+    }
+
+    private fun getTotalDistance() : Int {
+        return getDistance(path.getTop())
     }
 
     fun getDestination(desiredStep: Int): Location {
