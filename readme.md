@@ -39,6 +39,10 @@ Location positions are always relative to their parent. The parent is always (0,
 ### Command ideas
 * Search - skill based, finds scope that's hidden
 * Look (examine) object for its description
+  * Look during climb says the options you can go
+  * Prevent travel during climb
+  * Prevent using items etc during climb
+* Dismount - stop climbing if you are at the top or bottom of a climb (no damage)
 * Battle Commands (each can take a direction), (default to item in right hand, option to add left)
   * Slash 
   * Chop
@@ -77,6 +81,13 @@ Location positions are always relative to their parent. The parent is always (0,
 * Add falling to climbing and jump attempts
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 * f modifier to force / ignore confirmations
+* Remove logic from journey event, create actual journey object
+* Look at creature / target and see if you can compose instead of inherit
+* Look command while climbing
+* Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
+* Make starting a journey event based / handle replacing an existing event
+* Jump during a climb path jumps to the bottom
+
 
 **Validation tools**
 * Seperate from test suite

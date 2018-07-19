@@ -5,4 +5,4 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Location
 
-class FallEvent(val creature: Creature = GameState.player, val source: Location = GameState.player.location, val destination: Location) : Event
+class FallEvent(val creature: Creature = GameState.player, val destination: Location, val fallHeight: Int = 0, val reason: String? = null) : Event

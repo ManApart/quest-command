@@ -13,13 +13,9 @@ object CommandParser {
 
     fun parseCommand(line: String) {
         val commands = line.split("&&")
-        if (commands.size == 1){
-            parseSingleCommand(commands[0])
-        } else {
-            for (command in commands){
-                parseSingleCommand(command)
-                EventManager.executeEvents()
-            }
+        for (command in commands) {
+            parseSingleCommand(command)
+            EventManager.executeEvents()
         }
     }
 
@@ -43,7 +39,7 @@ object CommandParser {
     }
 
     fun findCommand(alias: String): Command {
-        return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) }?: unknownCommand
+        return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) } ?: unknownCommand
     }
 
     private fun containsIgnoreCase(textList: Array<String>, matchText: String): Boolean {
@@ -56,7 +52,7 @@ object CommandParser {
         return false
     }
 
-    inline fun <reified C : Command> getCommand() : C {
+    inline fun <reified C : Command> getCommand(): C {
         return commands.first { it is C } as C
     }
 
@@ -70,6 +66,6 @@ fun removeFirstItem(list: Array<String>): Array<String> {
     return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
 }
 
-fun removeExcludedWords(list: List<String>, excludedWords: List<String>) : List<String> {
+fun removeExcludedWords(list: List<String>, excludedWords: List<String>): List<String> {
     return list.subtract(excludedWords).toList()
 }

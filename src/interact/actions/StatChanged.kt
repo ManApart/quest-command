@@ -1,17 +1,18 @@
 package interact.actions
 
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.Stat
 import core.utility.StringFormatter
-import interact.UseEvent
 import status.StatChangeEvent
-import status.StatMinnedEvent
 
 class StatChanged : EventListener<StatChangeEvent>() {
+
+    override fun shouldExecute(event: StatChangeEvent): Boolean {
+        return event.amount != 0
+    }
+
     override fun execute(event: StatChangeEvent) {
         val change = StringFormatter.format(event.amount > 0, "increases", "decreases")
-        val subject = StringFormatter.getSubject(event.target)
+        val subject = StringFormatter.getSubjectPossessive(event.target)
         event.target.soul.incStat(event.target, event.type, event.amount)
 
         val current = event.target.soul.getCurrent(event.type)

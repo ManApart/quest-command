@@ -5,4 +5,4 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Target
 
-class ClimbAttemptEvent(val source: Creature = GameState.player, val target: Target, val upwards: Boolean = true) : Event
+class ClimbStartEvent(val creature: Creature = GameState.player, val target: Target) : Event

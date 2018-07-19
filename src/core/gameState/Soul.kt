@@ -7,8 +7,8 @@ import system.EventManager
 class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
 
     fun incStat(creature: Creature, type: String, amount: Int) {
-        if (amount != 0) {
-            val stat = getStat(type)
+        if (amount != 0 && getStatOrNull(type) != null) {
+            val stat = getStatOrNull(type)!!
             stat.current += amount
             stat.current = Math.max(Math.min(stat.current, stat.max), 0)
 
@@ -33,15 +33,11 @@ class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
     }
 
     fun getCurrent(type: String): Int {
-        return getStat(type).current
+        return getStatOrNull(type)?.current ?: 0
     }
 
     fun getTotal(type: String): Int {
-        return getStat(type).max
-    }
-
-    private fun getStat(type: String): Stat {
-        return getStatOrNull(type)!!
+        return getStatOrNull(type)?.max ?: 0
     }
 
     private fun getStatOrNull(type: String): Stat? {

@@ -9,6 +9,7 @@ class Player : Creature {
             Stat(Stat.HEALTH, 100),
             Stat(Stat.STAMINA, 100),
             Stat(Stat.STRENGTH, 1),
+            Stat(Stat.CLIMBING, 1),
             Stat(Stat.AGILITY, 1)))
     override val properties = Properties()
 

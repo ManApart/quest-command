@@ -11,23 +11,12 @@
         "Flammable"
       ]
     },
+    "climb": {
+      "name": "Climb Tree",
+      "destination": "an open field apple tree tree branches",
+      "direction": "ABOVE"
+    },
     "triggers": [
-      {
-        "condition": {
-          "callingEvent": "ClimbCompleteEvent",
-          "eventParams": {
-            "upwards": "true"
-          }
-        },
-        "events": [
-          {
-            "className": "ArriveEvent",
-            "params": [
-              "an open field apple tree tree branches"
-            ]
-          }
-        ]
-      },
       {
         "condition": {
           "callingEvent": "StatMinnedEvent",
@@ -83,23 +72,10 @@
         "Flammable"
       ]
     },
-    "triggers": [
-      {
-        "condition": {
-          "callingEvent": "ClimbCompleteEvent",
-          "eventParams": {
-            "upwards": "false"
-          }
-        },
-        "events": [
-          {
-            "className": "ArriveEvent",
-            "params": [
-              "an open field apple tree"
-            ]
-          }
-        ]
-      }
-    ]
+    "climb": {
+      "name": "Climb Tree",
+      "destination": "an open field apple tree",
+      "direction": "BELOW"
+    }
   }
 ]
