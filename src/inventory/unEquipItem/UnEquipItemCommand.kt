@@ -43,8 +43,11 @@ class UnEquipItemCommand : Command() {
 
     private fun getItem(args: Args): Item? {
         val itemName = args.argGroups[0].joinToString(" ")
-        return GameState.player.creature.body.getEquippedItems().firstOrNull {
-            it.name.toLowerCase() == itemName
+        val items = GameState.player.creature.body.getEquippedItems()
+        return if (items.exists(itemName)){
+            items.get(itemName)
+        } else {
+            null
         }
     }
 }

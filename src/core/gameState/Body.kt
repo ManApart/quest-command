@@ -1,34 +1,40 @@
 package core.gameState
 
+import core.utility.NameSearchableList
+
 class Body(val name: String = "None", parts: List<String> = listOf()) {
-    private val parts = parts.map { BodyPart(it) }
+    private val parts = NameSearchableList(parts.map { BodyPart(it) })
 
     fun copy(): Body {
         return Body(name, parts.map { it.name })
     }
 
     fun hasPart(part: String): Boolean {
-        return parts.firstOrNull { it.name.toLowerCase() == part.toLowerCase() } != null
+        return parts.exists(part)
     }
 
-    fun getEquippedItems() : List<Item> {
-        val items = mutableListOf<Item>()
+    fun getEquippedItems(): NameSearchableList<Item> {
+        val items = NameSearchableList<Item>()
         parts.forEach {
             val item = it.equippedItem
-            if (item != null && !items.contains(item)){
+            if (item != null && !items.contains(item)) {
                 items.add(item)
             }
         }
 
-        return items.toList()
+        return items
     }
 
-    fun getEquippedItemAt(part: String) : Item? {
+    fun getEquippedItemAt(part: String): Item? {
         return getPart(part).equippedItem
     }
 
-    private fun getPart(part: String): BodyPart {
-        return parts.first { it.name.toLowerCase() == part.toLowerCase() }
+    fun getPart(part: String): BodyPart {
+        return parts.get(part)
+    }
+
+    fun getEquippablePart(part: String, item: Item): BodyPart? {
+        return parts.getAll(part).firstOrNull { item.findSlot(this, it.name.toLowerCase()) != null }
     }
 
     private fun getPartsEquippedWith(item: Item): List<BodyPart> {
@@ -48,17 +54,22 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
         equip(item, getDefaultSlot(item))
     }
 
-    private fun getDefaultSlot(item: Item) : Slot {
-        return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) } ?: item.equipSlots.first{ canEquip(it) }
+    private fun getDefaultSlot(item: Item): Slot {
+        return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
+                ?: item.equipSlots.first { canEquip(it) }
     }
 
     fun equip(item: Item, slot: Slot) {
-        unEquip(item)
-        slot.bodyParts.forEach {
-            unEquip(it)
-        }
-        slot.bodyParts.forEach {
-            getPart(it).equippedItem = item
+        if (canEquip(slot)) {
+            unEquip(item)
+            slot.bodyParts.forEach {
+                unEquip(it)
+            }
+            slot.bodyParts.forEach {
+                getPart(it).equippedItem = item
+            }
+        } else {
+            println("Can't equip ${item.name} to ${slot.description}")
         }
     }
 

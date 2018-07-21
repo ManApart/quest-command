@@ -1,6 +1,8 @@
 package core.gameState
 
-class BodyPart(val name: String) {
+import core.utility.Named
+
+class BodyPart(override val name: String) :Named {
     var equippedItem: Item? = null
 
     fun getDefense(): Int {

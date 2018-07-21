@@ -7,7 +7,7 @@ class Item(override val name: String, override val description: String = "", val
     }
 
     fun copy(): Item {
-        return Item(name, description, weight, equipSlots.map { it.bodyParts }, properties)
+        return Item(name, description, weight, equipSlots.map { it.bodyParts.map { it } }, properties)
     }
 
     fun canEquipTo(body: Body): Boolean {
@@ -24,7 +24,7 @@ class Item(override val name: String, override val description: String = "", val
     }
 
     fun findSlot(body: Body, bodyPart: String) : Slot? {
-        return equipSlots.first { it.contains(bodyPart) && body.canEquip(it) }
+        return equipSlots.firstOrNull { it.contains(bodyPart) && body.canEquip(it) }
     }
 
 }

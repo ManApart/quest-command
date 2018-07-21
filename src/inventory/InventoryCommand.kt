@@ -14,8 +14,7 @@ class InventoryCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tInventory - list items in your inventory" +
-                "\n\tInventory equip <item> - equip an item X"
+        return "\n\tInventory - list items in your inventory"
     }
 
     override fun getCategory(): List<String> {

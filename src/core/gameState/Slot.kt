@@ -14,7 +14,7 @@ class Slot(val bodyParts: List<String>) {
 
     fun isEmpty(body: Body) : Boolean {
         bodyParts.forEach {
-            if (!body.hasPart(it) || body.getEquippedItemAt(it) != null) {
+            if (!body.hasPart(it) || body.getEquippedItemAt(it) == null) {
                 return false
             }
         }
