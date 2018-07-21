@@ -1,9 +1,14 @@
 package inventory.unEquipItem
 
+import core.commands.Args
 import core.commands.Command
+import core.gameState.GameState
+import core.gameState.Item
+import inventory.equipItem.EquipItemEvent
+import system.EventManager
 
 class UnEquipItemCommand : Command() {
-    private val delimiters = listOf("to", "on")
+    private val delimiters = listOf("from")
     override fun getAliases(): Array<String> {
         return arrayOf("UnEquip")
     }
@@ -14,14 +19,32 @@ class UnEquipItemCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tUnEquip <item> - UnEquip an item" +
-                "\n\tUnEquip <location> - UnEquip any items worn on a specific body part (ex: left hand)"
+                "\n\tUnEquip <body part> - UnEquip any items worn on a specific body part (ex: left hand) X"
     }
 
     override fun getCategory(): List<String> {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        val argsString = args.joinToString(" ")
+    override fun execute(keyword: String, arguments: List<String>) {
+        val args = Args(arguments, delimiters)
+
+        if (args.isEmpty()) {
+            println("What do you want to un-equip?")
+        } else {
+            val item = getItem(args)
+            if (item != null) {
+                EventManager.postEvent(UnEquipItemEvent(GameState.player.creature, item))
+            } else {
+                println("Could not find ${args.argStrings[0]}")
+            }
+        }
+    }
+
+    private fun getItem(args: Args): Item? {
+        val itemName = args.argGroups[0].joinToString(" ")
+        return GameState.player.creature.body.getEquippedItems().firstOrNull {
+            it.name.toLowerCase() == itemName
+        }
     }
 }

@@ -4,6 +4,6 @@ import core.events.EventListener
 
 class ItemEquipped : EventListener<EquippedItemEvent>() {
     override fun execute(event: EquippedItemEvent) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("${event.creature.name} equipped ${event.item.name} to ${event.slot.description}.")
     }
 }

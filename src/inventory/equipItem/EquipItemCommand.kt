@@ -18,7 +18,7 @@ class EquipItemCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tEquip <item> - Equip an item" +
-                "\n\tEquip <item> to <location> - Equip an item to a specific body part (ex: left hand)"
+                "\n\tEquip <item> to <body part> - Equip an item to a specific body part (ex: left hand) X"
     }
 
     override fun getCategory(): List<String> {
@@ -33,17 +33,27 @@ class EquipItemCommand : Command() {
         } else {
             val item = getItem(args)
             val bodyPartName = getBodyPart(args)
+            val body = GameState.player.creature.body
 
             if (item != null){
-                if (bodyPartName == null){
+                if (!item.canEquipTo(body)) {
+                    println("You can't equip ${item.name}.")
+                } else if (bodyPartName == null){
                     EventManager.postEvent(EquipItemEvent(GameState.player.creature, item))
                 } else {
-                    if (GameState.player.creature.body.hasPart(bodyPartName)){
-                        EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, bodyPartName))
+                    if (body.hasPart(bodyPartName)){
+                        val slot = item.findSlot(body, bodyPartName)
+                        if (slot != null){
+                            EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, slot))
+                        } else {
+                            println("Could not equip to body part $bodyPartName")
+                        }
                     } else {
                         println("Could not find body part $bodyPartName")
                     }
                 }
+            } else {
+                println("Could not find ${args.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
             }
         }
     }
@@ -53,14 +63,13 @@ class EquipItemCommand : Command() {
         return if (GameState.player.creature.inventory.itemExists(itemName)) {
             GameState.player.creature.inventory.getItem(itemName)
         } else {
-            println("Could not find $itemName")
             null
         }
     }
 
     private fun getBodyPart(args: Args): String? {
         return if (args.argGroups.size > 1) {
-            args.argGroups[1].joinToString(" ")
+            args.argStrings[1]
         } else {
             null
         }

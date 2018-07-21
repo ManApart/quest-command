@@ -4,8 +4,8 @@
     "description": "These pants used to be white.",
     "equipSlots": [
       [
-        "Left Leg",
-        "Right Leg"
+        "Right Leg",
+        "Left Leg"
       ]
     ]
   },
@@ -24,10 +24,10 @@
     "weight": "1",
     "equipSlots": [
       [
-        "Left Hand"
+        "Right Hand"
       ],
       [
-        "Right Hand"
+        "Left Hand"
       ]
     ],
     "properties": {
@@ -49,10 +49,10 @@
     "weight": "4",
     "equipSlots": [
       [
-        "Left Hand"
+        "Right Hand"
       ],
       [
-        "Right Hand"
+        "Left Hand"
       ]
     ],
     "properties": {

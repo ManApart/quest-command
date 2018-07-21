@@ -1,9 +1,5 @@
 package core.gameState
 
-import inventory.equipItem.EquippedItemEvent
-import inventory.unEquipItem.UnEquippedItemEvent
-import system.EventManager
-
 class Body(val name: String = "None", parts: List<String> = listOf()) {
     private val parts = parts.map { BodyPart(it) }
 
@@ -15,6 +11,22 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
         return parts.firstOrNull { it.name.toLowerCase() == part.toLowerCase() } != null
     }
 
+    fun getEquippedItems() : List<Item> {
+        val items = mutableListOf<Item>()
+        parts.forEach {
+            val item = it.equippedItem
+            if (item != null && !items.contains(item)){
+                items.add(item)
+            }
+        }
+
+        return items.toList()
+    }
+
+    fun getEquippedItemAt(part: String) : Item? {
+        return getPart(part).equippedItem
+    }
+
     private fun getPart(part: String): BodyPart {
         return parts.first { it.name.toLowerCase() == part.toLowerCase() }
     }
@@ -23,8 +35,8 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
         return parts.filter { it.equippedItem == item }
     }
 
-    fun canEquip(slot: List<String>): Boolean {
-        slot.forEach { part ->
+    fun canEquip(slot: Slot): Boolean {
+        slot.bodyParts.forEach { part ->
             if (!hasPart(part)) {
                 return false
             }
@@ -33,29 +45,34 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
     }
 
     fun equip(item: Item) {
-        val slot = item.equipSlots.first { canEquip(it) }
-        equip(item, slot)
+        equip(item, getDefaultSlot(item))
     }
 
-    fun equip(item: Item, slot: List<String>) {
-        slot.forEach {
-            val equippedItem = getPart(it).equippedItem
-            if (equippedItem != null) {
-                unEquip(equippedItem)
-            }
+    private fun getDefaultSlot(item: Item) : Slot {
+        return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) } ?: item.equipSlots.first{ canEquip(it) }
+    }
+
+    fun equip(item: Item, slot: Slot) {
+        unEquip(item)
+        slot.bodyParts.forEach {
+            unEquip(it)
         }
-        slot.forEach {
+        slot.bodyParts.forEach {
             getPart(it).equippedItem = item
         }
-        //TODO - use creature, not player
-        EventManager.postEvent(EquippedItemEvent(GameState.player.creature, item))
+    }
+
+    fun unEquip(bodyPart: String) {
+        val equippedItem = getPart(bodyPart).equippedItem
+        if (equippedItem != null) {
+            unEquip(equippedItem)
+        }
     }
 
     fun unEquip(item: Item) {
         getPartsEquippedWith(item).forEach {
             it.equippedItem = null
         }
-        EventManager.postEvent(UnEquippedItemEvent(GameState.player.creature, item))
     }
 
 }
