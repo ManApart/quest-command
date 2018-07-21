@@ -1,9 +1,9 @@
-package interact.actions
+package status.rest
 
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Stat
-import status.RestEvent
+import status.rest.RestEvent
 import status.StatChangeEvent
 import system.EventManager
 

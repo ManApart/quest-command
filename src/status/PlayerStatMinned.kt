@@ -1,10 +1,8 @@
-package interact.actions
+package status
 
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Stat
-import interact.UseEvent
-import status.StatMinnedEvent
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {

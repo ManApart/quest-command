@@ -1,11 +1,8 @@
-package interact.actions
+package status
 
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Stat
-import interact.UseEvent
-import status.StatMaxedEvent
-import status.StatMinnedEvent
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override fun shouldExecute(event: StatMaxedEvent): Boolean {

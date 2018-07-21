@@ -1,4 +1,4 @@
-package interact.actions
+package status
 
 import core.events.EventListener
 import core.utility.StringFormatter

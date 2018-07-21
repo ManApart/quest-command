@@ -1,4 +1,4 @@
-package status
+package status.rest
 
 import core.events.Event
 

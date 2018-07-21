@@ -1,4 +1,4 @@
-package status
+package status.rest
 
 import core.commands.Command
 import system.EventManager
