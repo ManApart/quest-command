@@ -56,6 +56,8 @@ Location positions are always relative to their parent. The parent is always (0,
   * Dodge
   * Block (high, low, medium)
   * Step (forward, back) (ranges: knife, sword, lance, bow)
+* Sheath / unsheath command?
+* Hold Command?
   
   **Battle**
   
@@ -74,25 +76,21 @@ Location positions are always relative to their parent. The parent is always (0,
 * Flamable Objects should be able to be set on fire
   * Open field (grass)
   * Apple Tree
-* Tree should be scratched by dagger, cut down by axe
-  * Cut down should turn into logs
 * Apple should be roasted, roasted apple should be burnt
 * Items should be equippable
 * Inventory carrying space
 * Better package organization for actions
 * Packages are still a mess
 * Give json inherit keywords. Spawning grabs all properties etc from inherited
-* Arrive event include a method of travel?
 * you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
 * Add falling to climbing and jump attempts
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
-* f modifier to force / ignore confirmations
-* Remove logic from journey event, create actual journey object
 * Look at creature / target and see if you can compose instead of inherit
 * Look command while climbing
 * Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
 * Make starting a journey event based / handle replacing an existing event
 * Jump during a climb path jumps to the bottom
+* Refactor args to an object that gives delimted, string etc
 
 
 **Validation tools**

@@ -1,5 +1,7 @@
 package core.gameState
 
+import system.BodyManager
+
 class Player : Creature {
     var location = GameState.world.findLocation(listOf("an open field"))
     override val name = "Player"
@@ -11,6 +13,7 @@ class Player : Creature {
             Stat(Stat.STRENGTH, 1),
             Stat(Stat.CLIMBING, 1),
             Stat(Stat.AGILITY, 1)))
+    val body = BodyManager.getBody("Human")
     override val properties = Properties()
 
     init {

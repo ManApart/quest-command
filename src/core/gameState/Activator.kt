@@ -3,6 +3,7 @@ package core.gameState
 import core.events.Event
 import core.gameState.climb.Climbable
 
+//TODO all creatures should be activators, but not all activators should be creatures
 class Activator(override val name: String, override val description: String = "", override val soul: Soul = Soul(), override val inventory: Inventory = Inventory(), val climb: Climbable?, private val triggers: List<Trigger> = listOf(), override val properties: Properties = Properties()) : Creature {
 
     init {

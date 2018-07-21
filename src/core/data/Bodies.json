@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Human",
+    "parts": [
+      "Right Hand",
+      "Left Hand",
+      "Right Leg",
+      "Left Leg",
+      "Right Arm",
+      "Left Arm",
+      "Head",
+      "Chest"
+    ]
+  }
+]

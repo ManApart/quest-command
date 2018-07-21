@@ -69,3 +69,13 @@ fun removeFirstItem(list: Array<String>): Array<String> {
 fun removeExcludedWords(list: List<String>, excludedWords: List<String>): List<String> {
     return list.subtract(excludedWords).toList()
 }
+
+fun findDelimiter(args: List<String>, delimiters: List<String>): Int {
+    delimiters.forEach {
+        val i = args.indexOf(it)
+        if (i != -1){
+            return i
+        }
+    }
+    return -1
+}

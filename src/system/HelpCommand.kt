@@ -69,6 +69,7 @@ class HelpCommand : Command() {
     private fun printCommandGroup(args: List<String>) {
         var description = ""
         //TODO - handle sub-categories
+        //TODO - sort alphabetically
         CommandParser.commands.forEach { command ->
             if (command.getCategory().map { it.toLowerCase() }.toTypedArray() contentEquals args.toTypedArray()) {
                 description += command.getDescription() + "\n"

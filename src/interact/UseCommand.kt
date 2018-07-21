@@ -1,6 +1,8 @@
 package interact
 
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.findDelimiter
 import core.gameState.GameState
 import core.gameState.Target
 import system.EventManager
@@ -28,9 +30,9 @@ class UseCommand : Command() {
         val argsString = args.joinToString(" ")
 
         if (args.isEmpty()) {
-            println("${args.joinToString(" ")} not found!")
+            println("What do you want to use?")
         } else {
-            val delimiter = findDelimiter(args)
+            val delimiter = findDelimiter(args, delimiters)
             val sourceArgs = if (delimiter > 0) args.subList(0, delimiter) else args
             if (targetExists(sourceArgs)) {
                 val source = findTarget(sourceArgs)
@@ -49,16 +51,6 @@ class UseCommand : Command() {
                 println("Couldn't find $argsString")
             }
         }
-    }
-
-    private fun findDelimiter(args: List<String>): Int {
-        delimiters.forEach {
-            val i = args.indexOf(it)
-            if (i != -1){
-                return i
-            }
-        }
-        return -1
     }
 
     private fun targetExists(args: List<String>): Boolean {
