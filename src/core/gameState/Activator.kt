@@ -9,6 +9,10 @@ class Activator(override val name: String, override val description: String = ""
         soul.addStats(properties.stats)
     }
 
+    override fun toString(): String {
+        return name
+    }
+
     fun evaluateAndExecute(event: Event){
         triggers.forEach { it.evaluateAndExecute(event) }
     }

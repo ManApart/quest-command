@@ -4,7 +4,7 @@
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
     "properties": {
       "stats": {
-        "health": 5
+        "chop-health": 5
       },
       "tags": [
         "Wood",
@@ -21,7 +21,7 @@
         "condition": {
           "callingEvent": "StatMinnedEvent",
           "eventParams": {
-            "stat": "health"
+            "stat": "chop-health"
           }
         },
         "events": [

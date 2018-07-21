@@ -17,6 +17,6 @@ class NoUseFound() : EventListener<UseEvent>() {
     }
 
     override fun execute(event: UseEvent) {
-        println("You use ${event.source} on ${event.target} but nothing happens.")
+        println("You use ${event.source.name} on ${event.target.name} but nothing happens.")
     }
 }
