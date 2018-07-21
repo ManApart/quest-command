@@ -31,7 +31,7 @@ class InventoryCommand : Command() {
     }
 
     private fun listInventory() {
-        val itemList = targetsToString(GameState.player.inventory.items)
+        val itemList = targetsToString(GameState.player.creature.inventory.items)
         println("You have $itemList in your inventory")
     }
 

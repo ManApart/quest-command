@@ -31,11 +31,11 @@ class MapCommand : Command() {
 
 
     private fun currentLocation(){
-        EventManager.postEvent(MapEvent(GameState.player.location))
+        EventManager.postEvent(MapEvent(GameState.player.creature.location))
     }
 
     private fun targetLocation(args: List<String>){
-        val target = Location.findLocation(GameState.player.location, args)
+        val target = Location.findLocation(GameState.player.creature.location, args)
         if (target != GameState.world){
             EventManager.postEvent(MapEvent(target))
         } else {

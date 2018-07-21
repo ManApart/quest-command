@@ -31,7 +31,7 @@ class TravelCommand : Command() {
             CommandParser.parseCommand(arguments.joinToString(" "))
         } else {
             val args = Args(arguments, excludedWords = listOf("to"))
-            val found = Location.findLocation(GameState.player.location, args.argGroups[0])
+            val found = Location.findLocation(GameState.player.creature.location, args.argGroups[0])
 
             if (foundMatch(args.argGroups[0], found)) {
                 EventManager.postEvent(TravelStartEvent(destination = found))

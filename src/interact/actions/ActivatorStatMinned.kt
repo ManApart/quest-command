@@ -10,10 +10,10 @@ import status.StatMinnedEvent
 
 class ActivatorStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return event.creature is Activator
+        return event.creature.parent != null && event.creature.parent is Activator
     }
 
     override fun execute(event: StatMinnedEvent) {
-        event.creature.consume(event)
+        event.creature.parent?.consume(event)
     }
 }

@@ -34,6 +34,7 @@ object ScopeManager {
         }
     }
 
+    //TODO - set location on spawn
     class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
         override fun execute(event: SpawnActivatorEvent) {
             println("${event.activator.name} appeared.")

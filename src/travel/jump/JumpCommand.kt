@@ -26,7 +26,7 @@ class JumpCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val loc = GameState.player.location
+        val loc = GameState.player.creature.location
         val found = loc.findChildLocation(Direction.BELOW).firstOrNull { it != loc }
                 ?: if (loc.position.isDirection(Direction.ABOVE, Position())) {
                     loc.getParent()
@@ -35,7 +35,7 @@ class JumpCommand : Command() {
                 }
                 ?: loc.findSiblings(Direction.BELOW).firstOrNull { it != loc }
         if (found != null) {
-            EventManager.postEvent(JumpEvent(source = GameState.player.location, destination = found))
+            EventManager.postEvent(JumpEvent(source = GameState.player.creature.location, destination = found))
         } else {
             println("Couldn't find anything below to jump down to.")
         }

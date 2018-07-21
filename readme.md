@@ -85,12 +85,11 @@ Location positions are always relative to their parent. The parent is always (0,
 * you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
 * Add falling to climbing and jump attempts
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
-* Look at creature / target and see if you can compose instead of inherit
 * Look command while climbing
 * Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
 * Make starting a journey event based / handle replacing an existing event
 * Jump during a climb path jumps to the bottom
-* Refactor args to an object that gives delimted, string etc, 
+
 
 
 **Validation tools**

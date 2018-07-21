@@ -4,7 +4,7 @@ import inventory.equipItem.EquippedItemEvent
 import inventory.unEquipItem.UnEquippedItemEvent
 import system.EventManager
 
-class Body(val name: String, parts: List<String> = listOf()) {
+class Body(val name: String = "None", parts: List<String> = listOf()) {
     private val parts = parts.map { BodyPart(it) }
 
     fun copy(): Body {
@@ -48,14 +48,14 @@ class Body(val name: String, parts: List<String> = listOf()) {
             getPart(it).equippedItem = item
         }
         //TODO - use creature, not player
-        EventManager.postEvent(EquippedItemEvent(GameState.player, item))
+        EventManager.postEvent(EquippedItemEvent(GameState.player.creature, item))
     }
 
     fun unEquip(item: Item) {
         getPartsEquippedWith(item).forEach {
             it.equippedItem = null
         }
-        EventManager.postEvent(UnEquippedItemEvent(GameState.player, item))
+        EventManager.postEvent(UnEquippedItemEvent(GameState.player.creature, item))
     }
 
 }

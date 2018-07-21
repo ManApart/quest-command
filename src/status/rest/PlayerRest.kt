@@ -13,6 +13,6 @@ class PlayerRest : EventListener<RestEvent>() {
     }
 
     override fun execute(event: RestEvent) {
-        EventManager.postEvent(StatChangeEvent(GameState.player, "Resting", Stat.STAMINA, event.hoursRested))
+        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Resting", Stat.STAMINA, event.hoursRested))
     }
 }

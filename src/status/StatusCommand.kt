@@ -26,7 +26,7 @@ class StatusCommand : Command() {
     }
 
     private fun getPlayerStatus() {
-        val soul = GameState.player.soul
+        val soul = GameState.player.creature.soul
         println("You have ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} SP.")
     }
 }

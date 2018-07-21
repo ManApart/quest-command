@@ -19,13 +19,13 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
     override fun execute(event: ClimbJourneyEvent) {
         val journey = GameState.journey as ClimbJourney
         val distance = journey.getDistanceTo(event.desiredStep)
-        EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", Stat.STAMINA, -distance))
+        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", Stat.STAMINA, -distance))
 
         if (isSuccessful(journey, event.desiredStep)) {
             val direction = StringFormatter.format(journey.getDirection(event.desiredStep), "up", "down")
             println("You climb $direction $distance ft.")
             if (journey.isPathEnd(event.desiredStep)) {
-                EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.getDestination(event.desiredStep)))
+                EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.getDestination(event.desiredStep)))
             } else {
                 journey.advance(event.desiredStep)
                 if (event.force){
@@ -36,7 +36,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
                 }
             }
         } else {
-            EventManager.postEvent(FallEvent(GameState.player, journey.bottom, journey.getCurrentDistance(), "You lose your grip on ${journey.target.name}."))
+            EventManager.postEvent(FallEvent(GameState.player.creature, journey.bottom, journey.getCurrentDistance(), "You lose your grip on ${journey.target.name}."))
         }
 
         journey.target.consume(event)
@@ -45,7 +45,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
 
     private fun isSuccessful(journey: ClimbJourney, desiredStep: Int): Boolean {
         //TODO - more detailed skill check
-        val skill = GameState.player.soul.getCurrent(Stat.CLIMBING)
+        val skill = GameState.player.creature.soul.getCurrent(Stat.CLIMBING)
         val challenge = journey.getSegment(desiredStep).level
         val chance = skill / challenge.toDouble()
         return true

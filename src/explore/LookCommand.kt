@@ -72,7 +72,7 @@ class LookCommand : Command() {
     }
 
     private fun describeLocation() {
-        println(GameState.player.location.getDescription())
+        println(GameState.player.creature.location.getDescription())
         if (ScopeManager.getTargets().size > 1) {
             val targetList = targetsToString(ScopeManager.getTargets().filterNot { it == GameState.player })
             println("You find yourself surrounded by $targetList.")

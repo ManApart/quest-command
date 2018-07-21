@@ -19,6 +19,6 @@ class EatFood : EventListener<UseEvent>() {
         val target = StringFormatter.format(event.target == GameState.player, "You eat", event.target.name +" eats")
         println("$target ${event.source}")
         EventManager.postEvent(StatChangeEvent(event.target as Creature, event.source.name, "Health", (event.source as Item).properties.values.getInt("healAmount")))
-        GameState.player.inventory.items.remove(event.source)
+        GameState.player.creature.inventory.items.remove(event.source)
     }
 }

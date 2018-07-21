@@ -36,10 +36,10 @@ class EquipItemCommand : Command() {
 
             if (item != null){
                 if (bodyPartName == null){
-                    EventManager.postEvent(EquipItemEvent(GameState.player, item))
+                    EventManager.postEvent(EquipItemEvent(GameState.player.creature, item))
                 } else {
-                    if (GameState.player.body.hasPart(bodyPartName)){
-                        EventManager.postEvent(EquipItemEvent(GameState.player, item, bodyPartName))
+                    if (GameState.player.creature.body.hasPart(bodyPartName)){
+                        EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, bodyPartName))
                     } else {
                         println("Could not find body part $bodyPartName")
                     }
@@ -50,8 +50,8 @@ class EquipItemCommand : Command() {
 
     private fun getItem(args: Args): Item? {
         val itemName = args.argGroups[0]
-        return if (GameState.player.inventory.itemExists(itemName)) {
-            GameState.player.inventory.getItem(itemName)
+        return if (GameState.player.creature.inventory.itemExists(itemName)) {
+            GameState.player.creature.inventory.getItem(itemName)
         } else {
             println("Could not find $itemName")
             null

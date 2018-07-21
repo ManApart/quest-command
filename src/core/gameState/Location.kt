@@ -139,7 +139,7 @@ class Location(override val name: String, private val description: String = "", 
             if (source.name.toLowerCase() == args.joinToString(" ").toLowerCase()) return source
             val found = GameState.world.findLocation(args)
             if (found == GameState.world) {
-                val playerRelativeArgs = (pathAsString(GameState.player.location) + " " + args.joinToString(" ")).split(" ")
+                val playerRelativeArgs = (pathAsString(GameState.player.creature.location) + " " + args.joinToString(" ")).split(" ")
                 return GameState.world.findLocation(playerRelativeArgs)
             }
             return found

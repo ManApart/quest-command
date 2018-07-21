@@ -9,7 +9,7 @@ object MapManager {
 
     class MapHandler : EventListener<MapEvent>() {
         override fun execute(event: MapEvent) {
-            if (GameState.player.location == event.target) {
+            if (GameState.player.creature.location == event.target) {
                 println("You are in ${event.target.name}, which is a part of ${event.target.getParent().name}.")
             }
             println("${event.target.name} ${getChildren(event.target)} and ${getSiblings(event.target)}.")

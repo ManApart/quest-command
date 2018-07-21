@@ -9,14 +9,14 @@ import travel.ArriveEvent
 
 class JumpListener : EventListener<JumpEvent>() {
     override fun shouldExecute(event: JumpEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature == GameState.player.creature
     }
     override fun execute(event: JumpEvent) {
         println("You jump from ${event.source}")
         val damage = calculateJumpDamage(event)
 
         EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
-        EventManager.postEvent(StatChangeEvent(GameState.player, "Falling", Stat.HEALTH, damage))
+        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Falling", Stat.HEALTH, damage))
     }
 
     private fun calculateJumpDamage(event: JumpEvent): Int {

@@ -43,7 +43,7 @@ class TravelInDirectionCommand : Command() {
     }
 
     private fun findLocationInDirection(direction: Direction): Location? {
-        val loc = GameState.player.location
+        val loc = GameState.player.creature.location
         return loc.findChildLocation(direction).firstOrNull{ it != loc}
         ?: loc.findSiblings(direction).firstOrNull{ it != loc}
         ?: loc.getParent().findSiblings(direction).firstOrNull{ it != loc}

@@ -18,7 +18,7 @@ object GameManager {
     }
 
     private fun newPlayer() {
-        val items = GameState.player.inventory.items
+        val items = GameState.player.creature.inventory.items
         items.add(ItemManager.getItem("Brown Pants"))
         items.add(ItemManager.getItem("Old Shirt"))
         items.add(ItemManager.getItem("Rusty Dagger"))

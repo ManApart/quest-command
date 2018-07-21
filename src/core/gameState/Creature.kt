@@ -1,9 +1,11 @@
 package core.gameState
 
-interface Creature : Target {
-    val soul: Soul
-    val inventory: Inventory
-//    val location: Location
-    //val body: Body
-    //TODO - make this a class instead of an interface
+class Creature(override val name: String, override val description: String, val body: Body = Body(), var location: Location = GameState.world, val parent: Target? = null, override val properties: Properties = Properties()) : Target {
+    val soul = Soul()
+    val inventory = Inventory()
+
+    init {
+        properties.tags.add("Creature")
+        soul.addStats(properties.stats)
+    }
 }
