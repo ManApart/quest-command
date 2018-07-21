@@ -1,4 +1,4 @@
-package inventory
+package inventory.pickupItem
 
 import core.gameState.GameState
 import core.gameState.Item

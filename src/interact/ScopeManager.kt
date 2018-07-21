@@ -5,7 +5,7 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Target
 import core.utility.NameSearchableList
-import inventory.PickupItemEvent
+import inventory.pickupItem.PickupItemEvent
 import system.*
 
 object ScopeManager {

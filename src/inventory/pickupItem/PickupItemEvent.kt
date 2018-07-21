@@ -1,4 +1,4 @@
-package inventory
+package inventory.pickupItem
 
 import core.events.Event
 import core.gameState.Creature

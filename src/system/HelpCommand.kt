@@ -57,6 +57,8 @@ class HelpCommand : Command() {
             printManual(args[0])
         } else if (isCommandGroup(args)) {
             printCommandGroup(args)
+        } else {
+            println(getDescription())
         }
     }
 

@@ -1,4 +1,4 @@
-package inventory
+package inventory.dropItem
 
 import core.gameState.GameState
 import system.EventManager

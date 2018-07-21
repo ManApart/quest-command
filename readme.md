@@ -37,6 +37,11 @@ Location positions are always relative to their parent. The parent is always (0,
 * context free gramer, tokenizers, lexers, (yacc, lex)
 
 
+### Skill ideas
+* Barehanded
+* Right and Left handed
+* Short sword, sword, axe, lance
+
 ### Command ideas
 * Search - skill based, finds scope that's hidden
 * Look (examine) object for its description
@@ -45,9 +50,9 @@ Location positions are always relative to their parent. The parent is always (0,
   * Prevent using items etc during climb
 * Dismount - stop climbing if you are at the top or bottom of a climb (no damage)
 * Battle Commands (each can take a direction), (default to item in right hand, option to add left)
-  * Slash 
-  * Chop
-  * Stab
+  * Slash - grazing damage but generally fast (hand slaps)
+  * Chop - most damage, slowest
+  * Stab - 
   * Dodge
   * Block (high, low, medium)
   * Step (forward, back) (ranges: knife, sword, lance, bow)
