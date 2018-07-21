@@ -12,14 +12,6 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
         return args.isEmpty()
     }
 
-    fun removeFirstItem(list: List<String>): List<String> {
-        return if (list.size > 1) list.subList(1, list.size) else listOf()
-    }
-
-    fun removeFirstItem(list: Array<String>): Array<String> {
-        return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
-    }
-
     private fun parseArgGroups(): List<List<String>> {
         val groups = mutableListOf<List<String>>()
         if (delimiters.isEmpty()) {

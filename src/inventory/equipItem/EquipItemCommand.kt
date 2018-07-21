@@ -2,6 +2,9 @@ package inventory.equipItem
 
 import core.commands.Args
 import core.commands.Command
+import core.gameState.GameState
+import core.gameState.Item
+import system.EventManager
 
 class EquipItemCommand : Command() {
     private val delimiters = listOf("to", "on")
@@ -28,7 +31,38 @@ class EquipItemCommand : Command() {
         if (args.isEmpty()) {
             println("What do you want to equip?")
         } else {
+            val item = getItem(args)
+            val bodyPartName = getBodyPart(args)
 
+            if (item != null){
+                if (bodyPartName == null){
+                    EventManager.postEvent(EquipItemEvent(GameState.player, item))
+                } else {
+                    if (GameState.player.body.hasPart(bodyPartName)){
+                        EventManager.postEvent(EquipItemEvent(GameState.player, item, bodyPartName))
+                    } else {
+                        println("Could not find body part $bodyPartName")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getItem(args: Args): Item? {
+        val itemName = args.argGroups[0]
+        return if (GameState.player.inventory.itemExists(itemName)) {
+            GameState.player.inventory.getItem(itemName)
+        } else {
+            println("Could not find $itemName")
+            null
+        }
+    }
+
+    private fun getBodyPart(args: Args): String? {
+        return if (args.argGroups.size > 1) {
+            args.argGroups[1].joinToString(" ")
+        } else {
+            null
         }
     }
 }
