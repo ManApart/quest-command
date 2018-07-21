@@ -1,30 +1,51 @@
 package core.commands
 
-class Args(val args: List<String>, delimiters: List<String> = listOf()) {
-    val argsString = args.joinToString(" ")
-    val argGroups = parseArgGroups(args, delimiters)
+class Args(val args: List<String>, private val delimiters: List<String> = listOf(), private val excludedWords: List<String> = listOf()) {
+    private val argsString = args.joinToString(" ")
+    val argGroups = parseArgGroups()
 
-    private fun parseArgGroups(args: List<String>, delimiters: List<String>): List<List<String>> {
-        if (delimiters.isEmpty()) {
-            return listOf()
-        }
+    override fun toString(): String {
+        return argsString
+    }
+
+    fun isEmpty() : Boolean {
+        return args.isEmpty()
+    }
+
+    fun removeFirstItem(list: List<String>): List<String> {
+        return if (list.size > 1) list.subList(1, list.size) else listOf()
+    }
+
+    fun removeFirstItem(list: Array<String>): Array<String> {
+        return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
+    }
+
+    private fun parseArgGroups(): List<List<String>> {
         val groups = mutableListOf<List<String>>()
-        splitGroup(args, delimiters, groups)
+        if (delimiters.isEmpty()) {
+            groups.add(args)
+        } else {
+            splitGroup(args, groups)
+        }
 
         return groups
     }
 
-    private fun splitGroup(args: List<String>, delimiters: List<String>, groups: MutableList<List<String>>) {
-        val delimiter = findDelimiter(args, delimiters)
+    private fun splitGroup(args: List<String>, groups: MutableList<List<String>>) {
+        val delimiter = findDelimiter(args)
         if (delimiter != -1) {
-            groups.add(args.subList(0, delimiter))
-            splitGroup(args.subList(delimiter, args.size), delimiters, groups)
+            groups.add(removeExcludedWords(args.subList(0, delimiter)))
+            splitGroup(args.subList(delimiter+1, args.size), groups)
         } else {
-            groups.add(args)
+            groups.add(removeExcludedWords(args))
         }
     }
 
-    private fun findDelimiter(args: List<String>, delimiters: List<String>): Int {
+    private fun removeExcludedWords(list: List<String>): List<String> {
+        return list.subtract(excludedWords).toList()
+    }
+
+    private fun findDelimiter(args: List<String>): Int {
         delimiters.forEach {
             val i = args.indexOf(it)
             if (i != -1) {

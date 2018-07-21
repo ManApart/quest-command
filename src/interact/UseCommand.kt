@@ -1,8 +1,7 @@
 package interact
 
+import core.commands.Args
 import core.commands.Command
-import core.commands.CommandParser
-import core.commands.findDelimiter
 import core.gameState.GameState
 import core.gameState.Target
 import system.EventManager
@@ -26,20 +25,17 @@ class UseCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        val argsString = args.joinToString(" ")
+    override fun execute(keyword: String, arguments: List<String>) {
+        val args = Args(arguments, delimiters)
 
         if (args.isEmpty()) {
             println("What do you want to use?")
         } else {
-            val delimiter = findDelimiter(args, delimiters)
-            val sourceArgs = if (delimiter > 0) args.subList(0, delimiter) else args
-            if (targetExists(sourceArgs)) {
-                val source = findTarget(sourceArgs)
-                if (args.size > delimiter + 1 && delimiter != -1) {
-                    val targetArgs = args.subList(delimiter+1, args.size)
-                    if (targetExists(targetArgs)) {
-                        val target = findTarget(targetArgs)
+            if (targetExists(args.argGroups[0])) {
+                val source = findTarget(args.argGroups[0])
+                if (args.argGroups.size > 1) {
+                    if (targetExists(args.argGroups[1])) {
+                        val target = findTarget(args.argGroups[1])
                         EventManager.postEvent(UseEvent(source, target))
                     } else {
                         printDescription(source)
@@ -48,7 +44,7 @@ class UseCommand : Command() {
                     printDescription(source)
                 }
             } else {
-                println("Couldn't find $argsString")
+                println("Couldn't find $args")
             }
         }
     }

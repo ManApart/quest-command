@@ -1,5 +1,6 @@
 package travel
 
+import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.removeExcludedWords
@@ -26,17 +27,17 @@ class TravelCommand : Command() {
         return listOf("Travel")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
-            CommandParser.parseCommand(args.joinToString(" "))
+    override fun execute(keyword: String, arguments: List<String>) {
+        if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(arguments[0].toLowerCase())) {
+            CommandParser.parseCommand(arguments.joinToString(" "))
         } else {
-            val cleanedArgs = removeExcludedWords(args, listOf("to"))
-            val found = Location.findLocation(GameState.player.location, cleanedArgs)
+            val args = Args(arguments, excludedWords = listOf("to"))
+            val found = Location.findLocation(GameState.player.location, args.argGroups[0])
 
-            if (foundMatch(cleanedArgs, found)) {
+            if (foundMatch(args.argGroups[0], found)) {
                 EventManager.postEvent(TravelStartEvent(destination = found))
             } else {
-                println("Could not find ${args.joinToString(" ")}")
+                println("Could not find $args")
             }
         }
     }

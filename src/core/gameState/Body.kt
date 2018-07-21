@@ -4,10 +4,11 @@ import inventory.equipItem.EquippedItemEvent
 import inventory.unEquipItem.UnEquippedItemEvent
 import system.EventManager
 
-class Body(val name: String, private val parts: List<BodyPart> = listOf()) {
+class Body(val name: String, parts: List<String> = listOf()) {
+    private val parts = parts.map { BodyPart(it) }
 
     fun copy(): Body {
-        return Body(name, parts.map { BodyPart(it.name) })
+        return Body(name, parts.map { it.name })
     }
 
     fun hasPart(part: String): Boolean {

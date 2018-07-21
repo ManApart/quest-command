@@ -90,7 +90,7 @@ Location positions are always relative to their parent. The parent is always (0,
 * Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
 * Make starting a journey event based / handle replacing an existing event
 * Jump during a climb path jumps to the bottom
-* Refactor args to an object that gives delimted, string etc
+* Refactor args to an object that gives delimted, string etc, 
 
 
 **Validation tools**

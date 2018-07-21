@@ -1,7 +1,7 @@
 package inventory.equipItem
 
+import core.commands.Args
 import core.commands.Command
-import core.commands.findDelimiter
 
 class EquipItemCommand : Command() {
     private val delimiters = listOf("to", "on")
@@ -22,11 +22,13 @@ class EquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(keyword: String, arguments: List<String>) {
+        val args = Args(arguments, delimiters)
+
         if (args.isEmpty()) {
             println("What do you want to equip?")
         } else {
-            val delimiter = findDelimiter(args, delimiters)
+
         }
     }
 }
