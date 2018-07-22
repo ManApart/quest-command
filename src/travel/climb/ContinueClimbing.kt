@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.stat.Stat
 import core.gameState.consume
+import core.utility.RandomManager
 import core.utility.StringFormatter
 import explore.LookEvent
 import status.StatChangeEvent
@@ -46,8 +47,8 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val skill = GameState.player.creature.soul.getCurrent(Stat.CLIMBING)
         val challenge = journey.getSegment(desiredStep).level
         val chance = skill / challenge.toDouble()
-        return true
-//        return RandomManager.isSuccess(chance)
+//        return true
+        return RandomManager.isSuccess(chance)
     }
 
 

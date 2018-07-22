@@ -13,15 +13,23 @@ class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1,
     fun addEXP(amount: Int, creature: Creature) {
         if (amount > 0) {
             exp += amount
-            if (exp >= getNextLevelEXP()) {
-                level++
+
+            val oldLevel = level
+            determineLevel()
+            if (level > oldLevel) {
                 max = calcMax()
                 EventManager.postEvent(LevelUpEvent(creature, this, level))
             }
         }
     }
 
-    private fun calcMax() : Int {
+    private fun determineLevel() {
+        while (exp >= getNextLevelEXP()) {
+            level++
+        }
+    }
+
+    private fun calcMax(): Int {
         return level * maxMultiplier
     }
 

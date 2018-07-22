@@ -54,10 +54,14 @@ class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return Math.sqrt(x + y + z).toInt()
     }
 
-    private fun getDistanceXY(other: Position): Int {
+    fun getDistanceXY(other: Position): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
         return Math.sqrt(x + y).toInt()
+    }
+
+    fun getDistanceZ(other: Position): Int {
+        return Math.abs(z - other.z)
     }
 
     /**
