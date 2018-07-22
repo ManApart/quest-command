@@ -1,5 +1,6 @@
 package core.gameState
 
+import core.gameState.stat.Stat
 import system.BodyManager
 
 class Player : Target {
@@ -10,9 +11,9 @@ class Player : Target {
     override val properties: Properties get() = creature.properties
 
     init {
-        creature.soul.addStat(Stat.HEALTH, 100)
-        creature.soul.addStat(Stat.STAMINA, 100)
-        creature.soul.addStat(Stat.STRENGTH, 1)
+        creature.soul.addStat(Stat.HEALTH, 1, 100, 1)
+        creature.soul.addStat(Stat.STAMINA, 1, 100, 1)
+        creature.soul.addStat(Stat.STRENGTH, 1, 1, 1)
         creature.soul.addStat(Stat.CLIMBING, 1)
         creature.soul.addStat(Stat.AGILITY, 1)
     }

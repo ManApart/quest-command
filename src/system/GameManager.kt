@@ -19,9 +19,13 @@ object GameManager {
 
     private fun newPlayer() {
         val items = GameState.player.creature.inventory.items
-        items.add(ItemManager.getItem("Brown Pants"))
-        items.add(ItemManager.getItem("Old Shirt"))
-        items.add(ItemManager.getItem("Rusty Dagger"))
+        val body = GameState.player.creature.body
+
+        listOf("Brown Pants", "Old Shirt", "Rusty Dagger").forEach {
+            val item = ItemManager.getItem(it)
+            items.add(item)
+            body.equip(item)
+        }
         items.add(ItemManager.getItem("Dulled Hatchet"))
         items.add(ItemManager.getItem("Apple"))
     }

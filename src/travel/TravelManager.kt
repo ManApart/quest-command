@@ -4,7 +4,7 @@ import core.events.EventListener
 import status.StatChangeEvent
 import core.gameState.GameState
 import core.gameState.Location
-import core.gameState.Stat
+import core.gameState.stat.Stat
 import system.EventManager
 
 object TravelManager {

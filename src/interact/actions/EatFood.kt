@@ -6,7 +6,6 @@ import interact.UseEvent
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Item
-import core.gameState.Stat
 import core.utility.StringFormatter
 import system.EventManager
 

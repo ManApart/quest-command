@@ -1,21 +1,31 @@
 package core.gameState
 
+import core.gameState.stat.Stat
 import status.StatMaxedEvent
 import status.StatMinnedEvent
 import system.EventManager
 
 class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
 
-    fun incStat(creature: Creature, type: String, amount: Int) {
-        if (amount != 0 && getStatOrNull(type) != null) {
-            val stat = getStatOrNull(type)!!
+    fun incStat(creature: Creature, name: String, amount: Int) {
+        if (amount != 0) {
+            if (getStatOrNull(name) == null) {
+                addStat(name)
+            }
+            val stat = getStatOrNull(name)!!
+            incStat(creature, stat, amount)
+        }
+    }
+
+    fun incStat(creature: Creature, stat: Stat, amount: Int) {
+        if (amount != 0) {
             stat.current += amount
             stat.current = Math.max(Math.min(stat.current, stat.max), 0)
 
             if (stat.current == 0) {
-                EventManager.postEvent(StatMinnedEvent(creature, stat.type))
+                EventManager.postEvent(StatMinnedEvent(creature, stat.name))
             } else if (stat.current == stat.max) {
-                EventManager.postEvent(StatMaxedEvent(creature, stat.type))
+                EventManager.postEvent(StatMaxedEvent(creature, stat.name))
             }
         }
     }
@@ -24,24 +34,24 @@ class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
         stats.forEach { addStat(it.key, Integer.parseInt(it.value)) }
     }
 
-    fun addStat(type: String, max: Int) {
-        stats.add(Stat(type, max))
+    fun addStat(name: String, level: Int = 1, maxMultiplier: Int = 1, expExponential: Int = 2) {
+        stats.add(Stat(name, level, maxMultiplier, expExponential))
     }
 
-    fun hasStat(type: String): Boolean {
-        return getStatOrNull(type) != null
+    fun hasStat(name: String): Boolean {
+        return getStatOrNull(name) != null
     }
 
-    fun getCurrent(type: String): Int {
-        return getStatOrNull(type)?.current ?: 0
+    fun getCurrent(name: String): Int {
+        return getStatOrNull(name)?.current ?: 0
     }
 
-    fun getTotal(type: String): Int {
-        return getStatOrNull(type)?.max ?: 0
+    fun getTotal(name: String): Int {
+        return getStatOrNull(name)?.max ?: 0
     }
 
-    private fun getStatOrNull(type: String): Stat? {
-        return stats.firstOrNull { it.type.toLowerCase() == type.toLowerCase() }
+    fun getStatOrNull(name: String): Stat? {
+        return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
 

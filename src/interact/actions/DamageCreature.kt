@@ -5,7 +5,6 @@ import status.StatChangeEvent
 import interact.UseEvent
 import core.gameState.Creature
 import core.gameState.Item
-import core.gameState.Stat
 import system.EventManager
 
 class DamageCreature : EventListener<UseEvent>() {

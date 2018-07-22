@@ -2,7 +2,7 @@ package travel.jump
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.Stat
+import core.gameState.stat.Stat
 import status.StatChangeEvent
 import system.EventManager
 import travel.ArriveEvent

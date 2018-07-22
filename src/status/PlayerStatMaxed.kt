@@ -2,7 +2,7 @@ package status
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.Stat
+import core.gameState.stat.Stat
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override fun shouldExecute(event: StatMaxedEvent): Boolean {

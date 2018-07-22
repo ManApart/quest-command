@@ -2,7 +2,6 @@ package interact.actions
 
 import core.events.EventListener
 import core.gameState.Activator
-import core.gameState.Stat
 import interact.UseEvent
 import status.StatChangeEvent
 import system.EventManager

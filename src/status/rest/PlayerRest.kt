@@ -2,8 +2,7 @@ package status.rest
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.Stat
-import status.rest.RestEvent
+import core.gameState.stat.Stat
 import status.StatChangeEvent
 import system.EventManager
 

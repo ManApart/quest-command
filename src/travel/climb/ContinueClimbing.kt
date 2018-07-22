@@ -1,11 +1,9 @@
 package travel.climb
 
-import core.commands.CommandParser
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.Stat
+import core.gameState.stat.Stat
 import core.gameState.consume
-import core.utility.RandomManager
 import core.utility.StringFormatter
 import explore.LookEvent
 import status.StatChangeEvent

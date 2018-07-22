@@ -2,7 +2,7 @@ package status
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.Stat
+import core.gameState.stat.Stat
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {

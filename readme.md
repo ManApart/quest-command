@@ -89,7 +89,11 @@ Location positions are always relative to their parent. The parent is always (0,
 * Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
 * Make starting a journey event based / handle replacing an existing event
 * Jump during a climb path jumps to the bottom
-
+* Stats
+  * Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
+  * Stats have an XP curve (exponential, linear single point increase)
+  * Derived stats use different formulas to calculate their max
+  * Boosts etc can affect current values and maxes
 
 **Validation tools**
 * Seperate from test suite
