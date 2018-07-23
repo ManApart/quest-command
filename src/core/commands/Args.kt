@@ -13,6 +13,22 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
         return args.isEmpty()
     }
 
+    fun getGroup(i: Int) : List<String> {
+        return if (i < argGroups.size){
+            argGroups[i]
+        } else {
+            listOf()
+        }
+    }
+
+    fun getGroupString(i: Int) : String {
+        return if (i < argStrings.size){
+            argStrings[i]
+        } else {
+            ""
+        }
+    }
+
     private fun parseArgGroups(): List<List<String>> {
         val groups = mutableListOf<List<String>>()
         if (delimiters.isEmpty()) {

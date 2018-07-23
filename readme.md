@@ -83,13 +83,11 @@ Ex:
   * Open field (grass)
   * Apple Tree
 * Apple should be roasted, roasted apple should be burnt
-* Items should be equippable
 * Inventory carrying space
 * Better package organization for actions
 * Packages are still a mess
 * Give json inherit keywords. Spawning grabs all properties etc from inherited
 * you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
-* Add falling to climbing and jump attempts
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 * Look command while climbing
 * Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
