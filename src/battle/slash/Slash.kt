@@ -1,9 +1,6 @@
-package battle
+package battle.slash
 
 import core.events.EventListener
-import core.gameState.Direction
-import core.gameState.GameState
-import core.gameState.Location
 
 class Slash : EventListener<SlashEvent>() {
     override fun execute(event: SlashEvent) {

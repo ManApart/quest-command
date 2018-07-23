@@ -1,5 +1,6 @@
-package battle
+package battle.slash
 
+import battle.HandHelper
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
@@ -23,7 +24,7 @@ class SlashCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Battle")
+        return listOf("Combat")
     }
 
     override fun execute(keyword: String, arguments: List<String>) {
