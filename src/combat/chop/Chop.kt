@@ -1,9 +1,7 @@
 package combat.chop
 
 import core.events.EventListener
-import core.gameState.Activator
-import core.gameState.BodyPart
-import core.gameState.Creature
+import core.gameState.*
 import core.gameState.Target
 import core.gameState.stat.Stat
 import status.statChanged.StatChangeEvent
@@ -25,15 +23,7 @@ class Chop : EventListener<ChopEvent>() {
                 EventManager.postEvent(StatChangeEvent(target, event.sourcePart.equippedName(), Stat.HEALTH, -damageDone))
             }
         } else {
-            println("But nothing happens.")
-        }
-    }
-
-    private fun getCreature(target: Target): Creature? {
-        return when (target) {
-            is Creature -> target
-            is Activator -> target.creature
-            else -> null
+            println("Nothing happens.")
         }
     }
 

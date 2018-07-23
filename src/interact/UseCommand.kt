@@ -38,7 +38,7 @@ class UseCommand : Command() {
                         val target = findTarget(args.argGroups[1])
                         EventManager.postEvent(UseEvent(source, target))
                     } else {
-                        printDescription(source)
+                        println("Couldn't find ${args.argStrings[1]}")
                     }
                 } else {
                     printDescription(source)
