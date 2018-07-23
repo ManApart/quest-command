@@ -54,5 +54,8 @@ class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
         return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
+    fun getStats() : List<Stat> {
+        return stats.toList()
+    }
 
 }

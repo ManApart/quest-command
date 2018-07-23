@@ -9,6 +9,7 @@ class Player : Target {
     override val name: String get() = creature.name
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
+    var canRest = true
 
     init {
         creature.soul.addStat(Stat.HEALTH, 1, 100, 1)

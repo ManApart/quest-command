@@ -20,6 +20,7 @@ class PlayerFall : EventListener<FallEvent>() {
         if (GameState.player.creature.location != event.destination){
             EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
         }
+        GameState.player.canRest = true
     }
 
     private fun takeDamage(event: FallEvent) {

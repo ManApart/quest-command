@@ -94,7 +94,9 @@ Ex:
   * Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
   * Boosts etc can affect current values and maxes
 * Redo location system so it's not so nested?
-
+* First time hints
+* preferences for what messages show
+* eat command
 
 **Validation tools**
 * Seperate from test suite

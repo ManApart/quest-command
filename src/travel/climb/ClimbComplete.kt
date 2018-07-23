@@ -21,5 +21,6 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
         } else {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))
         }
+        GameState.player.canRest = true
     }
 }

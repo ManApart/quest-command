@@ -18,6 +18,7 @@ class StartClimbing : EventListener<StartClimbingEvent>() {
 GameState.journey = ClimbJourney(event.target, GameState.player.creature.location, climb.destination, climb.upwards, path)
             EventManager.postEvent(ClimbJourneyEvent(path.getStart(climb.upwards), event.force))
         }
+        GameState.player.canRest = false
         event.target.consume(event)
     }
 }

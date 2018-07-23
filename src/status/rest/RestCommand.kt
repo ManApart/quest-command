@@ -1,6 +1,7 @@
 package status.rest
 
 import core.commands.Command
+import core.gameState.GameState
 import system.EventManager
 
 class RestCommand : Command() {
@@ -22,15 +23,19 @@ class RestCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        when {
-            args.isEmpty() -> rest(1)
-            args.size == 1 && args[0].toIntOrNull() != null -> rest(args[0].toInt())
-            else -> println("Unknown params for rest: ${args.joinToString(" ")}")
+        if (!GameState.player.canRest) {
+            println("You can't rest right now!")
+        } else {
+            when {
+                args.isEmpty() -> rest(1)
+                args.size == 1 && args[0].toIntOrNull() != null -> rest(args[0].toInt())
+                else -> println("Unknown params for rest: ${args.joinToString(" ")}")
+            }
         }
     }
 
     private fun rest(hours: Int) {
-        EventManager.postEvent(RestEvent(hours))
+        EventManager.postEvent(RestEvent(GameState.player.creature, hours))
     }
 }
 
