@@ -28,4 +28,18 @@ class Tags(tags: List<String> = listOf<String>()) {
         }
         return true
     }
+
+    fun matches(other: Tags): Boolean {
+        tags.forEach {
+            if (!other.has(it)){
+                return false
+            }
+        }
+        other.tags.forEach {
+            if (!has(it)){
+                return false
+            }
+        }
+        return true
+    }
 }

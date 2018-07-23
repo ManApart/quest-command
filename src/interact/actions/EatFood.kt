@@ -20,6 +20,6 @@ class EatFood : EventListener<UseEvent>() {
         println("$target ${event.source}")
         val creature = getCreature(event.target)!!
         EventManager.postEvent(StatChangeEvent(creature, event.source.name, "Health", (event.source as Item).properties.values.getInt("healAmount")))
-        creature.inventory.items.remove(event.source)
+        creature.inventory.remove(event.source)
     }
 }

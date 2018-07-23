@@ -30,10 +30,14 @@ class Item(override val name: String, override val description: String = "", val
     }
 
     fun getDamage(): Int {
-        val chop = properties.values.getInt("chopDamage", 1)
-        val stab = properties.values.getInt("stabDamage", 1)
-        val slash = properties.values.getInt("slashDamage", 1)
+        val chop = properties.values.getInt("chopDamage", 0)
+        val stab = properties.values.getInt("stabDamage", 0)
+        val slash = properties.values.getInt("slashDamage", 0)
         return max(chop, stab, slash)
+    }
+
+    fun isStackable(other: Item) : Boolean {
+        return name == other.name && properties.matches(other.properties)
     }
 
 }

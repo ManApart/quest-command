@@ -6,7 +6,7 @@ import interact.ScopeManager
 class DropItem : EventListener<DropItemEvent>() {
     override fun execute(event: DropItemEvent) {
         println("${event.source} dropped ${event.item}")
-        event.source.inventory.items.remove(event.item)
+        event.source.inventory.remove(event.item)
         ScopeManager.addTarget(event.item)
     }
 }

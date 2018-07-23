@@ -18,16 +18,16 @@ object GameManager {
     }
 
     private fun newPlayer() {
-        val items = GameState.player.creature.inventory.items
+        val inventory = GameState.player.creature.inventory
         val body = GameState.player.creature.body
 
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger").forEach {
             val item = ItemManager.getItem(it)
-            items.add(item)
+            inventory.add(item)
             body.equip(item)
         }
-        items.add(ItemManager.getItem("Dulled Hatchet"))
-        items.add(ItemManager.getItem("Apple"))
+        inventory.add(ItemManager.getItem("Dulled Hatchet"))
+        inventory.add(ItemManager.getItem("Apple"))
     }
 
     class MessageHandler() : EventListener<MessageEvent>() {

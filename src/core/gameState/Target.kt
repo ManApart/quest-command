@@ -10,7 +10,8 @@ interface Target : Named {
 fun targetsToString(targets: List<Target>) : String {
     val targetCounts = HashMap<String, Int>()
     targets.forEach {
-        targetCounts[it.name] = targetCounts[it.name]?.plus(1) ?: 1
+        val count = (it as? Item)?.count ?: 1
+        targetCounts[it.name] = targetCounts[it.name]?.plus(count) ?: count
     }
 
     return targetCounts.entries.joinToString(", ") {

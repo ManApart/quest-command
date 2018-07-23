@@ -1,5 +1,7 @@
 package core.gameState
 
+import core.utility.mapsMatch
+
 class PropertyValues(properties: Map<String, String> = HashMap()) {
     private val properties = parseProperties(properties)
 
@@ -20,5 +22,9 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
 
     fun getString(key: String, default: String = ""): String {
         return properties[key.toLowerCase()] ?: default
+    }
+
+    fun matches(other: PropertyValues): Boolean {
+        return mapsMatch(properties, other.properties)
     }
 }

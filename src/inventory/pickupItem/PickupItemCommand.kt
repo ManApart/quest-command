@@ -28,7 +28,6 @@ class PickupItemCommand : core.commands.Command() {
         } else {
             println("Pickup what?")
         }
-
     }
 
     private fun pickupItem(itemArgs: List<String>) {
