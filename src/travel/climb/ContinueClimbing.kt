@@ -1,12 +1,15 @@
 package travel.climb
 
 import core.events.EventListener
+import core.gameState.Creature
 import core.gameState.GameState
+import core.gameState.climb.ClimbSegment
 import core.gameState.stat.Stat
 import core.gameState.consume
 import core.utility.RandomManager
 import core.utility.StringFormatter
 import explore.LookEvent
+import status.ExpGainedEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 import travel.jump.FallEvent
@@ -19,10 +22,12 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val journey = GameState.journey as ClimbJourney
         val distance = journey.getDistanceTo(event.desiredStep)
         EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", Stat.STAMINA, -distance))
+        val chance = getChance(journey, event.desiredStep)
 
-        if (isSuccessful(journey, event.desiredStep)) {
+        if (RandomManager.isSuccess(chance)) {
             val direction = StringFormatter.format(journey.getDirection(event.desiredStep), "up", "down")
             println("You climb $direction $distance ft.")
+            awardEXP(GameState.player.creature, chance, journey.getSegment(event.desiredStep))
             if (journey.isPathEnd(event.desiredStep)) {
                 EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.getDestination(event.desiredStep)))
             } else {
@@ -42,15 +47,22 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
     }
 
 
-    private fun isSuccessful(journey: ClimbJourney, desiredStep: Int): Boolean {
+    private fun getChance(journey: ClimbJourney, desiredStep: Int): Double {
         //TODO - more detailed skill check
         val skill = GameState.player.creature.soul.getCurrent(Stat.CLIMBING)
         val challenge = journey.getSegment(desiredStep).level
-        val chance = skill / challenge.toDouble()
-//        return true
-        return RandomManager.isSuccess(chance)
+        return skill / challenge.toDouble()
     }
 
-
+    private fun awardEXP(creature: Creature, chance: Double, segment: ClimbSegment){
+        val amount = if (chance >= 1){
+            0
+        } else {
+            segment.level * segment.distance
+        }
+        if (amount > 0){
+            EventManager.postEvent(ExpGainedEvent(creature, Stat.CLIMBING, amount))
+        }
+    }
 
 }

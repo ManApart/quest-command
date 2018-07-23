@@ -10,7 +10,7 @@ class ExpGained : EventListener<ExpGainedEvent>() {
 
     override fun execute(event: ExpGainedEvent) {
         val stat = event.creature.soul.getStatOrNull(event.stat)
-        if (stat != null) {
+        if (stat != null && event.amount > 0) {
             if (stat.expExponential > 1) {
                 println("You gained ${event.amount} exp in ${stat.name}")
             }

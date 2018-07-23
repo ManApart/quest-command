@@ -76,9 +76,6 @@ Ex:
 ## TODO
 * find a way to allow auto complete with tab
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
-* Skill check for climb
-* Better use command debug messages, refactor big if statement
-  * If target not found, give error message, not just explain item
 * Flamable Objects should be able to be set on fire
   * Open field (grass)
   * Apple Tree
