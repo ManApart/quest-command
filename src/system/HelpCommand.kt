@@ -48,7 +48,10 @@ class HelpCommand : Command() {
             }
         }
         var groupList = ""
-        groups.forEach { groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n" }
+        groups.toSortedMap().forEach {
+            it.value.sort()
+            groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
+        }
         println("Help <Group Name> to learn about one of the following topics: $groupList")
     }
 

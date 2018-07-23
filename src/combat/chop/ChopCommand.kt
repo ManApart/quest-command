@@ -1,6 +1,6 @@
-package battle.chop
+package combat.chop
 
-import battle.HandHelper
+import combat.HandHelper
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState

@@ -1,4 +1,4 @@
-package battle.slash
+package combat.slash
 
 import core.events.EventListener
 

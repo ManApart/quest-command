@@ -1,4 +1,4 @@
-package battle.chop
+package combat.chop
 
 import core.events.EventListener
 

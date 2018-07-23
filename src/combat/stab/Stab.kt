@@ -1,4 +1,4 @@
-package battle.stab
+package combat.stab
 
 import core.events.EventListener
 

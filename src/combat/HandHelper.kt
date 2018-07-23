@@ -1,4 +1,4 @@
-package battle
+package combat
 
 import core.gameState.BodyPart
 import core.gameState.GameState

@@ -1,6 +1,6 @@
-package battle.stab
+package combat.stab
 
-import battle.HandHelper
+import combat.HandHelper
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
