@@ -48,9 +48,12 @@ object ScopeManager {
         }
     }
 
-    fun addTarget(target: Target) {
+    fun addTarget(target: Target, proxies: List<String> = listOf()) {
         if (!targets.contains(target)) {
             targets.add(target)
+        }
+        if (proxies.isNotEmpty()){
+            targets.addProxy(target, proxies)
         }
     }
 
@@ -68,7 +71,7 @@ object ScopeManager {
 
     private fun resetTargets() {
         targets.clear()
-        addTarget(GameState.player)
+        addTarget(GameState.player, listOf("me", "self"))
     }
 
     fun targetExists(name: String): Boolean {

@@ -1,13 +1,30 @@
 package core.utility
 
 class NameSearchableList<N : Named>() : ArrayList<N>() {
+    private val proxies = HashMap<String, N>()
 
-    constructor(items: N) : this() {
-        add(items)
+    constructor(item: N) : this() {
+        add(item)
     }
 
     constructor(items: List<N>) : this() {
         addAll(items)
+    }
+
+    override fun clear() {
+        proxies.clear()
+        super.clear()
+    }
+
+    fun addProxy(item: N, names: List<String>){
+        names.forEach { addProxy(item, it) }
+    }
+
+    fun addProxy(item: N, name: String){
+        if (!contains(item)){
+            add(item)
+        }
+        proxies[name] = item
     }
 
     fun exists(name: String): Boolean {
@@ -37,6 +54,9 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     private fun getOrNull(name: String): N? {
+        if (proxies.containsKey(name)){
+            return proxies[name]
+        }
         return firstOrNull { it.name.toLowerCase().contains(name.toLowerCase()) }
     }
 

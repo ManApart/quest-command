@@ -22,3 +22,15 @@ fun targetsToString(targets: List<Target>) : String {
     }
 }
 
+fun hasCreature(target: Target) : Boolean {
+    return getCreature(target) != null
+}
+
+fun getCreature(target: Target) : Creature? {
+    return when (target){
+        is Creature -> target
+        is Activator -> target.creature
+        is Player -> target.creature
+        else -> null
+    }
+}

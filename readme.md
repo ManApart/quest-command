@@ -90,7 +90,7 @@ Ex:
 * you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 * Look command while climbing
-* Convert climbing paths to generic paths with directions dictating next path isntead of up/down only
+* Convert climbing paths to generic paths with directions dictating next path instead of up/down only
 * Make starting a journey event based / handle replacing an existing event
 * Jump during a climb path jumps to the bottom
 * Stats
