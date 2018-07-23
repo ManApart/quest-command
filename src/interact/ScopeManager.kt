@@ -5,6 +5,7 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Target
 import core.utility.NameSearchableList
+import core.utility.StringFormatter
 import inventory.pickupItem.PickupItemEvent
 import system.*
 
@@ -26,7 +27,8 @@ object ScopeManager {
     class ItemSpawner : EventListener<ItemSpawnedEvent>() {
         override fun execute(event: ItemSpawnedEvent) {
             if (event.target == null) {
-                println("${event.item.name} appeared.")
+                val name = StringFormatter.format(event.item.count > 1, "${event.item.count}x ${event.item.name}s", event.item.name)
+                println("$name appeared.")
                 addTarget(event.item)
             } else {
                 EventManager.postEvent(PickupItemEvent(event.target, event.item))

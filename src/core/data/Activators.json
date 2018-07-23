@@ -54,6 +54,37 @@
     ]
   },
   {
+    "name": "Wheat Field",
+    "description": "The golden shafts of wheat whisper as they brush against each other.",
+    "properties": {
+      "tags": [
+        "Flammable"
+      ]
+    },
+    "triggers": [
+      {
+        "condition": {
+          "callingEvent": "SlashEvent"
+        },
+        "events": [
+          {
+            "className": "MessageEvent",
+            "params": [
+              "The wheat falls with little more than a whisper"
+            ]
+          },
+          {
+            "className": "SpawnItemEvent",
+            "params": [
+              "Wheat Bundle",
+              "3"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "Logs",
     "description": "A pile of logs.",
     "properties": {

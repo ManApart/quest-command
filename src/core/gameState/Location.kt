@@ -36,7 +36,7 @@ class Location(override val name: String, private val description: String = "", 
 
     private fun findLocation(direction: Direction, locations: List<Location>): List<Location> {
         return locations.filter{
-            it != this && position.getDirection(it.position) == direction
+            it != this && !it.restricted && position.getDirection(it.position) == direction
         }
     }
 
@@ -86,7 +86,7 @@ class Location(override val name: String, private val description: String = "", 
     }
 
     private fun locationMatches(args: List<String>): Boolean {
-        return name.toLowerCase().split(" ").contains(args[0])
+        return !restricted && name.toLowerCase().split(" ").contains(args[0])
     }
 
     fun getTotalPosition() : Position {

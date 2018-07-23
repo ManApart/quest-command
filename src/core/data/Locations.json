@@ -32,6 +32,9 @@
       "position": {
         "x": 10
       },
+      "activators": [
+        "Wheat Field"
+      ],
       "locations": [
         {
           "name": "Apple Tree",

@@ -3,11 +3,10 @@ package combat
 import combat.chop.ChopEvent
 import combat.slash.SlashEvent
 import combat.stab.StabEvent
+import core.events.Event
 import core.events.EventListener
-import core.gameState.BodyPart
-import core.gameState.Creature
+import core.gameState.*
 import core.gameState.Target
-import core.gameState.getCreature
 import core.gameState.stat.Stat
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -21,24 +20,23 @@ object AttackManager {
 
     class Chop : EventListener<ChopEvent>() {
         override fun execute(event: ChopEvent) {
-            AttackManager.execute(AttackType.CHOP, event.source, event.sourcePart, event.target)
+            AttackManager.execute(AttackType.CHOP, event.source, event.sourcePart, event.target, event)
         }
     }
 
     class Stab : EventListener<StabEvent>() {
         override fun execute(event: StabEvent) {
-            AttackManager.execute(AttackType.STAB, event.source, event.sourcePart, event.target)
+            AttackManager.execute(AttackType.STAB, event.source, event.sourcePart, event.target, event)
         }
     }
 
     class Slash : EventListener<SlashEvent>() {
         override fun execute(event: SlashEvent) {
-            AttackManager.execute(AttackType.SLASH, event.source, event.sourcePart, event.target)
+            AttackManager.execute(AttackType.SLASH, event.source, event.sourcePart, event.target, event)
         }
     }
 
-
-    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target) {
+    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, event: Event) {
         println("You ${type.name.toLowerCase()} at ${target.name} with your ${sourcePart.equippedName()}.")
 
         val creature = getCreature(target)
@@ -47,12 +45,13 @@ object AttackManager {
         if (creature != null && damageDone > 0) {
             if (hasSpecificHealth(creature, type)) {
                 EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), type.health, -damageDone))
-            } else {
+            } else if (creature.soul.hasStat(Stat.HEALTH)) {
                 EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), Stat.HEALTH, -damageDone))
             }
         } else {
             println("Nothing happens.")
         }
+        target.consume(event)
     }
 
     private fun getDamageDone(source: BodyPart, type: AttackType): Int {

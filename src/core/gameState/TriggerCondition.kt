@@ -5,7 +5,7 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
-class TriggerCondition(private val callingEvent: String, private val eventParams: Map<String, String>) {
+class TriggerCondition(private val callingEvent: String, private val eventParams: Map<String, String> = mapOf()) {
 
     fun matches(event: Event): Boolean {
         return classMatches(event) && eventValuesMatch(event)

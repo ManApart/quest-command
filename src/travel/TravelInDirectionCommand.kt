@@ -47,6 +47,7 @@ class TravelInDirectionCommand : Command() {
         return loc.findChildLocation(direction).firstOrNull{ it != loc}
         ?: loc.findSiblings(direction).firstOrNull{ it != loc}
         ?: loc.getParent().findSiblings(direction).firstOrNull{ it != loc}
+        ?: loc.getParent()
     }
 
 }
