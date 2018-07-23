@@ -10,10 +10,14 @@ object StringFormatter {
     }
 
     fun getSubject(target: Target) : String {
-        return format(target == GameState.player, "You", target.name)
+        return format(isPlayer(target), "You", target.name)
     }
 
     fun getSubjectPossessive(target: Target) : String {
-        return format(target == GameState.player, "Your", target.name + "'s")
+        return format(isPlayer(target), "Your", target.name + "'s")
+    }
+
+    private fun isPlayer(target: Target) : Boolean {
+        return target == GameState.player || target == GameState.player.creature
     }
 }

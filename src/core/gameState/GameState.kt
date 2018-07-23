@@ -14,4 +14,9 @@ object GameState {
         return jacksonObjectMapper().readValue(json)
     }
 
+    fun finishJourney(){
+        journey = null
+        player.canRest = true
+    }
+
 }

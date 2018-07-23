@@ -16,11 +16,10 @@ class PlayerFall : EventListener<FallEvent>() {
         if (event.reason != null) println(event.reason)
         println("You fall ${event.fallHeight}ft.")
         takeDamage(event)
-        GameState.journey = null
         if (GameState.player.creature.location != event.destination){
             EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
         }
-        GameState.player.canRest = true
+        GameState.finishJourney()
     }
 
     private fun takeDamage(event: FallEvent) {

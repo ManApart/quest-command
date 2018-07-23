@@ -5,6 +5,7 @@ import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Position
 import system.EventManager
+import travel.climb.ClimbJourney
 
 class JumpCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -27,17 +28,23 @@ class JumpCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val loc = GameState.player.creature.location
-        val found = loc.findChildLocation(Direction.BELOW).firstOrNull { it != loc }
-                ?: if (loc.position.isDirection(Direction.ABOVE, Position())) {
-                    loc.getParent()
-                } else {
-                    null
-                }
-                ?: loc.findSiblings(Direction.BELOW).firstOrNull { it != loc }
-        if (found != null) {
-            EventManager.postEvent(JumpEvent(source = GameState.player.creature.location, destination = found))
+        if (GameState.journey is ClimbJourney) {
+            val location = GameState.player.creature.location
+            val distance = (GameState.journey as ClimbJourney).getCurrentDistance()
+            EventManager.postEvent(JumpEvent(source = location, destination = location, fallDistance = distance))
         } else {
-            println("Couldn't find anything below to jump down to.")
+            val found = loc.findChildLocation(Direction.BELOW).firstOrNull { it != loc }
+                    ?: if (loc.position.isDirection(Direction.ABOVE, Position())) {
+                        loc.getParent()
+                    } else {
+                        null
+                    }
+                    ?: loc.findSiblings(Direction.BELOW).firstOrNull { it != loc }
+            if (found != null) {
+                EventManager.postEvent(JumpEvent(source = GameState.player.creature.location, destination = found))
+            } else {
+                println("Couldn't find anything below to jump down to.")
+            }
         }
     }
 

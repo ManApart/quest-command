@@ -88,7 +88,6 @@ Ex:
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 * Convert climbing paths to generic paths with directions dictating next path instead of up/down only
 * Make starting a journey event based / handle replacing an existing event
-* Jump during a climb path jumps to the bottom
 * Stats
   * Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
   * Boosts etc can affect current values and maxes
