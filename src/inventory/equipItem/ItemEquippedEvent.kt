@@ -5,4 +5,4 @@ import core.gameState.Creature
 import core.gameState.Item
 import core.gameState.Slot
 
-class EquippedItemEvent(val creature: Creature, val item: Item, val slot: Slot) : Event
+class ItemEquippedEvent(val creature: Creature, val item: Item, val slot: Slot) : Event

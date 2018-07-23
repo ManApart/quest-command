@@ -5,15 +5,12 @@ import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Location
 
-object MapManager {
-
-    class MapHandler : EventListener<MapEvent>() {
-        override fun execute(event: MapEvent) {
-            if (GameState.player.creature.location == event.target) {
-                println("You are in ${event.target.name}, which is a part of ${event.target.getParent().name}.")
-            }
-            println("${event.target.name} ${getChildren(event.target)} and ${getSiblings(event.target)}.")
+class ReadMap : EventListener<ReadMapEvent>() {
+    override fun execute(event: ReadMapEvent) {
+        if (GameState.player.creature.location == event.target) {
+            println("You are in ${event.target.name}, which is a part of ${event.target.getParent().name}.")
         }
+        println("${event.target.name} ${getChildren(event.target)} and ${getSiblings(event.target)}.")
     }
 
     private fun getChildren(target: Location): String {
@@ -45,4 +42,5 @@ object MapManager {
             "${sibling.name} ($farString$direction)"
         }
     }
+
 }

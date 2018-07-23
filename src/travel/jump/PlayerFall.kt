@@ -3,11 +3,11 @@ package travel.jump
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.stat.Stat
-import status.StatChangeEvent
+import status.statChanged.StatChangeEvent
 import system.EventManager
 import travel.ArriveEvent
 
-class FallListener : EventListener<FallEvent>() {
+class PlayerFall : EventListener<FallEvent>() {
     override fun shouldExecute(event: FallEvent): Boolean {
         return event.creature == GameState.player.creature
     }

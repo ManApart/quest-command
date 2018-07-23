@@ -1,4 +1,4 @@
-package status
+package status.statChanged
 
 import core.events.Event
 import core.gameState.Creature

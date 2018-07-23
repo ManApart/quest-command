@@ -1,8 +1,8 @@
 package core.gameState
 
 import core.gameState.stat.Stat
-import status.StatMaxedEvent
-import status.StatMinnedEvent
+import status.statChanged.StatMaxedEvent
+import status.statChanged.StatMinnedEvent
 import system.EventManager
 
 class Soul(private val stats: MutableList<Stat> = mutableListOf()) {

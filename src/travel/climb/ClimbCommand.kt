@@ -53,7 +53,7 @@ class ClimbCommand : Command() {
                 }
             } else {
                 if (ScopeManager.targetExists(argsString)) {
-                    EventManager.postEvent(ClimbStartEvent(GameState.player.creature, ScopeManager.getTarget(argsString), force))
+                    EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getTarget(argsString), force))
                 } else {
                     println("Unable to climb: ${args.joinToString(" ")}")
                 }

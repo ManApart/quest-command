@@ -1,8 +1,7 @@
-package status
+package status.statChanged
 
 import core.events.EventListener
 import core.utility.StringFormatter
-import status.StatChangeEvent
 
 class StatChanged : EventListener<StatChangeEvent>() {
 

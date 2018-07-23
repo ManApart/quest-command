@@ -5,7 +5,7 @@ import core.gameState.GameState
 import core.gameState.Location
 import system.EventManager
 
-class MapCommand : Command() {
+class ReadMapCommand : Command() {
     override fun getAliases(): Array<String> {
         return arrayOf("Map", "m")
     }
@@ -31,13 +31,13 @@ class MapCommand : Command() {
 
 
     private fun currentLocation(){
-        EventManager.postEvent(MapEvent(GameState.player.creature.location))
+        EventManager.postEvent(ReadMapEvent(GameState.player.creature.location))
     }
 
     private fun targetLocation(args: List<String>){
         val target = Location.findLocation(GameState.player.creature.location, args)
         if (target != GameState.world){
-            EventManager.postEvent(MapEvent(target))
+            EventManager.postEvent(ReadMapEvent(target))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }

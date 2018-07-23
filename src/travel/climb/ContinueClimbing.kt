@@ -7,7 +7,7 @@ import core.gameState.consume
 import core.utility.RandomManager
 import core.utility.StringFormatter
 import explore.LookEvent
-import status.StatChangeEvent
+import status.statChanged.StatChangeEvent
 import system.EventManager
 import travel.jump.FallEvent
 

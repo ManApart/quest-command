@@ -3,7 +3,7 @@ package interact.actions
 import core.events.EventListener
 import core.gameState.Activator
 import core.gameState.consume
-import status.StatMinnedEvent
+import status.statChanged.StatMinnedEvent
 
 class ActivatorStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {

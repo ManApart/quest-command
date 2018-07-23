@@ -28,10 +28,12 @@ Any time an activator adds a new triggered event, it needs to be added to the tr
 
 Location positions are always relative to their parent. The parent is always (0,0,0). If a location is compared with a location outside the parent, the parent locations are compared.
 
-An event, command and listener should share a package. Event should end in Event, command in Command, and listener without a suffix, with the same main name. Ex: 
+An event, command and listener should share a package. Event should end in Event, command in Command, and listener without a suffix, with the same main name. If a listener is player only etc, prefix it with player 
+Ex: 
 * LookCommand
 * LookEvent
 * Look
+* PlayerLook
 
 ## Planning and Ideas
 
@@ -96,6 +98,8 @@ An event, command and listener should share a package. Event should end in Event
 * Stats
   * Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
   * Boosts etc can affect current values and maxes
+* Redo location system so it's not so nested?
+
 
 **Validation tools**
 * Seperate from test suite

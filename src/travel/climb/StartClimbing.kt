@@ -6,12 +6,12 @@ import core.gameState.GameState
 import core.gameState.consume
 import system.EventManager
 
-class StartClimbing : EventListener<ClimbStartEvent>() {
-    override fun shouldExecute(event: ClimbStartEvent): Boolean {
+class StartClimbing : EventListener<StartClimbingEvent>() {
+    override fun shouldExecute(event: StartClimbingEvent): Boolean {
         return event.creature == GameState.player.creature && event.target is Activator && event.target.climb != null
     }
 
-    override fun execute(event: ClimbStartEvent) {
+    override fun execute(event: StartClimbingEvent) {
         val climb = (event.target as Activator).climb
         if (climb != null) {
             val path = ClimbPathManager.getPath(climb.name)

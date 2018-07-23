@@ -3,7 +3,7 @@ package status.rest
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.stat.Stat
-import status.StatChangeEvent
+import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class PlayerRest : EventListener<RestEvent>() {

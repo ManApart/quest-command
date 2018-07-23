@@ -1,4 +1,4 @@
-package status
+package status.statChanged
 
 import core.events.EventListener
 import core.gameState.GameState

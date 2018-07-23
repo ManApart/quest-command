@@ -3,7 +3,7 @@ package interact.actions
 import core.events.EventListener
 import core.gameState.Activator
 import interact.UseEvent
-import status.StatChangeEvent
+import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class ChopWood : EventListener<UseEvent>() {

@@ -10,6 +10,6 @@ class EquipItem : EventListener<EquipItemEvent>() {
         } else {
             event.creature.body.equip(event.item)
         }
-        EventManager.postEvent(EquippedItemEvent(event.creature, event.item, event.item.getEquippedSlot(event.creature.body)))
+        EventManager.postEvent(ItemEquippedEvent(event.creature, event.item, event.item.getEquippedSlot(event.creature.body)))
     }
 }

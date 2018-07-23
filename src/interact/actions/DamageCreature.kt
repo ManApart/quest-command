@@ -1,7 +1,7 @@
 package interact.actions
 
 import core.events.EventListener
-import status.StatChangeEvent
+import status.statChanged.StatChangeEvent
 import interact.UseEvent
 import core.gameState.Creature
 import core.gameState.Item
