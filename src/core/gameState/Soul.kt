@@ -5,7 +5,8 @@ import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
 
-class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
+class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutableListOf()) {
+    var effects = mutableListOf<Effect>()
 
     fun incStat(creature: Creature, name: String, amount: Int) {
         if (amount != 0) {
@@ -20,11 +21,11 @@ class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
     fun incStat(creature: Creature, stat: Stat, amount: Int) {
         if (amount != 0) {
             stat.current += amount
-            stat.current = Math.max(Math.min(stat.current, stat.max), 0)
+            stat.current = Math.max(Math.min(stat.current, stat.baseMax), 0)
 
             if (stat.current == 0) {
                 EventManager.postEvent(StatMinnedEvent(creature, stat.name))
-            } else if (stat.current == stat.max) {
+            } else if (stat.current == stat.baseMax) {
                 EventManager.postEvent(StatMaxedEvent(creature, stat.name))
             }
         }
@@ -47,7 +48,7 @@ class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
     }
 
     fun getTotal(name: String): Int {
-        return getStatOrNull(name)?.max ?: 0
+        return getStatOrNull(name)?.boostedMax ?: 0
     }
 
     fun getStatOrNull(name: String): Stat? {
@@ -56,6 +57,12 @@ class Soul(private val stats: MutableList<Stat> = mutableListOf()) {
 
     fun getStats() : List<Stat> {
         return stats.toList()
+    }
+
+    fun applyEffects(){
+        effects.forEach {
+            it.applyEffect(this)
+        }
     }
 
 }

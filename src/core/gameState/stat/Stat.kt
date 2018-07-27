@@ -6,8 +6,9 @@ import system.EventManager
 
 class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
     var level = level; private set
-    var max: Int = calcMax()
-    var current: Int = max
+    var baseMax: Int = calcMax()
+    var boostedMax = baseMax
+    var current: Int = boostedMax
     var exp: Double = getEXPAt(level); private set
 
     fun addEXP(amount: Int, creature: Creature) {
@@ -17,7 +18,7 @@ class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1,
             val oldLevel = level
             determineLevel()
             if (level > oldLevel) {
-                max = calcMax()
+                baseMax = calcMax()
                 EventManager.postEvent(LevelUpEvent(creature, this, level))
             }
         }

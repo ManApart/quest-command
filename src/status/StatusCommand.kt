@@ -29,7 +29,7 @@ class StatusCommand : Command() {
     private fun getPlayerStatus() {
         val soul = GameState.player.creature.soul
         println("You have ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} Stamina.")
-        val statString = soul.getStats().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") { "${it.name.capitalize()}: ${it.current}/${it.max}" }
+        val statString = soul.getStats().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") { "${it.name.capitalize()}: ${it.current}/${it.boostedMax}" }
         println("Your stats are:\n\t$statString")
     }
 }

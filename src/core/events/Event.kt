@@ -1,3 +1,7 @@
 package core.events
 
-interface Event
+interface Event {
+    fun usesGameTick() : Boolean {
+        return true
+    }
+}
