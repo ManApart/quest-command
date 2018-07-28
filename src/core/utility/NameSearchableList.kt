@@ -61,7 +61,17 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         if (proxies.containsKey(name)){
             return proxies[name]
         }
-        return firstOrNull { it.name.toLowerCase().contains(name.toLowerCase()) }
+        val matches = getAll(name)
+        return when {
+            matches.isEmpty() -> null
+            matches.size == 1 -> matches[0]
+            else -> bestMatch(matches, name)
+        }
+    }
+
+    private fun bestMatch(matches: List<N>, name: String): N {
+        return firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
+                ?: matches[0]
     }
 
 }
