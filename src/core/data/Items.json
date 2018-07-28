@@ -81,33 +81,13 @@
         "Food"
       ]
     },
-    "triggers": [
+    "behaviors": [
       {
-        "condition": {
-          "callingEvent": "StatMinnedEvent",
-          "eventParams": {
-            "stat": "burnHealth"
-          }
-        },
-        "events": [
-          {
-            "className": "MessageEvent",
-            "params": [
-              "The apple gives off a hardy smell as it roasts."
-            ]
-          },
-          {
-            "className": "RemoveScopeEvent"
-          },
-          {
-            "className": "SpawnItemEvent",
-            "params": [
-              "Baked Apple",
-              "1",
-              "Player"
-            ]
-          }
-        ]
+        "name": "Bake Food",
+        "params": {
+          "itemName": "Apple",
+          "resultItemName": "Baked Apple"
+        }
       }
     ]
   },

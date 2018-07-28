@@ -109,6 +109,7 @@ behaviors are list of triggered conditions + list of params
 * Check for duplicate names (across items and activators)
 * Check for duplicate command aliases
 * Check all targets reference valid events etc (triggers and trigger events)
+* Check all behavior receipies have params that match their assigned behaviors
 
 
 

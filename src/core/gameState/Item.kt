@@ -1,11 +1,15 @@
 package core.gameState
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
+import core.gameState.behavior.BehaviorRecipe
 import core.utility.max
+import system.BehaviorManager
 
-class Item(override val name: String, override val description: String = "", val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), private val triggers: List<Trigger> = listOf(), override val properties: Properties = Properties()) : Target {
+class Item(override val name: String, override val description: String = "", val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), @JsonProperty("behaviors") private val behaviorRecipes: List<BehaviorRecipe> = listOf(), override val properties: Properties = Properties()) : Target {
     val equipSlots = equipSlots.map { Slot(it) }
     val soul = Soul(this)
+    val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
         soul.addStats(properties.stats)
@@ -16,11 +20,11 @@ class Item(override val name: String, override val description: String = "", val
     }
 
     fun copy(): Item {
-        return Item(name, description, weight, 1, equipSlots.map { it.bodyParts.map { it } }, triggers, properties)
+        return Item(name, description, weight, 1, equipSlots.map { it.bodyParts.map { it } }, behaviorRecipes, properties)
     }
 
     fun evaluateAndExecute(event: Event) {
-        triggers.forEach { it.evaluateAndExecute(this, event) }
+        behaviors.forEach { it.evaluateAndExecute(this, event) }
     }
 
     fun canEquipTo(body: Body): Boolean {

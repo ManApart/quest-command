@@ -1,5 +1,9 @@
-package core.gameState
+package core.gameState.behavior
 
+import core.gameState.Creature
+import core.gameState.GameState
+import core.gameState.Item
+import core.gameState.Target
 import interact.ScopeManager
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
@@ -7,6 +11,24 @@ import system.*
 import travel.ArriveEvent
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {
+
+    fun applyParamValues(paramValues: Map<String, String>) : TriggeredEvent {
+        val modifiedParams = mutableListOf<String>()
+
+        params.forEach {
+            modifiedParams.add(replaceParams(it, paramValues))
+        }
+
+        return TriggeredEvent(className, modifiedParams)
+    }
+
+    private fun replaceParams(line: String, paramValues: Map<String, String>): String {
+        var modified = line
+        paramValues.forEach {
+            modified = modified.replace("$${it.key}", it.value)
+        }
+        return modified
+    }
 
     fun execute(parent: Target) {
         when (className) {
@@ -34,7 +56,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         }
     }
 
-    private fun getCreatureOrPlayer(paramNumber: Int) : Creature{
+    private fun getCreatureOrPlayer(paramNumber: Int) : Creature {
         val param = getParam(paramNumber, "none").split(" ")
         return if (ScopeManager.creatureExists(param)){
             ScopeManager.getCreature(param)

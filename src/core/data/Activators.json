@@ -17,65 +17,19 @@
       "destination": "an open field apple tree tree branches",
       "upwards": true
     },
-    "triggers": [
+    "behaviors": [
       {
-        "condition": {
-          "callingEvent": "StatMinnedEvent",
-          "eventParams": {
-            "stat": "chopHealth"
-          }
-        },
-        "events": [
-          {
-            "className": "MessageEvent",
-            "params": [
-              "The apple tree cracks and falls to the ground."
-            ]
-          },
-          {
-            "className": "RemoveScopeEvent",
-            "params": [
-              "Apple Tree"
-            ]
-          },
-          {
-            "className": "SpawnActivatorEvent",
-            "params": [
-              "Logs"
-            ]
-          },
-          {
-            "className": "SpawnItemEvent",
-            "params": [
-              "Apple"
-            ]
-          }
-        ]
+        "name": "Chop Tree",
+        "params": {
+          "treeName": "Apple",
+          "resultItemName": "Apple"
+        }
       },
       {
-        "condition": {
-          "callingEvent": "StatMinnedEvent",
-          "eventParams": {
-            "stat": "burnHealth"
-          }
-        },
-        "events": [
-          {
-            "className": "MessageEvent",
-            "params": [
-              "The apple tree smolders until it is nothing more than ash."
-            ]
-          },
-          {
-            "className": "RemoveScopeEvent"
-          },
-          {
-            "className": "SpawnItemEvent",
-            "params": [
-              "Ash"
-            ]
-          }
-        ]
+        "name": "Burn Activator",
+        "params": {
+          "name": "Apple Tree"
+        }
       }
     ]
   },
@@ -87,26 +41,14 @@
         "Flammable"
       ]
     },
-    "triggers": [
+    "behaviors": [
       {
-        "condition": {
-          "callingEvent": "SlashEvent"
-        },
-        "events": [
-          {
-            "className": "MessageEvent",
-            "params": [
-              "The wheat falls with little more than a whisper"
-            ]
-          },
-          {
-            "className": "SpawnItemEvent",
-            "params": [
-              "Wheat Bundle",
-              "3"
-            ]
-          }
-        ]
+        "name": "Slash Harvest",
+        "params": {
+          "itemName": "Wheat Bundle",
+          "message": "The wheat falls with little more than a whisper",
+          "count": 3
+        }
       }
     ]
   },
