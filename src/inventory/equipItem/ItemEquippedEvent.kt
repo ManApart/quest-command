@@ -5,4 +5,8 @@ import core.gameState.Creature
 import core.gameState.Item
 import core.gameState.Slot
 
-class ItemEquippedEvent(val creature: Creature, val item: Item, val slot: Slot) : Event
+class ItemEquippedEvent(val creature: Creature, val item: Item, val slot: Slot) : Event {
+    override fun gameTicks(): Int {
+        return 1
+    }
+}

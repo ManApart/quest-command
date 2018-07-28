@@ -8,25 +8,46 @@ import system.EventManager
 class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutableListOf()) {
     var effects = mutableListOf<Effect>()
 
-    fun incStat(creature: Creature, name: String, amount: Int) {
+    fun incStat(name: String, amount: Int) {
         if (amount != 0) {
             if (getStatOrNull(name) == null) {
                 addStat(name)
             }
             val stat = getStatOrNull(name)!!
-            incStat(creature, stat, amount)
+            incStat(stat, amount)
         }
     }
 
-    fun incStat(creature: Creature, stat: Stat, amount: Int) {
+    fun incStatMax(name: String, amount: Int) {
+        if (amount != 0) {
+            if (getStatOrNull(name) == null) {
+                addStat(name)
+            }
+            val stat = getStatOrNull(name)!!
+            incStatMax(stat, amount)
+        }
+    }
+
+    fun incStat(stat: Stat, amount: Int) {
         if (amount != 0) {
             stat.current += amount
             stat.current = Math.max(Math.min(stat.current, stat.baseMax), 0)
 
             if (stat.current == 0) {
                 EventManager.postEvent(StatMinnedEvent(creature, stat.name))
-            } else if (stat.current == stat.baseMax) {
+            } else if (stat.current == stat.boostedMax) {
                 EventManager.postEvent(StatMaxedEvent(creature, stat.name))
+            }
+        }
+    }
+
+    fun incStatMax(stat: Stat, amount: Int) {
+        if (amount != 0) {
+            stat.boostedMax += amount
+            stat.current = Math.max(Math.min(stat.current, stat.boostedMax), 0)
+
+            if (stat.current == 0) {
+                EventManager.postEvent(StatMinnedEvent(creature, stat.name))
             }
         }
     }
@@ -59,9 +80,9 @@ class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutabl
         return stats.toList()
     }
 
-    fun applyEffects(){
-        effects.forEach {
-            it.applyEffect(this)
+    fun applyEffects(time: Int) {
+        effects.toList().forEach {
+            it.applyEffect(this, time)
         }
     }
 

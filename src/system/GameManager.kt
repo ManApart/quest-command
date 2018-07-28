@@ -26,8 +26,10 @@ object GameManager {
             inventory.add(item)
             body.equip(item)
         }
-        inventory.add(ItemManager.getItem("Dulled Hatchet"))
-        inventory.add(ItemManager.getItem("Apple"))
+        listOf("Tinder Box", "Dulled Hatchet", "Apple").forEach {
+            val item = ItemManager.getItem(it)
+            inventory.add(item)
+        }
     }
 
     class MessageHandler() : EventListener<MessageEvent>() {

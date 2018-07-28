@@ -7,15 +7,14 @@ import core.gameState.GameState
 import interact.ScopeManager
 import system.gameTick.GameTickEvent
 
-class ApplyEffect: EventListener<GameTickEvent>() {
+class ApplyEffects: EventListener<GameTickEvent>() {
     override fun execute(event: GameTickEvent) {
-        //TODO - apply effects to ALL souls
-        GameState.player.creature.soul.applyEffects()
+        GameState.player.creature.soul.applyEffects(event.time)
         ScopeManager.getTargets().forEach {
             if (it is Activator) {
-                it.creature.soul.applyEffects()
+                it.creature.soul.applyEffects(event.time)
             }else if (it is Creature){
-                it.soul.applyEffects()
+                it.soul.applyEffects(event.time)
             }
         }
     }

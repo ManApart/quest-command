@@ -2,6 +2,8 @@ package interact
 
 import travel.ArriveEvent
 import core.events.EventListener
+import core.gameState.Activator
+import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Target
 import core.utility.NameSearchableList
@@ -84,12 +86,28 @@ object ScopeManager {
         return targets.exists(name)
     }
 
+    fun creatureExists(name: List<String>): Boolean {
+        return targets.exists(name) && getTarget(name) is Creature
+    }
+
+    fun activatorExists(name: List<String>): Boolean {
+        return targets.exists(name) && getTarget(name) is Activator
+    }
+
     fun getTarget(name: String): Target {
         return targets.get(name)
     }
 
     fun getTarget(name: List<String>): Target {
         return targets.get(name)
+    }
+
+    fun getCreature(name: List<String>): Creature {
+        return targets.get(name) as Creature
+    }
+
+    fun getActivator(name: List<String>): Activator {
+        return targets.get(name) as Activator
     }
 
 }

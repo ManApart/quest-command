@@ -2,7 +2,8 @@ package status
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.stat.Stat
+import interact.ScopeManager
+import system.EventManager
 
 class StatusCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -23,13 +24,12 @@ class StatusCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        getPlayerStatus()
+        when {
+            args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player.creature))
+            ScopeManager.activatorExists(args) -> EventManager.postEvent(StatusEvent(ScopeManager.getActivator(args).creature))
+            else -> println("Couldn't find ${args.joinToString(" ")}.")
+        }
     }
 
-    private fun getPlayerStatus() {
-        val soul = GameState.player.creature.soul
-        println("You have ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} Stamina.")
-        val statString = soul.getStats().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") { "${it.name.capitalize()}: ${it.current}/${it.boostedMax}" }
-        println("Your stats are:\n\t$statString")
-    }
+
 }

@@ -5,4 +5,8 @@ import core.gameState.BodyPart
 import core.gameState.Creature
 import core.gameState.Target
 
-class ChopEvent(val source: Creature, val sourcePart: BodyPart, val target: Target) : Event
+class ChopEvent(val source: Creature, val sourcePart: BodyPart, val target: Target) : Event {
+    override fun gameTicks(): Int {
+        return 1
+    }
+}

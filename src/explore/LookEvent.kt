@@ -1,10 +1,6 @@
 package explore
 
 import core.events.Event
+import core.gameState.Target
 
-class LookEvent : Event {
-
-    override fun usesGameTick(): Boolean {
-        return false
-    }
-}
+class LookEvent(val target: Target? = null) : Event

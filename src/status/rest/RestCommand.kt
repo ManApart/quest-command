@@ -6,7 +6,7 @@ import system.EventManager
 
 class RestCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Rest", "Sleep", "Camp")
+        return arrayOf("Rest", "Sleep", "Camp", "Wait")
     }
 
     override fun getDescription(): String {

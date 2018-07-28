@@ -6,7 +6,7 @@ class Trigger(private val condition: TriggerCondition, private val events: List<
     fun evaluateAndExecute(event: Event){
         if (condition.matches(event)){
             this.events.forEach {
-                it.execute(event)
+                it.execute()
             }
         }
     }

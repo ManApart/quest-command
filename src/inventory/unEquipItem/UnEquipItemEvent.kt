@@ -4,4 +4,8 @@ import core.events.Event
 import core.gameState.Creature
 import core.gameState.Item
 
-class UnEquipItemEvent(val creature: Creature, val item: Item) : Event
+class UnEquipItemEvent(val creature: Creature, val item: Item) : Event {
+    override fun gameTicks(): Int {
+        return 1
+    }
+}

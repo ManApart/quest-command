@@ -6,4 +6,8 @@ import core.gameState.GameState
 import core.gameState.Location
 import core.gameState.Target
 
-class ClimbCompleteEvent(val creature: Creature = GameState.player.creature, val target: Target, val origin: Location, val destination: Location) : Event
+class ClimbCompleteEvent(val creature: Creature = GameState.player.creature, val target: Target, val origin: Location, val destination: Location) : Event {
+    override fun gameTicks(): Int {
+        return 1
+    }
+}

@@ -1,7 +1,7 @@
 package core.events
 
 interface Event {
-    fun usesGameTick() : Boolean {
-        return true
+    fun gameTicks(): Int {
+        return 0
     }
 }

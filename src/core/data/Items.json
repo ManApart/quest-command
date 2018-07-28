@@ -83,5 +83,18 @@
     "name": "Wheat Bundle",
     "description": "It's steams lightly scratch your hands.",
     "weight": "1"
+  },
+  {
+    "name": "Tinder Box",
+    "description": "This can light flammable things on fire.",
+    "properties": {
+      "tags": [
+        "Fire Starter"
+      ]
+    }
+  },
+  {
+    "name": "Ash",
+    "description": "The result of a fire's unconstrained hunger."
   }
 ]

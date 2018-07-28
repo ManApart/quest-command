@@ -79,6 +79,7 @@ Ex:
 * Flamable Objects should be able to be set on fire
   * Open field (grass)
   * Apple Tree
+  * Apple
 * Apple should be roasted, roasted apple should be burnt
 * Inventory carrying space
 * Better package organization for actions

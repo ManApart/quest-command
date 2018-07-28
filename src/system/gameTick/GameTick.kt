@@ -6,8 +6,8 @@ import system.EventManager
 
 class GameTick : EventListener<Event>() {
     override fun execute(event: Event) {
-        if (event.usesGameTick()) {
-            EventManager.postEvent(GameTickEvent())
+        if (event.gameTicks() > 0) {
+            EventManager.postEvent(GameTickEvent(event.gameTicks()))
         }
     }
 

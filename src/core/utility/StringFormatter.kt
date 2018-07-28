@@ -20,4 +20,8 @@ object StringFormatter {
     private fun isPlayer(target: Target) : Boolean {
         return target == GameState.player || target == GameState.player.creature
     }
+
+//    fun joinWithAnd(targets: List<Target>) : String {
+//        return targets.joinToString(", ") { it.name }
+//    }
 }

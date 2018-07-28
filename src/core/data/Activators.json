@@ -4,7 +4,8 @@
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
     "properties": {
       "stats": {
-        "chop-health": 5
+        "chopHealth": 5,
+        "burnHealth": 5
       },
       "tags": [
         "Wood",
@@ -21,7 +22,7 @@
         "condition": {
           "callingEvent": "StatMinnedEvent",
           "eventParams": {
-            "stat": "chop-health"
+            "stat": "chopHealth"
           }
         },
         "events": [
@@ -47,6 +48,34 @@
             "className": "SpawnItemEvent",
             "params": [
               "Apple"
+            ]
+          }
+        ]
+      },
+      {
+        "condition": {
+          "callingEvent": "StatMinnedEvent",
+          "eventParams": {
+            "stat": "burnHealth"
+          }
+        },
+        "events": [
+          {
+            "className": "MessageEvent",
+            "params": [
+              "The apple tree smolders until it is nothing more than ash."
+            ]
+          },
+          {
+            "className": "RemoveScopeEvent",
+            "params": [
+              "Apple Tree"
+            ]
+          },
+          {
+            "className": "SpawnItemEvent",
+            "params": [
+              "Ash"
             ]
           }
         ]

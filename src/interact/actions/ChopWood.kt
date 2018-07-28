@@ -7,7 +7,7 @@ import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class ChopWood : EventListener<UseEvent>() {
-    val chopHealth = "chop-health"
+    val chopHealth = "chopHealth"
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return if (event.target is Activator) {
