@@ -1,6 +1,6 @@
 package status.statChanged
 
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 
-class StatMinnedEvent(val creature: Creature, val stat: String) : Event
+class StatMinnedEvent(val target: Target, val stat: String) : Event

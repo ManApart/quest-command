@@ -2,11 +2,12 @@ package inventory.pickupItem
 
 import core.events.EventListener
 import interact.ScopeManager
+import system.EventManager
 
 class PickupItem : EventListener<PickupItemEvent>() {
     override fun execute(event: PickupItemEvent) {
-        println("${event.source.name} picked up ${event.item}")
         event.source.inventory.add(event.item)
         ScopeManager.removeTarget(event.item)
+        EventManager.postEvent(ItemPickedUpEvent(event.source, event.item))
     }
 }

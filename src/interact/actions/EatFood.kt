@@ -1,18 +1,17 @@
 package interact.actions
 
 import core.events.EventListener
-import status.statChanged.StatChangeEvent
-import interact.UseEvent
-import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.getCreature
 import core.utility.StringFormatter
+import interact.UseEvent
+import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class EatFood : EventListener<UseEvent>() {
     override fun shouldExecute(event: UseEvent): Boolean {
-        return event.source.properties.tags.has("Food") && event.source is Item
+        return event.source.properties.tags.has("Food") && event.source is Item && event.target.properties.tags.has("Creature")
     }
 
     override fun execute(event: UseEvent) {

@@ -7,7 +7,12 @@ import travel.ArriveEvent
 fun main(args: Array<String>) {
     GameManager.newGame()
     EventManager.postEvent(ArriveEvent(destination = GameState.player.creature.location, method = "wake"))
-    CommandParser.parseCommand("map")
+    val initialCommand = if (args.isEmpty()) {
+        "map"
+    } else {
+        args.joinToString(" ")
+    }
+    CommandParser.parseCommand(initialCommand)
     while (true){
         CommandParser.parseCommand(readLine() ?: "")
     }

@@ -27,6 +27,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         proxies[name] = item
     }
 
+    fun exists(target: N): Boolean {
+        return contains(target)
+    }
+
     fun exists(name: String): Boolean {
         if (name.isBlank()) {
             return false

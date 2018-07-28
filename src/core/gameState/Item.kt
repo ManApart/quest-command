@@ -1,15 +1,26 @@
 package core.gameState
 
+import core.events.Event
 import core.utility.max
 
-class Item(override val name: String, override val description: String = "", val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), override val properties: Properties = Properties()) : Target {
+class Item(override val name: String, override val description: String = "", val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), private val triggers: List<Trigger> = listOf(), override val properties: Properties = Properties()) : Target {
     val equipSlots = equipSlots.map { Slot(it) }
+    val soul = Soul(this)
+
+    init {
+        soul.addStats(properties.stats)
+    }
+
     override fun toString(): String {
         return name
     }
 
     fun copy(): Item {
-        return Item(name, description, weight, 1, equipSlots.map { it.bodyParts.map { it } }, properties)
+        return Item(name, description, weight, 1, equipSlots.map { it.bodyParts.map { it } }, triggers, properties)
+    }
+
+    fun evaluateAndExecute(event: Event) {
+        triggers.forEach { it.evaluateAndExecute(this, event) }
     }
 
     fun canEquipTo(body: Body): Boolean {

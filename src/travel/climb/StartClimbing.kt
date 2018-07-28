@@ -3,7 +3,6 @@ package travel.climb
 import core.events.EventListener
 import core.gameState.Activator
 import core.gameState.GameState
-import core.gameState.consume
 import system.EventManager
 
 class StartClimbing : EventListener<StartClimbingEvent>() {

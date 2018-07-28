@@ -1,14 +1,18 @@
 package status.effects
 
 import core.events.EventListener
-import core.gameState.Activator
-import core.gameState.Creature
-import core.gameState.GameState
+import core.gameState.*
 import interact.ScopeManager
+import status.statChanged.StatChangeEvent
 import system.gameTick.GameTickEvent
 
 class RemoveEffect: EventListener<RemoveEffectEvent>() {
+    override fun shouldExecute(event: RemoveEffectEvent): Boolean {
+        return hasSoul(event.target)
+    }
+
     override fun execute(event: RemoveEffectEvent) {
-        event.creature.soul.effects.remove(event.effect)
+        val soul = getSoul(event.target)!!
+        soul.effects.remove(event.effect)
     }
 }

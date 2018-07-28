@@ -9,6 +9,10 @@ class Inventory {
        return items.exists(name)
     }
 
+    fun exists(item: Item) : Boolean{
+       return items.exists(item)
+    }
+
     fun getItem(name: List<String>) : Item {
         return items.get(name)
     }

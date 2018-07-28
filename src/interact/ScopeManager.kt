@@ -1,15 +1,13 @@
 package interact
 
-import travel.ArriveEvent
 import core.events.EventListener
-import core.gameState.Activator
-import core.gameState.Creature
-import core.gameState.GameState
+import core.gameState.*
 import core.gameState.Target
 import core.utility.NameSearchableList
 import core.utility.StringFormatter
-import inventory.pickupItem.PickupItemEvent
+import inventory.pickupItem.ItemPickedUpEvent
 import system.*
+import travel.ArriveEvent
 
 object ScopeManager {
     private val targets = NameSearchableList<Target>()
@@ -33,7 +31,8 @@ object ScopeManager {
                 println("$name appeared.")
                 addTarget(event.item)
             } else {
-                EventManager.postEvent(PickupItemEvent(event.target, event.item))
+                event.target.inventory.add(event.item)
+                EventManager.postEvent(ItemPickedUpEvent(event.target, event.item))
             }
         }
     }
@@ -48,7 +47,16 @@ object ScopeManager {
 
     class ScopeRemover : EventListener<RemoveScopeEvent>() {
         override fun execute(event: RemoveScopeEvent) {
-            removeTarget(event.target)
+            if (targetExists(event.target)){
+                removeTarget(event.target)
+            } else if (event.target is Item) {
+                getAllInventories().forEach {
+                    if (it.exists(event.target)){
+                        it.remove(event.target)
+                        return
+                    }
+                }
+            }
         }
     }
 
@@ -86,6 +94,10 @@ object ScopeManager {
         return targets.exists(name)
     }
 
+    fun targetExists(target: Target): Boolean {
+        return targets.exists(target)
+    }
+
     fun creatureExists(name: List<String>): Boolean {
         return targets.exists(name) && getTarget(name) is Creature
     }
@@ -108,6 +120,36 @@ object ScopeManager {
 
     fun getActivator(name: List<String>): Activator {
         return targets.get(name) as Activator
+    }
+
+    fun getAllSouls(): List<Soul> {
+        val souls = mutableListOf<Soul>()
+        souls.add(GameState.player.creature.soul)
+        souls.addAll(GameState.player.creature.inventory.getAllItems().map { it.soul })
+
+        getTargets().forEach {
+            if (it is Activator) {
+                souls.add(it.creature.soul)
+            } else if (it is Creature) {
+                souls.add(it.soul)
+                souls.addAll(it.inventory.getAllItems().map { it.soul })
+            }
+        }
+        return souls.toList()
+    }
+
+    fun getAllInventories(): List<Inventory> {
+        val inventories = mutableListOf<Inventory>()
+        inventories.add(GameState.player.creature.inventory)
+
+        getTargets().forEach {
+            if (it is Activator) {
+                inventories.add(it.creature.inventory)
+            } else if (it is Creature) {
+                inventories.add(it.inventory)
+            }
+        }
+        return inventories.toList()
     }
 
 }

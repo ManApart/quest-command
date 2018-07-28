@@ -65,10 +65,6 @@ object EventManager {
                 ?.forEach {
                     listeners.add(it)
                 }
-        listenerMap[Event::class.java]?.filter { (it as EventListener<Event>).shouldExecute(event) }
-                ?.forEach {
-                    listeners.add(it)
-                }
         return listeners.size
     }
 

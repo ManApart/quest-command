@@ -10,18 +10,17 @@ class Activator(name: String, description: String, val climb: Climbable?, privat
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
 
+    init {
+        properties.tags.remove("Creature")
+    }
+
     override fun toString(): String {
         return name
     }
 
     fun evaluateAndExecute(event: Event) {
-        triggers.forEach { it.evaluateAndExecute(event) }
+        triggers.forEach { it.evaluateAndExecute(this, event) }
     }
 
 }
 
-fun Target.consume(event: Event) {
-    if (this is Activator) {
-        this.evaluateAndExecute(event)
-    }
-}

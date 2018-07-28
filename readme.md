@@ -95,6 +95,14 @@ Ex:
 * Redo location system so it's not so nested?
 * First time hints
 * preferences for what messages show
+* Break scope manager and item manager listeners into own classes
+* properties vs soul with items, what to do?
+* Junit esque code to build and run with a compound command
+
+Items/Activators have list of behavior recipies
+behavior recipies: name, array of params
+behaviors are list of triggered conditions + list of params
+
 
 **Validation tools**
 * Seperate from test suite

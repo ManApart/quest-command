@@ -1,14 +1,15 @@
 package status.effects
 
 import core.events.EventListener
-import core.gameState.Activator
-import core.gameState.Creature
-import core.gameState.GameState
-import interact.ScopeManager
-import system.gameTick.GameTickEvent
+import core.gameState.getSoul
+import core.gameState.hasSoul
 
 class AddEffect: EventListener<AddEffectEvent>() {
+    override fun shouldExecute(event: AddEffectEvent): Boolean {
+        return hasSoul(event.target)
+    }
     override fun execute(event: AddEffectEvent) {
-        event.creature.soul.effects.add(event.effect)
+        val soul = getSoul(event.target)!!
+        soul.effects.add(event.effect)
     }
 }

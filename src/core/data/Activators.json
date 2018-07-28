@@ -67,10 +67,7 @@
             ]
           },
           {
-            "className": "RemoveScopeEvent",
-            "params": [
-              "Apple Tree"
-            ]
+            "className": "RemoveScopeEvent"
           },
           {
             "className": "SpawnItemEvent",

@@ -1,10 +1,10 @@
 package status.effects
 
 import core.events.Event
-import core.gameState.Creature
 import core.gameState.Effect
+import core.gameState.Target
 
-class EffectAppliedEvent(val creature: Creature, val effect: Effect) : Event {
+class EffectAppliedEvent(val target: Target, val effect: Effect) : Event {
     override fun gameTicks(): Int {
         return 0
     }

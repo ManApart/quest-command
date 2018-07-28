@@ -6,7 +6,7 @@ import core.gameState.stat.Stat
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return event.creature == GameState.player.creature
+        return event.target == GameState.player.creature
     }
 
     override fun execute(event: StatMinnedEvent) {

@@ -2,9 +2,6 @@ package travel.climb
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.consume
-import core.gameState.stat.Stat
-import status.ExpGainedEvent
 import system.EventManager
 import travel.ArriveEvent
 

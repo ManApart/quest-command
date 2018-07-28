@@ -6,7 +6,7 @@ import core.gameState.stat.Stat
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override fun shouldExecute(event: StatMaxedEvent): Boolean {
-        return event.creature == GameState.player.creature
+        return event.target == GameState.player.creature
     }
 
     override fun execute(event: StatMaxedEvent) {

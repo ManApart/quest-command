@@ -5,7 +5,7 @@ import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
 
-class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutableListOf()) {
+class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableListOf()) {
     var effects = mutableListOf<Effect>()
 
     fun incStat(name: String, amount: Int) {
@@ -34,9 +34,9 @@ class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutabl
             stat.current = Math.max(Math.min(stat.current, stat.baseMax), 0)
 
             if (stat.current == 0) {
-                EventManager.postEvent(StatMinnedEvent(creature, stat.name))
+                EventManager.postEvent(StatMinnedEvent(parent, stat.name))
             } else if (stat.current == stat.boostedMax) {
-                EventManager.postEvent(StatMaxedEvent(creature, stat.name))
+                EventManager.postEvent(StatMaxedEvent(parent, stat.name))
             }
         }
     }
@@ -47,7 +47,7 @@ class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutabl
             stat.current = Math.max(Math.min(stat.current, stat.boostedMax), 0)
 
             if (stat.current == 0) {
-                EventManager.postEvent(StatMinnedEvent(creature, stat.name))
+                EventManager.postEvent(StatMinnedEvent(parent, stat.name))
             }
         }
     }
@@ -64,6 +64,10 @@ class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutabl
         return getStatOrNull(name) != null
     }
 
+    fun hasEffect(name: String): Boolean {
+        return getEffectOrNull(name) != null
+    }
+
     fun getCurrent(name: String): Int {
         return getStatOrNull(name)?.current ?: 0
     }
@@ -74,6 +78,10 @@ class Soul(val creature: Creature, private val stats: MutableList<Stat> = mutabl
 
     fun getStatOrNull(name: String): Stat? {
         return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
+    }
+
+    fun getEffectOrNull(name: String): Effect? {
+        return effects.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
     fun getStats() : List<Stat> {

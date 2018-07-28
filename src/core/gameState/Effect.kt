@@ -5,7 +5,6 @@ import status.effects.EffectAppliedEvent
 import status.effects.RemoveEffectEvent
 import status.statChanged.StatBoostEvent
 import status.statChanged.StatChangeEvent
-import status.statChanged.StatChanged
 import system.EventManager
 
 class Effect(val name: String, val type: EffectType, val statName: String, val amount: Int = 1, var duration: Int = -1) {
@@ -22,7 +21,7 @@ class Effect(val name: String, val type: EffectType, val statName: String, val a
         if (stat != null) {
             val applied = applyEffectToStat(soul, stat, time)
             if (applied) {
-                EventManager.postEvent(EffectAppliedEvent(soul.creature, this))
+                EventManager.postEvent(EffectAppliedEvent(soul.parent, this))
             }
             decreaseDuration(soul)
         } else {
@@ -35,23 +34,23 @@ class Effect(val name: String, val type: EffectType, val statName: String, val a
         var applied = false
         when (type) {
             EffectType.DRAIN ->{
-                EventManager.postEvent(StatChangeEvent(soul.creature, name, stat.name, -amount*time))
+                EventManager.postEvent(StatChangeEvent(soul.parent, name, stat.name, -amount*time))
                 applied = true
             }
             EffectType.HEAL -> {
-                EventManager.postEvent(StatChangeEvent(soul.creature, name, stat.name, amount*time))
+                EventManager.postEvent(StatChangeEvent(soul.parent, name, stat.name, amount*time))
                 applied = true
             }
             EffectType.REDUCE -> {
                 if (doOnce) {
-                    EventManager.postEvent(StatBoostEvent(soul.creature, name, stat.name, -amount))
+                    EventManager.postEvent(StatBoostEvent(soul.parent, name, stat.name, -amount))
                     doOnce = false
                     applied = true
                 }
             }
             EffectType.BOOST -> {
                 if (doOnce) {
-                    EventManager.postEvent(StatBoostEvent(soul.creature, name, stat.name, amount))
+                    EventManager.postEvent(StatBoostEvent(soul.parent, name, stat.name, amount))
                     doOnce = false
                     applied = true
                 }
@@ -63,7 +62,7 @@ class Effect(val name: String, val type: EffectType, val statName: String, val a
     private fun decreaseDuration(soul: Soul) {
         if (duration > 0) duration--
         if (duration == 0) {
-            EventManager.postEvent(RemoveEffectEvent(soul.creature, this))
+            EventManager.postEvent(RemoveEffectEvent(soul.parent, this))
         }
     }
 }

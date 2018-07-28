@@ -72,7 +72,55 @@
     "weight": "1",
     "properties": {
       "values": {
-        "healAmount": "1"
+        "healAmount": 1
+      },
+      "stats": {
+        "burnHealth": 1
+      },
+      "tags": [
+        "Food"
+      ]
+    },
+    "triggers": [
+      {
+        "condition": {
+          "callingEvent": "StatMinnedEvent",
+          "eventParams": {
+            "stat": "burnHealth"
+          }
+        },
+        "events": [
+          {
+            "className": "MessageEvent",
+            "params": [
+              "The apple gives off a hardy smell as it roasts."
+            ]
+          },
+          {
+            "className": "RemoveScopeEvent"
+          },
+          {
+            "className": "SpawnItemEvent",
+            "params": [
+              "Baked Apple",
+              "1",
+              "Player"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Baked Apple",
+    "description": "The soft flesh smells of a wood fire.",
+    "weight": "1",
+    "properties": {
+      "values": {
+        "healAmount": 2
+      },
+      "stats": {
+        "burnHealth": 1
       },
       "tags": [
         "Food"

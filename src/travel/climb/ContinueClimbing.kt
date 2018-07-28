@@ -5,7 +5,6 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.climb.ClimbSegment
 import core.gameState.stat.Stat
-import core.gameState.consume
 import core.utility.RandomManager
 import core.utility.StringFormatter
 import explore.LookEvent

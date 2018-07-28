@@ -1,10 +1,21 @@
 package core.gameState
 
+import core.events.Event
 import core.utility.Named
 
 interface Target : Named {
     val description: String
     val properties: Properties
+
+    fun consume(event: Event) {
+        if (this is Activator) {
+            this.evaluateAndExecute(event)
+        } else if (this is Creature && this.parent is Activator) {
+            this.parent.evaluateAndExecute(event)
+        } else if (this is Item) {
+            this.evaluateAndExecute(event)
+        }
+    }
 }
 
 fun targetsToString(targets: List<Target>) : String {
@@ -34,4 +45,22 @@ fun getCreature(target: Target) : Creature? {
         is Player -> target.creature
         else -> null
     }
+}
+
+fun hasSoul(target: Target) : Boolean {
+    return getSoul(target) != null
+}
+
+fun getSoul(target: Target) : Soul? {
+    return when (target){
+        is Creature -> target.soul
+        is Item -> target.soul
+        is Activator -> target.creature.soul
+        is Player -> target.creature.soul
+        else -> null
+    }
+}
+
+fun isPlayer(target: Target) : Boolean {
+    return target == GameState.player || target == GameState.player.creature
 }
