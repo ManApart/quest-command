@@ -10,7 +10,7 @@ object BehaviorManager {
     private val behaviors = loadBehaviors()
 
     private fun loadBehaviors(): List<BehaviorBase> {
-        val json = this::class.java.classLoader.getResource("core/data/behaviors.json").readText()
+        val json = this::class.java.classLoader.getResource("core/data/Behaviors.json").readText()
         return jacksonObjectMapper().readValue(json)
     }
 

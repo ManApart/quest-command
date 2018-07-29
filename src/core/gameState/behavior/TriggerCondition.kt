@@ -1,6 +1,7 @@
 package core.gameState.behavior
 
 import core.events.Event
+import core.utility.applyParams
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
@@ -8,23 +9,8 @@ import kotlin.reflect.full.memberProperties
 class TriggerCondition(private val callingEvent: String, private val eventParams: Map<String, String> = mapOf()) {
 
     fun applyParamValues(paramValues: Map<String, String>) : TriggerCondition {
-        val modifiedParams = mutableMapOf<String, String>()
-
-        eventParams.entries.forEach {
-            val key = replaceParams(it.key, paramValues)
-            val value = replaceParams(it.value, paramValues)
-            modifiedParams[key] = value
-        }
-
+        val modifiedParams = applyParams(eventParams, paramValues)
         return TriggerCondition(callingEvent, modifiedParams)
-    }
-
-    private fun replaceParams(line: String, paramValues: Map<String, String>): String {
-        var modified = line
-        paramValues.forEach {
-            modified = modified.replace("$${it.key}", it.value)
-        }
-        return modified
     }
 
     fun matches(event: Event): Boolean {

@@ -1,32 +1,34 @@
 package core.gameState
 
+import core.utility.replaceParams
+
 class Tags(tags: List<String> = listOf<String>()) {
     private val tags = tags.map { it.toLowerCase() }.toMutableList()
 
-    fun has(tag: String) : Boolean{
+    fun has(tag: String): Boolean {
         return tags.contains(tag.toLowerCase())
     }
 
-    fun add(tag: String){
+    fun add(tag: String) {
         tags.add(tag.toLowerCase())
     }
 
-    fun remove(tag: String){
+    fun remove(tag: String) {
         tags.remove(tag.toLowerCase())
     }
 
-    fun hasAll(tags: List<String>) : Boolean{
+    fun hasAll(tags: List<String>): Boolean {
         tags.forEach {
-            if (!this.tags.contains(it)){
+            if (!this.tags.contains(it)) {
                 return false
             }
         }
         return true
     }
 
-    fun hasNone(tags: List<String>) : Boolean{
+    fun hasNone(tags: List<String>): Boolean {
         tags.forEach {
-            if (this.tags.contains(it)){
+            if (this.tags.contains(it)) {
                 return false
             }
         }
@@ -35,15 +37,28 @@ class Tags(tags: List<String> = listOf<String>()) {
 
     fun matches(other: Tags): Boolean {
         tags.forEach {
-            if (!other.has(it)){
+            if (!other.has(it)) {
                 return false
             }
         }
         other.tags.forEach {
-            if (!has(it)){
+            if (!has(it)) {
                 return false
             }
         }
         return true
+    }
+
+    fun inherit(parent: Tags) {
+        parent.tags.forEach {
+            if (!tags.contains(it)) {
+                tags.add(it)
+            }
+        }
+    }
+
+    fun applyParams(params: Map<String, String>): Tags {
+        val newTags = tags.map { replaceParams(it, params) }
+        return Tags(newTags)
     }
 }

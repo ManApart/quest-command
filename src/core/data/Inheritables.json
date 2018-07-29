@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Burnable",
+    "paramDefaults": {
+      "burnHealth": 1,
+      "itemName": "Item"
+    },
+    "properties": {
+      "stats": {
+        "burnHealth": "$burnHealth"
+      }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "$itemName"
+        }
+      }
+    ]
+  }
+]

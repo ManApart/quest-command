@@ -8,16 +8,12 @@
         "Left Leg"
       ]
     ],
-    "properties": {
-      "stats": {
-        "burnHealth": 1
-      }
-    },
-    "behaviors": [
+    "inherits": [
       {
-        "name": "Burn to Ash",
+        "name": "Burnable",
         "params": {
-          "name": "Brown Pants"
+          "burnHealth": 1,
+          "itemName": "Brown Pants"
         }
       }
     ]

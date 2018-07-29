@@ -3,10 +3,16 @@ package core.gameState
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
+import core.gameState.inhertiable.InheritRecipe
 import core.utility.max
 import system.BehaviorManager
+import system.InheritableManager
 
-class Item(override val name: String, override val description: String = "", val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), @JsonProperty("behaviors") private val behaviorRecipes: List<BehaviorRecipe> = listOf(), override val properties: Properties = Properties()) : Target {
+class Item(override val name: String, override val description: String = "", val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(), override val properties: Properties = Properties(), inherits: List<InheritRecipe> = listOf()) : Target {
+    init {
+        applyInherits(inherits)
+    }
+
     val equipSlots = equipSlots.map { Slot(it) }
     val soul = Soul(this)
     val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
@@ -17,6 +23,15 @@ class Item(override val name: String, override val description: String = "", val
 
     override fun toString(): String {
         return name
+    }
+
+    private fun applyInherits(inherits: List<InheritRecipe>) {
+        inherits.forEach {
+            val inherit = InheritableManager.getInheritable(it)
+            val itemBehaviorRecipeNames = behaviorRecipes.map { it.name }
+            behaviorRecipes.addAll(inherit.behaviorRecipes.filter { !itemBehaviorRecipeNames.contains(it.name) })
+            properties.inherit(inherit.properties)
+        }
     }
 
     fun copy(): Item {

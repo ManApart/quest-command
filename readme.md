@@ -115,4 +115,6 @@ Ex:
 
   
 
+Flow of param overrides (left overrides right)
+Item Params > inheritable params > Behavior Params/Properties > Conditions/events
 

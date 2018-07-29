@@ -5,8 +5,8 @@ import core.utility.mapsMatch
 class PropertyValues(properties: Map<String, String> = HashMap()) {
     private val properties = parseProperties(properties)
 
-    private fun parseProperties(properties: Map<String, String>): Map<String, String> {
-        val parsed = HashMap<String, String>()
+    private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
+        val parsed = mutableMapOf<String, String>()
         properties.entries.forEach {
             parsed[it.key.toLowerCase()] = it.value.toLowerCase()
         }
@@ -26,5 +26,18 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
 
     fun matches(other: PropertyValues): Boolean {
         return mapsMatch(properties, other.properties)
+    }
+
+    fun inherit(parent: PropertyValues) {
+        parent.properties.forEach{
+            if (!properties.containsKey(it.key)){
+                properties[it.key] = it.value
+            }
+        }
+    }
+
+    fun applyParams(params: Map<String, String>): PropertyValues {
+        val newProps = core.utility.applyParams(properties, params)
+        return PropertyValues(newProps)
     }
 }
