@@ -59,6 +59,7 @@ Ex:
   * Slash - grazing damage but generally fast (hand slaps)
   * Chop - most damage, slowest
   * Stab - 
+  * Smash
   * Dodge
   * Block (high, low, medium)
   * Step (forward, back) (ranges: knife, sword, lance, bow)
@@ -73,38 +74,36 @@ Ex:
  
  Weapons have different reach and the player may need to step closer, or step back to avoid a blow.
 
+
 ## TODO
+
+### Long Term
+
 * find a way to allow auto complete with tab
 * Story manager listens to all events, compares plot point criteria to each event to see if plot point should run
-* Flamable Objects should be able to be set on fire
-  * Open field (grass)
-  * Apple Tree
-  * Apple
-* Apple should be roasted, roasted apple should be burnt
-* Inventory carrying space
 * Better package organization for actions
 * Packages are still a mess
-* Give json inherit keywords. Spawning grabs all properties etc from inherited
-* you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
-* Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 * Convert climbing paths to generic paths with directions dictating next path instead of up/down only
 * Make starting a journey event based / handle replacing an existing event
-* Stats
-  * Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
-  * Boosts etc can affect current values and maxes
 * Redo location system so it's not so nested?
+* Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
 * First time hints
 * preferences for what messages show
+* Give json inherit keywords. Spawning grabs all properties etc from inherited
+  * Inheritable has properties and behavior recipes and params
+* Behaviors have default keywords (itemName, etc) that can be used as variables
+* Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
+
+### Short Term
+
+* Inventory carrying space
+* you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
 * Break scope manager and item manager listeners into own classes
-* properties vs soul with items, what to do?
-* Junit esque code to build and run with a compound command
-
-Items/Activators have list of behavior recipies
-behavior recipies: name, array of params
-behaviors are list of triggered conditions + list of params
+* Burning the apple tree branches should make the user fall
 
 
-**Validation tools**
+### Validation tools
+
 * Seperate from test suite
 * Check for duplicate names (across items and activators)
 * Check for duplicate command aliases

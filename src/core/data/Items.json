@@ -7,6 +7,19 @@
         "Right Leg",
         "Left Leg"
       ]
+    ],
+    "properties": {
+      "stats": {
+        "burnHealth": 1
+      }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Brown Pants"
+        }
+      }
     ]
   },
   {
@@ -16,6 +29,19 @@
       [
         "Chest"
       ]
+    ],
+    "properties": {
+      "stats": {
+        "burnHealth": 1
+      }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Old Shirt"
+        }
+      }
     ]
   },
   {
@@ -105,12 +131,33 @@
       "tags": [
         "Food"
       ]
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Apple"
+        }
+      }
+    ]
   },
   {
     "name": "Wheat Bundle",
     "description": "It's steams lightly scratch your hands.",
-    "weight": "1"
+    "weight": "1",
+    "properties": {
+      "stats": {
+        "burnHealth": 1
+      }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Apple"
+        }
+      }
+    ]
   },
   {
     "name": "Tinder Box",

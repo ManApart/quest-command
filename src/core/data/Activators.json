@@ -26,7 +26,7 @@
         }
       },
       {
-        "name": "Burn Activator",
+        "name": "Burn to Ash",
         "params": {
           "name": "Apple Tree"
         }
@@ -37,6 +37,9 @@
     "name": "Wheat Field",
     "description": "The golden shafts of wheat whisper as they brush against each other.",
     "properties": {
+      "stats": {
+        "burnHealth": 5
+      },
       "tags": [
         "Flammable"
       ]
@@ -49,6 +52,12 @@
           "message": "The wheat falls with little more than a whisper",
           "count": 3
         }
+      },
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Wheat Field"
+        }
       }
     ]
   },
@@ -56,16 +65,30 @@
     "name": "Logs",
     "description": "A pile of logs.",
     "properties": {
+      "stats": {
+        "burnHealth": 5
+      },
       "tags": [
         "Wood",
         "Flammable"
       ]
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Logs"
+        }
+      }
+    ]
   },
   {
     "name": "Apple Tree Branches",
     "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
     "properties": {
+      "stats": {
+        "burnHealth": 5
+      },
       "tags": [
         "Wood",
         "Flammable"
@@ -75,6 +98,14 @@
       "name": "Climb Tree",
       "destination": "an open field apple tree",
       "upwards": false
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Apple Tree Branches"
+        }
+      }
+    ]
   }
 ]
