@@ -26,16 +26,12 @@
         "Chest"
       ]
     ],
-    "properties": {
-      "stats": {
-        "burnHealth": 1
-      }
-    },
-    "behaviors": [
+    "inherits": [
       {
-        "name": "Burn to Ash",
+        "name": "Burnable",
         "params": {
-          "name": "Old Shirt"
+          "burnHealth": 1,
+          "itemName": "Old Shirt"
         }
       }
     ]
@@ -141,16 +137,12 @@
     "name": "Wheat Bundle",
     "description": "It's steams lightly scratch your hands.",
     "weight": "1",
-    "properties": {
-      "stats": {
-        "burnHealth": 1
-      }
-    },
-    "behaviors": [
+    "inherits": [
       {
-        "name": "Burn to Ash",
+        "name": "Burnable",
         "params": {
-          "name": "Apple"
+          "burnHealth": 1,
+          "itemName": "Brown Pants"
         }
       }
     ]

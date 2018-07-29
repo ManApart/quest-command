@@ -65,19 +65,16 @@
     "name": "Logs",
     "description": "A pile of logs.",
     "properties": {
-      "stats": {
-        "burnHealth": 5
-      },
       "tags": [
-        "Wood",
-        "Flammable"
+        "Wood"
       ]
     },
-    "behaviors": [
+    "inherits": [
       {
-        "name": "Burn to Ash",
+        "name": "Burnable",
         "params": {
-          "name": "Logs"
+          "burnHealth": 5,
+          "itemName": "Logs"
         }
       }
     ]
