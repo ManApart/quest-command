@@ -1,12 +1,15 @@
 package combat
 
 import combat.chop.ChopEvent
+import combat.crush.CrushEvent
 import combat.slash.SlashEvent
 import combat.stab.StabEvent
 import core.events.Event
 import core.events.EventListener
-import core.gameState.*
+import core.gameState.BodyPart
+import core.gameState.Creature
 import core.gameState.Target
+import core.gameState.getCreature
 import core.gameState.stat.Stat
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -14,30 +17,37 @@ import system.EventManager
 object AttackManager {
     enum class AttackType(val health: String, val damage: String) {
         CHOP("chop-health", "chopDamage"),
+        CRUSH("crushHealth", "crushDamage"),
         SLASH("slashHealth", "slashDamage"),
         STAB("stabHealth", "stabDamage");
     }
 
     class Chop : EventListener<ChopEvent>() {
         override fun execute(event: ChopEvent) {
-            AttackManager.execute(AttackType.CHOP, event.source, event.sourcePart, event.target, event)
+            AttackManager.execute(AttackType.CHOP, event.source, event.sourcePart, event.target, event.direction, event)
+        }
+    }
+
+    class Crush : EventListener<CrushEvent>() {
+        override fun execute(event: CrushEvent) {
+            AttackManager.execute(AttackType.CRUSH, event.source, event.sourcePart, event.target, event.direction, event)
         }
     }
 
     class Stab : EventListener<StabEvent>() {
         override fun execute(event: StabEvent) {
-            AttackManager.execute(AttackType.STAB, event.source, event.sourcePart, event.target, event)
+            AttackManager.execute(AttackType.STAB, event.source, event.sourcePart, event.target, event.direction, event)
         }
     }
 
     class Slash : EventListener<SlashEvent>() {
         override fun execute(event: SlashEvent) {
-            AttackManager.execute(AttackType.SLASH, event.source, event.sourcePart, event.target, event)
+            AttackManager.execute(AttackType.SLASH, event.source, event.sourcePart, event.target, event.direction, event)
         }
     }
 
-    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, event: Event) {
-        println("You ${type.name.toLowerCase()} at ${target.name} with your ${sourcePart.equippedName()}.")
+    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, direction: TargetDirection, event: Event) {
+        println("You ${type.name.toLowerCase()} the $direction of ${target.name} with your ${sourcePart.equippedName()}.")
 
         val creature = getCreature(target)
         val damageDone = getDamageDone(sourcePart, type)
