@@ -39,7 +39,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
                 val item = getItemOrParent(0, creature, parent)
                 EventManager.postEvent(RemoveItemEvent(creature, item))
             }
-            SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0], getParamInt(1), getCreatureOrPlayer(2)))
+            SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0], getParamInt(1), getCreatureOrNull(2)))
             RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
             SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0])))
             //TODO - very brittle
@@ -53,6 +53,15 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             ScopeManager.getTarget(param)
         } else {
             parent
+        }
+    }
+
+    private fun getCreatureOrNull(paramNumber: Int) : Creature? {
+        val param = getParam(paramNumber, "none").split(" ")
+        return if (ScopeManager.creatureExists(param)){
+            ScopeManager.getCreature(param)
+        } else {
+            null
         }
     }
 

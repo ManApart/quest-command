@@ -99,7 +99,7 @@ object ScopeManager {
     }
 
     fun creatureExists(name: List<String>): Boolean {
-        return targets.exists(name) && getTarget(name) is Creature
+        return targets.exists(name) && core.gameState.getCreature(getTarget(name)) != null
     }
 
     fun activatorExists(name: List<String>): Boolean {
@@ -115,7 +115,7 @@ object ScopeManager {
     }
 
     fun getCreature(name: List<String>): Creature {
-        return targets.get(name) as Creature
+        return getCreature(targets.get(name))!!
     }
 
     fun getActivator(name: List<String>): Activator {
