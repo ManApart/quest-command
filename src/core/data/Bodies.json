@@ -11,5 +11,12 @@
       "Head",
       "Chest"
     ]
+  },
+  {
+    "name": "Rat",
+    "parts": [
+      "Head",
+      "Body"
+    ]
   }
 ]

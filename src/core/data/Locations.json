@@ -66,6 +66,16 @@
               ]
             }
           ]
+        },
+        {
+          "name": "Barren Patch",
+          "description": "This patch is all dried mud.",
+          "position": {
+            "x": 10
+          },
+          "creatures": [
+            "Rat"
+          ]
         }
       ]
     }

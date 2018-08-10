@@ -59,9 +59,9 @@ Ex:
   * Slash - grazing damage but generally fast (hand slaps)
   * Chop - most damage, slowest
   * Stab - 
-  * Smash
+  * Crush
   * Dodge
-  * Block (high, low, medium)
+  * Block 
   * Step (forward, back) (ranges: knife, sword, lance, bow)
 * Sheath / unsheath command?
 * Hold Command?
@@ -74,6 +74,7 @@ Ex:
  
  Weapons have different reach and the player may need to step closer, or step back to avoid a blow.
 
+Agility affects how quickly someone can attack, strength how much the attack does, perception how likely to hit, etc
 
 ## TODO
 
@@ -93,6 +94,8 @@ Ex:
   * Inheritable has properties and behavior recipes and params
 * Behaviors have default keywords (itemName, etc) that can be used as variables
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
+* Cooking / recipes
+
 
 ### Short Term
 

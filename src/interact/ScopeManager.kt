@@ -21,6 +21,7 @@ object ScopeManager {
             resetTargets()
             addTargets(ItemManager.getItems(event.destination.items))
             addTargets(ActivatorManager.getActivators(event.destination.activators))
+            addTargets(CreatureManager.getCreatures(event.destination.creatures))
         }
     }
 

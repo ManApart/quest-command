@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Rat",
+    "description": "Mangy and red eyed.",
+    "body": "Rat",
+    "properties": {
+      "stats": {
+        "Health": 100,
+        "Strength": 2
+      },
+      "tags": [
+        "Predator",
+        "Small"
+      ]
+    }
+  }
+]
