@@ -159,5 +159,9 @@
   {
     "name": "Ash",
     "description": "The result of a fire's unconstrained hunger."
+  },
+  {
+    "name": "Raw Poor Quality Meat",
+    "description": "It's pale and oily."
   }
 ]
