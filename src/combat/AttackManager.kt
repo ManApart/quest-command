@@ -11,6 +11,7 @@ import core.gameState.Creature
 import core.gameState.Target
 import core.gameState.getCreature
 import core.gameState.stat.Stat
+import core.utility.StringFormatter
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
@@ -47,10 +48,12 @@ object AttackManager {
     }
 
     fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, direction: TargetDirection, event: Event) {
-        println("You ${type.name.toLowerCase()} the $direction of ${target.name} with your ${sourcePart.equippedName()}.")
+        val subject = StringFormatter.getSubject(source)
+        val possessive = StringFormatter.getSubjectPossessive(source)
+        println("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.equippedName()}.")
 
         val creature = getCreature(target)
-        val damageDone = getDamageDone(sourcePart, type)
+        val damageDone = getDamageDone(source, sourcePart, type)
 
         if (creature != null && damageDone > 0) {
             if (hasSpecificHealth(creature, type)) {
@@ -64,12 +67,10 @@ object AttackManager {
         target.consume(event)
     }
 
-    private fun getDamageDone(source: BodyPart, type: AttackType): Int {
-        return if (source.equippedItem != null){
-            source.equippedItem!!.properties.values.getInt(type.damage, 0)
-        } else {
-            //TODO - replace with damage based on unarmed skill
-            0
+    private fun getDamageDone(creature: Creature, source: BodyPart, type: AttackType): Int {
+        return when {
+            source.equippedItem != null -> source.equippedItem!!.properties.values.getInt(type.damage, 0)
+            else -> creature.soul.getCurrent(Stat.BARE_HANDED)
         }
     }
 

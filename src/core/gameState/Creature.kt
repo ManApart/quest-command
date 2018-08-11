@@ -1,19 +1,20 @@
 package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import system.AIManager
 import system.BodyManager
 import system.ItemManager
 
-class Creature(override val name: String, override val description: String, val body: Body = Body(), var location: Location = GameState.world, val parent: Target? = null, override val properties: Properties = Properties()) : Target {
+class Creature(override val name: String, override val description: String, val body: Body = Body(), var location: Location = GameState.world, ai: String? = null, val parent: Target? = null, override val properties: Properties = Properties()) : Target {
 
     val soul = Soul(this)
     val inventory = Inventory()
+    val ai = if (ai != null) AIManager.getAI(ai, this) else null
 
     @JsonCreator
-    constructor(name: String, description: String, body: String, properties: Properties = Properties(), items: List<String>): this(name, description, BodyManager.getBody(body), properties = properties) {
+    constructor(name: String, description: String, body: String, ai: String?, properties: Properties = Properties(), items: List<String>) : this(name, description, BodyManager.getBody(body), ai = ai, properties = properties) {
         items.forEach { inventory.add(ItemManager.getItem(it)) }
     }
-
 
 
     init {

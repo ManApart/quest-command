@@ -16,7 +16,12 @@ class Combatent(val creature: Creature) {
 
     fun act() {
         if (GameState.player.creature != creature){
-            println("${creature.name} is too dumb to do anything!")
+            if (creature.ai != null){
+                println("${creature.name} considers its choices.")
+                creature.ai.takeAction()
+            } else {
+                println("${creature.name} does nothing!")
+            }
         }
     }
 

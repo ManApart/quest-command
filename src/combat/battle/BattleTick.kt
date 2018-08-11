@@ -2,6 +2,7 @@ package combat.battle
 
 import core.events.EventListener
 import core.gameState.GameState
+import system.EventManager
 import system.gameTick.GameTickEvent
 
 class BattleTick : EventListener<GameTickEvent>() {
@@ -11,6 +12,6 @@ class BattleTick : EventListener<GameTickEvent>() {
     }
 
     override fun execute(event: GameTickEvent) {
-        GameState.battle?.takeTurn()
+        EventManager.postEvent(BattleTurnEvent())
     }
 }

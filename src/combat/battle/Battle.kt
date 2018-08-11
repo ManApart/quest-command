@@ -3,6 +3,7 @@ package combat.battle
 import combat.Combatent
 import core.gameState.Creature
 import core.gameState.GameState
+import system.EventManager
 
 class Battle(combatantCreatures: List<Creature>) {
     var distance = 10
@@ -34,7 +35,7 @@ class Battle(combatantCreatures: List<Creature>) {
                 println("You should have been able to do something by now. Something is wrong.")
                 lastFired = 0
             }
-            else -> takeTurn()
+            else -> EventManager.postEvent(BattleTurnEvent())
         }
 
 

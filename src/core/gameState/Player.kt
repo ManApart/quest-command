@@ -4,7 +4,7 @@ import core.gameState.stat.Stat
 import system.BodyManager
 
 class Player : Target {
-    val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), GameState.world.findLocation(listOf("an open field")), this)
+    val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), GameState.world.findLocation(listOf("an open field")), null, this)
 
     override val name: String get() = creature.name
     override val description: String get() = creature.description

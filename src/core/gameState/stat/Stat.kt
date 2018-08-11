@@ -52,6 +52,7 @@ class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1,
         //Skills
         const val CLIMBING = "Climbing"
         const val BARE_FOOT = "Barefoot"
+        const val BARE_HANDED = "Bare Handed"
     }
 
 

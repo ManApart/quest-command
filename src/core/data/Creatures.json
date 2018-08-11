@@ -3,10 +3,12 @@
     "name": "Rat",
     "description": "Mangy and red eyed.",
     "body": "Rat",
+    "ai": "Cowardly Predator",
     "properties": {
       "stats": {
         "Health": 20,
-        "Strength": 2
+        "Strength": 2,
+        "Bare Handed": 2
       },
       "tags": [
         "Predator",
