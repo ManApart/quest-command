@@ -2,7 +2,7 @@ package core.gameState
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import combat.Battle
+import combat.battle.Battle
 import travel.journey.Journey
 
 object GameState {

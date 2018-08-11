@@ -26,6 +26,7 @@ class AttackCommand : Command() {
         return "\n\t<attack> <target> - Chop, crush, slash, or stab the target with the item in your right hand" +
                 "\n\t<attack> <target> with <hand> - Attack the target with the item in your left/right hand" +
                 "\n\t<attack> <direction> of <target> - Attack the target, aiming in a direction (${TargetDirection.getPrimaryAliases().joinToString(", ")})" +
+                "\n\t<attack> <direction> - Attack the target you are battling, aiming in a direction (${TargetDirection.getPrimaryAliases().joinToString(", ")}) X" +
                 "\n\t<attack> <target> with <item> - Attack the target with the item in your left/right hand" +
                 "\n\tAttacking a target damages it based on the chop/stab/slash damage of the item you're holding in that hand, or the damage you do if empty handed"
     }
@@ -46,6 +47,7 @@ class AttackCommand : Command() {
         when {
             cleaned.argGroups.isEmpty() -> println("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
             ScopeManager.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, ScopeManager.getTarget(cleaned.argStrings[0]), direction))
+            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
             else -> println("Couldn't find ${cleaned.argStrings[0]}")
         }
     }

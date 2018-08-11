@@ -5,7 +5,7 @@
     "body": "Rat",
     "properties": {
       "stats": {
-        "Health": 100,
+        "Health": 20,
         "Strength": 2
       },
       "tags": [

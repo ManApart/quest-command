@@ -103,6 +103,8 @@ Agility affects how quickly someone can attack, strength how much the attack doe
 * you can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
 * Break scope manager and item manager listeners into own classes
 * Burning the apple tree branches should make the user fall
+* Tree continues burning even after leaving it
+* Attack direction should use previous target
 
 
 ### Validation tools
