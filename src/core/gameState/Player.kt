@@ -12,7 +12,7 @@ class Player : Target {
     var canRest = true
 
     init {
-        creature.soul.addStat(Stat.HEALTH, 1, 100, 1)
+        creature.soul.addStat(Stat.HEALTH, 1, 10, 1)
         creature.soul.addStat(Stat.STAMINA, 1, 100, 1)
         creature.soul.addStat(Stat.STRENGTH, 1, 1, 1)
         creature.soul.addStat(Stat.CLIMBING, 1)

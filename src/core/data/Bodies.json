@@ -16,7 +16,8 @@
     "name": "Rat",
     "parts": [
       "Head",
-      "Body"
+      "Body",
+      "Claws"
     ]
   }
 ]

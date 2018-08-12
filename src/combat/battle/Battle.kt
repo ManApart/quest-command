@@ -18,9 +18,31 @@ class Battle(combatantCreatures: List<Creature>) {
 
 
     private fun getPlayerCombatant() =
-            combatants.first { it.creature != GameState.player.creature }
+           getCombatant(GameState.player.creature)!!
+
+    fun getCombatant(creature: Creature) : Combatent? {
+        return combatants.firstOrNull { it.creature == creature }
+    }
 
     fun takeTurn(){
+        if (isOver()){
+            clearBattle()
+        } else {
+            executeTurn()
+        }
+    }
+
+    private fun isOver() : Boolean {
+        return combatants.size <= 1
+    }
+
+    private fun clearBattle() {
+        GameState.battle = null
+        println("The battle ends.")
+        EventManager.postEvent(BattleEndedEvent())
+    }
+
+    private fun executeTurn() {
         lastFired ++
         var playerTurn = false
 
@@ -42,8 +64,6 @@ class Battle(combatantCreatures: List<Creature>) {
             }
             else -> EventManager.postEvent(BattleTurnEvent())
         }
-
-
     }
 
 }

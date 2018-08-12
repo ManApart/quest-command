@@ -68,13 +68,20 @@ Ex:
   
   **Battle**
   
- In battle, a creature can act when it attains 100 action points. Action points are increased by the creature's agility, alternating between the two creatures. When 100 ap are achieved, the creature gets a turn and the ap are reset to 0. During a turn, a player can take any normal command / action, but will generally choose a battle action. The player can equip either hand, or use a hand. Each of the battle commands default's to the right hand, but can be preferenced with right or left to indicate a hand. If block is chosen without a hand preference, it will default to the hand that has a shield, is armed, or the right hand. 
+ In battle, a creature can act when it attains 100 action points. Action points are recovered based on the creature's agility, alternating between the two creatures. When 100 ap are achieved, the creature gets a turn and the ap are reset to 0. During a turn, a player can take any normal command / action, but will generally choose a battle action. The player can equip either hand, or use a hand. Each of the battle commands default's to the right hand, but can be preferenced with right or left to indicate a hand. If block is chosen without a hand preference, it will default to the hand that has a shield, is armed, or the right hand. 
  
  Block can be high, low or medium. If the player blocks high and the opponent strikes high, the shield will take all damagage. If the opponent strikes medium (one height away from block area), the shield takes medium damage (and low, the sheild would block no damage).
  
  Weapons have different reach and the player may need to step closer, or step back to avoid a blow.
 
 Agility affects how quickly someone can attack, strength how much the attack does, perception how likely to hit, etc
+
+Attacking with heavier weapons does what?
+* Costs more action points (instead of always resetting to 0 be based on weapon)?
+* Drains stamina?
+* Is only an issue if the weapon is heavy compared to your strength level?
+
+Attacking different body parts do anything? What's the point of the attack direction?
 
 ## TODO
 

@@ -6,8 +6,8 @@
     "ai": "Cowardly Predator",
     "properties": {
       "stats": {
-        "Health": 20,
-        "Strength": 2,
+        "Health": 5,
+        "Strength": 1,
         "Bare Handed": 2
       },
       "tags": [
