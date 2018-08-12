@@ -23,6 +23,11 @@ class Combatent(val creature: Creature) {
                 println("${creature.name} does nothing!")
             }
         }
+        actionPoints = 0
+    }
+
+    fun isPlayer() : Boolean {
+        return creature == GameState.player.creature
     }
 
 }

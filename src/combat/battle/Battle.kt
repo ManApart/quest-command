@@ -22,15 +22,20 @@ class Battle(combatantCreatures: List<Creature>) {
 
     fun takeTurn(){
         lastFired ++
+        var playerTurn = false
+
         combatants.forEach { it.increaseActionPoints() }
         combatants.forEach {
             if (it.canAct()){
+                if (it.isPlayer()) {
+                    playerTurn = true
+                }
                 it.act()
             }
         }
 
         when {
-            getPlayerCombatant().canAct() -> lastFired = 0
+            playerTurn -> lastFired = 0
             lastFired > 100 -> {
                 println("You should have been able to do something by now. Something is wrong.")
                 lastFired = 0
