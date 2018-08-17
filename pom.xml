@@ -62,7 +62,14 @@
 
     </dependencies>
 
+
+
     <build>
+        <resources>
+            <resource>
+                <directory>src/resource</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -12,7 +12,7 @@ object GameState {
     var battle: Battle? = null
 
     private fun loadLocations(): Location {
-        val json = this::class.java.classLoader.getResource("core/data/Locations.json").readText()
+        val json = this::class.java.getResourceAsStream("/data/Locations.json")
         return jacksonObjectMapper().readValue(json)
     }
 

@@ -21,7 +21,7 @@ object ItemManager {
     }
 
     private fun loadItems(): List<Item> {
-        val json = this::class.java.classLoader.getResource("core/data/Items.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/Items.json")
         return jacksonObjectMapper().readValue(json)
     }
 

@@ -4,23 +4,24 @@ import core.utility.ReflectionTools
 import org.junit.Assert
 import org.junit.Test
 
+
 class ReflectionToolsTest {
 
     @Test
     fun getAllCommands(){
         val commands = ReflectionTools.getAllCommands()
-        Assert.assertTrue(commands.isNotEmpty())
+        Assert.assertEquals(1, commands.isNotEmpty())
     }
 
     @Test
     fun getAllEvents(){
         val events = ReflectionTools.getAllEvents()
-        Assert.assertTrue(events.isNotEmpty())
+        Assert.assertEquals(true, events.isNotEmpty())
     }
 
     @Test
     fun getAllEventListeners(){
         val listeners = ReflectionTools.getAllEventListeners()
-        Assert.assertTrue(listeners.isNotEmpty())
+        Assert.assertEquals(true, listeners.isNotEmpty())
     }
 }

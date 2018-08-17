@@ -9,7 +9,7 @@ object InheritableManager {
     private val inheritables = loadInheritables()
 
     private fun loadInheritables(): List<Inheritable> {
-        val json = this::class.java.classLoader.getResource("core/data/Inheritables.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/Inheritables.json")
         return jacksonObjectMapper().readValue(json)
     }
 

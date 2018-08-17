@@ -20,7 +20,7 @@ object EffectManager {
 //    }
 
     private fun loadEffects(): List<Effect> {
-        val json = this::class.java.classLoader.getResource("core/data/Effects.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/Effects.json")
         return jacksonObjectMapper().readValue(json)
     }
 

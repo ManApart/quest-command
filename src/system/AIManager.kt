@@ -10,7 +10,7 @@ object AIManager {
     private val AIs = loadAI()
 
     private fun loadAI(): List<AIBase> {
-        val json = this::class.java.classLoader.getResource("core/data/AI.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/AI.json")
         return jacksonObjectMapper().readValue(json)
     }
 

@@ -8,7 +8,7 @@ object ClimbPathManager {
     private val paths = loadPaths()
 
     private fun loadPaths(): List<ClimbPath> {
-        val json = this::class.java.classLoader.getResource("core/data/ClimbPaths.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/ClimbPaths.json")
         return jacksonObjectMapper().readValue(json)
     }
 

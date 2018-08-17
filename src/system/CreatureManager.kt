@@ -8,7 +8,7 @@ object CreatureManager {
     private val creatures = loadCreatures()
 
     private fun loadCreatures(): List<Creature> {
-        val json = this::class.java.classLoader.getResource("core/data/Creatures.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/Creatures.json")
         return jacksonObjectMapper().readValue(json)
     }
 

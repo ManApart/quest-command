@@ -8,7 +8,7 @@ object ActivatorManager {
     private val activators = loadActivators()
 
     private fun loadActivators(): List<Activator> {
-        val json = this::class.java.classLoader.getResource("core/data/Activators.json").readText()
+        val json = this::class.java.getResourceAsStream("/resource/data/Activators.json")
         return jacksonObjectMapper().readValue(json)
     }
 
