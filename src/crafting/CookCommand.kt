@@ -56,7 +56,6 @@ class CookCommand : Command() {
                 ingredients.add(ItemManager.getItem(it))
             }
         }
-
         return ingredients
     }
 

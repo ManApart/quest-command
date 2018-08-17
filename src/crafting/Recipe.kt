@@ -1,9 +1,10 @@
 package crafting
 
 import core.gameState.Soul
+import core.utility.Named
 import core.utility.listsMatch
 
-data class Recipe(val name: String, val ingredients: List<String>, val skills: Map<String, Int>, val tool: String, val result: String) {
+data class Recipe(override val name: String, val ingredients: List<String>, val skills: Map<String, Int>, val tool: String, val result: String) : Named {
 
     fun matches(ingredients: List<String>, tool: String) : Boolean{
         return this.tool.toLowerCase() == tool.toLowerCase() && listsMatch(this.ingredients, ingredients)
@@ -17,5 +18,12 @@ data class Recipe(val name: String, val ingredients: List<String>, val skills: M
             }
         }
         return true
+    }
+
+    fun read() : String {
+        //TODO - add required skills
+        return "$name:" +
+                "\n\tIngredients: ${ingredients.joinToString(", ")}" +
+                "\n\tResult: $result"
     }
 }

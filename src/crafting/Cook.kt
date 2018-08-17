@@ -51,6 +51,7 @@ class Cook : EventListener<CookAttemptEvent>() {
         if (source == GameState.player.creature){
             if (!GameState.player.knownRecipes.contains(recipe)){
                 GameState.player.knownRecipes.add(recipe)
+                println("You've discovered how to make ${recipe.name}!")
             }
         }
     }

@@ -2,6 +2,7 @@ package core.gameState
 
 import crafting.Recipe
 import core.gameState.stat.Stat
+import core.utility.NameSearchableList
 import system.BodyManager
 
 class Player : Target {
@@ -11,7 +12,7 @@ class Player : Target {
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
     var canRest = true
-    val knownRecipes = mutableListOf<Recipe>()
+    val knownRecipes = NameSearchableList<Recipe>()
 
     init {
         creature.soul.addStat(Stat.HEALTH, 1, 10, 1)
