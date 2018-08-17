@@ -49,3 +49,6 @@ Sample Data/
 *.iml
 out/
 lib/
+
+.gradle/
+classes/

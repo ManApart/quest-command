@@ -5,6 +5,7 @@ import system.GameManager
 import travel.ArriveEvent
 
 fun main(args: Array<String>) {
+    EventManager.registerListeners()
     GameManager.newGame()
     EventManager.postEvent(ArriveEvent(destination = GameState.player.creature.location, method = "wake"))
     val initialCommand = if (args.isEmpty()) {

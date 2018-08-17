@@ -11,11 +11,7 @@ object EventManager {
     private val listenerMap = HashMap<Class<*>, ArrayList<EventListener<*>>>()
     private val eventQueue = mutableListOf<Event>()
 
-    init {
-        registerListeners()
-    }
-
-    private fun registerListeners() {
+    fun registerListeners() {
         ReflectionTools.getAllEventListeners().map {
             registerListener(it.newInstance())
         }
