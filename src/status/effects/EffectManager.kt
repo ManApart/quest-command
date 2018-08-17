@@ -9,7 +9,7 @@ object EffectManager {
 
 //    class ItemSpawner : EventListener<SpawnItemEvent>() {
 //        override fun execute(event: SpawnItemEvent) {
-//            if (itemExists(event.itemName)) {
+//            if (exists(event.itemName)) {
 //                val item = getItem(event.itemName)
 //                item.count = event.count
 //                EventManager.postEvent(ItemSpawnedEvent(item, event.target))

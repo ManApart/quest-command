@@ -162,6 +162,17 @@
   },
   {
     "name": "Raw Poor Quality Meat",
-    "description": "It's pale and oily."
+    "description": "It's pale and oily.",
+    "weight": "1"
+  },
+  {
+    "name": "Cooked Poor Quality Meat",
+    "description": "Despite its oily texture, the aroma rises natural and almost nutty.",
+    "weight": "1",
+    "properties": {
+      "values": {
+        "healAmount": 5
+      }
+    }
   }
 ]

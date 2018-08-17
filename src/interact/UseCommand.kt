@@ -50,11 +50,11 @@ class UseCommand : Command() {
     }
 
     private fun targetExists(args: List<String>): Boolean {
-        return ScopeManager.targetExists(args) || GameState.player.creature.inventory.itemExists(args)
+        return ScopeManager.targetExists(args) || GameState.player.creature.inventory.exists(args)
     }
 
     private fun findTarget(args: List<String>): Target {
-        return if (GameState.player.creature.inventory.itemExists(args)) {
+        return if (GameState.player.creature.inventory.exists(args)) {
             GameState.player.creature.inventory.getItem(args)
         } else {
             ScopeManager.getTarget(args)

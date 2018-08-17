@@ -61,7 +61,7 @@ class EquipItemCommand : Command() {
 
     private fun getItem(args: Args): Item? {
         val itemName = args.argGroups[0]
-        return if (GameState.player.creature.inventory.itemExists(itemName)) {
+        return if (GameState.player.creature.inventory.exists(itemName)) {
             GameState.player.creature.inventory.getItem(itemName)
         } else {
             null

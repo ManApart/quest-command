@@ -1,5 +1,6 @@
 package core.gameState
 
+import crafting.Recipe
 import core.gameState.stat.Stat
 import system.BodyManager
 
@@ -10,6 +11,7 @@ class Player : Target {
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
     var canRest = true
+    val knownRecipes = mutableListOf<Recipe>()
 
     init {
         creature.soul.addStat(Stat.HEALTH, 1, 10, 1)
@@ -17,6 +19,7 @@ class Player : Target {
         creature.soul.addStat(Stat.STRENGTH, 1, 1, 1)
         creature.soul.addStat(Stat.CLIMBING, 1)
         creature.soul.addStat(Stat.AGILITY, 1)
+        creature.soul.addStat(Stat.COOKING, 1)
     }
 
     override fun toString(): String {

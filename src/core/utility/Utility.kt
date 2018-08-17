@@ -17,3 +17,25 @@ fun <A, B> mapsMatch(map: Map<A, B>, other: Map<A, B>) : Boolean {
     }
     return true
 }
+
+fun listsMatch(list: List<String>, other: List<String>) : Boolean {
+    if (list.size != other.size) {
+        return false
+    }
+    val listLower = list.map { it.toLowerCase() }
+    val otherLower = list.map { it.toLowerCase() }
+
+    listLower.forEach {
+        if (!otherLower.contains(it)) {
+            return false
+        }
+    }
+
+    otherLower.forEach {
+        if (!listLower.contains(it)) {
+            return false
+        }
+    }
+
+    return true
+}

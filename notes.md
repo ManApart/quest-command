@@ -102,6 +102,8 @@ Attacking different body parts do anything? What's the point of the attack direc
 * Behaviors have default keywords (itemName, etc) that can be used as variables
 * Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 * Cooking / recipes
+  * Burn if not enough skill
+  * Gain xp for cooking
 * Tutorial
 
 

@@ -76,7 +76,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     private fun getItemOrParent(paramNumber: Int, source: Creature, parent: Target) : Item {
         val param = getParam(paramNumber, "none").split(" ")
-        return if (source.inventory.itemExists(param)){
+        return if (source.inventory.exists(param)){
             source.inventory.getItem(param)
         } else {
             parent as Item

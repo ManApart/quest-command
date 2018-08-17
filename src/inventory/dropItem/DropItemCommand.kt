@@ -29,7 +29,7 @@ class DropItemCommand : core.commands.Command() {
     }
 
     private fun dropItem(itemArgs: List<String>) {
-        if (GameState.player.creature.inventory.itemExists(itemArgs)) {
+        if (GameState.player.creature.inventory.exists(itemArgs)) {
             val item = GameState.player.creature.inventory.getItem(itemArgs)
             EventManager.postEvent(DropItemEvent(GameState.player.creature, item))
         } else {

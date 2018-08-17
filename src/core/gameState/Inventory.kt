@@ -5,7 +5,11 @@ import core.utility.NameSearchableList
 class Inventory {
     private val items = NameSearchableList<Item>()
 
-    fun itemExists(name: List<String>) : Boolean{
+    fun exists(name: List<String>) : Boolean{
+       return items.exists(name)
+    }
+
+    fun exists(name: String) : Boolean{
        return items.exists(name)
     }
 
@@ -14,6 +18,10 @@ class Inventory {
     }
 
     fun getItem(name: List<String>) : Item {
+        return items.get(name)
+    }
+
+    fun getItem(name: String) : Item {
         return items.get(name)
     }
 

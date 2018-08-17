@@ -104,5 +104,15 @@
         }
       }
     ]
+  },
+  {
+    "name": "Range",
+    "description": "The old metal is pitted, but its belly glows a contented orange.",
+    "properties": {
+      "tags": [
+        "Metal",
+        "Range"
+      ]
+    }
   }
 ]

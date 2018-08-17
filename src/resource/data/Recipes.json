@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Poor Quality Cooked Meat",
+    "ingredients": [
+      "Raw Poor Quality Meat"
+    ],
+    "skills": {
+      "Cooking": 1
+    },
+    "tool": "Range",
+    "result": "Cooked Poor Quality Meat"
+  }
+]

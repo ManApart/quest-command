@@ -123,6 +123,14 @@ object ScopeManager {
         return targets.get(name) as Activator
     }
 
+    fun findTargetByTag(tag: String) : Target?{
+        return targets.firstOrNull { it.properties.tags.has(tag) }
+    }
+
+    fun findActivatorByTag(tag: String) : Activator?{
+        return targets.firstOrNull { it is Activator && it.properties.tags.has(tag) } as Activator
+    }
+
     fun getAllSouls(): List<Soul> {
         val souls = mutableListOf<Soul>()
         souls.add(GameState.player.creature.soul)
