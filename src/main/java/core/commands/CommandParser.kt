@@ -8,7 +8,7 @@ object CommandParser {
     private val unknownCommand = UnknownCommand()
 
     private fun loadCommands(): List<Command> {
-        return ReflectionTools.getAllCommands().map { it.newInstance() }.toList()
+        return ReflectionTools.getAllCommands().asSequence().map { it.newInstance() }.toList()
     }
 
     fun parseCommand(line: String) {

@@ -6,9 +6,10 @@ An open world rpg with intense levels of interact, experienced through the comma
 
 ### Building
 
-Run `mvn clean install` and then `mvn package -Dmaven.test.skip=true` to build a jar. This should be found in `QuestCommand/target` (`quest-command-1.0-SNAPSHOT-jar-with-dependencies` or `quest-command-1.0-SNAPSHOT`)
+Run AppBuilder's main method. I use the ide. This generates files so they don't need to be done at runtime. This only needs to be re-run when you change certain files (like adding new commands, events, event listeners etc)
 
-TODO - tests run correctly in intellij but not through maven
+Run `gradlew clean build jar` to build a jar. This should be found in `QuestCommand/build/libs` (`quest-command-1.0-SNAPSHOT`)
+
 
 ### Running
-Navigate to `QuestCommand/target` and run `java -jar quest-command-1.0-SNAPSHOT-jar-with-dependencies.jar`
+Navigate to `QuestCommand/target` and run `java -jar quest-command-1.0-SNAPSHOT.jar`
