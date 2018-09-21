@@ -76,6 +76,14 @@ Ex:
 
 Agility affects how quickly someone can attack, strength how much the attack does, perception how likely to hit, etc
 
+Each Turn
+* Increase combatants AP by their agility level until one person hits 100
+* Each action takes AP. Bare fists take 1 ap, the bigger the weapon (size keyword) the more ap it takes
+* Each action drains stamina. The heavier the weapon the more stamina drained
+* Without enough stamina the combatant can’t do anything
+* A Combatant can rest to recover stamina points
+
+
 Attacking with heavier weapons does what?
 * Costs more action points (instead of always resetting to 0 be based on weapon)?
 * Drains stamina?
@@ -105,6 +113,7 @@ Attacking different body parts do anything? What's the point of the attack direc
   * Burn if not enough skill
   * Gain xp for cooking
 * Tutorial
+* Reflection tools is too slow to run every start up. Create a 'build phase' that finds these classes and writes them to a file or something so that each startup is fast
 
 
 ### Short Term
@@ -126,9 +135,10 @@ Attacking different body parts do anything? What's the point of the attack direc
 * Check all behavior receipies have params that match their assigned behaviors
 
 
-
-
-  
+### Possible CLI Tools
+* [Clink](http://mridgers.github.io/clink/)
+* [Picocli](https://github.com/remkop/picocli)
+* [JLine](https://jline.github.io/)  
 
 Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
