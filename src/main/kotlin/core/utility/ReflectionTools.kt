@@ -34,7 +34,7 @@ object ReflectionTools {
         val allClasses = reflections.getSubTypesOf(Event::class.java)
         println("Saving ${allClasses.size} classes for Event")
 
-        File(srcPrefix + commandsFile).printWriter().use { out ->
+        File(srcPrefix + eventsFile).printWriter().use { out ->
             allClasses.forEach {
                 out.println(it.name)
             }
@@ -45,7 +45,7 @@ object ReflectionTools {
         val allClasses = reflections.getSubTypesOf(EventListener::class.java)
         println("Saving ${allClasses.size} classes for Event Listener")
 
-        File(srcPrefix + commandsFile).printWriter().use { out ->
+        File(srcPrefix + eventListenersFile).printWriter().use { out ->
             allClasses.forEach {
                 out.println(it.name)
             }
