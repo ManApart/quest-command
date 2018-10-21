@@ -20,29 +20,48 @@ object ReflectionTools {
     private val reflections = Reflections(SubTypesScanner(false))
 
     fun saveAllCommands() {
-        saveClassNamesToFile(Command::class, commandsFile)
-    }
+        val allClasses = reflections.getSubTypesOf(Command::class.java)
+        println("Saving ${allClasses.size} classes for Command")
 
-    fun saveAllEvents() {
-        saveClassNamesToFile(Event::class, eventsFile)
-    }
-
-    fun saveAllEventListeners() {
-        saveClassNamesToFile(EventListener::class, eventListenersFile)
-    }
-
-    private fun saveClassNamesToFile(clazz: KClass<*>, file: String) {
-        reflections.expandSuperTypes()
-        val allClasses = reflections.getSubTypesOf(clazz::class.java)
-        val types = reflections.allTypes.filter { it.endsWith("Command") }
-        println("Saving ${allClasses.size} classes for ${clazz.simpleName}")
-
-        File(srcPrefix + file).printWriter().use { out ->
+        File(srcPrefix + commandsFile).printWriter().use { out ->
             allClasses.forEach {
                 out.println(it.name)
             }
         }
     }
+
+    fun saveAllEvents() {
+        val allClasses = reflections.getSubTypesOf(Event::class.java)
+        println("Saving ${allClasses.size} classes for Event")
+
+        File(srcPrefix + commandsFile).printWriter().use { out ->
+            allClasses.forEach {
+                out.println(it.name)
+            }
+        }
+    }
+
+    fun saveAllEventListeners() {
+        val allClasses = reflections.getSubTypesOf(EventListener::class.java)
+        println("Saving ${allClasses.size} classes for Event Listener")
+
+        File(srcPrefix + commandsFile).printWriter().use { out ->
+            allClasses.forEach {
+                out.println(it.name)
+            }
+        }
+    }
+
+//    private fun saveClassNamesToFile(clazz: KClass<*>, file: String) {
+//        val allClasses = reflections.getSubTypesOf(clazz::class.java)
+//        println("Saving ${allClasses.size} classes for ${clazz.simpleName}")
+//
+//        File(srcPrefix + file).printWriter().use { out ->
+//            allClasses.forEach {
+//                out.println(it.name)
+//            }
+//        }
+//    }
 
     fun getAllCommands(): List<Class<out Command>> {
         return getClassesFromFile(commandsFile)
