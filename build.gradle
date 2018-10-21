@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.70'
+    ext.kotlin_version = '1.2.71'
     repositories {
         mavenCentral()
     }
@@ -24,8 +24,8 @@ tasks.withType(JavaCompile) {
 sourceSets {
     main {
         java {
-            srcDirs 'src/main/java'
-            srcDirs 'src/tools/java'
+            srcDirs 'src/main/kotlin'
+            srcDirs 'src/tools/kotlin'
         }
         resources {
             srcDir 'src/main/resource'
@@ -34,9 +34,9 @@ sourceSets {
 }
 
 repositories {
-
     maven { url "http://repo.maven.apache.org/maven2" }
 }
+
 dependencies {
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.2.51'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'

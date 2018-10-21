@@ -28,11 +28,11 @@
     <output url="file://$MODULE_DIR$/../../out/production/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/main">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resource" type="java-resource" />
     </content>
     <content url="file://$MODULE_DIR$/../../src/tools">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/tools/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/tools/kotlin" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -13,4 +13,5 @@ fun main(args: Array<String>) {
     ReflectionTools.saveAllCommands()
     ReflectionTools.saveAllEvents()
     ReflectionTools.saveAllEventListeners()
+    println("Build complete")
 }

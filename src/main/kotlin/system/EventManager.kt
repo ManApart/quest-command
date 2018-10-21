@@ -55,7 +55,7 @@ object EventManager {
         }
     }
 
-    fun <E : Event> getNumberOfMatchingListeners(event: E) : Int {
+    fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
         val listeners = mutableListOf<EventListener<*>>()
         listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }
                 ?.forEach {
