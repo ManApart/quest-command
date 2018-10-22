@@ -52,9 +52,6 @@ Ex:
 * Search - skill based, finds scope that's hidden
 * Look (examine) object for its description
   * Look during climb says the options you can go
-  * Prevent travel during climb
-  * Prevent using items etc during climb
-* Dismount - stop climbing if you are at the top or bottom of a climb (no damage)
 * Battle Commands (each can take a direction), (default to item in right hand, option to add left)
   * Slash - grazing damage but generally fast (hand slaps)
   * Chop - most damage, slowest

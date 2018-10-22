@@ -52,17 +52,6 @@ object ReflectionTools {
         }
     }
 
-//    private fun saveClassNamesToFile(clazz: KClass<*>, file: String) {
-//        val allClasses = reflections.getSubTypesOf(clazz::class.java)
-//        println("Saving ${allClasses.size} classes for ${clazz.simpleName}")
-//
-//        File(srcPrefix + file).printWriter().use { out ->
-//            allClasses.forEach {
-//                out.println(it.name)
-//            }
-//        }
-//    }
-
     fun getAllCommands(): List<Class<out Command>> {
         return getClassesFromFile(commandsFile)
     }

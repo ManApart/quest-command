@@ -2,6 +2,7 @@ package interact.actions
 
 import core.events.Event
 import core.events.EventListener
+import core.gameState.GameState
 import interact.UseEvent
 import system.EventManager
 
@@ -9,7 +10,7 @@ class NoUseFound() : EventListener<UseEvent>() {
     var checkedEvent: Event? = null
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        if (event != checkedEvent){
+        if (event != checkedEvent) {
             checkedEvent = event
             return EventManager.getNumberOfMatchingListeners(event) == 0
         }
@@ -17,6 +18,10 @@ class NoUseFound() : EventListener<UseEvent>() {
     }
 
     override fun execute(event: UseEvent) {
-        println("You use ${event.source.name} on ${event.target.name} but nothing happens.")
+        if (GameState.player.canInteract) {
+            println("You use ${event.source.name} on ${event.target.name} but nothing happens.")
+        } else {
+            println("You can't interact with that right now.")
+        }
     }
 }

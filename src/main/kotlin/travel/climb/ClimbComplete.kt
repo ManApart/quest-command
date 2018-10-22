@@ -19,5 +19,7 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))
         }
         GameState.player.canRest = true
+        GameState.player.canTravel = true
+        GameState.player.canInteract = true
     }
 }

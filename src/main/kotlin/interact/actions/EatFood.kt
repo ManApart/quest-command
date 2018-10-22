@@ -11,7 +11,7 @@ import system.EventManager
 
 class EatFood : EventListener<UseEvent>() {
     override fun shouldExecute(event: UseEvent): Boolean {
-        return event.source.properties.tags.has("Food") && event.source is Item && event.target.properties.tags.has("Creature")
+        return GameState.player.canInteract && event.source.properties.tags.has("Food") && event.source is Item && event.target.properties.tags.has("Creature")
     }
 
     override fun execute(event: UseEvent) {

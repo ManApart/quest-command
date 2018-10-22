@@ -38,6 +38,8 @@ class Battle(combatantCreatures: List<Creature>) {
 
     private fun clearBattle() {
         GameState.battle = null
+        GameState.player.canTravel = true
+        GameState.player.canRest = true
         println("The battle ends.")
         EventManager.postEvent(BattleEndedEvent())
     }

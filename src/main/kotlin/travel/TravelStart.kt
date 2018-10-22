@@ -13,11 +13,12 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
             isMovingToRestricted(event.currentLocation, event.destination) -> println("Could not find ${event.destination.name}")
             GameState.player.creature.soul.getCurrent(Stat.STAMINA) == 0 -> println("You're too tired to do any traveling.")
+            !GameState.player.canTravel -> println("You can't travel right now.")
             else -> {
                 if (event.currentLocation.contains(event.destination)){
-                    println("You start travelling towards ${event.destination}")
+                    println("You start travelling towards ${event.destination}.")
                 } else {
-                    println("You leave ${event.currentLocation} travelling towards ${event.destination}")
+                    println("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 }
                 EventManager.postEvent(StatChangeEvent(GameState.player.creature, "The journey", Stat.STAMINA, -1))
                 EventManager.postEvent(ArriveEvent(destination =  event.destination, method = "travel"))

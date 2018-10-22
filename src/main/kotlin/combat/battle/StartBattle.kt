@@ -40,6 +40,8 @@ object StartBattle {
     fun startBattle(aggressor: Creature, victim: Target) {
         if (victim is Creature && GameState.battle == null){
             GameState.battle = Battle(listOf(aggressor, victim))
+            GameState.player.canRest = false
+            GameState.player.canTravel = false
             EventManager.postEvent(GameTickEvent())
         }
     }

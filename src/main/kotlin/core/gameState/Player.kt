@@ -12,6 +12,8 @@ class Player : Target {
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
     var canRest = true
+    var canTravel = true
+    var canInteract = true
     val knownRecipes = NameSearchableList<Recipe>()
 
     init {

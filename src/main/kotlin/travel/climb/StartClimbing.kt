@@ -18,6 +18,8 @@ GameState.journey = ClimbJourney(event.target, GameState.player.creature.locatio
             EventManager.postEvent(ClimbJourneyEvent(path.getStart(climb.upwards), event.force))
         }
         GameState.player.canRest = false
+        GameState.player.canTravel = false
+        GameState.player.canInteract = false
         event.target.consume(event)
     }
 }
