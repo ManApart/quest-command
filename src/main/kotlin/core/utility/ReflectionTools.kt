@@ -6,7 +6,6 @@ import core.events.EventListener
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import java.io.File
-import java.lang.ClassCastException
 import kotlin.reflect.full.memberProperties
 
 
