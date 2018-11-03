@@ -1,19 +1,17 @@
 package core.utility
 
 import core.commands.Command
-import core.commands.CommandParser.commands
 import core.events.Event
 import core.events.EventListener
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
-import system.EventManager.registerListener
 import java.io.File
-import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 
 object ReflectionTools {
-    private const val srcPrefix = "./src/main/resource"
+    private const val srcPrefix = "."
+//    private const val srcPrefix = "./src/main/resource"
     private const val commandsFile = "/data/generated/commands.txt"
     private const val eventsFile = "/data/generated/events.txt"
     private const val eventListenersFile = "/data/generated/eventListeners.txt"
