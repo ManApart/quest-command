@@ -2,14 +2,8 @@ package utility
 
 import core.utility.ReflectionTools
 import org.junit.Assert
-import org.junit.Ignore
 import org.junit.Test
 
-/**
- * While I'm not happy about it, I'm ignoring the tests in this file for now as they are slow locally and fail with Travis CI.
- */
-
-@Ignore
 class ReflectionToolsTest {
 
     @Test

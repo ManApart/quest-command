@@ -1,5 +1,7 @@
 # Quest Command
 
+[![Build Status](https://travis-ci.org/ManApart/QuestCommand.svg?branch=master)](https://travis-ci.org/ManApart/QuestCommand)
+
 An open world rpg with intense levels of interact, experienced through the command prompt
 
 ## Building / Running
