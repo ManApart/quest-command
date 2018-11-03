@@ -10,7 +10,7 @@ before_install:
 script:
 - ls
 - ls ./src/main/resource/data/generated
-- ls ../
+- ls /data/generated/
 - ./gradlew build jar
 
 deploy:

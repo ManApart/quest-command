@@ -10,8 +10,7 @@ import kotlin.reflect.full.memberProperties
 
 
 object ReflectionTools {
-    private const val srcPrefix = "."
-//    private const val srcPrefix = "./src/main/resource"
+    private const val srcPrefix = "./src/main/resource"
     private const val commandsFile = "/data/generated/commands.txt"
     private const val eventsFile = "/data/generated/events.txt"
     private const val eventListenersFile = "/data/generated/eventListeners.txt"
@@ -51,7 +50,7 @@ object ReflectionTools {
     }
 
     fun getAllCommands(): List<Class<out Command>> {
-        return getClassesFromFile(commandsFile)
+        return getClassesFromFile(srcPrefix +commandsFile)
     }
 
     fun getAllEvents(): List<Class<out Event>> {
