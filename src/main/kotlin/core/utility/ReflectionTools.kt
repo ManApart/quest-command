@@ -50,7 +50,7 @@ object ReflectionTools {
     }
 
     fun getAllCommands(): List<Class<out Command>> {
-        return getClassesFromFile(srcPrefix +commandsFile)
+        return getClassesFromFile(commandsFile)
     }
 
     fun getAllEvents(): List<Class<out Event>> {
