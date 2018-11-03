@@ -69,7 +69,7 @@ object ReflectionTools {
     private fun <E> getClassesFromFile(file: String): List<Class<E>> {
         val classes = mutableListOf<Class<E>>()
         val content = this::class.java.getResource(file).readText()
-        content.trim().split("\r\n").forEach {
+        content.trim().lines().forEach {
             try {
                 val kClass = Class.forName(it) as Class<E>
                 classes.add(kClass)
