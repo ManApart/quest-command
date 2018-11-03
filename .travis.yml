@@ -1,8 +1,22 @@
 language: java
+
 jdk:
 - oraclejdk8
+
 before_install:
 - chmod +x gradlew
 - chmod +x gradle/wrapper/gradle-wrapper.jar
+
 script:
 - ./gradlew build jar
+
+deploy:
+- provider: releases
+  api_key: "$GH_TOKEN"
+  file_glob: true
+  file: "build/libs/*"
+  skip_cleanup: true
+  name: $NAME
+  on:
+    branch: master
+    jdk: oraclejdk8
