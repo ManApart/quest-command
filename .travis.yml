@@ -8,7 +8,7 @@ before_install:
 - chmod +x gradle/wrapper/gradle-wrapper.jar
 
 script:
-- ./gradlew build jar --stacktrace
+- ./gradlew build jar --info
 
 deploy:
 - provider: releases
