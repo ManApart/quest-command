@@ -19,5 +19,4 @@ deploy:
   name: $NAME
   on:
     branch: master
-    condition: tag =~ /\d+\.\d+\.\d+/
-    jdk: oraclejdk8
+    condition: tag =~ \d+\.\d+\.\d+
