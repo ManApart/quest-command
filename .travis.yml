@@ -18,5 +18,6 @@ deploy:
   skip_cleanup: true
   name: $NAME
   on:
-    branch: /\d+\.\d+\.\d+/
+    branch: master
+    condition: tag =~ /\d+\.\d+\.\d+/
     jdk: oraclejdk8
