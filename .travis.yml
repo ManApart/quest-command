@@ -19,4 +19,4 @@ deploy:
   name: $NAME
   on:
     branch: master
-    condition: tag =~ \d+\.\d+\.\d+
+    condition: tag =~ v\d+\.\d+\.\d+
