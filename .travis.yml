@@ -18,5 +18,5 @@ deploy:
   skip_cleanup: true
   name: $NAME
   on:
-    branch: release
+    branch: /\d+\.\d+\.\d+/
     jdk: oraclejdk8
