@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ManApart/QuestCommand.svg?branch=master)](https://travis-ci.org/ManApart/QuestCommand)
 
-An open world rpg with intense levels of interact, experienced through the command prompt
+An open world rpg with intense levels of interaction, experienced through the command prompt
 
 ## Building / Running
 
@@ -42,3 +42,30 @@ Here are some example commands you can run:
 `travel tree && climb tree`
 `travel an open field barren patch && equip hatchet && chop rat && slash rat`
 `travel farmer's hut interior && cook Raw Poor Quality Meat on range`
+
+
+## Data
+
+### Locations
+
+**Locations**
+Locations describe an area and contain
+
+* A unique name (Required)
+* A description
+* A list of items
+* A list of activators
+* A list of creatures
+
+**Location Paths**
+Location Paths describe the relationship between locations. They contain
+
+* A unique name (Required)
+* A unique name of the location it is adjacent to(Required)
+  * For each attached location, optionally a position relative to the current location
+  * When parsed, the attached location will get a reference back to the current location with the proper position so that they can be referenced either way
+  * The attached location will not get a link back if it already has an explicit link or is marked with the `noLink` keyword.
+* Restricted locations?
+
+TODO - Position options for no other / 0.0.0 other
+Move direct calls to Location manager out to interface? Not necessary at this point? - worse for testing how it is now

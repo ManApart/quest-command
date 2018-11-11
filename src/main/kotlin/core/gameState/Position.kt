@@ -2,14 +2,25 @@ package core.gameState
 
 import kotlin.math.pow
 
+private val NO_POSITION: Position = Position()
+
 class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
+
 
     override fun toString(): String {
         return "Pos: $x, $y, $z"
     }
 
-    fun add(other: Position) : Position {
+    fun add(other: Position): Position {
         return Position(x + other.x, y + other.y, z + other.z)
+    }
+
+    /**
+     * Return the direction this position is relative to 0.0.0
+     * The same as calling (0.0.0).getDirection(this)
+     */
+    fun getDirection(): Direction {
+        return NO_POSITION.getDirection(this)
     }
 
     /**
@@ -82,6 +93,10 @@ class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         } else {
             degrees + 90
         }
+    }
+
+    fun invert(): Position {
+        return Position(-x, -y, -z)
     }
 
 

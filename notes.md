@@ -140,3 +140,8 @@ Attacking different body parts do anything? What's the point of the attack direc
 Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
 
+
+
+Locations 2
+Or
+Locations 3 + Location Paths

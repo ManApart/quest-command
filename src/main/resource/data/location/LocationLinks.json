@@ -1,0 +1,85 @@
+[
+  {
+    "name": "Kanbara",
+    "locationName": "Kanbara",
+    "locations": [
+      {
+        "name": "Gate"
+      },
+      {
+        "name": "Wall"
+      },
+      {
+        "name": "City",
+        "restricted": true
+      }
+    ]
+  },
+  {
+    "name": "Kanbara City",
+    "locationName": "Kanbara City",
+    "locations": [
+      {
+        "name": "Kanbara Pub"
+      },
+      {
+        "name": "Mapmaker Manor"
+      }
+    ]
+  },
+  {
+    "name": "Farmer's Hut",
+    "locationName": "Farmer's Hut",
+    "locations": [
+      {
+        "name": "Farmer's Hut Interior",
+        "position": {
+          "x": -5
+        }
+      },
+      {
+        "name": "Kanbara"
+      },
+      {
+        "name": "An Open Field",
+        "position": {
+          "x": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "An Open Field",
+    "locationName": "Field",
+    "locations": [
+      {
+        "name": "Apple Tree",
+        "position": {
+          "y": 1
+        }
+      },
+      {
+        "name": "Barren Patch",
+        "position": {
+          "y": -1
+        }
+      }
+    ]
+  },
+  {
+    "name": "Apple Tree",
+    "locationName": "Apple Tree",
+    "locations": [
+      {
+        "name": "Tree Branches",
+        "position": {
+          "z": 1
+        },
+        "restricted": true
+      }
+    ]
+  },
+  {
+    "name": "Tree Branches"
+  }
+]
