@@ -2,7 +2,7 @@ package core.gameState
 
 import kotlin.math.pow
 
-private val NO_POSITION: Position = Position()
+val NO_POSITION: Position = Position()
 
 class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
 

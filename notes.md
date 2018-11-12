@@ -141,7 +141,9 @@ Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
 
 
-
-Locations 2
-Or
-Locations 3 + Location Paths
+Move direct calls to Location manager out to interface? Not necessary at this point? - worse for testing how it is now
+Move climb journey etc under player
+In all cases track location node and get location only through the node.
+Restricted / one way location links
+Sub locations?
+Use some path finding to find nearest area by evaluating nodes out from center node

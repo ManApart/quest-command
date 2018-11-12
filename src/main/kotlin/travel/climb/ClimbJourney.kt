@@ -1,13 +1,12 @@
 package travel.climb
 
-import core.gameState.Direction
-import core.gameState.Location
 import core.gameState.Target
 import core.gameState.climb.ClimbPath
 import core.gameState.climb.ClimbSegment
+import core.gameState.location.LocationNode
 import travel.journey.Journey
 
-class ClimbJourney(val target: Target, origin: Location, destination: Location, upwards: Boolean, val path: ClimbPath) : Journey {
+class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, upwards: Boolean, val path: ClimbPath) : Journey {
     var step = 0
     private var lastDirectionWasUp = upwards
     val top = if (upwards) {
@@ -124,7 +123,7 @@ class ClimbJourney(val target: Target, origin: Location, destination: Location, 
         return getDistance(path.getTop())
     }
 
-    fun getDestination(desiredStep: Int): Location {
+    fun getDestination(desiredStep: Int): LocationNode {
         return if (desiredStep == path.getTop()) {
             top
         } else {

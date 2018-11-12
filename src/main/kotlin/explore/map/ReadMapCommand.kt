@@ -2,8 +2,8 @@ package explore.map
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.Location
 import system.EventManager
+import system.LocationManager
 
 class ReadMapCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -35,8 +35,8 @@ class ReadMapCommand : Command() {
     }
 
     private fun targetLocation(args: List<String>){
-        val target = Location.findLocation(GameState.player.creature.location, args)
-        if (target != GameState.world){
+        val target = LocationManager.findLocation(args.joinToString(" "))
+        if (target != LocationManager.NOWHERE_NODE){
             EventManager.postEvent(ReadMapEvent(target))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")

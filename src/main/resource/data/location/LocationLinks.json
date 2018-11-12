@@ -1,16 +1,14 @@
 [
   {
-    "name": "Kanbara",
-    "locationName": "Kanbara",
+    "name": "Kanbara Gate",
+    "locationName": "Kanbara Gate",
+    "parent": "Kanbara",
     "locations": [
       {
-        "name": "Gate"
+        "name": "Kanbara Wall"
       },
       {
-        "name": "Wall"
-      },
-      {
-        "name": "City",
+        "name": "Kanbara City",
         "restricted": true
       }
     ]
@@ -18,6 +16,7 @@
   {
     "name": "Kanbara City",
     "locationName": "Kanbara City",
+    "parent": "Kanbara",
     "locations": [
       {
         "name": "Kanbara Pub"
@@ -30,6 +29,7 @@
   {
     "name": "Farmer's Hut",
     "locationName": "Farmer's Hut",
+    "parent": "Kanbara Countryside",
     "locations": [
       {
         "name": "Farmer's Hut Interior",
@@ -51,6 +51,7 @@
   {
     "name": "An Open Field",
     "locationName": "Field",
+    "parent": "Kanbara Countryside",
     "locations": [
       {
         "name": "Apple Tree",
@@ -69,6 +70,7 @@
   {
     "name": "Apple Tree",
     "locationName": "Apple Tree",
+    "parent": "Kanbara Countryside",
     "locations": [
       {
         "name": "Tree Branches",
@@ -80,6 +82,7 @@
     ]
   },
   {
-    "name": "Tree Branches"
+    "name": "Tree Branches",
+    "parent": "Apple Tree"
   }
 ]

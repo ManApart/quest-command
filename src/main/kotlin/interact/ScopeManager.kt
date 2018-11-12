@@ -16,12 +16,13 @@ object ScopeManager {
         resetTargets()
     }
 
-    class ArrivalHandler() : EventListener<ArriveEvent>() {
+    class ArrivalHandler : EventListener<ArriveEvent>() {
         override fun execute(event: ArriveEvent) {
             resetTargets()
-            addTargets(ItemManager.getItems(event.destination.items))
-            addTargets(ActivatorManager.getActivators(event.destination.activators))
-            addTargets(CreatureManager.getCreatures(event.destination.creatures))
+            val location = event.destination.getLocation()
+            addTargets(ItemManager.getItems(location.items))
+            addTargets(ActivatorManager.getActivators(location.activators))
+            addTargets(CreatureManager.getCreatures(location.creatures))
         }
     }
 

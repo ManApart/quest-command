@@ -3,7 +3,7 @@ package travel
 import core.commands.Command
 import core.gameState.Direction
 import core.gameState.GameState
-import core.gameState.Location
+import core.gameState.location.LocationNode
 import system.EventManager
 
 class TravelInDirectionCommand : Command() {
@@ -42,12 +42,9 @@ class TravelInDirectionCommand : Command() {
         }
     }
 
-    private fun findLocationInDirection(direction: Direction): Location? {
+    private fun findLocationInDirection(direction: Direction): LocationNode? {
         val loc = GameState.player.creature.location
-        return loc.findChildLocation(direction).firstOrNull{ it != loc}
-        ?: loc.findSiblings(direction).firstOrNull{ it != loc}
-        ?: loc.getParent().findSiblings(direction).firstOrNull{ it != loc}
-        ?: loc.getParent()
+        return loc.getNeighbors(direction).firstOrNull()
     }
 
 }

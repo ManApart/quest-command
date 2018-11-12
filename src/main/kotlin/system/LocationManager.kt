@@ -8,8 +8,12 @@ import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
 
 object LocationManager {
+    val NOWHERE = Location("Nowhere")
+    val NOWHERE_NODE = LocationNode("Nowhere")
+
     private val locations = loadLocations()
     private val locationNodes = loadLocationNodes()
+
 
     private fun loadLocations(): NameSearchableList<Location> {
         val json = this::class.java.getResourceAsStream("/data/location/Locations.json")
@@ -49,19 +53,21 @@ object LocationManager {
         return locationNodes.get(name)
     }
 
+    fun findLocation(name: String): LocationNode {
+        return if (locationNodes.exists(name)) {
+            locationNodes.get(name)
+        } else {
+            NOWHERE_NODE
+        }
+    }
+
+
 //    //TODO - test
 //    fun findLeastDistant(locations: List<LocationNode>) : LocationNode {
 //        return locations.sortedBy { position.getDistance(it.position) }.first()
 //    }
 //
-//    fun findLocation(args: List<String>): LocationNode {
-//        return if (args.isEmpty()) {
-//            this
-//        } else {
-//            val adjustedArgs = args.flatMap { it.toLowerCase().split(" ") }
-//            return findChildLocation(adjustedArgs)
-//        }
-//    }
+
 //
 //    private fun findOverlap(name: String, args: List<String>): Int {
 //        var wordCount = 0

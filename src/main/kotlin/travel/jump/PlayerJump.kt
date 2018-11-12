@@ -30,7 +30,8 @@ class PlayerJump : EventListener<JumpEvent>() {
 
     private fun calculateJumpDamage(event: JumpEvent): Int {
         val soul = event.creature.soul
-        val height = event.fallDistance ?: Math.abs(event.source.position.z - event.destination.position.z)
+        val position = event.source.getLink(event.destination).position
+        val height = event.fallDistance ?: Math.abs(position.z)
         val damage = height - 2*soul.getCurrent(Stat.AGILITY)
 
         //TODO - look at foot defense and factor that in

@@ -4,8 +4,9 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.gameState.GameState
-import core.gameState.Location
+import core.gameState.location.LocationNode
 import system.EventManager
+import system.LocationManager
 
 class TravelCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -26,23 +27,23 @@ class TravelCommand : Command() {
         return listOf("Travel")
     }
 
-    override fun execute(keyword: String, arguments: List<String>) {
-        if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(arguments[0].toLowerCase())) {
-            CommandParser.parseCommand(arguments.joinToString(" "))
+    override fun execute(keyword: String, args: List<String>) {
+        if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
+            CommandParser.parseCommand(args.joinToString(" "))
         } else {
-            val args = Args(arguments, excludedWords = listOf("to"))
-            val found = Location.findLocation(GameState.player.creature.location, args.argGroups[0])
+            val arguments = Args(args, excludedWords = listOf("to"))
+            val found = LocationManager.findLocation(arguments.argGroups[0].joinToString(" "))
 
-            if (foundMatch(args.argGroups[0], found)) {
+            if (foundMatch(arguments.argGroups[0], found)) {
                 EventManager.postEvent(TravelStartEvent(destination = found))
             } else {
-                println("Could not find $args")
+                println("Could not find $arguments")
             }
         }
     }
 
-    private fun foundMatch(args: List<String>, found: Location): Boolean {
-        if (found == GameState.world) {
+    private fun foundMatch(args: List<String>, found: LocationNode): Boolean {
+        if (found == LocationManager.NOWHERE_NODE) {
             return false
         }
         args.forEach {

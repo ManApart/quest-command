@@ -33,13 +33,7 @@ class JumpCommand : Command() {
             val distance = (GameState.journey as ClimbJourney).getCurrentDistance()
             EventManager.postEvent(JumpEvent(source = location, destination = location, fallDistance = distance))
         } else {
-            val found = loc.findChildLocation(Direction.BELOW).firstOrNull { it != loc }
-                    ?: if (loc.position.isDirection(Direction.ABOVE, Position())) {
-                        loc.getParent()
-                    } else {
-                        null
-                    }
-                    ?: loc.findSiblings(Direction.BELOW).firstOrNull { it != loc }
+            val found = loc.getNeighbors(Direction.BELOW).firstOrNull()
             if (found != null) {
                 EventManager.postEvent(JumpEvent(source = GameState.player.creature.location, destination = found))
             } else {

@@ -32,7 +32,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     fun execute(parent: Target) {
         when (className) {
-            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = GameState.world.findLocation(params[0].split(" ")), method = "move"))
+            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationManager.findLocation(params[0]), method = "move"))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RemoveItemEvent::class.simpleName ->{
                 val creature = getCreatureOrPlayer(1)

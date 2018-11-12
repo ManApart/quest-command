@@ -1,6 +1,6 @@
 package explore.map
 
 import core.events.Event
-import core.gameState.Location
+import core.gameState.location.LocationNode
 
-class ReadMapEvent(val target: Location) : Event
+class ReadMapEvent(val target: LocationNode) : Event

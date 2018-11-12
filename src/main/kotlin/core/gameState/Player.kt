@@ -4,9 +4,10 @@ import crafting.Recipe
 import core.gameState.stat.Stat
 import core.utility.NameSearchableList
 import system.BodyManager
+import system.LocationManager
 
 class Player : Target {
-    val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), GameState.world.findLocation(listOf("an open field")), null, this)
+    val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), LocationManager.findLocation("an open field"), null, this)
 
     override val name: String get() = creature.name
     override val description: String get() = creature.description

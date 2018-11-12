@@ -1,11 +1,13 @@
 package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import core.gameState.location.LocationNode
 import system.AIManager
 import system.BodyManager
 import system.ItemManager
+import system.LocationManager
 
-class Creature(override val name: String, override val description: String, val body: Body = Body(), var location: Location = GameState.world, ai: String? = null, val parent: Target? = null, override val properties: Properties = Properties()) : Target {
+class Creature(override val name: String, override val description: String, val body: Body = Body(), var location: LocationNode = LocationManager.NOWHERE_NODE, ai: String? = null, val parent: Target? = null, override val properties: Properties = Properties()) : Target {
 
     val soul = Soul(this)
     val inventory = Inventory()
