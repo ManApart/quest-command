@@ -1,5 +1,6 @@
 package core.commands
 
+import core.history.ChatHistory
 import core.utility.ReflectionTools
 import system.EventManager
 
@@ -12,6 +13,7 @@ object CommandParser {
     }
 
     fun parseCommand(line: String) {
+        ChatHistory.addInput(line)
         val commands = line.split("&&")
         for (command in commands) {
             parseSingleCommand(command)

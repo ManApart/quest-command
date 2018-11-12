@@ -14,7 +14,6 @@ object LocationManager {
     private val locations = loadLocations()
     private val locationNodes = loadLocationNodes()
 
-
     private fun loadLocations(): NameSearchableList<Location> {
         val json = this::class.java.getResourceAsStream("/data/location/Locations.json")
         return jacksonObjectMapper().readValue(json)

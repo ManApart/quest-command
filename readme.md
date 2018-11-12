@@ -66,6 +66,6 @@ Location Paths describe the relationship between locations. They contain
   * When parsed, the attached location will get a reference back to the current location with the proper position so that they can be referenced either way
   * The attached location will not get a link back if it already has an explicit link or is marked with the `noLink` keyword.
 * A parent name - used only in descriptions (ex: Blue Cave is part of Kanbara Wilds)
-* Restricted locations?
+* Restricted locations? Hidden locations?
 
 

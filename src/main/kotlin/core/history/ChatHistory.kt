@@ -1,8 +1,12 @@
 package core.history
 
+fun display(message: String){
+    ChatHistory.print("NotUsedYet", message)
+}
+
 object ChatHistory {
     val history = mutableListOf<InputOutput>()
-    private var current = InputOutput("Start History")
+    private var current = InputOutput()
     private val ignored = mutableListOf<String>()
 
     fun addInput(input: String) {
@@ -19,5 +23,18 @@ object ChatHistory {
 
     fun ignoreMessage(id:String) {
         ignored.add(id)
+    }
+
+    fun clear() {
+        history.clear()
+        current = InputOutput()
+    }
+
+    fun getLastInput() : String {
+        return  current.input
+    }
+
+    fun getLastOutput() : String {
+        return current.outPut.lastOrNull() ?: ""
     }
 }

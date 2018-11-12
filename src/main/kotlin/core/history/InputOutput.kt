@@ -1,3 +1,3 @@
 package core.history
 
-data class InputOutput(val input: String, val outPut: MutableList<String> = mutableListOf())
+data class InputOutput(val input: String = "Start History", val outPut: MutableList<String> = mutableListOf())

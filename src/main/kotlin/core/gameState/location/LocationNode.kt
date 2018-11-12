@@ -15,7 +15,13 @@ class LocationNode(override val name: String, private val locationName: String =
     }
 
     fun addLink(link: LocationLink) {
-        locations.add(link)
+        if (!hasLink(link)) {
+            locations.add(link)
+        }
+    }
+
+    private fun hasLink(link: LocationLink): Boolean {
+        return locations.any { it.name == link.name }
     }
 
     fun getNeighborLinks(): List<LocationLink> {

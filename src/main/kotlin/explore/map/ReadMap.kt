@@ -1,11 +1,11 @@
 package explore.map
 
-import com.sun.javafx.robot.impl.FXRobotHelper.getChildren
 import core.events.EventListener
 import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.location.LocationLink
 import core.gameState.location.LocationNode
+import core.history.display
 
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {
@@ -16,14 +16,13 @@ class ReadMap : EventListener<ReadMapEvent>() {
                 println("You are in ${event.target.name}.")
             }
         }
-        println("${event.target.name} ${getSiblings(event.target)}.")
+        display("${event.target.name} ${getSiblings(event.target)}.")
     }
 
     private fun getSiblings(target: LocationNode): String {
         val locations = target.getNeighborLinks()
-        return if (locations.size > 1) {
-            //TODO - why always passing far?
-            val siblings = locations.joinToString(", ") { getLocationWithDirection(it, true) }
+        return if (locations.isNotEmpty()) {
+            val siblings = locations.joinToString(", ") { getLocationWithDirection(it, false) }
             "is neighbored by $siblings"
         } else {
             "has no known neighbors"
