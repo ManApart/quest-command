@@ -11,7 +11,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
     override fun execute(event: TravelStartEvent) {
         when {
             event.destination == event.currentLocation -> println("You realize that you're already at ${event.currentLocation}")
-            isMovingToRestricted(event.currentLocation, event.destination) -> println("Could not find ${event.destination.name}")
+            isMovingToRestricted(event.currentLocation, event.destination) -> println("You're not sure how to get to ${event.destination.name}")
             GameState.player.creature.soul.getCurrent(Stat.STAMINA) == 0 -> println("You're too tired to do any traveling.")
             !GameState.player.canTravel -> println("You can't travel right now.")
             else -> {
@@ -23,7 +23,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
     }
 
     private fun isMovingToRestricted(source: LocationNode, destination: LocationNode): Boolean {
-        //TODO - reimplement restricted?
-        return false
+        val link = source.getLink(destination)
+        return link == null || link.restricted
     }
 }

@@ -141,7 +141,5 @@ Item Params > inheritable params > Behavior Params/Properties > Conditions/event
 
 
 Move climb journey etc under player
-oneWay keyword
-Restricted - locations are visible but can't be traveled to (for things like climbing trees or openning doors)
 Use some path finding to find nearest area by evaluating nodes out from center node
 let map be used for route planning

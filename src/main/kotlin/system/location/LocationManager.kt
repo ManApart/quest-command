@@ -21,12 +21,12 @@ object LocationManager {
         val locationNodes = NameSearchableList(nodes)
         nodes.forEach { node ->
             node.getNeighborLinks().forEach { link ->
-                val neighbor = getLocationNodeByExactName(link.name, locationNodes)
+                var neighbor = getLocationNodeByExactName(link.name, locationNodes)
                 if (neighbor == null) {
-                    val newNeighbor = LocationNode(link.name)
-                    locationNodes.add(newNeighbor)
-                    newNeighbor.addLink(LocationLink(node.name, link.position.invert()))
-                } else {
+                    neighbor = LocationNode(link.name)
+                    locationNodes.add(neighbor)
+                }
+                if (!link.oneWay) {
                     neighbor.addLink(LocationLink(node.name, link.position.invert()))
                 }
             }
@@ -61,7 +61,7 @@ object LocationManager {
         }
     }
 
-    fun countLocationNodes() : Int {
+    fun countLocationNodes(): Int {
         return locationNodes.size
     }
 

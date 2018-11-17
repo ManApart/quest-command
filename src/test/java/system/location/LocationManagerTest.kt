@@ -10,7 +10,7 @@ import system.DependencyInjector
 class LocationManagerTest {
 
     @Test
-    fun linksCreateNeighborsIfTheyDoNotExist(){
+    fun linksCreateNeighborsIfTheyDoNotExist() {
         val neighborLink = LocationLink("neighbor")
         val source = LocationNode("source", locations = mutableListOf(neighborLink))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
@@ -23,7 +23,7 @@ class LocationManagerTest {
     }
 
     @Test
-    fun noDuplicateNodesOrLinks(){
+    fun noDuplicateNodesOrLinks() {
         val neighborExistsName = "neighbor exists"
         val neighborDoesNotExistsName = "neighbor doesn't exists"
 
@@ -47,4 +47,23 @@ class LocationManagerTest {
         Assert.assertEquals(1, neighborExists.getNeighborLinks().size)
         Assert.assertEquals(1, neighborDoesNotExists.getNeighborLinks().size)
     }
+
+    @Test
+    fun oneWayLinksDontLinkBack() {
+
+        val neighbor = LocationNode("neighbor")
+        val source = LocationNode("source", locations = mutableListOf(LocationLink(neighbor.name, oneWay = true)))
+        val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighbor)))
+
+        DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
+        LocationManager.reload()
+
+        Assert.assertEquals(source, LocationManager.getLocationNode(source.name))
+        Assert.assertEquals(neighbor, LocationManager.getLocationNode(neighbor.name))
+        Assert.assertEquals(1, source.getNeighborLinks().size)
+        Assert.assertEquals(0, neighbor.getNeighborLinks().size)
+
+    }
+
+
 }

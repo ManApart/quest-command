@@ -51,7 +51,7 @@ class LocationNode(override val name: String, private val locationName: String =
         return name.toLowerCase().split(" ").contains(args[0])
     }
 
-    fun getLink(destination: LocationNode): LocationLink {
+    fun getLink(destination: LocationNode): LocationLink? {
         return locations.first { it.name == destination.name }
     }
 

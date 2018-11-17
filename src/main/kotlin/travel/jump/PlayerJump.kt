@@ -2,6 +2,7 @@ package travel.jump
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.NO_POSITION
 import core.gameState.stat.Stat
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -30,7 +31,7 @@ class PlayerJump : EventListener<JumpEvent>() {
 
     private fun calculateJumpDamage(event: JumpEvent): Int {
         val soul = event.creature.soul
-        val position = event.source.getLink(event.destination).position
+        val position = event.source.getLink(event.destination)?.position ?: NO_POSITION
         val height = event.fallDistance ?: Math.abs(position.z)
         val damage = height - 2*soul.getCurrent(Stat.AGILITY)
 
