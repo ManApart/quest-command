@@ -1,13 +1,15 @@
 package core.gameState
 
-import crafting.Recipe
 import core.gameState.stat.Stat
 import core.utility.NameSearchableList
+import crafting.Recipe
 import system.BodyManager
 import system.location.LocationManager
+import travel.climb.ClimbJourney
 
 class Player : Target {
     val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), LocationManager.findLocation("an open field"), null, this)
+    var climbJourney: ClimbJourney? = null
 
     override val name: String get() = creature.name
     override val description: String get() = creature.description
@@ -28,6 +30,11 @@ class Player : Target {
 
     override fun toString(): String {
         return name
+    }
+
+    fun finishJourney(){
+        climbJourney = null
+        GameState.player.canRest = true
     }
 
 

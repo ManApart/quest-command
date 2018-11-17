@@ -32,7 +32,7 @@ object GameManager {
         }
     }
 
-    class MessageHandler() : EventListener<MessageEvent>() {
+    class MessageHandler : EventListener<MessageEvent>() {
         override fun execute(event: MessageEvent) {
             println(event.message)
         }

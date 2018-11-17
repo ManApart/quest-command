@@ -137,12 +137,12 @@ object ScopeManager {
         souls.add(GameState.player.creature.soul)
         souls.addAll(GameState.player.creature.inventory.getAllItems().map { it.soul })
 
-        getTargets().forEach {
-            if (it is Activator) {
-                souls.add(it.creature.soul)
-            } else if (it is Creature) {
-                souls.add(it.soul)
-                souls.addAll(it.inventory.getAllItems().map { it.soul })
+        getTargets().forEach { target ->
+            if (target is Activator) {
+                souls.add(target.creature.soul)
+            } else if (target is Creature) {
+                souls.add(target.soul)
+                souls.addAll(target.inventory.getAllItems().map { item -> item.soul })
             }
         }
         return souls.toList()

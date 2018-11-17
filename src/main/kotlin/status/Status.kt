@@ -23,7 +23,7 @@ class Status : EventListener<StatusEvent>() {
     private fun printOtherStats(event: StatusEvent) {
         val soul = event.creature.soul
         val subject = StringFormatter.getSubjectPossessive(event.creature)
-        val statString = soul.getStats().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") { "${it.name.capitalize()}: ${it.current}/${it.boostedMax}" }
+        val statString = soul.getStats().asSequence().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") { "${it.name.capitalize()}: ${it.current}/${it.boostedMax}" }
         println("$subject stats are:\n\t$statString")
     }
 

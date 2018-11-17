@@ -4,7 +4,7 @@ import kotlin.math.pow
 
 val NO_POSITION: Position = Position()
 
-class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
+class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
 
 
     override fun toString(): String {
@@ -65,7 +65,7 @@ class Position(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return Math.sqrt(x + y + z).toInt()
     }
 
-    fun getDistanceXY(other: Position): Int {
+    private fun getDistanceXY(other: Position): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
         return Math.sqrt(x + y).toInt()

@@ -7,10 +7,10 @@ import status.statChanged.StatBoostEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
-class Effect(val name: String, val type: EffectType, val statName: String, val amount: Int = 1, var duration: Int = -1) {
+class Effect(val name: String, private val type: EffectType, private val statName: String, val amount: Int = 1, private var duration: Int = -1) {
     enum class EffectType { DRAIN, REDUCE, HEAL, BOOST }
 
-    var doOnce = true
+    private var doOnce = true
 
     fun copy() : Effect {
         return Effect(name, type, statName, amount, duration)

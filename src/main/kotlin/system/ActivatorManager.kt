@@ -17,6 +17,6 @@ object ActivatorManager {
     }
 
     fun getActivators(names: List<String>) : List<Activator> {
-        return names.map { getActivator(it) }.toList()
+        return names.asSequence().map { getActivator(it) }.toList()
     }
 }

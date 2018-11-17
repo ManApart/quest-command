@@ -9,7 +9,7 @@ const val climbTree = "travel tree && climb tree"
 const val cookMeatTest = "travel farmer's hut interior && cook Raw Poor Quality Meat on range"
 
 
-val initialCommand: String = climbTree
+const val initialCommand: String = climbTree
 
 
 fun main(args: Array<String>) {

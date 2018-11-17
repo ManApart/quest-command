@@ -45,6 +45,6 @@ object EffectManager {
     }
 
     fun getEffects(names: List<String>): List<Effect> {
-        return names.map { getEffect(it) }.toList()
+        return names.asSequence().map { getEffect(it) }.toList()
     }
 }

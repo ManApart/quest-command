@@ -66,7 +66,7 @@ class HelpCommand : Command() {
     }
 
     private fun isCommandGroup(args: List<String>): Boolean {
-        return CommandParser.commands.asSequence().map { it.getCategory().map { it.toLowerCase() } }.contains(args)
+        return CommandParser.commands.asSequence().map { command -> command.getCategory().map { category -> category.toLowerCase() } }.contains(args)
     }
 
     private fun printCommandGroup(args: List<String>) {

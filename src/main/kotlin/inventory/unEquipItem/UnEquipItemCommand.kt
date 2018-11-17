@@ -4,7 +4,6 @@ import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Item
-import inventory.equipItem.EquipItemEvent
 import system.EventManager
 
 class UnEquipItemCommand : Command() {

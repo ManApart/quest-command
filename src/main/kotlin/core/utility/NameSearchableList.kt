@@ -20,7 +20,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         names.forEach { addProxy(item, it) }
     }
 
-    fun addProxy(item: N, name: String){
+    private fun addProxy(item: N, name: String){
         if (!contains(item)){
             add(item)
         }

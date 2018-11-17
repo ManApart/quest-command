@@ -3,7 +3,6 @@ package travel.jump
 import core.commands.Command
 import core.gameState.Direction
 import core.gameState.GameState
-import core.gameState.Position
 import system.EventManager
 import travel.climb.ClimbJourney
 
@@ -28,9 +27,9 @@ class JumpCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val loc = GameState.player.creature.location
-        if (GameState.journey is ClimbJourney) {
+        if (GameState.player.climbJourney is ClimbJourney) {
             val location = GameState.player.creature.location
-            val distance = (GameState.journey as ClimbJourney).getCurrentDistance()
+            val distance = (GameState.player.climbJourney as ClimbJourney).getCurrentDistance()
             EventManager.postEvent(JumpEvent(source = location, destination = location, fallDistance = distance))
         } else {
             val found = loc.getNeighbors(Direction.BELOW).firstOrNull()

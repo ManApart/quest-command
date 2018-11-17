@@ -5,11 +5,11 @@ import status.LevelUpEvent
 import system.EventManager
 
 class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
-    var level = level; private set
+    private var level = level;
     var baseMax: Int = calcMax()
     var boostedMax = baseMax
     var current: Int = boostedMax
-    var exp: Double = getEXPAt(level); private set
+    private var exp: Double = getEXPAt(level)
 
     fun addEXP(amount: Int, creature: Creature) {
         if (amount > 0) {
@@ -38,7 +38,7 @@ class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1,
         return Math.pow(level.toDouble(), expExponential.toDouble())
     }
 
-    fun getNextLevelEXP(): Double {
+    private fun getNextLevelEXP(): Double {
         return getEXPAt(level + 1)
     }
 

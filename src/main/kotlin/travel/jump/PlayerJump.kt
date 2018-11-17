@@ -16,7 +16,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         println("You jump from ${event.source}")
         val damage = calculateJumpDamage(event)
 
-        GameState.finishJourney()
+        GameState.player.finishJourney()
 
         if (damage != 0) {
             EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Falling", Stat.HEALTH, damage))
@@ -36,7 +36,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         val damage = height - 2*soul.getCurrent(Stat.AGILITY)
 
         //TODO - look at foot defense and factor that in
-        //TODO - factor in encumberance. The higher the encumberance, the greater the damage
+        //TODO - factor in encumbrance. The higher the encumbrance, the greater the damage
         return -Math.max(damage, 0)
     }
 }

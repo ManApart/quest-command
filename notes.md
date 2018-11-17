@@ -121,14 +121,18 @@ Attacking different body parts do anything? What's the point of the attack direc
 * Burning the apple tree branches should make the user fall
 * Tree continues burning even after leaving it
 * Attack direction should use previous target
-* Load data files correctly from jar
+* Update how routing works
+ * Use some path finding to find nearest area by evaluating nodes out from center node
+ * let map be used for route planning
 
 ### Validation tools
 
 * Seperate from test suite
 * Check for duplicate names (across items and activators)
 * Check all targets reference valid events etc (triggers and trigger events)
+* Check all activator targets reference actual items / locations etc
 * Check all behavior receipies have params that match their assigned behaviors
+
 
 
 ### Possible CLI Tools
@@ -140,6 +144,3 @@ Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
 
 
-Move climb journey etc under player
-Use some path finding to find nearest area by evaluating nodes out from center node
-let map be used for route planning

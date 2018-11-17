@@ -1,10 +1,8 @@
 package status.effects
 
 import core.events.EventListener
-import core.gameState.*
-import interact.ScopeManager
-import status.statChanged.StatChangeEvent
-import system.gameTick.GameTickEvent
+import core.gameState.getSoul
+import core.gameState.hasSoul
 
 class RemoveEffect: EventListener<RemoveEffectEvent>() {
     override fun shouldExecute(event: RemoveEffectEvent): Boolean {

@@ -14,7 +14,7 @@ object RecipeManager {
         return jacksonObjectMapper().readValue(json)
     }
 
-    fun getRecipe(name: String): Recipe {
+    private fun getRecipe(name: String): Recipe {
         return recipes.first { it.name.toLowerCase() == name.toLowerCase() }
     }
 
@@ -24,14 +24,14 @@ object RecipeManager {
     }
 
     fun getRecipes(names: List<String>): List<Recipe> {
-        return names.map { getRecipe(it) }.toList()
+        return names.asSequence().map { getRecipe(it) }.toList()
     }
 
     fun findRecipe(ingredients: List<Item>, tool: Activator, soul: Soul) : Recipe? {
         return findRecipes(ingredients, tool).firstOrNull { it.canBeCookedBy(soul)  }
     }
 
-    fun findRecipes(ingredients: List<Item>, tool: Activator) : List<Recipe> {
+    private fun findRecipes(ingredients: List<Item>, tool: Activator) : List<Recipe> {
         val toolName = tool.name
         val ingredientNames = ingredients.map { it.name }
 

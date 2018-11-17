@@ -7,7 +7,7 @@ import core.utility.NameSearchableList
 
 class HandHelper(source: String, desiredSkill: String) {
     lateinit var hand: BodyPart; private set
-    var weapon: Item? = null; private set
+    private var weapon: Item? = null
 
     init {
         determineHand(source, desiredSkill)

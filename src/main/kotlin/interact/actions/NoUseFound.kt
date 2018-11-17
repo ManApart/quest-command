@@ -6,8 +6,8 @@ import core.gameState.GameState
 import interact.UseEvent
 import system.EventManager
 
-class NoUseFound() : EventListener<UseEvent>() {
-    var checkedEvent: Event? = null
+class NoUseFound : EventListener<UseEvent>() {
+    private var checkedEvent: Event? = null
 
     override fun shouldExecute(event: UseEvent): Boolean {
         if (event != checkedEvent) {

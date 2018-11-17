@@ -1,17 +1,17 @@
 package combat.battle
 
-import combat.Combatent
+import combat.Combatant
 import core.gameState.Creature
 import core.gameState.GameState
 import system.EventManager
 
 class Battle(combatantCreatures: List<Creature>) {
     var distance = 10
-    var lastFired = 0
-    val combatants = mutableListOf<Combatent>()
+    private var lastFired = 0
+    val combatants = mutableListOf<Combatant>()
     init {
         combatantCreatures.forEach {
-            combatants.add(Combatent(it))
+            combatants.add(Combatant(it))
         }
     }
     var playerLastAttacked = getPlayerCombatant().creature
@@ -20,7 +20,7 @@ class Battle(combatantCreatures: List<Creature>) {
     private fun getPlayerCombatant() =
            getCombatant(GameState.player.creature)!!
 
-    fun getCombatant(creature: Creature) : Combatent? {
+    fun getCombatant(creature: Creature) : Combatant? {
         return combatants.firstOrNull { it.creature == creature }
     }
 

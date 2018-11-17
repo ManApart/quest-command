@@ -10,13 +10,14 @@ import core.history.display
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {
         if (GameState.player.creature.location == event.target) {
-            if (event.target.parent != null) {
-                println("You are in ${event.target.name}, which is a part of ${event.target.parent}.")
-            } else {
-                println("You are in ${event.target.name}.")
-            }
+            println("You are in ${event.target.name}.")
         }
-        display("${event.target.name} ${getSiblings(event.target)}.")
+        val name = if (event.target.parent != null) {
+            "${event.target.name} is a part of ${event.target.parent}. It"
+        } else {
+            event.target.name
+        }
+        display("$name ${getSiblings(event.target)}.")
     }
 
     private fun getSiblings(target: LocationNode): String {

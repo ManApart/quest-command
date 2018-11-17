@@ -2,8 +2,8 @@ package core.gameState
 
 import core.utility.replaceParams
 
-class Tags(tags: List<String> = listOf<String>()) {
-    private val tags = tags.map { it.toLowerCase() }.toMutableList()
+class Tags(tags: List<String> = listOf()) {
+    private val tags = tags.asSequence().map { it.toLowerCase() }.toMutableList()
 
     fun has(tag: String): Boolean {
         return tags.contains(tag.toLowerCase())

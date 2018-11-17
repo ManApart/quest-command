@@ -1,13 +1,12 @@
 package interact.actions
 
 import core.events.EventListener
-import status.statChanged.StatChangeEvent
-import interact.UseEvent
-import core.gameState.Creature
 import core.gameState.Item
 import core.gameState.getCreature
 import core.gameState.hasCreature
 import core.gameState.stat.Stat
+import interact.UseEvent
+import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class DamageCreature : EventListener<UseEvent>() {

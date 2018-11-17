@@ -73,7 +73,7 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
         }
     }
 
-    fun unEquip(bodyPart: String) {
+    private fun unEquip(bodyPart: String) {
         val equippedItem = getPart(bodyPart).equippedItem
         if (equippedItem != null) {
             unEquip(equippedItem)

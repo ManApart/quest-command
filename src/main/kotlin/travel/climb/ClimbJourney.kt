@@ -4,10 +4,9 @@ import core.gameState.Target
 import core.gameState.climb.ClimbPath
 import core.gameState.climb.ClimbSegment
 import core.gameState.location.LocationNode
-import travel.journey.Journey
 
-class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, upwards: Boolean, val path: ClimbPath) : Journey {
-    var step = 0
+class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, upwards: Boolean, private val path: ClimbPath) {
+    private var step = 0
     private var lastDirectionWasUp = upwards
     val top = if (upwards) {
         destination
@@ -20,7 +19,7 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
         destination
     }
 
-    fun hasSegment(step: Int): Boolean {
+    private fun hasSegment(step: Int): Boolean {
         return path.segments.firstOrNull { it.id == step } != null
     }
 
@@ -137,7 +136,7 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
             step = desiredStep
 
         } else {
-            println("Couldn't advance journey to $desiredStep. This shouldn't happen!")
+            println("Couldn't advance climbJourney to $desiredStep. This shouldn't happen!")
         }
     }
 }

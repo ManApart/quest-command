@@ -8,7 +8,7 @@ import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class ChopWood : EventListener<UseEvent>() {
-    val chopHealth = "chopHealth"
+    private val chopHealth = "chopHealth"
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return if (GameState.player.canInteract && event.target is Activator) {

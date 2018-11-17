@@ -12,11 +12,11 @@ object CreatureManager {
         return jacksonObjectMapper().readValue(json)
     }
 
-    fun getCreature(name: String) : Creature {
+    private fun getCreature(name: String) : Creature {
         return creatures.first { it.name.toLowerCase() == name.toLowerCase() }
     }
 
     fun getCreatures(names: List<String>) : List<Creature> {
-        return names.map { getCreature(it) }.toList()
+        return names.asSequence().map { getCreature(it) }.toList()
     }
 }

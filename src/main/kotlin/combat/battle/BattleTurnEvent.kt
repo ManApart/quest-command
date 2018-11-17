@@ -2,5 +2,4 @@ package combat.battle
 
 import core.events.Event
 
-class BattleTurnEvent : Event {
-}
+class BattleTurnEvent : Event

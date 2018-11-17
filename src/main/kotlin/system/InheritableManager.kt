@@ -14,7 +14,7 @@ object InheritableManager {
     }
 
     fun getInheritables(recipes: List<InheritRecipe>): List<Inheritable> {
-        return recipes.map { getInheritable(it) }.toList()
+        return recipes.asSequence().map { getInheritable(it) }.toList()
     }
 
     fun getInheritable(recipe: InheritRecipe): Inheritable {

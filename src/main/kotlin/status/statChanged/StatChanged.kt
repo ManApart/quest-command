@@ -6,7 +6,7 @@ import core.gameState.hasSoul
 import core.utility.StringFormatter
 
 class StatChanged : EventListener<StatChangeEvent>() {
-    val hiddenStats = listOf("burnHealth", "chopHealth")
+    private val hiddenStats = listOf("burnHealth", "chopHealth")
 
     override fun shouldExecute(event: StatChangeEvent): Boolean {
         return event.amount != 0 && hasSoul(event.target)

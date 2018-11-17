@@ -15,10 +15,10 @@ import travel.jump.FallEvent
 
 class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
     override fun shouldExecute(event: ClimbJourneyEvent): Boolean {
-        return GameState.journey is ClimbJourney
+        return GameState.player.climbJourney is ClimbJourney
     }
     override fun execute(event: ClimbJourneyEvent) {
-        val journey = GameState.journey as ClimbJourney
+        val journey = GameState.player.climbJourney as ClimbJourney
         val distance = journey.getDistanceTo(event.desiredStep)
         EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", Stat.STAMINA, -distance))
         val chance = getChance(journey, event.desiredStep)

@@ -6,7 +6,6 @@ import core.gameState.GameState
 import interact.UseEvent
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
-import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class StartFire : EventListener<UseEvent>() {

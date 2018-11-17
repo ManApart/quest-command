@@ -3,7 +3,7 @@ package combat
 import core.gameState.Creature
 import core.gameState.GameState
 
-class Combatent(val creature: Creature) {
+class Combatant(val creature: Creature) {
     private var actionPoints = 0
 
     fun increaseActionPoints() {

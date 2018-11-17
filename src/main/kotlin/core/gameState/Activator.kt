@@ -18,15 +18,15 @@ class Activator(name: String, description: String, val climb: Climbable?, @JsonP
         applyInherits(inherits)
     }
 
-    val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
+    private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
         properties.tags.remove("Creature")
     }
 
     private fun applyInherits(inherits: List<InheritRecipe>) {
-        inherits.forEach {
-            val inherit = InheritableManager.getInheritable(it)
+        inherits.forEach { inherit ->
+            val inherit = InheritableManager.getInheritable(inherit)
             val behaviorRecipeNames = behaviorRecipes.map { it.name }
             behaviorRecipes.addAll(inherit.behaviorRecipes.filter { !behaviorRecipeNames.contains(it.name) })
             properties.inherit(inherit.properties)

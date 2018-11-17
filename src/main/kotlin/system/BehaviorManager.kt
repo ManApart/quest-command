@@ -15,10 +15,10 @@ object BehaviorManager {
     }
 
     fun getBehaviors(recipes: List<BehaviorRecipe>): List<Behavior> {
-        return recipes.map { getBehavior(it) }.toList()
+        return recipes.asSequence().map { getBehavior(it) }.toList()
     }
 
-    fun getBehavior(recipe: BehaviorRecipe): Behavior {
+    private fun getBehavior(recipe: BehaviorRecipe): Behavior {
         val base = behaviors.first { it.name.toLowerCase() == recipe.name.toLowerCase() }
         return Behavior(base, recipe.params)
     }

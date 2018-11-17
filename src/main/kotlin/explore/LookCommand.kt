@@ -1,11 +1,8 @@
 package explore
 
 import core.commands.Command
-import core.gameState.GameState
 import interact.ScopeManager
-import core.gameState.targetsToString
 import system.EventManager
-import travel.climb.ClimbJourney
 
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {

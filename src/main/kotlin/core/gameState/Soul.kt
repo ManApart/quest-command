@@ -28,7 +28,7 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         }
     }
 
-    fun incStat(stat: Stat, amount: Int) {
+    private fun incStat(stat: Stat, amount: Int) {
         if (amount != 0) {
             stat.current += amount
             stat.current = Math.max(Math.min(stat.current, stat.baseMax), 0)
@@ -41,7 +41,7 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         }
     }
 
-    fun incStatMax(stat: Stat, amount: Int) {
+    private fun incStatMax(stat: Stat, amount: Int) {
         if (amount != 0) {
             stat.boostedMax += amount
             stat.current = Math.max(Math.min(stat.current, stat.boostedMax), 0)
@@ -80,7 +80,7 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
-    fun getEffectOrNull(name: String): Effect? {
+    private fun getEffectOrNull(name: String): Effect? {
         return effects.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 

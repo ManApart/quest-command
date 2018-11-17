@@ -12,7 +12,7 @@ class Look : EventListener<LookEvent>() {
 
 
     override fun execute(event: LookEvent) {
-        if (GameState.journey != null && GameState.journey is ClimbJourney) {
+        if (GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney) {
             describeClimbJourney()
         }else if (event.target != null){
             println(event.target.description)
@@ -23,7 +23,7 @@ class Look : EventListener<LookEvent>() {
     }
 
     private fun describeClimbJourney() {
-        val journey = GameState.journey as ClimbJourney
+        val journey = GameState.player.climbJourney as ClimbJourney
         val abovePaths = if (journey.getHigherSegments().isNotEmpty()) {
             var i = 0
             "Above you are path choices " + journey.getHigherSegments().joinToString(", "){

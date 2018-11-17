@@ -2,7 +2,6 @@ package travel.climb
 
 import core.commands.Command
 import core.gameState.GameState
-import interact.ScopeManager
 import system.EventManager
 
 class DismountCommand : Command() {
@@ -24,7 +23,7 @@ class DismountCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         if (isClimbing()) {
-            val journey = GameState.journey as ClimbJourney
+            val journey = GameState.player.climbJourney as ClimbJourney
             when {
                 journey.getCurrentSegment().top -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.top))
                 journey.getCurrentSegment().bottom -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.bottom))
@@ -36,7 +35,7 @@ class DismountCommand : Command() {
     }
 
     private fun isClimbing(): Boolean {
-        return GameState.journey != null && GameState.journey is ClimbJourney
+        return GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney
     }
 
 }

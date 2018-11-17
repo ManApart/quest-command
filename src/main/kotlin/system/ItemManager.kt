@@ -46,6 +46,6 @@ object ItemManager {
     }
 
     fun getItems(names: List<String>): List<Item> {
-        return names.map { getItem(it) }.toList()
+        return names.asSequence().map { getItem(it) }.toList()
     }
 }

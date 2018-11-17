@@ -35,14 +35,14 @@ class ClimbCommand : Command() {
 
         if (adjustedArgs.isEmpty() && !up && !down) {
             if (isClimbing()) {
-                val step = getStep(GameState.journey as ClimbJourney)
+                val step = getStep(GameState.player.climbJourney as ClimbJourney)
                 climbStep(step, force)
             } else {
                 println("What do you want to climb?")
             }
         } else {
             if (isClimbing()) {
-                val journey = GameState.journey as ClimbJourney
+                val journey = GameState.player.climbJourney as ClimbJourney
                 if (adjustedArgs.isNotEmpty() && isStep(adjustedArgs[0])) {
                     val step = getStep(journey, adjustedArgs[0])
                     climbStep(step, force)
@@ -73,7 +73,7 @@ class ClimbCommand : Command() {
     }
 
     private fun isClimbing(): Boolean {
-        return GameState.journey != null && GameState.journey is ClimbJourney
+        return GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney
     }
 
     private fun isStep(word: String): Boolean {
