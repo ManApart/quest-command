@@ -2,7 +2,7 @@ package core.gameState.location
 
 import core.gameState.Direction
 import core.utility.Named
-import system.LocationManager
+import system.location.LocationManager
 
 class LocationNode(override val name: String, private val locationName: String = name, val parent: String? = null, private val locations: MutableList<LocationLink> = mutableListOf()) : Named {
 

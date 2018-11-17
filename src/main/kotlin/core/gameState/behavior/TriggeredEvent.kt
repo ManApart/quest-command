@@ -8,6 +8,7 @@ import interact.ScopeManager
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
 import system.*
+import system.location.LocationManager
 import travel.ArriveEvent
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {

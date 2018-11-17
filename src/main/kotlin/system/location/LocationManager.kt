@@ -1,35 +1,30 @@
-package system
+package system.location
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.location.Location
 import core.gameState.location.LocationLink
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
+import system.DependencyInjector
 
 object LocationManager {
     val NOWHERE = Location("Nowhere")
     val NOWHERE_NODE = LocationNode("Nowhere")
 
-    private val locations = loadLocations()
-    private val locationNodes = loadLocationNodes()
+    private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
 
-    private fun loadLocations(): NameSearchableList<Location> {
-        val json = this::class.java.getResourceAsStream("/data/location/Locations.json")
-        return jacksonObjectMapper().readValue(json)
-    }
+    private var locations = parser.loadLocations()
+    private var locationNodes = loadLocationNodes()
 
     private fun loadLocationNodes(): NameSearchableList<LocationNode> {
-        val json = this::class.java.getResourceAsStream("/data/location/LocationLinks.json")
-        val nodes: List<LocationNode> = jacksonObjectMapper().readValue(json)
+        val nodes: List<LocationNode> = parser.loadLocationNodes()
 
-        val locationLinks = NameSearchableList(nodes)
+        val locationNodes = NameSearchableList(nodes)
         nodes.forEach { node ->
             node.getNeighborLinks().forEach { link ->
-                val neighbor = getLocationNodeByExactName(link.name, locationLinks)
+                val neighbor = getLocationNodeByExactName(link.name, locationNodes)
                 if (neighbor == null) {
                     val newNeighbor = LocationNode(link.name)
-                    locationLinks.add(newNeighbor)
+                    locationNodes.add(newNeighbor)
                     newNeighbor.addLink(LocationLink(node.name, link.position.invert()))
                 } else {
                     neighbor.addLink(LocationLink(node.name, link.position.invert()))
@@ -37,11 +32,17 @@ object LocationManager {
             }
         }
 
-        return locationLinks
+        return locationNodes
     }
 
     private fun getLocationNodeByExactName(name: String, nodes: List<LocationNode>): LocationNode? {
         return nodes.firstOrNull { name == it.name }
+    }
+
+    fun reload() {
+        parser = DependencyInjector.getImplementation(LocationParser::class.java)
+        parser.loadLocations()
+        locationNodes = loadLocationNodes()
     }
 
     fun getLocation(name: String): Location {
@@ -58,6 +59,10 @@ object LocationManager {
         } else {
             NOWHERE_NODE
         }
+    }
+
+    fun countLocationNodes() : Int {
+        return locationNodes.size
     }
 
 

@@ -4,7 +4,7 @@ import crafting.Recipe
 import core.gameState.stat.Stat
 import core.utility.NameSearchableList
 import system.BodyManager
-import system.LocationManager
+import system.location.LocationManager
 
 class Player : Target {
     val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), LocationManager.findLocation("an open field"), null, this)

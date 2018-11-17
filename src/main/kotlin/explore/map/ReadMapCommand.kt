@@ -3,7 +3,7 @@ package explore.map
 import core.commands.Command
 import core.gameState.GameState
 import system.EventManager
-import system.LocationManager
+import system.location.LocationManager
 
 class ReadMapCommand : Command() {
     override fun getAliases(): Array<String> {
