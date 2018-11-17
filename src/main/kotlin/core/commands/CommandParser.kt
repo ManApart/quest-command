@@ -5,11 +5,14 @@ import core.utility.ReflectionTools
 import system.EventManager
 
 object CommandParser {
-    val commands = loadCommands()
     private val unknownCommand = UnknownCommand()
+    val commands = loadCommands()
 
     private fun loadCommands(): List<Command> {
-        return ReflectionTools.getAllCommands().asSequence().map { it.newInstance() }.toList()
+        return ReflectionTools.getAllCommands().asSequence()
+                .map { it.newInstance() }
+                .filter { it!!::class != UnknownCommand::class }
+                .toList()
     }
 
     fun parseCommand(line: String) {
@@ -56,6 +59,16 @@ object CommandParser {
 
     inline fun <reified C : Command> getCommand(): C {
         return commands.first { it is C } as C
+    }
+
+    fun getCategories(): List<String> {
+        val categories = mutableListOf<String>()
+        commands.flatMap { it.getCategory() }.forEach {
+            if (!categories.contains(it)) {
+                categories.add(it)
+            }
+        }
+        return categories
     }
 
 }

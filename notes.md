@@ -127,7 +127,6 @@ Attacking different body parts do anything? What's the point of the attack direc
 
 * Seperate from test suite
 * Check for duplicate names (across items and activators)
-* Check for duplicate command aliases
 * Check all targets reference valid events etc (triggers and trigger events)
 * Check all behavior receipies have params that match their assigned behaviors
 
@@ -141,9 +140,8 @@ Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
 
 
-Move direct calls to Location manager out to interface? Not necessary at this point? - worse for testing how it is now
 Move climb journey etc under player
-In all cases track location node and get location only through the node.
-Restricted / one way location links
-Sub locations?
+oneWay keyword
+Restricted - locations are visible but can't be traveled to (for things like climbing trees or openning doors)
 Use some path finding to find nearest area by evaluating nodes out from center node
+let map be used for route planning

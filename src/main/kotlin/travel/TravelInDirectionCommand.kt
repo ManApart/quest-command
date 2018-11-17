@@ -8,7 +8,7 @@ import system.EventManager
 
 class TravelInDirectionCommand : Command() {
     override fun getAliases(): Array<String> {
-        val aliases = mutableListOf<String>()
+        val aliases = mutableListOf("Direction")
         Direction.values().forEach {
             aliases.add(it.name)
             aliases.add(it.shortcut)
@@ -29,15 +29,19 @@ class TravelInDirectionCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val direction = Direction.getDirection(keyword)
-        if (direction == Direction.NONE) {
-            println("Could not find direction $keyword")
+        if (keyword.toLowerCase() == "direction") {
+            println(getManual())
         } else {
-            val found = findLocationInDirection(direction)
-            if (found != null) {
-                EventManager.postEvent(TravelStartEvent(destination = found))
+            val direction = Direction.getDirection(keyword)
+            if (direction == Direction.NONE) {
+                println("Could not find direction $keyword")
             } else {
-                println("Could not find a location to the $direction")
+                val found = findLocationInDirection(direction)
+                if (found != null) {
+                    EventManager.postEvent(TravelStartEvent(destination = found))
+                } else {
+                    println("Could not find a location to the $direction")
+                }
             }
         }
     }

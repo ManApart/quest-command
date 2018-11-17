@@ -2,7 +2,7 @@ package core.gameState
 
 enum class Direction(val shortcut: String) {
 
-    NORTH("n"), SOUTH("s"), WEST("w"), EAST("e"), NORTH_WEST("nw"), NORTH_EAST("ne"), SOUTH_WEST("nw"), SOUTH_EAST("se"), ABOVE("u"), BELOW("d"), NONE("none");
+    NORTH("n"), SOUTH("s"), WEST("w"), EAST("e"), NORTH_WEST("nw"), NORTH_EAST("ne"), SOUTH_WEST("sw"), SOUTH_EAST("se"), ABOVE("a"), BELOW("d"), NONE("none");
 
 
 

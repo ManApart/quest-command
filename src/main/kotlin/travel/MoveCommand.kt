@@ -7,19 +7,19 @@ import core.gameState.location.LocationNode
 import system.EventManager
 import system.location.LocationManager
 
-class TravelCommand : Command() {
+class MoveCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Travel", "t", "go")
+        return arrayOf("Move", "t", "go")
     }
 
     override fun getDescription(): String {
-        return "Travel:\n\tTravel to different locations."
+        return "Move:\n\tMove to different locations."
     }
 
     override fun getManual(): String {
-        return "\n\tTravel to <location> - Start traveling to a location." +
-                "\n\tTravel - Continue traveling to a goal location. X" +
-                "\n\tTravel goal - Remember what the travel location goal is. X"
+        return "\n\tMove to <location> - Start traveling to a location." +
+                "\n\tMove - Continue traveling to a goal location. X" +
+                "\n\tMove goal - Remember what the travel location goal is. X"
     }
 
     override fun getCategory(): List<String> {

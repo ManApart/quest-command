@@ -22,7 +22,7 @@ class CraftRecipeCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Craft")
+        return listOf("Crafting")
     }
 
     override fun execute(keyword: String, args: List<String>) {

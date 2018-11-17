@@ -52,7 +52,7 @@ class HelpCommand : Command() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
         }
-        println("Help <Group Name> to learn about one of the following topics: $groupList")
+        println("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
     private fun printTopic(args: List<String>) {
@@ -66,11 +66,11 @@ class HelpCommand : Command() {
     }
 
     private fun isCommandGroup(args: List<String>): Boolean {
-        return CommandParser.commands.map { it.getCategory().map { it.toLowerCase() } }.contains(args)
+        return CommandParser.commands.asSequence().map { it.getCategory().map { it.toLowerCase() } }.contains(args)
     }
 
     private fun printCommandGroup(args: List<String>) {
-        var description = ""
+        var description = "Help <Command> to learn more about on of the following topics:\n"
         //TODO - handle sub-categories
         //TODO - sort alphabetically
         CommandParser.commands.forEach { command ->

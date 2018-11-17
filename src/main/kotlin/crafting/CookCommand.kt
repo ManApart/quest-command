@@ -25,7 +25,7 @@ class CookCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Craft")
+        return listOf("Crafting")
     }
 
     override fun execute(keyword: String, arguments: List<String>) {
