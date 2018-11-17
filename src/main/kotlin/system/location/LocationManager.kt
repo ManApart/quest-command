@@ -20,19 +20,30 @@ object LocationManager {
 
         val locationNodes = NameSearchableList(nodes)
         nodes.forEach { node ->
-            node.getNeighborLinks().forEach { link ->
-                var neighbor = getLocationNodeByExactName(link.name, locationNodes)
-                if (neighbor == null) {
-                    neighbor = LocationNode(link.name)
-                    locationNodes.add(neighbor)
-                }
-                if (!link.oneWay) {
-                    neighbor.addLink(LocationLink(node.name, link.position.invert()))
-                }
-            }
+            createNeighborLinks(node, locationNodes)
+            createLocationIfNeeded(node)
         }
 
         return locationNodes
+    }
+
+    private fun createLocationIfNeeded(node: LocationNode) {
+        if (!locationExists(node.locationName)){
+            locations.add(Location(node.locationName))
+        }
+    }
+
+    private fun createNeighborLinks(node: LocationNode, locationNodes: NameSearchableList<LocationNode>) {
+        node.getNeighborLinks().forEach { link ->
+            var neighbor = getLocationNodeByExactName(link.name, locationNodes)
+            if (neighbor == null) {
+                neighbor = LocationNode(link.name)
+                locationNodes.add(neighbor)
+            }
+            if (!link.oneWay) {
+                neighbor.addLink(LocationLink(node.name, link.position.invert()))
+            }
+        }
     }
 
     private fun getLocationNodeByExactName(name: String, nodes: List<LocationNode>): LocationNode? {
@@ -46,23 +57,36 @@ object LocationManager {
     }
 
     fun getLocation(name: String): Location {
-        return locations.get(name)
+        return locations.getOrNull(name) ?: NOWHERE
+    }
+
+    fun getLocations() : List<Location> {
+        return locations.toList()
     }
 
     fun getLocationNode(name: String): LocationNode {
         return locationNodes.get(name)
     }
 
+    fun getLocationNodes() : List<LocationNode> {
+        return locationNodes.toList()
+    }
+
     fun findLocation(name: String): LocationNode {
         return if (locationNodes.exists(name)) {
             locationNodes.get(name)
         } else {
+            println("Could not find location: $name")
             NOWHERE_NODE
         }
     }
 
     fun countLocationNodes(): Int {
         return locationNodes.size
+    }
+
+    fun locationExists(name: String) : Boolean {
+        return locations.exists(name)
     }
 
 

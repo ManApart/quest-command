@@ -57,7 +57,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return get(fullName)
     }
 
-    private fun getOrNull(name: String): N? {
+    fun getOrNull(name: String): N? {
         if (proxies.containsKey(name)){
             return proxies[name]
         }

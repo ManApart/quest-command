@@ -15,4 +15,7 @@ object ClimbPathManager {
     fun getPath(name: String): ClimbPath {
         return paths.first { it.name.toLowerCase() == name.toLowerCase() }
     }
+    fun pathExists(name: String): Boolean {
+        return paths.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
+    }
 }

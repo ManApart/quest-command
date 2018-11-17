@@ -5,7 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.Activator
 
 object ActivatorManager {
-    private val activators = loadActivators()
+    val activators = loadActivators()
 
     private fun loadActivators(): List<Activator> {
         val json = this::class.java.getResourceAsStream("/data/Activators.json")

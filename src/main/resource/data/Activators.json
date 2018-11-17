@@ -14,7 +14,7 @@
     },
     "climb": {
       "name": "Climb Tree",
-      "destination": "an open field apple tree tree branches",
+      "destination": "apple tree branches",
       "upwards": true
     },
     "behaviors": [
@@ -93,7 +93,7 @@
     },
     "climb": {
       "name": "Climb Tree",
-      "destination": "an open field apple tree",
+      "destination": "apple tree",
       "upwards": false
     },
     "behaviors": [

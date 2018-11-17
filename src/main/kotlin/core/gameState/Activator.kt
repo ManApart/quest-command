@@ -8,7 +8,7 @@ import core.gameState.inhertiable.InheritRecipe
 import system.BehaviorManager
 import system.InheritableManager
 
-class Activator(name: String, description: String, val climb: Climbable?, @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(), properties: Properties = Properties(), inherits: List<InheritRecipe> = listOf()) : Target {
+class Activator(name: String, description: String, val climb: Climbable?, @JsonProperty("behaviors") val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(), properties: Properties = Properties(), inherits: List<InheritRecipe> = listOf()) : Target {
     val creature = Creature(name, description, parent = this, properties = properties)
     override val name: String get() = creature.name
     override val description: String get() = creature.description
@@ -25,8 +25,8 @@ class Activator(name: String, description: String, val climb: Climbable?, @JsonP
     }
 
     private fun applyInherits(inherits: List<InheritRecipe>) {
-        inherits.forEach { inherit ->
-            val inherit = InheritableManager.getInheritable(inherit)
+        inherits.forEach { inheritRecipe ->
+            val inherit = InheritableManager.getInheritable(inheritRecipe)
             val behaviorRecipeNames = behaviorRecipes.map { it.name }
             behaviorRecipes.addAll(inherit.behaviorRecipes.filter { !behaviorRecipeNames.contains(it.name) })
             properties.inherit(inherit.properties)

@@ -73,7 +73,7 @@
     "parent": "Kanbara Countryside",
     "locations": [
       {
-        "name": "Tree Branches",
+        "name": "Apple Tree Branches",
         "position": {
           "z": 1
         },
@@ -82,7 +82,7 @@
     ]
   },
   {
-    "name": "Tree Branches",
+    "name": "Apple Tree Branches",
     "parent": "Apple Tree"
   }
 ]

@@ -65,5 +65,16 @@ class LocationManagerTest {
 
     }
 
+    @Test
+    fun locationNodesCreateLocationsThatDontExist() {
+        val source = LocationNode("source")
+        val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
+
+        DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
+        LocationManager.reload()
+
+        Assert.assertEquals(source.name, source.getLocation().name)
+    }
+
 
 }

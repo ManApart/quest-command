@@ -14,13 +14,21 @@ object BehaviorManager {
         return jacksonObjectMapper().readValue(json)
     }
 
-    fun getBehaviors(recipes: List<BehaviorRecipe>): List<Behavior> {
-        return recipes.asSequence().map { getBehavior(it) }.toList()
+    fun behaviorExists(recipe: BehaviorRecipe): Boolean {
+        return behaviors.firstOrNull { it.name.toLowerCase() == recipe.name.toLowerCase() } != null
     }
 
-    private fun getBehavior(recipe: BehaviorRecipe): Behavior {
-        val base = behaviors.first { it.name.toLowerCase() == recipe.name.toLowerCase() }
-        return Behavior(base, recipe.params)
+    fun getBehaviors(recipes: List<BehaviorRecipe>): List<Behavior> {
+        return recipes.asSequence().map { getBehavior(it) }.filterNotNull().toList()
+    }
+
+    private fun getBehavior(recipe: BehaviorRecipe): Behavior? {
+        val base = behaviors.firstOrNull { it.name.toLowerCase() == recipe.name.toLowerCase() }
+        return if (base != null) {
+            Behavior(base, recipe.params)
+        } else {
+            null
+        }
     }
 
 
