@@ -2,6 +2,7 @@ package travel.climb
 
 import core.commands.Command
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 
 class DismountCommand : Command() {
@@ -27,10 +28,10 @@ class DismountCommand : Command() {
             when {
                 journey.getCurrentSegment().top -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.top))
                 journey.getCurrentSegment().bottom -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.bottom))
-                else -> println("You can't safely dismount from here, but you may be able to jump down.")
+                else -> display("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {
-            println("You're not climbing.")
+            display("You're not climbing.")
         }
     }
 

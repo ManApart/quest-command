@@ -2,6 +2,7 @@ package crafting
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 
 class CheckRecipes : EventListener<CheckRecipeEvent>() {
     override fun shouldExecute(event: CheckRecipeEvent): Boolean {
@@ -10,15 +11,15 @@ class CheckRecipes : EventListener<CheckRecipeEvent>() {
 
     override fun execute(event: CheckRecipeEvent) {
         when {
-            GameState.player.knownRecipes.isEmpty() -> println("You don't know any recipes yet.")
+            GameState.player.knownRecipes.isEmpty() -> display("You don't know any recipes yet.")
             event.recipe == null -> printRecipes()
-            else -> println(event.recipe.read())
+            else -> display(event.recipe.read())
         }
     }
 
     private fun printRecipes() {
         val recipes = GameState.player.knownRecipes.joinToString { "\n\t${it.name}" }
-        println("Recipes:$recipes")
+        display("Recipes:$recipes")
     }
 
 

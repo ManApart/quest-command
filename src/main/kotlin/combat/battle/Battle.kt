@@ -3,6 +3,7 @@ package combat.battle
 import combat.Combatant
 import core.gameState.Creature
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 
 class Battle(combatantCreatures: List<Creature>) {
@@ -40,7 +41,7 @@ class Battle(combatantCreatures: List<Creature>) {
         GameState.battle = null
         GameState.player.canTravel = true
         GameState.player.canRest = true
-        println("The battle ends.")
+        display("The battle ends.")
         EventManager.postEvent(BattleEndedEvent())
     }
 
@@ -61,7 +62,7 @@ class Battle(combatantCreatures: List<Creature>) {
         when {
             playerTurn -> lastFired = 0
             lastFired > 100 -> {
-                println("You should have been able to do something by now. Something is wrong.")
+                display("You should have been able to do something by now. Something is wrong.")
                 lastFired = 0
             }
             else -> EventManager.postEvent(BattleTurnEvent())

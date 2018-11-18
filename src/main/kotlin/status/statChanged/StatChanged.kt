@@ -3,6 +3,7 @@ package status.statChanged
 import core.events.EventListener
 import core.gameState.getSoul
 import core.gameState.hasSoul
+import core.history.display
 import core.utility.StringFormatter
 
 class StatChanged : EventListener<StatChangeEvent>() {
@@ -22,7 +23,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
             val subject = StringFormatter.getSubjectPossessive(event.target)
             val current = soul.getCurrent(event.type)
             val max = soul.getTotal(event.type)
-            println("${event.source} $change $subject ${event.type} by ${Math.abs(event.amount)} ($current/$max).")
+            display("${event.source} $change $subject ${event.type} by ${Math.abs(event.amount)} ($current/$max).")
         }
     }
 }

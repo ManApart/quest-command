@@ -2,6 +2,7 @@ package explore.map
 
 import core.commands.Command
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 import system.location.LocationManager
 
@@ -39,7 +40,7 @@ class ReadMapCommand : Command() {
         if (target != LocationManager.NOWHERE_NODE){
             EventManager.postEvent(ReadMapEvent(target))
         } else {
-            println("Could not find ${args.joinToString(" ")} on the map.")
+            display("Could not find ${args.joinToString(" ")} on the map.")
         }
     }
 

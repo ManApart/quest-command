@@ -4,6 +4,7 @@ import core.commands.Command
 import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.location.LocationNode
+import core.history.display
 import system.EventManager
 
 class TravelInDirectionCommand : Command() {
@@ -30,17 +31,17 @@ class TravelInDirectionCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         if (keyword.toLowerCase() == "direction") {
-            println(getManual())
+            display(getManual())
         } else {
             val direction = Direction.getDirection(keyword)
             if (direction == Direction.NONE) {
-                println("Could not find direction $keyword")
+                display("Could not find direction $keyword")
             } else {
                 val found = findLocationInDirection(direction)
                 if (found != null) {
                     EventManager.postEvent(TravelStartEvent(destination = found))
                 } else {
-                    println("Could not find a location to the $direction")
+                    display("Could not find a location to the $direction")
                 }
             }
         }

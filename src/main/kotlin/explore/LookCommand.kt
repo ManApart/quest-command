@@ -1,6 +1,7 @@
 package explore
 
 import core.commands.Command
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 
@@ -26,7 +27,7 @@ class LookCommand : Command() {
         when {
             args.isEmpty() -> EventManager.postEvent(LookEvent())
             ScopeManager.targetExists(args) -> EventManager.postEvent(LookEvent(ScopeManager.getTarget(args)))
-            else -> println("Couldn't find ${args.joinToString(" ")}.")
+            else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 

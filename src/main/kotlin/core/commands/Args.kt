@@ -29,6 +29,27 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
         }
     }
 
+    fun contains(word: String) : Boolean {
+        args.forEach {
+            if (it.toLowerCase().contains(word.toLowerCase())){
+                return true
+            }
+        }
+        return false
+    }
+
+    /**
+     * Get the first argument that is a number and return it if it exists
+     */
+    fun getNumber() : Int? {
+        args.forEach {
+            if (it.toIntOrNull() != null) {
+                return it.toInt()
+            }
+        }
+        return null
+    }
+
     private fun parseArgGroups(): List<List<String>> {
         val groups = mutableListOf<List<String>>()
         if (delimiters.isEmpty()) {

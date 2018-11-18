@@ -33,7 +33,7 @@ class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         val xyDist = getDistanceXY(other)
         val angle = getAngleXY(other)
 
-//        println("angle between $this and $other = $angle")
+//        display("angle between $this and $other = $angle")
 
         return when {
             x == other.x && y == other.y && z == other.z -> Direction.NONE

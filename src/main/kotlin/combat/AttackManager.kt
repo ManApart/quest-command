@@ -11,6 +11,7 @@ import core.gameState.Creature
 import core.gameState.Target
 import core.gameState.getCreature
 import core.gameState.stat.Stat
+import core.history.display
 import core.utility.StringFormatter
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -50,7 +51,7 @@ object AttackManager {
     fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, direction: TargetDirection, event: Event) {
         val subject = StringFormatter.getSubject(source)
         val possessive = StringFormatter.getSubjectPossessive(source)
-        println("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.equippedName()}.")
+        display("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.equippedName()}.")
 
         val creature = getCreature(target)
         val damageDone = getDamageDone(source, sourcePart, type)
@@ -62,7 +63,7 @@ object AttackManager {
                 EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), Stat.HEALTH, -damageDone))
             }
         } else {
-            println("Nothing happens.")
+            display("Nothing happens.")
         }
         target.consume(event)
     }

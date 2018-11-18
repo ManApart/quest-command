@@ -3,6 +3,7 @@ package status.statChanged
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.stat.Stat
+import core.history.display
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
@@ -11,8 +12,8 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
 
     override fun execute(event: StatMinnedEvent) {
         when (event.stat.toLowerCase()){
-            Stat.HEALTH.toLowerCase() -> println("Oh dear, you have died!")
-            Stat.STAMINA.toLowerCase() -> println("You are completely exhausted.")
+            Stat.HEALTH.toLowerCase() -> display("Oh dear, you have died!")
+            Stat.STAMINA.toLowerCase() -> display("You are completely exhausted.")
         }
     }
 }

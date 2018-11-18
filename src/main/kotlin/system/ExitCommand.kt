@@ -1,6 +1,7 @@
 package system
 
 import core.commands.Command
+import core.history.display
 import kotlin.system.exitProcess
 
 class ExitCommand : Command() {
@@ -22,7 +23,7 @@ class ExitCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         //TODO - move to event / system manager
-        println("Exiting")
+        display("Exiting")
         exitProcess(0)
     }
 }

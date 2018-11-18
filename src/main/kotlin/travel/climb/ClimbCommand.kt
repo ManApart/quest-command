@@ -2,6 +2,7 @@ package travel.climb
 
 import core.commands.Command
 import core.gameState.GameState
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 
@@ -38,7 +39,7 @@ class ClimbCommand : Command() {
                 val step = getStep(GameState.player.climbJourney as ClimbJourney)
                 climbStep(step, force)
             } else {
-                println("What do you want to climb?")
+                display("What do you want to climb?")
             }
         } else {
             if (isClimbing()) {
@@ -49,13 +50,13 @@ class ClimbCommand : Command() {
                 } else if (up || down) {
                     climbTowardsDirection(up, journey, force)
                 } else {
-                    println("Unable to climb: ${args.joinToString(" ")}")
+                    display("Unable to climb: ${args.joinToString(" ")}")
                 }
             } else {
                 if (ScopeManager.targetExists(argsString)) {
                     EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getTarget(argsString), force))
                 } else {
-                    println("Unable to climb: ${args.joinToString(" ")}")
+                    display("Unable to climb: ${args.joinToString(" ")}")
                 }
             }
         }
@@ -103,7 +104,7 @@ class ClimbCommand : Command() {
         if (step != 0) {
             EventManager.postEvent(ClimbJourneyEvent(step, force))
         } else {
-            println("Couldn't find the next place to climb to!")
+            display("Couldn't find the next place to climb to!")
         }
     }
 

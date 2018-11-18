@@ -3,6 +3,7 @@ package inventory
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.targetsToString
+import core.history.display
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -25,7 +26,7 @@ class InventoryCommand : Command() {
         if (args.isEmpty()) {
             listInventory()
         } else {
-            println("Unknown command: ${args.joinToString(" ")}")
+            display("Unknown command: ${args.joinToString(" ")}")
         }
     }
 

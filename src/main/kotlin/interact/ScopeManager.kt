@@ -3,6 +3,7 @@ package interact
 import core.events.EventListener
 import core.gameState.*
 import core.gameState.Target
+import core.history.display
 import core.utility.NameSearchableList
 import core.utility.StringFormatter
 import inventory.pickupItem.ItemPickedUpEvent
@@ -30,7 +31,7 @@ object ScopeManager {
         override fun execute(event: ItemSpawnedEvent) {
             if (event.target == null) {
                 val name = StringFormatter.format(event.item.count > 1, "${event.item.count}x ${event.item.name}s", event.item.name)
-                println("$name appeared.")
+                display("$name appeared.")
                 addTarget(event.item)
             } else {
                 event.target.inventory.add(event.item)
@@ -42,7 +43,7 @@ object ScopeManager {
     //TODO - set location on spawn
     class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
         override fun execute(event: SpawnActivatorEvent) {
-            println("${event.activator.name} appeared.")
+            display("${event.activator.name} appeared.")
             addTarget(event.activator)
         }
     }

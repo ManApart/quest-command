@@ -2,6 +2,7 @@ package status
 
 import core.commands.Command
 import core.gameState.GameState
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 
@@ -27,7 +28,7 @@ class StatusCommand : Command() {
         when {
             args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player.creature))
             ScopeManager.activatorExists(args) -> EventManager.postEvent(StatusEvent(ScopeManager.getActivator(args).creature))
-            else -> println("Couldn't find ${args.joinToString(" ")}.")
+            else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 

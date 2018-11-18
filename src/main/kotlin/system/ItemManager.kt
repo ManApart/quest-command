@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import core.events.EventListener
 import core.gameState.Item
+import core.history.display
 
 object ItemManager {
     private val items = loadItems()
@@ -15,7 +16,7 @@ object ItemManager {
                 item.count = event.count
                 EventManager.postEvent(ItemSpawnedEvent(item, event.target))
             } else {
-                println("Could not spawn ${event.itemName} because it could not be found.")
+                display("Could not spawn ${event.itemName} because it could not be found.")
             }
         }
     }

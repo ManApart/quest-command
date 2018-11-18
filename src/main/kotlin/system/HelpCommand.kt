@@ -4,6 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.UnknownCommand
 import core.commands.removeFirstItem
+import core.history.display
 
 class HelpCommand : Command() {
 
@@ -13,7 +14,7 @@ class HelpCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         when {
-            args.isEmpty() -> println(getDescription())
+            args.isEmpty() -> display(getDescription())
             args[0] == "commands" -> printCommandGroups()
             else -> printTopic(args)
         }
@@ -52,7 +53,7 @@ class HelpCommand : Command() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
         }
-        println("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        display("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
     private fun printTopic(args: List<String>) {
@@ -61,7 +62,7 @@ class HelpCommand : Command() {
         } else if (isCommandGroup(args)) {
             printCommandGroup(args)
         } else {
-            println(getDescription())
+            display(getDescription())
         }
     }
 
@@ -78,12 +79,12 @@ class HelpCommand : Command() {
                 description += command.getDescription() + "\n"
             }
         }
-        println(description)
+        display(description)
     }
 
     private fun printManual(commandName: String) {
         val command = CommandParser.findCommand(commandName)
-        println(getTitle(command) + command.getManual())
+        display(getTitle(command) + command.getManual())
     }
 
     private fun getTitle(command: Command): String {

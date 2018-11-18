@@ -3,6 +3,7 @@ package travel.jump
 import core.commands.Command
 import core.gameState.Direction
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 import travel.climb.ClimbJourney
 
@@ -36,7 +37,7 @@ class JumpCommand : Command() {
             if (found != null) {
                 EventManager.postEvent(JumpEvent(source = GameState.player.creature.location, destination = found))
             } else {
-                println("Couldn't find anything below to jump down to.")
+                display("Couldn't find anything below to jump down to.")
             }
         }
     }

@@ -110,7 +110,6 @@ Attacking different body parts do anything? What's the point of the attack direc
   * Burn if not enough skill
   * Gain xp for cooking
 * Tutorial
-* Reflection tools is too slow to run every start up. Create a 'build phase' that finds these classes and writes them to a file or something so that each startup is fast
 
 
 ### Short Term

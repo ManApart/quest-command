@@ -10,6 +10,7 @@ import core.events.Event
 import core.gameState.BodyPart
 import core.gameState.GameState
 import core.gameState.Target
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 
@@ -45,10 +46,10 @@ class AttackCommand : Command() {
         ignoredWords.addAll(TargetDirection.getAllAliases())
         val cleaned = Args(arguments, listOf("with"), ignoredWords)
         when {
-            cleaned.argGroups.isEmpty() -> println("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
+            cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
             ScopeManager.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, ScopeManager.getTarget(cleaned.argStrings[0]), direction))
             GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
-            else -> println("Couldn't find ${cleaned.argStrings[0]}")
+            else -> display("Couldn't find ${cleaned.argStrings[0]}")
         }
     }
 

@@ -4,6 +4,7 @@ import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Target
+import core.history.display
 import system.EventManager
 
 class UseCommand : Command() {
@@ -29,7 +30,7 @@ class UseCommand : Command() {
         val args = Args(arguments, delimiters)
 
         if (args.isEmpty()) {
-            println("What do you want to use?")
+            display("What do you want to use?")
         } else {
             if (targetExists(args.argGroups[0])) {
                 val source = findTarget(args.argGroups[0])
@@ -38,13 +39,13 @@ class UseCommand : Command() {
                         val target = findTarget(args.argGroups[1])
                         EventManager.postEvent(UseEvent(source, target))
                     } else {
-                        println("Couldn't find ${args.argStrings[1]}")
+                        display("Couldn't find ${args.argStrings[1]}")
                     }
                 } else {
                     printDescription(source)
                 }
             } else {
-                println("Couldn't find $args")
+                display("Couldn't find $args")
             }
         }
     }
@@ -63,7 +64,7 @@ class UseCommand : Command() {
 
     private fun printDescription(firstTarget: Target) {
         val description = if (firstTarget.description.isNotBlank()) firstTarget.description else "Not much to say."
-        println("${firstTarget.name}: $description")
+        display("${firstTarget.name}: $description")
     }
 
 }

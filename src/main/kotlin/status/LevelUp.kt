@@ -2,6 +2,7 @@ package status
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 
 class LevelUp : EventListener<LevelUpEvent>() {
     override fun shouldExecute(event: LevelUpEvent): Boolean {
@@ -9,6 +10,6 @@ class LevelUp : EventListener<LevelUpEvent>() {
     }
 
     override fun execute(event: LevelUpEvent) {
-        println("${event.stat.name} leveled up to ${event.level}.")
+        display("${event.stat.name} leveled up to ${event.level}.")
     }
 }

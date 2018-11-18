@@ -1,5 +1,6 @@
 package core.gameState
 
+import core.history.display
 import core.utility.NameSearchableList
 
 class Body(val name: String = "None", parts: List<String> = listOf()) {
@@ -69,7 +70,7 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
                 getPart(it).equippedItem = item
             }
         } else {
-            println("Can't equip ${item.name} to ${slot.description}")
+            display("Can't equip ${item.name} to ${slot.description}")
         }
     }
 

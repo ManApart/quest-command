@@ -4,6 +4,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.gameState.location.LocationNode
+import core.history.display
 import system.EventManager
 import system.location.LocationManager
 
@@ -36,7 +37,7 @@ class MoveCommand : Command() {
             if (foundMatch(arguments.argGroups[0], found)) {
                 EventManager.postEvent(TravelStartEvent(destination = found))
             } else {
-                println("Could not find $arguments")
+                display("Could not find $arguments")
             }
         }
     }

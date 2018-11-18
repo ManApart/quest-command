@@ -3,6 +3,7 @@ package travel.jump
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.stat.Stat
+import core.history.display
 import status.statChanged.StatChangeEvent
 import system.EventManager
 import travel.ArriveEvent
@@ -13,8 +14,8 @@ class PlayerFall : EventListener<FallEvent>() {
     }
 
     override fun execute(event: FallEvent) {
-        if (event.reason != null) println(event.reason)
-        println("You fall ${event.fallHeight}ft.")
+        if (event.reason != null) display(event.reason)
+        display("You fall ${event.fallHeight}ft.")
         takeDamage(event)
         if (GameState.player.creature.location != event.destination){
             EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
@@ -28,7 +29,7 @@ class PlayerFall : EventListener<FallEvent>() {
         if (amount != 0) {
             EventManager.postEvent(StatChangeEvent(event.creature, "Falling", Stat.HEALTH, -amount))
         } else {
-            println("You land without taking damage.")
+            display("You land without taking damage.")
         }
 
     }

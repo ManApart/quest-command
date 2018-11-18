@@ -2,6 +2,7 @@ package system
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 
 object GameManager {
 
@@ -34,7 +35,7 @@ object GameManager {
 
     class MessageHandler : EventListener<MessageEvent>() {
         override fun execute(event: MessageEvent) {
-            println(event.message)
+            display(event.message)
         }
 
     }

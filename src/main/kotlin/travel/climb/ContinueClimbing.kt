@@ -5,6 +5,7 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.climb.ClimbSegment
 import core.gameState.stat.Stat
+import core.history.display
 import core.utility.RandomManager
 import core.utility.StringFormatter
 import explore.LookEvent
@@ -25,7 +26,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
 
         if (RandomManager.isSuccess(chance)) {
             val direction = StringFormatter.format(journey.getDirection(event.desiredStep), "up", "down")
-            println("You climb $direction $distance ft.")
+            display("You climb $direction $distance ft.")
             awardEXP(GameState.player.creature, chance, journey.getSegment(event.desiredStep))
             if (journey.isPathEnd(event.desiredStep)) {
                 EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.getDestination(event.desiredStep)))

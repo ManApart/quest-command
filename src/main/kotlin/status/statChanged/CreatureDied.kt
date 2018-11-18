@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.stat.Stat
+import core.history.display
 import inventory.dropItem.DropItemEvent
 import status.CreatureDiedEvent
 import system.EventManager
@@ -15,7 +16,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
     }
 
     override fun execute(event: StatMinnedEvent) {
-        println("${event.target.name} has died.")
+        display("${event.target.name} has died.")
         val creature = event.target as Creature
 
         creature.inventory.getAllItems().forEach {

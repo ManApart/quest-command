@@ -5,6 +5,7 @@ import core.gameState.Activator
 import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.targetsToString
+import core.history.display
 import interact.ScopeManager
 import travel.climb.ClimbJourney
 
@@ -15,7 +16,7 @@ class Look : EventListener<LookEvent>() {
         if (GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney) {
             describeClimbJourney()
         }else if (event.target != null){
-            println(event.target.description)
+            display(event.target.description)
             describeStatusEffects(event.target)
         } else {
             describeLocation()
@@ -50,24 +51,24 @@ class Look : EventListener<LookEvent>() {
                 "Below you is nothing to climb on"
             }
         }
-        println("You are ${journey.getCurrentDistance()}ft up. $abovePaths. $belowPaths.")
+        display("You are ${journey.getCurrentDistance()}ft up. $abovePaths. $belowPaths.")
     }
 
 
     private fun describeStatusEffects(target: Target) {
         if (target is Activator && target.creature.soul.effects.isNotEmpty()){
             val effects = target.creature.soul.effects.joinToString(", ") { it.name }
-            println("${target.name} is $effects")
+            display("${target.name} is $effects")
         }
     }
 
     private fun describeLocation() {
-        println(GameState.player.creature.location.getDescription())
+        display(GameState.player.creature.location.getDescription())
         if (ScopeManager.getTargets().size > 1) {
             val targetList = targetsToString(ScopeManager.getTargets().filterNot { it == GameState.player })
-            println("You find yourself surrounded by $targetList.")
+            display("You find yourself surrounded by $targetList.")
         } else {
-            println("You don't see anything of use.")
+            display("You don't see anything of use.")
         }
     }
 

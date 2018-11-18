@@ -2,6 +2,7 @@ package combat
 
 import core.gameState.Creature
 import core.gameState.GameState
+import core.history.display
 
 class Combatant(val creature: Creature) {
     private var actionPoints = 0
@@ -17,10 +18,10 @@ class Combatant(val creature: Creature) {
     fun act() {
         if (GameState.player.creature != creature){
             if (creature.ai != null){
-                println("${creature.name} considers its choices.")
+                display("${creature.name} considers its choices.")
                 creature.ai.takeAction()
             } else {
-                println("${creature.name} does nothing!")
+                display("${creature.name} does nothing!")
             }
         }
         actionPoints = 0

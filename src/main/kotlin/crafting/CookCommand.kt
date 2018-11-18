@@ -5,6 +5,7 @@ import core.commands.Command
 import core.gameState.Activator
 import core.gameState.GameState
 import core.gameState.Item
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 import system.ItemManager
@@ -31,14 +32,14 @@ class CookCommand : Command() {
     override fun execute(keyword: String, arguments: List<String>) {
         val args = Args(arguments, delimiters)
         if (!isValidInput(args)){
-            println("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
+            display("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(args)
             val tool = getTool(args)
 
             when {
-                tool == null -> println("Couldn't find something to cook on")
-                ingredients.size != args.argStrings.size-1 -> println("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
+                tool == null -> display("Couldn't find something to cook on")
+                ingredients.size != args.argStrings.size-1 -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
                 else -> EventManager.postEvent(CookAttemptEvent(GameState.player.creature, ingredients, tool))
 
             }

@@ -3,6 +3,7 @@ package crafting
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Item
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 import system.ItemManager
@@ -32,13 +33,13 @@ class CraftRecipeCommand : Command() {
                 val recipe = GameState.player.knownRecipes.get(args)
                 val tool = ScopeManager.findActivatorByTag(recipe.tool)
                 if (tool == null){
-                    println("Couldn't find a nearby ${recipe.result}")
+                    display("Couldn't find a nearby ${recipe.result}")
                 } else {
                     val ingredients = getIngredients(recipe.ingredients)
                     EventManager.postEvent(CookAttemptEvent(GameState.player.creature, ingredients, tool))
                 }
             }
-            else -> println("Couldn't find recipe ${args.joinToString(" ")}.")
+            else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
 

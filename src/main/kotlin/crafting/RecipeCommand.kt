@@ -2,6 +2,7 @@ package crafting
 
 import core.commands.Command
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 
 class RecipeCommand : Command() {
@@ -26,7 +27,7 @@ class RecipeCommand : Command() {
         when {
             args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(GameState.player))
             GameState.player.knownRecipes.exists(args) -> EventManager.postEvent(CheckRecipeEvent(GameState.player, GameState.player.knownRecipes.get(args)))
-            else -> println("Couldn't find recipe ${args.joinToString(" ")}.")
+            else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
 

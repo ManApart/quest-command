@@ -1,5 +1,7 @@
 package core.commands
 
+import core.history.display
+
 class UnknownCommand : Command() {
 
     override fun getAliases(): Array<String> {
@@ -23,6 +25,6 @@ class UnknownCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        println("Unknown command: ${args.joinToString(" ")}")
+        display("Unknown command: ${args.joinToString(" ")}")
     }
 }

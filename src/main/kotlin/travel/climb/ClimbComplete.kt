@@ -2,6 +2,7 @@ package travel.climb
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 import travel.ArriveEvent
 
@@ -14,7 +15,7 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
         event.target.consume(event)
         GameState.player.climbJourney = null
         if (GameState.player.creature.location == event.destination) {
-            println("You climb back off ${event.target.name}")
+            display("You climb back off ${event.target.name}")
         } else {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))
         }

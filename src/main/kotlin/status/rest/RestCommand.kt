@@ -2,6 +2,7 @@ package status.rest
 
 import core.commands.Command
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 
 class RestCommand : Command() {
@@ -24,12 +25,12 @@ class RestCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         if (!GameState.player.canRest) {
-            println("You can't rest right now!")
+            display("You can't rest right now!")
         } else {
             when {
                 args.isEmpty() -> rest(1)
                 args.size == 1 && args[0].toIntOrNull() != null -> rest(args[0].toInt())
-                else -> println("Unknown params for rest: ${args.joinToString(" ")}")
+                else -> display("Unknown params for rest: ${args.joinToString(" ")}")
             }
         }
     }

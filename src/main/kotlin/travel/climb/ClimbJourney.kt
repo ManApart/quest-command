@@ -4,6 +4,7 @@ import core.gameState.Target
 import core.gameState.climb.ClimbPath
 import core.gameState.climb.ClimbSegment
 import core.gameState.location.LocationNode
+import core.history.display
 
 class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, upwards: Boolean, private val path: ClimbPath) {
     private var step = 0
@@ -136,7 +137,7 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
             step = desiredStep
 
         } else {
-            println("Couldn't advance climbJourney to $desiredStep. This shouldn't happen!")
+            display("Couldn't advance journey to $desiredStep. This shouldn't happen!")
         }
     }
 }
