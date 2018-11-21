@@ -52,4 +52,5 @@ class EventManagerTest {
         Assert.assertEquals("second", resultList[1])
         resultList.clear()
     }
+
 }
