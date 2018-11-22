@@ -43,18 +43,20 @@ object ScopeManager {
     //TODO - set location on spawn
     class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
         override fun execute(event: SpawnActivatorEvent) {
-            display("${event.activator.name} appeared.")
+            if (!event.silent) {
+                display("${event.activator.name} appeared.")
+            }
             addTarget(event.activator)
         }
     }
 
     class ScopeRemover : EventListener<RemoveScopeEvent>() {
         override fun execute(event: RemoveScopeEvent) {
-            if (targetExists(event.target)){
+            if (targetExists(event.target)) {
                 removeTarget(event.target)
             } else if (event.target is Item) {
                 getAllInventories().forEach {
-                    if (it.exists(event.target)){
+                    if (it.exists(event.target)) {
                         it.remove(event.target)
                         return
                     }
@@ -67,7 +69,7 @@ object ScopeManager {
         if (!targets.contains(target)) {
             targets.add(target)
         }
-        if (proxies.isNotEmpty()){
+        if (proxies.isNotEmpty()) {
             targets.addProxy(target, proxies)
         }
     }
@@ -125,11 +127,11 @@ object ScopeManager {
         return targets.get(name) as Activator
     }
 
-    fun findTargetByTag(tag: String) : Target?{
+    fun findTargetByTag(tag: String): Target? {
         return targets.firstOrNull { it.properties.tags.has(tag) }
     }
 
-    fun findActivatorByTag(tag: String) : Activator?{
+    fun findActivatorByTag(tag: String): Activator? {
         return targets.firstOrNull { it is Activator && it.properties.tags.has(tag) } as Activator
     }
 

@@ -5,11 +5,27 @@
     "parent": "Kanbara",
     "locations": [
       {
-        "name": "Kanbara Wall"
+        "name": "Kanbara Wall South",
+        "restricted": true,
+        "position": {
+          "x": -1,
+          "y": -1
+        }
+      },
+      {
+        "name": "Kanbara Wall North",
+        "restricted": true,
+        "position": {
+          "x": -1,
+          "y": 1
+        }
       },
       {
         "name": "Kanbara City",
-        "restricted": true
+        "restricted": true,
+        "position": {
+          "x": -1
+        }
       }
     ]
   },
@@ -34,11 +50,14 @@
       {
         "name": "Farmer's Hut Interior",
         "position": {
-          "x": -5
+          "y": -5
         }
       },
       {
-        "name": "Kanbara City"
+        "name": "Kanbara Gate",
+        "position": {
+          "x": -10
+        }
       },
       {
         "name": "An Open Field",

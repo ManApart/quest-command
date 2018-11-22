@@ -101,7 +101,11 @@
   },
   {
     "name": "Slash Harvest",
-    "params": ["itemName", "message", "count"],
+    "params": [
+      "itemName",
+      "message",
+      "count"
+    ],
     "condition": {
       "callingEvent": "SlashEvent"
     },
@@ -117,6 +121,45 @@
         "params": [
           "$itemName",
           "$count"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Restrict Destination",
+    "params": [
+      "source",
+      "destination",
+      "makeRestricted",
+      "message",
+      "replacementActivator"
+    ],
+    "condition": {
+      "callingEvent": "InteractEvent"
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "$message"
+        ]
+      },
+      {
+        "className": "RestrictLocationEvent",
+        "params": [
+          "$source",
+          "$destination",
+          "$makeRestricted"
+        ]
+      },
+      {
+        "className": "RemoveScopeEvent"
+      },
+      {
+        "className": "SpawnActivatorEvent",
+        "params": [
+          "$replacementActivator",
+          "true"
         ]
       }
     ]

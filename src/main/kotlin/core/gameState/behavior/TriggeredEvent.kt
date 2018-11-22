@@ -4,6 +4,7 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.Target
+import explore.RestrictLocationEvent
 import interact.ScopeManager
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
@@ -42,9 +43,10 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             }
             SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0], getParamInt(1), getCreatureOrNull(2)))
             RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
-            SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0])))
+            SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0]), getParamBoolean(1)))
             //TODO - very brittle
             AddEffectEvent::class.simpleName -> EventManager.postEvent(AddEffectEvent(ScopeManager.getTarget(params[0]) as Creature, EffectManager.getEffect(params[1])))
+            RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getLocationNode(params[0]), LocationManager.getLocationNode(params[1]), getParamBoolean(2)))
         }
     }
 
@@ -94,6 +96,12 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     private fun getParamInt(i: Int, default: Int = 1) : Int {
         if (i < params.size){
             return params[i].toInt()
+        }
+        return default
+    }
+    private fun getParamBoolean(i: Int, default: Boolean = false) : Boolean {
+        if (i < params.size){
+            return params[i].toBoolean()
         }
         return default
     }

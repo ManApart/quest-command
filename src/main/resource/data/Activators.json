@@ -106,6 +106,48 @@
     ]
   },
   {
+    "name": "Kanbara Gate (Open)",
+    "description": "The gate is large but not immovable.",
+    "properties": {
+      "tags": [
+        "Door"
+      ]
+    },
+    "behaviors": [
+      {
+        "name": "Restrict Destination",
+        "params": {
+          "source": "Kanbara Gate",
+          "destination": "Kanbara City",
+          "makeRestricted": true,
+          "message": "The gates swing closed.",
+          "replacementActivator": "Kanbara Gate (Closed)"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Kanbara Gate (Closed)",
+    "description": "The gate is large but not immovable.",
+    "properties": {
+      "tags": [
+        "Door"
+      ]
+    },
+    "behaviors": [
+      {
+        "name": "Restrict Destination",
+        "params": {
+          "source": "Kanbara Gate",
+          "destination": "Kanbara City",
+          "makeRestricted": false,
+          "message": "The gates swing open.",
+          "replacementActivator": "Kanbara Gate (Open)"
+        }
+      }
+    ]
+  },
+  {
     "name": "Range",
     "description": "The old metal is pitted, but its belly glows a contented orange.",
     "properties": {

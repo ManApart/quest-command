@@ -5,6 +5,7 @@ import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
+import interact.interaction.InteractEvent
 import system.EventManager
 
 class UseCommand : Command() {
@@ -18,7 +19,7 @@ class UseCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tUse <item> - Describe an item or activator" +
+        return "\n\tUse <item> - Interact with an item or target" +
                 "\n\tUse <item> on <target> - Use an item on a target."
     }
 
@@ -42,7 +43,7 @@ class UseCommand : Command() {
                         display("Couldn't find ${args.argStrings[1]}")
                     }
                 } else {
-                    printDescription(source)
+                    EventManager.postEvent(InteractEvent(source))
                 }
             } else {
                 display("Couldn't find $args")

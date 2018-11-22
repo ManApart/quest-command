@@ -110,6 +110,7 @@ Attacking different body parts do anything? What's the point of the attack direc
   * Burn if not enough skill
   * Gain xp for cooking
 * Tutorial
+* Make activators / items able to extend others (parse all, loop through each copying base and updating properties on each sub-item etc)
 
 
 ### Short Term
@@ -123,6 +124,7 @@ Attacking different body parts do anything? What's the point of the attack direc
 * Update how routing works
  * Use some path finding to find nearest area by evaluating nodes out from center node
  * let map be used for route planning
+* make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 
 ### Validation tools
 

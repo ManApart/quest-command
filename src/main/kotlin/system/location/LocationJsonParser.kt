@@ -14,7 +14,7 @@ class LocationJsonParser : LocationParser {
     }
 
     override fun loadLocationNodes(): List<LocationNode> {
-        val json = this::class.java.getResourceAsStream("/data/location/LocationLinks.json")
+        val json = this::class.java.getResourceAsStream("/data/location/LocationNodes.json")
         return jacksonObjectMapper().readValue(json)
     }
 }
