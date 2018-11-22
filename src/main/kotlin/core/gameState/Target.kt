@@ -7,6 +7,18 @@ interface Target : Named {
     val description: String
     val properties: Properties
 
+    fun canConsume(event: Event) : Boolean {
+        return if (this is Activator) {
+            this.evaluate(event)
+        } else if (this is Creature && this.parent is Activator) {
+            this.parent.evaluate(event)
+        } else if (this is Item) {
+            this.evaluate(event)
+        } else {
+            false
+        }
+    }
+
     fun consume(event: Event) {
         if (this is Activator) {
             this.evaluateAndExecute(event)

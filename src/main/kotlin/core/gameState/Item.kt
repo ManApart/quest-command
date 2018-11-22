@@ -38,8 +38,13 @@ class Item(override val name: String, override val description: String = "", pri
         return Item(name, description, weight, 1, equipSlots.map { slot -> slot.bodyParts.map { it } }, behaviorRecipes, properties)
     }
 
+    fun evaluate(event: Event): Boolean {
+        return behaviors.any { it.evaluate(event) }
+    }
+
     fun evaluateAndExecute(event: Event) {
-        behaviors.forEach { it.evaluateAndExecute(this, event) }
+        behaviors.filter { it.evaluate(event) }
+                .forEach { it.execute(this) }
     }
 
     fun canEquipTo(body: Body): Boolean {
@@ -66,7 +71,7 @@ class Item(override val name: String, override val description: String = "", pri
         return max(chop, stab, slash)
     }
 
-    fun isStackable(other: Item) : Boolean {
+    fun isStackable(other: Item): Boolean {
         return name == other.name && properties.matches(other.properties)
     }
 

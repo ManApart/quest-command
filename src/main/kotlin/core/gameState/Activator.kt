@@ -37,8 +37,13 @@ class Activator(name: String, description: String, val climb: Climbable?, @JsonP
         return name
     }
 
+    fun evaluate(event: Event): Boolean {
+        return behaviors.any { it.evaluate(event) }
+    }
+
     fun evaluateAndExecute(event: Event) {
-        behaviors.forEach { it.evaluateAndExecute(this, event) }
+        behaviors.filter { it.evaluate(event) }
+                .forEach { it.execute(this) }
     }
 
 }
