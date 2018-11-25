@@ -1,6 +1,7 @@
-package core.gameState.behavior
+package core.gameState.dataParsing
 
 import core.events.Event
+import core.utility.Named
 import core.utility.applyParams
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
@@ -22,15 +23,23 @@ class TriggerCondition(private val callingEvent: String, private val eventParams
     private fun eventValuesMatch(event: Event) : Boolean {
         eventParams.forEach{ entry ->
             val property = event.javaClass.kotlin.memberProperties.first { it.name == entry.key }
+
+            //Convert param value to proper type
             val expected = when {
                 property.returnType.isSubtypeOf(Boolean::class.createType()) -> entry.value.toBoolean()
                 property.returnType.isSubtypeOf(Int::class.createType()) -> entry.value.toInt()
                 else -> entry.value
             }
 
-            if (expected is String && expected.toLowerCase() != (property.get(event) as String).toLowerCase()) {
+            //If property value is a named object, use the proeprty's name, otherwise it should be a String
+            val propertyVal = when {
+                property.get(event) is Named ->  (property.get(event) as Named).name
+                else -> property.get(event)
+            }
+
+            if (expected is String && expected.toLowerCase() != (propertyVal as String).toLowerCase()) {
                 return false
-            }else if (expected != property.get(event)){
+            }else if (expected != propertyVal){
                return false
             }
         }

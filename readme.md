@@ -46,6 +46,24 @@ Here are some example commands you can run:
 
 ## Data
 
+### Triggered Events
+
+See the Triggered Event class to see what events can be used, and what params they can accept
+
+### Story Events
+
+
+#### Querying Game State
+
+A Query object is used to evaluate a game value against a given value to see if the event should be executed. It contains the following fields
+
+* Property to query on
+* Params passed to that query
+* The operator to evaluate `>, <, >=, <=, =, !=`
+* The value to compare against
+
+See the XXX class to see a list of queryable values and their parameters
+
 ### Locations
 
 **Locations**
@@ -67,5 +85,4 @@ Location Paths describe the relationship between locations. They contain
   * The attached location will not get a link back if it already has an explicit link or the link is marked with the `oneWay` keyword.
 * A parent name - used only in descriptions (ex: Blue Cave is part of Kanbara Wilds)
 * Restricted - locations are visible but can't be traveled to (for things like climbing trees or opening doors)
-
 

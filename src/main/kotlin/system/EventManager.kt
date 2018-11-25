@@ -18,7 +18,7 @@ object EventManager {
     }
 
     fun <E : Event> registerListener(listener: EventListener<E>) {
-//        display("Registering $listener")
+//        display("registering $listener")
         val listenerClass = getListenedForClass(listener)
         if (!listenerMap.containsKey(listenerClass)) {
             listenerMap[listenerClass] = ArrayList()

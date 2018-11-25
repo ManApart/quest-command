@@ -111,6 +111,7 @@ Attacking different body parts do anything? What's the point of the attack direc
   * Gain xp for cooking
 * Tutorial
 * Make activators / items able to extend others (parse all, loop through each copying base and updating properties on each sub-item etc)
+* Break out parsing json from files into folders so files can be more organized / brief
 
 
 ### Short Term
@@ -144,4 +145,16 @@ Attacking different body parts do anything? What's the point of the attack direc
 Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
 
+
+
+quest events
+* Trigger conditions
+* Poll certain stats, like quest progress, player level, etc
+* Called Events
+* 
+
+only some events being active eliminates ability to do OR statement
+* should a list of active events be possible for each quest?
+
+each event has a stage. When the event runs the quest is automatically updated to be that stage
 
