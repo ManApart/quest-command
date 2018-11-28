@@ -3,7 +3,7 @@
     "quest": "Tutorial",
     "name": "Intro",
     "stage": 10,
-    "journal": "I can remember what I can do by typing 'help commands'.",
+    "journal": "I can remember what I can do by typing 'help commands'. I need to use 'map' to see where I am.",
     "condition": {
       "callingEvent": "GameStartEvent"
     },
@@ -30,20 +30,10 @@
     "quest": "Tutorial",
     "name": "Intro Map",
     "stage": 20,
-    "journal": "I used the map to see where I am.",
+    "journal": "I used the map to see where I am. Now I should use the look command.",
     "condition": {
       "callingEvent": "ReadMapEvent"
     },
-    "queries": [
-      {
-        "property": "QuestStage",
-        "params": [
-          "Tutorial"
-        ],
-        "operator": "=",
-        "value": "10"
-      }
-    ],
     "events": [
       {
         "className": "MessageEvent",
@@ -60,17 +50,7 @@
     "journal": "I used 'look' to look around.",
     "condition": {
       "callingEvent": "LookEvent"
-    },
-    "queries": [
-      {
-        "property": "QuestStage",
-        "params": [
-          "Tutorial"
-        ],
-        "operator": "=",
-        "value": "20"
-      }
-    ]
+    }
   },
   {
     "quest": "Tutorial",

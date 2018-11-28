@@ -29,4 +29,8 @@ object QuestManager {
         val json = this::class.java.getResourceAsStream("/data/StoryEvents.json")
         return jacksonObjectMapper().readValue(json)
     }
+
+    fun getActiveQuests() : NameSearchableList<Quest> {
+        return NameSearchableList(quests.filter { it.active})
+    }
 }

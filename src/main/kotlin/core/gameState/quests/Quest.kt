@@ -8,6 +8,7 @@ import system.EventManager
 class Quest(override val name: String, var activeEvent: StoryEvent, var stage: Int = 0) : Named {
     private val journalEntries = mutableListOf<String>()
     var complete = false
+    var active = false
     private val storyEvents = mutableMapOf(activeEvent.stage to activeEvent)
 
     fun addEvent(event: StoryEvent) {
@@ -15,8 +16,9 @@ class Quest(override val name: String, var activeEvent: StoryEvent, var stage: I
     }
 
     fun calculateActiveEvent() {
-        val stage = storyEvents.keys.asSequence().sorted().firstOrNull { it > stage }
-                ?: storyEvents.keys.asSequence().sorted().last()
+        val sorted = storyEvents.keys.asSequence().sorted()
+        val stage = sorted.firstOrNull { it > stage }
+                ?: sorted.last()
         activeEvent = storyEvents[stage]!!
     }
 
@@ -26,6 +28,13 @@ class Quest(override val name: String, var activeEvent: StoryEvent, var stage: I
 
     fun matches(event: Event, stage: StoryEvent = activeEvent): Boolean {
         return stage.matches(event)
+    }
+
+    fun getAllJournalEntries() : List<String> {
+        return journalEntries.toList()
+    }
+    fun getLatestJournalEntry() : String {
+        return journalEntries.last()
     }
 
     fun execute() {
@@ -41,17 +50,21 @@ class Quest(override val name: String, var activeEvent: StoryEvent, var stage: I
     }
 
     private fun executeEvent(event: StoryEvent) {
-        //TODO - apply params?
         event.events.forEach {
             it.execute()
         }
         journalEntries.add(event.journal)
+
+        if (!complete) {
+            active = true
+        }
 
         stage = event.stage
         EventManager.postEvent(QuestStageUpdatedEvent(this, stage))
         calculateActiveEvent()
         if (stage == activeEvent.stage) {
             complete = true
+            active = false
             EventManager.postEvent(CompleteQuestEvent(this))
         }
     }
