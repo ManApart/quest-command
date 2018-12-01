@@ -3,9 +3,11 @@ package status.effects
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.Effect
+import core.utility.JsonDirectoryParser
 
 object EffectManager {
-    private val effects = loadEffects()
+    private val effects = JsonDirectoryParser.parseDirectory("/data/content/effects", ::parseFile)
+    private fun parseFile(path: String): List<Effect> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
 //    class ItemSpawner : EventListener<SpawnItemEvent>() {
 //        override fun execute(event: SpawnItemEvent) {
@@ -19,10 +21,6 @@ object EffectManager {
 //        }
 //    }
 
-    private fun loadEffects(): List<Effect> {
-        val json = this::class.java.getResourceAsStream("/data/Effects.json")
-        return jacksonObjectMapper().readValue(json)
-    }
 
     fun effectExists(name: String): Boolean {
         return effects.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null

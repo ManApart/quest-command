@@ -5,14 +5,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.Activator
 import core.gameState.Item
 import core.gameState.Soul
+import core.utility.JsonDirectoryParser
 
 object RecipeManager {
-    private val recipes = loadRecipes()
-
-    private fun loadRecipes(): List<Recipe> {
-        val json = this::class.java.getResourceAsStream("/data/Recipes.json")
-        return jacksonObjectMapper().readValue(json)
-    }
+    private val recipes = JsonDirectoryParser.parseDirectory("/data/content/recipes", ::parseFile)
+    private fun parseFile(path: String): List<Recipe> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     private fun getRecipe(name: String): Recipe {
         return recipes.first { it.name.toLowerCase() == name.toLowerCase() }

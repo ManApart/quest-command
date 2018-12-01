@@ -29,6 +29,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/integration-test">
       <sourceFolder url="file://$MODULE_DIR$/../../src/integration-test/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/integration-test/resource" type="java-resource" />
     </content>
     <content url="file://$MODULE_DIR$/../../src/integrationTest" />
     <orderEntry type="inheritedJdk" />

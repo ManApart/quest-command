@@ -1,7 +1,5 @@
-package utility
+package core.utility
 
-import core.utility.NameSearchableList
-import core.utility.Named
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

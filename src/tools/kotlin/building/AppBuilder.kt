@@ -3,7 +3,7 @@ package building
 import core.utility.ReflectionTools
 
 /*
-This utility 'builds' the app by generated files so they don't have to be generated at runtime.
+This core.utility 'builds' the app by generated files so they don't have to be generated at runtime.
 
 Currently it runs reflection to detect all of the commands, events, and event listeners
 

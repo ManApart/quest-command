@@ -5,14 +5,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.behavior.Behavior
 import core.gameState.behavior.BehaviorBase
 import core.gameState.behavior.BehaviorRecipe
+import core.utility.JsonDirectoryParser
 
 object BehaviorManager {
-    private val behaviors = loadBehaviors()
-
-    private fun loadBehaviors(): List<BehaviorBase> {
-        val json = this::class.java.getResourceAsStream("/data/Behaviors.json")
-        return jacksonObjectMapper().readValue(json)
-    }
+    private val behaviors = JsonDirectoryParser.parseDirectory("/data/content/behaviors", ::parseFile)
+    private fun parseFile(path: String): List<BehaviorBase> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun behaviorExists(recipe: BehaviorRecipe): Boolean {
         return behaviors.firstOrNull { it.name.toLowerCase() == recipe.name.toLowerCase() } != null

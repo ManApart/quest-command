@@ -2,13 +2,14 @@ package core.gameState.quests
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 
 object QuestManager {
     val quests = loadQuests()
 
     private fun loadQuests(): NameSearchableList<Quest> {
-        val events = loadStoryEvents()
+        val events = JsonDirectoryParser.parseDirectory("/data/content/story-events", ::parseFile)
         val quests = mutableMapOf<String, Quest>()
 
         events.forEach {event ->
@@ -25,10 +26,7 @@ object QuestManager {
         return NameSearchableList(quests.values.toList())
     }
 
-    private fun loadStoryEvents(): List<StoryEvent> {
-        val json = this::class.java.getResourceAsStream("/data/StoryEvents.json")
-        return jacksonObjectMapper().readValue(json)
-    }
+    private fun parseFile(path: String): List<StoryEvent> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun getActiveQuests() : NameSearchableList<Quest> {
         return NameSearchableList(quests.filter { it.active})

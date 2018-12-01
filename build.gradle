@@ -33,6 +33,9 @@ sourceSets {
         java {
             srcDirs 'src/integration-test/kotlin'
         }
+        resources {
+            srcDir 'src/integration-test/resource'
+        }
 
         compileClasspath += sourceSets.main.output + configurations.testCompile
         runtimeClasspath += output + compileClasspath + configurations.testRuntime

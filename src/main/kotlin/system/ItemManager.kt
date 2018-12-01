@@ -5,9 +5,11 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import core.events.EventListener
 import core.gameState.Item
 import core.history.display
+import core.utility.JsonDirectoryParser
 
 object ItemManager {
-    private val items = loadItems()
+    private val items = JsonDirectoryParser.parseDirectory("/data/content/items", ::parseFile)
+    private fun parseFile(path: String): List<Item> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     class ItemSpawner : EventListener<SpawnItemEvent>() {
         override fun execute(event: SpawnItemEvent) {
@@ -21,10 +23,6 @@ object ItemManager {
         }
     }
 
-    private fun loadItems(): List<Item> {
-        val json = this::class.java.getResourceAsStream("/data/Items.json")
-        return jacksonObjectMapper().readValue(json)
-    }
 
     fun itemExists(name: String): Boolean {
         return items.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
@@ -46,7 +44,7 @@ object ItemManager {
         return items.first { fullName.contains(it.name.toLowerCase()) }.copy()
     }
 
-    fun getItems(names: List<String>): List<Item> {
+    fun parseItems(names: List<String>): List<Item> {
         return names.asSequence().map { getItem(it) }.toList()
     }
 }

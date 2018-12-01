@@ -1,0 +1,10 @@
+[
+  {
+    "name": "FirstBody",
+    "parts": [
+      "Head",
+      "Body",
+      "Claws"
+    ]
+  }
+]
