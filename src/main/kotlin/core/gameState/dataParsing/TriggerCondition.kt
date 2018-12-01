@@ -7,7 +7,7 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
-class TriggerCondition(private val callingEvent: String, private val eventParams: Map<String, String> = mapOf()) {
+class TriggerCondition(val callingEvent: String, private val eventParams: Map<String, String> = mapOf()) {
 
     fun applyParamValues(paramValues: Map<String, String>) : TriggerCondition {
         val modifiedParams = applyParams(eventParams, paramValues)

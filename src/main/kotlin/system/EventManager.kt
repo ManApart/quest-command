@@ -12,7 +12,7 @@ object EventManager {
     private val eventQueue = mutableListOf<Event>()
 
     fun registerListeners() {
-        ReflectionTools.getAllEventListeners().map {
+        ReflectionTools.eventListeners.map {
             registerListener(it.newInstance())
         }
     }

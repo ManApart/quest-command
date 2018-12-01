@@ -33,4 +33,8 @@ object QuestManager {
     fun getActiveQuests() : NameSearchableList<Quest> {
         return NameSearchableList(quests.filter { it.active})
     }
+
+    fun getAllPlayerQuests() : NameSearchableList<Quest> {
+        return NameSearchableList(quests.filter { it.active || it.complete})
+    }
 }

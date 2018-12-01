@@ -9,7 +9,7 @@ object CommandParser {
     val commands = loadCommands()
 
     private fun loadCommands(): List<Command> {
-        return ReflectionTools.getAllCommands().asSequence()
+        return ReflectionTools.commands.asSequence()
                 .map { it.newInstance() }
                 .filter { it!!::class != UnknownCommand::class }
                 .toList()

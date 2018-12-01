@@ -16,6 +16,10 @@ object ReflectionTools {
     private const val eventListenersFile = "/data/generated/eventListeners.txt"
     private val reflections = Reflections(SubTypesScanner(false))
 
+    val events: List<Class<out Event>> by lazy { getAllEvents()}
+    val commands: List<Class<out Command>> by lazy { getAllCommands()}
+    val eventListeners: List<Class<out EventListener<*>>> by lazy { getAllEventListeners()}
+
     fun saveAllCommands() {
         val allClasses = reflections.getSubTypesOf(Command::class.java)
         println("Saving ${allClasses.size} classes for Command")
@@ -49,19 +53,19 @@ object ReflectionTools {
         }
     }
 
-    fun getAllCommands(): List<Class<out Command>> {
+    fun getEvent(className: String): Class<out Event> {
+        return events.first { className == it.name.substring(it.name.lastIndexOf(".") + 1) }
+    }
+
+    private fun getAllCommands(): List<Class<out Command>> {
         return getClassesFromFile(commandsFile)
     }
 
-    fun getAllEvents(): List<Class<out Event>> {
+    private fun getAllEvents(): List<Class<out Event>> {
         return getClassesFromFile(eventsFile)
     }
 
-    fun getEvent(className: String): Class<out Event> {
-        return getAllEvents().first { className == it.name.substring(it.name.lastIndexOf(".") + 1) }
-    }
-
-    fun getAllEventListeners(): List<Class<out EventListener<*>>> {
+    private fun getAllEventListeners(): List<Class<out EventListener<*>>> {
         return getClassesFromFile(eventListenersFile)
     }
 

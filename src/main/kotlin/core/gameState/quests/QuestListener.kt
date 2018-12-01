@@ -2,24 +2,46 @@ package core.gameState.quests
 
 import core.events.Event
 import core.events.EventListener
-import core.gameState.Creature
-import core.gameState.GameState
-import core.history.display
-import crafting.CookAttemptEvent
-import crafting.Recipe
-import crafting.RecipeManager
-import inventory.pickupItem.PickupItemEvent
-import system.EventManager
-import system.ItemManager
+import core.utility.ReflectionTools
 
-//TODO - instead of cycling all quests every event, maybe create a list of listened for events and only trigger on those
 class QuestListener : EventListener<Event>() {
+    private val listeners = mutableMapOf<Class<*>, MutableList<Quest>>()
 
     override fun execute(event: Event) {
-        QuestManager.quests.forEach { quest->
-            if (quest.matches(event)){
-                quest.execute()
+        if (listeners.isEmpty()){
+            buildListeners()
+        }
+        if (listeners.containsKey(event.javaClass)) {
+            val quests = listeners[event.javaClass]?.toList()
+            quests?.forEach { quest ->
+                if (quest.matches(event)) {
+                    quest.execute()
+
+                    updateQuestListener(event, quest)
+                }
             }
         }
     }
+
+    private fun updateQuestListener(event: Event, quest: Quest) {
+        listeners[event.javaClass]?.remove(quest)
+        if (!quest.complete) {
+            listenForQuest(quest)
+        }
+    }
+
+    private fun buildListeners() {
+        QuestManager.quests.forEach {
+            listenForQuest(it)
+        }
+    }
+
+    private fun listenForQuest(quest: Quest){
+        val clazz = ReflectionTools.getEvent(quest.activeEvent.condition.callingEvent)
+        if (!listeners.containsKey(clazz)){
+            listeners[clazz] = mutableListOf()
+        }
+        listeners[clazz]?.add(quest)
+    }
+
 }

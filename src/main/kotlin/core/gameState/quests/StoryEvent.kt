@@ -11,7 +11,7 @@ class StoryEvent(
         val name: String,
         val stage: Int,
         val journal: String,
-        private val condition: TriggerCondition,
+        val condition: TriggerCondition,
         private val queries: List<Query> = listOf(),
         val events: List<TriggeredEvent> = listOf()
 ) {

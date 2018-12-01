@@ -1,26 +1,41 @@
 package status.journal
 
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.dataParsing.GamestateQuery
+import core.gameState.quests.Quest
 import core.gameState.quests.QuestManager
-import core.gameState.stat.Stat
 import core.history.display
-import status.rest.RestEvent
-import status.statChanged.StatChangeEvent
-import system.EventManager
+import core.utility.NameSearchableList
 
 class ViewQuestJournal : EventListener<ViewJournalEvent>() {
 
     override fun execute(event: ViewJournalEvent) {
-        val message = QuestManager.getActiveQuests().joinToString("\n") {
+        val quests = getQuests(event)
+
+        val message = quests.joinToString("\n") {
             "${it.name}\n\t${it.getLatestJournalEntry()}"
         }
 
+        displayQuestMessage(message, event)
+    }
+
+    private fun getQuests(event: ViewJournalEvent): NameSearchableList<Quest> {
+        return if (event.justActive) {
+            QuestManager.getActiveQuests()
+        } else {
+            QuestManager.getAllPlayerQuests()
+        }
+    }
+
+    private fun displayQuestMessage(message: String, event: ViewJournalEvent) {
         if (message.isBlank()) {
-            display("I don't have any active quests")
+            if (event.justActive) {
+                display("I don't have any active quests.")
+            } else {
+                display("I don't have any quests.")
+            }
         } else {
             display(message)
         }
     }
+
 }
