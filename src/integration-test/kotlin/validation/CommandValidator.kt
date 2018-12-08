@@ -1,4 +1,4 @@
-package test.validation
+package validation
 
 import core.commands.Command
 import core.commands.CommandParser.commands

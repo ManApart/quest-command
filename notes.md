@@ -129,7 +129,7 @@ Attacking different body parts do anything? What's the point of the attack direc
 ### Validation tools
 
 * Seperate from test suite
-* Check for duplicate names (across items and activators)
+* Check for duplicate names (across items, recipes, and activators)
 * Check all targets reference valid events etc (triggers and trigger events)
 * Check all activator targets reference actual items / locations etc
 * Check all behavior receipies have params that match their assigned behaviors
@@ -143,7 +143,6 @@ Attacking different body parts do anything? What's the point of the attack direc
 
 Flow of param overrides (left overrides right)
 Item Params > inheritable params > Behavior Params/Properties > Conditions/events
-
 
 
 quest events

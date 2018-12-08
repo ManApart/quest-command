@@ -1,7 +1,6 @@
-package test.validation
+package validation
 
 import system.location.LocationManager
-import system.location.LocationManager.NOWHERE
 
 class LocationValidator {
 

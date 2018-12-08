@@ -1,4 +1,4 @@
-package test.validation
+package validation
 
 import system.ActivatorManager.activators
 import system.BehaviorManager
@@ -46,8 +46,8 @@ class ActivatorValidator {
         var warnings = 0
         activators.forEach { activator ->
             if (activator.climb != null) {
-                if (!ClimbPathManager.pathExists(activator.climb.name)) {
-                    println("WARN: Activator '${activator.name}' references nonexistent path: ${activator.climb.name}.")
+                if (!ClimbPathManager.pathExists(activator.climb!!.name)) {
+                    println("WARN: Activator '${activator.name}' references nonexistent path: ${activator.climb!!.name}.")
                     warnings++
                 }
             }
@@ -59,7 +59,7 @@ class ActivatorValidator {
         var warnings = 0
         activators.forEach { activator ->
             if (activator.climb != null) {
-                if (activator.climb.destination == LocationManager.NOWHERE_NODE) {
+                if (activator.climb!!.destination == LocationManager.NOWHERE_NODE) {
                     println("WARN: Activator '${activator.name}' references nonexistent climb path destination.")
                     warnings++
                 }
