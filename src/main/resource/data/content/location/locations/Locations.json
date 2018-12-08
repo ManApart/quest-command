@@ -56,5 +56,9 @@
       "Apple",
       "Apple"
     ]
+  },
+  {
+    "name": "Barren Patch",
+    "creatures": ["Rat"]
   }
 ]

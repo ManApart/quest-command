@@ -2,9 +2,13 @@ package system
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.quests.QuestManager
+import core.history.ChatHistory
 import core.history.display
+import travel.ArriveEvent
 
 object GameManager {
+    var playing = false
 
     fun saveGame() {
         TODO("not implemented") //To change body of created functions interact File | Settings | File Templates.
@@ -15,10 +19,18 @@ object GameManager {
     }
 
     fun newGame() {
+        ChatHistory.reset()
+        GameState.reset()
+        QuestManager.reset()
+
         newPlayer()
+        EventManager.postEvent(ArriveEvent(destination = GameState.player.creature.location, method = "wake"))
+        playing = true
+        EventManager.postEvent(GameStartEvent())
     }
 
     private fun newPlayer() {
+
         val inventory = GameState.player.creature.inventory
         val body = GameState.player.creature.body
 
@@ -27,7 +39,7 @@ object GameManager {
             inventory.add(item)
             body.equip(item)
         }
-        listOf("Tinder Box", "Dulled Hatchet", "Apple", "Raw Poor Quality Meat").forEach {
+        listOf("Tinder Box", "Dulled Hatchet", "Apple").forEach {
             val item = ItemManager.getItem(it)
             inventory.add(item)
         }

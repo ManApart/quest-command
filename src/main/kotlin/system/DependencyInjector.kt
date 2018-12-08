@@ -1,5 +1,7 @@
 package system
 
+import crafting.RecipeJsonParser
+import crafting.RecipeParser
 import system.location.LocationJsonParser
 import system.location.LocationParser
 
@@ -20,6 +22,7 @@ object DependencyInjector {
 
     private fun setDefaultImplementations(){
         setImplementation(LocationParser::class.java, LocationJsonParser())
+        setImplementation(RecipeParser::class.java, RecipeJsonParser())
     }
 
 

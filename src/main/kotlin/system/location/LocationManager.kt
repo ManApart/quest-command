@@ -50,7 +50,7 @@ object LocationManager {
         return nodes.firstOrNull { name == it.name }
     }
 
-    fun reload() {
+    fun reset() {
         parser = DependencyInjector.getImplementation(LocationParser::class.java)
         parser.loadLocations()
         locationNodes = loadLocationNodes()

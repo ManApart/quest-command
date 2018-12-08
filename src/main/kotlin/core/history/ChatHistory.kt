@@ -25,7 +25,7 @@ object ChatHistory {
         ignored.add(id)
     }
 
-    fun clear() {
+    fun reset() {
         history.clear()
         current = InputOutput()
     }

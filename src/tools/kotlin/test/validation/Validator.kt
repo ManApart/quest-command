@@ -5,9 +5,13 @@ This tool should validate things the compiler doesn't know to check, like unique
 
  */
 fun main(args: Array<String>) {
-    val warnings = CommandValidator().validate() +
+    val warnings = validate()
+    println("Completed with $warnings warnings")
+}
+
+fun validate(): Int {
+    return CommandValidator().validate() +
             ActivatorValidator().validate() +
             LocationValidator().validate()
-    println("Completed with $warnings warnings")
 }
 

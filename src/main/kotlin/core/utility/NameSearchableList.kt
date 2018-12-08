@@ -1,5 +1,8 @@
 package core.utility
 
+import crafting.Recipe
+import crafting.RecipeManager
+
 class NameSearchableList<N : Named>() : ArrayList<N>() {
     private val proxies = HashMap<String, N>()
 
@@ -50,6 +53,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
     fun getAll(name: String): List<N> {
         return filter { it.name.toLowerCase().contains(name.toLowerCase()) }
+    }
+
+    fun getAll(names: List<String>): List<N> {
+        return names.asSequence().map { getOrNull(it) }.filterNotNull().toList()
     }
 
     fun get(name: List<String>): N {

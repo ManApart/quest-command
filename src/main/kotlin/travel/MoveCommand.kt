@@ -18,7 +18,7 @@ class MoveCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tMove to <location> - Start traveling to a location." +
+        return "\n\tMove to <location> - Start traveling to a location. X" +
                 "\n\tMove - Continue traveling to a goal location. X" +
                 "\n\tMove goal - Remember what the travel location goal is. X"
     }

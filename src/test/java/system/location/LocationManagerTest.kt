@@ -16,7 +16,7 @@ class LocationManagerTest {
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
-        LocationManager.reload()
+        LocationManager.reset()
 
         Assert.assertEquals(source, LocationManager.getLocationNode(source.name))
         Assert.assertEquals(neighborLink.name, LocationManager.findLocation(neighborLink.name).name)
@@ -32,7 +32,7 @@ class LocationManagerTest {
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighborExists)))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
-        LocationManager.reload()
+        LocationManager.reset()
 
         val neighborDoesNotExists = LocationManager.findLocation(neighborDoesNotExistsName)
 
@@ -56,7 +56,7 @@ class LocationManagerTest {
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighbor)))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
-        LocationManager.reload()
+        LocationManager.reset()
 
         Assert.assertEquals(source, LocationManager.getLocationNode(source.name))
         Assert.assertEquals(neighbor, LocationManager.getLocationNode(neighbor.name))
@@ -71,7 +71,7 @@ class LocationManagerTest {
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
-        LocationManager.reload()
+        LocationManager.reset()
 
         Assert.assertEquals(source.name, source.getLocation().name)
     }

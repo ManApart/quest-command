@@ -55,6 +55,28 @@ class LocationNode(override val name: String, val locationName: String = name, v
         return locations.first { it.name == destination.name }
     }
 
+    fun getSiblings(): String {
+        val locations = getNeighborLinks()
+        return if (locations.isNotEmpty()) {
+            val siblings = locations.joinToString(", ") { getLocationWithDirection(it, false) }
+            "is neighbored by $siblings"
+        } else {
+            "has no known neighbors"
+        }
+    }
+
+    private fun getLocationWithDirection(neighbor: LocationLink, far: Boolean): String {
+        val direction = neighbor.position.getDirection()
+        return if (direction == Direction.NONE) {
+            neighbor.name
+        } else {
+            val farString = if (far) {
+                "Far "
+            } else ""
+            "${neighbor.name} ($farString$direction)"
+        }
+    }
+
 //    fun getNearestNeighbor(direction: Direction): LocationNode {
 //
 //    }

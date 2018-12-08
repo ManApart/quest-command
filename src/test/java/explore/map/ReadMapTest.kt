@@ -12,7 +12,7 @@ class ReadMapTest {
 
     @Before
     fun setup(){
-        ChatHistory.clear()
+        ChatHistory.reset()
     }
 
     @Test

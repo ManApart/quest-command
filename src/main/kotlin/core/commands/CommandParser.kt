@@ -15,6 +15,15 @@ object CommandParser {
                 .toList()
     }
 
+    fun parseInitialCommand(args: Array<String>) {
+        val initialCommand = if (args.isEmpty()) {
+            "look"
+        } else {
+            args.joinToString(" ")
+        }
+        parseCommand(initialCommand)
+    }
+
     fun parseCommand(line: String) {
         ChatHistory.addInput(line)
         val commands = line.split("&&")

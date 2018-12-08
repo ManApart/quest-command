@@ -24,7 +24,7 @@ class Cook : EventListener<CookAttemptEvent>() {
                     EventManager.postEvent(PickupItemEvent(event.source, ItemManager.getItem(recipe.result), true))
                     discoverRecipe(event.source, recipe)
                     //TODO - Add XP
-                    display("You cook ${event.ingredients.joinToString(",")} and get a ${recipe.result}")
+                    display("You cook ${event.ingredients.joinToString(",")} and get a ${recipe.result}.")
                 } else {
                     display("Seems like ${recipe.result} doesn't exist.")
                 }

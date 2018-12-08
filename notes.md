@@ -111,7 +111,6 @@ Attacking different body parts do anything? What's the point of the attack direc
   * Gain xp for cooking
 * Tutorial
 * Make activators / items able to extend others (parse all, loop through each copying base and updating properties on each sub-item etc)
-* Break out parsing json from files into folders so files can be more organized / brief
 
 
 ### Short Term
@@ -157,4 +156,18 @@ only some events being active eliminates ability to do OR statement
 * should a list of active events be possible for each quest?
 
 each event has a stage. When the event runs the quest is automatically updated to be that stage
+
+
+
+quest adjustments
+fix combat
+fix tree burning / hacking
+readable behavior / item
+Redo move command to move to location by finding path is possible
+
+Be consistent. End with periods or without them.
+
+remove hatchet and apple from starting inventory and place them in world etc
+
+directly cook recipe
 

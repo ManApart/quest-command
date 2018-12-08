@@ -6,7 +6,7 @@
     "ai": "Cowardly Predator",
     "properties": {
       "stats": {
-        "Health": 5,
+        "Health": 3,
         "Strength": 1,
         "Bare Handed": 2
       },

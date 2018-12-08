@@ -5,9 +5,20 @@
       "Raw Poor Quality Meat"
     ],
     "skills": {
-      "Cooking": 1
+      "Cooking": 2
     },
     "tool": "Range",
     "result": "Cooked Poor Quality Meat"
+  },
+  {
+    "name": "Baked Apple",
+    "ingredients": [
+      "Apple"
+    ],
+    "skills": {
+      "Cooking": 1
+    },
+    "tool": "Range",
+    "result": "Baked Apple"
   }
 ]

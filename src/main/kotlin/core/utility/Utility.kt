@@ -23,7 +23,7 @@ fun listsMatch(list: List<String>, other: List<String>) : Boolean {
         return false
     }
     val listLower = list.map { it.toLowerCase() }
-    val otherLower = list.map { it.toLowerCase() }
+    val otherLower = other.map { it.toLowerCase() }
 
     listLower.forEach {
         if (!otherLower.contains(it)) {

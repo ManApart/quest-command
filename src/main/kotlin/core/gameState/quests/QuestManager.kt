@@ -6,7 +6,7 @@ import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 
 object QuestManager {
-    val quests = loadQuests()
+    var quests = loadQuests()
 
     private fun loadQuests(): NameSearchableList<Quest> {
         val events = JsonDirectoryParser.parseDirectory("/data/content/story-events", ::parseFile)
@@ -35,4 +35,9 @@ object QuestManager {
     fun getAllPlayerQuests() : NameSearchableList<Quest> {
         return NameSearchableList(quests.filter { it.active || it.complete})
     }
+
+    fun reset(){
+        quests = loadQuests()
+    }
+
 }
