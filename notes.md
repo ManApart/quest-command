@@ -18,6 +18,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Break scope manager and item manager listeners into own classes
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
+- Create a git wiki and move readme information to more sorted format?
 
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
@@ -86,14 +87,6 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
     - [JLine](https://jline.github.io/)  
 
 ### Quests
-
-Active Quests
-- only some events being active eliminates ability to do OR statement
-- Completed - event has been completed
-- Repeatable - can be hit even if completed before
-- AvailableAfter - After this stage this event can be hit if the conditions are met, even if that means skipping other stages. If blank available only when this is the next highest stage after current stage
-- AvailableUntil - once this stage has been hit, this event can no longer be active. If blank available until is just the next highest quest stage after this
-- each event has a stage. When the event runs the quest is automatically updated to be that stage
 
 Other
 - First time hints / build out tutorial

@@ -25,7 +25,7 @@ class QuestTest {
     fun lowestStageIfNoCurrentActiveStage(){
         val events = createEvents("quest", 5)
         val quest = createQuest(events)
-        quest.calculateActiveEvent()
+        quest.calculateListenedForEvents()
         Assert.assertEquals(events.first(), quest.activeEvent)
     }
 
@@ -34,7 +34,7 @@ class QuestTest {
         val currentStage = 2
         val events = createEvents("quest", 5)
         val quest = createQuest(events, currentStage)
-        quest.calculateActiveEvent()
+        quest.calculateListenedForEvents()
         Assert.assertEquals(currentStage+1, quest.activeEvent.stage)
     }
 
@@ -43,7 +43,7 @@ class QuestTest {
         val currentStage = 4
         val events = createEvents("quest", 5)
         val quest = createQuest(events, currentStage)
-        quest.calculateActiveEvent()
+        quest.calculateListenedForEvents()
         Assert.assertEquals(events.last(), quest.activeEvent)
     }
 
@@ -52,7 +52,7 @@ class QuestTest {
         val currentStage = 6
         val events = createEvents("quest", 5)
         val quest = createQuest(events, currentStage)
-        quest.calculateActiveEvent()
+        quest.calculateListenedForEvents()
         Assert.assertEquals(events.last(), quest.activeEvent)
     }
 

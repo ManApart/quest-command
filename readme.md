@@ -92,6 +92,17 @@ See the Triggered Event class to see what events can be used, and what params th
 
 ### Story Events
 
+Quests are made up of Story Events. Each event has a stage. When the event runs the quest is automatically updated to be that stage. The first valid stage found will be executed.
+
+Properties of note:
+
+- Completed - Event has been completed
+- Repeatable - Can be hit even if completed before
+- AvailableAfter - After (`>=`) this stage this event can be hit if the conditions are met, even if that means skipping other stages. If blank available only when this is the next highest stage after current stage
+- AvailableUntil - This event can be hit up until this stage (`<=`). If blank available until is just the next highest quest stage after this
+
+Available after and available before default to the story event's stage, meaning the story event cannot be hit unless the event is the next stage in the quest.
+
 
 #### Querying Game State
 

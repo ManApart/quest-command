@@ -14,13 +14,13 @@ object QuestManager {
 
         events.forEach {event ->
             if (!quests.containsKey(event.questName)){
-                quests[event.questName] = Quest(event.questName, event)
+                quests[event.questName] = Quest(event.questName)
             }
             quests[event.questName]?.addEvent(event)
         }
 
         quests.values.forEach{
-            it.calculateActiveEvent()
+            it.initialize()
         }
 
         return NameSearchableList(quests.values.toList())

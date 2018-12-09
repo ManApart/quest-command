@@ -5,55 +5,65 @@ import core.history.display
 import core.utility.Named
 import system.EventManager
 
-class Quest(override val name: String, var activeEvent: StoryEvent, var stage: Int = 0) : Named {
+class Quest(override val name: String, var stage: Int = 0) : Named {
     private val journalEntries = mutableListOf<String>()
     var complete = false
     var active = false
-    private val storyEvents = mutableMapOf(activeEvent.stage to activeEvent)
+    private val storyEvents = mutableMapOf<Int, StoryEvent>()
+    private val listenedForEvents = mutableListOf<StoryEvent>()
 
     fun addEvent(event: StoryEvent) {
         storyEvents[event.stage] = event
     }
 
-    fun calculateActiveEvent() {
-        val sorted = storyEvents.keys.asSequence().sorted()
-        val stage = sorted.firstOrNull { it > stage }
-                ?: sorted.last()
-        activeEvent = storyEvents[stage]!!
+    fun initialize() {
+        var stage = 0
+        storyEvents.values.sortedBy { it.stage }.forEach { event ->
+            event.setDefaultAvailability(stage)
+            stage = event.stage
+        }
+        calculateListenedForEvents()
+    }
+
+    fun calculateListenedForEvents() {
+        listenedForEvents.clear()
+        listenedForEvents.addAll(storyEvents.values.filter { it.canBeListenedFor(stage) })
     }
 
     fun getAllEvents(): List<StoryEvent> {
         return storyEvents.values.toList()
     }
 
-    fun matches(event: Event, stage: StoryEvent = activeEvent): Boolean {
-        return stage.matches(event)
+    fun getMatchingEvent(event: Event): StoryEvent? {
+        return listenedForEvents.firstOrNull { it.matches(event) }
     }
 
-    fun getAllJournalEntries() : List<String> {
+    fun getAllJournalEntries(): List<String> {
         return journalEntries.toList()
     }
-    fun getLatestJournalEntry() : String {
+
+    fun getLatestJournalEntry(): String {
         return journalEntries.last()
     }
 
-    fun execute() {
-        executeEvent(activeEvent)
+    fun getListenedForEvents(): List<StoryEvent> {
+        return listenedForEvents.toList()
     }
 
     fun executeStage(stage: Int) {
-        if (!storyEvents.containsKey(stage)){
+        if (!storyEvents.containsKey(stage)) {
             display("Could not find stage $stage for quest $name. This shouldn't happen!")
         } else {
             executeEvent(storyEvents[stage]!!)
         }
     }
 
-    private fun executeEvent(event: StoryEvent) {
+    fun executeEvent(event: StoryEvent) {
         event.events.forEach {
             it.execute()
         }
         journalEntries.add(event.journal)
+        event.completed = true
 
         if (!complete) {
             active = true
@@ -61,8 +71,8 @@ class Quest(override val name: String, var activeEvent: StoryEvent, var stage: I
 
         stage = event.stage
         EventManager.postEvent(QuestStageUpdatedEvent(this, stage))
-        calculateActiveEvent()
-        if (stage == activeEvent.stage) {
+        calculateListenedForEvents()
+        if (listenedForEvents.isEmpty()) {
             complete = true
             active = false
             EventManager.postEvent(CompleteQuestEvent(this))
