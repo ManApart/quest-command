@@ -52,7 +52,7 @@ object LocationManager {
 
     fun reset() {
         parser = DependencyInjector.getImplementation(LocationParser::class.java)
-        parser.loadLocations()
+        locations = parser.loadLocations()
         locationNodes = loadLocationNodes()
     }
 

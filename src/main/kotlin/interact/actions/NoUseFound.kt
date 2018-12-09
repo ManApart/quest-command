@@ -3,6 +3,7 @@ package interact.actions
 import core.events.Event
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 import interact.UseEvent
 import system.EventManager
 
@@ -19,9 +20,9 @@ class NoUseFound : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         if (GameState.player.canInteract) {
-            println("You use ${event.source.name} on ${event.target.name} but nothing happens.")
+            display("You use ${event.source.name} on ${event.target.name} but nothing happens.")
         } else {
-            println("You can't interact with that right now.")
+            display("You can't interact with that right now.")
         }
     }
 }

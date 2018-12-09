@@ -4,6 +4,7 @@ import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.Target
+import core.history.display
 import system.EventManager
 import system.ItemManager
 
@@ -27,7 +28,7 @@ class EatCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         if (args.isEmpty()) {
-            println("${args.joinToString(" ")} not found!")
+            display("${args.joinToString(" ")} not found!")
         } else {
             if (targetExists(args)) {
                 val food = findTarget(args)
@@ -35,10 +36,10 @@ class EatCommand : Command() {
                     EventManager.postEvent(UseEvent(food, GameState.player))
                 } else {
                     val description = if (food.description.isNotBlank()) food.description else "Not much to say."
-                    println("${food.name}: $description")
+                    display("${food.name}: $description")
                 }
             } else {
-                println("Couldn't find $argsString")
+                display("Couldn't find $argsString")
             }
         }
     }

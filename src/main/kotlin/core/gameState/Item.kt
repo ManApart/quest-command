@@ -13,6 +13,8 @@ class Item(override val name: String, override val description: String = "", pri
         applyInherits(inherits)
     }
 
+    constructor(base: Item) : this(base.name, base.description, base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, base.properties)
+
     val equipSlots = equipSlots.map { Slot(it) }
     val soul = Soul(this)
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)

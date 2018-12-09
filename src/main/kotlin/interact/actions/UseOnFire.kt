@@ -3,6 +3,7 @@ package interact.actions
 import core.events.EventListener
 import core.gameState.Item
 import core.gameState.getSoul
+import core.history.display
 import interact.UseEvent
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
@@ -20,7 +21,7 @@ class UseOnFire : EventListener<UseEvent>() {
     }
 
     override fun execute(event: UseEvent) {
-        println("You place ${event.source.name} in the fire burning the ${event.target.name}.")
+        display("You place ${event.source.name} in the fire burning the ${event.target.name}.")
         val item = (event.source as Item)
         EventManager.postEvent(AddEffectEvent(item, EffectManager.getEffect("Burning")))
         EventManager.postEvent(AddEffectEvent(item, EffectManager.getEffect("On Fire")))

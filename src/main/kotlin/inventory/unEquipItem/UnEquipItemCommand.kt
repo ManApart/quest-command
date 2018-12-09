@@ -4,6 +4,7 @@ import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Item
+import core.history.display
 import system.EventManager
 
 class UnEquipItemCommand : Command() {
@@ -29,13 +30,13 @@ class UnEquipItemCommand : Command() {
         val args = Args(arguments, delimiters)
 
         if (args.isEmpty()) {
-            println("What do you want to un-equip?")
+            display("What do you want to un-equip?")
         } else {
             val item = getItem(args)
             if (item != null) {
                 EventManager.postEvent(UnEquipItemEvent(GameState.player.creature, item))
             } else {
-                println("Could not find ${args.argStrings[0]}")
+                display("Could not find ${args.argStrings[0]}")
             }
         }
     }

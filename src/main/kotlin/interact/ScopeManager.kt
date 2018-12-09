@@ -21,7 +21,7 @@ object ScopeManager {
         override fun execute(event: ArriveEvent) {
             resetTargets()
             val location = event.destination.getLocation()
-            addTargets(ItemManager.parseItems(location.items))
+            addTargets(ItemManager.getItems(location.items))
             addTargets(ActivatorManager.getActivators(location.activators))
             addTargets(CreatureManager.getCreatures(location.creatures))
         }

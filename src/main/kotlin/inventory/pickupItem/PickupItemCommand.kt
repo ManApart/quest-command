@@ -2,6 +2,7 @@ package inventory.pickupItem
 
 import core.gameState.GameState
 import core.gameState.Item
+import core.history.display
 import interact.ScopeManager
 import system.EventManager
 
@@ -26,7 +27,7 @@ class PickupItemCommand : core.commands.Command() {
         if (args.size == 1) {
             pickupItem(args)
         } else {
-            println("Pickup what?")
+            display("Pickup what?")
         }
     }
 
@@ -35,7 +36,7 @@ class PickupItemCommand : core.commands.Command() {
             val item = ScopeManager.getTarget(itemArgs) as Item
             EventManager.postEvent(PickupItemEvent(GameState.player.creature, item))
         } else {
-            println("Couldn't find ${itemArgs.joinToString(" ")}")
+            display("Couldn't find ${itemArgs.joinToString(" ")}")
         }
     }
 }

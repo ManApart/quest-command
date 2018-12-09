@@ -3,6 +3,7 @@ package interact.actions
 import core.events.EventListener
 import core.gameState.Activator
 import core.gameState.GameState
+import core.history.display
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -19,7 +20,7 @@ class ChopWood : EventListener<UseEvent>() {
     }
 
     override fun execute(event: UseEvent) {
-        println("The ${event.source} hacks at ${event.target.name}.")
+        display("The ${event.source} hacks at ${event.target.name}.")
             val damageDone = -event.source.properties.values.getInt("chopDamage", 0)
             EventManager.postEvent(StatChangeEvent((event.target as Activator).creature, event.source.name, chopHealth, damageDone))
     }

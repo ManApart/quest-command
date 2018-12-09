@@ -4,6 +4,7 @@ import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Item
+import core.history.display
 import system.EventManager
 
 class EquipItemCommand : Command() {
@@ -29,7 +30,7 @@ class EquipItemCommand : Command() {
         val args = Args(arguments, delimiters)
 
         if (args.isEmpty()) {
-            println("What do you want to equip?")
+            display("What do you want to equip?")
         } else {
             val item = getItem(args)
             val bodyPartNameGuess = getBodyPart(args)
@@ -37,7 +38,7 @@ class EquipItemCommand : Command() {
 
             if (item != null){
                 if (!item.canEquipTo(body)) {
-                    println("You can't equip ${item.name}.")
+                    display("You can't equip ${item.name}.")
                 } else if (bodyPartNameGuess == null){
                     EventManager.postEvent(EquipItemEvent(GameState.player.creature, item))
                 } else {
@@ -47,14 +48,14 @@ class EquipItemCommand : Command() {
                         if (slot != null){
                             EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, slot))
                         } else {
-                            println("Could not equip to body part ${bodyPart.name}")
+                            display("Could not equip to body part ${bodyPart.name}")
                         }
                     } else {
-                        println("Could not find body part $bodyPartNameGuess")
+                        display("Could not find body part $bodyPartNameGuess")
                     }
                 }
             } else {
-                println("Could not find ${args.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
+                display("Could not find ${args.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
             }
         }
     }

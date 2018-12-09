@@ -1,11 +1,13 @@
 package validation
 
-import system.ActivatorManager.activators
+import system.ActivatorManager
 import system.BehaviorManager
 import system.location.LocationManager
 import travel.climb.ClimbPathManager
 
 class ActivatorValidator {
+
+    private val activators = ActivatorManager.getAll()
 
     fun validate(): Int {
         return noDuplicateNames() +

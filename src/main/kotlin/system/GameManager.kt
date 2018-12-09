@@ -2,9 +2,11 @@ package system
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.Player
 import core.gameState.quests.QuestManager
 import core.history.ChatHistory
 import core.history.display
+import system.location.LocationManager
 import travel.ArriveEvent
 
 object GameManager {
@@ -22,6 +24,7 @@ object GameManager {
         ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()
+//        LocationManager.reset()
 
         newPlayer()
         EventManager.postEvent(ArriveEvent(destination = GameState.player.creature.location, method = "wake"))
@@ -30,7 +33,7 @@ object GameManager {
     }
 
     private fun newPlayer() {
-
+        GameState.player = Player()
         val inventory = GameState.player.creature.inventory
         val body = GameState.player.creature.body
 

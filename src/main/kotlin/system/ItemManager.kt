@@ -6,9 +6,10 @@ import core.events.EventListener
 import core.gameState.Item
 import core.history.display
 import core.utility.JsonDirectoryParser
+import core.utility.NameSearchableList
 
 object ItemManager {
-    private val items = JsonDirectoryParser.parseDirectory("/data/content/items", ::parseFile)
+    private val items = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/content/items", ::parseFile))
     private fun parseFile(path: String): List<Item> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     class ItemSpawner : EventListener<SpawnItemEvent>() {
@@ -23,28 +24,23 @@ object ItemManager {
         }
     }
 
-
     fun itemExists(name: String): Boolean {
-        return items.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
+        return items.exists(name)
     }
 
     fun itemExists(name: List<String>): Boolean {
-        if (name.isEmpty()) return false
-
-        val fullName = name.joinToString(" ").toLowerCase()
-        return items.firstOrNull { fullName.contains(it.name.toLowerCase()) } != null
+       return items.exists(name)
     }
 
     fun getItem(name: String): Item {
-        return items.first { it.name.toLowerCase() == name.toLowerCase() }.copy()
+        return Item(items.get(name))
     }
 
     fun getItem(name: List<String>): Item {
-        val fullName = name.joinToString(" ").toLowerCase()
-        return items.first { fullName.contains(it.name.toLowerCase()) }.copy()
+        return Item(items.get(name))
     }
 
-    fun parseItems(names: List<String>): List<Item> {
-        return names.asSequence().map { getItem(it) }.toList()
+    fun getItems(names: List<String>): List<Item> {
+        return items.getAll(names).map { Item(it) }
     }
 }

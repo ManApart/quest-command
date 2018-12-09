@@ -3,6 +3,7 @@ package interact.interaction
 import core.events.Event
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 import interact.UseEvent
 import system.EventManager
 
@@ -19,9 +20,9 @@ class NoInteractionFound : EventListener<InteractEvent>() {
 
     override fun execute(event: InteractEvent) {
         if (GameState.player.canInteract) {
-            println("You don't seem to be able to do anything interesting with ${event.target.name}.")
+            display("You don't seem to be able to do anything interesting with ${event.target.name}.")
         } else {
-            println("You can't interact with ${event.target.name} right now.")
+            display("You can't interact with ${event.target.name} right now.")
         }
     }
 }

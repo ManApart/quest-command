@@ -44,7 +44,47 @@ Here are some example commands you can run:
 `travel farmer's hut interior && cook Raw Poor Quality Meat on range`
 
 
-## Data
+## Design
+
+### Goals
+
+Create a world more interactive than Skyrim by trading presentation layer for higher levels of interaction.
+
+### Design Pillars
+
+* Architecture is flat and increases in complexity relative to project size in as small of increments as possible.
+* Classes are small, decoupled, and do just one thing
+* Dependency and coupling are kept to a minimum
+
+### Design Principles
+
+* Commands simply parse / understand user input and then create events
+* Commands do not handle or change state
+* Commands should be unknown to game state, events, and logic
+* All intents and actions are created through events
+* Listeners subscribe to individual events, update gamestate and print to console.
+
+### General Design Notes
+
+Any time an activator adds a new triggered event, it needs to be added to the triggered event when statement
+
+Location positions are always relative to their parent. The parent is always (0,0,0). If a location is compared with a location outside the parent, the parent locations are compared.
+
+An event, command and listener should share a package. Event should end in Event, command in Command, and listener without a suffix, with the same main name. If a listener is player only etc, prefix it with player
+Ex:
+* LookCommand
+* LookEvent
+* Look
+* PlayerLook
+
+### Research
+* manic mansion SCUM
+* ducktype
+* context free gramer, tokenizers, lexers, (yacc, lex)
+
+## Game Systems Explanation
+
+Below are explanations of how the game works today. See `notes.md` for thoughts and ideas on systems that have not been implemented yet.
 
 ### Triggered Events
 

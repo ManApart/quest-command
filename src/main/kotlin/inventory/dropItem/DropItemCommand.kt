@@ -1,6 +1,7 @@
 package inventory.dropItem
 
 import core.gameState.GameState
+import core.history.display
 import system.EventManager
 
 class DropItemCommand : core.commands.Command() {
@@ -24,7 +25,7 @@ class DropItemCommand : core.commands.Command() {
         if (args.size == 1) {
             dropItem(args)
         } else {
-            println("Drop what?")
+            display("Drop what?")
         }
     }
 
@@ -33,7 +34,7 @@ class DropItemCommand : core.commands.Command() {
             val item = GameState.player.creature.inventory.getItem(itemArgs)
             EventManager.postEvent(DropItemEvent(GameState.player.creature, item))
         } else {
-            println("Couldn't find ${itemArgs.joinToString(" ")}")
+            display("Couldn't find ${itemArgs.joinToString(" ")}")
         }
     }
 }

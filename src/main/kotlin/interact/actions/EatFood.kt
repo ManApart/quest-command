@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.getCreature
+import core.history.display
 import core.utility.StringFormatter
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
@@ -16,7 +17,7 @@ class EatFood : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         val target = StringFormatter.format(event.target == GameState.player, "You eat", event.target.name +" eats")
-        println("$target ${event.source}")
+        display("$target ${event.source}")
         val creature = getCreature(event.target)!!
         EventManager.postEvent(StatChangeEvent(creature, event.source.name, "Health", (event.source as Item).properties.values.getInt("healAmount")))
         creature.inventory.remove(event.source)

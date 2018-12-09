@@ -2,6 +2,7 @@ package interact.interaction
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 
 class Interact : EventListener<InteractEvent>() {
 
@@ -13,7 +14,7 @@ class Interact : EventListener<InteractEvent>() {
         if (GameState.player.canInteract) {
             event.target.consume(event)
         } else {
-            println("You can't interact with ${event.target.name} right now.")
+            display("You can't interact with ${event.target.name} right now.")
         }
     }
 }

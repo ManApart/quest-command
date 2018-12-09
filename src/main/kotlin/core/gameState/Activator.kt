@@ -17,6 +17,8 @@ class Activator(
         inherits: List<InheritRecipe> = listOf()
 ) : Target {
 
+    constructor(base: Activator) : this(base.name, base.description, base.climb, base.behaviorRecipes, base.creature.properties)
+
     val creature = Creature(name, description, parent = this, properties = properties)
     override val name: String get() = creature.name
     override val description: String get() = creature.description
