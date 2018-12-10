@@ -17,7 +17,8 @@ class QuestTest {
 
     @Test
     fun questAddsDefaultEventToEvents(){
-        val quest = Quest("quest", StoryEvent("quest", "event", 10, "journal", TriggerCondition("callingEvent")))
+        val quest = Quest("quest")
+        quest.addEvent(StoryEvent("quest", "event", 10, "journal", condition = TriggerCondition("callingEvent")))
         Assert.assertEquals(1, quest.getAllEvents().size)
     }
 
@@ -26,7 +27,7 @@ class QuestTest {
         val events = createEvents("quest", 5)
         val quest = createQuest(events)
         quest.calculateListenedForEvents()
-        Assert.assertEquals(events.first(), quest.activeEvent)
+        Assert.assertEquals(events.first(), quest.getListenedForEvents().first())
     }
 
     @Test
@@ -35,7 +36,7 @@ class QuestTest {
         val events = createEvents("quest", 5)
         val quest = createQuest(events, currentStage)
         quest.calculateListenedForEvents()
-        Assert.assertEquals(currentStage+1, quest.activeEvent.stage)
+        Assert.assertEquals(currentStage+1, quest.getListenedForEvents().first().stage)
     }
 
     @Test
@@ -44,29 +45,31 @@ class QuestTest {
         val events = createEvents("quest", 5)
         val quest = createQuest(events, currentStage)
         quest.calculateListenedForEvents()
-        Assert.assertEquals(events.last(), quest.activeEvent)
+        Assert.assertEquals(events.last(), quest.getListenedForEvents().first())
     }
 
     @Test
-    fun highestStageReturnedIfNoStagesAfterCurrent(){
+    fun noStagesAfterCurrent(){
         val currentStage = 6
         val events = createEvents("quest", 5)
         val quest = createQuest(events, currentStage)
         quest.calculateListenedForEvents()
-        Assert.assertEquals(events.last(), quest.activeEvent)
+
+        Assert.assertTrue(quest.getListenedForEvents().isEmpty())
     }
 
     private fun createEvents(questName: String, number: Int) : List<StoryEvent> {
         return (1..number).map {
-            StoryEvent(questName, questName + it, it, "journal$it", TriggerCondition("callingEvent"))
+            StoryEvent(questName, questName + it, it, "journal$it", condition = TriggerCondition("callingEvent"))
         }
     }
 
     private fun createQuest(events: List<StoryEvent>, currentStage: Int = 0) : Quest {
-        val quest = Quest(events.first().name, events.first(), currentStage)
+        val quest = Quest(events.first().name, currentStage)
         events.forEach {
             quest.addEvent(it)
         }
+        quest.initialize()
         return quest
     }
 }
