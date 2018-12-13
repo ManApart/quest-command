@@ -34,14 +34,17 @@ object LocationManager {
     }
 
     private fun createNeighborLinks(node: LocationNode, locationNodes: NameSearchableList<LocationNode>) {
-        node.getNeighborLinks().forEach { link ->
+        node.protoLocationLinks.forEach { link ->
             var neighbor = getLocationNodeByExactName(link.name, locationNodes)
             if (neighbor == null) {
                 neighbor = LocationNode(link.name)
                 locationNodes.add(neighbor)
             }
+            val locationLink = LocationLink(node, neighbor, link.position, link.restricted)
+            node.addLink(locationLink)
+
             if (!link.oneWay) {
-                neighbor.addLink(LocationLink(node.name, link.position.invert()))
+                neighbor.addLink(locationLink.invert())
             }
         }
     }

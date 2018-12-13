@@ -18,22 +18,22 @@ class ReadMapTest {
     @Test
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
-        target.addLink(LocationLink("north", Position(0,10,0)))
+        target.addLink(LocationLink(target, LocationNode("Destination"), Position(0,10,0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()
         listener.execute(event)
         val actual = ChatHistory.getLastOutput()
-        Assert.assertEquals("My Place is neighbored by north (NORTH).", actual)
+        Assert.assertEquals("My Place is neighbored by Destination (NORTH).", actual)
     }
 
     @Test
     fun neighborsAreProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
-        target.addLink(LocationLink("north", Position(0,10,0)))
-        target.addLink(LocationLink("south", Position(0,-10,0)))
-        target.addLink(LocationLink("east", Position(10,0,0)))
-        target.addLink(LocationLink("west", Position(-10,0,0)))
+        target.addLink(LocationLink(target, LocationNode("north"), Position(0,10,0)))
+        target.addLink(LocationLink(target, LocationNode("south"), Position(0,-10,0)))
+        target.addLink(LocationLink(target, LocationNode("east"), Position(10,0,0)))
+        target.addLink(LocationLink(target, LocationNode("west"), Position(-10,0,0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()

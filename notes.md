@@ -20,17 +20,6 @@ While the readme should cover how to build and run the game, as well with inform
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
 
-#### Persistence
-- Tree continues burning even after leaving it and coming back (Persistence within session)
- - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
-- Persistence should happen across sessions.
-
-### Crafting
-
-- Cooking / recipes
-  - Burn if not enough skill
-  - Gain xp for cooking
-
 ### Combat
 
 #### Thoughts and Description
@@ -48,7 +37,6 @@ Each Turn
 - Each action drains stamina. The heavier the weapon the more stamina drained
 - Without enough stamina the combatant can’t do anything
 - A Combatant can rest to recover stamina points
-
 
 Attacking with heavier weapons does what?
 - Costs more action points (instead of always resetting to 0 be based on weapon)?
@@ -72,9 +60,22 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Block
 - Step (forward, back) (ranges: knife, sword, lance, bow)
 
-#### Other
-- Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
-- Attack direction should use previous target
+### Crafting
+
+- Cooking / recipes
+ - Burn if not enough skill
+ - Gain xp for cooking
+- Slice apple
+- Behavior / interact / recipe alignment. Use knife on apple same as slash apple, same as craft sliced apple
+
+
+### Inventory
+
+- Weapons have a type (property)
+- Bag can hold x amount of weight, any type
+- Character can only hold so much weight.
+ - Item could fit in bag weight but then bag be too heavy for character to move
+- Bags / armor can have equip slots for specific types. So a weapon holster can provide a slot but only for hatchets etc
 
 
 ### General UI
@@ -84,17 +85,45 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Possible CLI Tools
     - [Clink](http://mridgers.github.io/clink/)
     - [Picocli](https://github.com/remkop/picocli)
-    - [JLine](https://jline.github.io/)  
+    - [JLine](https://jline.github.io/)
+
+### Locations
+
+- Location items take hashmap of item name and locationDescription string. Looking in a location will say ‘tinderbox on the range’
+- Place the hatchet/tinderbox/apple in the scenes
+
+#### Other
+- Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
+- Attack direction should use previous target
+
+#### Persistence
+- Tree continues burning even after leaving it and coming back (Persistence within session)
+ - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
+- Persistence should happen across sessions.
+
 
 ### Quests
 
+- Tutorial teach players how to pick things up, tell them to light the range, cook an apple pie with water, wheat, apple, tin etc
+- On quest stage updated:  In tutorial it fires on each pickup item, if all items picked up then next quest section
+
 Other
 - First time hints / build out tutorial
+- Quest event has array of help sentences
 
 ### Stats
 
 - Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
 - Or stats improve by use, attributes are like stat categories and improve when their stats improve, properties are derived from attributes (health, endurance, etc)
+- Each skill levelup adds 1 xp to attribute
+
+Possible Stats
+- Strong
+- Clever
+- Agile
+- Wise
+- Enduring
+
 
 ### Travel
 
@@ -104,6 +133,7 @@ Other
 - Update how routing works
  - Use some path finding to find nearest area by evaluating nodes out from center node
  - let map be used for route planning
+- Map command two levels (configurable) deep
 
 #### Climbing
 - You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall

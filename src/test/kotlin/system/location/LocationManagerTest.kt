@@ -1,7 +1,7 @@
 package system.location
 
-import core.gameState.location.LocationLink
 import core.gameState.location.LocationNode
+import core.gameState.location.ProtoLocationLink
 import core.utility.NameSearchableList
 import org.junit.Assert
 import org.junit.Test
@@ -11,8 +11,8 @@ class LocationManagerTest {
 
     @Test
     fun linksCreateNeighborsIfTheyDoNotExist() {
-        val neighborLink = LocationLink("neighbor")
-        val source = LocationNode("source", locations = mutableListOf(neighborLink))
+        val neighborLink = ProtoLocationLink("neighbor")
+        val source = LocationNode("source", protoLocationLinks = mutableListOf(neighborLink))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
@@ -27,7 +27,7 @@ class LocationManagerTest {
         val neighborExistsName = "neighbor exists"
         val neighborDoesNotExistsName = "neighbor doesn't exists"
 
-        val source = LocationNode("source", locations = mutableListOf(LocationLink(neighborExistsName), LocationLink(neighborDoesNotExistsName)))
+        val source = LocationNode("source", protoLocationLinks = mutableListOf(ProtoLocationLink(neighborExistsName), ProtoLocationLink(neighborDoesNotExistsName)))
         val neighborExists = LocationNode(neighborExistsName)
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighborExists)))
 
@@ -52,7 +52,7 @@ class LocationManagerTest {
     fun oneWayLinksDontLinkBack() {
 
         val neighbor = LocationNode("neighbor")
-        val source = LocationNode("source", locations = mutableListOf(LocationLink(neighbor.name, oneWay = true)))
+        val source = LocationNode("source", protoLocationLinks = mutableListOf(ProtoLocationLink(neighbor.name, oneWay = true)))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighbor)))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)

@@ -1,10 +1,11 @@
 package core.gameState.location
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import core.gameState.Direction
 import core.utility.Named
 import system.location.LocationManager
 
-class LocationNode(override val name: String, val locationName: String = name, val parent: String? = null, private val locations: MutableList<LocationLink> = mutableListOf()) : Named {
+class LocationNode(override val name: String, val locationName: String = name, val parent: String? = null, @JsonProperty("locations") val protoLocationLinks: List<ProtoLocationLink> = listOf(), private val locationLinks: MutableList<LocationLink> = mutableListOf()) : Named {
 
     override fun toString(): String {
         return name
@@ -16,31 +17,27 @@ class LocationNode(override val name: String, val locationName: String = name, v
 
     fun addLink(link: LocationLink) {
         if (!hasLink(link)) {
-            locations.add(link)
+            locationLinks.add(link)
         }
     }
 
     private fun hasLink(link: LocationLink): Boolean {
-        return locations.any { it.name == link.name }
+        return locationLinks.any { it.source == link.source && it.destination == link.destination}
     }
 
     fun getNeighborLinks(): List<LocationLink> {
-        return locations.toList()
+        return locationLinks.toList()
     }
 
     fun getNeighbors(): List<LocationNode> {
-        return locations.map {
-            LocationManager.getLocationNode(it.name)
-        }
+        return locationLinks.map { it.destination }
     }
 
     fun getNeighbors(direction: Direction): List<LocationNode> {
-        val links = locations.filter {
-            it.position.getDirection() == direction
-        }
-        return links.map {
-            LocationManager.getLocationNode(it.name)
-        }
+        return locationLinks.asSequence()
+                .filter { it.position.getDirection() == direction }
+                .map { it.destination }
+                .toList()
     }
 
     fun getLocation(): Location {
@@ -52,7 +49,7 @@ class LocationNode(override val name: String, val locationName: String = name, v
     }
 
     fun getLink(destination: LocationNode): LocationLink? {
-        return locations.first { it.name == destination.name }
+        return locationLinks.firstOrNull { it.destination == destination }
     }
 
     fun getSiblings(): String {
@@ -68,30 +65,19 @@ class LocationNode(override val name: String, val locationName: String = name, v
     private fun getLocationWithDirection(neighbor: LocationLink, far: Boolean): String {
         val direction = neighbor.position.getDirection()
         return if (direction == Direction.NONE) {
-            neighbor.name
+            neighbor.destination.name
         } else {
             val farString = if (far) {
                 "Far "
             } else ""
-            "${neighbor.name} ($farString$direction)"
+            "${neighbor.destination.name} ($farString$direction)"
         }
     }
 
-//    fun getNearestNeighbor(direction: Direction): LocationNode {
-//
-//    }
-
-//    fun getPathTo(destination: LocationNode): List<LocationNode> {
+//    fun findRouteTo(destination: LocationNode): Route {
 //
 //    }
 //
-//    fun getDistanceTo(destination: LocationNode): List<LocationNode> {
-//
-//    }
-//
-//    private fun getDistanceOfPath(path: List<LocationNode>) : Int {
-//
-//    }
 
 
 }

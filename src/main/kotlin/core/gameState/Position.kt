@@ -6,6 +6,21 @@ val NO_POSITION: Position = Position()
 
 class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
 
+    companion object {
+        fun fromDirection(direction: Direction) : Position {
+            return when (direction) {
+                Direction.EAST -> Position(1)
+                Direction.WEST -> Position(-1)
+                Direction.NORTH_EAST -> Position(1, 1)
+                Direction.NORTH_WEST -> Position(-1, 1)
+                Direction.NORTH-> Position(0, 1)
+                Direction.SOUTH-> Position(0, -1)
+                Direction.SOUTH_EAST-> Position(1, -1)
+                Direction.SOUTH_WEST-> Position(-1, -1)
+                else -> Position()
+            }
+        }
+    }
 
     override fun toString(): String {
         return "Pos: $x, $y, $z"
@@ -58,7 +73,7 @@ class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         return direction == other.getDirection(this)
     }
 
-    fun getDistance(other: Position): Int {
+    fun getDistance(other: Position = Position()): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
         val z = (z - other.z).toDouble().pow(2)
