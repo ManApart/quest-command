@@ -16,6 +16,17 @@ class ReadMapTest {
     }
 
     @Test
+    fun noNeighbors(){
+        val target = LocationNode("My Place")
+        val event = ReadMapEvent(target)
+
+        val listener = ReadMap()
+        listener.execute(event)
+        val actual = ChatHistory.getLastOutput()
+        Assert.assertEquals("My Place has no known neighbors.", actual)
+    }
+
+    @Test
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         target.addLink(LocationLink(target, LocationNode("Destination"), Position(0,10,0)))
@@ -24,7 +35,9 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = ChatHistory.getLastOutput()
-        Assert.assertEquals("My Place is neighbored by Destination (NORTH).", actual)
+        Assert.assertEquals("My Place is neighbored by:\n" +
+                "  Name         Distance  Direction Path  \n" +
+                "  Destination  10        N               \n", actual)
     }
 
     @Test
@@ -39,6 +52,11 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = ChatHistory.getLastOutput()
-        Assert.assertEquals("My Place is neighbored by north (NORTH), south (SOUTH), east (EAST), west (WEST).", actual)
+        Assert.assertEquals("My Place is neighbored by:\n" +
+                "  Name   Distance  Direction Path  \n" +
+                "  north  10        N               \n" +
+                "  south  10        S               \n" +
+                "  east   10        E               \n" +
+                "  west   10        W               \n", actual)
     }
 }

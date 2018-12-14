@@ -20,19 +20,26 @@ class Route(val source: LocationNode, private val links: MutableList<LocationLin
     }
 
     fun addLink(link: LocationLink) {
-        if (link.source != destination){
+        if (link.source != destination) {
             throw IllegalArgumentException("Route starting with '${source.name}' was passed a link whose source '${link.source.name}' did not match current destination '${destination.name}'.")
         }
         links.add(link)
         destination = link.destination
     }
 
-    fun getLinks() : List<LocationLink> {
+    fun getLinks(): List<LocationLink> {
         return links.toList()
     }
 
-    fun getDistance() : Int {
-        return links.asSequence().map{ it.position.getDistance() }.sum()
+    fun getDistance(): Int {
+        return links.asSequence().map { it.position.getDistance() }.sum()
+    }
+
+    fun getDirectionString(): String {
+        return links.asSequence()
+                .map { it.position.getDirection().shortcut }
+                .joinToString(", ")
+                .toUpperCase()
     }
 
 }

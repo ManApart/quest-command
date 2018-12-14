@@ -1,10 +1,10 @@
 package explore.map
 
 import core.events.EventListener
-import core.gameState.Direction
 import core.gameState.GameState
-import core.gameState.location.LocationLink
-import core.gameState.location.LocationNode
+import core.gameState.location.Route
+import core.gameState.location.RouteFinder
+import core.history.StringTable
 import core.history.display
 
 class ReadMap : EventListener<ReadMapEvent>() {
@@ -17,8 +17,26 @@ class ReadMap : EventListener<ReadMapEvent>() {
         } else {
             event.target.name
         }
-        display("$name ${event.target.getSiblings()}.")
+
+        display("$name ${getRoutesString(event)}")
     }
 
+    private fun getRoutesString(event: ReadMapEvent) : String {
+        val routes = RouteFinder(event.target, event.depth).getNeighbors()
+
+        return if (routes.isNotEmpty()) {
+            val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))
+            input.addAll(routes.map { getRouteString(it) })
+            val table = StringTable(input, 2, rightPadding = 2)
+
+            "is neighbored by:\n${table.getString()}"
+        } else {
+            "has no known neighbors."
+        }
+    }
+
+    private fun getRouteString(route: Route) : List<String> {
+        return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString())
+    }
 
 }

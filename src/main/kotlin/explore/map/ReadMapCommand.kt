@@ -1,5 +1,6 @@
 package explore.map
 
+import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
@@ -16,7 +17,8 @@ class ReadMapCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tMap *<location> - List your current location (or given location) and the surrounding areas."
+        return "\n\tMap *<location> - List your current location (or given location) and the surrounding areas." +
+                "\n\tMap *depth - list neighbors to <depth> levels away from the location."
     }
 
     override fun getCategory(): List<String> {
@@ -24,23 +26,26 @@ class ReadMapCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val arguments = Args(args)
+        val depth = arguments.getNumber() ?: 1
+        val otherArgs = args.minus(depth.toString())
+
         when{
-            args.isEmpty() -> currentLocation()
-            else -> targetLocation(args)
+            otherArgs.isEmpty() -> currentLocation(depth)
+            else -> targetLocation(otherArgs, depth)
         }
     }
 
-
-    private fun currentLocation(){
-        EventManager.postEvent(ReadMapEvent(GameState.player.creature.location))
+    private fun currentLocation(depth: Int){
+        EventManager.postEvent(ReadMapEvent(GameState.player.creature.location, depth))
     }
 
-    private fun targetLocation(args: List<String>){
+    private fun targetLocation(args: List<String>, depth: Int){
         val target = LocationManager.findLocation(args.joinToString(" "))
         if (target != LocationManager.NOWHERE_NODE){
-            EventManager.postEvent(ReadMapEvent(target))
+            EventManager.postEvent(ReadMapEvent(target, depth))
         } else {
-            display("Could not find ${args.joinToString(" ")} on the map.")
+            println("Could not find ${args.joinToString(" ")} on the map.")
         }
     }
 
