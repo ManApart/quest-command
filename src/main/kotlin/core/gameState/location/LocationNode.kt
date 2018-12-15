@@ -22,7 +22,9 @@ class LocationNode(override val name: String, val locationName: String = name, v
     }
 
     private fun hasLink(link: LocationLink): Boolean {
-        return locationLinks.any { it.source == link.source && it.destination == link.destination}
+        return locationLinks.any {
+            it.source == link.source && it.destination == link.destination
+        }
     }
 
     fun getNeighborLinks(): List<LocationLink> {

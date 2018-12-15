@@ -4,10 +4,21 @@ import core.gameState.location.LocationNode
 import core.gameState.location.ProtoLocationLink
 import core.utility.NameSearchableList
 import org.junit.Assert
+import org.junit.BeforeClass
 import org.junit.Test
 import system.DependencyInjector
 
 class LocationManagerTest {
+
+    companion object {
+        @JvmStatic @BeforeClass
+        fun setup() {
+            //Run before other tests so object is initialized and we're testing a fresh reset each time
+            val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf()))
+            DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
+            LocationManager.getLocations()
+        }
+    }
 
     @Test
     fun linksCreateNeighborsIfTheyDoNotExist() {
