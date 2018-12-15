@@ -53,4 +53,29 @@ class UtilityTest {
 
         assertFalse(mapsMatch(mapA, mapB))
     }
+
+    @Test
+    fun mapAHasAllOfMapB() {
+        val mapA = mapOf("one" to 1, "two" to 2, "three" to 3)
+        val mapB = mapOf("one" to 1, "two" to 2)
+
+        assertTrue(mapAHasAllOfMapB(mapA, mapB))
+    }
+
+    @Test
+    fun mapADoesNotHaveAllOfMapB() {
+        val mapA = mapOf("one" to 1, "two" to 2)
+        val mapB = mapOf("one" to 1, "two" to 2, "three" to 3)
+
+        assertFalse(mapAHasAllOfMapB(mapA, mapB))
+    }
+
+    @Test
+    fun mapADoesNotHaveSameValuesAsMapB() {
+        val mapA = mapOf("one" to 1, "two" to 2)
+        val mapB = mapOf("one" to 1, "two" to 3)
+
+        assertFalse(mapAHasAllOfMapB(mapA, mapB))
+    }
+
 }

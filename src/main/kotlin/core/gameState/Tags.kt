@@ -17,6 +17,10 @@ class Tags(tags: List<String> = listOf()) {
         tags.remove(tag.toLowerCase())
     }
 
+    fun hasAll(other: Tags): Boolean {
+        return hasAll(other.tags)
+    }
+
     fun hasAll(tags: List<String>): Boolean {
         tags.forEach {
             if (!this.tags.contains(it)) {

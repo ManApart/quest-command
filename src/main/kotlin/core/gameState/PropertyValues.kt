@@ -1,5 +1,6 @@
 package core.gameState
 
+import core.utility.mapAHasAllOfMapB
 import core.utility.mapsMatch
 
 class PropertyValues(properties: Map<String, String> = HashMap()) {
@@ -28,6 +29,10 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
         return mapsMatch(properties, other.properties)
     }
 
+    fun hasAll(other: PropertyValues): Boolean {
+        return mapAHasAllOfMapB(properties, other.properties)
+    }
+
     fun inherit(parent: PropertyValues) {
         parent.properties.forEach{
             if (!properties.containsKey(it.key)){
@@ -40,4 +45,6 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
         val newProps = core.utility.applyParams(properties, params)
         return PropertyValues(newProps)
     }
+
+
 }

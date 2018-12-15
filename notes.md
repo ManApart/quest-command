@@ -19,6 +19,7 @@ While the readme should cover how to build and run the game, as well with inform
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
+- JSON should be 100% inheritable
 
 ### Combat
 
@@ -67,6 +68,8 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
  - Gain xp for cooking
 - Slice apple
 - Behavior / interact / recipe alignment. Use knife on apple same as slash apple, same as craft sliced apple
+ - Effects should apply properties during their duration and then remove them afterwords (like 'burning' when on fire)
+ - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)'
 
 
 ### Inventory

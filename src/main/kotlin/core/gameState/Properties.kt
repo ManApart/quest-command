@@ -1,6 +1,7 @@
 package core.gameState
 
 import core.utility.inheritMap
+import core.utility.mapAHasAllOfMapB
 import core.utility.mapsMatch
 
 class Properties(val tags: Tags = Tags(), val values: PropertyValues = PropertyValues(), var stats: Map<String, String> = mapOf()) {
@@ -9,8 +10,16 @@ class Properties(val tags: Tags = Tags(), val values: PropertyValues = PropertyV
         return tags.matches(other.tags) && values.matches(other.values) && matchesStats(other)
     }
 
+    fun hasAll(other: Properties) : Boolean {
+        return tags.hasAll(other.tags) && values.hasAll(other.values) && hasAllStats(other)
+    }
+
     private fun matchesStats(other: Properties): Boolean {
         return mapsMatch(stats, other.stats)
+    }
+
+    private fun hasAllStats(other: Properties): Boolean {
+        return mapAHasAllOfMapB(stats, other.stats)
     }
 
     fun applyParams(params: Map<String, String>) : Properties {

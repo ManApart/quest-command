@@ -1,8 +1,6 @@
 package crafting
 
-import core.gameState.Activator
-import core.gameState.Item
-import core.gameState.Player
+import core.gameState.*
 import org.junit.Assert
 import org.junit.Test
 import system.DependencyInjector
@@ -11,9 +9,9 @@ class RecipeManagerTest {
 
     @Test
     fun findRecipe() {
-        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 1)), "Range", "Baked Apple")
+        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 1)), Properties(tags = Tags(listOf("Range"))), "Baked Apple")
         val ingredients = listOf(Item("Apple"))
-        val tool = Activator("Range")
+        val tool = Activator("Range", properties =  Properties(tags = Tags(listOf("Range"))))
         val baker = Player()
 
 
@@ -27,7 +25,7 @@ class RecipeManagerTest {
 
     @Test
     fun recipeWithoutIngredientsNotFound() {
-        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 1)), "Range", "Baked Apple")
+        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 1)), Properties(tags = Tags(listOf("Range"))), "Baked Apple")
         val ingredients = listOf<Item>()
         val tool = Activator("Range")
         val baker = Player()
@@ -42,7 +40,7 @@ class RecipeManagerTest {
 
     @Test
     fun recipeWithoutCorrectIngredientsNotFound() {
-        val recipe = Recipe("Poor Quality Cooked Meat", listOf("Raw Poor Quality Meat"), mapOf(Pair("Cooking", 1)), "Range", "Poor Quality Cooked Meat")
+        val recipe = Recipe("Poor Quality Cooked Meat", listOf("Raw Poor Quality Meat"), mapOf(Pair("Cooking", 1)), Properties(tags = Tags(listOf("Range"))), "Poor Quality Cooked Meat")
         val ingredients = listOf(Item("Apple"))
         val tool = Activator("Range")
         val baker = Player()
@@ -57,7 +55,7 @@ class RecipeManagerTest {
 
     @Test
     fun recipeWithoutToolNotFound() {
-        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 1)), "Range", "Baked Apple")
+        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 1)), Properties(tags = Tags(listOf("Range"))), "Baked Apple")
         val ingredients = listOf(Item("Apple"))
         val tool = Activator("NONE")
         val baker = Player()
@@ -72,7 +70,7 @@ class RecipeManagerTest {
 
     @Test
     fun recipeWithoutSkillNotFound() {
-        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 5)), "Range", "Baked Apple")
+        val recipe = Recipe("Baked Apple", listOf("Apple"), mapOf(Pair("Cooking", 5)), Properties(tags = Tags(listOf("Range"))), "Baked Apple")
         val ingredients = listOf(Item("Apple"))
         val tool = Activator("Range")
         val baker = Player()
