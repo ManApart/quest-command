@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Poor Quality Cooked Meat",
+    "ingredients": [
+      "Raw Poor Quality Meat"
+    ],
+    "skills": {
+      "Cooking": 2
+    },
+    "toolProperties": {
+      "tags": [
+        "Range"
+      ]
+    },
+    "result": "Cooked Poor Quality Meat"
+  },
+  {
+    "name": "Baked Apple",
+    "ingredients": [
+      "Apple"
+    ],
+    "skills": {
+      "Cooking": 1
+    },
+    "toolProperties": {
+      "tags": [
+        "Range"
+      ]
+    },
+    "result": "Baked Apple"
+  }
+]

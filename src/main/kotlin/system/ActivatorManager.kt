@@ -7,7 +7,7 @@ import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 
 object ActivatorManager {
-    private val activators = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/content/activators", ::parseFile))
+    private val activators = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/activators", ::parseFile))
     private fun parseFile(path: String): List<Activator> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun getActivator(name: String) : Activator {

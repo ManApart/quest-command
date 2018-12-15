@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Rat",
+    "description": "Mangy and red eyed.",
+    "body": "Rat",
+    "ai": "Cowardly Predator",
+    "properties": {
+      "stats": {
+        "Health": 3,
+        "Strength": 1,
+        "Bare Handed": 2
+      },
+      "tags": [
+        "Predator",
+        "Small"
+      ]
+    },
+    "items": [
+      "Raw Poor Quality Meat"
+    ]
+  }
+]

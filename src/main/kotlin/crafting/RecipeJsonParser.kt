@@ -6,7 +6,7 @@ import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 
 class RecipeJsonParser : RecipeParser {
-    private val recipes = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/content/recipes", ::parseFile))
+    private val recipes = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/recipes", ::parseFile))
     private fun parseFile(path: String): List<Recipe> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     override fun loadRecipes(): NameSearchableList<Recipe> {

@@ -6,7 +6,7 @@ import core.gameState.Creature
 import core.utility.JsonDirectoryParser
 
 object CreatureManager {
-    private val creatures = JsonDirectoryParser.parseDirectory("/data/content/creatures", ::parseFile)
+    private val creatures = JsonDirectoryParser.parseDirectory("/data/generated/content/creatures", ::parseFile)
     private fun parseFile(path: String): List<Creature> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     private fun getCreature(name: String) : Creature {

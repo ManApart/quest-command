@@ -8,7 +8,7 @@ import core.gameState.behavior.BehaviorRecipe
 import core.utility.JsonDirectoryParser
 
 object BehaviorManager {
-    private val behaviors = JsonDirectoryParser.parseDirectory("/data/content/behaviors", ::parseFile)
+    private val behaviors = JsonDirectoryParser.parseDirectory("/data/generated/content/behaviors", ::parseFile)
     private fun parseFile(path: String): List<BehaviorBase> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun behaviorExists(recipe: BehaviorRecipe): Boolean {

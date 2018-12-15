@@ -8,7 +8,7 @@ import core.gameState.Creature
 import core.utility.JsonDirectoryParser
 
 object AIManager {
-    private val AIs = JsonDirectoryParser.parseDirectory("/data/content/ai", ::parseFile)
+    private val AIs = JsonDirectoryParser.parseDirectory("/data/generated/content/ai", ::parseFile)
     private fun parseFile(path: String): List<AIBase> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun getAI(name: String, creature: Creature) : AI {

@@ -6,7 +6,7 @@ import core.gameState.Effect
 import core.utility.JsonDirectoryParser
 
 object EffectManager {
-    private val effects = JsonDirectoryParser.parseDirectory("/data/content/effects", ::parseFile)
+    private val effects = JsonDirectoryParser.parseDirectory("/data/generated/content/effects", ::parseFile)
     private fun parseFile(path: String): List<Effect> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
 //    class ItemSpawner : EventListener<SpawnItemEvent>() {

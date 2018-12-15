@@ -1,0 +1,178 @@
+[
+  {
+    "name": "Brown Pants",
+    "description": "These pants used to be white.",
+    "equipSlots": [
+      [
+        "Right Leg",
+        "Left Leg"
+      ]
+    ],
+    "inherits": [
+      {
+        "name": "Burnable",
+        "params": {
+          "burnHealth": 1,
+          "itemName": "Brown Pants"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Old Shirt",
+    "description": "A faint scent of soil oozes from the worn cloth",
+    "equipSlots": [
+      [
+        "Chest"
+      ]
+    ],
+    "inherits": [
+      {
+        "name": "Burnable",
+        "params": {
+          "burnHealth": 1,
+          "itemName": "Old Shirt"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Rusty Dagger",
+    "description": "It once held a cutting edge, but those days are little remembered.",
+    "weight": "1",
+    "equipSlots": [
+      [
+        "Right Hand"
+      ],
+      [
+        "Left Hand"
+      ]
+    ],
+    "properties": {
+      "values": {
+        "slashDamage": "1",
+        "stabDamage": "2"
+      },
+      "tags": [
+        "Weapon",
+        "Sharp",
+        "Small",
+        "Short"
+      ]
+    }
+  },
+  {
+    "name": "Dulled Hatchet",
+    "description": "The handle has been polished through much use.",
+    "weight": "4",
+    "equipSlots": [
+      [
+        "Right Hand"
+      ],
+      [
+        "Left Hand"
+      ]
+    ],
+    "properties": {
+      "values": {
+        "chopDamage": "4"
+      },
+      "tags": [
+        "Weapon",
+        "Sharp",
+        "Short"
+      ]
+    }
+  },
+  {
+    "name": "Apple",
+    "description": "It glistens and smells of spring blossoms.",
+    "weight": "1",
+    "properties": {
+      "values": {
+        "healAmount": 1
+      },
+      "stats": {
+        "burnHealth": 1
+      },
+      "tags": [
+        "Food"
+      ]
+    },
+    "behaviors": [
+      {
+        "name": "Bake Food",
+        "params": {
+          "itemName": "Apple",
+          "resultItemName": "Baked Apple"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Baked Apple",
+    "description": "The soft flesh smells of a wood fire.",
+    "weight": "1",
+    "properties": {
+      "values": {
+        "healAmount": 2
+      },
+      "stats": {
+        "burnHealth": 1
+      },
+      "tags": [
+        "Food"
+      ]
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "Apple"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Wheat Bundle",
+    "description": "It's steams lightly scratch your hands.",
+    "weight": "1",
+    "inherits": [
+      {
+        "name": "Burnable",
+        "params": {
+          "burnHealth": 1,
+          "itemName": "Brown Pants"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Tinder Box",
+    "description": "This can light flammable things on fire.",
+    "properties": {
+      "tags": [
+        "Fire Starter"
+      ]
+    }
+  },
+  {
+    "name": "Ash",
+    "description": "The result of a fire's unconstrained hunger."
+  },
+  {
+    "name": "Raw Poor Quality Meat",
+    "description": "It's pale and oily.",
+    "weight": "1"
+  },
+  {
+    "name": "Cooked Poor Quality Meat",
+    "description": "Despite its oily texture, the aroma rises natural and almost nutty.",
+    "weight": "1",
+    "properties": {
+      "values": {
+        "healAmount": 5
+      }
+    }
+  }
+]

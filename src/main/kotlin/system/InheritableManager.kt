@@ -7,7 +7,7 @@ import core.gameState.inhertiable.Inheritable
 import core.utility.JsonDirectoryParser
 
 object InheritableManager {
-    private val inheritables = JsonDirectoryParser.parseDirectory("/data/content/inheritables", ::parseFile)
+    private val inheritables = JsonDirectoryParser.parseDirectory("/data/generated/content/inheritables", ::parseFile)
     private fun parseFile(path: String): List<Inheritable> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun getInheritables(recipes: List<InheritRecipe>): List<Inheritable> {

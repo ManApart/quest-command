@@ -9,7 +9,7 @@ import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 
 object ItemManager {
-    private val items = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/content/items", ::parseFile))
+    private val items = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/items", ::parseFile))
     private fun parseFile(path: String): List<Item> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     class ItemSpawner : EventListener<SpawnItemEvent>() {

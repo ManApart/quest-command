@@ -9,7 +9,7 @@ object QuestManager {
     var quests = loadQuests()
 
     private fun loadQuests(): NameSearchableList<Quest> {
-        val events = JsonDirectoryParser.parseDirectory("/data/content/story-events", ::parseFile)
+        val events = JsonDirectoryParser.parseDirectory("/data/generated/content/story-events", ::parseFile)
         val quests = mutableMapOf<String, Quest>()
 
         events.forEach {event ->

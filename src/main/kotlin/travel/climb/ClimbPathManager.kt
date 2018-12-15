@@ -6,7 +6,7 @@ import core.gameState.climb.ClimbPath
 import core.utility.JsonDirectoryParser
 
 object ClimbPathManager {
-    private val paths = JsonDirectoryParser.parseDirectory("/data/content/climb-paths", ::parseFile)
+    private val paths = JsonDirectoryParser.parseDirectory("/data/generated/content/climb-paths", ::parseFile)
     private fun parseFile(path: String): List<ClimbPath> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun getPath(name: String): ClimbPath {

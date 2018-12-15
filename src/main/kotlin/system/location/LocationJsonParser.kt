@@ -12,10 +12,10 @@ class LocationJsonParser : LocationParser {
     private fun parseLocationNodeFile(path: String): List<LocationNode> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     override fun loadLocations(): NameSearchableList<Location> {
-        return NameSearchableList(JsonDirectoryParser.parseDirectory("/data/content/location/locations", ::parseLocationFile))
+        return NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/location/locations", ::parseLocationFile))
     }
 
     override fun loadLocationNodes(): List<LocationNode> {
-        return JsonDirectoryParser.parseDirectory("/data/content/location/location-nodes", ::parseLocationNodeFile)
+        return JsonDirectoryParser.parseDirectory("/data/generated/content/location/location-nodes", ::parseLocationNodeFile)
     }
 }
