@@ -6,6 +6,6 @@ class JsonGeneratorTest {
 
     @Test
     fun doThing() {
-        JsonGenerator.generate("/test")
+        JsonGenerator.generate("./src/integration-test/resource", "/test/src/content", "/test/generated/content")
     }
 }

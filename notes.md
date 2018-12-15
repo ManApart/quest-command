@@ -21,6 +21,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Create a git wiki and move readme information to more sorted format?
 - JSON should be 100% inheritable
  - What about lists? What is removed, overwritten, appended?
+ - automatically create packages
 
 ### Combat
 

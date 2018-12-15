@@ -3,18 +3,12 @@ package building.json
 import core.utility.ResourceHelper
 
 object JsonGenerator {
-    fun generate(root: String) {
-        getSourceFiles(root).forEach {
-            JsonConverter(it, outputPath(it, root)).convert()
-        }
+    fun generate(writeRoot: String, inputPath: String, outputPath: String) {
+        ResourceHelper.getResourceFiles(inputPath, true)
+                .forEach {
+                    JsonConverter(writeRoot + it, writeRoot + it.replace(inputPath, outputPath)).convert()
+                }
     }
 
-    private fun getSourceFiles(root: String): List<String> {
-        return ResourceHelper.getResourceFiles("$root/src/content", true)
-    }
-
-    private fun outputPath(input: String, root: String) : String {
-        return input.replace("$root/src", "$root/generated")
-    }
 
 }

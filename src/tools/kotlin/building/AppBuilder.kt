@@ -16,6 +16,6 @@ fun main(args: Array<String>) {
     ReflectionTools.saveAllCommands()
     ReflectionTools.saveAllEvents()
     ReflectionTools.saveAllEventListeners()
-    JsonGenerator.generate("/data")
+    JsonGenerator.generate("./src/main/resource", "/data/src/content", "/data/generated/content")
     println("Build complete")
 }
