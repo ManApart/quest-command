@@ -3,6 +3,7 @@ package travel
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
+import core.gameState.GameState
 import core.gameState.location.LocationNode
 import core.history.display
 import system.EventManager
@@ -18,9 +19,9 @@ class MoveCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tMove to <location> - Start traveling to a location. X" +
-                "\n\tMove - Continue traveling to a goal location. X" +
-                "\n\tMove goal - Remember what the travel location goal is. X"
+        return "\n\tMove to <location> - Start traveling to a location, if a route can be found." +
+                "\n\tMove - Continue traveling to a goal location." +
+                "\n\tTo view a route, see the Route command"
     }
 
     override fun getCategory(): List<String> {
@@ -28,14 +29,23 @@ class MoveCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
+        if (args.isEmpty()) {
+            val route = GameState.player.route
+            val source = GameState.player.creature.location
+            when {
+                route == null -> display("No route to move to.")
+                route.destination == source -> display("You're already at the end of the route.")
+                route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination))
+                else -> display("You're not on a route right now.")
+            }
+        } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
             CommandParser.parseCommand(args.joinToString(" "))
         } else {
             val arguments = Args(args, excludedWords = listOf("to"))
             val found = LocationManager.findLocation(arguments.argGroups[0].joinToString(" "))
 
             if (foundMatch(arguments.argGroups[0], found)) {
-                EventManager.postEvent(TravelStartEvent(destination = found))
+                EventManager.postEvent(FindRouteEvent(GameState.player.creature.location, found, 4, true))
             } else {
                 display("Could not find $arguments")
             }

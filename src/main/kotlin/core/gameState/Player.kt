@@ -1,5 +1,6 @@
 package core.gameState
 
+import core.gameState.location.Route
 import core.gameState.stat.Stat
 import core.utility.NameSearchableList
 import crafting.Recipe
@@ -10,6 +11,7 @@ import travel.climb.ClimbJourney
 class Player : Target {
     val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), LocationManager.findLocation("an open field"), null, this)
     var climbJourney: ClimbJourney? = null
+    var route: Route? = null
 
     override val name: String get() = creature.name
     override val description: String get() = creature.description

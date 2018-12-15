@@ -42,4 +42,28 @@ class Route(val source: LocationNode, private val links: MutableList<LocationLin
                 .toUpperCase()
     }
 
+    fun isOnRoute(location: LocationNode): Boolean {
+        return location == source || links.any { location == it.destination }
+    }
+
+    fun getNextStep(location: LocationNode) : LocationLink {
+        return links.first { it.source == location }
+    }
+
+    fun getRouteProgressString(currentLocation: LocationNode): String {
+        val names = links.asSequence()
+                .map { it.source.name }
+                .toMutableList()
+
+        names.add(destination.name)
+        return names.map {
+            if (it == currentLocation.name) {
+                "*$it*"
+            } else {
+                it
+            }
+        }.joinToString(", ")
+
+    }
+
 }

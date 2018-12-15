@@ -133,7 +133,7 @@ Possible Stats
 - Update how routing works
  - Use some path finding to find nearest area by evaluating nodes out from center node
  - let map be used for route planning
-- Map command two levels (configurable) deep
+- Make moving up/down restricted by default and when moving in that direction look for an object to climb or note that you could jump down
 
 #### Climbing
 - You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall

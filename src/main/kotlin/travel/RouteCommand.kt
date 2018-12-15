@@ -1,49 +1,48 @@
-package explore.map
+package travel
 
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
+import core.gameState.location.LocationNode
 import core.history.display
+import explore.map.ReadMapEvent
 import system.EventManager
 import system.location.LocationManager
 
-class ReadMapCommand : Command() {
+class RouteCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Map", "m")
+        return arrayOf("Route", "r")
     }
 
     override fun getDescription(): String {
-        return "Map:\n\tGet information on your current and other locations"
+        return "Route:\n\tView your current Route."
     }
 
     override fun getManual(): String {
-        return "\n\tMap *<location> - List your current location (or given location) and the surrounding areas." +
-                "\n\tMap *depth - List neighbors to <depth> levels away from the location."
+        return "\n\tRoute - View your current route." +
+                "\n\tRoute *<location> - Find a route to <location>." +
+                "\n\tRoutes are used with the Move command."
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Explore")
+        return listOf("Travel")
     }
 
     override fun execute(keyword: String, args: List<String>) {
         val arguments = Args(args)
-        val depth = arguments.getNumber() ?: 1
+        val depth = arguments.getNumber() ?: 5
         val otherArgs = args.minus(depth.toString())
 
         when{
-            otherArgs.isEmpty() -> currentLocation(depth)
+            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent())
             else -> targetLocation(otherArgs, depth)
         }
-    }
-
-    private fun currentLocation(depth: Int){
-        EventManager.postEvent(ReadMapEvent(GameState.player.creature.location, depth))
     }
 
     private fun targetLocation(args: List<String>, depth: Int){
         val target = LocationManager.findLocation(args.joinToString(" "))
         if (target != LocationManager.NOWHERE_NODE){
-            EventManager.postEvent(ReadMapEvent(target, depth))
+            EventManager.postEvent(FindRouteEvent(GameState.player.creature.location, target, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }

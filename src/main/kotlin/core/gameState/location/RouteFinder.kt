@@ -1,26 +1,44 @@
 package core.gameState.location
 
-class RouteFinder(private val source: LocationNode, private val depth: Int) {
-    private val neighbors: MutableList<Route> = mutableListOf()
+class RouteFinder(private val source: LocationNode, private val destination: LocationNode, private val depth: Int) {
     private val potentials: MutableList<Route> = mutableListOf()
     private val examined: MutableList<LocationNode> = mutableListOf()
+    private var solution: Route? = null
 
-
-    fun getNeighbors(): List<Route> {
-        source.getNeighborLinks().forEach {
-            val route = Route(source)
-            route.addLink(it)
-            neighbors.add(route)
-            potentials.add(route)
-        }
-        examined.add(source)
-
-        buildNeighbors()
-        return neighbors
+    init {
+        findRoute()
     }
 
+    fun hasRoute(): Boolean {
+        return solution != null
+    }
+
+    fun getRoute(): Route {
+        return solution!!
+    }
+
+    private fun findRoute() {
+        if (source.getNeighborLinks().any { it.destination == destination }) {
+            solution = Route(source)
+            solution?.addLink(source.getNeighborLinks().first { it.destination == destination })
+        } else {
+            source.getNeighborLinks().forEach {
+                val route = Route(source)
+                route.addLink(it)
+                potentials.add(route)
+                if (route.destination == destination){
+                    solution = route
+                }
+            }
+            examined.add(source)
+
+            buildNeighbors()
+        }
+    }
+
+
     private fun buildNeighbors() {
-        if (potentials.isNotEmpty() && depth > potentials.first().getLinks().size) {
+        if (solution == null && potentials.isNotEmpty() && depth > potentials.first().getLinks().size) {
             val current = potentials.toList()
             potentials.clear()
 
@@ -28,11 +46,13 @@ class RouteFinder(private val source: LocationNode, private val depth: Int) {
                 if (!examined.contains(route.destination)) {
                     examined.add(route.destination)
                     route.destination.getNeighborLinks().forEach { link ->
-                        if (!examined.contains(link.destination)) {
+                        if (!examined.contains(link.destination) && solution == null) {
                             val newRoute = Route(route)
                             newRoute.addLink(link)
-                            neighbors.add(newRoute)
                             potentials.add(newRoute)
+                            if (newRoute.destination == destination){
+                                solution = newRoute
+                            }
                         }
                     }
                 }

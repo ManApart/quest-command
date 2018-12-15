@@ -3,7 +3,7 @@ package explore.map
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.location.Route
-import core.gameState.location.RouteFinder
+import core.gameState.location.RouteNeighborFinder
 import core.history.StringTable
 import core.history.display
 
@@ -22,7 +22,7 @@ class ReadMap : EventListener<ReadMapEvent>() {
     }
 
     private fun getRoutesString(event: ReadMapEvent) : String {
-        val routes = RouteFinder(event.target, event.depth).getNeighbors()
+        val routes = RouteNeighborFinder(event.target, event.depth).getNeighbors()
 
         return if (routes.isNotEmpty()) {
             val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))

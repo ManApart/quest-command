@@ -18,11 +18,11 @@ class TravelInDirectionCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Direction:\n\tTravel the nearest location in the specified direction."
+        return "Direction:\n\tMove to the nearest location in the specified direction."
     }
 
     override fun getManual(): String {
-        return "\n\t<direction> - Start traveling to the nearest location in that direction, if it exists."
+        return "\n\t<direction> - Start moving to the nearest location in that direction, if it exists."
     }
 
     override fun getCategory(): List<String> {
