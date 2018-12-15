@@ -1,11 +1,14 @@
 package building
 
+import building.json.JsonGenerator
 import core.utility.ReflectionTools
 
 /*
 This core.utility 'builds' the app by generated files so they don't have to be generated at runtime.
 
-Currently it runs reflection to detect all of the commands, events, and event listeners
+Currently it runs:
+ - Reflection to detect all of the commands, events, and event listeners
+ - Read all source content json and convert to generated content
 
 */
 
@@ -13,5 +16,6 @@ fun main(args: Array<String>) {
     ReflectionTools.saveAllCommands()
     ReflectionTools.saveAllEvents()
     ReflectionTools.saveAllEventListeners()
+    JsonGenerator.generate("/data")
     println("Build complete")
 }
