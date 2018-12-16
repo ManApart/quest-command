@@ -41,6 +41,13 @@
     },
     "behaviors": [
       {
+        "name": "Bake Food",
+        "params": {
+          "itemName": "Apple",
+          "resultItemName": "Baked Apple"
+        }
+      },
+      {
         "name": "Burn to Ash",
         "params": {
           "name": "Apple"

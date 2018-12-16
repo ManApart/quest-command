@@ -20,8 +20,8 @@ While the readme should cover how to build and run the game, as well with inform
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
 - JSON should be 100% inheritable
- - What about lists? What is removed, overwritten, appended?
- - automatically create packages
+ - any matching property is overwritten
+ - any new property or list is appended to
 
 ### Combat
 

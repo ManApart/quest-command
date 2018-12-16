@@ -6,7 +6,7 @@ object JsonGenerator {
     fun generate(writeRoot: String, inputPath: String, outputPath: String) {
         ResourceHelper.getResourceFiles(inputPath, true)
                 .forEach {
-                    JsonConverter(writeRoot + it, writeRoot + it.replace(inputPath, outputPath)).convert()
+                    JsonFileConverter(writeRoot + it, writeRoot + it.replace(inputPath, outputPath)).convert()
                 }
     }
 

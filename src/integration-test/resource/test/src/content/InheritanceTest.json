@@ -26,6 +26,7 @@
   },
   {
     "name": "Baked Apple",
+    "extends": "Apple",
     "description": "The soft flesh smells of a wood fire.",
     "properties": {
       "values": {

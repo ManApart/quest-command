@@ -1,11 +1,22 @@
 package building.json
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.Test
+import java.io.File
+import kotlin.test.assertEquals
 
 class JsonGeneratorTest {
 
     @Test
-    fun doThing() {
+    fun sampleConversion() {
         JsonGenerator.generate("./src/integration-test/resource", "/test/src/content", "/test/generated/content")
+        val mapper = jacksonObjectMapper()
+
+        val expected: List<MutableMap<String, Any>> = mapper.readValue(File("./src/integration-test/resource/test/results/InheritanceTestResult.json").readText())
+        val actual: List<MutableMap<String, Any>> = mapper.readValue(File("./src/integration-test/resource/test/generated/content/InheritanceTest.json").readText())
+
+        assertEquals(expected, actual)
     }
+
 }

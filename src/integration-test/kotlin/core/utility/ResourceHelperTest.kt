@@ -7,15 +7,15 @@ class ResourceHelperTest {
 
     @Test
     fun getFilesInPath() {
-        val files = ResourceHelper.getResourceFiles("/test/src/content")
+        val files = ResourceHelper.getResourceFiles("/test/core/utility")
         assertEquals(2, files.size)
-        assertEquals("/test/src/content/InheritanceTest.json", files[0])
-        assertEquals("/test/src/content/InheritanceTestResult.json", files[1])
+        assertEquals("/test/core/utility/BodiesTest.json", files[0])
+        assertEquals("/test/core/utility/SecondBodiesTest.json", files[1])
     }
 
     @Test
     fun getFilesInPathRecursive() {
-        val files = ResourceHelper.getResourceFiles("/test", true)
-        assertEquals(4, files.size)
+        val files = ResourceHelper.getResourceFiles("/test/core", true)
+        assertEquals(2, files.size)
     }
 }
