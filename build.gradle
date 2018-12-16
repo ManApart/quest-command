@@ -35,6 +35,7 @@ sourceSets {
         }
         resources {
             srcDir 'src/integration-test/resource'
+            srcDir 'src/main/resource'
         }
 
         compileClasspath += sourceSets.main.output + configurations.testCompile

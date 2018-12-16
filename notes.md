@@ -72,6 +72,12 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Behavior / interact / recipe alignment. Use knife on apple same as slash apple, same as craft sliced apple
  - Effects should apply properties during their duration and then remove them afterwords (like 'burning' when on fire)
  - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)'
+ - Maybe like this:
+  - knife used on apple gives apple 'sliced effect'
+  - Target has 'display name' that adds effect names to target
+  - Pie recipe takes apple (sliced)
+  - Use fire on apple, becomes baked apple (effect), effect makes heal worth 1.5x
+
 
 
 ### Inventory

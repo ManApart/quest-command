@@ -1,12 +1,1 @@
-[
-  {
-    "name": "Burning",
-    "type": "DRAIN",
-    "statName": "Health"
-  },
-  {
-    "name": "On Fire",
-    "type": "DRAIN",
-    "statName": "burnHealth"
-  }
-]
+[{"name":"Burning","type":"DRAIN","statName":"Health"},{"name":"On Fire","type":"DRAIN","statName":"burnHealth"}]

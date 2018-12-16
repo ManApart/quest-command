@@ -1,5 +1,6 @@
 package core.utility
 
+import java.lang.IllegalArgumentException
 import java.net.URI
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -8,9 +9,10 @@ import java.nio.file.Paths
 
 //TODO - make class with instance variables?
 object ResourceHelper {
-    fun getResourceFiles(path: String, recursive: Boolean = false): List<String> {
+    fun getResourceFiles(path: String, recursive: Boolean = true): List<String> {
+        val resourcePath = this::class.java.getResource(path) ?: throw IllegalArgumentException("Unable to find Path: $path")
 
-        val uri = this::class.java.getResource(path).toURI()
+        val uri = resourcePath.toURI()
         return if (uri.scheme == "jar") {
             getResourceFilesJAR(path, uri, path, recursive)
         } else {
