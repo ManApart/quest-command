@@ -31,8 +31,6 @@ object RecipeManager {
     }
 
     private fun findRecipes(ingredients: List<Item>, tool: Activator) : List<Recipe> {
-        val ingredientNames = ingredients.map { it.name }
-
-        return recipes.filter { it.matches(ingredientNames, tool) }
+        return recipes.filter { it.matches(ingredients, tool) }
     }
 }

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "Brown Pants",
+    "description": "These pants used to be white.",
+    "equipSlots": [
+      [
+        "Right Leg",
+        "Left Leg"
+      ]
+    ],
+    "inherits": [
+      {
+        "name": "Burnable",
+        "params": {
+          "burnHealth": 1,
+          "itemName": "Brown Pants"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Old Shirt",
+    "description": "A faint scent of soil oozes from the worn cloth",
+    "equipSlots": [
+      [
+        "Chest"
+      ]
+    ],
+    "inherits": [
+      {
+        "name": "Burnable",
+        "params": {
+          "burnHealth": 1,
+          "itemName": "Old Shirt"
+        }
+      }
+    ]
+  }
+]

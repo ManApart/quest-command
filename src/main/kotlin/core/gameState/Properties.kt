@@ -4,7 +4,7 @@ import core.utility.inheritMap
 import core.utility.mapAHasAllOfMapB
 import core.utility.mapsMatch
 
-class Properties(val tags: Tags = Tags(), val values: PropertyValues = PropertyValues(), var stats: Map<String, String> = mapOf()) {
+data class Properties(val tags: Tags = Tags(), val values: PropertyValues = PropertyValues(), var stats: Map<String, String> = mapOf()) {
 
     fun matches(other: Properties) : Boolean {
         return tags.matches(other.tags) && values.matches(other.values) && matchesStats(other)

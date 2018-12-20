@@ -1,8 +1,13 @@
 [
   {
-    "name": "Poor Quality Cooked Meat",
+    "name": "Cooked Meat",
     "ingredients": [
-      "Raw Poor Quality Meat"
+      {
+        "tags": [
+          "Meat",
+          "Raw"
+        ]
+      }
     ],
     "skills": {
       "Cooking": 2
@@ -12,21 +17,93 @@
         "Range"
       ]
     },
-    "result": "Cooked Poor Quality Meat"
+    "results": [
+      {
+        "id": 0,
+        "tagsAdded": [
+          "Cooked"
+        ],
+        "tagsRemoved": [
+          "Raw"
+        ]
+      }
+    ]
   },
   {
-    "name": "Baked Apple",
+    "name": "Bucket of Water",
     "ingredients": [
-      "Apple"
+      "Bucket"
+    ],
+    "toolProperties": {
+      "tags": [
+        "Water Source"
+      ]
+    },
+    "results": [
+      "Bucket of Water"
+    ]
+  },
+  {
+    "name": "Baked Fruit",
+    "ingredients": [
+      {
+        "tags": [
+          "Fruit",
+          "Raw"
+        ]
+      }
     ],
     "skills": {
       "Cooking": 1
     },
     "toolProperties": {
       "tags": [
+        "Sharp"
+      ]
+    },
+    "results": [
+      {
+        "id": 0,
+        "tagsAdded": [
+          "Baked"
+        ],
+        "tagsRemoved": [
+          "Raw"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dough",
+    "ingredients": [
+      "Wheat",
+      "Bucket of Water"
+    ],
+    "results": [
+      "Dough",
+      "Bucket of Water"
+    ]
+  },
+  {
+    "name": "Apple Pie",
+    "ingredients": [
+      {
+        "name": "Apple",
+        "tags": "Sliced"
+      },
+      "Pie Tin",
+      "Dough"
+    ],
+    "skills": {
+      "Cooking": 2
+    },
+    "toolProperties": {
+      "tags": [
         "Range"
       ]
     },
-    "result": "Baked Apple"
+    "results": [
+      "Apple Pie"
+    ]
   }
 ]

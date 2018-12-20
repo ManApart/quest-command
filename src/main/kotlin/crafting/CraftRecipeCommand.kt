@@ -33,10 +33,11 @@ class CraftRecipeCommand : Command() {
                 val recipe = GameState.player.knownRecipes.get(args)
                 val tool = ScopeManager.findActivatorByProperties(recipe.toolProperties)
                 if (tool == null){
-                    display("Couldn't find the necessary tools to create ${recipe.result}")
+                    //TODO
+//                    display("Couldn't find the necessary tools to create ${recipe.result}")
                 } else {
-                    val ingredients = getIngredients(recipe.ingredients)
-                    EventManager.postEvent(CookAttemptEvent(GameState.player.creature, ingredients, tool))
+//                    val ingredients = getIngredients(recipe.ingredients)
+//                    EventManager.postEvent(CookAttemptEvent(GameState.player.creature, ingredients, tool))
                 }
             }
             else -> display("Couldn't find recipe ${args.joinToString(" ")}.")

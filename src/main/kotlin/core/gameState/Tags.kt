@@ -5,6 +5,14 @@ import core.utility.replaceParams
 class Tags(tags: List<String> = listOf()) {
     private val tags = tags.asSequence().map { it.toLowerCase() }.toMutableList()
 
+    override fun toString(): String {
+        return if (tags.isEmpty()) {
+            "No Tags"
+        }else {
+            "Tags: ${tags.joinToString(", ")}"
+        }
+    }
+
     fun has(tag: String): Boolean {
         return tags.contains(tag.toLowerCase())
     }

@@ -86,6 +86,64 @@ Ex:
 
 Below are explanations of how the game works today. See `notes.md` for thoughts and ideas on systems that have not been implemented yet.
 
+
+### Crafting
+
+#### Recipes
+
+Recipes take in a set of skills, properties for the required tool, and a set of ingredients.
+
+In the case of an Apple Pie, an Apple, Pie Tin and Dough are required. The Apple must have the tag `Sliced`.
+```
+"name": "Apple Pie",
+"ingredients": [
+  {
+    "name": "Apple",
+    "tags": "Sliced"
+  },
+  "Pie Tin",
+  "Dough"
+]
+```
+
+
+In the case of baked fruit, we don't know exactly what fruit we'll be given, because the ingredient doesn't have a name, but we do know it must have the `Fruit` and `Raw` tags.
+```
+"name": "Baked Fruit",
+"ingredients": [
+  {
+    "tags": [
+      "Fruit",
+      "Raw"
+    ]
+  }
+],
+```
+
+Recipes generally yield a single result: `"results": ["Apple Pie"]`, but they can also yield multiple items, like in the case of Dough: `"results": ["Dough","Bucket of Water"]`.
+
+They can also add or remove tags to a passed in ingredient. In the case of baked fruit, the first passed in ingredient (referenced by `"id": 0`) is given the baked tag and loses the raw tag:
+```
+  "results": [
+   {
+     "id": 0,
+     "tagsAdded": [
+       "Baked"
+     ],
+     "tagsRemoved": [
+       "Raw"
+     ]
+   }
+ ]
+ ```
+ A new item can be created (using the `name` property instead of the `id` property) and have tags added / removed as well.
+
+
+A couple things to note:
+- All conditions for recipes are `AND`; all conditions must be met for a recipe to be used.
+- In the above Baked Fruit example you could not re-bake the fruit because `Fruit` must be `Raw` and that tag is removed from the result.
+- A recipe without any tool properties can be made without a specific tool.
+
 ### Triggered Events
 
 See the Triggered Event class to see what events can be used, and what params they can accept

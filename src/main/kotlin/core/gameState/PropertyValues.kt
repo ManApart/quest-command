@@ -6,6 +6,10 @@ import core.utility.mapsMatch
 class PropertyValues(properties: Map<String, String> = HashMap()) {
     private val properties = parseProperties(properties)
 
+    override fun toString(): String {
+        return properties.toString()
+    }
+
     private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
         val parsed = mutableMapOf<String, String>()
         properties.entries.forEach {

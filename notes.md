@@ -19,9 +19,6 @@ While the readme should cover how to build and run the game, as well with inform
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
-- JSON should be 100% inheritable
- - any matching property is overwritten
- - any new property or list is appended to
 
 ### Combat
 
@@ -73,10 +70,16 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
  - Effects should apply properties during their duration and then remove them afterwords (like 'burning' when on fire)
  - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)'
  - Maybe like this:
-  - knife used on apple gives apple 'sliced effect'
-  - Target has 'display name' that adds effect names to target
+  - knife used on apple gives apple 'sliced' tag
+  - Sliced, Baked, Burnt, Cooked
+  - Target has 'display name' that adds tag names to target??
   - Pie recipe takes apple (sliced)
-  - Use fire on apple, becomes baked apple (effect), effect makes heal worth 1.5x
+  - Use fire on apple, becomes baked apple (tag), tag makes heal worth 1.5x when eaten ( behavior)
+  - Pie should leave a pie tin once eaten > Behavior on Pie, when eaten drop tin
+- Recipe action occurs if other actions don’t, finds available recipes
+- If more than one recipe works display message so they can choose which recipe they want to craft
+- Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
+
 
 
 
@@ -134,6 +137,12 @@ Possible Stats
 - Agile
 - Wise
 - Enduring
+
+### Story
+
+* Main story about npc realizing they are inside a construct
+* Realizes that maybe there are other verbs that he’s not capable of thinking of. (NPCs would never think to skin the bark of a tree because that’s not in the game, etc)
+* Magic is based on the understanding of the construct
 
 
 ### Travel
