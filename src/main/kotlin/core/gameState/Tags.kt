@@ -6,11 +6,7 @@ class Tags(tags: List<String> = listOf()) {
     private val tags = tags.toMutableList()
 
     override fun toString(): String {
-        return if (tags.isEmpty()) {
-            "No Tags"
-        }else {
-            "Tags: ${tags.joinToString(", ")}"
-        }
+        return tags.joinToString(", ")
     }
 
     fun has(tag: String): Boolean {
@@ -18,7 +14,9 @@ class Tags(tags: List<String> = listOf()) {
     }
 
     fun add(tag: String) {
-        tags.add(tag)
+        if (!has(tag)) {
+            tags.add(tag)
+        }
     }
 
     fun remove(tag: String) {
@@ -46,19 +44,19 @@ class Tags(tags: List<String> = listOf()) {
     }
 
     fun applyParams(params: Map<String, String>): Tags {
-        val newTags = tags.map { replaceParams(it, params) }
+        val newTags = tags.map { it.replaceParams(params) }
         return Tags(newTags)
     }
 
-    fun isEmpty() : Boolean{
+    fun isEmpty(): Boolean {
         return tags.isEmpty()
     }
 
-    fun getAll() : List<String> {
+    fun getAll(): List<String> {
         return tags.toList()
     }
 
-    private fun lowerCaseTags() : List<String> {
+    private fun lowerCaseTags(): List<String> {
         return tags.asSequence().map { it.toLowerCase() }.toList()
     }
 }

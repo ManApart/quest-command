@@ -1,7 +1,7 @@
 package core.utility
 
-fun inheritMap(parent: Map<String, String>, child: Map<String, String>): Map<String, String> {
-    val newMap = child.toMutableMap()
+fun Map<String, String>.inheritMap(parent: Map<String, String>): Map<String, String> {
+    val newMap = toMutableMap()
     parent.forEach{
         if (!newMap.containsKey(it.key)){
             newMap[it.key] = it.value
@@ -10,29 +10,37 @@ fun inheritMap(parent: Map<String, String>, child: Map<String, String>): Map<Str
     return newMap
 }
 
-fun overrideMap(map: Map<String, String>, overrides: Map<String, String>): Map<String, String> {
-    val newMap = map.toMutableMap()
+fun Map<String, String>.overrideMap(overrides: Map<String, String>): Map<String, String> {
+    val newMap = toMutableMap()
     overrides.forEach{
         newMap[it.key] = it.value
     }
     return newMap
 }
 
-fun applyParams(map: Map<String, String>, params: Map<String, String>) : Map<String, String> {
+fun Map<String, String>.applyParams(params: Map<String, String>) : Map<String, String> {
     val newMap = mutableMapOf<String, String>()
 
-    map.entries.forEach {
-        val key = replaceParams(it.key, params)
-        val value = replaceParams(it.value, params)
+    entries.forEach {
+        val key = it.key.replaceParams(params)
+        val value = it.value.replaceParams(params)
         newMap[key] = value
     }
     return newMap
 }
 
-fun replaceParams(line: String, paramValues: Map<String, String>): String {
-    var modified = line
+fun String.replaceParams(paramValues: Map<String, String>): String {
+    var modified = this
     paramValues.forEach {
         modified = modified.replace("$${it.key}", it.value)
     }
     return modified
+}
+
+fun Map<String, String>.toEmptyString() : String {
+    return if (isEmpty()) {
+        ""
+    } else {
+        toString()
+    }
 }

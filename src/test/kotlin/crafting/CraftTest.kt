@@ -27,7 +27,7 @@ class CraftTest {
 
         EventManager.registerListener(PickupItem())
 
-        Craft().execute(CraftRecipeEvent(baker, recipe, "Transfigure"))
+        Craft().execute(CraftRecipeEvent(baker, recipe))
 
         EventManager.executeEvents()
 
@@ -49,7 +49,7 @@ class CraftTest {
         EventManager.registerListener(PickupItem())
 
         val recipe = Recipe("Apples of Silver and Gold", listOf(RecipeIngredient("Apple")), results = listOf(RecipeResult(id = 0, tagsAdded = Tags(listOf("Cooked")))))
-        Craft().execute(CraftRecipeEvent(baker, recipe, "Transfigure"))
+        Craft().execute(CraftRecipeEvent(baker, recipe))
 
         EventManager.executeEvents()
 

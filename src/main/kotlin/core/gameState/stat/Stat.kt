@@ -1,11 +1,13 @@
 package core.gameState.stat
 
 import core.gameState.Creature
+import core.gameState.Target
 import status.LevelUpEvent
+import status.statChanged.StatMaxedEvent
+import status.statChanged.StatMinnedEvent
 import system.EventManager
 
-class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
-    private var level = level;
+class Stat(val name: String, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
     var baseMax: Int = calcMax()
     var boostedMax = baseMax
     var current: Int = boostedMax
@@ -22,6 +24,45 @@ class Stat(val name: String, level: Int = 1, private var maxMultiplier: Int = 1,
                 EventManager.postEvent(LevelUpEvent(creature, this, level))
             }
         }
+    }
+
+    fun levelUp(creature: Creature, times: Int = 1) {
+        val xp = getEXPAt(level + times)
+        addEXP(xp.toInt(), creature)
+    }
+
+    fun incStat(parent: Target, amount: Int) {
+        if (amount != 0) {
+            current = Math.max(Math.min(current + amount, boostedMax), 0)
+
+            if (current == 0) {
+                EventManager.postEvent(StatMinnedEvent(parent, name))
+            } else if (current == boostedMax) {
+                EventManager.postEvent(StatMaxedEvent(parent, name))
+            }
+        }
+    }
+
+    fun incStatMax(parent: Target, amount: Int) {
+        if (amount != 0) {
+            boostedMax = Math.max(boostedMax + amount, 0)
+            current = Math.min(boostedMax, current)
+
+            if (current == 0) {
+                EventManager.postEvent(StatMinnedEvent(parent, name))
+            }
+        }
+    }
+
+    fun setLevel(creature: Creature, desiredLevel: Int) {
+        exp = 0.toDouble()
+        level = 0
+        baseMax = 0
+        current = 0
+        boostedMax = 0
+        levelUp(creature, desiredLevel)
+        incStatMax(creature, desiredLevel)
+        incStat(creature, desiredLevel)
     }
 
     private fun determineLevel() {

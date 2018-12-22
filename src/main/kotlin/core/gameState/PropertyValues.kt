@@ -1,7 +1,9 @@
 package core.gameState
 
+import core.utility.applyParams
 import core.utility.mapAHasAllOfMapB
 import core.utility.mapsMatch
+import core.utility.toEmptyString
 
 class PropertyValues(properties: Map<String, String> = HashMap()) {
     constructor(base: PropertyValues) : this(base.properties)
@@ -9,7 +11,7 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
     private val properties = parseProperties(properties)
 
     override fun toString(): String {
-        return properties.toString()
+        return properties.toEmptyString()
     }
 
     private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
@@ -40,19 +42,19 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
     }
 
     fun inherit(parent: PropertyValues) {
-        parent.properties.forEach{
-            if (!properties.containsKey(it.key)){
+        parent.properties.forEach {
+            if (!properties.containsKey(it.key)) {
                 properties[it.key] = it.value
             }
         }
     }
 
     fun applyParams(params: Map<String, String>): PropertyValues {
-        val newProps = core.utility.applyParams(properties, params)
+        val newProps = properties.applyParams(params)
         return PropertyValues(newProps)
     }
 
-    fun isEmpty() : Boolean{
+    fun isEmpty(): Boolean {
         return properties.isEmpty()
     }
 

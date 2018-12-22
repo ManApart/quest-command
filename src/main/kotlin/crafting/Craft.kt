@@ -20,7 +20,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
             addResults(results, event)
             discoverRecipe(event.source, event.recipe)
 //            TODO - Add XP
-            display("You ${event.craftVerb} ${ingredients.joinToString(",") { it.name }} and get ${results.joinToString(", ") {it.getTaggedItemName()}}.")
+            display("You ${event.recipe.craftVerb} ${ingredients.joinToString(",") { it.name }} and get ${results.joinToString(", ") {it.getTaggedItemName()}}.")
         } else {
             display("You aren't able to craft ${event.recipe.name}.")
         }

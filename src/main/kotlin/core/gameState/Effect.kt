@@ -12,11 +12,12 @@ class Effect(val name: String, private val type: EffectType, private val statNam
 
     private var doOnce = true
 
-    fun copy() : Effect {
+    fun copy(): Effect {
         return Effect(name, type, statName, amount, duration)
     }
 
     fun applyEffect(soul: Soul, time: Int) {
+        soul.parent.getTopParent().properties.tags.add(name)
         val stat = soul.getStatOrNull(statName)
         if (stat != null) {
             val applied = applyEffectToStat(soul, stat, time)
@@ -25,20 +26,21 @@ class Effect(val name: String, private val type: EffectType, private val statNam
             }
             decreaseDuration(soul)
         } else {
+            soul.parent.getTopParent().properties.tags.remove(name)
             soul.effects.remove(this)
         }
 
     }
 
-    private fun applyEffectToStat(soul: Soul, stat: Stat, time: Int) : Boolean {
+    private fun applyEffectToStat(soul: Soul, stat: Stat, time: Int): Boolean {
         var applied = false
         when (type) {
-            EffectType.DRAIN ->{
-                EventManager.postEvent(StatChangeEvent(soul.parent, name, stat.name, -amount*time))
+            EffectType.DRAIN -> {
+                EventManager.postEvent(StatChangeEvent(soul.parent, name, stat.name, -amount * time))
                 applied = true
             }
             EffectType.HEAL -> {
-                EventManager.postEvent(StatChangeEvent(soul.parent, name, stat.name, amount*time))
+                EventManager.postEvent(StatChangeEvent(soul.parent, name, stat.name, amount * time))
                 applied = true
             }
             EffectType.REDUCE -> {

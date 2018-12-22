@@ -1,6 +1,7 @@
 [
   {
     "name": "Sliced Food",
+    "craftVerb": "slice",
     "ingredients": [
       {
         "tags": [
@@ -31,6 +32,7 @@
   },
   {
     "name": "Roasted Food",
+    "craftVerb": "roast",
     "ingredients": [
       {
         "tags": [
@@ -43,7 +45,7 @@
     },
     "toolProperties": {
       "tags": [
-        "Range"
+        "On Fire"
       ]
     },
     "results": [
@@ -60,6 +62,7 @@
   },
   {
     "name": "Cooked Food",
+    "craftVerb": "cook",
     "ingredients": [
       {
         "tags": [
@@ -89,6 +92,7 @@
   },
   {
     "name": "Bucket of Water",
+    "craftVerb": "fill",
     "ingredients": [
       "Bucket"
     ],
@@ -103,6 +107,7 @@
   },
   {
     "name": "Dough",
+    "craftVerb": "mix",
     "ingredients": [
       "Wheat",
       "Bucket of Water"
@@ -114,6 +119,7 @@
   },
   {
     "name": "Apple Pie",
+    "craftVerb": "bake",
     "ingredients": [
       {
         "name": "Apple",

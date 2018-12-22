@@ -1,54 +1,21 @@
 package core.gameState
 
 import core.gameState.stat.Stat
-import status.statChanged.StatMaxedEvent
-import status.statChanged.StatMinnedEvent
-import system.EventManager
 
 class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableListOf()) {
     var effects = mutableListOf<Effect>()
 
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
-            if (getStatOrNull(name) == null) {
-                addStat(name)
-            }
-            val stat = getStatOrNull(name)!!
-            incStat(stat, amount)
+            val stat = getOrCreateStat(name)
+            stat.incStat(parent, amount)
         }
     }
 
     fun incStatMax(name: String, amount: Int) {
         if (amount != 0) {
-            if (getStatOrNull(name) == null) {
-                addStat(name)
-            }
-            val stat = getStatOrNull(name)!!
-            incStatMax(stat, amount)
-        }
-    }
-
-    private fun incStat(stat: Stat, amount: Int) {
-        if (amount != 0) {
-            stat.current += amount
-            stat.current = Math.max(Math.min(stat.current, stat.baseMax), 0)
-
-            if (stat.current == 0) {
-                EventManager.postEvent(StatMinnedEvent(parent, stat.name))
-            } else if (stat.current == stat.boostedMax) {
-                EventManager.postEvent(StatMaxedEvent(parent, stat.name))
-            }
-        }
-    }
-
-    private fun incStatMax(stat: Stat, amount: Int) {
-        if (amount != 0) {
-            stat.boostedMax += amount
-            stat.current = Math.max(Math.min(stat.current, stat.boostedMax), 0)
-
-            if (stat.current == 0) {
-                EventManager.postEvent(StatMinnedEvent(parent, stat.name))
-            }
+            val stat = getOrCreateStat(name)
+            stat.incStatMax(parent, amount)
         }
     }
 
@@ -74,6 +41,13 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
 
     fun getTotal(name: String): Int {
         return getStatOrNull(name)?.boostedMax ?: 0
+    }
+
+    private fun getOrCreateStat(name: String): Stat {
+        if (getStatOrNull(name) == null) {
+            addStat(name)
+        }
+        return getStatOrNull(name)!!
     }
 
     fun getStatOrNull(name: String): Stat? {

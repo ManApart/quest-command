@@ -5,7 +5,7 @@ import core.gameState.Target
 import core.utility.Named
 import core.utility.listsMatch
 
-data class Recipe(override val name: String, val ingredients: List<RecipeIngredient>, val skills: Map<String, Int> = mapOf(), val toolProperties: Properties = Properties(), val results: List<RecipeResult> = listOf()) : Named {
+data class Recipe(override val name: String, val ingredients: List<RecipeIngredient>, val skills: Map<String, Int> = mapOf(), val toolProperties: Properties = Properties(), val results: List<RecipeResult> = listOf(), val craftVerb: String = "craft") : Named {
 
     fun matches(ingredients: List<Item>, tool: Target?): Boolean {
         return toolMatches(tool) && ingredientsMatch(ingredients)
@@ -15,7 +15,7 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return (tool?.properties ?: Properties()).hasAll(this.toolProperties)
     }
 
-    fun canBeCraftedBy(creature: Creature, tool: Target?) : Boolean {
+    fun canBeCraftedBy(creature: Creature, tool: Target?): Boolean {
         return hasSkillsToCraft(creature.soul) && matches(creature.inventory.getAllItems(), tool)
     }
 
@@ -29,14 +29,7 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return true
     }
 
-    fun read(): String {
-        //TODO - add required skills
-        return "$name:" +
-                "\n\tIngredients: ${ingredients.joinToString(", ")}"
-//                "\n\tResult: $result"
-    }
-
-    fun getUsedIngredients(availableItems: List<Item>) : List<Item> {
+    fun getUsedIngredients(availableItems: List<Item>): List<Item> {
         val ingredientsLeft = availableItems.toMutableList()
         val usedIngredients = mutableListOf<Item>()
         this.ingredients.forEach {
@@ -49,7 +42,7 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return usedIngredients
     }
 
-    fun getResults(usedIngredients: List<Item>) : List<Item> {
+    fun getResults(usedIngredients: List<Item>): List<Item> {
         return results.map { it.getResult(usedIngredients) }
     }
 
@@ -64,6 +57,42 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
             }
         }
         return true
+    }
+
+    fun read(): String {
+        return "$name:" + readIngredients() + readSkills() + readTools() + readResults()
+    }
+
+    private fun readIngredients(): String {
+        return if (ingredients.isEmpty()) {
+            ""
+        } else {
+            "\n\tIngredients: ${ingredients.joinToString(", ") { it.read() }}"
+        }
+    }
+
+    private fun readResults(): String {
+        return if (results.isEmpty()) {
+            ""
+        } else {
+            "\n\tResults: ${results.joinToString(", ") { it.read() }}"
+        }
+    }
+
+    private fun readTools(): String {
+        return if (toolProperties.isEmpty()) {
+            ""
+        } else {
+            "\n\tTool: Something $toolProperties"
+        }
+    }
+
+    private fun readSkills(): String {
+        return if (skills.isEmpty()) {
+            ""
+        } else {
+            "\n\tIngredients: ${skills.entries.joinToString(", ") { "${it.value} ${it.key}" }}"
+        }
     }
 
 

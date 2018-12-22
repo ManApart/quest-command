@@ -51,10 +51,12 @@ class AttackCommand : Command() {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
             isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(handHelper.hand.equippedItem!!, ScopeManager.getTarget(cleaned.argStrings[0])))
             ScopeManager.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, ScopeManager.getTarget(cleaned.argStrings[0]), direction))
+            GameState.player.creature.inventory.exists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0]), direction))
             GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
             else -> display("Couldn't find ${cleaned.argStrings[0]}")
         }
     }
+
 
     private fun getDamageType(keyword: String) : String {
         return when (keyword) {

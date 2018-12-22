@@ -13,6 +13,7 @@ import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
+import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
@@ -62,6 +63,8 @@ object AttackManager {
             } else if (creature.soul.hasStat(Stat.HEALTH)) {
                 EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), Stat.HEALTH, -damageDone))
             }
+        } else if (sourcePart.equippedItem != null) {
+            EventManager.postEvent(UseEvent(sourcePart.equippedItem!!, target))
         } else {
             display("Nothing happens.")
         }

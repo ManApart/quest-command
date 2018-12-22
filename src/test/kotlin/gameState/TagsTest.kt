@@ -4,6 +4,7 @@ import core.gameState.Tags
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class TagsTest {
 
@@ -75,6 +76,14 @@ class TagsTest {
         val tagB = Tags(listOf("Apple", "Pear", "Orange"))
         assertFalse(tagA.matches(tagB))
         assertFalse(tagB.matches(tagA))
+    }
+
+    @Test
+    fun doNotAddDuplicateTags() {
+        val tag = Tags(listOf("Apple"))
+        tag.add(("aPPlE"))
+        assertEquals(1, tag.getAll().size)
+        assertEquals("Apple", tag.getAll()[0])
     }
 
 

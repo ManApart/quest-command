@@ -35,7 +35,7 @@ class CraftRecipeCommand : Command() {
                 if (!recipe.toolProperties.isEmpty() && tool == null){
                     display("Couldn't find the necessary tools to create ${recipe.name}")
                 } else {
-                    EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipe, "craft", tool))
+                    EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipe, tool))
                 }
             }
             else -> display("Couldn't find recipe ${args.joinToString(" ")}.")

@@ -34,4 +34,8 @@ data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsA
         return item
     }
 
+    fun read() : String {
+        return (name ?: "Something") + " (${tagsAdded.getAll().joinToString(", ")})"
+    }
+
 }

@@ -23,4 +23,8 @@ data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
         return filtered.asSequence().filter { it.properties.tags.hasAll(tags) }.firstOrNull()
     }
 
+    fun read() : String {
+        return (name ?: "Something") + " (${tags.getAll().joinToString(", ")})"
+    }
+
 }

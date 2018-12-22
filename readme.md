@@ -52,17 +52,22 @@ Create a world more interactive than Skyrim by trading presentation layer for hi
 
 ### Design Pillars
 
-* Architecture is flat and increases in complexity relative to project size in as small of increments as possible.
-* Classes are small, decoupled, and do just one thing
-* Dependency and coupling are kept to a minimum
+- Architecture is flat and increases in complexity relative to project size in as small of increments as possible.
+- Classes are small, decoupled, and do just one thing
+- Dependency and coupling are kept to a minimum
+- Least effort possible for content creation
+  - Content should be as concise as possible without losing clarity
+  - Everything should have a reasonable default
+  - Content creators should only need to specify what makes an item etc unique
+
 
 ### Design Principles
 
-* Commands simply parse / understand user input and then create events
-* Commands do not handle or change state
-* Commands should be unknown to game state, events, and logic
-* All intents and actions are created through events
-* Listeners subscribe to individual events, update gamestate and print to console.
+- Commands simply parse / understand user input and then create events
+- Commands do not handle or change state
+- Commands should be unknown to game state, events, and logic
+- All intents and actions are created through events
+- Listeners subscribe to individual events, update gamestate and print to console.
 
 ### General Design Notes
 
@@ -72,15 +77,15 @@ Location positions are always relative to their parent. The parent is always (0,
 
 An event, command and listener should share a package. Event should end in Event, command in Command, and listener without a suffix, with the same main name. If a listener is player only etc, prefix it with player
 Ex:
-* LookCommand
-* LookEvent
-* Look
-* PlayerLook
+- LookCommand
+- LookEvent
+- Look
+- PlayerLook
 
 ### Research
-* manic mansion SCUM
-* ducktype
-* context free gramer, tokenizers, lexers, (yacc, lex)
+- manic mansion SCUM
+- ducktype
+- context free gramer, tokenizers, lexers, (yacc, lex)
 
 ## Game Systems Explanation
 
@@ -91,7 +96,7 @@ Below are explanations of how the game works today. See `notes.md` for thoughts 
 
 #### Recipes
 
-Recipes take in a set of skills, properties for the required tool, and a set of ingredients.
+Recipes take in a set of skills, properties for the required tool, and a set of ingredients. They can be triggered by explicitly crafting a recipe or by using an ingredient on a tool etc. Sliced Apple can be created by `craft sliced apple`, by `use apple on dagger` or by `slash apple` if the ingredients, tools, and skills are all present.
 
 In the case of an Apple Pie, an Apple, Pie Tin and Dough are required. The Apple must have the tag `Sliced`.
 ```
@@ -166,32 +171,32 @@ Available after and available before default to the story event's stage, meaning
 
 A Query object is used to evaluate a game value against a given value to see if the event should be executed. It contains the following fields
 
-* Property to query on
-* Params passed to that query
-* The operator to evaluate `>, <, >=, <=, =, !=`
-* The value to compare against
+- Property to query on
+- Params passed to that query
+- The operator to evaluate `>, <, >=, <=, =, !=`
+- The value to compare against
 
 See the XXX class to see a list of queryable values and their parameters
 
 ### Locations
 
-**Locations**
+--Locations--
 Locations describe an area and contain
 
-* A unique name (Required)
-* A description
-* A list of items
-* A list of activators
-* A list of creatures
+- A unique name (Required)
+- A description
+- A list of items
+- A list of activators
+- A list of creatures
 
-**Location Paths**
+--Location Paths--
 Location Paths describe the relationship between locations. They contain
 
-* A unique name (Required)
-* A unique name of the location it is adjacent to(Required)
-  * For each attached location, optionally a position relative to the current location
-  * When parsed, the attached location will get a reference back to the current location with the proper position so that they can be referenced either way
-  * The attached location will not get a link back if it already has an explicit link or the link is marked with the `oneWay` keyword.
-* A parent name - used only in descriptions (ex: Blue Cave is part of Kanbara Wilds)
-* Restricted - locations are visible but can't be traveled to (for things like climbing trees or opening doors)
+- A unique name (Required)
+- A unique name of the location it is adjacent to(Required)
+  - For each attached location, optionally a position relative to the current location
+  - When parsed, the attached location will get a reference back to the current location with the proper position so that they can be referenced either way
+  - The attached location will not get a link back if it already has an explicit link or the link is marked with the `oneWay` keyword.
+- A parent name - used only in descriptions (ex: Blue Cave is part of Kanbara Wilds)
+- Restricted - locations are visible but can't be traveled to (for things like climbing trees or opening doors)
 

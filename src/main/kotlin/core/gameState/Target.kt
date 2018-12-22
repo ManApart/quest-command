@@ -76,3 +76,13 @@ fun getSoul(target: Target) : Soul? {
 fun isPlayer(target: Target) : Boolean {
     return target == GameState.player || target == GameState.player.creature
 }
+
+fun Target.getTopParent() : Target {
+    return when (this){
+        is Creature -> this.parent
+        is Item -> this
+        is Activator -> this
+        is Player -> this
+        else -> this
+    } ?: this
+}
