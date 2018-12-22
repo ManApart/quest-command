@@ -19,6 +19,8 @@ While the readme should cover how to build and run the game, as well with inform
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
+- Replace Inhertiable with pure json inheritance?
+- Validate valid recipe ingredients and results
 
 ### Combat
 

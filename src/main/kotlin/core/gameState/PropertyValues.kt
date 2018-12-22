@@ -4,6 +4,8 @@ import core.utility.mapAHasAllOfMapB
 import core.utility.mapsMatch
 
 class PropertyValues(properties: Map<String, String> = HashMap()) {
+    constructor(base: PropertyValues) : this(base.properties)
+
     private val properties = parseProperties(properties)
 
     override fun toString(): String {
@@ -50,5 +52,8 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
         return PropertyValues(newProps)
     }
 
+    fun isEmpty() : Boolean{
+        return properties.isEmpty()
+    }
 
 }

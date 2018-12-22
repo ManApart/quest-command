@@ -47,10 +47,10 @@ class CommandComboTest {
     }
 
     @Test
-    fun cookMeat() {
+    fun cookApple() {
         val input = "w && s && cook apple on range"
         CommandParser.parseCommand(input)
-        assertEquals(("You cook Apple and get a Baked Apple."), ChatHistory.getLastOutput())
+        assertEquals(("You cook Apple and get Roasted Apple."), ChatHistory.getLastOutput())
     }
 
     @Test

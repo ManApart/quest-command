@@ -10,7 +10,7 @@ class JsonDirectoryParserTest {
 
     @Test
     fun multipleJsonFilesAreParsedAndAppendedToList() {
-        val bodies = JsonDirectoryParser.parseDirectory("/test/core/utility", ::parseFile)
+        val bodies = JsonDirectoryParser.parseDirectory("/test/core/utility/bodies", ::parseFile)
 
         assertEquals(2, bodies.size)
         assertEquals("FirstBody", bodies[0].name)

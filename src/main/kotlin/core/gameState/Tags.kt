@@ -3,7 +3,7 @@ package core.gameState
 import core.utility.replaceParams
 
 class Tags(tags: List<String> = listOf()) {
-    private val tags = tags.asSequence().map { it.toLowerCase() }.toMutableList()
+    private val tags = tags.toMutableList()
 
     override fun toString(): String {
         return if (tags.isEmpty()) {
@@ -14,56 +14,32 @@ class Tags(tags: List<String> = listOf()) {
     }
 
     fun has(tag: String): Boolean {
-        return tags.contains(tag.toLowerCase())
+        return lowerCaseTags().contains(tag.toLowerCase())
     }
 
     fun add(tag: String) {
-        tags.add(tag.toLowerCase())
+        tags.add(tag)
     }
 
     fun remove(tag: String) {
-        tags.remove(tag.toLowerCase())
+        tags.remove(tag)
     }
 
     fun hasAll(other: Tags): Boolean {
-        return hasAll(other.tags)
+        return other.lowerCaseTags().all { this.lowerCaseTags().contains(it) }
     }
 
-    fun hasAll(tags: List<String>): Boolean {
-        tags.forEach {
-            if (!this.tags.contains(it)) {
-                return false
-            }
-        }
-        return true
-    }
-
-    fun hasNone(tags: List<String>): Boolean {
-        tags.forEach {
-            if (this.tags.contains(it)) {
-                return false
-            }
-        }
-        return true
+    fun hasNone(other: Tags): Boolean {
+        return !other.lowerCaseTags().any { this.lowerCaseTags().contains(it) }
     }
 
     fun matches(other: Tags): Boolean {
-        tags.forEach {
-            if (!other.has(it)) {
-                return false
-            }
-        }
-        other.tags.forEach {
-            if (!has(it)) {
-                return false
-            }
-        }
-        return true
+        return hasAll(other) && other.hasAll(this)
     }
 
     fun inherit(parent: Tags) {
-        parent.tags.forEach {
-            if (!tags.contains(it)) {
+        parent.lowerCaseTags().forEach {
+            if (!lowerCaseTags().contains(it)) {
                 tags.add(it)
             }
         }
@@ -72,5 +48,17 @@ class Tags(tags: List<String> = listOf()) {
     fun applyParams(params: Map<String, String>): Tags {
         val newTags = tags.map { replaceParams(it, params) }
         return Tags(newTags)
+    }
+
+    fun isEmpty() : Boolean{
+        return tags.isEmpty()
+    }
+
+    fun getAll() : List<String> {
+        return tags.toList()
+    }
+
+    private fun lowerCaseTags() : List<String> {
+        return tags.asSequence().map { it.toLowerCase() }.toList()
     }
 }

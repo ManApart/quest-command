@@ -4,7 +4,6 @@ import core.gameState.*
 import org.junit.Assert
 import org.junit.Test
 import system.DependencyInjector
-import kotlin.test.fail
 
 class RecipeManagerTest {
 
@@ -15,50 +14,42 @@ class RecipeManagerTest {
         val tool = Activator("Range", properties = Properties(tags = Tags(listOf("Range"))))
         val baker = Player()
 
-
         val fakeParser = RecipeFakeParser(listOf(recipe))
         DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
         RecipeManager.reset()
 
-        val result = RecipeManager.findRecipe(ingredients, tool, baker.creature.soul)
-        Assert.assertEquals(recipe, result)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertEquals(recipe, results.first())
     }
 
     @Test
     fun findRecipeByTags() {
-        val recipe = Recipe("Baked Apple", listOf(RecipeIngredient(tags = Tags(listOf("Raw", "Fruit")))))
-        val ingredients = listOf(Item("Apple", properties = Properties(Tags(listOf("Raw", "Fruit")))))
+        val recipe = Recipe("Baked Pear", listOf(RecipeIngredient(tags = Tags(listOf("Raw", "Fruit")))))
+        val ingredients = listOf(Item("Pear", properties = Properties(Tags(listOf("Raw", "Fruit")))))
         val tool = Activator("Range", properties = Properties(tags = Tags(listOf("Range"))))
         val baker = Player()
-
 
         val fakeParser = RecipeFakeParser(listOf(recipe))
         DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
         RecipeManager.reset()
 
-        val result = RecipeManager.findRecipe(ingredients, tool, baker.creature.soul)
-        Assert.assertEquals(recipe, result)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertEquals(recipe, results.first())
     }
 
     @Test
     fun findRecipeByItemWithTags() {
-        fail()
-    }
+        val recipe = Recipe("Baked Apple", listOf(RecipeIngredient("Apple", tags = Tags(listOf("Raw", "Fruit")))))
+        val ingredients = listOf(Item("Apple", properties = Properties(Tags(listOf("Raw", "Fruit")))))
+        val tool = Activator("Range", properties = Properties(tags = Tags(listOf("Range"))))
+        val baker = Player()
 
-    //TODO - Move recipe returns to cook listener
-    @Test
-    fun recipeReturnsNewItem() {
-        fail()
-    }
+        val fakeParser = RecipeFakeParser(listOf(recipe))
+        DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
+        RecipeManager.reset()
 
-    @Test
-    fun recipeReturnsNewItems() {
-        fail()
-    }
-
-    @Test
-    fun recipeReturnsFirstItemWithDifferentTags() {
-        fail()
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertEquals(recipe, results.first())
     }
 
     @Test
@@ -72,8 +63,8 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
         RecipeManager.reset()
 
-        val result = RecipeManager.findRecipe(ingredients, tool, baker.creature.soul)
-        Assert.assertNull(result)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertTrue(results.isEmpty())
     }
 
     @Test
@@ -87,8 +78,8 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
         RecipeManager.reset()
 
-        val result = RecipeManager.findRecipe(ingredients, tool, baker.creature.soul)
-        Assert.assertNull(result)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertTrue(results.isEmpty())
     }
 
     @Test
@@ -102,8 +93,8 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
         RecipeManager.reset()
 
-        val result = RecipeManager.findRecipe(ingredients, tool, baker.creature.soul)
-        Assert.assertNull(result)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertTrue(results.isEmpty())
     }
 
     @Test
@@ -117,8 +108,8 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipeParser::class.java, fakeParser)
         RecipeManager.reset()
 
-        val result = RecipeManager.findRecipe(ingredients, tool, baker.creature.soul)
-        Assert.assertNull(result)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.creature.soul)
+        Assert.assertTrue(results.isEmpty())
     }
 
 

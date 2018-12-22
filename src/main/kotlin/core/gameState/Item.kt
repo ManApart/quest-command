@@ -7,13 +7,14 @@ import core.gameState.inhertiable.InheritRecipe
 import core.utility.max
 import system.BehaviorManager
 import system.InheritableManager
+import system.ItemManager
 
 class Item(override val name: String, override val description: String = "", private val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(), override val properties: Properties = Properties(), inherits: List<InheritRecipe> = listOf()) : Target {
     init {
         applyInherits(inherits)
     }
 
-    constructor(base: Item) : this(base.name, base.description, base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, base.properties)
+    constructor(base: Item) : this(base.name, base.description, base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, Properties(base.properties))
 
     val equipSlots = equipSlots.map { Slot(it) }
     val soul = Soul(this)
@@ -75,6 +76,12 @@ class Item(override val name: String, override val description: String = "", pri
 
     fun isStackable(other: Item): Boolean {
         return name == other.name && properties.matches(other.properties)
+    }
+
+    fun getTaggedItemName() : String {
+        val orig = ItemManager.getItem(name)
+        val newTags = properties.tags.getAll() - orig.properties.tags.getAll()
+        return newTags.joinToString(" ") + " " + name
     }
 
 }

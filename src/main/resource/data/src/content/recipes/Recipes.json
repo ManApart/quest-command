@@ -1,10 +1,68 @@
 [
   {
-    "name": "Cooked Meat",
+    "name": "Sliced Food",
     "ingredients": [
       {
         "tags": [
-          "Meat",
+          "Food",
+          "Slicable"
+        ]
+      }
+    ],
+    "skills": {
+      "Cooking": 1
+    },
+    "toolProperties": {
+      "tags": [
+        "Sharp"
+      ]
+    },
+    "results": [
+      {
+        "id": 0,
+        "tagsAdded": [
+          "Sliced"
+        ],
+        "tagsRemoved": [
+          "Slicable"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Roasted Food",
+    "ingredients": [
+      {
+        "tags": [
+          "Raw"
+        ]
+      }
+    ],
+    "skills": {
+      "Cooking": 1
+    },
+    "toolProperties": {
+      "tags": [
+        "Range"
+      ]
+    },
+    "results": [
+      {
+        "id": 0,
+        "tagsAdded": [
+          "Roasted"
+        ],
+        "tagsRemoved": [
+          "Raw"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cooked Food",
+    "ingredients": [
+      {
+        "tags": [
           "Raw"
         ]
       }
@@ -44,36 +102,6 @@
     ]
   },
   {
-    "name": "Baked Fruit",
-    "ingredients": [
-      {
-        "tags": [
-          "Fruit",
-          "Raw"
-        ]
-      }
-    ],
-    "skills": {
-      "Cooking": 1
-    },
-    "toolProperties": {
-      "tags": [
-        "Sharp"
-      ]
-    },
-    "results": [
-      {
-        "id": 0,
-        "tagsAdded": [
-          "Baked"
-        ],
-        "tagsRemoved": [
-          "Raw"
-        ]
-      }
-    ]
-  },
-  {
     "name": "Dough",
     "ingredients": [
       "Wheat",
@@ -89,7 +117,9 @@
     "ingredients": [
       {
         "name": "Apple",
-        "tags": "Sliced"
+        "tags": [
+          "Sliced"
+        ]
       },
       "Pie Tin",
       "Dough"

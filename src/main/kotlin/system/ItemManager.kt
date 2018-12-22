@@ -1,16 +1,12 @@
 package system
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.events.EventListener
 import core.gameState.Item
 import core.history.display
-import core.utility.JsonDirectoryParser
-import core.utility.NameSearchableList
 
 object ItemManager {
-    private val items = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/items", ::parseFile))
-    private fun parseFile(path: String): List<Item> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private var parser = DependencyInjector.getImplementation(ItemParser::class.java)
+    private var items = parser.loadItems()
 
     class ItemSpawner : EventListener<SpawnItemEvent>() {
         override fun execute(event: SpawnItemEvent) {
@@ -22,6 +18,11 @@ object ItemManager {
                 display("Could not spawn ${event.itemName} because it could not be found.")
             }
         }
+    }
+
+    fun reset() {
+        parser = DependencyInjector.getImplementation(ItemParser::class.java)
+        items = parser.loadItems()
     }
 
     fun itemExists(name: String): Boolean {

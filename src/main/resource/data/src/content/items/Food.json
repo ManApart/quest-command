@@ -7,15 +7,11 @@
       "values": {
         "healAmount": 1
       },
-      "stats": {
-        "burnHealth": 1
-      },
       "tags": [
+        "Raw",
         "Food",
         "Fruit",
-        "Bakeable",
-        "Sliceable",
-        "Smashable"
+        "Slicable"
       ]
     }
   },
@@ -28,19 +24,9 @@
         "healAmount": 10
       },
       "tags": [
-        "Food",
-        "Burnable"
+        "Food"
       ]
-    },
-    "behaviors": [
-      {
-        "name": "Bake Food",
-        "params": {
-          "itemName": "Apple",
-          "resultItemName": "Baked Apple"
-        }
-      }
-    ]
+    }
   },
   {
     "name": "Wheat Bundle",
@@ -64,6 +50,13 @@
   {
     "name": "Poor Quality Meat",
     "description": "It's pale and oily.",
-    "weight": "1"
+    "weight": "1",
+    "properties": {
+      "tags": [
+        "Raw",
+        "Meat",
+        "Slicable"
+      ]
+    }
   }
 ]

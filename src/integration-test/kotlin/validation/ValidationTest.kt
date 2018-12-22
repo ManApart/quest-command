@@ -10,8 +10,10 @@ class ValidationTest {
 
     @Test
     fun allValidationsPass() {
-        val warnings = CommandValidator().validate() +
+        val warnings =
                 ActivatorValidator().validate() +
+                CommandValidator().validate() +
+                CreatureValidator().validate() +
                 LocationValidator().validate()
 
         assertEquals(0, warnings)

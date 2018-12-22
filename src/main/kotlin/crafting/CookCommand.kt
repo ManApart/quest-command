@@ -18,11 +18,11 @@ class CookCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Cook:\n\tCook food"
+        return "Craft:\n\tCraft food"
     }
 
     override fun getManual(): String {
-        return "\n\tCook <ingredient>, <ingredient2> on <range>"
+        return "\n\tCraft <ingredient>, <ingredient2> on <range>"
     }
 
     override fun getCategory(): List<String> {
@@ -31,17 +31,19 @@ class CookCommand : Command() {
 
     override fun execute(keyword: String, arguments: List<String>) {
         val args = Args(arguments, delimiters)
-        if (!isValidInput(args)){
+        if (!isValidInput(args)) {
             display("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(args)
             val tool = getTool(args)
+            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, GameState.player.creature.soul)
 
             when {
                 tool == null -> display("Couldn't find something to cook on")
-                ingredients.size != args.argStrings.size-1 -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
-                else -> EventManager.postEvent(CookAttemptEvent(GameState.player.creature, ingredients, tool))
-
+                ingredients.size != args.argStrings.size - 1 -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
+                recipes.isEmpty() -> display("Couldn't find a recipe for those ingredients")
+                recipes.size > 1 -> display("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
+                else -> EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipes.first(), "cook", tool ))
             }
         }
     }

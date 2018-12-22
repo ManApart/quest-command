@@ -9,15 +9,14 @@ class ResourceHelperTest {
     @Test
     fun getFilesInPath() {
         val files = ResourceHelper.getResourceFiles("/test/core/utility", false)
-        assertEquals(2, files.size)
-        assertEquals("/test/core/utility/BodiesTest.json", files[0])
-        assertEquals("/test/core/utility/SecondBodiesTest.json", files[1])
+        assertEquals(1, files.size)
+        assertEquals("/test/core/utility/MultiObjectTest.json", files[0])
     }
 
     @Test
     fun getFilesInPathRecursive() {
         val files = ResourceHelper.getResourceFiles("/test/core", true)
-        assertEquals(2, files.size)
+        assertEquals(3, files.size)
     }
 
     @Test(expected = IllegalArgumentException::class)
