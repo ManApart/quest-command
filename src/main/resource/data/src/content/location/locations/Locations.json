@@ -30,6 +30,12 @@
   {
     "name": "Farmer's Hut Interior",
     "description": "The thatched roof hangs close to the ground; the single room is empty but for a small cooking range.",
+    "items": [
+      {
+        "name": "Tinder Box",
+        "location": "on the range"
+      }
+    ],
     "activators": [
       {
         "name": "Range",

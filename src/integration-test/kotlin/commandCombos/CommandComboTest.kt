@@ -25,8 +25,15 @@ class CommandComboTest {
     }
 
     @Test
+    fun sliceApple() {
+        val input = "use dagger on apple"
+        CommandParser.parseCommand(input)
+        assertEquals(("You slice Apple and get Sliced Apple."), ChatHistory.getLastOutput())
+    }
+
+    @Test
     fun roastApple() {
-        val input = "n && use tinder on tree && pickup apple && use apple on tree"
+        val input = "w && s && pickup tinder box && n && e && n && use tinder on tree && pickup apple && use apple on tree"
         CommandParser.parseCommand(input)
         assertEquals(("You roast Apple and get Roasted Apple."), ChatHistory.getLastOutput())
     }
@@ -42,10 +49,10 @@ class CommandComboTest {
     }
 
     @Test
-    fun sliceApple() {
-        val input = "use dagger on apple"
+    fun chopTree() {
+        val input = "n && pickup hatchet && equip hatchet && chop tree"
         CommandParser.parseCommand(input)
-        assertEquals(("You slice Apple and get Sliced Apple."), ChatHistory.getLastOutput())
+        assertEquals(("The Dulled Hatchet hacks at Apple Tree."), ChatHistory.getLastOutput())
     }
 
     @Test
@@ -69,13 +76,5 @@ class CommandComboTest {
         CommandParser.parseCommand(input)
         assertEquals(("You can now access Kanbara City from Kanbara Gate."), ChatHistory.getLastOutput())
     }
-
-    @Test
-    fun chopTree() {
-        val input = "n && pickup hatchet && equip hatchet && chop tree"
-        CommandParser.parseCommand(input)
-        assertEquals(("The Dulled Hatchet hacks at Apple Tree."), ChatHistory.getLastOutput())
-    }
-
 
 }

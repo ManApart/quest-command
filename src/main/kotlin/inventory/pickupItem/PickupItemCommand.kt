@@ -24,7 +24,7 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (args.size == 1) {
+        if (args.isNotEmpty()) {
             pickupItem(args)
         } else {
             display("Pickup what?")

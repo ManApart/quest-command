@@ -62,6 +62,10 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Block
 - Step (forward, back) (ranges: knife, sword, lance, bow)
 
+#### Other
+- Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
+- Attack direction should use previous target
+
 ### Crafting
 
 - Cooking / recipes
@@ -91,15 +95,9 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 
 ### Locations
 
-- Place the hatchet/tinderbox/apple in the scenes
-
-#### Other
-- Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
-- Attack direction should use previous target
-
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
- - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
+  - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
 - Persistence should happen across sessions.
 
 
