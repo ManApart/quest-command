@@ -7,13 +7,13 @@ import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
 
-class Stat(val name: String, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
-    var baseMax: Int = calcMax()
-    var boostedMax = baseMax
-    var current: Int = boostedMax
+class Stat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
+    var baseMax: Int = calcMax(); private set
+    var boostedMax = baseMax; private set
+    var current: Int = boostedMax; private set
     private var exp: Double = getEXPAt(level)
 
-    fun addEXP(amount: Int, creature: Creature) {
+    fun addEXP(amount: Int) {
         if (amount > 0) {
             exp += amount
 
@@ -21,17 +21,17 @@ class Stat(val name: String, private var level: Int = 1, private var maxMultipli
             determineLevel()
             if (level > oldLevel) {
                 baseMax = calcMax()
-                EventManager.postEvent(LevelUpEvent(creature, this, level))
+                EventManager.postEvent(LevelUpEvent(parent, this, level))
             }
         }
     }
 
-    fun levelUp(creature: Creature, times: Int = 1) {
+    fun levelUp(times: Int = 1) {
         val xp = getEXPAt(level + times)
-        addEXP(xp.toInt(), creature)
+        addEXP(xp.toInt())
     }
 
-    fun incStat(parent: Target, amount: Int) {
+    fun incStat(amount: Int) {
         if (amount != 0) {
             current = Math.max(Math.min(current + amount, boostedMax), 0)
 
@@ -43,7 +43,7 @@ class Stat(val name: String, private var level: Int = 1, private var maxMultipli
         }
     }
 
-    fun incStatMax(parent: Target, amount: Int) {
+    fun incStatMax(amount: Int) {
         if (amount != 0) {
             boostedMax = Math.max(boostedMax + amount, 0)
             current = Math.min(boostedMax, current)
@@ -54,15 +54,15 @@ class Stat(val name: String, private var level: Int = 1, private var maxMultipli
         }
     }
 
-    fun setLevel(creature: Creature, desiredLevel: Int) {
+    fun setLevel(desiredLevel: Int) {
         exp = 0.toDouble()
         level = 0
         baseMax = 0
         current = 0
         boostedMax = 0
-        levelUp(creature, desiredLevel)
-        incStatMax(creature, desiredLevel)
-        incStat(creature, desiredLevel)
+        levelUp(desiredLevel)
+        incStatMax(desiredLevel)
+        incStat(desiredLevel)
     }
 
     private fun determineLevel() {

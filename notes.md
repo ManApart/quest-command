@@ -20,7 +20,6 @@ While the readme should cover how to build and run the game, as well with inform
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
 - Validate valid recipe ingredients and results
-- Stats needs creature/target for posting events, but it's dirty, maybe pass in a reference once and if check for event posting
 
 ### Combat
 

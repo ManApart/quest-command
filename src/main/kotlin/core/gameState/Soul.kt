@@ -8,14 +8,14 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
             val stat = getOrCreateStat(name)
-            stat.incStat(parent, amount)
+            stat.incStat(amount)
         }
     }
 
     fun incStatMax(name: String, amount: Int) {
         if (amount != 0) {
             val stat = getOrCreateStat(name)
-            stat.incStatMax(parent, amount)
+            stat.incStatMax(amount)
         }
     }
 
@@ -24,7 +24,7 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
     }
 
     fun addStat(name: String, level: Int = 1, maxMultiplier: Int = 1, expExponential: Int = 2) {
-        stats.add(Stat(name, level, maxMultiplier, expExponential))
+        stats.add(Stat(name, parent, level, maxMultiplier, expExponential))
     }
 
     fun hasStat(name: String): Boolean {

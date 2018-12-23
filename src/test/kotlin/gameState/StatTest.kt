@@ -12,43 +12,43 @@ class StatTest {
 
     @Test
     fun statCurrentIsInitializedProperly() {
-        val stat = Stat(statName, 5)
+        val stat = Stat(statName, parent, 5)
         assertEquals(5, stat.current)
     }
 
     @Test
     fun incStatCannotBeLowerThan0() {
-        val stat = Stat(statName)
-        stat.incStat(parent, -10)
+        val stat = Stat(statName, parent)
+        stat.incStat(-10)
         assertEquals(0, stat.current)
     }
 
     @Test
     fun incMaxStatCannotBeLowerThan0() {
-        val stat = Stat(statName)
-        stat.incStatMax(parent, -10)
+        val stat = Stat(statName, parent)
+        stat.incStatMax(-10)
         assertEquals(0, stat.boostedMax)
     }
 
     @Test
     fun incStatMaxDoesNotIncreaseCurrent() {
-        val stat = Stat(statName)
-        stat.incStatMax(parent, 5)
+        val stat = Stat(statName, parent)
+        stat.incStatMax(5)
         assertEquals(1, stat.current)
     }
 
     @Test
     fun decreaseStatMaxLowersCurrent() {
-        val stat = Stat(statName, 10)
-        stat.incStatMax(parent, -7)
+        val stat = Stat(statName, parent, 10)
+        stat.incStatMax(-7)
         assertEquals(3, stat.current)
     }
 
     @Test
     fun incStatCannotBeHigherThanMax() {
-        val stat = Stat(statName)
-        stat.incStatMax(parent, 4)
-        stat.incStat(parent, 10)
+        val stat = Stat(statName, parent)
+        stat.incStatMax(4)
+        stat.incStat(10)
         assertEquals(5, stat.current)
     }
 

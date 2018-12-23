@@ -15,7 +15,7 @@ class ExpGained : EventListener<ExpGainedEvent>() {
             if (stat.expExponential > 1) {
                 display("You gained ${event.amount} exp in ${stat.name}")
             }
-            stat.addEXP(event.amount, event.creature)
+            stat.addEXP(event.amount)
         }
     }
 }
