@@ -180,7 +180,7 @@ See the XXX class to see a list of queryable values and their parameters
 
 ### Locations
 
---Locations--
+#### Locations
 Locations describe an area and contain
 
 - A unique name (Required)
@@ -189,7 +189,15 @@ Locations describe an area and contain
 - A list of activators
 - A list of creatures
 
---Location Paths--
+When specifying a list of targets (items, activators, creatures), you can give just their name, or their name and location within the location. This is just a string of flavor text used for the look command:
+```
+{
+    "name": "Apple",
+    "location": "at the base of the tree"
+}
+```
+
+#### Location Paths
 Location Paths describe the relationship between locations. They contain
 
 - A unique name (Required)

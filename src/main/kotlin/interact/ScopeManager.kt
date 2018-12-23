@@ -21,9 +21,9 @@ object ScopeManager {
         override fun execute(event: ArriveEvent) {
             resetTargets()
             val location = event.destination.getLocation()
-            addTargets(ItemManager.getItems(location.items))
-            addTargets(ActivatorManager.getActivators(location.activators))
-            addTargets(CreatureManager.getCreatures(location.creatures))
+            addTargets(ItemManager.getItemsFromLocationTargets(location.items))
+            addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
+            addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
         }
     }
 
@@ -40,7 +40,6 @@ object ScopeManager {
         }
     }
 
-    //TODO - set location on spawn
     class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
         override fun execute(event: SpawnActivatorEvent) {
             if (!event.silent) {

@@ -19,7 +19,6 @@ While the readme should cover how to build and run the game, as well with inform
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
-- Replace Inhertiable with pure json inheritance?
 - Validate valid recipe ingredients and results
 - Stats needs creature/target for posting events, but it's dirty, maybe pass in a reference once and if check for event posting
 
@@ -92,7 +91,6 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 
 ### Locations
 
-- Location items take hashmap of item name and locationDescription string. Looking in a location will say ‘tinderbox on the range’
 - Place the hatchet/tinderbox/apple in the scenes
 
 #### Other
@@ -161,7 +159,7 @@ Possible Stats
 
 ### Misc / Unsorted
 - Readable behavior / item
-- Be consistent. End with periods or without them.
+- Be consistent. End all statements with periods.
 - Remove hatchet and apple from starting inventory and place them in world etc
 - Directly cook recipe
 - Inventory carrying space

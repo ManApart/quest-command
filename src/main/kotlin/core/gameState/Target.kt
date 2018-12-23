@@ -6,6 +6,7 @@ import core.utility.Named
 interface Target : Named {
     val description: String
     val properties: Properties
+    val locationDescription: String?
 
     fun canConsume(event: Event) : Boolean {
         return if (this is Activator) {
@@ -34,7 +35,7 @@ fun targetsToString(targets: List<Target>) : String {
     val targetCounts = HashMap<String, Int>()
     targets.forEach {
         val count = (it as? Item)?.count ?: 1
-        targetCounts[it.name] = targetCounts[it.name]?.plus(count) ?: count
+        targetCounts[it.getDisplayName()] = targetCounts[it.name]?.plus(count) ?: count
     }
 
     return targetCounts.entries.joinToString(", ") {
@@ -45,6 +46,15 @@ fun targetsToString(targets: List<Target>) : String {
         }
     }
 }
+
+fun Target.getDisplayName() : String {
+    return name + if (locationDescription.isNullOrBlank()){
+        ""
+    } else {
+        " $locationDescription"
+    }
+}
+
 fun Target.hasCreature() : Boolean {
     return getCreature() != null
 }

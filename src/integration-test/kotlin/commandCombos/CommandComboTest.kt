@@ -72,7 +72,7 @@ class CommandComboTest {
 
     @Test
     fun chopTree() {
-        val input = "n && equip hatchet && chop tree"
+        val input = "n && pickup hatchet && equip hatchet && chop tree"
         CommandParser.parseCommand(input)
         assertEquals(("The Dulled Hatchet hacks at Apple Tree."), ChatHistory.getLastOutput())
     }

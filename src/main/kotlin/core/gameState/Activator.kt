@@ -11,13 +11,15 @@ import system.InheritableManager
 class Activator(
         name: String,
         description: String = "Nothing interesting",
+        override val locationDescription: String? = null,
         val climb: Climbable? = null,
         @JsonProperty("behaviors") val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
         properties: Properties = Properties(),
         inherits: List<InheritRecipe> = listOf()
 ) : Target {
 
-    constructor(base: Activator) : this(base.name, base.description, base.climb, base.behaviorRecipes, base.creature.properties)
+    constructor(base: Activator, locationDescription: String? = null) : this(base.name, base.description, locationDescription
+            ?: base.locationDescription, base.climb, base.behaviorRecipes, base.creature.properties)
 
     val creature = Creature(name, description, parent = this, properties = properties)
     override val name: String get() = creature.name

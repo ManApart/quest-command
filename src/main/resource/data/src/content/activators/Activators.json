@@ -80,6 +80,15 @@
     ]
   },
   {
+    "name": "Well",
+    "description": "The well's smoothed stones seem at once immovable and soft, as if they are a natural part of the terrain.",
+    "properties": {
+      "tags": [
+        "Water Source"
+      ]
+    }
+  },
+  {
     "name": "Apple Tree Branches",
     "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
     "properties": {

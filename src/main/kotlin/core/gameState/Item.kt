@@ -9,12 +9,23 @@ import system.BehaviorManager
 import system.InheritableManager
 import system.ItemManager
 
-class Item(override val name: String, override val description: String = "", private val weight: Int = 0, var count: Int = 1, equipSlots: List<List<String>> = listOf(), @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(), override val properties: Properties = Properties(), inherits: List<InheritRecipe> = listOf()) : Target {
+class Item(
+        override val name: String,
+        override val description: String = "",
+        override val locationDescription: String? = null,
+        private val weight: Int = 0,
+        var count: Int = 1,
+        equipSlots: List<List<String>> = listOf(),
+        @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
+        override val properties: Properties = Properties(),
+        inherits: List<InheritRecipe> = listOf()
+) : Target {
     init {
         applyInherits(inherits)
     }
 
-    constructor(base: Item) : this(base.name, base.description, base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, Properties(base.properties))
+    constructor(base: Item, locationDescription: String? = null) : this(base.name, base.description, locationDescription
+            ?: base.locationDescription, base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, Properties(base.properties))
 
     val equipSlots = equipSlots.map { Slot(it) }
     val soul = Soul(this)
@@ -35,10 +46,6 @@ class Item(override val name: String, override val description: String = "", pri
             behaviorRecipes.addAll(inherit.behaviorRecipes.filter { !itemBehaviorRecipeNames.contains(it.name) })
             properties.inherit(inherit.properties)
         }
-    }
-
-    fun copy(): Item {
-        return Item(name, description, weight, 1, equipSlots.map { slot -> slot.bodyParts.map { it } }, behaviorRecipes, properties)
     }
 
     fun evaluate(event: Event): Boolean {
@@ -78,7 +85,7 @@ class Item(override val name: String, override val description: String = "", pri
         return name == other.name && properties.matches(other.properties)
     }
 
-    fun getTaggedItemName() : String {
+    fun getTaggedItemName(): String {
         val orig = ItemManager.getItem(name)
         val newTags = properties.tags.getAll() - orig.properties.tags.getAll()
         return newTags.joinToString(" ") + " " + name

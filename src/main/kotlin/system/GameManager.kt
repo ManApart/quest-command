@@ -42,7 +42,7 @@ object GameManager {
             inventory.add(item)
             body.equip(item)
         }
-        listOf("Tinder Box", "Dulled Hatchet", "Apple", "Apple Pie").forEach {
+        listOf("Tinder Box", "Apple").forEach {
             val item = ItemManager.getItem(it)
             inventory.add(item)
         }

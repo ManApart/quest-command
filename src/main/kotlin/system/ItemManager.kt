@@ -2,6 +2,7 @@ package system
 
 import core.events.EventListener
 import core.gameState.Item
+import core.gameState.location.LocationTarget
 import core.history.display
 
 object ItemManager {
@@ -43,5 +44,11 @@ object ItemManager {
 
     fun getItems(names: List<String>): List<Item> {
         return items.getAll(names).map { Item(it) }
+    }
+
+    fun getItemsFromLocationTargets(targets: List<LocationTarget>): List<Item> {
+        return targets.map {
+            Item(items.get(it.name), it.location)
+        }
     }
 }

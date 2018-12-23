@@ -7,16 +7,27 @@ import system.BodyManager
 import system.ItemManager
 import system.location.LocationManager
 
-class Creature(override val name: String, override val description: String, val body: Body = Body(), var location: LocationNode = LocationManager.NOWHERE_NODE, ai: String? = null, val parent: Target? = null, override val properties: Properties = Properties()) : Target {
+class Creature(
+        override val name: String,
+        override val description: String,
+        override val locationDescription: String? = null,
+        val body: Body = Body(),
+        var location: LocationNode = LocationManager.NOWHERE_NODE,
+        ai: String? = null,
+        val parent: Target? = null,
+        override val properties: Properties = Properties()
+) : Target {
 
     val soul = Soul(this)
     val inventory = Inventory()
     val ai = if (ai != null) AIManager.getAI(ai, this) else null
 
     @JsonCreator
-    constructor(name: String, description: String, body: String, ai: String?, properties: Properties = Properties(), items: List<String>) : this(name, description, BodyManager.getBody(body), ai = ai, properties = properties) {
+    constructor(name: String, description: String, locationDescription: String? = null, body: String, ai: String?, properties: Properties = Properties(), items: List<String>) : this(name, description, locationDescription, BodyManager.getBody(body), ai = ai, properties = properties) {
         items.forEach { inventory.add(ItemManager.getItem(it)) }
     }
+
+    constructor(base: Creature, locationDescription: String? = null) : this(base.name, base.description, locationDescription ?: base.locationDescription, base.body, base.location, base.ai?.name, base.parent, base.properties)
 
 
     init {

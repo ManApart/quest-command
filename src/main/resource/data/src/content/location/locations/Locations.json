@@ -19,13 +19,22 @@
   },
   {
     "name": "Farmer's Hut",
-    "description": "The hut is small, but it's hewn logs are worn by the passage of time and polished by the passing of many caring hands."
+    "description": "The hut is small, but it's hewn logs are worn by the passage of time and polished by the passing of many caring hands.",
+    "activators": [
+      "Well"
+    ],
+    "items": [
+      "Bucket"
+    ]
   },
   {
     "name": "Farmer's Hut Interior",
-    "description": "The low roof hangs close; the single room is empty but for a small cooking range.",
+    "description": "The thatched roof hangs close to the ground; the single room is empty but for a small cooking range.",
     "activators": [
-      "Range"
+      {
+        "name": "Range",
+        "location": "by the door"
+      }
     ]
   },
   {
@@ -42,8 +51,18 @@
       "Apple Tree"
     ],
     "items": [
-      "Apple",
-      "Apple"
+      {
+        "name": "Apple",
+        "location": "at the base of the tree"
+      },
+      {
+        "name": "Apple",
+        "location": "at the base of the tree"
+      },
+      {
+        "name": "Dulled Hatchet",
+        "location": "leaning against the tree"
+      }
     ]
   },
   {
