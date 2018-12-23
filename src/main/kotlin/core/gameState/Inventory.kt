@@ -1,6 +1,7 @@
 package core.gameState
 
 import core.utility.NameSearchableList
+import interact.ScopeManager
 
 class Inventory {
     private val items = NameSearchableList<Item>()
@@ -48,5 +49,9 @@ class Inventory {
 
     fun getAllItems() : List<Item> {
         return items.toList()
+    }
+
+    fun findItemByProperties(properties: Properties): Item? {
+        return items.firstOrNull { it.properties.hasAll(properties) }
     }
 }

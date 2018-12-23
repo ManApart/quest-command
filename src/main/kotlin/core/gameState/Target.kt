@@ -45,7 +45,7 @@ fun targetsToString(targets: List<Target>) : String {
         }
     }
 }
-
+//TODO - make extension functions
 fun hasCreature(target: Target) : Boolean {
     return getCreature(target) != null
 }

@@ -1,26 +1,13 @@
 [
   {
-    "name": "Bake Food",
+    "name": "Add on Eat",
     "params": [
-      "itemName",
       "resultItemName"
     ],
     "condition": {
-      "callingEvent": "StatMinnedEvent",
-      "eventParams": {
-        "stat": "burnHealth"
-      }
+      "callingEvent": "EatFoodEvent"
     },
     "events": [
-      {
-        "className": "MessageEvent",
-        "params": [
-          "The $itemName gives off a hardy smell as it roasts."
-        ]
-      },
-      {
-        "className": "RemoveScopeEvent"
-      },
       {
         "className": "SpawnItemEvent",
         "params": [

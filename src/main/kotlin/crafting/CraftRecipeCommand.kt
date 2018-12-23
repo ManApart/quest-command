@@ -31,9 +31,11 @@ class CraftRecipeCommand : Command() {
             args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(GameState.player))
             GameState.player.knownRecipes.exists(args) -> {
                 val recipe = GameState.player.knownRecipes.get(args)
-                val tool = ScopeManager.findActivatorByProperties(recipe.toolProperties)
-                if (!recipe.toolProperties.isEmpty() && tool == null){
+                val tool = ScopeManager.findActivatorByProperties(recipe.toolProperties) ?: GameState.player.creature.inventory.findItemByProperties(recipe.toolProperties)
+                if (!recipe.toolProperties.isEmpty() && tool == null) {
                     display("Couldn't find the necessary tools to create ${recipe.name}")
+                }else if (!recipe.matches(GameState.player.creature.inventory.getAllItems(), tool)){
+                    display("Couldn't find all the needed ingredients to create ${recipe.name}.")
                 } else {
                     EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipe, tool))
                 }

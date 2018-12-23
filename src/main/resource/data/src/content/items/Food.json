@@ -26,7 +26,15 @@
       "tags": [
         "Food"
       ]
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Add on Eat",
+        "params": {
+          "resultItemName": "Pie Tin"
+        }
+      }
+    ]
   },
   {
     "name": "Wheat Bundle",

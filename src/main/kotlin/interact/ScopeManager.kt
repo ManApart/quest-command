@@ -132,15 +132,15 @@ object ScopeManager {
     }
 
     fun findActivatorByTag(tag: String): Activator? {
-        return targets.firstOrNull { it is Activator && it.properties.tags.has(tag) } as Activator
+        return targets.firstOrNull { it is Activator && it.properties.tags.has(tag) } as Activator?
     }
 
     fun findActivatorByTags(tag: Tags): Activator? {
-        return targets.firstOrNull { it is Activator && it.properties.tags.hasAll(tag) } as Activator
+        return targets.firstOrNull { it is Activator && it.properties.tags.hasAll(tag) } as Activator?
     }
 
     fun findActivatorByProperties(properties: Properties): Activator? {
-        return targets.firstOrNull { it is Activator && it.properties.hasAll(properties) } as Activator
+        return targets.firstOrNull { it is Activator && it.properties.hasAll(properties) } as Activator?
     }
 
     fun getAllSouls(): List<Soul> {

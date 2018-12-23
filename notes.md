@@ -66,12 +66,9 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 ### Crafting
 
 - Cooking / recipes
- - Burn if not enough skill
- - Gain xp for cooking
- - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)'
- - Maybe like this:
-  - Baked tag makes heal worth 1.5x when eaten ( behavior)
-  - Pie should leave a pie tin once eaten > Behavior on Pie, when eaten drop tin
+  - Burn if not enough skill
+  - Gain xp for cooking
+  - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)'
 - Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
 
 

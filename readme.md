@@ -96,7 +96,7 @@ Below are explanations of how the game works today. See `notes.md` for thoughts 
 
 #### Recipes
 
-Recipes take in a set of skills, properties for the required tool, and a set of ingredients. They can be triggered by explicitly crafting a recipe or by using an ingredient on a tool etc. Sliced Apple can be created by `craft sliced apple`, by `use apple on dagger` or by `slash apple` if the ingredients, tools, and skills are all present.
+Recipes take in a set of skills, properties for the required tool, and a set of ingredients. They can be triggered by explicitly crafting a recipe or by using an ingredient on a tool etc. Sliced Apple can be created by `craft sliced apple`, by `use dagger on apple` or by `slash apple` if the ingredients, tools, and skills are all present.
 
 In the case of an Apple Pie, an Apple, Pie Tin and Dough are required. The Apple must have the tag `Sliced`.
 ```
