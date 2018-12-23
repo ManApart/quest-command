@@ -6,10 +6,10 @@ import core.gameState.hasSoul
 
 class AddEffect: EventListener<AddEffectEvent>() {
     override fun shouldExecute(event: AddEffectEvent): Boolean {
-        return hasSoul(event.target)
+        return event.target.hasSoul()
     }
     override fun execute(event: AddEffectEvent) {
-        val soul = getSoul(event.target)!!
+        val soul = event.target.getSoul()!!
         soul.effects.add(event.effect)
     }
 }

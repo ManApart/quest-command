@@ -13,7 +13,7 @@ class UseOnFire : EventListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return if (event.source is Item && event.source.soul.hasStat("burnHealth")){
-            val soul = getSoul(event.target)
+            val soul = event.target.getSoul()
             soul != null && soul.hasEffect("On Fire")
         } else {
             false

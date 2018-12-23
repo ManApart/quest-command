@@ -16,8 +16,10 @@ object DependencyInjector {
 
     fun <T : E, E : Any> getImplementation(targetInterface: Class<E>): T {
         return if (interfaces.containsKey(targetInterface)) {
+            @Suppress("UNCHECKED_CAST")
             interfaces[targetInterface] as T
         } else {
+            @Suppress("UNCHECKED_CAST")
             defaultImplementations[targetInterface] as T
         }
     }

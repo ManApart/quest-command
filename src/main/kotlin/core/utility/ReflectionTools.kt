@@ -74,6 +74,7 @@ object ReflectionTools {
         val content = this::class.java.getResource(file).readText()
         content.trim().lines().forEach {
             try {
+                @Suppress("UNCHECKED_CAST")
                 val kClass = Class.forName(it) as Class<E>
                 classes.add(kClass)
             } catch (e: ClassNotFoundException) {
@@ -85,6 +86,7 @@ object ReflectionTools {
     }
 
     fun <R : Any> getProperty(instance: Any, propertyName: String): R {
+        @Suppress("UNCHECKED_CAST")
         return instance.javaClass.kotlin.memberProperties.first { it.name == propertyName }.get(instance) as R
     }
 

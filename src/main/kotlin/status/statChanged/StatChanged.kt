@@ -10,12 +10,12 @@ class StatChanged : EventListener<StatChangeEvent>() {
     private val hiddenStats = listOf("burnHealth", "chopHealth")
 
     override fun shouldExecute(event: StatChangeEvent): Boolean {
-        return event.amount != 0 && hasSoul(event.target)
+        return event.amount != 0 && event.target.hasSoul()
     }
 
     override fun execute(event: StatChangeEvent) {
         val change = StringFormatter.format(event.amount > 0, "increases", "decreases")
-        val soul = getSoul(event.target)!!
+        val soul = event.target.getSoul()!!
 
         soul.incStat(event.type, event.amount)
 

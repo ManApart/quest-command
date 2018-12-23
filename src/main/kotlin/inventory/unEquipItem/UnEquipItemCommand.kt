@@ -26,17 +26,17 @@ class UnEquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, arguments: List<String>) {
-        val args = Args(arguments, delimiters)
+    override fun execute(keyword: String, args: List<String>) {
+        val arguments = Args(args, delimiters)
 
-        if (args.isEmpty()) {
+        if (arguments.isEmpty()) {
             display("What do you want to un-equip?")
         } else {
-            val item = getItem(args)
+            val item = getItem(arguments)
             if (item != null) {
                 EventManager.postEvent(UnEquipItemEvent(GameState.player.creature, item))
             } else {
-                display("Could not find ${args.argStrings[0]}")
+                display("Could not find ${arguments.argStrings[0]}")
             }
         }
     }

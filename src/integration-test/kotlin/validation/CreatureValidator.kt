@@ -33,6 +33,7 @@ class CreatureValidator {
         var warnings = 0
         creatureMap.forEach { creature ->
             if (creature.containsKey("items")) {
+                @Suppress("UNCHECKED_CAST")
                 val items = creature["items"] as List<String>
                 items.forEach { item ->
                     if (!itemExists(item)) {

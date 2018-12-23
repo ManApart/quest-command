@@ -17,7 +17,7 @@ class UseFoodItem : EventListener<UseEvent>() {
     }
 
     override fun execute(event: UseEvent) {
-        val creature = getCreature(event.target)!!
+        val creature = event.target.getCreature()!!
         EventManager.postEvent(EatFoodEvent(creature, event.source as Item))
     }
 

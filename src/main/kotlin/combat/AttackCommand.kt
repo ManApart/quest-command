@@ -38,15 +38,15 @@ class AttackCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun execute(keyword: String, arguments: List<String>) {
-        val args = Args(arguments, listOf("with", "of"))
+    override fun execute(keyword: String, args: List<String>) {
+        val arguments = Args(args, listOf("with", "of"))
         val damageType = getDamageType(keyword)
-        val direction = getDirection(args)
-        val handHelper = HandHelper(args.getGroupString(1), damageType)
+        val direction = getDirection(arguments)
+        val handHelper = HandHelper(arguments.getGroupString(1), damageType)
 
         val ignoredWords = mutableListOf("left", "l", "right", "r", "of")
         ignoredWords.addAll(TargetDirection.getAllAliases())
-        val cleaned = Args(arguments, listOf("with"), ignoredWords)
+        val cleaned = Args(args, listOf("with"), ignoredWords)
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
             isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(handHelper.hand.equippedItem!!, ScopeManager.getTarget(cleaned.argStrings[0])))

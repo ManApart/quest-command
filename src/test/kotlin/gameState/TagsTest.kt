@@ -1,10 +1,10 @@
 package gameState
 
 import core.gameState.Tags
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class TagsTest {
 

@@ -6,7 +6,7 @@ import status.statChanged.StatMinnedEvent
 
 class StatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return !isPlayer(event.target)
+        return !event.target.isPlayer()
     }
 
     override fun execute(event: StatMinnedEvent) {

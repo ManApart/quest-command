@@ -26,14 +26,14 @@ class EquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, arguments: List<String>) {
-        val args = Args(arguments, delimiters)
+    override fun execute(keyword: String, args: List<String>) {
+        val arguments = Args(args, delimiters)
 
-        if (args.isEmpty()) {
+        if (arguments.isEmpty()) {
             display("What do you want to equip?")
         } else {
-            val item = getItem(args)
-            val bodyPartNameGuess = getBodyPart(args)
+            val item = getItem(arguments)
+            val bodyPartNameGuess = getBodyPart(arguments)
             val body = GameState.player.creature.body
 
             if (item != null){
@@ -55,7 +55,7 @@ class EquipItemCommand : Command() {
                     }
                 }
             } else {
-                display("Could not find ${args.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
+                display("Could not find ${arguments.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
             }
         }
     }

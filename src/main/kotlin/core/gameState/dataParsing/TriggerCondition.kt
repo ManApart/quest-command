@@ -25,6 +25,7 @@ class TriggerCondition(val callingEvent: String, private val eventParams: Map<St
             val property = event.javaClass.kotlin.memberProperties.first { it.name == entry.key }
 
             //Convert param value to proper type
+            @Suppress("IMPLICIT_CAST_TO_ANY")
             val expected = when {
                 property.returnType.isSubtypeOf(Boolean::class.createType()) -> entry.value.toBoolean()
                 property.returnType.isSubtypeOf(Int::class.createType()) -> entry.value.toInt()

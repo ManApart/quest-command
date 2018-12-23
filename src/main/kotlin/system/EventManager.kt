@@ -55,6 +55,7 @@ object EventManager {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
         val listeners = mutableListOf<EventListener<*>>()
         listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }
@@ -64,6 +65,7 @@ object EventManager {
         return listeners.size
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <E : Event> executeEvent(event: E) {
         val listeners = mutableListOf<EventListener<*>>()
         listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }

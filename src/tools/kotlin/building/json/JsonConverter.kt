@@ -67,6 +67,7 @@ class JsonConverter(data: List<MutableMap<String, Any>>) {
             newList.addAll((item[baseKey] as List<*>))
             item[baseKey] = newList
         } else if (baseValue is Map<*, *>) {
+            @Suppress("UNCHECKED_CAST")
             transfer(baseValue as MutableMap<String, Any>, item[baseKey] as MutableMap<String, Any>)
         }
     }

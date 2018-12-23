@@ -6,11 +6,11 @@ import core.gameState.hasSoul
 
 class RemoveEffect: EventListener<RemoveEffectEvent>() {
     override fun shouldExecute(event: RemoveEffectEvent): Boolean {
-        return hasSoul(event.target)
+        return event.target.hasSoul()
     }
 
     override fun execute(event: RemoveEffectEvent) {
-        val soul = getSoul(event.target)!!
+        val soul = event.target.getSoul()!!
         soul.effects.remove(event.effect)
     }
 }

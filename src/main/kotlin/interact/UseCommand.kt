@@ -27,26 +27,26 @@ class UseCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(keyword: String, arguments: List<String>) {
-        val args = Args(arguments, delimiters)
+    override fun execute(keyword: String, args: List<String>) {
+        val arguments = Args(args, delimiters)
 
-        if (args.isEmpty()) {
+        if (arguments.isEmpty()) {
             display("What do you want to use?")
         } else {
-            if (targetExists(args.argGroups[0])) {
-                val source = findTarget(args.argGroups[0])
-                if (args.argGroups.size > 1) {
-                    if (targetExists(args.argGroups[1])) {
-                        val target = findTarget(args.argGroups[1])
+            if (targetExists(arguments.argGroups[0])) {
+                val source = findTarget(arguments.argGroups[0])
+                if (arguments.argGroups.size > 1) {
+                    if (targetExists(arguments.argGroups[1])) {
+                        val target = findTarget(arguments.argGroups[1])
                         EventManager.postEvent(UseEvent(source, target))
                     } else {
-                        display("Couldn't find ${args.argStrings[1]}")
+                        display("Couldn't find ${arguments.argStrings[1]}")
                     }
                 } else {
                     EventManager.postEvent(InteractEvent(source))
                 }
             } else {
-                display("Couldn't find $args")
+                display("Couldn't find $arguments")
             }
         }
     }

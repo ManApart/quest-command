@@ -20,7 +20,7 @@ data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsA
             if (usedIngredients.size <= id!!) {
                 throw IllegalArgumentException("Recipe Result had id $id but only ${usedIngredients.size} used ingredients")
             } else {
-                usedIngredients[id!!]
+                usedIngredients[id]
             }
         }
         tagsRemoved.getAll().forEach {

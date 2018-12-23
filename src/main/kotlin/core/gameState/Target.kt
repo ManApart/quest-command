@@ -45,36 +45,35 @@ fun targetsToString(targets: List<Target>) : String {
         }
     }
 }
-//TODO - make extension functions
-fun hasCreature(target: Target) : Boolean {
-    return getCreature(target) != null
+fun Target.hasCreature() : Boolean {
+    return getCreature() != null
 }
 
-fun getCreature(target: Target) : Creature? {
-    return when (target){
-        is Creature -> target
-        is Activator -> target.creature
-        is Player -> target.creature
+fun Target.getCreature() : Creature? {
+    return when (this){
+        is Creature -> this
+        is Activator -> this.creature
+        is Player -> this.creature
         else -> null
     }
 }
 
-fun hasSoul(target: Target) : Boolean {
-    return getSoul(target) != null
+fun Target.hasSoul() : Boolean {
+    return getSoul() != null
 }
 
-fun getSoul(target: Target) : Soul? {
-    return when (target){
-        is Creature -> target.soul
-        is Item -> target.soul
-        is Activator -> target.creature.soul
-        is Player -> target.creature.soul
+fun Target.getSoul() : Soul? {
+    return when (this){
+        is Creature -> this.soul
+        is Item -> this.soul
+        is Activator -> this.creature.soul
+        is Player -> this.creature.soul
         else -> null
     }
 }
 
-fun isPlayer(target: Target) : Boolean {
-    return target == GameState.player || target == GameState.player.creature
+fun Target.isPlayer() : Boolean {
+    return this == GameState.player || this == GameState.player.creature
 }
 
 fun Target.getTopParent() : Target {

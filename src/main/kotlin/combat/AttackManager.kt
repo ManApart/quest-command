@@ -13,6 +13,7 @@ import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
+import interact.ScopeManager.getCreature
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -54,7 +55,7 @@ object AttackManager {
         val possessive = StringFormatter.getSubjectPossessive(source)
         display("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.equippedName()}.")
 
-        val creature = getCreature(target)
+        val creature = target.getCreature()
         val damageDone = getDamageDone(source, sourcePart, type)
 
         if (creature != null && damageDone > 0) {

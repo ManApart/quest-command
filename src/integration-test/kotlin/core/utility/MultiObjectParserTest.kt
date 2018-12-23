@@ -6,7 +6,6 @@ import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-//TODO - delete this test and the tested classes
 class MultiObjectParserTest {
 
     @Test
