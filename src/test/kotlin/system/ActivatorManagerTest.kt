@@ -2,6 +2,7 @@ package system
 
 import core.gameState.Activator
 import core.gameState.climb.Climbable
+import core.gameState.location.LocationNode
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
 import org.junit.BeforeClass
@@ -50,7 +51,7 @@ class ActivatorManagerTest {
         val target = LocationTarget("Target", null, mapOf("destination" to "resort"))
         val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
 
-        assertEquals("resort", result.climb?.destination ?: "")
+        assertEquals("resort", result.climb?.name ?: "")
     }
 
 }

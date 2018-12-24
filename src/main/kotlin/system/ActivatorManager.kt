@@ -24,7 +24,7 @@ object ActivatorManager {
 
     fun getActivatorsFromLocationTargets(targets: List<LocationTarget>): List<Activator> {
         return targets.map {
-            Activator(activators.get(it.name), it.location)
+            Activator(activators.get(it.name), it.params, it.location)
         }
     }
 

@@ -3,7 +3,6 @@ package crafting
 import core.gameState.*
 import core.gameState.Target
 import core.utility.Named
-import core.utility.listsMatch
 
 data class Recipe(override val name: String, val ingredients: List<RecipeIngredient>, val skills: Map<String, Int> = mapOf(), val toolProperties: Properties = Properties(), val results: List<RecipeResult> = listOf(), val craftVerb: String = "craft") : Named {
 

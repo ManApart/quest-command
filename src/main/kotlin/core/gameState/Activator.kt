@@ -5,6 +5,7 @@ import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.climb.Climbable
 import core.gameState.inhertiable.InheritRecipe
+import core.utility.apply
 import system.BehaviorManager
 import system.InheritableManager
 
@@ -19,8 +20,14 @@ class Activator(
         val params: Map<String, String> = mapOf()
 ) : Target {
 
-    constructor(base: Activator, locationDescription: String? = null) : this(base.name, base.description, locationDescription
-            ?: base.locationDescription, base.climb, base.behaviorRecipes, base.creature.properties)
+    constructor(base: Activator, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
+            base.name.apply(params),
+            base.description.apply(params),
+            (locationDescription
+                    ?: base.locationDescription)?.apply(params),
+            base.climb?.let { Climbable(it, params) },
+            base.behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList(),
+            Properties(base.creature.properties, params))
 
     val creature = Creature(name, description, parent = this, properties = properties)
     override val name: String get() = creature.name

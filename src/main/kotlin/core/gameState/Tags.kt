@@ -1,8 +1,10 @@
 package core.gameState
 
-import core.utility.replaceParams
+import core.utility.apply
 
 class Tags(tags: List<String> = listOf()) {
+    constructor(base: Tags, params: Map<String, String> = mapOf()) : this (base.tags.apply(params))
+
     private val tags = tags.toMutableList()
 
     override fun toString(): String {
@@ -41,11 +43,6 @@ class Tags(tags: List<String> = listOf()) {
                 tags.add(it)
             }
         }
-    }
-
-    fun applyParams(params: Map<String, String>): Tags {
-        val newTags = tags.map { it.replaceParams(params) }
-        return Tags(newTags)
     }
 
     fun isEmpty(): Boolean {

@@ -1,12 +1,12 @@
 package core.gameState
 
-import core.utility.applyParams
-import core.utility.mapAHasAllOfMapB
-import core.utility.mapsMatch
+import core.utility.apply
+import core.utility.hasAllOf
+import core.utility.matches
 import core.utility.toEmptyString
 
-class PropertyValues(properties: Map<String, String> = HashMap()) {
-    constructor(base: PropertyValues) : this(base.properties)
+class PropertyValues(properties: Map<String, String> = mapOf()) {
+    constructor(base: PropertyValues, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
 
     private val properties = parseProperties(properties)
 
@@ -34,11 +34,11 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
     }
 
     fun matches(other: PropertyValues): Boolean {
-        return mapsMatch(properties, other.properties)
+        return properties.matches(other.properties)
     }
 
     fun hasAll(other: PropertyValues): Boolean {
-        return mapAHasAllOfMapB(properties, other.properties)
+        return properties.hasAllOf(other.properties)
     }
 
     fun inherit(parent: PropertyValues) {
@@ -47,11 +47,6 @@ class PropertyValues(properties: Map<String, String> = HashMap()) {
                 properties[it.key] = it.value
             }
         }
-    }
-
-    fun applyParams(params: Map<String, String>): PropertyValues {
-        val newProps = properties.applyParams(params)
-        return PropertyValues(newProps)
     }
 
     fun isEmpty(): Boolean {

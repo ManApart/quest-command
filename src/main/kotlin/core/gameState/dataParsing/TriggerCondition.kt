@@ -2,7 +2,7 @@ package core.gameState.dataParsing
 
 import core.events.Event
 import core.utility.Named
-import core.utility.applyParams
+import core.utility.apply
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
@@ -10,7 +10,7 @@ import kotlin.reflect.full.memberProperties
 class TriggerCondition(val callingEvent: String, private val eventParams: Map<String, String> = mapOf()) {
 
     fun applyParamValues(paramValues: Map<String, String>) : TriggerCondition {
-        val modifiedParams = eventParams.applyParams(paramValues)
+        val modifiedParams = eventParams.apply(paramValues)
         return TriggerCondition(callingEvent, modifiedParams)
     }
 

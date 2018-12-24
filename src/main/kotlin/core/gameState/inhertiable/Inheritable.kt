@@ -12,8 +12,8 @@ class Inheritable(val name: String, private val paramDefaults: Map<String, Strin
             params[it.key] = it.value
         }
 
-        val recipes = behaviorRecipes.map { it.copy(params) }
-        return Inheritable(name, paramDefaults, recipes, properties.applyParams(params))
+        val recipes = behaviorRecipes.map { BehaviorRecipe(it, params) }
+        return Inheritable(name, paramDefaults, recipes, Properties(properties, params))
     }
 
 }

@@ -1,10 +1,7 @@
 package core.gameState.behavior
 
-import core.utility.applyParams
+import core.utility.apply
 
 class BehaviorRecipe(val name: String, val params: Map<String, String> = mapOf()) {
-
-    fun copy(overrides: Map<String, String>) : BehaviorRecipe {
-        return BehaviorRecipe(name, params.applyParams(overrides))
-    }
+    constructor(base: BehaviorRecipe, params: Map<String, String> = mapOf()) : this(base.name.apply(params), base.params.apply(params))
 }

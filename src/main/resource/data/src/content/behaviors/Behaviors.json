@@ -153,11 +153,6 @@
   },
   {
     "name": "Mill",
-    "params": [
-      "sourceItem",
-      "resultItemLocation",
-      "resultItem"
-    ],
     "condition": {
       "callingEvent": "UseEvent",
       "eventParams": {
