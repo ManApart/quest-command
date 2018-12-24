@@ -51,6 +51,11 @@
     ]
   },
   {
+    "name": "Wheat Flour",
+    "description": "The finely ground wheat looks almost like silver sand.",
+    "weight": "1"
+  },
+  {
     "name": "Dough",
     "description": "It may not be of much value alone, but it forms the base of many a great meal.",
     "weight": "1"

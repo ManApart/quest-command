@@ -1,4 +1,4 @@
-package system
+package interact.scope
 
 import core.events.Event
 import core.gameState.Target

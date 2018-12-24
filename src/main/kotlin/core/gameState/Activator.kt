@@ -15,7 +15,8 @@ class Activator(
         val climb: Climbable? = null,
         @JsonProperty("behaviors") val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
         properties: Properties = Properties(),
-        inherits: List<InheritRecipe> = listOf()
+        inherits: List<InheritRecipe> = listOf(),
+        val params: Map<String, String> = mapOf()
 ) : Target {
 
     constructor(base: Activator, locationDescription: String? = null) : this(base.name, base.description, locationDescription

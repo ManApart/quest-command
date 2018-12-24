@@ -1,67 +1,14 @@
-package interact
+package interact.scope
 
-import core.events.EventListener
 import core.gameState.*
 import core.gameState.Target
-import core.history.display
 import core.utility.NameSearchableList
-import core.utility.StringFormatter
-import inventory.pickupItem.ItemPickedUpEvent
-import system.*
-import travel.ArriveEvent
 
 object ScopeManager {
     private val targets = NameSearchableList<Target>()
 
     init {
         resetTargets()
-    }
-
-    class ArrivalHandler : EventListener<ArriveEvent>() {
-        override fun execute(event: ArriveEvent) {
-            resetTargets()
-            val location = event.destination.getLocation()
-            addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
-            addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
-            addTargets(ItemManager.getItemsFromLocationTargets(location.items))
-        }
-    }
-
-    class ItemSpawner : EventListener<ItemSpawnedEvent>() {
-        override fun execute(event: ItemSpawnedEvent) {
-            if (event.target == null) {
-                val name = StringFormatter.format(event.item.count > 1, "${event.item.count}x ${event.item.name}s", event.item.name)
-                display("$name appeared.")
-                addTarget(event.item)
-            } else {
-                event.target.inventory.add(event.item)
-                EventManager.postEvent(ItemPickedUpEvent(event.target, event.item))
-            }
-        }
-    }
-
-    class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
-        override fun execute(event: SpawnActivatorEvent) {
-            if (!event.silent) {
-                display("${event.activator.name} appeared.")
-            }
-            addTarget(event.activator)
-        }
-    }
-
-    class ScopeRemover : EventListener<RemoveScopeEvent>() {
-        override fun execute(event: RemoveScopeEvent) {
-            if (targetExists(event.target)) {
-                removeTarget(event.target)
-            } else if (event.target is Item) {
-                getAllInventories().forEach {
-                    if (it.exists(event.target)) {
-                        it.remove(event.target)
-                        return
-                    }
-                }
-            }
-        }
     }
 
     fun addTarget(target: Target, proxies: List<String> = listOf()) {
@@ -85,7 +32,7 @@ object ScopeManager {
         return targets.toList()
     }
 
-    private fun resetTargets() {
+    fun resetTargets() {
         targets.clear()
         addTarget(GameState.player, listOf("me", "self"))
     }

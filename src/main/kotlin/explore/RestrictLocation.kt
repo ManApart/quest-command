@@ -1,13 +1,7 @@
 package explore
 
 import core.events.EventListener
-import core.gameState.Activator
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.targetsToString
 import core.history.display
-import interact.ScopeManager
-import travel.climb.ClimbJourney
 
 class RestrictLocation : EventListener<RestrictLocationEvent>() {
 

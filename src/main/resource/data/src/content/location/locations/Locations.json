@@ -84,6 +84,52 @@
   },
   {
     "name": "Barren Patch",
-    "creatures": ["Rat"]
+    "creatures": [
+      "Rat"
+    ]
+  },
+  {
+    "name": "Windmill",
+    "activators": [
+      "Grain Bin",
+      {
+        "name": "Stairs Up",
+        "params": {
+          "destination": "Windmill - Second Floor"
+        }
+      }
+    ],
+    "items": [
+      "Pot"
+    ]
+  },
+  {
+    "name": "Windmill - Second Floor",
+    "activators": [
+      {
+        "name": "Stairs Up",
+        "params": {
+          "destination": "Windmill - Third Floor"
+        }
+      },
+      {
+        "name": "Stairs Down",
+        "params": {
+          "destination": "Windmill"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Windmill - Third Floor",
+    "activators": [
+      "Grain Chute",
+      {
+        "name": "Stairs Down",
+        "params": {
+          "destination": "Windmill - Second Floor"
+        }
+      }
+    ]
   }
 ]

@@ -10,8 +10,7 @@ While the readme should cover how to build and run the game, as well with inform
 
 - Better package organization for actions
 - Packages are still a mess
-- Make activators / items able to extend others (parse all, loop through each copying base and updating properties on each sub-item etc)
-- Set activator copy's location to spawned location
+- Set target copy's location to spawned location
 - Reset vs Reload. Reset resets game state, reload reloads json?
 - Flow of param overrides (left overrides right)
   - Item Params > inheritable params > Behavior Params/Properties > Conditions/events
@@ -20,6 +19,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
 - Validate valid recipe ingredients and results
+- Remove inheritables now that json can extend things?
 
 ### Combat
 
@@ -70,7 +70,11 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Cooking / recipes
   - Burn if not enough skill
   - Gain xp for cooking
-  - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)'
+  - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)' - use burning effect?
+  - Implement getting grain as a quest?
+    - behavior that when item with tag added, it adds item to other activator?
+    - Will need persistence across locations
+    - Behavior/action to search inventory of an activator
 - Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
 
 
@@ -131,12 +135,8 @@ Possible Stats
 
 ### Travel
 
-- Redo move command to move to location by finding path is possible
 - Make starting a journey event based / handle replacing an existing event
 - Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
-- Update how routing works
- - Use some path finding to find nearest area by evaluating nodes out from center node
- - let map be used for route planning
 - Make moving up/down restricted by default and when moving in that direction look for an object to climb or note that you could jump down
 
 #### Climbing
@@ -158,8 +158,8 @@ Possible Stats
 - Readable behavior / item
 - Be consistent. End all statements with periods.
 - Remove hatchet and apple from starting inventory and place them in world etc
-- Directly cook recipe
 - Inventory carrying space
+
 
 #### Command ideas
 - Search - skill based, finds scope that's hidden

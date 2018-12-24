@@ -12,7 +12,7 @@ import core.gameState.BodyPart
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
-import interact.ScopeManager
+import interact.scope.ScopeManager
 import interact.UseEvent
 import system.EventManager
 

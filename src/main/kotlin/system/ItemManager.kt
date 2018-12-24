@@ -4,6 +4,8 @@ import core.events.EventListener
 import core.gameState.Item
 import core.gameState.location.LocationTarget
 import core.history.display
+import interact.scope.ItemSpawnedEvent
+import interact.scope.SpawnItemEvent
 
 object ItemManager {
     private var parser = DependencyInjector.getImplementation(ItemParser::class.java)

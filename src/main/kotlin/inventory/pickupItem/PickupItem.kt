@@ -1,7 +1,7 @@
 package inventory.pickupItem
 
 import core.events.EventListener
-import interact.ScopeManager
+import interact.scope.ScopeManager
 import system.EventManager
 
 class PickupItem : EventListener<PickupItemEvent>() {

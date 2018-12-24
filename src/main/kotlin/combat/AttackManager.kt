@@ -13,7 +13,6 @@ import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
-import interact.ScopeManager.getCreature
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager

@@ -1,7 +1,7 @@
 package status.effects
 
 import core.events.EventListener
-import interact.ScopeManager
+import interact.scope.ScopeManager
 import system.gameTick.GameTickEvent
 
 class ApplyEffects : EventListener<GameTickEvent>() {

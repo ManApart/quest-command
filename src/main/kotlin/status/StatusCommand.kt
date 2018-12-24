@@ -3,7 +3,7 @@ package status
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
-import interact.ScopeManager
+import interact.scope.ScopeManager
 import system.EventManager
 
 class StatusCommand : Command() {

@@ -2,7 +2,7 @@ package inventory.dropItem
 
 import core.events.EventListener
 import core.history.display
-import interact.ScopeManager
+import interact.scope.ScopeManager
 
 class DropItem : EventListener<DropItemEvent>() {
     override fun execute(event: DropItemEvent) {

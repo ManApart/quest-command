@@ -6,6 +6,7 @@ import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
 import interact.interaction.InteractEvent
+import interact.scope.ScopeManager
 import system.EventManager
 
 class UseCommand : Command() {

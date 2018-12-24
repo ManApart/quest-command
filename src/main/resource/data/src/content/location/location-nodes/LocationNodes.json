@@ -83,6 +83,37 @@
         "position": {
           "y": -1
         }
+      },
+      {
+        "name": "Windmill",
+        "position": {
+          "x": 1,
+          "y": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "Windmill",
+    "parent": "Kanbara Countryside",
+    "locations": [
+      {
+        "name": "Windmill - Second Floor",
+        "position": {
+          "z": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "Windmill - Second Floor",
+    "parent": "Kanbara Countryside",
+    "locations": [
+      {
+        "name": "Windmill - Third Floor",
+        "position": {
+          "z": 1
+        }
       }
     ]
   },

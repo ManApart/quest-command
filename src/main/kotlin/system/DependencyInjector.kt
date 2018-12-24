@@ -26,9 +26,10 @@ object DependencyInjector {
 
     private fun createDefaultImplementations(): Map<Class<*>, Any> {
         return mapOf(
+                ActivatorParser::class.java to ActivatorJsonParser(),
+                ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),
-                RecipeParser::class.java to RecipeJsonParser(),
-                ItemParser::class.java to ItemJsonParser()
+                RecipeParser::class.java to RecipeJsonParser()
         )
     }
 

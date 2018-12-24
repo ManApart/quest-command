@@ -150,5 +150,36 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Mill",
+    "params": [
+      "sourceItem",
+      "resultItemLocation",
+      "resultItem"
+    ],
+    "condition": {
+      "callingEvent": "UseEvent",
+      "eventParams": {
+        "source": "$sourceItem"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "The $sourceItem slides down the chute and is milled into $resultItem as it collects in the Grain Bin"
+        ]
+      },
+      {
+        "className": "SpawnItemEvent",
+        "params": [
+          "$resultItem",
+          "1",
+          "Grain Bin",
+          "$resultItemLocation"
+        ]
+      }
+    ]
   }
 ]

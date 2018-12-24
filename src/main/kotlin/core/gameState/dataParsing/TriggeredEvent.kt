@@ -8,7 +8,7 @@ import core.gameState.quests.CompleteQuestEvent
 import core.gameState.quests.QuestManager
 import core.gameState.quests.SetQuestStageEvent
 import explore.RestrictLocationEvent
-import interact.ScopeManager
+import interact.scope.*
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
 import system.*

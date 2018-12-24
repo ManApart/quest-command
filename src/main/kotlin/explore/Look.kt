@@ -6,7 +6,7 @@ import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.targetsToString
 import core.history.display
-import interact.ScopeManager
+import interact.scope.ScopeManager
 import travel.climb.ClimbJourney
 
 class Look : EventListener<LookEvent>() {

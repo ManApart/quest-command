@@ -19,12 +19,17 @@
   },
   {
     "name": "Bucket",
-    "description": "Any empty bucket. Avoid kicking it.",
+    "description": "Any empty bucket that can be filled with liquids. Avoid kicking it.",
     "weight": 1
   },
   {
     "name": "Bucket of Water",
     "description": "Looks clean enough.",
     "weight": 2
+  },
+  {
+    "name": "Pot",
+    "description": "Any empty pot that can be filled with fine grained solids.",
+    "weight": 1
   }
 ]

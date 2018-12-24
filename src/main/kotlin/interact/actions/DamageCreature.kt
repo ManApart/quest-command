@@ -5,7 +5,6 @@ import core.gameState.Item
 import core.gameState.getCreature
 import core.gameState.hasCreature
 import core.gameState.stat.Stat
-import interact.ScopeManager.getCreature
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager

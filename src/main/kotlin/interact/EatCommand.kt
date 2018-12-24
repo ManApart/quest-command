@@ -5,6 +5,7 @@ import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.Target
 import core.history.display
+import interact.scope.ScopeManager
 import system.EventManager
 import system.ItemManager
 

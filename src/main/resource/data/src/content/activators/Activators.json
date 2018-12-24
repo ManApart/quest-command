@@ -13,7 +13,7 @@
       ]
     },
     "climb": {
-      "name": "Climb Tree",
+      "name": "Tree",
       "destination": "apple tree branches",
       "upwards": true
     },
@@ -101,7 +101,7 @@
       ]
     },
     "climb": {
-      "name": "Climb Tree",
+      "name": "Tree",
       "destination": "apple tree",
       "upwards": false
     },
@@ -164,6 +164,32 @@
         "Metal",
         "Range"
       ]
+    }
+  },
+  {
+    "name": "Grain Chute",
+    "description": "Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below."
+  },
+  {
+    "name": "Grain Bin",
+    "description": "Place grain in the chute above to pick up the milled contents here."
+  },
+  {
+    "name": "Stairs Up",
+    "description": "The stairs lead up to another floor.",
+    "climb": {
+      "name": "Stairs",
+      "destination": "$destination",
+      "upwards": true
+    }
+  },
+  {
+    "name": "Stairs Down",
+    "description": "The stairs lead down to another floor.",
+    "climb": {
+      "name": "Stairs",
+      "destination": "$destination",
+      "upwards": false
     }
   }
 ]

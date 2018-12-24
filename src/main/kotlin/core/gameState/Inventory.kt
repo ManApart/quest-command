@@ -1,7 +1,6 @@
 package core.gameState
 
 import core.utility.NameSearchableList
-import interact.ScopeManager
 
 class Inventory {
     private val items = NameSearchableList<Item>()
