@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.inhertiable.InheritRecipe
+import core.utility.apply
+import core.utility.applyNested
 import core.utility.max
 import system.BehaviorManager
 import system.InheritableManager
@@ -20,6 +22,19 @@ class Item(
         override val properties: Properties = Properties(),
         inherits: List<InheritRecipe> = listOf()
 ) : Target {
+
+    constructor(base: Item, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
+            base.name.apply(params),
+            base.description.apply(params),
+            (locationDescription
+                    ?: base.locationDescription)?.apply(params),
+            base.weight,
+            base.count,
+            base.equipSlots.map { it.bodyParts }.applyNested(params),
+            base.behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList(),
+            Properties(base.properties, params)
+    )
+
     init {
         applyInherits(inherits)
     }

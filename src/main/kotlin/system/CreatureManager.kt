@@ -20,7 +20,7 @@ object CreatureManager {
     }
 
     fun getCreaturesFromLocationTargets(targets: List<LocationTarget>) : List<Creature> {
-        return targets.map { Creature(creatures.get(it.name), it.location) }
+        return targets.map { Creature(creatures.get(it.name), it.params, it.location) }
     }
 
 }

@@ -27,7 +27,8 @@ class Activator(
                     ?: base.locationDescription)?.apply(params),
             base.climb?.let { Climbable(it, params) },
             base.behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList(),
-            Properties(base.creature.properties, params))
+            Properties(base.creature.properties, params)
+    )
 
     val creature = Creature(name, description, parent = this, properties = properties)
     override val name: String get() = creature.name

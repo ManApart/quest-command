@@ -4,11 +4,9 @@ import core.history.display
 import core.utility.NameSearchableList
 
 class Body(val name: String = "None", parts: List<String> = listOf()) {
-    private val parts = NameSearchableList(parts.map { BodyPart(it) })
+    constructor(base: Body) : this(base.name, base.parts.map { it.name })
 
-    fun copy(): Body {
-        return Body(name, parts.map { it.name })
-    }
+    private val parts = NameSearchableList(parts.map { BodyPart(it) })
 
     fun hasPart(part: String): Boolean {
         return parts.exists(part)

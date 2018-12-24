@@ -14,6 +14,6 @@ object BodyManager {
     }
 
     fun getBody(name: String): Body {
-        return bodies.first { it.name.toLowerCase() == name.toLowerCase() }.copy()
+        return Body(bodies.first { it.name.toLowerCase() == name.toLowerCase() })
     }
 }

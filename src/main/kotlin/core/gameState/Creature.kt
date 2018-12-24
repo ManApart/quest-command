@@ -2,6 +2,7 @@ package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import core.gameState.location.LocationNode
+import core.utility.apply
 import system.AIManager
 import system.BodyManager
 import system.ItemManager
@@ -18,17 +19,26 @@ class Creature(
         override val properties: Properties = Properties()
 ) : Target {
 
-    val soul = Soul(this)
-    val inventory = Inventory()
-    val ai = if (ai != null) AIManager.getAI(ai, this) else null
-
     @JsonCreator
     constructor(name: String, description: String, locationDescription: String? = null, body: String, ai: String?, properties: Properties = Properties(), items: List<String>) : this(name, description, locationDescription, BodyManager.getBody(body), ai = ai, properties = properties) {
         items.forEach { inventory.add(ItemManager.getItem(it)) }
     }
 
-    constructor(base: Creature, locationDescription: String? = null) : this(base.name, base.description, locationDescription ?: base.locationDescription, base.body, base.location, base.ai?.name, base.parent, base.properties)
+    constructor(base: Creature, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
+            base.name.apply(params),
+            base.description.apply(params),
+            (locationDescription
+                    ?: base.locationDescription)?.apply(params),
+            base.body,
+            base.location,
+            base.ai?.name,
+            base.parent,
+            Properties(base.properties, params)
+    )
 
+    val soul = Soul(this)
+    val inventory = Inventory()
+    val ai = if (ai != null) AIManager.getAI(ai, this) else null
 
     init {
         properties.tags.add("Creature")

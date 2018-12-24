@@ -22,8 +22,15 @@ fun List<String>.matches(other: List<String>): Boolean {
     return true
 }
 
+fun List<List<String>>.applyNested(params: Map<String, String>): List<List<String>> {
+    return map {
+        it.apply(params)
+    }
+}
+
 fun List<String>.apply(params: Map<String, String>): List<String> {
     return map {
         it.apply(params)
     }
 }
+

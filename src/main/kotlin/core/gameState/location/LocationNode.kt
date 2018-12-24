@@ -5,7 +5,13 @@ import core.gameState.Direction
 import core.utility.Named
 import system.location.LocationManager
 
-class LocationNode(override val name: String, val locationName: String = name, val parent: String? = null, @JsonProperty("locations") val protoLocationLinks: List<ProtoLocationLink> = listOf(), private val locationLinks: MutableList<LocationLink> = mutableListOf()) : Named {
+class LocationNode(
+        override val name: String,
+        val locationName: String = name,
+        val parent: String? = null,
+        @JsonProperty("locations") val protoLocationLinks: List<ProtoLocationLink> = listOf(),
+        private val locationLinks: MutableList<LocationLink> = mutableListOf()
+) : Named {
 
     override fun toString(): String {
         return name

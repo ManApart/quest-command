@@ -50,7 +50,7 @@ object ItemManager {
 
     fun getItemsFromLocationTargets(targets: List<LocationTarget>): List<Item> {
         return targets.map {
-            Item(items.get(it.name), it.location)
+            Item(items.get(it.name), it.params, it.location)
         }
     }
 }
