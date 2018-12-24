@@ -1,5 +1,6 @@
 package travel.climb
 
+import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
@@ -27,38 +28,60 @@ class ClimbCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val adjustedArgs = args.toMutableList()
-        val force = adjustedArgs.remove("f")
-        val up = adjustedArgs.remove("up") || adjustedArgs.remove("u")
-        val down = adjustedArgs.remove("down") || adjustedArgs.remove("d")
+        val arguments = Args(args)
+        val force = arguments.has("f")
+        val up = arguments.hasAny(listOf("up", "u"), isClimbing())
+        val down = arguments.hasAny(listOf("down", "d"), isClimbing())
 
+        val adjustedArgs = arguments.argsWithout(listOf("f", "up", "u", "down", "d"))
         val argsString = adjustedArgs.joinToString(" ")
 
         if (adjustedArgs.isEmpty() && !up && !down) {
-            if (isClimbing()) {
-                val step = getStep(GameState.player.climbJourney as ClimbJourney)
-                climbStep(step, force)
-            } else {
-                display("What do you want to climb?")
-            }
+            processNoArgs(force)
         } else {
-            if (isClimbing()) {
-                val journey = GameState.player.climbJourney as ClimbJourney
-                if (adjustedArgs.isNotEmpty() && isStep(adjustedArgs[0])) {
-                    val step = getStep(journey, adjustedArgs[0])
-                    climbStep(step, force)
-                } else if (up || down) {
-                    climbTowardsDirection(up, journey, force)
-                } else {
-                    display("Unable to climb: ${args.joinToString(" ")}")
-                }
+            processWithArgs(adjustedArgs, force, up, down, args.joinToString(" "), argsString)
+        }
+    }
+
+    private fun processNoArgs(force: Boolean) {
+        if (isClimbing()) {
+            val step = getStep(GameState.player.climbJourney as ClimbJourney)
+            climbStep(step, force)
+        } else {
+            val climbTarget = ScopeManager.findTargetsByTag("Climbable").firstOrNull()
+            if (climbTarget != null) {
+                EventManager.postEvent(StartClimbingEvent(GameState.player.creature, climbTarget, force))
             } else {
-                if (ScopeManager.targetExists(argsString)) {
-                    EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getTarget(argsString), force))
-                } else {
-                    display("Unable to climb: ${args.joinToString(" ")}")
-                }
+                display("What do you want to attemptClimb?")
             }
+        }
+    }
+
+    private fun processWithArgs(adjustedArgs: List<String>, force: Boolean, up: Boolean, down: Boolean, originalArgs: String, argsString: String) {
+        if (isClimbing()) {
+            processClimbContinue(adjustedArgs, force, up, down, originalArgs)
+        } else {
+            processNewClimb(argsString, force, originalArgs)
+        }
+    }
+
+    private fun processClimbContinue(adjustedArgs: List<String>, force: Boolean, up: Boolean, down: Boolean, originalArgs: String) {
+        val journey = GameState.player.climbJourney as ClimbJourney
+        if (adjustedArgs.isNotEmpty() && isStep(adjustedArgs[0])) {
+            val step = getStep(journey, adjustedArgs[0])
+            climbStep(step, force)
+        } else if (up || down) {
+            climbTowardsDirection(up, journey, force)
+        } else {
+            display("Unable to attemptClimb: $originalArgs")
+        }
+    }
+
+    private fun processNewClimb(argsString: String, force: Boolean, originalArgs: String) {
+        if (ScopeManager.targetExists(argsString)) {
+            EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getTarget(argsString), force))
+        } else {
+            display("Unable to attemptClimb: $originalArgs")
         }
     }
 
@@ -68,7 +91,7 @@ class ClimbCommand : Command() {
         } else if (!upwards && journey.getCurrentSegment().bottom) {
             EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.bottom))
         } else {
-            val step = getStep(journey, upwards)
+            val step = journey.getNextSegment(upwards)
             climbStep(step, force)
         }
     }
@@ -83,10 +106,6 @@ class ClimbCommand : Command() {
 
     private fun getStep(journey: ClimbJourney): Int {
         return journey.getNextSegments().firstOrNull()?.id ?: 0
-    }
-
-    private fun getStep(journey: ClimbJourney, upwards: Boolean): Int {
-        return journey.getNextSegments(upwards).firstOrNull()?.id ?: 0
     }
 
     private fun getStep(journey: ClimbJourney, choiceWord: String): Int {

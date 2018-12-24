@@ -73,20 +73,16 @@ object ScopeManager {
         return targets.get(name) as Activator
     }
 
-    fun findTargetByTag(tag: String): Target? {
-        return targets.firstOrNull { it.properties.tags.has(tag) }
+    fun findTargetsByTag(tag: String): List<Target> {
+        return targets.filter { it.properties.tags.has(tag) }
     }
 
-    fun findActivatorByTag(tag: String): Activator? {
-        return targets.firstOrNull { it is Activator && it.properties.tags.has(tag) } as Activator?
+    fun findActivatorsByTag(tag: String): List<Activator> {
+        return targets.asSequence().filter { it is Activator && it.properties.tags.has(tag) }.map { it as Activator }.toList()
     }
 
-    fun findActivatorByTags(tag: Tags): Activator? {
-        return targets.firstOrNull { it is Activator && it.properties.tags.hasAll(tag) } as Activator?
-    }
-
-    fun findActivatorByProperties(properties: Properties): Activator? {
-        return targets.firstOrNull { it is Activator && it.properties.hasAll(properties) } as Activator?
+    fun findActivatorsByProperties(properties: Properties): List<Activator> {
+        return targets.asSequence().filter { it is Activator && it.properties.hasAll(properties) }.map { it as Activator }.toList()
     }
 
     fun getAllSouls(): List<Soul> {

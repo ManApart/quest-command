@@ -101,7 +101,8 @@
         "name": "Windmill - Second Floor",
         "position": {
           "z": 1
-        }
+        },
+        "restricted": true
       }
     ]
   },
@@ -111,6 +112,7 @@
     "locations": [
       {
         "name": "Windmill - Third Floor",
+        "restricted": true,
         "position": {
           "z": 1
         }
@@ -124,10 +126,10 @@
     "locations": [
       {
         "name": "Apple Tree Branches",
+        "restricted": true,
         "position": {
           "z": 1
-        },
-        "restricted": true
+        }
       }
     ]
   },

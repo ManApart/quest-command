@@ -15,7 +15,7 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
         event.target.consume(event)
         GameState.player.climbJourney = null
         if (GameState.player.creature.location == event.destination) {
-            display("You climb back off ${event.target.name}")
+            display("You attemptClimb back off ${event.target.name}")
         } else {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))
         }

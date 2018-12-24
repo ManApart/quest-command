@@ -67,7 +67,7 @@ class CookCommand : Command() {
         return if (ScopeManager.activatorExists(group)) {
             ScopeManager.getActivator(group)
         } else {
-            ScopeManager.findActivatorByTag("Range")
+            ScopeManager.findActivatorsByTag("Range").firstOrNull()
         }
     }
 

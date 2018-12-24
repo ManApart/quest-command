@@ -6,6 +6,7 @@ import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.targetsToString
 import core.history.display
+import explore.ClimbLook.describeClimbJourney
 import interact.scope.ScopeManager
 import travel.climb.ClimbJourney
 
@@ -14,8 +15,8 @@ class Look : EventListener<LookEvent>() {
 
     override fun execute(event: LookEvent) {
         if (GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney) {
-            describeClimbJourney()
-        }else if (event.target != null){
+            ClimbLook.describeClimbJourney()
+        } else if (event.target != null) {
             display(event.target.description)
             describeStatusEffects(event.target)
         } else {
@@ -23,40 +24,8 @@ class Look : EventListener<LookEvent>() {
         }
     }
 
-    private fun describeClimbJourney() {
-        val journey = GameState.player.climbJourney as ClimbJourney
-        val abovePaths = if (journey.getHigherSegments().isNotEmpty()) {
-            var i = 0
-            "Above you are path choices " + journey.getHigherSegments().joinToString(", "){
-                i++
-                "$i"
-            }
-        } else {
-            if (journey.getCurrentSegment().top){
-                "You are at the top of ${journey.target.name}"
-            } else {
-                "Above you is nothing to climb on"
-            }
-        }
-        val belowPaths = if (journey.getLowerSegments().isNotEmpty()) {
-            var i = journey.getHigherSegments().size
-            "Below you are path choices " + journey.getLowerSegments().joinToString(","){
-                i++
-                "$i"
-            }
-        } else {
-            if (journey.getCurrentSegment().bottom){
-                "You are at the bottom of ${journey.target.name}"
-            } else {
-                "Below you is nothing to climb on"
-            }
-        }
-        display("You are ${journey.getCurrentDistance()}ft up. $abovePaths. $belowPaths.")
-    }
-
-
     private fun describeStatusEffects(target: Target) {
-        if (target is Activator && target.creature.soul.effects.isNotEmpty()){
+        if (target is Activator && target.creature.soul.effects.isNotEmpty()) {
             val effects = target.creature.soul.effects.joinToString(", ") { it.name }
             display("${target.name} is $effects")
         }

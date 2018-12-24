@@ -137,13 +137,12 @@ Possible Stats
 
 - Make starting a journey event based / handle replacing an existing event
 - Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
-- Make moving up/down restricted by default and when moving in that direction look for an object to climb or note that you could jump down
 
 #### Climbing
 - You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
-- Look during climb says the options you can go
 - Convert climbing paths to generic paths with directions dictating next path instead of up/down only?
 - Burning the apple tree branches should make the user fall
+- Climb paths should be capable of one step that is both top and bottom (for stairs and ladders)
 
 ### Validation tools
 

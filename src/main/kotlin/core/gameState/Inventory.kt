@@ -50,7 +50,7 @@ class Inventory {
         return items.toList()
     }
 
-    fun findItemByProperties(properties: Properties): Item? {
-        return items.firstOrNull { it.properties.hasAll(properties) }
+    fun findItemsByProperties(properties: Properties): List<Item> {
+        return items.filter { it.properties.hasAll(properties) }
     }
 }

@@ -70,6 +70,11 @@ class LocationNode(
         }
     }
 
+    fun isMovingToRestricted(destination: LocationNode): Boolean {
+        val link = getLink(destination)
+        return link == null || link.restricted
+    }
+
     private fun getLocationWithDirection(neighbor: LocationLink, far: Boolean): String {
         val direction = neighbor.position.getDirection()
         return if (direction == Direction.NONE) {

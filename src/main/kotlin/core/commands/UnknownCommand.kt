@@ -25,6 +25,9 @@ class UnknownCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        display("Unknown command: ${args.joinToString(" ")}")
+        val line = args.joinToString(" ")
+        if (line.isNotBlank()) {
+            display("Unknown command: $line")
+        }
     }
 }

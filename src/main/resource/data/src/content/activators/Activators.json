@@ -8,6 +8,7 @@
         "burnHealth": 5
       },
       "tags": [
+        "Climbable",
         "Wood",
         "Flammable"
       ]
@@ -96,6 +97,7 @@
         "burnHealth": 5
       },
       "tags": [
+        "Climbable",
         "Wood",
         "Flammable"
       ]
@@ -105,6 +107,7 @@
       "destination": "apple tree",
       "upwards": false
     },
+
     "behaviors": [
       {
         "name": "Burn to Ash",
@@ -181,6 +184,11 @@
       "name": "Stairs",
       "destination": "$destination",
       "upwards": true
+    },
+    "properties": {
+      "tags": [
+        "Climbable"
+      ]
     }
   },
   {
@@ -190,6 +198,11 @@
       "name": "Stairs",
       "destination": "$destination",
       "upwards": false
+    },
+    "properties": {
+      "tags": [
+        "Climbable"
+      ]
     }
   }
 ]

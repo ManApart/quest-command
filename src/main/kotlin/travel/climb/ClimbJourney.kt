@@ -1,10 +1,12 @@
 package travel.climb
 
+import core.gameState.Direction
 import core.gameState.Target
 import core.gameState.climb.ClimbPath
 import core.gameState.climb.ClimbSegment
 import core.gameState.location.LocationNode
 import core.history.display
+import system.EventManager
 
 class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, upwards: Boolean, private val path: ClimbPath) {
     private var step = 0
@@ -32,14 +34,19 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
         return path.segments.first { it.id == id }
     }
 
+    fun getNextSegment(upwards: Boolean): Int {
+        return getNextSegments(upwards).firstOrNull()?.id ?: 0
+    }
+
+
     /**
-     * Returns the next segment based on the previous direction taken
+     * Returns the next segments based on the previous direction taken
      */
     fun getNextSegments(): List<ClimbSegment> {
         return getNextSegments(lastDirectionWasUp)
     }
 
-    fun getNextSegments(upwards: Boolean): List<ClimbSegment> {
+    private fun getNextSegments(upwards: Boolean): List<ClimbSegment> {
         return if (upwards) {
             getHigherSegments(step)
         } else {
@@ -95,7 +102,7 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
         }
     }
 
-    fun getDistanceTo(step: Int) : Int {
+    fun getDistanceTo(step: Int): Int {
         return Math.abs(getDistance(step) - getCurrentDistance())
     }
 
@@ -119,7 +126,7 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
         return distance
     }
 
-    private fun getTotalDistance() : Int {
+    private fun getTotalDistance(): Int {
         return getDistance(path.getTop())
     }
 
