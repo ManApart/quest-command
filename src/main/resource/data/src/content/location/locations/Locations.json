@@ -72,7 +72,8 @@
     ]
   },
   {
-    "name": "Tree Branches",
+    "name": "Apple Tree Branches",
+    "description": "The crisp smell of apples permeates the air.",
     "activators": [
       "Apple Tree Branches"
     ],

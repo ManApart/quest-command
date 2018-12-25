@@ -35,7 +35,7 @@ fun targetsToString(targets: List<Target>) : String {
     val targetCounts = HashMap<String, Int>()
     targets.forEach {
         val count = (it as? Item)?.count ?: 1
-        targetCounts[it.getDisplayName()] = targetCounts[it.name]?.plus(count) ?: count
+        targetCounts[it.getDisplayName()] = targetCounts[it.getDisplayName()]?.plus(count) ?: count
     }
 
     return targetCounts.entries.joinToString(", ") {
