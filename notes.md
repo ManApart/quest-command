@@ -20,6 +20,15 @@ While the readme should cover how to build and run the game, as well with inform
 - Create a git wiki and move readme information to more sorted format?
 - Validate valid recipe ingredients and results
 - Remove inheritables now that json can extend things?
+- make target class instead of interface?
+
+Paramitization
+- paramatize targets on spawn events
+- delete params list from behaviors if not used
+- delete behavior recipe / rework for global params
+- replace non-parameratized $keys?
+- paramatize numbers/boolean like weight?
+- remove locationDescription and use parameter instead
 
 ### Combat
 
@@ -102,6 +111,7 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Tree continues burning even after leaving it and coming back (Persistence within session)
   - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
 - Persistence should happen across sessions.
+- Scope Manager needs to do 'garbage collection' and have a 'max loaded locations' in memory etc
 
 
 ### Quests
@@ -139,7 +149,7 @@ Possible Stats
 - Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 
 #### Climbing
-- You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall
+- You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall (jump down locations added in link)
 - Convert climbing paths to generic paths with directions dictating next path instead of up/down only?
 - Burning the apple tree branches should make the user fall
 - Climb paths should be capable of one step that is both top and bottom (for stairs and ladders)

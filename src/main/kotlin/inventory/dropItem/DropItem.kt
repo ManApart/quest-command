@@ -10,6 +10,6 @@ class DropItem : EventListener<DropItemEvent>() {
             display("${event.source} dropped ${event.item}")
         }
         event.source.inventory.remove(event.item)
-        ScopeManager.addTarget(event.item)
+        ScopeManager.getScope(event.source.location).addTarget(event.item)
     }
 }

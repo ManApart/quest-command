@@ -87,7 +87,7 @@ class TravelInDirectionCommand : Command() {
 
     private fun findClimbTarget(direction: Direction): Activator? {
         val desireUpwards = direction == Direction.ABOVE
-        return ScopeManager.findTargetsByTag("Climbable")
+        return ScopeManager.getScope().findTargetsByTag("Climbable")
                 .firstOrNull {
                     it is Activator && it.climb != null && it.climb.upwards == desireUpwards
                 } as Activator?

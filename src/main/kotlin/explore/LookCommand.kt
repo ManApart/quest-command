@@ -26,7 +26,7 @@ class LookCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> EventManager.postEvent(LookEvent())
-            ScopeManager.targetExists(args) -> EventManager.postEvent(LookEvent(ScopeManager.getTarget(args)))
+            ScopeManager.getScope().targetExists(args) -> EventManager.postEvent(LookEvent(ScopeManager.getScope().getTarget(args)))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

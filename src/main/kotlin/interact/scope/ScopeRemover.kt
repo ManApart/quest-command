@@ -5,10 +5,11 @@ import core.gameState.Item
 
 class ScopeRemover : EventListener<RemoveScopeEvent>() {
     override fun execute(event: RemoveScopeEvent) {
-        if (ScopeManager.targetExists(event.target)) {
-            ScopeManager.removeTarget(event.target)
+        val scope = ScopeManager.getScope(event.targetLocation)
+        if (scope.targetExists(event.target)) {
+            scope.removeTarget(event.target)
         } else if (event.target is Item) {
-            ScopeManager.getAllInventories().forEach {
+            scope.getAllInventories().forEach {
                 if (it.exists(event.target)) {
                     it.remove(event.target)
                     return

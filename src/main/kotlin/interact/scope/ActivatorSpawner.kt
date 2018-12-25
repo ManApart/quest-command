@@ -8,6 +8,6 @@ class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
         if (!event.silent) {
             display("${event.activator.name} appeared.")
         }
-        ScopeManager.addTarget(event.activator)
+        ScopeManager.getScope(event.targetLocation).addTarget(event.activator)
     }
 }

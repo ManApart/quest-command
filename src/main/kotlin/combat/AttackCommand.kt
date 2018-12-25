@@ -47,10 +47,11 @@ class AttackCommand : Command() {
         val ignoredWords = mutableListOf("left", "l", "right", "r", "of")
         ignoredWords.addAll(TargetDirection.getAllAliases())
         val cleaned = Args(args, listOf("with"), ignoredWords)
+        val scope = ScopeManager.getScope()
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
-            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(handHelper.hand.equippedItem!!, ScopeManager.getTarget(cleaned.argStrings[0])))
-            ScopeManager.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, ScopeManager.getTarget(cleaned.argStrings[0]), direction))
+            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(handHelper.hand.equippedItem!!, scope.getTarget(cleaned.argStrings[0])))
+            scope.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTarget(cleaned.argStrings[0]), direction))
             GameState.player.creature.inventory.exists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0]), direction))
             GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
             else -> display("Couldn't find ${cleaned.argStrings[0]}")
@@ -69,7 +70,7 @@ class AttackCommand : Command() {
     }
 
     private fun isAttackingActivatorWithWeapon(cleaned: Args, handHelper: HandHelper) =
-            ScopeManager.targetExists(cleaned.argStrings[0]) && ScopeManager.getTarget(cleaned.argStrings[0]) is Activator && handHelper.hand.equippedItem != null
+            ScopeManager.getScope().targetExists(cleaned.argStrings[0]) && ScopeManager.getScope().getTarget(cleaned.argStrings[0]) is Activator && handHelper.hand.equippedItem != null
 
     private fun getDirection(args: Args): TargetDirection {
         return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()

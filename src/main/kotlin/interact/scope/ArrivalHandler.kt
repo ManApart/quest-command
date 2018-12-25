@@ -1,6 +1,7 @@
 package interact.scope
 
 import core.events.EventListener
+import core.gameState.GameState
 import system.ActivatorManager
 import system.CreatureManager
 import system.ItemManager
@@ -8,10 +9,14 @@ import travel.ArriveEvent
 
 class ArrivalHandler : EventListener<ArriveEvent>() {
     override fun execute(event: ArriveEvent) {
-        ScopeManager.resetTargets()
+        ScopeManager.getScope(event.origin).removeTarget(GameState.player)
+
         val location = event.destination.getLocation()
-        ScopeManager.addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
-        ScopeManager.addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
-        ScopeManager.addTargets(ItemManager.getItemsFromLocationTargets(location.items))
+        val scope = ScopeManager.getScope(event.destination)
+        scope.clear()
+        scope.addTarget(GameState.player, listOf("me", "self"))
+        scope.addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
+        scope.addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
+        scope.addTargets(ItemManager.getItemsFromLocationTargets(location.items))
     }
 }

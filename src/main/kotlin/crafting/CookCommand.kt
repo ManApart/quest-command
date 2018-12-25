@@ -64,10 +64,11 @@ class CookCommand : Command() {
 
     private fun getTool(args: Args): Activator? {
         val group = args.argGroups.last()
-        return if (ScopeManager.activatorExists(group)) {
-            ScopeManager.getActivator(group)
+        val scope = ScopeManager.getScope()
+        return if (scope.activatorExists(group)) {
+            scope.getActivator(group)
         } else {
-            ScopeManager.findActivatorsByTag("Range").firstOrNull()
+            scope.findActivatorsByTag("Range").firstOrNull()
         }
     }
 

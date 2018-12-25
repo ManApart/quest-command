@@ -48,7 +48,7 @@ class ClimbCommand : Command() {
             val step = getStep(GameState.player.climbJourney as ClimbJourney)
             climbStep(step, force)
         } else {
-            val climbTarget = ScopeManager.findTargetsByTag("Climbable").firstOrNull()
+            val climbTarget = ScopeManager.getScope().findTargetsByTag("Climbable").firstOrNull()
             if (climbTarget != null) {
                 EventManager.postEvent(StartClimbingEvent(GameState.player.creature, climbTarget, force))
             } else {
@@ -78,8 +78,8 @@ class ClimbCommand : Command() {
     }
 
     private fun processNewClimb(argsString: String, force: Boolean, originalArgs: String) {
-        if (ScopeManager.targetExists(argsString)) {
-            EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getTarget(argsString), force))
+        if (ScopeManager.getScope().targetExists(argsString)) {
+            EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getScope().getTarget(argsString), force))
         } else {
             display("Unable to attemptClimb: $originalArgs")
         }

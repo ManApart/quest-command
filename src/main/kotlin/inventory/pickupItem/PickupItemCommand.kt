@@ -32,8 +32,8 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupItem(itemArgs: List<String>) {
-        if (ScopeManager.targetExists(itemArgs) && ScopeManager.getTarget(itemArgs) is Item) {
-            val item = ScopeManager.getTarget(itemArgs) as Item
+        if (ScopeManager.getScope().targetExists(itemArgs) && ScopeManager.getScope().getTarget(itemArgs) is Item) {
+            val item = ScopeManager.getScope().getTarget(itemArgs) as Item
             EventManager.postEvent(PickupItemEvent(GameState.player.creature, item))
         } else {
             display("Couldn't find ${itemArgs.joinToString(" ")}")

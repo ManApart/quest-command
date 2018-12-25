@@ -46,14 +46,14 @@ class EatCommand : Command() {
     }
 
     private fun targetExists(args: List<String>): Boolean {
-        return ScopeManager.targetExists(args) || ItemManager.itemExists(args)
+        return ScopeManager.getScope().targetExists(args) || ItemManager.itemExists(args)
     }
 
     private fun findTarget(args: List<String>): Target {
         return if (ItemManager.itemExists(args)) {
             ItemManager.getItem(args)
         } else {
-            ScopeManager.getTarget(args)
+            ScopeManager.getScope().getTarget(args)
         }
     }
 

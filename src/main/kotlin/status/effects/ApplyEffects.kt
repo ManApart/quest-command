@@ -6,7 +6,7 @@ import system.gameTick.GameTickEvent
 
 class ApplyEffects : EventListener<GameTickEvent>() {
     override fun execute(event: GameTickEvent) {
-        ScopeManager.getAllSouls().forEach {
+        ScopeManager.getScope().getAllSouls().forEach {
             it.applyEffects(event.time)
         }
     }

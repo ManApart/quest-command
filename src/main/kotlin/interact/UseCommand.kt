@@ -7,6 +7,7 @@ import core.gameState.Target
 import core.history.display
 import interact.interaction.InteractEvent
 import interact.scope.ScopeManager
+import sun.rmi.transport.ObjectTable.getTarget
 import system.EventManager
 
 class UseCommand : Command() {
@@ -53,14 +54,14 @@ class UseCommand : Command() {
     }
 
     private fun targetExists(args: List<String>): Boolean {
-        return ScopeManager.targetExists(args) || GameState.player.creature.inventory.exists(args)
+        return ScopeManager.getScope().targetExists(args) || GameState.player.creature.inventory.exists(args)
     }
 
     private fun findTarget(args: List<String>): Target {
         return if (GameState.player.creature.inventory.exists(args)) {
             GameState.player.creature.inventory.getItem(args)
         } else {
-            ScopeManager.getTarget(args)
+            ScopeManager.getScope().getTarget(args)
         }
     }
 
