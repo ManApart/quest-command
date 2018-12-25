@@ -15,13 +15,12 @@ class StoryEvent(
         private var availableAfter: Int = -1,
         private var availableBefore: Int = -1,
         val condition: TriggerCondition,
-        private val queries: List<Query> = listOf(),
         val events: List<TriggeredEvent> = listOf()
 ) {
     var completed = false
 
     fun matches(event: Event): Boolean {
-        return condition.matches(event) && queries.all { it.evaluate() }
+        return condition.matches(event)
     }
 
     fun canBeListenedFor(stage: Int): Boolean {

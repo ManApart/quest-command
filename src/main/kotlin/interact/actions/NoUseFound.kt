@@ -20,7 +20,11 @@ class NoUseFound : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         if (GameState.player.canInteract) {
-            display("You use ${event.source.name} on ${event.target.name} but nothing happens.")
+            if (event.target.canConsume(event)) {
+                event.target.consume(event)
+            } else {
+                display("You use ${event.source.name} on ${event.target.name} but nothing happens.")
+            }
         } else {
             display("You can't interact with that right now.")
         }

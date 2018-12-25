@@ -57,6 +57,15 @@ enum class Operator(val symbol: String) {
         override fun compareInt(left: Int, right: Int): Boolean {
             return left <= right
         }
+    },
+    CONTAINS("contains"){
+        override fun compareString(left: String, right: String): Boolean {
+            return left.contains(right)
+        }
+
+        override fun compareInt(left: Int, right: Int): Boolean {
+            return false
+        }
     };
 
     fun evaluate(left: String, right: String) : Boolean {

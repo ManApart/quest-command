@@ -88,13 +88,19 @@
   },
   {
     "name": "Slash Harvest",
-    "params": [
-      "itemName",
-      "message",
-      "count"
-    ],
     "condition": {
-      "callingEvent": "SlashEvent"
+      "callingEvent": "UseEvent",
+      "queries": [
+        {
+          "property": "Target",
+          "params": [
+            "$event.target",
+            "Tags"
+          ],
+          "operator": "=",
+          "value": "Sharp"
+        }
+      ]
     },
     "events": [
       {

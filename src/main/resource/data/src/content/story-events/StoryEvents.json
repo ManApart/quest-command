@@ -5,18 +5,18 @@
     "stage": 10,
     "journal": "I can remember what I can do by typing 'help commands'. I need to use 'map' to see where I am.",
     "condition": {
-      "callingEvent": "GameStartEvent"
+      "callingEvent": "GameStartEvent",
+      "queries": [
+        {
+          "property": "QuestStage",
+          "params": [
+            "Tutorial"
+          ],
+          "operator": "<",
+          "value": "10"
+        }
+      ]
     },
-    "queries": [
-      {
-        "property": "QuestStage",
-        "params": [
-          "Tutorial"
-        ],
-        "operator": "<",
-        "value": "10"
-      }
-    ],
     "events": [
       {
         "className": "MessageEvent",

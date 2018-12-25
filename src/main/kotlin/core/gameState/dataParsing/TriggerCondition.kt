@@ -7,41 +7,41 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 
-class TriggerCondition(val callingEvent: String, private val eventParams: Map<String, String> = mapOf()) {
+class TriggerCondition(val callingEvent: String, private val eventParams: Map<String, String> = mapOf(), private val queries: List<Query> = listOf()) {
 
-    fun applyParamValues(paramValues: Map<String, String>) : TriggerCondition {
+    fun applyParamValues(paramValues: Map<String, String>): TriggerCondition {
         val modifiedParams = eventParams.apply(paramValues)
         return TriggerCondition(callingEvent, modifiedParams)
     }
 
     fun matches(event: Event): Boolean {
-        return classMatches(event) && eventValuesMatch(event)
+        val params = getEventValues(event)
+        return classMatches(event) && eventValuesMatch(params) && queries.all { it.evaluate(params) }
     }
 
     private fun classMatches(event: Event) = event::class.simpleName == callingEvent
 
-    private fun eventValuesMatch(event: Event) : Boolean {
-        eventParams.forEach{ entry ->
-            val property = event.javaClass.kotlin.memberProperties.first { it.name == entry.key }
+    private fun getEventValues(event: Event): Map<String, String>{
+        val values = mutableMapOf<String, String>()
 
-            //Convert param value to proper type
-            @Suppress("IMPLICIT_CAST_TO_ANY")
-            val expected = when {
-                property.returnType.isSubtypeOf(Boolean::class.createType()) -> entry.value.toBoolean()
-                property.returnType.isSubtypeOf(Int::class.createType()) -> entry.value.toInt()
-                else -> entry.value
+        event.javaClass.kotlin.memberProperties.forEach { property ->
+            //If property value is a named object, use the property name, otherwise it should be a String
+            val propertyVal : String = when {
+                property.get(event) is Named -> (property.get(event) as Named).name
+                else -> property.get(event) as String
             }
+            values[property.name] = propertyVal
+        }
+        return values
+    }
 
-            //If property value is a named object, use the proeprty's name, otherwise it should be a String
-            val propertyVal = when {
-                property.get(event) is Named ->  (property.get(event) as Named).name
-                else -> property.get(event)
-            }
+    private fun eventValuesMatch(eventValues: Map<String, String>): Boolean {
+        eventParams.forEach { entry ->
+            val expected = entry.value
+            val propertyVal = eventValues[entry.key] ?: ""
 
-            if (expected is String && expected.toLowerCase() != (propertyVal as String).toLowerCase()) {
+            if (expected.toLowerCase() != propertyVal.toLowerCase()) {
                 return false
-            }else if (expected != propertyVal){
-               return false
             }
         }
         return true
