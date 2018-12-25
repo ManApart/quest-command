@@ -62,7 +62,7 @@ class ActivatorValidator {
         activators.forEach { activator ->
             if (activator.climb != null) {
                 if (!activator.climb!!.destinationName.startsWith("\$") && activator.climb!!.destination == LocationManager.NOWHERE_NODE) {
-                    println("WARN: Activator '${activator.name}' references nonexistent attemptClimb path destination.")
+                    println("WARN: Activator '${activator.name}' references nonexistent climb path destination.")
                     warnings++
                 }
             }

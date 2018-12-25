@@ -31,7 +31,7 @@ class TravelInDirectionCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Travel")
+        return listOf("Traveling")
     }
 
     override fun execute(keyword: String, args: List<String>) {
@@ -67,7 +67,7 @@ class TravelInDirectionCommand : Command() {
                 if (climbTarget != null) {
                     EventManager.postEvent(StartClimbingEvent(GameState.player.creature, climbTarget))
                 } else {
-                    display("Could not find anything to attemptClimb.")
+                    display("Could not find anything to climb.")
                 }
             }
         }

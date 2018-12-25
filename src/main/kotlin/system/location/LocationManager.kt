@@ -76,11 +76,13 @@ object LocationManager {
     }
 
     fun findLocation(name: String): LocationNode {
-        return if (locationNodes.exists(name)) {
-            locationNodes.get(name)
-        } else {
-            println("Could not find location: $name")
-            NOWHERE_NODE
+        return when {
+            locationNodes.exists(name) -> locationNodes.get(name)
+            name.startsWith("$") -> NOWHERE_NODE
+            else -> {
+                println("Could not find location: $name")
+                NOWHERE_NODE
+            }
         }
     }
 

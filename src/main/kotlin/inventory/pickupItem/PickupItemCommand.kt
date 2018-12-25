@@ -8,7 +8,7 @@ import system.EventManager
 
 class PickupItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Pickup", "p", "get", "add", "take")
+        return arrayOf("Pickup", "p", "get", "add", "take", "grab")
     }
 
     override fun getDescription(): String {

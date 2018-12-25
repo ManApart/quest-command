@@ -57,7 +57,7 @@ class CommandComboTest {
 
     @Test
     fun climbTree() {
-        //TODO - somehow remove random element and test full attemptClimb
+        //TODO - somehow remove random element and test full climb
         val input = "n && climb tree"
         CommandParser.parseCommand(input)
         assertEquals(("Above you are path choices 1, 2. You are at the bottom of Apple Tree."), ChatHistory.getLastOutput())

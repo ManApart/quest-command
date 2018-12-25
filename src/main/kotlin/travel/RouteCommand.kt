@@ -25,7 +25,7 @@ class RouteCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Travel")
+        return listOf("Traveling")
     }
 
     override fun execute(keyword: String, args: List<String>) {

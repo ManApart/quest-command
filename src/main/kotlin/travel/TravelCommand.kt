@@ -9,23 +9,23 @@ import core.history.display
 import system.EventManager
 import system.location.LocationManager
 
-class MoveCommand : Command() {
+class TravelCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Move", "t", "go")
+        return arrayOf("Travel", "move", "t", "go")
     }
 
     override fun getDescription(): String {
-        return "Move:\n\tMove to different locations."
+        return "Travel:\n\tTravel to different locations."
     }
 
     override fun getManual(): String {
-        return "\n\tMove to <location> - Start traveling to a location, if a route can be found." +
-                "\n\tMove - Continue traveling to a goal location." +
+        return "\n\tTravel to <location> - Start traveling to a location, if a route can be found." +
+                "\n\tTravel - Continue traveling to a goal location." +
                 "\n\tTo view a route, see the Route command"
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Travel")
+        return listOf("Traveling")
     }
 
     override fun execute(keyword: String, args: List<String>) {
@@ -33,7 +33,7 @@ class MoveCommand : Command() {
             val route = GameState.player.route
             val source = GameState.player.creature.location
             when {
-                route == null -> display("No route to move to.")
+                route == null -> display("No route to travel to.")
                 route.destination == source -> display("You're already at the end of the route.")
                 route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination))
                 else -> display("You're not on a route right now.")

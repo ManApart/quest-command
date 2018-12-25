@@ -37,7 +37,7 @@ object ClimbLook {
             if (journey.getCurrentSegment().top) {
                 "You are at the top of ${journey.target.name}."
             } else {
-                "Above you is nothing to attemptClimb on."
+                "Above you is nothing to climb on."
             }
         }
     }
@@ -55,7 +55,7 @@ object ClimbLook {
             if (journey.getCurrentSegment().bottom) {
                 "You are at the bottom of ${journey.target.name}."
             } else {
-                "Below you is nothing to attemptClimb on."
+                "Below you is nothing to climb on."
             }
         }
     }

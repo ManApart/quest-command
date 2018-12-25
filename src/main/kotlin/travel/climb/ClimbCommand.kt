@@ -24,7 +24,7 @@ class ClimbCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Travel")
+        return listOf("Traveling")
     }
 
     override fun execute(keyword: String, args: List<String>) {
@@ -52,7 +52,7 @@ class ClimbCommand : Command() {
             if (climbTarget != null) {
                 EventManager.postEvent(StartClimbingEvent(GameState.player.creature, climbTarget, force))
             } else {
-                display("What do you want to attemptClimb?")
+                display("What do you want to climb?")
             }
         }
     }
@@ -73,7 +73,7 @@ class ClimbCommand : Command() {
         } else if (up || down) {
             climbTowardsDirection(up, journey, force)
         } else {
-            display("Unable to attemptClimb: $originalArgs")
+            display("Unable to climb: $originalArgs")
         }
     }
 
@@ -81,7 +81,7 @@ class ClimbCommand : Command() {
         if (ScopeManager.getScope().targetExists(argsString)) {
             EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getScope().getTarget(argsString), force))
         } else {
-            display("Unable to attemptClimb: $originalArgs")
+            display("Unable to climb: $originalArgs")
         }
     }
 
