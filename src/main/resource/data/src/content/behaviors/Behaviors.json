@@ -94,10 +94,10 @@
         {
           "property": "Target",
           "params": [
-            "$event.target",
+            "$source",
             "Tags"
           ],
-          "operator": "=",
+          "operator": "contains",
           "value": "Sharp"
         }
       ]

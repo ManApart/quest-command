@@ -77,4 +77,11 @@ class CommandComboTest {
         assertEquals(("You can now access Kanbara City from Kanbara Gate."), ChatHistory.getLastOutput())
     }
 
+    @Test
+    fun slashWheat() {
+        val input = "slash wheat && pickup wheat"
+        CommandParser.parseCommand(input)
+        assertEquals(("Player picked up Wheat Bundle."), ChatHistory.getLastOutput())
+    }
+
 }

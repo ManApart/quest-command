@@ -20,7 +20,7 @@ object GameStateQuery {
             return ""
         }
 
-        val target = ScopeManager.getScope().getTarget(params[0])
+        val target = ScopeManager.getScope().getTargetIncludingPlayerInventory(params[0])!!
         val type = params[1].toLowerCase()
 
         if (type != "tags" && params.size != 3) {

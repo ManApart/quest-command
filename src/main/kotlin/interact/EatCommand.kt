@@ -31,8 +31,8 @@ class EatCommand : Command() {
         if (args.isEmpty()) {
             display("${args.joinToString(" ")} not found!")
         } else {
-            if (targetExists(args)) {
-                val food = findTarget(args)
+            if (targetExists(argsString)) {
+                val food = findTarget(argsString)
                 if (food is Item && food.properties.tags.has("food")){
                     EventManager.postEvent(UseEvent(food, GameState.player))
                 } else {
@@ -45,15 +45,15 @@ class EatCommand : Command() {
         }
     }
 
-    private fun targetExists(args: List<String>): Boolean {
+    private fun targetExists(args: String): Boolean {
         return ScopeManager.getScope().targetExists(args) || ItemManager.itemExists(args)
     }
 
-    private fun findTarget(args: List<String>): Target {
+    private fun findTarget(args: String): Target {
         return if (ItemManager.itemExists(args)) {
             ItemManager.getItem(args)
         } else {
-            ScopeManager.getScope().getTarget(args)
+            ScopeManager.getScope().getTarget(args)!!
         }
     }
 

@@ -23,18 +23,18 @@ class DropItemCommand : core.commands.Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         if (args.size == 1) {
-            dropItem(args)
+            dropItem(args.joinToString(" "))
         } else {
             display("Drop what?")
         }
     }
 
-    private fun dropItem(itemArgs: List<String>) {
-        if (GameState.player.creature.inventory.exists(itemArgs)) {
-            val item = GameState.player.creature.inventory.getItem(itemArgs)
+    private fun dropItem(itemArgs: String) {
+        val item = GameState.player.creature.inventory.getItem(itemArgs)
+        if (item != null) {
             EventManager.postEvent(DropItemEvent(GameState.player.creature, item))
         } else {
-            display("Couldn't find ${itemArgs.joinToString(" ")}")
+            display("Couldn't find $itemArgs")
         }
     }
 }

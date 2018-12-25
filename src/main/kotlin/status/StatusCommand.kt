@@ -25,9 +25,10 @@ class StatusCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val argsString = args.joinToString(" ")
         when {
             args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player.creature))
-            ScopeManager.getScope().activatorExists(args) -> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getActivator(args).creature))
+            ScopeManager.getScope().getActivator(argsString) != null -> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getActivator(argsString)!!.creature))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

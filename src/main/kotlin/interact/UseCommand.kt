@@ -7,7 +7,6 @@ import core.gameState.Target
 import core.history.display
 import interact.interaction.InteractEvent
 import interact.scope.ScopeManager
-import sun.rmi.transport.ObjectTable.getTarget
 import system.EventManager
 
 class UseCommand : Command() {
@@ -35,11 +34,11 @@ class UseCommand : Command() {
         if (arguments.isEmpty()) {
             display("What do you want to use?")
         } else {
-            if (targetExists(arguments.argGroups[0])) {
-                val source = findTarget(arguments.argGroups[0])
+            val source = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[0])
+            if (source != null) {
                 if (arguments.argGroups.size > 1) {
-                    if (targetExists(arguments.argGroups[1])) {
-                        val target = findTarget(arguments.argGroups[1])
+                    val target = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[1])
+                    if (target != null) {
                         EventManager.postEvent(UseEvent(source, target))
                     } else {
                         display("Couldn't find ${arguments.argStrings[1]}")
@@ -50,18 +49,6 @@ class UseCommand : Command() {
             } else {
                 display("Couldn't find $arguments")
             }
-        }
-    }
-
-    private fun targetExists(args: List<String>): Boolean {
-        return ScopeManager.getScope().targetExists(args) || GameState.player.creature.inventory.exists(args)
-    }
-
-    private fun findTarget(args: List<String>): Target {
-        return if (GameState.player.creature.inventory.exists(args)) {
-            GameState.player.creature.inventory.getItem(args)
-        } else {
-            ScopeManager.getScope().getTarget(args)
         }
     }
 

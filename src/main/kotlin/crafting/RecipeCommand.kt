@@ -24,9 +24,10 @@ class RecipeCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val argString = args.joinToString(" ")
         when {
             args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(GameState.player))
-            GameState.player.knownRecipes.exists(args) -> EventManager.postEvent(CheckRecipeEvent(GameState.player, GameState.player.knownRecipes.get(args)))
+            GameState.player.knownRecipes.exists(argString) -> EventManager.postEvent(CheckRecipeEvent(GameState.player, GameState.player.knownRecipes.get(argString)))
             else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }

@@ -79,7 +79,7 @@ class ClimbCommand : Command() {
 
     private fun processNewClimb(argsString: String, force: Boolean, originalArgs: String) {
         if (ScopeManager.getScope().targetExists(argsString)) {
-            EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getScope().getTarget(argsString), force))
+            EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getScope().getTarget(argsString)!!, force))
         } else {
             display("Unable to climb: $originalArgs")
         }

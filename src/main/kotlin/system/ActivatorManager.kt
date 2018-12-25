@@ -19,7 +19,7 @@ object ActivatorManager {
     }
 
     fun getActivators(names: List<String>): List<Activator> {
-        return activators.getAll(names).map { Activator(it) }
+        return names.map { getActivator(it) }
     }
 
     fun getActivatorsFromLocationTargets(targets: List<LocationTarget>): List<Activator> {

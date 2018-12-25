@@ -24,9 +24,10 @@ class LookCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val argString = args.joinToString(" ")
         when {
             args.isEmpty() -> EventManager.postEvent(LookEvent())
-            ScopeManager.getScope().targetExists(args) -> EventManager.postEvent(LookEvent(ScopeManager.getScope().getTarget(args)))
+            ScopeManager.getScope().targetExists(argString) -> EventManager.postEvent(LookEvent(ScopeManager.getScope().getTarget(argString)))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

@@ -1,7 +1,7 @@
 package core.gameState.dataParsing
 
 /**
- * NOTE: Equal and not equal work with Int and String. All other operators only work on Int values
+ * NOTE: Equal and not equal work with Int and String. Contains only works on strings. All other operators only work on Int values
  */
 enum class Operator(val symbol: String) {
     EQUALS("=") {

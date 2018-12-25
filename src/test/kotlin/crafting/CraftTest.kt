@@ -7,6 +7,7 @@ import inventory.pickupItem.PickupItem
 import org.junit.Test
 import system.*
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CraftTest {
@@ -32,8 +33,8 @@ class CraftTest {
         EventManager.executeEvents()
 
         assertFalse(baker.inventory.exists(ingredient))
-        assertTrue(baker.inventory.exists(resultItemName1))
-        assertTrue(baker.inventory.exists(resultItemName2))
+        assertNotNull(baker.inventory.getItem(resultItemName1))
+        assertNotNull(baker.inventory.getItem(resultItemName2))
     }
 
     @Test

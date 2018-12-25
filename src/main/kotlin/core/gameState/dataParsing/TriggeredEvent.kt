@@ -7,6 +7,7 @@ import core.gameState.Target
 import core.gameState.quests.CompleteQuestEvent
 import core.gameState.quests.QuestManager
 import core.gameState.quests.SetQuestStageEvent
+import core.utility.apply
 import explore.RestrictLocationEvent
 import interact.scope.*
 import status.effects.AddEffectEvent
@@ -17,23 +18,7 @@ import travel.ArriveEvent
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {
 
-    fun applyParamValues(paramValues: Map<String, String>) : TriggeredEvent {
-        val modifiedParams = mutableListOf<String>()
-
-        params.forEach {
-            modifiedParams.add(replaceParams(it, paramValues))
-        }
-
-        return TriggeredEvent(className, modifiedParams)
-    }
-
-    private fun replaceParams(line: String, paramValues: Map<String, String>): String {
-        var modified = line
-        paramValues.forEach {
-            modified = modified.replace("$${it.key}", it.value)
-        }
-        return modified
-    }
+    constructor(base: TriggeredEvent, params: Map<String, String>) : this(base.className, base.params.apply(params))
 
     fun execute(parent: Target = GameState.player) {
         when (className) {
@@ -58,37 +43,25 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     private fun getTargetOrParent(paramNumber: Int, parent: Target) : Target {
         val param = getParam(paramNumber, "none")
         return if (ScopeManager.getScope().targetExists(param)){
-            ScopeManager.getScope().getTarget(param)
+            ScopeManager.getScope().getTarget(param)!!
         } else {
             parent
         }
     }
 
     private fun getCreatureOrNull(paramNumber: Int) : Creature? {
-        val param = getParam(paramNumber, "none").split(" ")
-        return if (ScopeManager.getScope().creatureExists(param)){
-            ScopeManager.getScope().getCreature(param)
-        } else {
-            null
-        }
+        val param = getParam(paramNumber, "none")
+        return ScopeManager.getScope().getCreature(param)
     }
 
     private fun getCreatureOrPlayer(paramNumber: Int) : Creature {
-        val param = getParam(paramNumber, "none").split(" ")
-        return if (ScopeManager.getScope().creatureExists(param)){
-            ScopeManager.getScope().getCreature(param)
-        } else {
-            GameState.player.creature
-        }
+        val param = getParam(paramNumber, "none")
+        return ScopeManager.getScope().getCreature(param) ?: GameState.player.creature
     }
 
     private fun getItemOrParent(paramNumber: Int, source: Creature, parent: Target) : Item {
-        val param = getParam(paramNumber, "none").split(" ")
-        return if (source.inventory.exists(param)){
-            source.inventory.getItem(param)
-        } else {
-            parent as Item
-        }
+        val param = getParam(paramNumber, "none")
+        return source.inventory.getItem(param) ?: parent as Item
     }
 
     private fun getParam(i: Int, default: String) : String {

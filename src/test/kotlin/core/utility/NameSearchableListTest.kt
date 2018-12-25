@@ -44,8 +44,8 @@ class NameSearchableListTest {
         val list = NameSearchableList<TestSearchable>()
         list.add(target)
 
-        val baseline = list.exists(badTarget.name.split(" "))
-        val actual = list.exists(target.name.split(" "))
+        val baseline = list.exists(badTarget.name)
+        val actual = list.exists(target.name)
 
         assertEquals(false, baseline)
         assertEquals(true, actual)
@@ -59,8 +59,8 @@ class NameSearchableListTest {
         val list = NameSearchableList<TestSearchable>()
         list.add(target)
 
-        val baseline = list.exists(badTarget.name.split(" "))
-        val actual = list.exists(listOf("Partial"))
+        val baseline = list.exists(badTarget.name)
+        val actual = list.exists("Partial")
 
         assertEquals(false, baseline)
         assertEquals(true, actual)
@@ -97,7 +97,7 @@ class NameSearchableListTest {
         val list = NameSearchableList<TestSearchable>()
         list.add(target)
 
-        val actual = list.get(target.name.split(" "))
+        val actual = list.get(target.name)
 
         assertEquals(target, actual)
     }
@@ -109,7 +109,7 @@ class NameSearchableListTest {
         val list = NameSearchableList<TestSearchable>()
         list.add(target)
 
-        val actual = list.get(listOf("Partial"))
+        val actual = list.get("Partial")
 
         assertEquals(target, actual)
     }

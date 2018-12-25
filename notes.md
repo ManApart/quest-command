@@ -21,7 +21,6 @@ While the readme should cover how to build and run the game, as well with inform
 - Validate valid recipe ingredients and results
 - Remove inheritables now that json can extend things?
 - make target class instead of interface?
-- Reduce number of methods in scope, clean up interface
 
 Paramitization
 - paramatize targets on spawn events

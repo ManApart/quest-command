@@ -32,20 +32,12 @@ object ItemManager {
         return items.exists(name)
     }
 
-    fun itemExists(name: List<String>): Boolean {
-       return items.exists(name)
-    }
-
     fun getItem(name: String): Item {
         return Item(items.get(name))
     }
 
-    fun getItem(name: List<String>): Item {
-        return Item(items.get(name))
-    }
-
     fun getItems(names: List<String>): List<Item> {
-        return items.getAll(names).map { Item(it) }
+        return names.map { getItem(it) }
     }
 
     fun getItemsFromLocationTargets(targets: List<LocationTarget>): List<Item> {

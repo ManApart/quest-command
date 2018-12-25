@@ -37,36 +37,28 @@ class Scope(val locationNode: LocationNode) {
         return targets.exists(name)
     }
 
-    fun targetExists(name: List<String>): Boolean {
-        return targets.exists(name)
-    }
-
     fun targetExists(target: Target): Boolean {
         return targets.exists(target)
     }
 
-    fun creatureExists(name: List<String>): Boolean {
-        return targets.exists(name) && getTarget(name).getCreature() != null
+    fun getTarget(name: String): Target? {
+        return targets.getAll(name).firstOrNull()
     }
 
-    fun activatorExists(name: List<String>): Boolean {
-        return targets.exists(name) && getTarget(name) is Activator
+    fun getTargetIncludingPlayerInventory(name: String): Target? {
+        return GameState.player.creature.inventory.getItem(name) ?: ScopeManager.getScope().getTarget(name)
     }
 
-    fun getTarget(name: String): Target {
-        return targets.get(name)
+    fun getCreature(name: String): Creature? {
+        return targets.getAll(name).asSequence().filter { it is Creature }.firstOrNull() as Creature?
     }
 
-    fun getTarget(name: List<String>): Target {
-        return targets.get(name)
+    fun getActivator(name: String): Activator? {
+        return targets.getAll(name).asSequence().filter { it is Activator }.firstOrNull() as Activator?
     }
 
-    fun getCreature(name: List<String>): Creature {
-        return targets.get(name).getCreature()!!
-    }
-
-    fun getActivator(name: List<String>): Activator {
-        return targets.get(name) as Activator
+    fun getItem(name: String): Item? {
+        return targets.getAll(name).asSequence().filter { it is Item }.firstOrNull() as Item?
     }
 
     fun findTargetsByTag(tag: String): List<Target> {
@@ -74,7 +66,7 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun findActivatorsByTag(tag: String): List<Activator> {
-        return targets.asSequence().filter { it is Activator && it.properties.tags.has(tag) }.map { it as Activator }.toList()
+        return findTargetsByTag(tag).asSequence().filter { it is Activator }.map { it as Activator }.toList()
     }
 
     fun findActivatorsByProperties(properties: Properties): List<Activator> {

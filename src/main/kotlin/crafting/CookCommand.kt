@@ -43,7 +43,7 @@ class CookCommand : Command() {
                 ingredients.size != arguments.argStrings.size - 1 -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
                 recipes.isEmpty() -> display("Couldn't find a recipe for those ingredients")
                 recipes.size > 1 -> display("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
-                else -> EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipes.first(), tool ))
+                else -> EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipes.first(), tool))
             }
         }
     }
@@ -65,11 +65,7 @@ class CookCommand : Command() {
     private fun getTool(args: Args): Activator? {
         val group = args.argGroups.last()
         val scope = ScopeManager.getScope()
-        return if (scope.activatorExists(group)) {
-            scope.getActivator(group)
-        } else {
-            scope.findActivatorsByTag("Range").firstOrNull()
-        }
+        return scope.getActivator(group.joinToString(" ")) ?: scope.findActivatorsByTag("Range").firstOrNull()
     }
 
 }

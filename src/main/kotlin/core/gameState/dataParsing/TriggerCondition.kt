@@ -9,10 +9,7 @@ import kotlin.reflect.full.memberProperties
 
 class TriggerCondition(val callingEvent: String, private val eventParams: Map<String, String> = mapOf(), private val queries: List<Query> = listOf()) {
 
-    fun applyParamValues(paramValues: Map<String, String>): TriggerCondition {
-        val modifiedParams = eventParams.apply(paramValues)
-        return TriggerCondition(callingEvent, modifiedParams)
-    }
+    constructor(base: TriggerCondition, params: Map<String, String>) : this(base.callingEvent.apply(params), base.eventParams.apply(params), base.queries)
 
     fun matches(event: Event): Boolean {
         val params = getEventValues(event)
@@ -25,10 +22,9 @@ class TriggerCondition(val callingEvent: String, private val eventParams: Map<St
         val values = mutableMapOf<String, String>()
 
         event.javaClass.kotlin.memberProperties.forEach { property ->
-            //If property value is a named object, use the property name, otherwise it should be a String
             val propertyVal : String = when {
                 property.get(event) is Named -> (property.get(event) as Named).name
-                else -> property.get(event) as String
+                else -> property.get(event).toString()
             }
             values[property.name] = propertyVal
         }

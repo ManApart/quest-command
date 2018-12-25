@@ -25,10 +25,11 @@ class CraftRecipeCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val argString = args.joinToString(" ")
         when {
             args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(GameState.player))
-            GameState.player.knownRecipes.exists(args) -> {
-                val recipe = GameState.player.knownRecipes.get(args)
+            GameState.player.knownRecipes.exists(argString) -> {
+                val recipe = GameState.player.knownRecipes.get(argString)
                 val tool = ScopeManager.getScope().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
                         ?: GameState.player.creature.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
                 if (!recipe.toolProperties.isEmpty() && tool == null) {

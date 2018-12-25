@@ -16,7 +16,7 @@ object CreatureManager {
     }
 
     fun getCreatures(names: List<String>) : List<Creature> {
-        return creatures.getAll(names).map { Creature(it) }
+        return names.map { getCreature(it) }
     }
 
     fun getCreaturesFromLocationTargets(targets: List<LocationTarget>) : List<Creature> {

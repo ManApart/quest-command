@@ -50,9 +50,9 @@ class AttackCommand : Command() {
         val scope = ScopeManager.getScope()
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
-            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(handHelper.hand.equippedItem!!, scope.getTarget(cleaned.argStrings[0])))
-            scope.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTarget(cleaned.argStrings[0]), direction))
-            GameState.player.creature.inventory.exists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0]), direction))
+            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(handHelper.hand.equippedItem!!, scope.getTarget(cleaned.argStrings[0])!!))
+            scope.targetExists(cleaned.argStrings[0]) -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTarget(cleaned.argStrings[0])!!, direction))
+            GameState.player.creature.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0])!!, direction))
             GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
             else -> display("Couldn't find ${cleaned.argStrings[0]}")
         }

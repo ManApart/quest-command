@@ -36,16 +36,16 @@ class EquipItemCommand : Command() {
             val bodyPartNameGuess = getBodyPart(arguments)
             val body = GameState.player.creature.body
 
-            if (item != null){
+            if (item != null) {
                 if (!item.canEquipTo(body)) {
                     display("You can't equip ${item.name}.")
-                } else if (bodyPartNameGuess == null){
+                } else if (bodyPartNameGuess == null) {
                     EventManager.postEvent(EquipItemEvent(GameState.player.creature, item))
                 } else {
                     val bodyPart = body.getEquippablePart(bodyPartNameGuess, item)
-                    if (bodyPart != null){
+                    if (bodyPart != null) {
                         val slot = item.findSlot(body, bodyPart.name)
-                        if (slot != null){
+                        if (slot != null) {
                             EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, slot))
                         } else {
                             display("Could not equip to body part ${bodyPart.name}")
@@ -61,12 +61,8 @@ class EquipItemCommand : Command() {
     }
 
     private fun getItem(args: Args): Item? {
-        val itemName = args.argGroups[0]
-        return if (GameState.player.creature.inventory.exists(itemName)) {
-            GameState.player.creature.inventory.getItem(itemName)
-        } else {
-            null
-        }
+        val itemName = args.argStrings[0]
+        return GameState.player.creature.inventory.getItem(itemName)
     }
 
     private fun getBodyPart(args: Args): String? {
