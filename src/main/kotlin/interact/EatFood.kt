@@ -8,6 +8,7 @@ import core.history.display
 import core.utility.StringFormatter
 import interact.EatFoodEvent
 import interact.UseEvent
+import interact.scope.ScopeManager
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
@@ -18,7 +19,7 @@ class EatFood : EventListener<EatFoodEvent>() {
         display("$target ${event.food}")
         val healAmount = getHealAmount(event.food)
         EventManager.postEvent(StatChangeEvent(event.creature, event.food.name, "Health", healAmount))
-        event.creature.inventory.remove(event.food)
+        ScopeManager.getScope().removeTargetIncludingPlayerInventory(event.food)
 
         if (event.food.canConsume(event)){
             event.food.consume(event)

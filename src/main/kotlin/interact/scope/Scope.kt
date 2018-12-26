@@ -29,6 +29,14 @@ class Scope(val locationNode: LocationNode) {
         targets.remove(target)
     }
 
+    fun removeTargetIncludingPlayerInventory(target: Target) {
+        if (target is Item && GameState.player.creature.inventory.exists(target)) {
+            GameState.player.creature.inventory.remove(target)
+        } else {
+            targets.remove(target)
+        }
+    }
+
     fun getTargets(): List<Target> {
         return targets.toList()
     }
@@ -46,7 +54,7 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun getTargetIncludingPlayerInventory(name: String): Target? {
-        return GameState.player.creature.inventory.getItem(name) ?: ScopeManager.getScope().getTarget(name)
+        return GameState.player.creature.inventory.getItem(name) ?: getTarget(name)
     }
 
     fun getCreature(name: String): Creature? {
@@ -59,6 +67,10 @@ class Scope(val locationNode: LocationNode) {
 
     fun getItem(name: String): Item? {
         return targets.getAll(name).asSequence().filter { it is Item }.firstOrNull() as Item?
+    }
+
+    fun getItemIncludingPlayerInventory(name: String): Item? {
+        return GameState.player.creature.inventory.getItem(name) ?: getItem(name)
     }
 
     fun findTargetsByTag(tag: String): List<Target> {

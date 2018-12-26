@@ -31,29 +31,16 @@ class EatCommand : Command() {
         if (args.isEmpty()) {
             display("${args.joinToString(" ")} not found!")
         } else {
-            if (targetExists(argsString)) {
-                val food = findTarget(argsString)
-                if (food is Item && food.properties.tags.has("food")){
+            val food = ScopeManager.getScope().getItemIncludingPlayerInventory(argsString)
+            if (food != null) {
+                if (food.properties.tags.has("food")){
                     EventManager.postEvent(UseEvent(food, GameState.player))
                 } else {
-                    val description = if (food.description.isNotBlank()) food.description else "Not much to say."
-                    display("${food.name}: $description")
+                    display("${food.name} is inedible.")
                 }
             } else {
                 display("Couldn't find $argsString")
             }
-        }
-    }
-
-    private fun targetExists(args: String): Boolean {
-        return ScopeManager.getScope().targetExists(args) || ItemManager.itemExists(args)
-    }
-
-    private fun findTarget(args: String): Target {
-        return if (ItemManager.itemExists(args)) {
-            ItemManager.getItem(args)
-        } else {
-            ScopeManager.getScope().getTarget(args)!!
         }
     }
 
