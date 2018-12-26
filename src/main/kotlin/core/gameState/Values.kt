@@ -3,10 +3,9 @@ package core.gameState
 import core.utility.apply
 import core.utility.hasAllOf
 import core.utility.matches
-import core.utility.toEmptyString
 
-class PropertyValues(properties: Map<String, String> = mapOf()) {
-    constructor(base: PropertyValues, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
+class Values(properties: Map<String, String> = mapOf()) {
+    constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
 
     private val properties = parseProperties(properties)
 
@@ -38,15 +37,15 @@ class PropertyValues(properties: Map<String, String> = mapOf()) {
         return properties[key.toLowerCase()] ?: default
     }
 
-    fun matches(other: PropertyValues): Boolean {
+    fun matches(other: Values): Boolean {
         return properties.matches(other.properties)
     }
 
-    fun hasAll(other: PropertyValues): Boolean {
+    fun hasAll(other: Values): Boolean {
         return properties.hasAllOf(other.properties)
     }
 
-    fun inherit(parent: PropertyValues) {
+    fun inherit(parent: Values) {
         parent.properties.forEach {
             if (!properties.containsKey(it.key)) {
                 properties[it.key] = it.value
@@ -56,6 +55,10 @@ class PropertyValues(properties: Map<String, String> = mapOf()) {
 
     fun isEmpty(): Boolean {
         return properties.isEmpty()
+    }
+
+    fun getAll() : Map<String, String> {
+        return properties.toMap()
     }
 
 }

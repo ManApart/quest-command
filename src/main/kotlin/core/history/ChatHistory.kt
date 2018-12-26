@@ -37,4 +37,9 @@ object ChatHistory {
     fun getLastOutput() : String {
         return current.outPut.lastOrNull() ?: ""
     }
+
+    fun getLastOutputs() : List<String> {
+        return current.outPut
+    }
+
 }

@@ -28,14 +28,14 @@ class CommandComboTest {
     fun sliceApple() {
         val input = "use dagger on apple"
         CommandParser.parseCommand(input)
-        assertEquals(("You slice Apple and get Sliced Apple."), ChatHistory.getLastOutput())
+        assertEquals("You slice Apple and get Sliced Apple.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun roastApple() {
         val input = "w && s && pickup tinder box && n && e && n && use tinder on tree && pickup apple && use apple on tree"
         CommandParser.parseCommand(input)
-        assertEquals(("You roast Apple and get Roasted Apple."), ChatHistory.getLastOutput())
+        assertEquals("You roast Apple and get Roasted Apple.", ChatHistory.getLastOutputs()[ChatHistory.getLastOutputs().size-3])
     }
 
     @Test
@@ -45,14 +45,14 @@ class CommandComboTest {
 
         val input = "w && s && cook apple on range"
         CommandParser.parseCommand(input)
-        assertEquals(("You cook Apple and get Cooked Apple."), ChatHistory.getLastOutput())
+        assertEquals("You cook Apple and get Cooked Apple.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun chopTree() {
         val input = "n && pickup hatchet && equip hatchet && chop tree"
         CommandParser.parseCommand(input)
-        assertEquals(("The Dulled Hatchet hacks at Apple Tree."), ChatHistory.getLastOutput())
+        assertEquals("The Dulled Hatchet hacks at Apple Tree.", ChatHistory.getLastOutput())
     }
 
     @Test
@@ -60,28 +60,28 @@ class CommandComboTest {
         //TODO - somehow remove random element and test full climb
         val input = "n && climb tree"
         CommandParser.parseCommand(input)
-        assertEquals(("Above you are path choices 1, 2. You are at the bottom of Apple Tree."), ChatHistory.getLastOutput())
+        assertEquals("Above you are path choices 1, 2. You are at the bottom of Apple Tree.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun fightRat() {
         val input = "s && slash rat && slash rat && slash rat"
         CommandParser.parseCommand(input)
-        assertEquals(("The battle ends."), ChatHistory.getLastOutput())
+        assertEquals("The battle ends.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun useGate() {
         val input = "w && w && use gate"
         CommandParser.parseCommand(input)
-        assertEquals(("You can now access Kanbara City from Kanbara Gate."), ChatHistory.getLastOutput())
+        assertEquals("You can now access Kanbara City from Kanbara Gate.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun slashWheat() {
         val input = "slash wheat && pickup wheat"
         CommandParser.parseCommand(input)
-        assertEquals(("Player picked up Wheat Bundle."), ChatHistory.getLastOutput())
+        assertEquals("Player picked up Wheat Bundle.", ChatHistory.getLastOutput())
     }
 
 }

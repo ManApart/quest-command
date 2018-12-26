@@ -47,7 +47,7 @@ class Item(
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
-        soul.addStats(properties.stats)
+        soul.addStats(properties.stats.getAll())
     }
 
     override fun toString(): String {

@@ -42,7 +42,7 @@ class Creature(
 
     init {
         properties.tags.add("Creature")
-        soul.addStats(properties.stats)
+        soul.addStats(properties.stats.getAll())
     }
 
     override fun toString(): String {
