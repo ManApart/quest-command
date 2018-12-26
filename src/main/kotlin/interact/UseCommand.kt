@@ -52,9 +52,4 @@ class UseCommand : Command() {
         }
     }
 
-    private fun printDescription(firstTarget: Target) {
-        val description = if (firstTarget.description.isNotBlank()) firstTarget.description else "Not much to say."
-        display("${firstTarget.name}: $description")
-    }
-
 }

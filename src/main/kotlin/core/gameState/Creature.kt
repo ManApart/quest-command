@@ -44,4 +44,9 @@ class Creature(
         properties.tags.add("Creature")
         soul.addStats(properties.stats)
     }
+
+    override fun toString(): String {
+        return name
+    }
+
 }

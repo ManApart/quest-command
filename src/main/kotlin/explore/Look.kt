@@ -1,10 +1,8 @@
 package explore
 
 import core.events.EventListener
-import core.gameState.Activator
-import core.gameState.GameState
+import core.gameState.*
 import core.gameState.Target
-import core.gameState.targetsToString
 import core.history.display
 import explore.ClimbLook.describeClimbJourney
 import interact.scope.ScopeManager
@@ -17,18 +15,33 @@ class Look : EventListener<LookEvent>() {
         if (GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney) {
             ClimbLook.describeClimbJourney()
         } else if (event.target != null) {
-            display(event.target.description)
-            describeStatusEffects(event.target)
+            describeTarget(event.target)
         } else {
             describeLocation()
         }
     }
 
-    private fun describeStatusEffects(target: Target) {
-        if (target is Activator && target.creature.soul.effects.isNotEmpty()) {
-            val effects = target.creature.soul.effects.joinToString(", ") { it.name }
-            display("${target.name} is $effects")
+    private fun describeTarget(target: Target) {
+        var message = target.getDisplayName()
+        message += "\n\t${target.description}"
+        message += describeStatusEffects(target)
+        message += describeProperties(target)
+        display(message)
+    }
+
+    private fun describeStatusEffects(target: Target) : String {
+        if (target.hasSoul() && target.getSoul()!!.effects.isNotEmpty()) {
+            val effects = target.getSoul()!!.effects.joinToString(", ") { it.name }
+            return "\n\t${target.name} is $effects"
         }
+        return ""
+    }
+
+    private fun describeProperties(target: Target) : String {
+        if (!target.properties.isEmpty()) {
+            return "\n\t${target.properties}"
+        }
+        return ""
     }
 
     private fun describeLocation() {

@@ -11,7 +11,12 @@ class PropertyValues(properties: Map<String, String> = mapOf()) {
     private val properties = parseProperties(properties)
 
     override fun toString(): String {
-        return properties.toEmptyString()
+        return if (properties.isEmpty()){
+            ""
+        } else{
+            properties.entries.joinToString(", ") { "${it.value} ${it.key}"}
+        }
+
     }
 
     private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {

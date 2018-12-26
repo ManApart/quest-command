@@ -21,6 +21,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Validate valid recipe ingredients and results
 - Remove inheritables now that json can extend things?
 - make target class instead of interface?
+- Properties.stats should just use property values? Why have both?
 
 Paramitization
 - paramatize targets on spawn events

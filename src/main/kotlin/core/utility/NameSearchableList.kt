@@ -16,12 +16,12 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         super.clear()
     }
 
-    fun addProxy(item: N, names: List<String>){
+    fun addProxy(item: N, names: List<String>) {
         names.forEach { addProxy(item, it) }
     }
 
-    private fun addProxy(item: N, name: String){
-        if (!contains(item)){
+    private fun addProxy(item: N, name: String) {
+        if (!contains(item)) {
             add(item)
         }
         proxies[name] = item
@@ -43,11 +43,16 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     fun getAll(name: String): List<N> {
-        return filter { it.name.toLowerCase().contains(name.toLowerCase()) }
+        val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } +
+                proxies.filter { it.key.contains(name) }.map { it.value }
+
+        val results = mutableSetOf<N>()
+        includingDuplicates.forEach { results.add(it) }
+        return results.toList()
     }
 
     fun getOrNull(name: String): N? {
-        if (proxies.containsKey(name)){
+        if (proxies.containsKey(name)) {
             return proxies[name]
         }
         val matches = getAll(name)
