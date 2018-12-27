@@ -6,7 +6,7 @@ import core.utility.StringFormatter
 import inventory.pickupItem.ItemPickedUpEvent
 import system.EventManager
 
-class ItemSpawner : EventListener<ItemSpawnedEvent>() {
+class SpawnItem : EventListener<ItemSpawnedEvent>() {
     override fun execute(event: ItemSpawnedEvent) {
         if (event.target == null) {
             val name = StringFormatter.format(event.item.count > 1, "${event.item.count}x ${event.item.name}s", event.item.name)

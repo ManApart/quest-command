@@ -9,7 +9,7 @@ object EffectManager {
     private val effects = JsonDirectoryParser.parseDirectory("/data/generated/content/effects", ::parseFile)
     private fun parseFile(path: String): List<Effect> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
-//    class ItemSpawner : EventListener<SpawnItemEvent>() {
+//    class SpawnItem : EventListener<SpawnItemEvent>() {
 //        override fun execute(event: SpawnItemEvent) {
 //            if (exists(event.itemName)) {
 //                val item = getItem(event.itemName)

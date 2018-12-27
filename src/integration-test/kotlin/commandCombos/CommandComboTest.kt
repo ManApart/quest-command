@@ -22,6 +22,7 @@ class CommandComboTest {
     @Before
     fun reset() {
         GameManager.newGame()
+        EventManager.executeEvents()
     }
 
     @Test

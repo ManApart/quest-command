@@ -188,7 +188,7 @@
     "name": "Stairs Up",
     "description": "The stairs lead up to another floor.",
     "params": {
-      "destination": "Nowhere"
+      "destination": "An Open Field"
     },
     "climb": {
       "name": "Stairs",
@@ -205,7 +205,7 @@
     "name": "Stairs Down",
     "description": "The stairs lead down to another floor.",
     "params": {
-      "destination": "Nowhere"
+      "destination": "An Open Field"
     },
     "climb": {
       "name": "Stairs",

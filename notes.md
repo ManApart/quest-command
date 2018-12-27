@@ -25,7 +25,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Inherit object that's common to item and activator (burnable)?
 - Cleanup locationDescription constructor
 
-- if object has variables and not matching params, and doesn't extend, throw validation error
+- follow param pattern with creatures
 
 Paramitization
 - paramatize targets on spawn events

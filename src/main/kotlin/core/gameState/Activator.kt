@@ -10,30 +10,33 @@ import system.BehaviorManager
 class Activator(
         name: String,
         description: String = "Nothing interesting",
-        override val locationDescription: String? = null,
-        val climb: Climbable? = null,
+        params: Map<String, String> = mapOf(),
+        locationDescription: String? = null,
+        climb: Climbable? = null,
         items: List<String> = listOf(),
-        @JsonProperty("behaviors") val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
-        properties: Properties = Properties(),
-        val params: Map<String, String> = mapOf()
-) : Target {
+        @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
+        properties: Properties = Properties()
 
+) : Target {
     constructor(base: Activator, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
-            base.name.apply(params),
-            base.description.apply(params),
+            base.name,
+            base.description,
+            params,
             (locationDescription
-                    ?: base.locationDescription)?.apply(params),
-            base.climb?.let { Climbable(it, params) },
+                    ?: base.locationDescription),
+            base.climb,
             base.creature.inventory.getAllItems().map { it.name },
-            base.behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList(),
-            Properties(base.creature.properties, params)
+            base.behaviorRecipes,
+            base.creature.properties
     )
 
-    val creature = Creature(name, description, parent = this, properties = properties, inventory = Inventory(items))
+    val creature = Creature(name.apply(params), description.apply(params), parent = this, properties = Properties(properties, params), inventory = Inventory(items))
     override val name: String get() = creature.name
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
-
+    override val locationDescription = locationDescription?.apply(params)
+    val climb = climb?.let { Climbable(it, params) }
+    val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
