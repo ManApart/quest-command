@@ -149,6 +149,10 @@ A couple things to note:
 - In the above Baked Fruit example you could not re-bake the fruit because `Fruit` must be `Raw` and that tag is removed from the result.
 - A recipe without any tool properties can be made without a specific tool.
 
+### Inventory
+
+Players can see their own inventory and the inventory of any target that has the `Container` tag. They can take objects from any container that has the `Open` keyword.
+
 ### Triggered Events
 
 See the Triggered Event class to see what events can be used, and what params they can accept

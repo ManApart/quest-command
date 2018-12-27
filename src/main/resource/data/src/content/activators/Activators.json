@@ -9,8 +9,10 @@
       },
       "tags": [
         "Climbable",
-        "Wood",
-        "Flammable"
+        "Container",
+        "Flammable",
+        "Open",
+        "Wood"
       ]
     },
     "climb": {

@@ -1,24 +1,19 @@
 package inventory
 
-import core.gameState.*
+import core.gameState.Creature
+import core.gameState.Item
+import core.gameState.Properties
+import core.gameState.Tags
 import core.history.ChatHistory
 import org.junit.Test
-import system.DependencyInjector
-import system.ItemFakeParser
-import system.ItemManager
-import system.ItemParser
 import kotlin.test.assertEquals
 
 class ListInventoryTest {
 
     @Test
     fun listInventory() {
-        val itemName = "Apple"
-        val fakeParser = ItemFakeParser(listOf(Item(itemName)))
-        DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
-        ItemManager.reset()
-
-        val creature = Creature("Chest", "", inventory = Inventory(listOf(itemName)), properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = Creature("Chest", "", properties = Properties(tags = Tags(listOf("Container"))))
+        creature.inventory.add(Item("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
         assertEquals("Chest has Apple.", ChatHistory.getLastOutput())
@@ -26,17 +21,12 @@ class ListInventoryTest {
 
     @Test
     fun creatureWithoutTagDoesNotListInventory() {
-        val itemName = "Apple"
-        val fakeParser = ItemFakeParser(listOf(Item(itemName)))
-        DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
-        ItemManager.reset()
-
-        val creature = Creature("Chest", "", inventory = Inventory(listOf(itemName)))
+        val creature = Creature("Chest", "")
+        creature.inventory.add(Item("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
         assertEquals("Cannot view inventory of Chest", ChatHistory.getLastOutput())
     }
-
 
 
 }

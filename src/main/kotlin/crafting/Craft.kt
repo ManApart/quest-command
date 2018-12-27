@@ -34,7 +34,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
 
     private fun addResults(results: List<Item>, event: CraftRecipeEvent) {
         results.forEach {
-            EventManager.postEvent(PickupItemEvent(event.source, it, true))
+            EventManager.postEvent(PickupItemEvent(event.source, it, null,true))
         }
     }
 
