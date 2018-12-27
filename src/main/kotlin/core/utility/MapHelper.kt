@@ -65,3 +65,22 @@ fun <A, B> Map<A, B>.hasAllOf(mapB: Map<A, B>): Boolean {
     }
     return true
 }
+
+fun <A, B> Map<A, B>.getAllStrings(): List<String> {
+    val strings = mutableListOf<String>()
+    addAllStrings(strings)
+    return strings
+}
+
+private fun <A, B> Map<A, B>.addAllStrings(strings: MutableList<String>) {
+    entries.forEach {
+        if (it.key is String) {
+            strings.add(it.key as String)
+            if (it.value is String) {
+                strings.add(it.value as String)
+            } else if (it.value is Map<*, *>) {
+                (it.value as Map<*, *>).addAllStrings(strings)
+            }
+        }
+    }
+}

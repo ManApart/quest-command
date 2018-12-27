@@ -3,64 +3,55 @@ package core.gameState
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
-import core.gameState.inhertiable.InheritRecipe
 import core.utility.apply
 import core.utility.applyNested
 import core.utility.max
 import system.BehaviorManager
-import system.InheritableManager
 import system.ItemManager
 
 class Item(
-        override val name: String,
-        override val description: String = "",
-        override val locationDescription: String? = null,
+        name: String,
+        description: String = "",
+        locationDescription: String? = null,
+        params: Map<String, String> = mapOf(),
         val weight: Int = 0,
         var count: Int = 1,
         equipSlots: List<List<String>> = listOf(),
-        @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
-        override val properties: Properties = Properties(),
-        inherits: List<InheritRecipe> = listOf()
+        @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
+        properties: Properties = Properties()
 ) : Target {
 
     constructor(base: Item, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
-            base.name.apply(params),
-            base.description.apply(params),
+            base.name,
+            base.description,
             (locationDescription
-                    ?: base.locationDescription)?.apply(params),
+                    ?: base.locationDescription),
+            params,
             base.weight,
             base.count,
-            base.equipSlots.map { it.bodyParts }.applyNested(params),
-            base.behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList(),
-            Properties(base.properties, params)
+            base.equipSlots.map { it.bodyParts },
+            base.behaviorRecipes,
+            base.properties
     )
 
-    init {
-        applyInherits(inherits)
-    }
-
     constructor(base: Item, locationDescription: String? = null) : this(base.name, base.description, locationDescription
-            ?: base.locationDescription, base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, Properties(base.properties))
+            ?: base.locationDescription, mapOf(), base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, Properties(base.properties))
 
-    val equipSlots = equipSlots.map { Slot(it) }
+    override val name = name.apply(params)
+    override val description = description.apply(params)
+    override val locationDescription = locationDescription?.apply(params)
+    override val properties: Properties = Properties(properties, params)
+    val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val soul = Soul(this)
+    private val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
-        soul.addStats(properties.stats.getAll())
+        soul.addStats(this.properties.stats.getAll())
     }
 
     override fun toString(): String {
         return name
-    }
-
-    private fun applyInherits(inherits: List<InheritRecipe>) {
-        inherits.forEach { it ->
-            val inherit = InheritableManager.getInheritable(it)
-            val itemBehaviorRecipeNames = behaviorRecipes.map { it.name }
-            behaviorRecipes.addAll(inherit.behaviorRecipes.filter { !itemBehaviorRecipeNames.contains(it.name) })
-            properties.inherit(inherit.properties)
-        }
     }
 
     fun evaluate(event: Event): Boolean {

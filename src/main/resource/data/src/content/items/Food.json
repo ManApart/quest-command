@@ -1,5 +1,28 @@
 [
   {
+    "name": "Burnable",
+    "params": {
+      "burnHealth": 1,
+      "itemName": "Item"
+    },
+    "properties": {
+      "stats": {
+        "burnHealth": "$burnHealth"
+      },
+      "tags": [
+        "Flammable"
+      ]
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "$itemName"
+        }
+      }
+    ]
+  },
+  {
     "name": "Apple",
     "description": "It glistens and smells of spring blossoms.",
     "weight": "1",
@@ -40,15 +63,11 @@
     "name": "Wheat Bundle",
     "description": "It's stems lightly scratch your hands.",
     "weight": "1",
-    "inherits": [
-      {
-        "name": "Burnable",
-        "params": {
-          "burnHealth": 1,
-          "itemName": "Ash"
-        }
-      }
-    ]
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 1,
+      "itemName": "Wheat Bundle"
+    }
   },
   {
     "name": "Wheat Flour",

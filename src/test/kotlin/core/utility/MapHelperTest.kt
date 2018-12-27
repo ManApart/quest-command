@@ -1,6 +1,8 @@
 package core.utility
 
+import core.gameState.location.LocationTarget
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -52,4 +54,12 @@ class MapHelperTest {
 
         assertFalse(mapA.hasAllOf(mapB))
     }
+
+    @Test
+    fun getAllStrings() {
+        val map = mapOf("One" to "1", "Two" to mapOf("Three" to "three"), "Four" to LocationTarget("IgnoredValue"), LocationTarget("IgnoredKey") to "IgnoredValue2")
+        val expected = listOf("One", "1", "Two", "Three", "three", "Four")
+        assertEquals(expected, map.getAllStrings())
+    }
+
 }

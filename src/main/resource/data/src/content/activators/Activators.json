@@ -1,5 +1,28 @@
 [
   {
+    "name": "Burnable",
+    "params": {
+      "burnHealth": 1,
+      "itemName": "Item"
+    },
+    "properties": {
+      "stats": {
+        "burnHealth": "$burnHealth"
+      },
+      "tags": [
+        "Flammable"
+      ]
+    },
+    "behaviors": [
+      {
+        "name": "Burn to Ash",
+        "params": {
+          "name": "$itemName"
+        }
+      }
+    ]
+  },
+  {
     "name": "Apple Tree",
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
     "properties": {
@@ -42,13 +65,10 @@
   {
     "name": "Wheat Field",
     "description": "The golden shafts of wheat whisper as they brush against each other.",
-    "properties": {
-      "stats": {
-        "burnHealth": 5
-      },
-      "tags": [
-        "Flammable"
-      ]
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 2,
+      "itemName": "Wheat Field"
     },
     "behaviors": [
       {
@@ -58,32 +78,22 @@
           "message": "The wheat falls with little more than a whisper",
           "count": 3
         }
-      },
-      {
-        "name": "Burn to Ash",
-        "params": {
-          "name": "Wheat Field"
-        }
       }
     ]
   },
   {
     "name": "Logs",
     "description": "A pile of logs.",
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 5,
+      "itemName": "Logs"
+    },
     "properties": {
       "tags": [
         "Wood"
       ]
-    },
-    "inherits": [
-      {
-        "name": "Burnable",
-        "params": {
-          "burnHealth": 5,
-          "itemName": "Logs"
-        }
-      }
-    ]
+    }
   },
   {
     "name": "Well",
@@ -97,30 +107,22 @@
   {
     "name": "Apple Tree Branches",
     "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 5,
+      "itemName": "Apple Tree Branches"
+    },
     "properties": {
-      "stats": {
-        "burnHealth": 5
-      },
       "tags": [
         "Climbable",
-        "Wood",
-        "Flammable"
+        "Wood"
       ]
     },
     "climb": {
       "name": "Tree",
       "destination": "apple tree",
       "upwards": false
-    },
-
-    "behaviors": [
-      {
-        "name": "Burn to Ash",
-        "params": {
-          "name": "Apple Tree Branches"
-        }
-      }
-    ]
+    }
   },
   {
     "name": "Kanbara Gate (Open)",
@@ -185,6 +187,9 @@
   {
     "name": "Stairs Up",
     "description": "The stairs lead up to another floor.",
+    "params": {
+      "destination": "Nowhere"
+    },
     "climb": {
       "name": "Stairs",
       "destination": "$destination",
@@ -199,6 +204,9 @@
   {
     "name": "Stairs Down",
     "description": "The stairs lead down to another floor.",
+    "params": {
+      "destination": "Nowhere"
+    },
     "climb": {
       "name": "Stairs",
       "destination": "$destination",

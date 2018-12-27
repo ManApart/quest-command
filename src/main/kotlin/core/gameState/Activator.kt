@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.climb.Climbable
-import core.gameState.inhertiable.InheritRecipe
 import core.utility.apply
 import system.BehaviorManager
-import system.InheritableManager
 
 class Activator(
         name: String,
@@ -17,7 +15,6 @@ class Activator(
         items: List<String> = listOf(),
         @JsonProperty("behaviors") val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
         properties: Properties = Properties(),
-        inherits: List<InheritRecipe> = listOf(),
         val params: Map<String, String> = mapOf()
 ) : Target {
 
@@ -37,23 +34,10 @@ class Activator(
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
 
-    init {
-        applyInherits(inherits)
-    }
-
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
         properties.tags.remove("Creature")
-    }
-
-    private fun applyInherits(inherits: List<InheritRecipe>) {
-        inherits.forEach { inheritRecipe ->
-            val inherit = InheritableManager.getInheritable(inheritRecipe)
-            val behaviorRecipeNames = behaviorRecipes.map { it.name }
-            behaviorRecipes.addAll(inherit.behaviorRecipes.filter { !behaviorRecipeNames.contains(it.name) })
-            properties.inherit(inherit.properties)
-        }
     }
 
     override fun toString(): String {

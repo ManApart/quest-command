@@ -19,13 +19,16 @@ While the readme should cover how to build and run the game, as well with inform
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
 - Validate valid recipe ingredients and results
-- Remove inheritables now that json can extend things?
 - make target class instead of interface?
-- Properties.stats should just use property values? Why have both?
+
+- Json inherits from other files in same folder?
+- Inherit object that's common to item and activator (burnable)?
+- Cleanup locationDescription constructor
+
+- if object has variables and not matching params, and doesn't extend, throw validation error
 
 Paramitization
 - paramatize targets on spawn events
-- delete params list from behaviors if not used
 - delete behavior recipe / rework for global params
 - replace non-parameratized $keys?
 - paramatize numbers/boolean like weight?

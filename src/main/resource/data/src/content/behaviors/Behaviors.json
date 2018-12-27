@@ -1,9 +1,9 @@
 [
   {
     "name": "Add on Eat",
-    "params": [
-      "resultItemName"
-    ],
+    "params": {
+      "resultItemName": "Item"
+    },
     "condition": {
       "callingEvent": "EatFoodEvent"
     },
@@ -20,10 +20,10 @@
   },
   {
     "name": "Chop Tree",
-    "params": [
-      "treeName",
-      "resultItemName"
-    ],
+    "params": {
+      "treeName": "Tree",
+      "resultItemName": "Item"
+    },
     "condition": {
       "callingEvent": "StatMinnedEvent",
       "eventParams": {
@@ -59,9 +59,9 @@
   },
   {
     "name": "Burn to Ash",
-    "params": [
-      "name"
-    ],
+    "params": {
+      "name": "Item"
+    },
     "condition": {
       "callingEvent": "StatMinnedEvent",
       "eventParams": {
@@ -88,6 +88,12 @@
   },
   {
     "name": "Slash Harvest",
+    "params": {
+      "source": "Item",
+      "itemName": "Item",
+      "message": "Message",
+      "count": "1"
+    },
     "condition": {
       "callingEvent": "UseEvent",
       "queries": [
@@ -120,13 +126,13 @@
   },
   {
     "name": "Restrict Destination",
-    "params": [
-      "source",
-      "destination",
-      "makeRestricted",
-      "message",
-      "replacementActivator"
-    ],
+    "params": {
+      "message": "Restricted",
+      "source": "Nowhere",
+      "destination": "Nowhere",
+      "makeRestricted": "true",
+      "replacementActivator": "Nothing"
+    },
     "condition": {
       "callingEvent": "InteractEvent"
     },
@@ -159,6 +165,11 @@
   },
   {
     "name": "Mill",
+    "params": {
+      "sourceItem": "Item",
+      "resultItemName": "Item",
+      "resultItemLocation": "Item"
+    },
     "condition": {
       "callingEvent": "UseEvent",
       "eventParams": {
@@ -169,13 +180,13 @@
       {
         "className": "MessageEvent",
         "params": [
-          "The $sourceItem slides down the chute and is milled into $resultItem as it collects in the Grain Bin"
+          "The $sourceItem slides down the chute and is milled into resultItemName as it collects in the Grain Bin"
         ]
       },
       {
         "className": "SpawnItemEvent",
         "params": [
-          "$resultItem",
+          "resultItemName",
           "1",
           "Grain Bin",
           "$resultItemLocation"

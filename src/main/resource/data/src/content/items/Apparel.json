@@ -1,39 +1,54 @@
 [
   {
-    "name": "Brown Pants",
-    "description": "These pants used to be white.",
-    "equipSlots": [
-      [
-        "Right Leg",
-        "Left Leg"
+    "name": "Burnable",
+    "params": {
+      "burnHealth": 1,
+      "itemName": "Item"
+    },
+    "properties": {
+      "stats": {
+        "burnHealth": "$burnHealth"
+      },
+      "tags": [
+        "Flammable"
       ]
-    ],
-    "inherits": [
+    },
+    "behaviors": [
       {
-        "name": "Burnable",
+        "name": "Burn to Ash",
         "params": {
-          "burnHealth": 1,
-          "itemName": "Brown Pants"
+          "name": "$itemName"
         }
       }
     ]
   },
   {
+    "name": "Brown Pants",
+    "description": "These pants used to be white.",
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 1,
+      "itemName": "Brown Pants"
+    },
+    "equipSlots": [
+      [
+        "Right Leg",
+        "Left Leg"
+      ]
+    ]
+  },
+  {
     "name": "Old Shirt",
     "description": "A faint scent of soil oozes from the worn cloth",
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 1,
+      "itemName": "Old Shirt"
+    },
     "equipSlots": [
       [
         "Chest"
       ]
-    ],
-    "inherits": [
-      {
-        "name": "Burnable",
-        "params": {
-          "burnHealth": 1,
-          "itemName": "Old Shirt"
-        }
-      }
     ]
   }
 ]
