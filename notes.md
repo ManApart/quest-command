@@ -96,6 +96,17 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
  - Item could fit in bag weight but then bag be too heavy for character to move
 - Bags / armor can have equip slots for specific types. So a weapon holster can provide a slot but only for hatchets etc
 
+Item Containers
+- Any target that is a creature has an inventory
+- Looking at a creature will say what the creature has equipped (is wearing)
+- If the target has the tag 'Container' the player can view contents
+  - 'bag <target>'
+- If the target has the tag 'Open' items can be removed from it.
+  - take/pickup <item> from <target>
+- If the target has the property value 'capacity: 10' etc the player can deposit into the inventory (as long as the weight is less than the capacity).
+  - Give/place/put <item> in/to <target>
+  - Creature containers override capacity based on their strength
+
 
 ### General UI
 

@@ -4,17 +4,18 @@ import core.gameState.GameState
 import core.history.display
 import system.EventManager
 
-class DropItemCommand : core.commands.Command() {
+class PlaceItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Drop")
+        return arrayOf("Place", "Drop", "Give")
     }
 
     override fun getDescription(): String {
-        return "Drop:\n\tDrop an item from your inventory"
+        return "Place:\n\tPlace an item from your inventory in another inventory or on the ground."
     }
 
     override fun getManual(): String {
-        return "\n\tDrop <item> - Drop an item an item from your inventory"
+        return "\n\tDrop <item> - Drop an item an item from your inventory." +
+                "\n\tPlace <item> in <target> - Drop an item an item from your inventory. X"
     }
 
     override fun getCategory(): List<String> {
@@ -32,7 +33,7 @@ class DropItemCommand : core.commands.Command() {
     private fun dropItem(itemArgs: String) {
         val item = GameState.player.creature.inventory.getItem(itemArgs)
         if (item != null) {
-            EventManager.postEvent(DropItemEvent(GameState.player.creature, item))
+            EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item))
         } else {
             display("Couldn't find $itemArgs")
         }

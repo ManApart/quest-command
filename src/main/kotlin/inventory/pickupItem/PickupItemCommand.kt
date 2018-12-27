@@ -12,11 +12,12 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     override fun getDescription(): String {
-        return "Pickup:\n\tAdd an item to your inventory"
+        return "Pickup:\n\tAdd an item to your inventory."
     }
 
     override fun getManual(): String {
-        return "\n\tPickup <item> - pickup an item"
+        return "\n\tPickup <item> - pickup an item." +
+                "\n\tPickup <item> from <target> - take item from target's inventory, if possible. X"
     }
 
     override fun getCategory(): List<String> {

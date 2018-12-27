@@ -1,9 +1,10 @@
 package inventory
 
 import core.commands.Command
-import core.gameState.GameState
-import core.gameState.targetsToString
+import core.gameState.getCreature
 import core.history.display
+import interact.scope.ScopeManager
+import system.EventManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -11,11 +12,12 @@ class InventoryCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Inventory:\n\tView and manage your inventory"
+        return "Bag:\n\tView and manage your inventory."
     }
 
     override fun getManual(): String {
-        return "\n\tInventory - list items in your inventory"
+        return "\n\tBag - list items in your inventory." +
+                "\n\tBag <target> - list items in the target's inventory, if possible."
     }
 
     override fun getCategory(): List<String> {
@@ -24,15 +26,17 @@ class InventoryCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         if (args.isEmpty()) {
-            listInventory()
+            EventManager.postEvent(ListInventoryEvent())
         } else {
-            display("Unknown command: ${args.joinToString(" ")}")
+            val argString = args.joinToString(" ")
+            val target = ScopeManager.getScope().getTarget(argString)?.getCreature()
+            if (target != null) {
+                EventManager.postEvent(ListInventoryEvent(target))
+            } else {
+                display("Could not find $argString")
+            }
         }
     }
 
-    private fun listInventory() {
-        val itemList = targetsToString(GameState.player.creature.inventory.getAllItems())
-        display("You have $itemList in your inventory")
-    }
 
 }

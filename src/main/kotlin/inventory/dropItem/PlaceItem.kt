@@ -4,8 +4,8 @@ import core.events.EventListener
 import core.history.display
 import interact.scope.ScopeManager
 
-class DropItem : EventListener<DropItemEvent>() {
-    override fun execute(event: DropItemEvent) {
+class PlaceItem : EventListener<PlaceItemEvent>() {
+    override fun execute(event: PlaceItemEvent) {
         if (!event.silent){
             display("${event.source} dropped ${event.item}")
         }

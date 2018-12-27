@@ -18,6 +18,9 @@
       "destination": "apple tree branches",
       "upwards": true
     },
+    "items": [
+      "Apple"
+    ],
     "behaviors": [
       {
         "name": "Chop Tree",

@@ -14,6 +14,7 @@ class Activator(
         description: String = "Nothing interesting",
         override val locationDescription: String? = null,
         val climb: Climbable? = null,
+        items: List<String> = listOf(),
         @JsonProperty("behaviors") val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
         properties: Properties = Properties(),
         inherits: List<InheritRecipe> = listOf(),
@@ -26,11 +27,12 @@ class Activator(
             (locationDescription
                     ?: base.locationDescription)?.apply(params),
             base.climb?.let { Climbable(it, params) },
+            base.creature.inventory.getAllItems().map { it.name },
             base.behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList(),
             Properties(base.creature.properties, params)
     )
 
-    val creature = Creature(name, description, parent = this, properties = properties)
+    val creature = Creature(name, description, parent = this, properties = properties, inventory = Inventory(items))
     override val name: String get() = creature.name
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties

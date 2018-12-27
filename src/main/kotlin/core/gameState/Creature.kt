@@ -16,13 +16,19 @@ class Creature(
         var location: LocationNode = LocationManager.NOWHERE_NODE,
         ai: String? = null,
         val parent: Target? = null,
+        val inventory: Inventory = Inventory(),
         override val properties: Properties = Properties()
 ) : Target {
 
     @JsonCreator
-    constructor(name: String, description: String, locationDescription: String? = null, body: String, ai: String?, properties: Properties = Properties(), items: List<String>) : this(name, description, locationDescription, BodyManager.getBody(body), ai = ai, properties = properties) {
-        items.forEach { inventory.add(ItemManager.getItem(it)) }
-    }
+    constructor(
+            name: String,
+            description: String,
+            locationDescription: String? = null,
+            body: String, ai: String?,
+            properties: Properties = Properties(),
+            items: List<String>
+    ) : this(name, description, locationDescription, BodyManager.getBody(body), ai = ai, inventory = Inventory(items), properties = properties)
 
     constructor(base: Creature, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
             base.name.apply(params),
@@ -33,11 +39,11 @@ class Creature(
             base.location,
             base.ai?.name,
             base.parent,
+            base.inventory,
             Properties(base.properties, params)
     )
 
     val soul = Soul(this)
-    val inventory = Inventory()
     val ai = if (ai != null) AIManager.getAI(ai, this) else null
 
     init {

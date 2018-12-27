@@ -1,9 +1,12 @@
 package core.gameState
 
 import core.utility.NameSearchableList
+import system.ItemManager
 
-class Inventory {
-    private val items = NameSearchableList<Item>()
+class Inventory(itemNames: List<String> = listOf()) {
+    constructor(base: Inventory) : this(base.getAllItems().map { it.name })
+
+    private val items = NameSearchableList(itemNames.map { ItemManager.getItem(it) })
 
     fun exists(item: Item) : Boolean{
         return items.exists(item)

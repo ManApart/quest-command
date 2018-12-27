@@ -5,7 +5,7 @@ import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.stat.Stat
 import core.history.display
-import inventory.dropItem.DropItemEvent
+import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
 import system.EventManager
 import interact.scope.RemoveScopeEvent
@@ -20,7 +20,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         val creature = event.target as Creature
 
         creature.inventory.getAllItems().forEach {
-            EventManager.postEvent(DropItemEvent(creature, it, true))
+            EventManager.postEvent(PlaceItemEvent(creature, it, true))
         }
         EventManager.postEvent(RemoveScopeEvent(event.target))
         EventManager.postEvent(CreatureDiedEvent(event.target))
