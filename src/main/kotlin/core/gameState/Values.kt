@@ -15,7 +15,6 @@ class Values(properties: Map<String, String> = mapOf()) {
         } else{
             properties.entries.joinToString(", ") { "${it.value} ${it.key}"}
         }
-
     }
 
     private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
@@ -35,6 +34,10 @@ class Values(properties: Map<String, String> = mapOf()) {
 
     fun getString(key: String, default: String = ""): String {
         return properties[key.toLowerCase()] ?: default
+    }
+
+    fun getList(key: String, delimiter: String = ",", default: List<String> = listOf()): List<String> {
+        return properties[key.toLowerCase()]?.split(delimiter) ?: default
     }
 
     fun matches(other: Values): Boolean {

@@ -90,7 +90,7 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 
 ### Inventory
 
-- Weapons have a type (property)
+- Weapons have a type (tags like short, long, bow, dagger, etc)
 - Bag can hold x amount of weight, any type
 - Character can only hold so much weight.
  - Item could fit in bag weight but then bag be too heavy for character to move
@@ -99,9 +99,6 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 Item Containers
 - Any target that is a creature has an inventory
 - Looking at a creature will say what the creature has equipped (is wearing)
-- If the target has the property value 'capacity: 10' etc the player can deposit into the inventory (as long as the weight is less than the capacity).
-  - Give/place/put <item> in/to <target>
-  - Creature containers override capacity based on their strength
 
 
 ### General UI

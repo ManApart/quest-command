@@ -44,4 +44,8 @@ class Inventory(itemNames: List<String> = listOf()) {
     fun findItemsByProperties(properties: Properties): List<Item> {
         return items.filter { it.properties.hasAll(properties) }
     }
+
+    fun getTotalWeight() : Int {
+        return items.sumBy { it.weight }
+    }
 }

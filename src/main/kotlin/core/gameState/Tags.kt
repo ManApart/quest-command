@@ -3,7 +3,7 @@ package core.gameState
 import core.utility.apply
 
 class Tags(tags: List<String> = listOf()) {
-    constructor(base: Tags, params: Map<String, String> = mapOf()) : this (base.tags.apply(params))
+    constructor(base: Tags, params: Map<String, String> = mapOf()) : this(base.tags.apply(params))
 
     private val tags = tags.toMutableList()
 
@@ -27,6 +27,10 @@ class Tags(tags: List<String> = listOf()) {
 
     fun hasAll(other: Tags): Boolean {
         return other.lowerCaseTags().all { this.lowerCaseTags().contains(it) }
+    }
+
+    fun hasAny(other: Tags): Boolean {
+        return other.lowerCaseTags().any { this.lowerCaseTags().contains(it) }
     }
 
     fun hasNone(other: Tags): Boolean {

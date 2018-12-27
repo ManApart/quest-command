@@ -15,7 +15,7 @@ class Item(
         override val name: String,
         override val description: String = "",
         override val locationDescription: String? = null,
-        private val weight: Int = 0,
+        val weight: Int = 0,
         var count: Int = 1,
         equipSlots: List<List<String>> = listOf(),
         @JsonProperty("behaviors") private val behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),

@@ -55,4 +55,12 @@ class Creature(
         return name
     }
 
+    fun getTotalCapacity(): Int {
+        return if (soul.hasStat("Strength")){
+            soul.getCurrent("Strength") * 10
+        } else {
+            properties.values.getInt("Capacity", 0)
+        }
+    }
+
 }
