@@ -1,9 +1,6 @@
 [
   {
     "name": "Add on Eat",
-    "params": {
-      "resultItemName": "Item"
-    },
     "condition": {
       "callingEvent": "EatFoodEvent"
     },
@@ -20,10 +17,6 @@
   },
   {
     "name": "Chop Tree",
-    "params": {
-      "treeName": "Tree",
-      "resultItemName": "Item"
-    },
     "condition": {
       "callingEvent": "StatMinnedEvent",
       "eventParams": {
@@ -59,9 +52,6 @@
   },
   {
     "name": "Burn to Ash",
-    "params": {
-      "name": "Item"
-    },
     "condition": {
       "callingEvent": "StatMinnedEvent",
       "eventParams": {
@@ -88,12 +78,6 @@
   },
   {
     "name": "Slash Harvest",
-    "params": {
-      "source": "Item",
-      "itemName": "Item",
-      "message": "Message",
-      "count": "1"
-    },
     "condition": {
       "callingEvent": "UseEvent",
       "queries": [
@@ -126,13 +110,6 @@
   },
   {
     "name": "Restrict Destination",
-    "params": {
-      "message": "Restricted",
-      "source": "Nowhere",
-      "destination": "Nowhere",
-      "makeRestricted": "true",
-      "replacementActivator": "Nothing"
-    },
     "condition": {
       "callingEvent": "InteractEvent"
     },
@@ -165,11 +142,6 @@
   },
   {
     "name": "Mill",
-    "params": {
-      "sourceItem": "Item",
-      "resultItemName": "Item",
-      "resultItemLocation": "Item"
-    },
     "condition": {
       "callingEvent": "UseEvent",
       "eventParams": {

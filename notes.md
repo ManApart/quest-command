@@ -24,6 +24,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Json inherits from other files in same folder?
 - Inherit object that's common to item and activator (burnable)?
 - Cleanup locationDescription constructor
+- Requiring default params breaks everything since params don't override other params, have to remove param satisfied test
 
 - follow param pattern with creatures
 

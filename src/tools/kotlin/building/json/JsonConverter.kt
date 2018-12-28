@@ -32,62 +32,6 @@ class JsonConverter(data: List<MutableMap<String, Any>>) {
                 throw IllegalArgumentException("Object extends a non-real item: $item")
             }
         }
-
-        data.values.forEach { item ->
-            val variables = getExtendedVariables(item)
-            if (variables.isNotEmpty()) {
-                val params = getExtendedParams(item)
-                variables.forEach {
-                    if (!params.contains(it)) {
-                        throw IllegalArgumentException("Object had unsatisfied variable $it: $item")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getExtendedParams(item: MutableMap<String, Any>): List<String> {
-        val params = mutableListOf<String>()
-        addExtendedParams(item, params)
-        return params
-    }
-
-    private fun addExtendedParams(item: MutableMap<String, Any>, params: MutableList<String>) {
-        params.addAll(getParams(item))
-        if (item.containsKey("extends")) {
-            val base = data[item["extends"] as String]
-            if (base != null) {
-                addExtendedParams(base, params)
-            }
-        }
-    }
-
-    private fun getParams(item: MutableMap<String, Any>): List<String> {
-        return if (item.containsKey("params") && item["params"] is Map<*, *>) {
-            (item["params"] as Map<*, *>).keys.asSequence().filter { it is String }.map { it as String }.toList()
-        } else {
-            listOf()
-        }
-    }
-
-    private fun getExtendedVariables(item: MutableMap<String, Any>): List<String> {
-        val variables = mutableListOf<String>()
-        addExtendedVariables(item, variables)
-        return variables
-    }
-
-    private fun addExtendedVariables(item: MutableMap<String, Any>, variables: MutableList<String>) {
-        variables.addAll(getVariables(item))
-        if (item.containsKey("extends")) {
-            val base = data[item["extends"] as String]
-            if (base != null) {
-                addExtendedParams(base, variables)
-            }
-        }
-    }
-
-    private fun getVariables(item: MutableMap<String, Any>): List<String> {
-        return item.getAllStrings().asSequence().filter { it.startsWith("\$") }.map { it.substring(1, it.length) }.toList()
     }
 
     fun transform(): List<Map<String, Any>> {

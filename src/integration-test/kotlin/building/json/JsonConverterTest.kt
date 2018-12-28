@@ -30,33 +30,6 @@ class JsonConverterTest {
         JsonConverter(data).transform()
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun baseItemWithUnsatisfiedVariableKeyThrowsError() {
-        val data = listOf<MutableMap<String, Any>>(mutableMapOf("name" to "Apple", "\$variable" to "variable"))
-        JsonConverter(data).transform()
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun baseItemWithUnsatisfiedVariableValueThrowsError() {
-        val data = listOf<MutableMap<String, Any>>(mutableMapOf("name" to "Apple", "variable" to "\$variable"))
-        JsonConverter(data).transform()
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun baseItemWithUnsatisfiedNestedVariableThrowsError() {
-        val data = listOf(mutableMapOf("name" to "Apple", "topic" to mutableMapOf("variable" to "\$variable")))
-        JsonConverter(data).transform()
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun extendedItemWithUnsatisfiedVariablesThrowsError() {
-        val data = listOf<MutableMap<String, Any>>(
-                mutableMapOf("name" to "Apple"),
-                mutableMapOf("name" to "Pear", "extends" to "Apple", "topic" to mutableMapOf("variable" to "\$variable"))
-        )
-        JsonConverter(data).transform()
-    }
-
     @Test
     fun propertyInherited() {
         val data = listOf<MutableMap<String, Any>>(
