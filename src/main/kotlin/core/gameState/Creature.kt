@@ -46,6 +46,7 @@ class Creature(
     val soul = Soul(this)
     val ai = if (ai != null) AIManager.getAI(ai, this) else null
 
+
     init {
         properties.tags.add("Creature")
         soul.addStats(properties.stats.getAll())

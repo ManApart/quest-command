@@ -3,7 +3,6 @@ package interact
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.Target
 import core.history.display
 import interact.interaction.InteractEvent
 import interact.scope.ScopeManager
@@ -34,17 +33,17 @@ class UseCommand : Command() {
         if (arguments.isEmpty()) {
             display("What do you want to use?")
         } else {
-            val source = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[0])
-            if (source != null) {
+            val used = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[0])
+            if (used != null) {
                 if (arguments.argGroups.size > 1) {
                     val target = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[1])
                     if (target != null) {
-                        EventManager.postEvent(UseEvent(source, target))
+                        EventManager.postEvent(UseEvent(GameState.player.creature, used, target))
                     } else {
                         display("Couldn't find ${arguments.argStrings[1]}")
                     }
                 } else {
-                    EventManager.postEvent(InteractEvent(source))
+                    EventManager.postEvent(InteractEvent(GameState.player, used))
                 }
             } else {
                 display("Couldn't find $arguments")

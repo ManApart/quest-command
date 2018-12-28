@@ -13,12 +13,16 @@ import system.EventManager
 
 class UseFoodItem : EventListener<UseEvent>() {
     override fun shouldExecute(event: UseEvent): Boolean {
-        return GameState.player.canInteract && event.source.properties.tags.has("Food") && event.source is Item && event.target.properties.tags.has("Creature")
+        //TODO - check event source, don't hardcode to player
+        return GameState.player.canInteract
+                && event.used is Item
+                && event.used.properties.tags.has("Food")
+                && event.target.properties.tags.has("Creature")
     }
 
     override fun execute(event: UseEvent) {
         val creature = event.target.getCreature()!!
-        EventManager.postEvent(EatFoodEvent(creature, event.source as Item))
+        EventManager.postEvent(EatFoodEvent(creature, event.used as Item))
     }
 
 }

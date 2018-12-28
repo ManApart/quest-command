@@ -24,7 +24,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Json inherits from other files in same folder?
 - Inherit object that's common to item and activator (burnable)?
 - Cleanup locationDescription constructor
-- Requiring default params breaks everything since params don't override other params, have to remove param satisfied test
+
 
 - follow param pattern with creatures
 
@@ -91,6 +91,14 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
     - Behavior/action to search inventory of an activator
 - Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
 
+
+### Interaction
+
+- Should check if source can interact, not be hardcoded to player
+  - Interact
+  - eat Food
+  - no use found
+  - ChopWood
 
 ### Inventory
 
@@ -170,7 +178,7 @@ Possible Stats
 - Check all targets reference valid events etc (triggers and trigger events)
 - Check all activator targets reference actual items / locations etc
 - Check all behavior receipies have params that match their assigned behaviors
-
+- Requiring default params breaks everything since params don't override other params, have to remove param satisfied test > is there another way to check variables at compile time?
 
 ### Misc / Unsorted
 - Readable behavior / item

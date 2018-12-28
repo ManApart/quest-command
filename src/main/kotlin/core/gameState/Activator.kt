@@ -40,7 +40,7 @@ class Activator(
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
 
     init {
-        properties.tags.remove("Creature")
+        this.properties.tags.remove("Creature")
     }
 
     override fun toString(): String {

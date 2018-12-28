@@ -12,17 +12,14 @@ import system.EventManager
 class UseOnFire : EventListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return if (event.source is Item && event.source.soul.hasStat("burnHealth")){
-            val soul = event.target.getSoul()
-            soul != null && soul.hasEffect("On Fire")
-        } else {
-            false
-        }
+        return event.used is Item
+                && event.used.soul.hasStat("burnHealth")
+                && event.target.getSoul()?.hasEffect("On Fire") ?: false
     }
 
     override fun execute(event: UseEvent) {
-        display("You place ${event.source.name} in the fire burning the ${event.target.name}.")
-        val item = (event.source as Item)
+        display("You place ${event.used.name} in the fire burning the ${event.target.name}.")
+        val item = (event.used as Item)
         EventManager.postEvent(AddEffectEvent(item, EffectManager.getEffect("Burning")))
         EventManager.postEvent(AddEffectEvent(item, EffectManager.getEffect("On Fire")))
     }

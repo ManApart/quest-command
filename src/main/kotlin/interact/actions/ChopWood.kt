@@ -12,16 +12,16 @@ class ChopWood : EventListener<UseEvent>() {
     private val chopHealth = "chopHealth"
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return if (GameState.player.canInteract && event.target is Activator) {
-            event.target.properties.tags.has("Wood") && event.target.creature.soul.hasStat(chopHealth) && event.source.properties.values.getInt("chopDamage", 0) != 0
-        } else {
-            false
-        }
+        return GameState.player.canInteract
+                && event.target is Activator
+                && event.target.properties.tags.has("Wood")
+                && event.target.creature.soul.hasStat(chopHealth)
+                && event.used.properties.values.getInt("chopDamage", 0) != 0
     }
 
     override fun execute(event: UseEvent) {
-        display("The ${event.source} hacks at ${event.target.name}.")
-            val damageDone = -event.source.properties.values.getInt("chopDamage", 0)
-            EventManager.postEvent(StatChangeEvent((event.target as Activator).creature, event.source.name, chopHealth, damageDone))
+        display("The ${event.used} hacks at ${event.target.name}.")
+        val damageDone = -event.used.properties.values.getInt("chopDamage", 0)
+        EventManager.postEvent(StatChangeEvent((event.target as Activator).creature, event.used.name, chopHealth, damageDone))
     }
 }

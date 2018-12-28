@@ -11,6 +11,7 @@ class Interact : EventListener<InteractEvent>() {
     }
 
     override fun execute(event: InteractEvent) {
+        //TODO - should check if event.source can interact
         if (GameState.player.canInteract) {
             event.target.consume(event)
         } else {

@@ -12,11 +12,10 @@ import system.EventManager
 class StartFire : EventListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return if (GameState.player.canInteract && event.target is Activator) {
-            event.source.properties.tags.has("Fire Starter") && event.target.properties.tags.has("Flammable")
-        } else {
-            false
-        }
+        return GameState.player.canInteract
+                && event.target is Activator
+                && event.used.properties.tags.has("Fire Starter")
+                && event.target.properties.tags.has("Flammable")
     }
 
     override fun execute(event: UseEvent) {

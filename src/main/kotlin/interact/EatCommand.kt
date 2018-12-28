@@ -34,7 +34,7 @@ class EatCommand : Command() {
             val food = ScopeManager.getScope().getItemIncludingPlayerInventory(argsString)
             if (food != null) {
                 if (food.properties.tags.has("food")){
-                    EventManager.postEvent(UseEvent(food, GameState.player))
+                    EventManager.postEvent(UseEvent(GameState.player.creature, food, GameState.player.creature))
                 } else {
                     display("${food.name} is inedible.")
                 }

@@ -175,6 +175,21 @@ Properties of note:
 Available after and available before default to the story event's stage, meaning the story event cannot be hit unless the event is the next stage in the quest.
 
 
+### Trigger Conditions
+
+Trigger Conditions evaluate when a looked for calling event is posted. It uses a combination of event params (values of the event variables) and queries to evaluate true or false.
+
+```
+"condition": {
+  "callingEvent": "UseEvent",
+  "eventParams": {
+    "used": "$used"
+  }
+},
+```
+Trigger conditions get the current values of the event properties and can use them for evaluation. For example, the used event has values `source`, `used`, and `target`. The above condition will trigger on any `UseEvent` because it's checking that the `used` property of the event matches its own value (`$used`).
+
+
 #### Querying Game State
 
 A Query object is used to evaluate a game value against a given value to see if the event should be executed. It contains the following fields
@@ -184,7 +199,7 @@ A Query object is used to evaluate a game value against a given value to see if 
 - The operator to evaluate `>, <, >=, <=, =, !=`
 - The value to compare against
 
-See the XXX class to see a list of queryable values and their parameters
+See the `GameStateQuery` class to see a list of queryable values and their parameters.
 
 ### Locations
 

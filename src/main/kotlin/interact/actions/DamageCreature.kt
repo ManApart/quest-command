@@ -11,12 +11,15 @@ import system.EventManager
 
 class DamageCreature : EventListener<UseEvent>() {
     override fun shouldExecute(event: UseEvent): Boolean {
-        return event.source is Item && event.source.properties.tags.has("Weapon") && event.target.hasCreature() && event.target.getCreature()!!.soul.hasStat(Stat.HEALTH)
+        return event.used is Item
+                && event.used.properties.tags.has("Weapon")
+                && event.target.hasCreature()
+                && event.target.getCreature()!!.soul.hasStat(Stat.HEALTH)
     }
 
     override fun execute(event: UseEvent) {
-        val item = event.source as Item
+        val item = event.used as Item
         val creature = event.target.getCreature()!!
-        EventManager.postEvent(StatChangeEvent(creature, event.source.name, "Health", -item.getDamage()))
+        EventManager.postEvent(StatChangeEvent(creature, event.used.name, "Health", -item.getDamage()))
     }
 }

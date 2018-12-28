@@ -84,7 +84,7 @@
         {
           "property": "Target",
           "params": [
-            "$source",
+            "$used",
             "Tags"
           ],
           "operator": "contains",
@@ -145,7 +145,7 @@
     "condition": {
       "callingEvent": "UseEvent",
       "eventParams": {
-        "source": "$sourceItem"
+        "used": "$sourceItem"
       }
     },
     "events": [

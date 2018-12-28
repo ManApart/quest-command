@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.getCreature
+import core.gameState.isPlayer
 import core.history.display
 import core.utility.StringFormatter
 import interact.EatFoodEvent
@@ -15,7 +16,7 @@ import system.EventManager
 class EatFood : EventListener<EatFoodEvent>() {
 
     override fun execute(event: EatFoodEvent) {
-        val target = StringFormatter.format(event.creature.parent == GameState.player, "You eat", event.creature.name +" eats")
+        val target = StringFormatter.format(event.creature.isPlayer(), "You eat", event.creature.name +" eats")
         display("$target ${event.food}")
         val healAmount = getHealAmount(event.food)
         EventManager.postEvent(StatChangeEvent(event.creature, event.food.name, "Health", healAmount))

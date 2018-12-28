@@ -6,10 +6,8 @@ import combat.slash.SlashEvent
 import combat.stab.StabEvent
 import core.events.Event
 import core.events.EventListener
-import core.gameState.BodyPart
-import core.gameState.Creature
+import core.gameState.*
 import core.gameState.Target
-import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
@@ -64,7 +62,7 @@ object AttackManager {
                 EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), Stat.HEALTH, -damageDone))
             }
         } else if (sourcePart.equippedItem != null) {
-            EventManager.postEvent(UseEvent(sourcePart.equippedItem!!, target))
+            EventManager.postEvent(UseEvent(GameState.player.creature, sourcePart.equippedItem!!, target))
         } else {
             display("Nothing happens.")
         }
