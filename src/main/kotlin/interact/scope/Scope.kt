@@ -8,6 +8,10 @@ import core.utility.NameSearchableList
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
 
+    fun isEmpty(): Boolean {
+        return targets.isEmpty()
+    }
+
     fun clear() {
         targets.clear()
     }

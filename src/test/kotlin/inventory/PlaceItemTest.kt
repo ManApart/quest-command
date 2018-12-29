@@ -5,6 +5,7 @@ import interact.scope.ScopeManager
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -19,7 +20,7 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item))
         assertTrue(scope.targetExists(item))
-        assertFalse(creature.inventory.exists(item))
+        assertFalse(creature.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -31,8 +32,24 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(chest.inventory.exists(item))
-        assertFalse(creature.inventory.exists(item))
+        assertTrue(chest.inventory.getItem(item.name) != null)
+        assertFalse(creature.inventory.getItem(item.name) != null)
+    }
+    
+    @Test
+    fun placeItemStackInContainer() {
+        val item = Item("Apple", weight = 5, count = 2)
+        val creature = Creature("Name", "")
+        val chest = Creature("Name", "", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
+        creature.inventory.add(item)
+
+        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+
+        assertTrue(chest.inventory.getItem(item.name) != null)
+        assertEquals(1, chest.inventory.getItem(item.name)!!.count)
+
+        assertTrue(creature.inventory.getItem(item.name) != null)
+        assertEquals(1, creature.inventory.getItem(item.name)!!.count)
     }
 
     @Test
@@ -45,8 +62,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(chest.inventory.exists(item))
-        assertFalse(creature.inventory.exists(item))
+        assertTrue(chest.inventory.getItem(item.name) != null)
+        assertFalse(creature.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -58,8 +75,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(creature.inventory.exists(item))
-        assertFalse(chest.inventory.exists(item))
+        assertTrue(creature.inventory.getItem(item.name) != null)
+        assertFalse(chest.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -71,8 +88,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(creature.inventory.exists(item))
-        assertFalse(chest.inventory.exists(item))
+        assertTrue(creature.inventory.getItem(item.name) != null)
+        assertFalse(chest.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -84,8 +101,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(creature.inventory.exists(item))
-        assertFalse(chest.inventory.exists(item))
+        assertTrue(creature.inventory.getItem(item.name) != null)
+        assertFalse(chest.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -97,8 +114,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(creature.inventory.exists(item))
-        assertFalse(chest.inventory.exists(item))
+        assertTrue(creature.inventory.getItem(item.name) != null)
+        assertFalse(chest.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -110,8 +127,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(chest.inventory.exists(item))
-        assertFalse(creature.inventory.exists(item))
+        assertTrue(chest.inventory.getItem(item.name) != null)
+        assertFalse(creature.inventory.getItem(item.name) != null)
     }
 
     @Test
@@ -123,8 +140,8 @@ class PlaceItemTest {
 
         PlaceItem().execute(PlaceItemEvent(creature, item, chest))
 
-        assertTrue(creature.inventory.exists(item))
-        assertFalse(chest.inventory.exists(item))
+        assertTrue(creature.inventory.getItem(item.name) != null)
+        assertFalse(chest.inventory.getItem(item.name) != null)
     }
 
 

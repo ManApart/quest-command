@@ -178,18 +178,40 @@
   },
   {
     "name": "Grain Chute",
-    "description": "Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below."
+    "description": "Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below.",
+    "properties": {
+      "tags": [
+        "Open",
+        "Container"
+      ],
+      "values": {
+        "Capacity": "3"
+      }
+    },
+    "behaviors": [
+      {
+        "name": "Mill",
+        "params": {
+          "sourceItem": "Wheat Bundle",
+          "resultItem": "Wheat Flour",
+          "resultItemLocation": "Windmill"
+        }
+      }
+    ]
   },
   {
     "name": "Grain Bin",
-    "description": "Place grain in the chute above to pick up the milled contents here."
+    "description": "Place grain in the chute above to pick up the milled contents here.",
+    "properties": {
+      "tags": [
+        "Open",
+        "Container"
+      ]
+    }
   },
   {
     "name": "Stairs Up",
     "description": "The stairs lead up to another floor.",
-    "params": {
-      "destination": "An Open Field"
-    },
     "climb": {
       "name": "Stairs",
       "destination": "$destination",
@@ -204,9 +226,6 @@
   {
     "name": "Stairs Down",
     "description": "The stairs lead down to another floor.",
-    "params": {
-      "destination": "An Open Field"
-    },
     "climb": {
       "name": "Stairs",
       "destination": "$destination",

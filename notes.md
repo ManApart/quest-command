@@ -31,6 +31,7 @@ Paramitization
 - replace non-parameratized $keys?
 - paramatize numbers/boolean like weight?
 - follow param pattern with creatures
+- Eventually param locations and location nodes. Ex: Location Node windmill can pass grain bin node location down to chute.
 
 ### Combat
 
@@ -108,6 +109,7 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 Item Containers
 - Any target that is a creature has an inventory
 - Looking at a creature will say what the creature has equipped (is wearing)
+- Pickup/Place commands have optional count for item stacks
 
 
 ### General UI

@@ -1,6 +1,6 @@
 package core.utility
 
-fun String.wrapNonEmpty(prefix: String, suffix: String) : String {
+fun String.wrapNonEmpty(prefix: String, suffix: String): String {
     return if (isBlank()) {
         this
     } else {
@@ -10,8 +10,9 @@ fun String.wrapNonEmpty(prefix: String, suffix: String) : String {
 
 fun String.apply(params: Map<String, String>): String {
     var modified = this
-    params.forEach {
-        modified = modified.replace("$${it.key}", it.value, true)
-    }
+    params.keys.sortedBy { -it.length }
+            .forEach {
+                modified = modified.replace("$$it", params[it]!!, true)
+            }
     return modified
 }

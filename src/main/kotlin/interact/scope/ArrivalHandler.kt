@@ -13,10 +13,11 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
 
         val location = event.destination.getLocation()
         val scope = ScopeManager.getScope(event.destination)
-        scope.clear()
-        scope.addTarget(GameState.player, listOf("me", "self"))
-        scope.addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
-        scope.addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
-        scope.addTargets(ItemManager.getItemsFromLocationTargets(location.items))
+        if (scope.isEmpty()) {
+            scope.addTarget(GameState.player, listOf("me", "self"))
+            scope.addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
+            scope.addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
+            scope.addTargets(ItemManager.getItemsFromLocationTargets(location.items))
+        }
     }
 }

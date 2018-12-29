@@ -29,9 +29,9 @@ class Inventory(itemNames: List<String> = listOf()) {
         }
     }
 
-    fun remove(item: Item) {
-        if (item.count > 1){
-            item.count--
+    fun remove(item: Item, count: Int = 1) {
+        if (item.count > count){
+            item.count -= count
         } else {
             items.remove(item)
         }

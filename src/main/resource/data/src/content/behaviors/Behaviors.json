@@ -143,22 +143,29 @@
   {
     "name": "Mill",
     "condition": {
-      "callingEvent": "UseEvent",
+      "callingEvent": "ItemPickedUpEvent",
       "eventParams": {
-        "used": "$sourceItem"
+        "item": "$sourceItem"
       }
     },
     "events": [
       {
         "className": "MessageEvent",
         "params": [
-          "The $sourceItem slides down the chute and is milled into resultItemName as it collects in the Grain Bin"
+          "The $sourceItem slides down the chute and is milled into $resultItem as it collects in the Grain Bin"
+        ]
+      },
+      {
+        "className": "RemoveItemEvent",
+        "params": [
+          "$source",
+          "$sourceItem"
         ]
       },
       {
         "className": "SpawnItemEvent",
         "params": [
-          "resultItemName",
+          "$resultItem",
           "1",
           "Grain Bin",
           "$resultItemLocation"

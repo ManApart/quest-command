@@ -51,7 +51,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
 
     private fun placeItem(event: PlaceItemEvent, destination: Creature) {
         event.source.inventory.remove(event.item)
-        destination.inventory.add(event.item)
+        destination.inventory.add(Item(event.item, 1))
         EventManager.postEvent(ItemPickedUpEvent(destination, event.item, event.silent))
     }
 

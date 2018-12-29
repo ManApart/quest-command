@@ -6,6 +6,7 @@ import core.gameState.Player
 import core.gameState.quests.QuestManager
 import core.history.ChatHistory
 import core.history.display
+import interact.scope.ScopeManager
 import system.location.LocationManager
 import travel.ArriveEvent
 
@@ -24,6 +25,7 @@ object GameManager {
         ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()
+        ScopeManager.reset()
 //        LocationManager.reset()
 
         newPlayer()

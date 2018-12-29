@@ -14,7 +14,7 @@ class SpawnItem : EventListener<ItemSpawnedEvent>() {
             ScopeManager.getScope(event.targetLocation).addTarget(event.item)
         } else {
             event.target.inventory.add(event.item)
-            EventManager.postEvent(ItemPickedUpEvent(event.target, event.item))
+            EventManager.postEvent(ItemPickedUpEvent(event.target, event.item, true))
         }
     }
 }

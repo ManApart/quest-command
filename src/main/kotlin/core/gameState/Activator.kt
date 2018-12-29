@@ -49,7 +49,7 @@ class Activator(
 
     fun evaluateAndExecute(event: Event) {
         behaviors.filter { it.evaluate(event) }
-                .forEach { it.execute(this) }
+                .forEach { it.execute(event, this) }
     }
 
 }

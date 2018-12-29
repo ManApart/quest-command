@@ -8,5 +8,8 @@ class ItemPickedUp : EventListener<ItemPickedUpEvent>() {
         if (!event.silent){
             display("${event.source.name} picked up ${event.item}.")
         }
+        if (event.source.canConsume(event)){
+            event.source.consume(event)
+        }
     }
 }

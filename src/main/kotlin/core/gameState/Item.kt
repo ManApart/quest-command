@@ -31,6 +31,11 @@ class Item(
             base.properties
     )
 
+    constructor(base: Item, count: Int) : this(base) {
+        this.count = count
+    }
+
+
     override val name = name.apply(params)
     override val description = description.apply(params)
     override val properties: Properties = Properties(properties, params)
@@ -53,7 +58,7 @@ class Item(
 
     fun evaluateAndExecute(event: Event) {
         behaviors.filter { it.evaluate(event) }
-                .forEach { it.execute(this) }
+                .forEach { it.execute(event, this) }
     }
 
     fun canEquipTo(body: Body): Boolean {

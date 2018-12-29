@@ -12,4 +12,36 @@ class StringHelperTest {
 
         assertEquals("1", base.apply(params))
     }
+
+    @Test
+    fun onlyEscapedVariablesReplaced() {
+        val base = "\$burnHealth burnHealth"
+        val params = mapOf("burnHealth" to "1")
+
+        assertEquals("1 burnHealth", base.apply(params))
+    }
+
+    @Test
+    fun variablesThatHaveTheSameStartAreProperlyReplaced() {
+        val base = "\$health \$healthCurrent"
+        val params = mapOf("health" to "2", "healthCurrent" to "1")
+
+        assertEquals("2 1", base.apply(params))
+    }
+
+    @Test
+    fun variableInMiddleOfStringIsReplaced() {
+        val base = "My stat is \$healthCurrent, health"
+        val params = mapOf("health" to "2", "healthCurrent" to "1")
+
+        assertEquals("My stat is 1, health", base.apply(params))
+    }
+
+    @Test
+    fun onlyTheCorrectVariableIsReplaced() {
+        val base = "\$sourceItem"
+        val params = mapOf("sourceItem" to "Wheat Bundle", "resultItem" to "Wheat Flour", "resultItemLocation" to "Windmill")
+
+        assertEquals("Wheat Bundle", base.apply(params))
+    }
 }

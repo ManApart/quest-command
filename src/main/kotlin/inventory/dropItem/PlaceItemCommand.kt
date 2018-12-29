@@ -10,7 +10,7 @@ import system.EventManager
 
 class PlaceItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Place", "Drop", "Give")
+        return arrayOf("Place", "Drop", "Give", "Put")
     }
 
     override fun getDescription(): String {
@@ -57,7 +57,7 @@ class PlaceItemCommand : core.commands.Command() {
         if (item != null) {
             val destination = ScopeManager.getScope().getTarget(args.argStrings[1])?.getCreature()
             if (destination != null) {
-                EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item, destination))
+                EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item, destination, true))
             } else {
                 display("Couldn't find ${args.argStrings[1]}")
             }
