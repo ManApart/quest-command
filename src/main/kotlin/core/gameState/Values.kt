@@ -40,20 +40,16 @@ class Values(properties: Map<String, String> = mapOf()) {
         return properties[key.toLowerCase()]?.split(delimiter) ?: default
     }
 
+    fun put(key: String, value: String) {
+        properties[key.toLowerCase()] = value
+    }
+
     fun matches(other: Values): Boolean {
         return properties.matches(other.properties)
     }
 
     fun hasAll(other: Values): Boolean {
         return properties.hasAllOf(other.properties)
-    }
-
-    fun inherit(parent: Values) {
-        parent.properties.forEach {
-            if (!properties.containsKey(it.key)) {
-                properties[it.key] = it.value
-            }
-        }
     }
 
     fun isEmpty(): Boolean {

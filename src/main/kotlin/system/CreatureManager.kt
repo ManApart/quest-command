@@ -2,6 +2,7 @@ package system
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import core.gameState.Activator
 import core.gameState.Creature
 import core.gameState.location.LocationTarget
 import core.utility.JsonDirectoryParser
@@ -20,7 +21,13 @@ object CreatureManager {
     }
 
     fun getCreaturesFromLocationTargets(targets: List<LocationTarget>) : List<Creature> {
-        return targets.map { Creature(creatures.get(it.name), it.params, it.location) }
+        return targets.map {
+            val creature = Creature(creatures.get(it.name), it.params)
+            if (!it.location.isNullOrBlank()) {
+                creature.properties.values.put("locationDescription", it.location!!)
+            }
+            creature
+        }
     }
 
 }

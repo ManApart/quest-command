@@ -11,19 +11,16 @@ class Activator(
         name: String,
         description: String = "Nothing interesting",
         params: Map<String, String> = mapOf(),
-        locationDescription: String? = null,
         climb: Climbable? = null,
         items: List<String> = listOf(),
         @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
         properties: Properties = Properties()
 
 ) : Target {
-    constructor(base: Activator, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
+    constructor(base: Activator, params: Map<String, String> = mapOf()) : this(
             base.name,
             base.description,
             params,
-            (locationDescription
-                    ?: base.locationDescription),
             base.climb,
             base.creature.inventory.getAllItems().map { it.name },
             base.behaviorRecipes,
@@ -34,7 +31,6 @@ class Activator(
     override val name: String get() = creature.name
     override val description: String get() = creature.description
     override val properties: Properties get() = creature.properties
-    override val locationDescription = locationDescription?.apply(params)
     val climb = climb?.let { Climbable(it, params) }
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)

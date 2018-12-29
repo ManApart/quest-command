@@ -12,7 +12,6 @@ import system.ItemManager
 class Item(
         name: String,
         description: String = "",
-        locationDescription: String? = null,
         params: Map<String, String> = mapOf(),
         val weight: Int = 0,
         var count: Int = 1,
@@ -21,11 +20,9 @@ class Item(
         properties: Properties = Properties()
 ) : Target {
 
-    constructor(base: Item, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
+    constructor(base: Item, params: Map<String, String> = mapOf()) : this(
             base.name,
             base.description,
-            (locationDescription
-                    ?: base.locationDescription),
             params,
             base.weight,
             base.count,
@@ -34,12 +31,8 @@ class Item(
             base.properties
     )
 
-    constructor(base: Item, locationDescription: String? = null) : this(base.name, base.description, locationDescription
-            ?: base.locationDescription, mapOf(), base.weight, base.count, base.equipSlots.map { it.bodyParts }, base.behaviorRecipes, Properties(base.properties))
-
     override val name = name.apply(params)
     override val description = description.apply(params)
-    override val locationDescription = locationDescription?.apply(params)
     override val properties: Properties = Properties(properties, params)
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val soul = Soul(this)

@@ -24,7 +24,11 @@ object ActivatorManager {
 
     fun getActivatorsFromLocationTargets(targets: List<LocationTarget>): List<Activator> {
         return targets.map {
-            Activator(activators.get(it.name), it.params, it.location)
+            val activator = Activator(activators.get(it.name), it.params)
+            if (!it.location.isNullOrBlank()) {
+                activator.properties.values.put("locationDescription", it.location!!)
+            }
+            activator
         }
     }
 

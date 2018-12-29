@@ -11,7 +11,6 @@ import system.location.LocationManager
 class Creature(
         override val name: String,
         override val description: String,
-        override val locationDescription: String? = null,
         val body: Body = Body(),
         var location: LocationNode = LocationManager.NOWHERE_NODE,
         ai: String? = null,
@@ -24,17 +23,14 @@ class Creature(
     constructor(
             name: String,
             description: String,
-            locationDescription: String? = null,
             body: String, ai: String?,
             properties: Properties = Properties(),
             items: List<String>
-    ) : this(name, description, locationDescription, BodyManager.getBody(body), ai = ai, inventory = Inventory(items), properties = properties)
+    ) : this(name, description, BodyManager.getBody(body), ai = ai, inventory = Inventory(items), properties = properties)
 
-    constructor(base: Creature, params: Map<String, String> = mapOf(), locationDescription: String? = null) : this(
+    constructor(base: Creature, params: Map<String, String> = mapOf()) : this(
             base.name.apply(params),
             base.description.apply(params),
-            (locationDescription
-                    ?: base.locationDescription)?.apply(params),
             base.body,
             base.location,
             base.ai?.name,

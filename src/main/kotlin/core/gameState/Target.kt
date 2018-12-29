@@ -6,7 +6,6 @@ import core.utility.Named
 interface Target : Named {
     val description: String
     val properties: Properties
-    val locationDescription: String?
 
     fun canConsume(event: Event) : Boolean {
         return if (this is Activator) {
@@ -48,7 +47,8 @@ fun targetsToString(targets: List<Target>) : String {
 }
 
 fun Target.getDisplayName() : String {
-    return name + if (locationDescription.isNullOrBlank()){
+    val locationDescription = properties.values.getString("locationDescription")
+    return name + if (locationDescription.isBlank()){
         ""
     } else {
         " $locationDescription"

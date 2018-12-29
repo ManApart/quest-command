@@ -23,12 +23,6 @@ data class Properties(val tags: Tags = Tags(), val values: Values = Values(), va
         return tags.hasAll(other.tags) && values.hasAll(other.values) && stats.hasAll(other.stats)
     }
 
-    fun inherit(parent: Properties) {
-        tags.inherit(parent.tags)
-        values.inherit(parent.values)
-        stats.inherit(parent.stats)
-    }
-
     fun isEmpty(): Boolean {
         return tags.isEmpty() && values.isEmpty() && stats.isEmpty()
     }

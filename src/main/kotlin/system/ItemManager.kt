@@ -1,6 +1,7 @@
 package system
 
 import core.events.EventListener
+import core.gameState.Activator
 import core.gameState.Item
 import core.gameState.location.LocationTarget
 import core.history.display
@@ -42,7 +43,11 @@ object ItemManager {
 
     fun getItemsFromLocationTargets(targets: List<LocationTarget>): List<Item> {
         return targets.map {
-            Item(items.get(it.name), it.params, it.location)
+            val item = Item(items.get(it.name), it.params)
+            if (!it.location.isNullOrBlank()) {
+                item.properties.values.put("locationDescription", it.location!!)
+            }
+            item
         }
     }
 }

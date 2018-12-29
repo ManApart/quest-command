@@ -41,14 +41,6 @@ class Tags(tags: List<String> = listOf()) {
         return hasAll(other) && other.hasAll(this)
     }
 
-    fun inherit(parent: Tags) {
-        parent.lowerCaseTags().forEach {
-            if (!lowerCaseTags().contains(it)) {
-                tags.add(it)
-            }
-        }
-    }
-
     fun isEmpty(): Boolean {
         return tags.isEmpty()
     }
