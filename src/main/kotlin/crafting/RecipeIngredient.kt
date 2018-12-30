@@ -2,6 +2,7 @@ package crafting
 
 import core.gameState.Item
 import core.gameState.Tags
+import core.utility.wrapNonEmpty
 import java.lang.IllegalArgumentException
 
 data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
@@ -24,7 +25,7 @@ data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
     }
 
     fun read() : String {
-        return (name ?: "Something") + " (${tags.getAll().joinToString(", ")})"
+        return (name ?: "Something") + tags.toString().wrapNonEmpty(" (", ")")
     }
 
 }

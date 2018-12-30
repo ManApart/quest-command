@@ -2,6 +2,7 @@ package crafting
 
 import core.gameState.Item
 import core.gameState.Tags
+import core.utility.wrapNonEmpty
 import system.ItemManager
 
 data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsAdded: Tags = Tags(), val tagsRemoved: Tags = Tags()) {
@@ -35,7 +36,7 @@ data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsA
     }
 
     fun read() : String {
-        return (name ?: "Something") + " (${tagsAdded.getAll().joinToString(", ")})"
+        return (name ?: "Something") + tagsAdded.toString().wrapNonEmpty(" (", ")")
     }
 
 }

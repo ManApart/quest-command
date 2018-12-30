@@ -8,7 +8,7 @@ import system.EventManager
 
 class StatusCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Status")
+        return arrayOf("Status", "Info")
     }
 
     override fun getDescription(): String {

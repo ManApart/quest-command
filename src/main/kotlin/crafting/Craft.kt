@@ -18,7 +18,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
 
             removeIngredients(event.source.inventory, ingredients)
             addResults(results, event)
-            discoverRecipe(event.source, event.recipe)
+            EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))
 //            TODO - Add XP
             display("You ${event.recipe.craftVerb} ${ingredients.joinToString(", ") { it.name }} and get ${results.joinToString(", ") {it.getTaggedItemName()}}.")
         } else {
@@ -37,15 +37,5 @@ class Craft : EventListener<CraftRecipeEvent>() {
             EventManager.postEvent(PickupItemEvent(event.source, it, null,true))
         }
     }
-
-    private fun discoverRecipe(source: Creature, recipe: Recipe) {
-        if (source == GameState.player.creature) {
-            if (!GameState.player.knownRecipes.contains(recipe)) {
-                GameState.player.knownRecipes.add(recipe)
-                display("You've discovered how to make ${recipe.name}!")
-            }
-        }
-    }
-
 
 }

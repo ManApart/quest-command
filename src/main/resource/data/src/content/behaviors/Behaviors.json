@@ -172,5 +172,32 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Learn Recipe",
+    "condition": {
+      "callingEvent": "InteractEvent"
+    },
+    "events": [
+      {
+        "className": "RemoveItemEvent",
+        "params": [
+          "$source",
+          "$sourceItem"
+        ]
+      },
+      {
+        "className": "RemoveScopeEvent",
+        "params": [
+          "$sourceItem"
+        ]
+      },
+      {
+        "className": "DiscoverRecipeEvent",
+        "params": [
+          "$recipe"
+        ]
+      }
+    ]
   }
 ]

@@ -1,6 +1,5 @@
 package core.gameState.stat
 
-import core.gameState.Creature
 import core.gameState.Target
 import status.LevelUpEvent
 import status.statChanged.StatMaxedEvent
@@ -11,23 +10,24 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
     var baseMax: Int = calcMax(); private set
     var boostedMax = baseMax; private set
     var current: Int = boostedMax; private set
-    private var exp: Double = getEXPAt(level)
+    private var xp: Double = getXPAt(level)
 
     fun addEXP(amount: Int) {
         if (amount > 0) {
-            exp += amount
+            xp += amount
 
             val oldLevel = level
             determineLevel()
             if (level > oldLevel) {
                 baseMax = calcMax()
+                boostedMax = baseMax
                 EventManager.postEvent(LevelUpEvent(parent, this, level))
             }
         }
     }
 
     fun levelUp(times: Int = 1) {
-        val xp = getEXPAt(level + times)
+        val xp = getXPAt(level + times)
         addEXP(xp.toInt())
     }
 
@@ -55,7 +55,7 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
     }
 
     fun setLevel(desiredLevel: Int) {
-        exp = 0.toDouble()
+        xp = 0.toDouble()
         level = 0
         baseMax = 0
         current = 0
@@ -66,7 +66,7 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
     }
 
     private fun determineLevel() {
-        while (exp >= getNextLevelEXP()) {
+        while (xp >= getNextLevelXP()) {
             level++
         }
     }
@@ -75,12 +75,16 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
         return level * maxMultiplier
     }
 
-    private fun getEXPAt(level: Int): Double {
+    private fun getXPAt(level: Int): Double {
         return Math.pow(level.toDouble(), expExponential.toDouble())
     }
 
-    private fun getNextLevelEXP(): Double {
-        return getEXPAt(level + 1)
+    fun getCurrentXP() : Double {
+        return xp
+    }
+
+    fun getNextLevelXP(): Double {
+        return getXPAt(level + 1)
     }
 
     companion object {

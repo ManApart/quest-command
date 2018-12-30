@@ -9,6 +9,7 @@ import org.junit.Test
 import system.EventManager
 import system.GameManager
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class CommandComboTest {
 
@@ -29,14 +30,16 @@ class CommandComboTest {
     fun sliceApple() {
         val input = "use dagger on apple"
         CommandParser.parseCommand(input)
-        assertEquals("You slice Apple and get Sliced Apple.", ChatHistory.getLastOutput())
+        assertTrue(GameState.player.creature.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.creature.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
     }
 
     @Test
     fun roastApple() {
-        val input = "w && s && pickup tinder box && n && e && n && use tinder on tree && pickup apple && use apple on tree"
+        val input = "w && s && pickup tinder box && n && e && n && use tinder on tree && use apple on tree"
         CommandParser.parseCommand(input)
-        assertEquals("You roast Apple and get Roasted Apple.", ChatHistory.getLastOutputs()[ChatHistory.getLastOutputs().size-3])
+        assertTrue(GameState.player.creature.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.creature.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
     }
 
     @Test
@@ -46,7 +49,8 @@ class CommandComboTest {
 
         val input = "w && s && cook apple on range"
         CommandParser.parseCommand(input)
-        assertEquals("You cook Apple and get Cooked Apple.", ChatHistory.getLastOutput())
+        assertTrue(GameState.player.creature.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.creature.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
     }
 
     @Test
@@ -85,15 +89,15 @@ class CommandComboTest {
         assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
     }
 
-//    @Test
-//    fun makePie() {
-//        val input = "slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
-//                "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
-//                "&& t tree && t && take apple and use dagger on apple" +
-//                "&& t interior && t && t && take pie tin" +
-//                "&& craft apple pie"
-//        CommandParser.parseCommand(input)
-//        assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
-//    }
+    @Test
+    fun makePie() {
+        val input = "slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
+                "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
+                "&& use dagger on apple" +
+                "&& t interior && t && t && take pie tin" +
+                "&& read recipe && rest && craft apple pie"
+        CommandParser.parseCommand(input)
+        assertEquals("You bake Apple, Pie Tin, Dough and get Apple Pie.", ChatHistory.getLastOutput())
+    }
 
 }

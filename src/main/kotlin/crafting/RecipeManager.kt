@@ -14,7 +14,7 @@ object RecipeManager {
         recipes = parser.loadRecipes()
     }
 
-    private fun getRecipe(name: String): Recipe {
+    fun getRecipe(name: String): Recipe {
         return recipes.get(name)
     }
 

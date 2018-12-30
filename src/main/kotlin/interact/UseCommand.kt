@@ -11,7 +11,7 @@ import system.EventManager
 class UseCommand : Command() {
     private val delimiters = listOf("to", "with", "on")
     override fun getAliases(): Array<String> {
-        return arrayOf("Use", "u")
+        return arrayOf("Use", "u", "Read")
     }
 
     override fun getDescription(): String {

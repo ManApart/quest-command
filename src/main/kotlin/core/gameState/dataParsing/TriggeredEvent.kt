@@ -7,6 +7,9 @@ import core.gameState.quests.CompleteQuestEvent
 import core.gameState.quests.QuestManager
 import core.gameState.quests.SetQuestStageEvent
 import core.utility.apply
+import crafting.DiscoverRecipeEvent
+import crafting.Recipe
+import crafting.RecipeManager
 import explore.RestrictLocationEvent
 import interact.scope.*
 import status.effects.AddEffectEvent
@@ -25,6 +28,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             //TODO - Add effect event is very brittle
             AddEffectEvent::class.simpleName -> EventManager.postEvent(AddEffectEvent(ScopeManager.getScope().getTarget(params[0]) as Creature, EffectManager.getEffect(params[1])))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
+            DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player.creature, getRecipe(0)))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getLocationNode(params[0]), LocationManager.getLocationNode(params[1]), getParamBoolean(2)))
             RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(0), getItemOrParent(1, getTargetCreatureOrPlayer(0), parent)))
@@ -69,6 +73,11 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     private fun getItemOrParent(paramNumber: Int, source: Creature, parent: Target): Item {
         val param = getParam(paramNumber, "none")
         return source.inventory.getItem(param) ?: parent as Item
+    }
+
+    private fun getRecipe(paramNumber: Int): Recipe {
+        val param = getParam(paramNumber, "none")
+        return RecipeManager.getRecipe(param)
     }
 
     private fun getParam(i: Int, default: String): String {

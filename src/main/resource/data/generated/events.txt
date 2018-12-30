@@ -11,7 +11,7 @@ status.LevelUpEvent
 interact.scope.RemoveItemEvent
 system.gameTick.GameTickEvent
 status.ExpGainedEvent
-system.MessageEvent
+crafting.DiscoverRecipeEvent
 core.gameState.quests.CompleteQuestEvent
 inventory.unEquipItem.UnEquipItemEvent
 interact.scope.RemoveScopeEvent
@@ -22,13 +22,14 @@ inventory.dropItem.PlaceItemEvent
 status.StatusEvent
 inventory.dropItem.ItemDroppedEvent
 interact.UseEvent
-travel.ArriveEvent
+status.statChanged.StatMinnedEvent
 status.journal.ViewQuestJournalEvent
+travel.ArriveEvent
 core.gameState.quests.QuestStageUpdatedEvent
 travel.climb.ClimbJourneyEvent
 combat.slash.SlashEvent
 status.statChanged.StatChangeEvent
-status.statChanged.StatMinnedEvent
+inventory.pickupItem.ItemPickedUpEvent
 explore.RestrictLocationEvent
 status.effects.EffectAppliedEvent
 inventory.unEquipItem.ItemUnEquippedEvent
@@ -46,7 +47,7 @@ status.effects.RemoveEffectEvent
 inventory.equipItem.EquipItemEvent
 inventory.ListInventoryEvent
 interact.scope.SpawnItemEvent
-inventory.pickupItem.ItemPickedUpEvent
+system.MessageEvent
 travel.TravelStartEvent
 status.statChanged.StatBoostEvent
 status.effects.AddEffectEvent
