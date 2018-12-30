@@ -34,6 +34,10 @@
       {
         "name": "Tinder Box",
         "location": "on the range"
+      },
+      {
+        "name": "Pie Tin",
+        "location": "on the range"
       }
     ],
     "activators": [

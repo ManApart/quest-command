@@ -27,7 +27,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getLocationNode(params[0]), LocationManager.getLocationNode(params[1]), getParamBoolean(2)))
-            RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreature(0), getItemOrParent(1, getTargetCreature(0), parent)))
+            RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(0), getItemOrParent(1, getTargetCreatureOrPlayer(0), parent)))
             RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
             SetQuestStageEvent::class.simpleName -> EventManager.postEvent(SetQuestStageEvent(QuestManager.quests.get(params[0]), getParamInt(1)))
             SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0]), getParamBoolean(1)))
@@ -57,9 +57,13 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         }
     }
 
-    private fun getTargetCreature(paramNumber: Int, location: LocationNode? = null): Creature {
+    private fun getTargetCreatureOrPlayer(paramNumber: Int, location: LocationNode? = null): Creature {
+        return getTargetCreature(paramNumber, location) ?: GameState.player.creature
+    }
+
+    private fun getTargetCreature(paramNumber: Int, location: LocationNode? = null): Creature? {
         val param = getParam(paramNumber, "none")
-        return ScopeManager.getScope(location).getTarget(param)?.getCreature() ?: GameState.player.creature
+        return ScopeManager.getScope(location).getTarget(param)?.getCreature()
     }
 
     private fun getItemOrParent(paramNumber: Int, source: Creature, parent: Target): Item {

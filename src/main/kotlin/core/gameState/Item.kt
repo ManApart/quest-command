@@ -92,7 +92,11 @@ class Item(
     fun getTaggedItemName(): String {
         val orig = ItemManager.getItem(name)
         val newTags = properties.tags.getAll() - orig.properties.tags.getAll()
-        return newTags.joinToString(" ") + " " + name
+        return if (newTags.isNotEmpty()){
+            newTags.joinToString(" ") + " " + name
+        } else {
+            name
+        }
     }
 
 }

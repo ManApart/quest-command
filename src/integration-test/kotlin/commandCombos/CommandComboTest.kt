@@ -85,4 +85,15 @@ class CommandComboTest {
         assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
     }
 
+//    @Test
+//    fun makePie() {
+//        val input = "slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
+//                "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
+//                "&& t tree && t && take apple and use dagger on apple" +
+//                "&& t interior && t && t && take pie tin" +
+//                "&& craft apple pie"
+//        CommandParser.parseCommand(input)
+//        assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
+//    }
+
 }

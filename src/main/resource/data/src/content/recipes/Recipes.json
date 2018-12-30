@@ -109,7 +109,7 @@
     "name": "Dough",
     "craftVerb": "mix",
     "ingredients": [
-      "Wheat",
+      "Wheat Flour",
       "Bucket of Water"
     ],
     "results": [
