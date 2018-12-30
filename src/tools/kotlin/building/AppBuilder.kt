@@ -1,3 +1,4 @@
+@file:JvmName("AppBuilder")
 package building
 
 import building.json.JsonGenerator

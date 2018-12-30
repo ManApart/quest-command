@@ -1,25 +1,35 @@
 package travel.climb
 
-import core.gameState.Direction
 import core.gameState.Target
 import core.gameState.climb.ClimbPath
 import core.gameState.climb.ClimbSegment
 import core.gameState.location.LocationNode
 import core.history.display
-import system.EventManager
 
-class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, upwards: Boolean, private val path: ClimbPath) {
+class ClimbJourney(val target: Target, origin: LocationNode, destination: LocationNode, val initialDirection: Boolean, private val path: ClimbPath) {
     private var step = 0
-    private var lastDirectionWasUp = upwards
-    val top = if (upwards) {
+    private var lastDirectionWasUp = initialDirection
+    val top = if (initialDirection) {
         destination
     } else {
         origin
     }
-    val bottom = if (upwards) {
+    val bottom = if (initialDirection) {
         origin
     } else {
         destination
+    }
+
+    fun isOneStepJourney() : Boolean {
+        return path.segments.size == 1
+    }
+
+    fun getInitialDestination() : LocationNode {
+        return if (initialDirection) {
+            top
+        } else {
+            bottom
+        }
     }
 
     private fun hasSegment(step: Int): Boolean {
@@ -126,7 +136,7 @@ class ClimbJourney(val target: Target, origin: LocationNode, destination: Locati
         return distance
     }
 
-    private fun getTotalDistance(): Int {
+    fun getTotalDistance(): Int {
         return getDistance(path.getTop())
     }
 

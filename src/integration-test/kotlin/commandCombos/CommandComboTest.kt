@@ -80,7 +80,7 @@ class CommandComboTest {
 
     @Test
     fun millFlour() {
-        val input = "slash wheat && pickup wheat && ne && a && a && a && a && place wheat in chute && d && d && d && d && take wheat from bin"
+        val input = "slash wheat && pickup wheat && ne && a && a && place wheat in chute && d && d && take wheat from bin"
         CommandParser.parseCommand(input)
         assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
     }

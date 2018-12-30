@@ -45,7 +45,10 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     }
 
     private fun getLocation(paramNumber: Int): LocationNode? {
-        val param = getParam(paramNumber, "none")
+        val param = getParam(paramNumber, "")
+        if (param.isBlank()){
+            return null
+        }
         val location = LocationManager.findLocation(param)
         return if (location == LocationManager.NOWHERE_NODE) {
             null

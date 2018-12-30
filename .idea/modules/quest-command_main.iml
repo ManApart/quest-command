@@ -32,7 +32,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resource" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../src/main/resource/data/generated" />
     </content>
-    <content url="file://$MODULE_DIR$/../../src/tools">
+    <content url="file://$MODULE_DIR$/../../src/tools/kotlin">
       <sourceFolder url="file://$MODULE_DIR$/../../src/tools/kotlin" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />

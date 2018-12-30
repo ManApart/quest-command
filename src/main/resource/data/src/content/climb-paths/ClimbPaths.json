@@ -30,19 +30,13 @@
     ]
   },
   {
-    "name": "Stairs",
+    "name": "One Step",
     "segments": [
       {
         "id": 1,
         "level": 1,
         "distance": 1,
         "bottom": true,
-        "higherSegments": [2]
-      },
-      {
-        "id": 2,
-        "level": 1,
-        "distance": 1,
         "top": true
       }
     ]

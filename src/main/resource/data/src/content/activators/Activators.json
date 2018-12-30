@@ -213,7 +213,7 @@
     "name": "Stairs Up",
     "description": "The stairs lead up to another floor.",
     "climb": {
-      "name": "Stairs",
+      "name": "One Step",
       "destination": "$destination",
       "upwards": true
     },
@@ -227,7 +227,7 @@
     "name": "Stairs Down",
     "description": "The stairs lead down to another floor.",
     "climb": {
-      "name": "Stairs",
+      "name": "One Step",
       "destination": "$destination",
       "upwards": false
     },

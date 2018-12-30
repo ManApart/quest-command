@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/quest-command_integrationTest.iml" filepath="$PROJECT_DIR$/.idea/modules/quest-command_integrationTest.iml" group="quest-command" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/quest-command_main.iml" filepath="$PROJECT_DIR$/.idea/modules/quest-command_main.iml" group="quest-command" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/quest-command_test.iml" filepath="$PROJECT_DIR$/.idea/modules/quest-command_test.iml" group="quest-command" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/quest-command_tools.iml" filepath="$PROJECT_DIR$/.idea/modules/quest-command_tools.iml" group="quest-command" />
     </modules>
   </component>
 </project>

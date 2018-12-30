@@ -6,6 +6,7 @@
       <module name="quest-command_intTest" target="1.8" />
       <module name="quest-command_main" target="1.8" />
       <module name="quest-command_test" target="1.8" />
+      <module name="quest-command_tools" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
