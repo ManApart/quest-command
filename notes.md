@@ -83,12 +83,7 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
   - Burn if not enough skill
   - Gain xp for cooking
   - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)' - use burning effect?
-  - Implement getting grain as a quest?
-    - behavior that when item with tag added, it adds item to other activator?
-    - Will need persistence across locations
-    - Behavior/action to search inventory of an activator
 - Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
-
 
 ### Interaction
 
@@ -157,7 +152,6 @@ Possible Stats
 * Main story about npc realizing they are inside a construct
 * Realizes that maybe there are other verbs that he’s not capable of thinking of. (NPCs would never think to skin the bark of a tree because that’s not in the game, etc)
 * Magic is based on the understanding of the construct
-
 
 ### Travel
 
