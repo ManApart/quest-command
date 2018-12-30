@@ -15,9 +15,17 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
         val scope = ScopeManager.getScope(event.destination)
         if (scope.isEmpty()) {
             scope.addTarget(GameState.player, listOf("me", "self"))
-            scope.addTargets(ActivatorManager.getActivatorsFromLocationTargets(location.activators))
-            scope.addTargets(CreatureManager.getCreaturesFromLocationTargets(location.creatures))
-            scope.addTargets(ItemManager.getItemsFromLocationTargets(location.items))
+
+            val activators = ActivatorManager.getActivatorsFromLocationTargets(location.activators)
+            activators.forEach { it.creature.location = event.destination }
+            scope.addTargets(activators)
+
+            val creatures = CreatureManager.getCreaturesFromLocationTargets(location.creatures)
+            creatures.forEach { it.location = event.destination }
+            scope.addTargets(creatures)
+
+            val items = ItemManager.getItemsFromLocationTargets(location.items)
+            scope.addTargets(items)
         }
     }
 }
