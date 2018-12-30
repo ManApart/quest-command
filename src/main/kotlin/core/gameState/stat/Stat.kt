@@ -7,9 +7,8 @@ import status.statChanged.StatMinnedEvent
 import system.EventManager
 
 class Stat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
-    var baseMax: Int = calcMax(); private set
-    var boostedMax = baseMax; private set
-    var current: Int = boostedMax; private set
+    var max: Int = getBaseMaxAtCurrentLevel(); private set
+    var current: Int = max; private set
     private var xp: Double = getXPAt(level)
 
     fun addEXP(amount: Int) {
@@ -19,8 +18,7 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
             val oldLevel = level
             determineLevel()
             if (level > oldLevel) {
-                baseMax = calcMax()
-                boostedMax = baseMax
+                max++
                 EventManager.postEvent(LevelUpEvent(parent, this, level))
             }
         }
@@ -33,11 +31,11 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
 
     fun incStat(amount: Int) {
         if (amount != 0) {
-            current = Math.max(Math.min(current + amount, boostedMax), 0)
+            current = Math.max(Math.min(current + amount, max), 0)
 
             if (current == 0) {
                 EventManager.postEvent(StatMinnedEvent(parent, name))
-            } else if (current == boostedMax) {
+            } else if (current == max) {
                 EventManager.postEvent(StatMaxedEvent(parent, name))
             }
         }
@@ -45,8 +43,8 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
 
     fun incStatMax(amount: Int) {
         if (amount != 0) {
-            boostedMax = Math.max(boostedMax + amount, 0)
-            current = Math.min(boostedMax, current)
+            max = Math.max(max + amount, 0)
+            current = Math.min(max, current)
 
             if (current == 0) {
                 EventManager.postEvent(StatMinnedEvent(parent, name))
@@ -57,9 +55,8 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
     fun setLevel(desiredLevel: Int) {
         xp = 0.toDouble()
         level = 0
-        baseMax = 0
+        max = 0
         current = 0
-        boostedMax = 0
         levelUp(desiredLevel)
         incStatMax(desiredLevel)
         incStat(desiredLevel)
@@ -71,7 +68,7 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
         }
     }
 
-    private fun calcMax(): Int {
+    fun getBaseMaxAtCurrentLevel(): Int {
         return level * maxMultiplier
     }
 

@@ -25,7 +25,7 @@ class Status : EventListener<StatusEvent>() {
         val soul = event.creature.soul
         val subject = StringFormatter.getSubjectPossessive(event.creature)
         val statString = soul.getStats().asSequence().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") {
-            "${it.name.capitalize()}: ${it.current}/${it.baseMax} (${it.getCurrentXP().toInt()}/${it.getNextLevelXP().toInt()}xp)"
+            "${it.name.capitalize()}: ${it.current}/${it.max} (${it.getCurrentXP().toInt()}/${it.getNextLevelXP().toInt()}xp)"
         }
         display("$subject stats are:\n\t$statString")
     }

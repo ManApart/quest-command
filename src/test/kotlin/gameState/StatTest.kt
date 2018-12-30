@@ -27,7 +27,7 @@ class StatTest {
     fun incMaxStatCannotBeLowerThan0() {
         val stat = Stat(statName, parent)
         stat.incStatMax(-10)
-        assertEquals(0, stat.boostedMax)
+        assertEquals(0, stat.max)
     }
 
     @Test

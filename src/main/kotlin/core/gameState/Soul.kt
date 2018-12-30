@@ -40,7 +40,7 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
     }
 
     fun getTotal(name: String): Int {
-        return getStatOrNull(name)?.boostedMax ?: 0
+        return getStatOrNull(name)?.max ?: 0
     }
 
     private fun getOrCreateStat(name: String): Stat {

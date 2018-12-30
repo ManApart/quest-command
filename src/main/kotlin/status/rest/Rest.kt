@@ -17,6 +17,6 @@ class Rest : EventListener<RestEvent>() {
 
     private fun isRecoverable(stat: Stat): Boolean {
         return stat.name != Stat.HEALTH
-                && stat.current < stat.boostedMax
+                && stat.current < stat.max
     }
 }
