@@ -20,6 +20,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Create a git wiki and move readme information to more sorted format?
 - Validate valid recipe ingredients and results
 - make target class instead of interface?
+- Break triggered event class out into multiple classes
 
 Json
 - Json inherits from other files in same folder?

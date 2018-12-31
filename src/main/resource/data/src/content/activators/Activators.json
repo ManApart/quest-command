@@ -170,11 +170,23 @@
     "name": "Range",
     "description": "The old metal is pitted, but its belly glows a contented orange.",
     "properties": {
+      "stats": {
+        "burnHealth": "2"
+      },
       "tags": [
         "Metal",
+        "Flammable",
         "Range"
       ]
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Burn Out",
+        "params": {
+          "burnHealth": "2"
+        }
+      }
+    ]
   },
   {
     "name": "Grain Chute",

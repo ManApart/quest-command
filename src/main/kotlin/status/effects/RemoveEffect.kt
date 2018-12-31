@@ -11,6 +11,6 @@ class RemoveEffect: EventListener<RemoveEffectEvent>() {
 
     override fun execute(event: RemoveEffectEvent) {
         val soul = event.target.getSoul()!!
-        soul.effects.remove(event.effect)
+        soul.effects.remove(soul.getEffectOrNull(event.effect.name))
     }
 }

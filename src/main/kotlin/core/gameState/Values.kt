@@ -60,4 +60,8 @@ class Values(properties: Map<String, String> = mapOf()) {
         return properties.toMap()
     }
 
+    fun setFrom(other: Values) {
+        other.properties.forEach { properties[it.key] = it.value }
+    }
+
 }

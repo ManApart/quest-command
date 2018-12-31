@@ -21,6 +21,10 @@ class Tags(tags: List<String> = listOf()) {
         }
     }
 
+    fun addAll(other: Tags) {
+        other.tags.forEach { add(it) }
+    }
+
     fun remove(tag: String) {
         tags.remove(tag)
     }
@@ -52,4 +56,5 @@ class Tags(tags: List<String> = listOf()) {
     private fun lowerCaseTags(): List<String> {
         return tags.asSequence().map { it.toLowerCase() }.toList()
     }
+
 }

@@ -86,5 +86,15 @@ class TagsTest {
         assertEquals("Apple", tag.getAll()[0])
     }
 
+    @Test
+    fun setFrom() {
+        val tag = Tags(listOf("Apple"))
+        val other = Tags(listOf("Pear"))
+        tag.addAll(other)
+        assertEquals(2, tag.getAll().size)
+        assertEquals("Apple", tag.getAll()[0])
+        assertEquals("Pear", tag.getAll()[1])
+    }
+
 
 }

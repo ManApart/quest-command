@@ -22,14 +22,15 @@ inventory.dropItem.PlaceItemEvent
 status.StatusEvent
 inventory.dropItem.ItemDroppedEvent
 interact.UseEvent
-status.statChanged.StatMinnedEvent
+inventory.pickupItem.ItemPickedUpEvent
 status.journal.ViewQuestJournalEvent
+status.statChanged.StatMinnedEvent
 travel.ArriveEvent
 core.gameState.quests.QuestStageUpdatedEvent
 travel.climb.ClimbJourneyEvent
 combat.slash.SlashEvent
 status.statChanged.StatChangeEvent
-inventory.pickupItem.ItemPickedUpEvent
+core.gameState.SetPropertiesEvent
 explore.RestrictLocationEvent
 status.effects.EffectAppliedEvent
 inventory.unEquipItem.ItemUnEquippedEvent

@@ -77,6 +77,39 @@
     ]
   },
   {
+    "name": "Burn Out",
+    "condition": {
+      "callingEvent": "StatMinnedEvent",
+      "eventParams": {
+        "stat": "burnHealth"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "The $target smolders out and needs to be relit."
+        ]
+      },
+      {
+        "className": "RemoveEffectEvent",
+        "params": [
+          "$target",
+          "On Fire"
+        ]
+      },
+      {
+        "className": "StatChangeEvent",
+        "params": [
+          "$target",
+          "lighting",
+          "burnHealth",
+          "$burnHealth"
+        ]
+      }
+    ]
+  },
+  {
     "name": "Slash Harvest",
     "condition": {
       "callingEvent": "UseEvent",

@@ -27,6 +27,12 @@ data class Properties(val tags: Tags = Tags(), val values: Values = Values(), va
         return tags.isEmpty() && values.isEmpty() && stats.isEmpty()
     }
 
+    fun setFrom(other: Properties) {
+        stats.setFrom(other.stats)
+        tags.addAll(other.tags)
+        values.setFrom(other.values)
+    }
+
     private fun matchesStats(other: Properties): Boolean {
         return stats.matches(other.stats)
     }

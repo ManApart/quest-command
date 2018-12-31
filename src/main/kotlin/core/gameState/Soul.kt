@@ -54,7 +54,7 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
-    private fun getEffectOrNull(name: String): Effect? {
+    fun getEffectOrNull(name: String): Effect? {
         return effects.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
