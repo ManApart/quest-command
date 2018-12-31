@@ -9,6 +9,7 @@ import org.junit.Test
 import system.EventManager
 import system.GameManager
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CommandComboTest {
@@ -95,9 +96,10 @@ class CommandComboTest {
                 "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple" +
                 "&& t interior && t && t && take pie tin" +
-                "&& read recipe && rest && craft apple pie"
+                "&& read recipe && rest" +
+                "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
-        assertEquals("You bake Apple, Pie Tin, Dough and get Apple Pie.", ChatHistory.getLastOutput())
+        assertNotNull(GameState.player.creature.inventory.getItem("Apple Pie"))
     }
 
 }
