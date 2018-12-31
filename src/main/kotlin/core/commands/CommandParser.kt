@@ -7,6 +7,7 @@ import system.EventManager
 object CommandParser {
     private val unknownCommand = UnknownCommand()
     val commands = loadCommands()
+    private var responseRequest: ResponseRequest? = null
 
     private fun loadCommands(): List<Command> {
         return ReflectionTools.commands.asSequence()
@@ -28,7 +29,13 @@ object CommandParser {
         ChatHistory.addInput(line)
         val commands = line.split("&&")
         for (command in commands) {
-            parseSingleCommand(command)
+            val responseCommand = responseRequest?.getCommand(command)
+            responseRequest = null
+            if (responseCommand != null) {
+                parseSingleCommand(responseCommand)
+            } else {
+                parseSingleCommand(command)
+            }
             EventManager.executeEvents()
         }
     }
@@ -78,6 +85,10 @@ object CommandParser {
             }
         }
         return categories
+    }
+
+    fun setNextResponse(responseRequest: ResponseRequest) {
+        this.responseRequest = responseRequest
     }
 
 }

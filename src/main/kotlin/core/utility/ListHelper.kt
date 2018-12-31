@@ -34,3 +34,15 @@ fun List<String>.apply(params: Map<String, String>): List<String> {
     }
 }
 
+fun <E : Named> List<E>.filterUniqueByName(): List<E> {
+    val unique = mutableListOf<String>()
+    val results = mutableListOf<E>()
+    forEach {
+        if (!unique.contains(it.name)){
+            unique.add(it.name)
+            results.add(it)
+        }
+    }
+    return results
+}
+

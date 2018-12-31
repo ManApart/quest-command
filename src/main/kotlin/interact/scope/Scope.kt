@@ -65,12 +65,21 @@ class Scope(val locationNode: LocationNode) {
         return targets.getAll(name).asSequence().filter { it is Creature }.firstOrNull() as Creature?
     }
 
+    fun getCreatures(name: String): List<Creature> {
+        return targets.getAll(name).asSequence().filter { it is Creature }.map { it as Creature }.toList()
+    }
+
     fun getActivator(name: String): Activator? {
         return targets.getAll(name).asSequence().filter { it is Activator }.firstOrNull() as Activator?
     }
 
+    //Phase out in preference of presenting multiple choices to user etc
     fun getItem(name: String): Item? {
         return targets.getAll(name).asSequence().filter { it is Item }.firstOrNull() as Item?
+    }
+
+    fun getItems(name: String): List<Item> {
+        return targets.getAll(name).asSequence().filter { it is Item }.map { it as Item }.toList()
     }
 
     fun getItemIncludingPlayerInventory(name: String): Item? {
