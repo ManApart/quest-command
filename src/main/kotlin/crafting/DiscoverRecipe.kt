@@ -17,6 +17,7 @@ class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
                 val amount = event.recipe.skills.values.max() ?: 1
                 EventManager.postEvent(ExpGainedEvent(event.source, Stat.COOKING, amount))
                 display("You've discovered how to make ${event.recipe.name}!")
+                display("\t${event.recipe.read()}")
             }
         }
     }

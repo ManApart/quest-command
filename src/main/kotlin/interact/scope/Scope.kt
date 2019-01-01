@@ -4,7 +4,6 @@ import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
-import core.utility.filterUniqueByName
 
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()

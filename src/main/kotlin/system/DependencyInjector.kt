@@ -1,5 +1,7 @@
 package system
 
+import core.gameState.quests.QuestJsonParser
+import core.gameState.quests.QuestParser
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
 import system.location.LocationJsonParser
@@ -29,6 +31,7 @@ object DependencyInjector {
                 ActivatorParser::class.java to ActivatorJsonParser(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),
+                QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser()
         )
     }

@@ -7,6 +7,10 @@ import core.utility.ReflectionTools
 class QuestListener : EventListener<Event>() {
     private val listeners = mutableMapOf<Class<*>, MutableList<Quest>>()
 
+    fun getListeners() : Map<Class<*>, List<Quest>> {
+        return listeners
+    }
+
     override fun execute(event: Event) {
         if (listeners.isEmpty()) {
             buildListeners()
@@ -28,7 +32,11 @@ class QuestListener : EventListener<Event>() {
 
     private fun removeListeners(quest: Quest) {
         quest.getListenedForEvents().forEach { event ->
-            listeners[event.javaClass]?.remove(quest)
+            val clazz = ReflectionTools.getEvent(event.condition.callingEvent)
+            listeners[clazz]?.remove(quest)
+            if (listeners[clazz]?.isEmpty() == true){
+                listeners.remove(clazz)
+            }
         }
     }
 

@@ -19,7 +19,7 @@
     "name": "Chop Tree",
     "condition": {
       "callingEvent": "StatMinnedEvent",
-      "eventParams": {
+      "params": {
         "stat": "chopHealth"
       }
     },
@@ -54,7 +54,7 @@
     "name": "Burn to Ash",
     "condition": {
       "callingEvent": "StatMinnedEvent",
-      "eventParams": {
+      "params": {
         "stat": "burnHealth"
       }
     },
@@ -80,7 +80,7 @@
     "name": "Burn Out",
     "condition": {
       "callingEvent": "StatMinnedEvent",
-      "eventParams": {
+      "params": {
         "stat": "burnHealth"
       }
     },
@@ -177,7 +177,7 @@
     "name": "Mill",
     "condition": {
       "callingEvent": "ItemPickedUpEvent",
-      "eventParams": {
+      "params": {
         "item": "$sourceItem"
       }
     },

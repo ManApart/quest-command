@@ -1,0 +1,22 @@
+[
+  {
+    "quest": "A Simple Pie",
+    "name": "Read Recipe",
+    "stage": 10,
+    "journal": "I can do the new quest or I can continue travelling to Barren Field.",
+    "condition": {
+      "callingEvent": "InteractEvent",
+      "params": {
+        "target": "Apple Pie Recipe"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "This pie sounds pretty simple to make."
+        ]
+      }
+    ]
+  }
+]

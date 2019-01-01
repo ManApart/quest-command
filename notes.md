@@ -21,7 +21,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Validate valid recipe ingredients and results
 - make target class instead of interface?
 - Break triggered event class out into multiple classes
-- Prefer Scope manager to return multiple targets and have calling code choose what to do if more than one target returned
+- delete existing generated files on buildData so renamed files don't leave artifacts
 
 Json
 - Json inherits from other files in same folder?
@@ -131,6 +131,7 @@ Item Containers
 
 - Tutorial teach players how to pick things up, tell them to light the range, cook an apple pie with water, wheat, apple, tin etc
 - On quest stage updated:  In tutorial it fires on each pickup item, if all items picked up then next quest section
+- on removed quest triggers - if item dropped
 
 Other
 - First time hints / build out tutorial

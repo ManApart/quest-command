@@ -9,9 +9,18 @@ object GameStateQuery {
     fun getValue(property: String, params: List<String>): String {
         return when (property) {
             "QuestStage" -> QuestManager.quests.get(params[0]).stage.toString()
+            "Location" -> getLocation(params)
             "Target" -> getTargetValue(params)
             else -> ""
         }
+    }
+
+    private fun getLocation(params: List<String>): String {
+        if (params.isEmpty()) {
+            display("Wrong number of params to query Target for: ${params.joinToString(", ")}")
+            return ""
+        }
+        return ScopeManager.getScope().getTargetsWithCreatures(params[0]).first().location.name
     }
 
     private fun getTargetValue(params: List<String>): String {

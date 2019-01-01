@@ -1,0 +1,160 @@
+[
+  {
+    "quest": "Tutorial",
+    "name": "Intro",
+    "stage": 10,
+    "journal": "I can remember what I can do by typing 'help commands'. I need to use 'map' to see where I am.",
+    "condition": {
+      "callingEvent": "GameStartEvent",
+      "queries": [
+        {
+          "property": "QuestStage",
+          "params": [
+            "Tutorial"
+          ],
+          "operator": "<",
+          "value": "10"
+        }
+      ]
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I can always remember the commands by typing 'help commands'. I should familiarize myself with some basic commands. I'll start by typing 'map' to see where I am."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Intro Map",
+    "stage": 20,
+    "journal": "I should travel to Farmer's Hut.",
+    "condition": {
+      "callingEvent": "ReadMapEvent"
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I should travel to the Farmer's Hut. I can do so by typing 'travel farmer's hut'."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Travel again",
+    "stage": 30,
+    "journal": "I should continue traveling to the interior of Farmer's Hut",
+    "condition": {
+      "callingEvent": "ArriveEvent",
+      "params": {
+        "destination": "Farmer's Hut"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "Now I should travel to the Farmer's Hut Interior. I can do so by typing the shortcuts 't interior'."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Arrive Interior",
+    "stage": 40,
+    "journal": "I should read the Apple Pie Recipe",
+    "condition": {
+      "callingEvent": "ArriveEvent",
+      "params": {
+        "destination": "Farmer's Hut Interior"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I should use the 'look' command to see what surrounds me."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Intro Look",
+    "stage": 50,
+    "journal": "I should read the recipe for Apple Pie.",
+    "condition": {
+      "callingEvent": "LookEvent",
+      "queries": [
+        {
+          "property": "Location",
+          "params": [
+            "Player"
+          ],
+          "operator": "=",
+          "value": "Farmer's Hut Interior"
+        }
+      ]
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I should read the recipe for Apple Pie."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Read Recipe",
+    "stage": 60,
+    "journal": "I can do the new quest or I can continue travelling to Barren Field.",
+    "condition": {
+      "callingEvent": "InteractEvent",
+      "params": {
+        "target": "Apple Pie Recipe"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I can do the new quest or I can continue travelling to Barren Field."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Complete",
+    "stage": 70,
+    "journal": "I now have a basic knowledge of how I can explore this world.",
+    "condition": {
+      "callingEvent": "QuestStageUpdatedEvent",
+      "params": {
+        "quest": "Tutorial",
+        "stage": "60"
+      }
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "Now that I've completed these tasks I feel ready to explore the world."
+        ]
+      },
+      {
+        "className": "SetQuestCompleteEvent",
+        "params": [
+          "Tutorial"
+        ]
+      }
+    ]
+  }
+]

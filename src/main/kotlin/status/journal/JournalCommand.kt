@@ -1,15 +1,13 @@
 package status.journal
 
 import core.commands.Command
-import core.gameState.GameState
 import core.gameState.quests.QuestManager
 import core.history.display
-import status.rest.RestEvent
 import system.EventManager
 
 class JournalCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Quest", "Journal", "Q")
+        return arrayOf("Quest", "Quests", "Journal", "Q")
     }
 
     override fun getDescription(): String {
@@ -28,8 +26,8 @@ class JournalCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         when {
-            args.isEmpty() -> EventManager.postEvent(ViewJournalEvent(justActive = true))
-            args.size == 1 && args[0].toLowerCase() == "all" -> EventManager.postEvent(ViewJournalEvent(justActive = false))
+            args.isEmpty() -> EventManager.postEvent(ViewQuestListEvent(justActive = true))
+            args.size == 1 && args[0].toLowerCase() == "all" -> EventManager.postEvent(ViewQuestListEvent(justActive = false))
             else -> {
                 val quest = QuestManager.quests.getOrNull(args.joinToString())
                 if (quest != null) {

@@ -4,9 +4,9 @@ import core.events.Event
 import core.events.getValues
 import core.utility.apply
 
-class TriggerCondition(val callingEvent: String, private val eventParams: Map<String, String> = mapOf(), private val queries: List<Query> = listOf()) {
+class TriggerCondition(val callingEvent: String, private val params: Map<String, String> = mapOf(), private val queries: List<Query> = listOf()) {
 
-    constructor(base: TriggerCondition, params: Map<String, String>) : this(base.callingEvent.apply(params), base.eventParams.apply(params), base.queries)
+    constructor(base: TriggerCondition, params: Map<String, String>) : this(base.callingEvent.apply(params), base.params.apply(params), base.queries)
 
     fun matches(event: Event): Boolean {
         val params = event.getValues()
@@ -16,7 +16,7 @@ class TriggerCondition(val callingEvent: String, private val eventParams: Map<St
     private fun classMatches(event: Event) = event::class.simpleName == callingEvent
 
     private fun eventValuesMatch(eventValues: Map<String, String>): Boolean {
-        eventParams.forEach { entry ->
+        params.forEach { entry ->
             val expected = entry.value
             val propertyVal = eventValues[entry.key] ?: ""
 
