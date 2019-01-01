@@ -1,7 +1,10 @@
 package interact.eat
 
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.GameState
+import core.gameState.Item
 import core.history.display
 import interact.UseEvent
 import interact.scope.ScopeManager
@@ -29,16 +32,27 @@ class EatCommand : Command() {
         if (args.isEmpty()) {
             display("${args.joinToString(" ")} not found!")
         } else {
-            val food = ScopeManager.getScope().getItemsIncludingPlayerInventory(argsString).firstOrNull()
-            if (food != null) {
-                if (food.properties.tags.has("food")){
-                    EventManager.postEvent(UseEvent(GameState.player.creature, food, GameState.player.creature))
-                } else {
-                    display("${food.name} is inedible.")
-                }
-            } else {
-                display("Couldn't find $argsString")
+            val food = ScopeManager.getScope().getItemsIncludingPlayerInventory(argsString)
+
+            when {
+                food.isEmpty() -> display("Couldn't find $argsString")
+                food.size > 1 -> eatWhat(food)
+                else -> eatFood(food.first())
             }
+        }
+    }
+
+    private fun eatWhat(food: List<Item>) {
+        display("Eat what?\n\t${food.joinToString(", ")}")
+        val response = ResponseRequest(food.map { it.name to "eat ${it.name}" }.toMap())
+        CommandParser.responseRequest  = response
+    }
+
+    private fun eatFood(food: Item) {
+        if (food.properties.tags.has("food")){
+            EventManager.postEvent(UseEvent(GameState.player.creature, food, GameState.player.creature))
+        } else {
+            display("${food.name} is inedible.")
         }
     }
 

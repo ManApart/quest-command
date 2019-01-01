@@ -17,6 +17,11 @@ object EventManager {
         }
     }
 
+    fun reset() {
+        listenerMap.clear()
+        eventQueue.clear()
+    }
+
     fun <E : Event> registerListener(listener: EventListener<E>) {
 //        display("registering $listener")
         val listenerClass = getListenedForClass(listener)
@@ -63,6 +68,10 @@ object EventManager {
                     listeners.add(it)
                 }
         return listeners.size
+    }
+
+    fun getUnexecutedEvents() : List<Event>{
+        return eventQueue.toList()
     }
 
     @Suppress("UNCHECKED_CAST")

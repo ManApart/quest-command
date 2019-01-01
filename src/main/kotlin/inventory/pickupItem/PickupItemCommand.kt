@@ -58,7 +58,7 @@ class PickupItemCommand : core.commands.Command() {
     private fun pickupWhat(items: List<Item>) {
         display("Pickup which item?\n\t${items.joinToString(", ")}")
         val response = ResponseRequest(items.map { it.name to "take ${it.name}" }.toMap())
-        CommandParser.setNextResponse(response)
+        CommandParser.responseRequest  = response
     }
 
     private fun pickupItemFromContainer(args: Args) {
@@ -73,7 +73,7 @@ class PickupItemCommand : core.commands.Command() {
     private fun takeFromWhat(creatures: List<Creature>, itemName: String) {
         display("Take $itemName from what?\n\t${creatures.joinToString(", ")}")
         val response = ResponseRequest(creatures.map { it.name to "take $itemName from ${it.name}" }.toMap())
-        CommandParser.setNextResponse(response)
+        CommandParser.responseRequest  = response
     }
 
     private fun takeItemFromContainer(from: Creature, itemName: String) {

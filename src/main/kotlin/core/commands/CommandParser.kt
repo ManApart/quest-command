@@ -7,7 +7,7 @@ import system.EventManager
 object CommandParser {
     private val unknownCommand = UnknownCommand()
     val commands = loadCommands()
-    private var responseRequest: ResponseRequest? = null
+    var responseRequest: ResponseRequest? = null
 
     private fun loadCommands(): List<Command> {
         return ReflectionTools.commands.asSequence()
@@ -85,10 +85,6 @@ object CommandParser {
             }
         }
         return categories
-    }
-
-    fun setNextResponse(responseRequest: ResponseRequest) {
-        this.responseRequest = responseRequest
     }
 
 }

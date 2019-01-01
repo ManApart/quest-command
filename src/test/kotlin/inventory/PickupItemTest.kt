@@ -23,6 +23,8 @@ class PickupItemTest {
         PickupItem().execute(PickupItemEvent(creature, item))
         assertTrue(creature.inventory.exists(item))
         assertTrue(scope.getTargets(item.name).isEmpty())
+
+        ScopeManager.reset()
     }
 
     @Test

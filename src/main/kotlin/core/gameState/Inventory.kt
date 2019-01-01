@@ -16,6 +16,10 @@ class Inventory(itemNames: List<String> = listOf()) {
         return items.getOrNull(name)
     }
 
+    fun getItems(name: String) : List<Item> {
+        return items.getAll(name)
+    }
+
     fun add(item: Item) {
         if (items.exists(item.name)){
             val match = items.get(item.name)

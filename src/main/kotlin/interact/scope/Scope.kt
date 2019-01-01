@@ -67,7 +67,7 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun getItemsIncludingPlayerInventory(name: String): List<Item> {
-        return (listOf(GameState.player.creature.inventory.getItem(name)) + getItems(name)).filterNotNull()
+        return GameState.player.creature.inventory.getItems(name) + getItems(name)
     }
 
     fun getTargetsWithCreatures(name: String): List<Creature> {

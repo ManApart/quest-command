@@ -70,7 +70,7 @@ class PlaceItemCommand : core.commands.Command() {
     private fun giveToWhat(creatures: List<Creature>, itemName: String) {
         display("Give $itemName to what?\n\t${creatures.joinToString(", ")}")
         val response = ResponseRequest(creatures.map { it.name to "give $itemName to ${it.name}" }.toMap())
-        CommandParser.setNextResponse(response)
+        CommandParser.responseRequest  = response
     }
 
 
