@@ -21,6 +21,7 @@ While the readme should cover how to build and run the game, as well with inform
 - Validate valid recipe ingredients and results
 - make target class instead of interface?
 - Break triggered event class out into multiple classes
+- Prefer Scope manager to return multiple targets and have calling code choose what to do if more than one target returned
 
 Json
 - Json inherits from other files in same folder?

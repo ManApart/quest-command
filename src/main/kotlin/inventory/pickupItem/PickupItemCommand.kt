@@ -6,6 +6,7 @@ import core.commands.ResponseRequest
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Item
+import core.gameState.getCreature
 import core.history.display
 import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
@@ -48,7 +49,7 @@ class PickupItemCommand : core.commands.Command() {
 
     private fun pickupItemFromScope(args: Args) {
         val items = ScopeManager.getScope().getItems(args.argStrings[0]).filterUniqueByName()
-        when{
+        when {
             items.isEmpty() -> display("Couldn't find ${args.argStrings[0]}")
             items.size == 1 -> EventManager.postEvent(PickupItemEvent(GameState.player.creature, items.first()))
             else -> pickupWhat(items)
@@ -62,8 +63,8 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupItemFromContainer(args: Args) {
-        val from = ScopeManager.getScope().getCreatures(args.argStrings[1]).filterUniqueByName()
-        when{
+        val from = ScopeManager.getScope().getInventories(args.argStrings[1])
+        when {
             from.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
             from.size == 1 -> takeItemFromContainer(from.first(), args.argStrings[0])
             else -> takeFromWhat(from, args.argStrings[0])
@@ -71,12 +72,12 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun takeFromWhat(creatures: List<Creature>, itemName: String) {
-        display("Take from what?\n\t${creatures.joinToString(", ")}")
+        display("Take $itemName from what?\n\t${creatures.joinToString(", ")}")
         val response = ResponseRequest(creatures.map { it.name to "take $itemName from ${it.name}" }.toMap())
         CommandParser.setNextResponse(response)
     }
 
-    private fun takeItemFromContainer(from: Creature, itemName: String){
+    private fun takeItemFromContainer(from: Creature, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
             EventManager.postEvent(PickupItemEvent(GameState.player.creature, item, from))

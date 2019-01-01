@@ -4,6 +4,7 @@ import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
+import core.utility.filterUniqueByName
 
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
@@ -53,6 +54,10 @@ class Scope(val locationNode: LocationNode) {
         return targets.exists(target)
     }
 
+    fun getTargets(name: String): List<Target> {
+        return targets.getAll(name)
+    }
+
     fun getTarget(name: String): Target? {
         return targets.getAll(name).firstOrNull()
     }
@@ -73,7 +78,6 @@ class Scope(val locationNode: LocationNode) {
         return targets.getAll(name).asSequence().filter { it is Activator }.firstOrNull() as Activator?
     }
 
-    //Phase out in preference of presenting multiple choices to user etc
     fun getItem(name: String): Item? {
         return targets.getAll(name).asSequence().filter { it is Item }.firstOrNull() as Item?
     }
@@ -85,6 +89,14 @@ class Scope(val locationNode: LocationNode) {
     fun getItemIncludingPlayerInventory(name: String): Item? {
         return GameState.player.creature.inventory.getItem(name) ?: getItem(name)
     }
+
+    fun getInventories(name: String) : List<Creature> {
+        return getTargets(name).asSequence()
+                .map { it.getCreature() }.toList()
+                .filterNotNull()
+                .filterUniqueByName()
+    }
+
 
     fun findTargetsByTag(tag: String): List<Target> {
         return targets.filter { it.properties.tags.has(tag) }

@@ -1,6 +1,9 @@
 package inventory.dropItem
 
 import core.commands.Args
+import core.commands.CommandParser
+import core.commands.ResponseRequest
+import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.getCreature
 import core.history.display
@@ -55,15 +58,21 @@ class PlaceItemCommand : core.commands.Command() {
     private fun placeItemInContainer(args: Args) {
         val item = GameState.player.creature.inventory.getItem(args.argStrings[0])
         if (item != null) {
-            val destination = ScopeManager.getScope().getTarget(args.argStrings[1])?.getCreature()
-            if (destination != null) {
-                EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item, destination, true))
-            } else {
-                display("Couldn't find ${args.argStrings[1]}")
+            val destinations = ScopeManager.getScope().getInventories(args.argStrings[1])
+            when{
+                destinations.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
+                destinations.size == 1 -> EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item, destinations.first(), true))
+                else -> giveToWhat(destinations, args.argStrings[0])
             }
         } else {
-            display("Couldn't find ${args.argStrings[1]}")
+            display("Couldn't find ${args.argStrings[0]}")
         }
     }
+    private fun giveToWhat(creatures: List<Creature>, itemName: String) {
+        display("Give $itemName to what?\n\t${creatures.joinToString(", ")}")
+        val response = ResponseRequest(creatures.map { it.name to "give $itemName to ${it.name}" }.toMap())
+        CommandParser.setNextResponse(response)
+    }
+
 
 }
