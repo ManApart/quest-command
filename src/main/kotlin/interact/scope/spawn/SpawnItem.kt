@@ -1,8 +1,9 @@
-package interact.scope
+package interact.scope.spawn
 
 import core.events.EventListener
 import core.history.display
 import core.utility.StringFormatter
+import interact.scope.ScopeManager
 import inventory.pickupItem.ItemPickedUpEvent
 import system.EventManager
 

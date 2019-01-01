@@ -1,8 +1,9 @@
-package interact
+package interact.eat
 
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
+import interact.UseEvent
 import interact.scope.ScopeManager
 import system.EventManager
 

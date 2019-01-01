@@ -8,7 +8,7 @@ import core.history.display
 import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
 import system.EventManager
-import interact.scope.RemoveScopeEvent
+import interact.scope.remove.RemoveScopeEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {

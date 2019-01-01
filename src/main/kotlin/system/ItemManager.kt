@@ -1,12 +1,11 @@
 package system
 
 import core.events.EventListener
-import core.gameState.Activator
 import core.gameState.Item
 import core.gameState.location.LocationTarget
 import core.history.display
-import interact.scope.ItemSpawnedEvent
-import interact.scope.SpawnItemEvent
+import interact.scope.spawn.ItemSpawnedEvent
+import interact.scope.spawn.SpawnItemEvent
 
 object ItemManager {
     private var parser = DependencyInjector.getImplementation(ItemParser::class.java)

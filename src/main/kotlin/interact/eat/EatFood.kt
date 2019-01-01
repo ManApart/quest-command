@@ -1,14 +1,10 @@
-package interact
+package interact.eat
 
 import core.events.EventListener
-import core.gameState.GameState
 import core.gameState.Item
-import core.gameState.getCreature
 import core.gameState.isPlayer
 import core.history.display
 import core.utility.StringFormatter
-import interact.EatFoodEvent
-import interact.UseEvent
 import interact.scope.ScopeManager
 import status.statChanged.StatChangeEvent
 import system.EventManager

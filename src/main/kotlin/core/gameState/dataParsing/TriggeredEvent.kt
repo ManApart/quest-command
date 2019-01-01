@@ -12,6 +12,10 @@ import crafting.Recipe
 import crafting.RecipeManager
 import explore.RestrictLocationEvent
 import interact.scope.*
+import interact.scope.remove.RemoveItemEvent
+import interact.scope.remove.RemoveScopeEvent
+import interact.scope.spawn.SpawnActivatorEvent
+import interact.scope.spawn.SpawnItemEvent
 import status.effects.AddEffectEvent
 import status.effects.EffectManager
 import status.effects.RemoveEffectEvent

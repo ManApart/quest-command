@@ -1,4 +1,4 @@
-package interact
+package interact.eat
 
 import core.events.Event
 import core.gameState.Creature

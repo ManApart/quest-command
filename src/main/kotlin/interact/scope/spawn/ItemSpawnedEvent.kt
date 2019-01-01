@@ -1,4 +1,4 @@
-package interact.scope
+package interact.scope.spawn
 
 import core.events.Event
 import core.gameState.Creature
