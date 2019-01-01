@@ -22,7 +22,7 @@ class PickupItemTest {
 
         PickupItem().execute(PickupItemEvent(creature, item))
         assertTrue(creature.inventory.exists(item))
-        assertFalse(scope.targetExists(item))
+        assertTrue(scope.getTargets(item.name).isEmpty())
     }
 
     @Test

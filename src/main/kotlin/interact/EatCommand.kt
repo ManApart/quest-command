@@ -2,12 +2,9 @@ package interact
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.Item
-import core.gameState.Target
 import core.history.display
 import interact.scope.ScopeManager
 import system.EventManager
-import system.ItemManager
 
 class EatCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -31,7 +28,7 @@ class EatCommand : Command() {
         if (args.isEmpty()) {
             display("${args.joinToString(" ")} not found!")
         } else {
-            val food = ScopeManager.getScope().getItemIncludingPlayerInventory(argsString)
+            val food = ScopeManager.getScope().getItemsIncludingPlayerInventory(argsString).firstOrNull()
             if (food != null) {
                 if (food.properties.tags.has("food")){
                     EventManager.postEvent(UseEvent(GameState.player.creature, food, GameState.player.creature))

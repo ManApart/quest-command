@@ -65,7 +65,7 @@ class CookCommand : Command() {
     private fun getTool(args: Args): Activator? {
         val group = args.argGroups.last()
         val scope = ScopeManager.getScope()
-        return scope.getActivator(group.joinToString(" ")) ?: scope.findActivatorsByTag("Range").firstOrNull()
+        return (scope.getActivators(group.joinToString(" ")) + scope.findActivatorsByTag("Range")).firstOrNull()
     }
 
 }

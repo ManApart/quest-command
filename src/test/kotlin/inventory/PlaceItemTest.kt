@@ -19,7 +19,7 @@ class PlaceItemTest {
         val scope = ScopeManager.getScope(creature.location)
 
         PlaceItem().execute(PlaceItemEvent(creature, item))
-        assertTrue(scope.targetExists(item))
+        assertTrue(scope.getTargets(item.name).isNotEmpty())
         assertFalse(creature.inventory.getItem(item.name) != null)
     }
 

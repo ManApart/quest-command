@@ -6,7 +6,6 @@ import core.commands.ResponseRequest
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Item
-import core.gameState.getCreature
 import core.history.display
 import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
@@ -63,7 +62,7 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupItemFromContainer(args: Args) {
-        val from = ScopeManager.getScope().getInventories(args.argStrings[1])
+        val from = ScopeManager.getScope().getTargetsWithCreatures(args.argStrings[1]).filterUniqueByName()
         when {
             from.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
             from.size == 1 -> takeItemFromContainer(from.first(), args.argStrings[0])

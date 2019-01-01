@@ -5,10 +5,9 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.gameState.Creature
 import core.gameState.GameState
-import core.gameState.getCreature
 import core.history.display
+import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
-import inventory.pickupItem.PickupItemEvent
 import system.EventManager
 
 class PlaceItemCommand : core.commands.Command() {
@@ -58,7 +57,7 @@ class PlaceItemCommand : core.commands.Command() {
     private fun placeItemInContainer(args: Args) {
         val item = GameState.player.creature.inventory.getItem(args.argStrings[0])
         if (item != null) {
-            val destinations = ScopeManager.getScope().getInventories(args.argStrings[1])
+            val destinations = ScopeManager.getScope().getTargetsWithCreatures(args.argStrings[1]).filterUniqueByName()
             when{
                 destinations.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
                 destinations.size == 1 -> EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item, destinations.first(), true))

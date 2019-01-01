@@ -42,61 +42,39 @@ class Scope(val locationNode: LocationNode) {
         }
     }
 
-    fun getTargets(): List<Target> {
+    fun getAllTargets(): List<Target> {
         return targets.toList()
-    }
-
-    fun targetExists(name: String): Boolean {
-        return targets.exists(name)
-    }
-
-    fun targetExists(target: Target): Boolean {
-        return targets.exists(target)
     }
 
     fun getTargets(name: String): List<Target> {
         return targets.getAll(name)
     }
 
-    fun getTarget(name: String): Target? {
-        return targets.getAll(name).firstOrNull()
-    }
-
-    fun getTargetIncludingPlayerInventory(name: String): Target? {
-        return GameState.player.creature.inventory.getItem(name) ?: getTarget(name)
-    }
-
-    fun getCreature(name: String): Creature? {
-        return targets.getAll(name).asSequence().filter { it is Creature }.firstOrNull() as Creature?
+    fun getTargetsIncludingPlayerInventory(name: String): List<Target> {
+        return (listOf(GameState.player.creature.inventory.getItem(name)) + getTargets(name)).filterNotNull()
     }
 
     fun getCreatures(name: String): List<Creature> {
         return targets.getAll(name).asSequence().filter { it is Creature }.map { it as Creature }.toList()
     }
 
-    fun getActivator(name: String): Activator? {
-        return targets.getAll(name).asSequence().filter { it is Activator }.firstOrNull() as Activator?
-    }
-
-    fun getItem(name: String): Item? {
-        return targets.getAll(name).asSequence().filter { it is Item }.firstOrNull() as Item?
+    fun getActivators(name: String): List<Activator> {
+        return targets.getAll(name).asSequence().filter { it is Activator }.map { it as Activator }.toList()
     }
 
     fun getItems(name: String): List<Item> {
         return targets.getAll(name).asSequence().filter { it is Item }.map { it as Item }.toList()
     }
 
-    fun getItemIncludingPlayerInventory(name: String): Item? {
-        return GameState.player.creature.inventory.getItem(name) ?: getItem(name)
+    fun getItemsIncludingPlayerInventory(name: String): List<Item> {
+        return (listOf(GameState.player.creature.inventory.getItem(name)) + getItems(name)).filterNotNull()
     }
 
-    fun getInventories(name: String) : List<Creature> {
+    fun getTargetsWithCreatures(name: String): List<Creature> {
         return getTargets(name).asSequence()
                 .map { it.getCreature() }.toList()
                 .filterNotNull()
-                .filterUniqueByName()
     }
-
 
     fun findTargetsByTag(tag: String): List<Target> {
         return targets.filter { it.properties.tags.has(tag) }
@@ -111,33 +89,22 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun getAllSouls(): List<Soul> {
-        val souls = mutableListOf<Soul>()
+        val souls = mutableListOf<Soul?>()
         souls.add(GameState.player.creature.soul)
         souls.addAll(GameState.player.creature.inventory.getAllItems().map { it.soul })
 
-        getTargets().forEach { target ->
-            if (target is Activator) {
-                souls.add(target.creature.soul)
-            } else if (target is Creature) {
-                souls.add(target.soul)
-                souls.addAll(target.inventory.getAllItems().map { item -> item.soul })
-            }
+        targets.forEach {
+            souls.add(it.getCreature()?.soul)
+            it.getCreature()?.inventory?.getAllItems()?.forEach { item -> souls.add(item.soul) }
         }
-        return souls.toList()
+
+        return souls.filterNotNull()
     }
 
     fun getAllInventories(): List<Inventory> {
-        val inventories = mutableListOf<Inventory>()
-        inventories.add(GameState.player.creature.inventory)
-
-        getTargets().forEach {
-            if (it is Activator) {
-                inventories.add(it.creature.inventory)
-            } else if (it is Creature) {
-                inventories.add(it.inventory)
-            }
-        }
-        return inventories.toList()
+        return targets.asSequence()
+                .map { it.getCreature()?.inventory }.toList()
+                .filterNotNull()
     }
 
 }

@@ -27,7 +27,7 @@ class LookCommand : Command() {
         val argString = args.joinToString(" ")
         when {
             args.isEmpty() -> EventManager.postEvent(LookEvent())
-            ScopeManager.getScope().getTargetIncludingPlayerInventory(argString) != null -> EventManager.postEvent(LookEvent(ScopeManager.getScope().getTargetIncludingPlayerInventory(argString)))
+            ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(LookEvent(ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

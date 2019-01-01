@@ -33,10 +33,10 @@ class UseCommand : Command() {
         if (arguments.isEmpty()) {
             display("What do you want to use?")
         } else {
-            val used = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[0])
+            val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[0]).firstOrNull()
             if (used != null) {
                 if (arguments.argGroups.size > 1) {
-                    val target = ScopeManager.getScope().getTargetIncludingPlayerInventory(arguments.argStrings[1])
+                    val target = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[1]).firstOrNull()
                     if (target != null) {
                         EventManager.postEvent(UseEvent(GameState.player.creature, used, target))
                     } else {

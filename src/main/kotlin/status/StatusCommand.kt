@@ -3,6 +3,7 @@ package status
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
+import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
 import system.EventManager
 
@@ -28,7 +29,7 @@ class StatusCommand : Command() {
         val argsString = args.joinToString(" ")
         when {
             args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player.creature))
-            ScopeManager.getScope().getActivator(argsString) != null -> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getActivator(argsString)!!.creature))
+            ScopeManager.getScope().getTargetsWithCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getTargetsWithCreatures(argsString).filterUniqueByName().first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

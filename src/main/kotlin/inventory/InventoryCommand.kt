@@ -29,7 +29,7 @@ class InventoryCommand : Command() {
             EventManager.postEvent(ListInventoryEvent())
         } else {
             val argString = args.joinToString(" ")
-            val target = ScopeManager.getScope().getTarget(argString)?.getCreature()
+            val target = ScopeManager.getScope().getTargets(argString).firstOrNull()?.getCreature()
             if (target != null) {
                 EventManager.postEvent(ListInventoryEvent(target))
             } else {

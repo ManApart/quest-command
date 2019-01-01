@@ -47,8 +47,8 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     private fun getTargetOrParent(paramNumber: Int, parent: Target): Target {
         val param = getParam(paramNumber, "none")
-        return if (ScopeManager.getScope().targetExists(param)) {
-            ScopeManager.getScope().getTarget(param)!!
+        return if (ScopeManager.getScope().getTargets(param).isNotEmpty()) {
+            ScopeManager.getScope().getTargets(param).first()
         } else {
             parent
         }
@@ -73,7 +73,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     private fun getTargetCreature(paramNumber: Int, location: LocationNode? = null): Creature? {
         val param = getParam(paramNumber, "none")
-        return ScopeManager.getScope(location).getTarget(param)?.getCreature()
+        return ScopeManager.getScope(location).getTargets(param).firstOrNull()?.getCreature()
     }
 
     private fun getItemOrParent(paramNumber: Int, source: Creature, parent: Target): Item {
