@@ -15,6 +15,8 @@ class PickupItemTest {
 
     @Test
     fun pickupItemFromScope() {
+        ScopeManager.reset()
+        
         val creature = Creature("Name", "")
         val scope = ScopeManager.getScope(creature.location)
         val item = Item("Apple")
