@@ -1,7 +1,5 @@
 package building.json
 
-import core.utility.getAllStrings
-
 class JsonConverter(data: List<MutableMap<String, Any>>) {
     private val data = buildNamedList(data)
 

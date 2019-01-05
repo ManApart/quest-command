@@ -3,7 +3,7 @@
     "quest": "Tutorial",
     "name": "Intro",
     "stage": 10,
-    "journal": "I can remember what I can do by typing 'help commands'. I need to use 'map' to see where I am.",
+    "journal": "I can remember what I can do by typing 'help commands'. I should do that now.",
     "condition": {
       "callingEvent": "GameStartEvent",
       "queries": [
@@ -21,7 +21,41 @@
       {
         "className": "MessageEvent",
         "params": [
-          "I can always remember the commands by typing 'help commands'. I should familiarize myself with some basic commands. I'll start by typing 'map' to see where I am."
+          "To see what I can do I should type 'help commands'."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Intro Commands",
+    "stage": 20,
+    "journal": "To see my progress I should type `journal`.",
+    "condition": {
+      "callingEvent": "ViewHelpEvent"
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I have made progress in a quest! To see my progress I should type `journal`."
+        ]
+      }
+    ]
+  },
+  {
+    "quest": "Tutorial",
+    "name": "Intro Journal",
+    "stage": 30,
+    "journal": "I should read my map.",
+    "condition": {
+      "callingEvent": "ViewQuestListEvent"
+    },
+    "events": [
+      {
+        "className": "MessageEvent",
+        "params": [
+          "I should familiarize myself with some basic commands. I'll start by typing 'map' to see where I am."
         ]
       }
     ]
@@ -29,7 +63,7 @@
   {
     "quest": "Tutorial",
     "name": "Intro Map",
-    "stage": 20,
+    "stage": 40,
     "journal": "I should travel to Farmer's Hut.",
     "condition": {
       "callingEvent": "ReadMapEvent"
@@ -46,7 +80,7 @@
   {
     "quest": "Tutorial",
     "name": "Travel again",
-    "stage": 30,
+    "stage": 50,
     "journal": "I should continue traveling to the interior of Farmer's Hut",
     "condition": {
       "callingEvent": "ArriveEvent",
@@ -58,7 +92,7 @@
       {
         "className": "MessageEvent",
         "params": [
-          "Now I should travel to the Farmer's Hut Interior. I can do so by typing the shortcuts 't interior'."
+          "Now I should travel to the Farmer's Hut Interior."
         ]
       }
     ]
@@ -66,7 +100,7 @@
   {
     "quest": "Tutorial",
     "name": "Arrive Interior",
-    "stage": 40,
+    "stage": 60,
     "journal": "I should read the Apple Pie Recipe",
     "condition": {
       "callingEvent": "ArriveEvent",
@@ -86,7 +120,7 @@
   {
     "quest": "Tutorial",
     "name": "Intro Look",
-    "stage": 50,
+    "stage": 70,
     "journal": "I should read the recipe for Apple Pie.",
     "condition": {
       "callingEvent": "LookEvent",
@@ -113,8 +147,8 @@
   {
     "quest": "Tutorial",
     "name": "Read Recipe",
-    "stage": 60,
-    "journal": "I can do the new quest or I can continue travelling to Barren Field.",
+    "stage": 80,
+    "journal": "I should travel to Barren Field.",
     "condition": {
       "callingEvent": "InteractEvent",
       "params": {
@@ -125,7 +159,7 @@
       {
         "className": "MessageEvent",
         "params": [
-          "I can do the new quest or I can continue travelling to Barren Field."
+          "Once I'm done here I should travel to Barren Field."
         ]
       }
     ]
@@ -133,13 +167,13 @@
   {
     "quest": "Tutorial",
     "name": "Complete",
-    "stage": 70,
+    "stage": 90,
     "journal": "I now have a basic knowledge of how I can explore this world.",
     "condition": {
       "callingEvent": "QuestStageUpdatedEvent",
       "params": {
         "quest": "Tutorial",
-        "stage": "60"
+        "stage": "80"
       }
     },
     "events": [
