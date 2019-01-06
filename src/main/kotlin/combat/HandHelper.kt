@@ -1,6 +1,6 @@
 package combat
 
-import core.gameState.bodies.BodyPart
+import core.gameState.body.BodyPart
 import core.gameState.GameState
 import core.gameState.Item
 import core.utility.NameSearchableList

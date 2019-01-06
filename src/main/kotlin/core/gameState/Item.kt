@@ -3,8 +3,8 @@ package core.gameState
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
-import core.gameState.bodies.Body
-import core.gameState.bodies.Slot
+import core.gameState.body.Body
+import core.gameState.body.Slot
 import core.utility.apply
 import core.utility.applyNested
 import core.utility.max
@@ -28,7 +28,7 @@ class Item(
             params,
             base.weight,
             base.count,
-            base.equipSlots.map { it.bodyParts },
+            base.equipSlots.map { it.attachPoints },
             base.behaviorRecipes,
             base.properties
     )
@@ -76,8 +76,8 @@ class Item(
         return equipSlots.first { it.itemIsEquipped(this, body) }
     }
 
-    fun findSlot(body: Body, bodyPart: String): Slot? {
-        return equipSlots.firstOrNull { it.contains(bodyPart) && body.canEquip(it) }
+    fun findSlot(body: Body, attachPoint: String): Slot? {
+        return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
     }
 
     fun getDamage(): Int {

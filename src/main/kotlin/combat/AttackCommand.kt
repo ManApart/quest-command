@@ -8,7 +8,7 @@ import core.commands.Args
 import core.commands.Command
 import core.events.Event
 import core.gameState.Activator
-import core.gameState.bodies.BodyPart
+import core.gameState.body.BodyPart
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display

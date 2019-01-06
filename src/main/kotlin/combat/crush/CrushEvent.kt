@@ -2,7 +2,7 @@ package combat.crush
 
 import combat.TargetDirection
 import core.events.Event
-import core.gameState.bodies.BodyPart
+import core.gameState.body.BodyPart
 import core.gameState.Creature
 import core.gameState.Target
 

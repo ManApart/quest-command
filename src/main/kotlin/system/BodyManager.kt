@@ -2,9 +2,9 @@ package system
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import core.gameState.bodies.Body
-import core.gameState.bodies.BodyPart
-import core.gameState.bodies.ProtoBody
+import core.gameState.body.Body
+import core.gameState.body.BodyPart
+import core.gameState.body.ProtoBody
 import core.utility.JsonDirectoryParser
 
 object BodyManager {

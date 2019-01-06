@@ -1,4 +1,4 @@
-package core.gameState.bodies
+package core.gameState.body
 
 import core.gameState.Item
 import core.history.display
@@ -14,6 +14,10 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         return parts.exists(part)
     }
 
+    fun hasAttachPoint(attachPoint: String): Boolean {
+        return parts.any { it.hasAttachPoint(attachPoint) }
+    }
+
     fun getEquippedItems(): NameSearchableList<Item> {
         val items = NameSearchableList<Item>()
         parts.forEach { part ->
@@ -26,16 +30,24 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         return items
     }
 
-    fun getEquippedItemsAt(part: String): List<Item> {
-        return getPart(part).getEquippedItems()
+    fun getEquippedItemsAt(attachPoint: String): List<Item> {
+        return parts.asSequence().map { it.getEquippedItem(attachPoint) }.filterNotNull().toList()
     }
 
     fun getPart(part: String): BodyPart {
         return parts.get(part)
     }
 
+    fun getPartsWithAttachPoint(attachPoint: String): List<BodyPart> {
+        return parts.filter { it.hasAttachPoint(attachPoint) }
+    }
+
     fun getEquippablePart(part: String, item: Item): BodyPart? {
-        return parts.getAll(part).firstOrNull { item.findSlot(this, it.name.toLowerCase()) != null }
+        return parts.getAll(part).firstOrNull { part ->
+            part.getAttachPoints().any {
+                item.findSlot(this, it.toLowerCase()) != null
+            }
+        }
     }
 
     private fun getPartsEquippedWith(item: Item): List<BodyPart> {
@@ -43,12 +55,7 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
     }
 
     fun canEquip(slot: Slot): Boolean {
-        slot.bodyParts.forEach { part ->
-            if (!hasPart(part)) {
-                return false
-            }
-        }
-        return true
+        return slot.attachPoints.all { hasAttachPoint(it) }
     }
 
     fun equip(item: Item) {
@@ -64,20 +71,18 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
     fun equip(item: Item, slot: Slot) {
         if (canEquip(slot)) {
             unEquip(item)
-            slot.bodyParts.forEach {
-                unEquip(it)
+            slot.attachPoints.forEach { attachPoint ->
+                getEquippedItemsAt(attachPoint).forEach {
+                    unEquip(it)
+                }
             }
-            slot.bodyParts.forEach {
-                getPart(it).equipItem(it, item)
+            slot.attachPoints.forEach { attachPoint ->
+                getPartsWithAttachPoint(attachPoint).forEach { part ->
+                    part.equipItem(attachPoint, item)
+                }
             }
         } else {
             display("Can't equip ${item.name} to ${slot.description}")
-        }
-    }
-
-    private fun unEquip(bodyPart: String) {
-        getPart(bodyPart).getEquippedItems().forEach {
-            unEquip(it)
         }
     }
 

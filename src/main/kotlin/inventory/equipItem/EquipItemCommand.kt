@@ -4,10 +4,10 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.bodies.Body
+import core.gameState.body.Body
 import core.gameState.GameState
 import core.gameState.Item
-import core.gameState.bodies.Slot
+import core.gameState.body.Slot
 import core.history.display
 import system.EventManager
 
@@ -75,6 +75,7 @@ class EquipItemCommand : Command() {
         }
     }
 
+    //TODO - attachPoint, not body part
     private fun findSlot(bodyPartNameGuess: String?, body: Body, item: Item): Slot? {
         return if (bodyPartNameGuess == null) {
             body.getDefaultSlot(item)

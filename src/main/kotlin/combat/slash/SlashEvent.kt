@@ -2,7 +2,7 @@ package combat.slash
 
 import combat.TargetDirection
 import core.events.Event
-import core.gameState.bodies.BodyPart
+import core.gameState.body.BodyPart
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Target

@@ -9,7 +9,7 @@ import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Target
-import core.gameState.bodies.BodyPart
+import core.gameState.body.BodyPart
 import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
