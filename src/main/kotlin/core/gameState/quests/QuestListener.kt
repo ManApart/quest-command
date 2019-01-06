@@ -11,6 +11,10 @@ class QuestListener : EventListener<Event>() {
         return listeners
     }
 
+    override fun getPriority() : Int {
+        return 100
+    }
+
     override fun execute(event: Event) {
         if (listeners.isEmpty()) {
             buildListeners()
@@ -28,6 +32,11 @@ class QuestListener : EventListener<Event>() {
                 }
             }
         }
+    }
+
+    fun reset() {
+        listeners.clear()
+        buildListeners()
     }
 
     private fun removeListeners(quest: Quest) {

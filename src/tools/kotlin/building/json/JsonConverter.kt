@@ -13,6 +13,9 @@ class JsonConverter(data: List<MutableMap<String, Any>>) {
             if (!item.containsKey("name") || item["name"] !is String) {
                 throw IllegalArgumentException("Object didn't have a string value for 'name': $item")
             }
+            if (map.containsKey(item["name"])) {
+                throw IllegalArgumentException("Name must be unique but is duplicated: $item")
+            }
             map[item["name"] as String] = item
         }
         return map

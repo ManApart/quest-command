@@ -17,7 +17,7 @@ class ActivatorManagerTest {
     companion object {
         @JvmStatic @BeforeClass
         fun setup() {
-            //Run before other tests so object is initialized and we're testing a fresh reset each time
+            //Run before other tests so object is initialized and we're testing a fresh clear each time
             val fakeParser = ActivatorFakeParser(NameSearchableList(listOf()))
             DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
             ActivatorManager.getAll()

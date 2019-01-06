@@ -26,7 +26,7 @@ object GameManager {
         GameState.reset()
         QuestManager.reset()
         ScopeManager.reset()
-//        LocationManager.reset()
+//        LocationManager.clear()
 
         newPlayer()
         EventManager.postEvent(ArriveEvent(destination = GameState.player.creature.location, method = "wake"))

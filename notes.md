@@ -129,13 +129,13 @@ Item Containers
 
 ### Quests
 
-- Tutorial teach players how to pick things up, tell them to light the range, cook an apple pie with water, wheat, apple, tin etc
+A Simple Pie
+- Repeatable events for when items dropped
 - On quest stage updated:  In tutorial it fires on each pickup item, if all items picked up then next quest section
-- on removed quest triggers - if item dropped
 
 Other
 - First time hints / build out tutorial
-- Quest event has array of help sentences
+- Quest event has array of help sentences?
 
 ### Stats
 

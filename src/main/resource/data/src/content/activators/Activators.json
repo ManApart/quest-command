@@ -183,7 +183,7 @@
       {
         "name": "Burn Out",
         "params": {
-          "burnHealth": "2"
+          "burnHealth": "5"
         }
       }
     ]

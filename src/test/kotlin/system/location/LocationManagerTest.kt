@@ -13,7 +13,7 @@ class LocationManagerTest {
     companion object {
         @JvmStatic @BeforeClass
         fun setup() {
-            //Run before other tests so object is initialized and we're testing a fresh reset each time
+            //Run before other tests so object is initialized and we're testing a fresh clear each time
             val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf()))
             DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
             LocationManager.getLocations()

@@ -17,7 +17,7 @@ object EventManager {
         }
     }
 
-    fun reset() {
+    fun clear() {
         listenerMap.clear()
         eventQueue.clear()
     }

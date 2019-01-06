@@ -73,10 +73,13 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         EventManager.postEvent(QuestStageUpdatedEvent(this, stage))
         calculateListenedForEvents()
         if (listenedForEvents.isEmpty()) {
-            complete = true
-            active = false
             EventManager.postEvent(CompleteQuestEvent(this))
         }
+    }
+
+    fun completeQuest() {
+        complete = true
+        active = false
     }
 
 

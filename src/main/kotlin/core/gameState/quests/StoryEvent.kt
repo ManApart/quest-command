@@ -24,7 +24,7 @@ class StoryEvent(
     }
 
     fun canBeListenedFor(stage: Int): Boolean {
-        return (!completed || repeatable) && availableAfter >= stage && availableBefore <= stage
+        return (!completed || repeatable) && availableAfter <= stage && stage <= availableBefore
     }
 
     fun setDefaultAvailability(previousStage: Int) {

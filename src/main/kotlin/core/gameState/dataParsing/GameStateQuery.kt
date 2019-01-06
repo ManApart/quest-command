@@ -10,7 +10,8 @@ object GameStateQuery {
         return when (property) {
             "QuestStage" -> QuestManager.quests.get(params[0]).stage.toString()
             "Location" -> getLocation(params)
-            "Target" -> getTargetValue(params)
+            "Target" -> getTargetValues(params, false)
+            "AllTargets" -> getTargetValues(params, true)
             else -> ""
         }
     }
@@ -23,13 +24,18 @@ object GameStateQuery {
         return ScopeManager.getScope().getTargetsWithCreatures(params[0]).first().location.name
     }
 
-    private fun getTargetValue(params: List<String>): String {
+    private fun getTargetValues(params: List<String>, all: Boolean): String {
         if (params.size < 2) {
             display("Wrong number of params to query Target for: ${params.joinToString(", ")}")
             return ""
         }
 
-        val target = ScopeManager.getScope().getTargetsIncludingPlayerInventory(params[0]).first()
+        val targets =  if (all) {
+            ScopeManager.getScope().getTargetsIncludingPlayerInventory(params[0])
+        } else {
+            listOf(ScopeManager.getScope().getTargetsIncludingPlayerInventory(params[0]).first())
+        }
+
         val type = params[1].toLowerCase()
 
         if (type != "tags" && params.size != 3) {
@@ -37,12 +43,17 @@ object GameStateQuery {
             return ""
         }
 
-        return when (type) {
-            "values" -> target.properties.values.getString(params[2])
-            "stats" -> target.properties.values.getString(params[2])
-            "tags" -> target.properties.tags.getAll().joinToString(",")
-            else -> ""
+        val values = mutableListOf<String?>()
+        targets.forEach { target ->
+            values.add(when (type) {
+                "values" -> target.properties.values.getString(params[2])
+                "stats" -> target.properties.values.getString(params[2])
+                "tags" -> target.properties.tags.getAll().joinToString(",")
+                else -> null
+            })
         }
 
+        return values.asSequence().filterNotNull().joinToString(",")
     }
+
 }

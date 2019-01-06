@@ -2,6 +2,7 @@ package commandCombos
 
 import core.commands.CommandParser
 import core.gameState.GameState
+import core.gameState.quests.QuestManager
 import core.history.ChatHistory
 import org.junit.Before
 import org.junit.BeforeClass
@@ -14,15 +15,10 @@ import kotlin.test.assertTrue
 
 class CommandComboTest {
 
-    companion object {
-        @BeforeClass @JvmStatic
-        fun setup() {
-            EventManager.registerListeners()
-        }
-    }
-
     @Before
     fun reset() {
+        EventManager.clear()
+        EventManager.registerListeners()
         GameManager.newGame()
         EventManager.executeEvents()
     }
@@ -99,7 +95,10 @@ class CommandComboTest {
                 "&& read recipe && rest" +
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
+
         assertNotNull(GameState.player.creature.inventory.getItem("Apple Pie"))
+        assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
+
     }
 
 }

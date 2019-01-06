@@ -15,7 +15,7 @@ class EatCommandTest {
 
     @Before
     fun reset() {
-        EventManager.reset()
+        EventManager.clear()
         CommandParser.responseRequest  = null
         GameState.player = Player()
     }

@@ -185,7 +185,7 @@
       {
         "className": "MessageEvent",
         "params": [
-          "The $sourceItem slides down the chute and is milled into $resultItem as it collects in the Grain Bin"
+          "The $sourceItem slides down the chute and is milled into $resultItem as it collects in the Grain Bin."
         ]
       },
       {
