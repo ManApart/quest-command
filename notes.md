@@ -38,53 +38,74 @@ Paramitization
 ### Combat
 
 #### Thoughts and Description
-In battle, a creature can act when it attains 100 action points. Action points are recovered based on the creature's agility, alternating between the two creatures. When 100 ap are achieved, the creature gets a turn and the ap are reset to 0. During a turn, a player can take any normal command / action, but will generally choose a battle action. The player can equip either hand, or use a hand. Each of the battle commands default's to the right hand, but can be preferenced with right or left to indicate a hand. If block is chosen without a hand preference, it will default to the hand that has a shield, is armed, or the right hand.
- 
-Block can be high, low or medium. If the player blocks high and the opponent strikes high, the shield will take all damagage. If the opponent strikes medium (one height away from block area), the shield takes medium damage (and low, the sheild would block no damage).
- 
-Weapons have different reach and the player may need to step closer, or step back to avoid a blow.
 
-Agility affects how quickly someone can attack, strength how much the attack does, perception how likely to hit, etc
+Battle commands (attack, defend etc) allow a hand to be specified or default to the hand that has the weapon with the most damage etc for that skill
 
+Battles take place at different distances (knife, sword, lance, bow). Combatants can step closer or further back during their turn.
+
+Each attack is given a target position: (high-left, mid-right etc). Combatants can use dodge (jump, duck, left, right) to temporarily adjust their position. They can also use block to block a specific position (the shield passively blocks the slot it's equipped to).
+
+When an attack lands it picks a body part from the target position. If there are no body parts in the target position, it looks for one from any of the adjacent slots. Full damage is done to a slot at the attack target position, and half damage is done to a slot in adjacent positions.
+
+Damage is assessed by getting the slots at a specific position and then working through each layer of equipped armor on that slot. Each layer subtracts its defense from total damage done. The leftover damage detracts the combatant's health.
+
+Armour has critical percents. A critical is a hole in the armour where armor damage is ignored.
+
+Balanced weapons are things like swords and daggers. Weighted weapons are things like maces, axes, and hammers.
+
+**Battle Skills**
+- Archery
+- Block
+- Dodge
+- Large Balanced Weapons
+- Large Weighted Weapons
+- Small Balanced Weapons Left Handed
+- Small Balanced Weapons Right Handed
+- Small Weighted Weapons Left Handed
+- Small Weighted Weapons Right Handed
+
+#### Charts
+
+**Stat Effects**
+
+Stat | Effect
+--- | ---
+Agility | how quickly someone can attack
+Strength | how much the attack does
+Encumbrance | how long the attack takes to land
+Perception | chance of critical
+
+**Attack Types**
+
+Command | Speed | Damage | Focus
+--- | --- | --- | ---
+Slash | Fastest | Lowest | Quick Strikes
+Stab | Fast | Low | High Critical
+Chop | Medium | High | Consistent Damage
+Crush | Slow | Highest | High Damage
+
+#### Turn Walk Through
 Each Turn
 - Increase combatants AP by their agility level until one person hits 100
-- Each action takes AP. Bare fists take 1 ap, the bigger the weapon (size keyword) the more ap it takes
-- Each action drains stamina. The heavier the weapon the more stamina drained
+- Combatant choose an attack or any other command (AP reset to 0)
+  - Equip item
+  - Use Item
+  - Battle Commands
+- Weapon Size + weight + encumbrance percent determines number of turns taken to deliver the attack
+- Each action drains stamina. The heavier the weapon the more stamina drained for an attack, the more encumbered the more stamina drained per movement
 - Without enough stamina the combatant can’t do anything
 - A Combatant can rest to recover stamina points
-
-Attacking with heavier weapons does what?
-- Costs more action points (instead of always resetting to 0 be based on weapon)?
-- Drains stamina?
-- Is only an issue if the weapon is heavy compared to your strength level?
-
-Attacking different body parts do anything? What's the point of the attack direction?
-
-#### Battle Skill ideas
-- Barehanded
-- Right and Left handed
-- Short sword, sword, axe, lance
-
-#### Battle Command Ideas
-Battle Commands (each can take a direction), (default to item in right hand, option to add left)
-- Slash - grazing damage but generally fast (hand slaps)
-- Chop - most damage, slowest
-- Stab -
-- Crush
-- Dodge
-- Block
-- Step (forward, back) (ranges: knife, sword, lance, bow)
 
 #### Other
 - Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
 - Attack direction should use previous target
+- Individual health for body parts, can't use parts that don't have health?
 
 ### Crafting
 
 - Cooking / recipes
-  - Burn if not enough skill
+  - Burn if not enough skill (first warn), consume ingredients
   - Gain xp for cooking
-  - Range needs lit, goes from 'Range (unlit)' to 'Range (lit)' - use burning effect?
 - Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
 
 ### Interaction
@@ -102,8 +123,11 @@ Battle Commands (each can take a direction), (default to item in right hand, opt
 - Character can only hold so much weight.
  - Item could fit in bag weight but then bag be too heavy for character to move
 - Bags / armor can have equip slots for specific types. So a weapon holster can provide a slot but only for hatchets etc
+- Equip slots have layers (inner, normal, outer)
+- Hold is just equip to a hand - equip gives option to replace
 
 Item Containers
+- Give the player a starting pouch - equips to belt (front, back, left, or right)
 - Any target that is a creature has an inventory
 - Looking at a creature will say what the creature has equipped (is wearing)
 - Pickup/Place commands have optional count for item stacks
