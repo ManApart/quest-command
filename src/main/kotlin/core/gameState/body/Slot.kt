@@ -5,14 +5,18 @@ import core.gameState.Item
 class Slot(val attachPoints: List<String>) {
     val description = attachPoints.joinToString(", ")
 
-    fun itemIsEquipped(body: Body) : Boolean {
-        attachPoints.forEach {
-            if (body.getEquippedItemsAt(it).isNotEmpty()) {
-                return false
-            }
-        }
-        return true
+    override fun toString(): String {
+        return description
     }
+
+    fun getEquippedItems(body: Body) : List<Item> {
+        val items = mutableListOf<Item>()
+        attachPoints.forEach {
+            items.addAll(body.getEquippedItemsAt(it))
+        }
+        return items
+    }
+
     fun itemIsEquipped(item: Item, body: Body) : Boolean {
         attachPoints.forEach {
             if (!body.getEquippedItemsAt(it).contains(item)) {

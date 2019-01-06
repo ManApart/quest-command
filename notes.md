@@ -123,8 +123,6 @@ Each Turn
 - Character can only hold so much weight.
  - Item could fit in bag weight but then bag be too heavy for character to move
 - Bags / armor can have equip slots for specific types. So a weapon holster can provide a slot but only for hatchets etc
-- Equip slots have layers (inner, normal, outer)
-- Hold is just equip to a hand - equip gives option to replace
 
 Item Containers
 - Give the player a starting pouch - equips to belt (front, back, left, or right)

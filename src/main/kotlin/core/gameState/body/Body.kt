@@ -10,11 +10,11 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
 
     private val parts = NameSearchableList(parts)
 
-    fun hasPart(part: String): Boolean {
-        return parts.exists(part)
-    }
+//    fun hasPart(part: String): Boolean {
+//        return parts.exists(part)
+//    }
 
-    fun hasAttachPoint(attachPoint: String): Boolean {
+    private fun hasAttachPoint(attachPoint: String): Boolean {
         return parts.any { it.hasAttachPoint(attachPoint) }
     }
 
@@ -38,16 +38,8 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         return parts.get(part)
     }
 
-    fun getPartsWithAttachPoint(attachPoint: String): List<BodyPart> {
+    private fun getPartsWithAttachPoint(attachPoint: String): List<BodyPart> {
         return parts.filter { it.hasAttachPoint(attachPoint) }
-    }
-
-    fun getEquippablePart(part: String, item: Item): BodyPart? {
-        return parts.getAll(part).firstOrNull { part ->
-            part.getAttachPoints().any {
-                item.findSlot(this, it.toLowerCase()) != null
-            }
-        }
     }
 
     private fun getPartsEquippedWith(item: Item): List<BodyPart> {

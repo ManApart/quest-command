@@ -12,7 +12,6 @@ import core.history.display
 import system.EventManager
 
 class EquipItemCommand : Command() {
-    private val delimiters = listOf("to", "on")
     override fun getAliases(): Array<String> {
         return arrayOf("Equip")
     }
@@ -32,16 +31,15 @@ class EquipItemCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val arguments = Args(args, delimiters)
+        val arguments = Args(args, listOf("to", "on"), listOf("f"))
 
         if (arguments.isEmpty()) {
-            //TODO - suggest anything equipable
-            display("What do you want to equip?")
+            suggestEquippableItems()
         } else {
             val item = getItem(arguments)
-            val bodyPartNameGuess = getBodyPart(arguments)
+            val attachPointGuess = getAttachPoint(arguments)
             val body = GameState.player.creature.body
-            val force = arguments.contains("f")
+            val force = arguments.has("f")
 
             if (item == null) {
                 display("Could not find ${arguments.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
@@ -49,10 +47,13 @@ class EquipItemCommand : Command() {
                 if (!item.canEquipTo(body)) {
                     display("You can't equip ${item.name}.")
                 } else {
-                    val slot = findSlot(bodyPartNameGuess, body, item)
-                    if (slot != null) {
-                        if (slot.itemIsEquipped(body) && !force) {
-                            confirmEquip(item, bodyPartNameGuess)
+                    val slot = findSlot(attachPointGuess, body, item)
+                    if (slot == null) {
+                        suggestAttachPoints(attachPointGuess, item)
+                    } else {
+                        val equippedItems = slot.getEquippedItems(body)
+                        if (equippedItems.isNotEmpty() && !force) {
+                            confirmEquip(item, equippedItems, attachPointGuess)
                         } else {
                             EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, slot))
                         }
@@ -67,7 +68,7 @@ class EquipItemCommand : Command() {
         return GameState.player.creature.inventory.getItem(itemName)
     }
 
-    private fun getBodyPart(args: Args): String? {
+    private fun getAttachPoint(args: Args): String? {
         return if (args.argGroups.size > 1) {
             args.argStrings[1]
         } else {
@@ -75,32 +76,43 @@ class EquipItemCommand : Command() {
         }
     }
 
-    //TODO - attachPoint, not body part
-    private fun findSlot(bodyPartNameGuess: String?, body: Body, item: Item): Slot? {
-        return if (bodyPartNameGuess == null) {
+    private fun findSlot(attachPointGuess: String?, body: Body, item: Item): Slot? {
+        return if (attachPointGuess == null) {
             body.getDefaultSlot(item)
         } else {
-            val bodyPart = body.getEquippablePart(bodyPartNameGuess, item)
-            if (bodyPart != null) {
-                item.findSlot(body, bodyPart.name)
-            } else {
-                display("Could not find body part $bodyPartNameGuess")
-                null
-            }
+            item.findSlot(body, attachPointGuess)
         }
     }
 
-    private fun confirmEquip(newEquip: Item, bodyPartName: String?) {
-        //TODO -state equipped item
-        display("Replace currently equipped item with ${newEquip.name}?")
+    private fun suggestEquippableItems() {
+        val equippableItems = getEquipableItems()
+        display("What do you want to equip?\n\t${equippableItems.joinToString(", ")}")
+        val response = ResponseRequest(equippableItems.map { it.name to "equip ${it.name}" }.toMap())
+        CommandParser.responseRequest = response
+    }
 
-        val toPart = if (bodyPartName.isNullOrBlank()) {
+    private fun getEquipableItems(): List<Item> {
+        val body = GameState.player.creature.body
+        val equippedItems = body.getEquippedItems()
+        return GameState.player.creature.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
+    }
+
+    private fun suggestAttachPoints(attachPointGuess: String?, item: Item) {
+        display("Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}")
+        val response = ResponseRequest(item.equipSlots.flatMap { it.attachPoints }.map { it to "equip $item to $it" }.toMap())
+        CommandParser.responseRequest = response
+    }
+
+    private fun confirmEquip(newEquip: Item, equippedItems: List<Item>, attachPoint: String?) {
+        display("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
+
+        val toPart = if (attachPoint.isNullOrBlank()) {
             ""
         } else {
-            " to $bodyPartName"
+            " to $attachPoint"
         }
 
-        val response = ResponseRequest(mutableMapOf("y" to "equip $newEquip$toPart f", "n" to ""))
+        val response = ResponseRequest(mapOf("y" to "equip $newEquip$toPart f", "n" to ""))
         CommandParser.responseRequest = response
     }
 }
