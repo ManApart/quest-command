@@ -15,9 +15,9 @@
   {
     "name": "Rat",
     "parts": [
-      "Head",
-      "Body",
-      "Claws"
+      "Canine Head",
+      "Canine Body",
+      "Small Claws"
     ]
   }
 ]

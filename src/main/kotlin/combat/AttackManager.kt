@@ -6,8 +6,11 @@ import combat.slash.SlashEvent
 import combat.stab.StabEvent
 import core.events.Event
 import core.events.EventListener
-import core.gameState.*
+import core.gameState.Creature
+import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.bodies.BodyPart
+import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
@@ -50,19 +53,19 @@ object AttackManager {
     fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, direction: TargetDirection, event: Event) {
         val subject = StringFormatter.getSubject(source)
         val possessive = StringFormatter.getSubjectPossessive(source)
-        display("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.equippedName()}.")
+        display("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.getEquippedWeapon()}.")
 
         val creature = target.getCreature()
         val damageDone = getDamageDone(source, sourcePart, type)
 
         if (creature != null && damageDone > 0) {
             if (hasSpecificHealth(creature, type)) {
-                EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), type.health, -damageDone))
+                EventManager.postEvent(StatChangeEvent(creature, sourcePart.getEquippedWeapon()?.name ?: "", type.health, -damageDone))
             } else if (creature.soul.hasStat(Stat.HEALTH)) {
-                EventManager.postEvent(StatChangeEvent(creature, sourcePart.equippedName(), Stat.HEALTH, -damageDone))
+                EventManager.postEvent(StatChangeEvent(creature, sourcePart.getEquippedWeapon()?.name ?: "", Stat.HEALTH, -damageDone))
             }
-        } else if (sourcePart.equippedItem != null) {
-            EventManager.postEvent(UseEvent(GameState.player.creature, sourcePart.equippedItem!!, target))
+        } else if (sourcePart.getEquippedWeapon() != null) {
+            EventManager.postEvent(UseEvent(GameState.player.creature, sourcePart.getEquippedWeapon()!!, target))
         } else {
             display("Nothing happens.")
         }
@@ -71,7 +74,7 @@ object AttackManager {
 
     private fun getDamageDone(creature: Creature, source: BodyPart, type: AttackType): Int {
         return when {
-            source.equippedItem != null -> source.equippedItem!!.properties.values.getInt(type.damage, 0)
+            source.getEquippedWeapon() != null -> source.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
             else -> creature.soul.getCurrent(Stat.BARE_HANDED)
         }
     }

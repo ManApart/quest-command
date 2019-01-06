@@ -1,12 +1,14 @@
-package core.gameState
+package core.gameState.bodies
 
+import core.gameState.Item
 import core.history.display
 import core.utility.NameSearchableList
+import java.lang.IllegalArgumentException
 
-class Body(val name: String = "None", parts: List<String> = listOf()) {
-    constructor(base: Body) : this(base.name, base.parts.map { it.name })
+class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
+    constructor(base: Body) : this(base.name, base.parts.map { BodyPart(it) })
 
-    private val parts = NameSearchableList(parts.map { BodyPart(it) })
+    private val parts = NameSearchableList(parts)
 
     fun hasPart(part: String): Boolean {
         return parts.exists(part)
@@ -14,18 +16,18 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
 
     fun getEquippedItems(): NameSearchableList<Item> {
         val items = NameSearchableList<Item>()
-        parts.forEach {
-            val item = it.equippedItem
-            if (item != null && !items.contains(item)) {
-                items.add(item)
+        parts.forEach { part ->
+            part.getEquippedItems().forEach { item ->
+                if (!items.contains(item)) {
+                    items.add(item)
+                }
             }
         }
-
         return items
     }
 
-    fun getEquippedItemAt(part: String): Item? {
-        return getPart(part).equippedItem
+    fun getEquippedItemsAt(part: String): List<Item> {
+        return getPart(part).getEquippedItems()
     }
 
     fun getPart(part: String): BodyPart {
@@ -37,7 +39,7 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
     }
 
     private fun getPartsEquippedWith(item: Item): List<BodyPart> {
-        return parts.filter { it.equippedItem == item }
+        return parts.filter { it.getEquippedItems().contains(item) }
     }
 
     fun canEquip(slot: Slot): Boolean {
@@ -53,9 +55,10 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
         equip(item, getDefaultSlot(item))
     }
 
-    private fun getDefaultSlot(item: Item): Slot {
+    fun getDefaultSlot(item: Item): Slot {
         return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
-                ?: item.equipSlots.first { canEquip(it) }
+                ?: item.equipSlots.firstOrNull { canEquip(it) }
+                ?: throw IllegalArgumentException("Found no Slot for $item for body $name. This should not happen!")
     }
 
     fun equip(item: Item, slot: Slot) {
@@ -65,7 +68,7 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
                 unEquip(it)
             }
             slot.bodyParts.forEach {
-                getPart(it).equippedItem = item
+                getPart(it).equipItem(it, item)
             }
         } else {
             display("Can't equip ${item.name} to ${slot.description}")
@@ -73,15 +76,14 @@ class Body(val name: String = "None", parts: List<String> = listOf()) {
     }
 
     private fun unEquip(bodyPart: String) {
-        val equippedItem = getPart(bodyPart).equippedItem
-        if (equippedItem != null) {
-            unEquip(equippedItem)
+        getPart(bodyPart).getEquippedItems().forEach {
+            unEquip(it)
         }
     }
 
     fun unEquip(item: Item) {
         getPartsEquippedWith(item).forEach {
-            it.equippedItem = null
+            it.unEquip(item)
         }
     }
 

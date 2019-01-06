@@ -3,6 +3,8 @@ package core.gameState
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
+import core.gameState.bodies.Body
+import core.gameState.bodies.Slot
 import core.utility.apply
 import core.utility.applyNested
 import core.utility.max

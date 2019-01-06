@@ -1,11 +1,11 @@
 package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import core.gameState.bodies.Body
 import core.gameState.location.LocationNode
 import core.utility.apply
 import system.AIManager
 import system.BodyManager
-import system.ItemManager
 import system.location.LocationManager
 
 class Creature(

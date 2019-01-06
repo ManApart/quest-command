@@ -1,13 +1,13 @@
 package combat
 
-import core.gameState.BodyPart
+import core.gameState.bodies.BodyPart
 import core.gameState.GameState
 import core.gameState.Item
 import core.utility.NameSearchableList
 
 class HandHelper(source: String, desiredSkill: String) {
     lateinit var hand: BodyPart; private set
-    private var weapon: Item? = null
+    var weapon: Item? = null
 
     init {
         determineHand(source, desiredSkill)
@@ -16,8 +16,8 @@ class HandHelper(source: String, desiredSkill: String) {
     private fun determineHand(source: String, desiredSkill: String) {
         val rightHand = GameState.player.creature.body.getPart("right hand")
         val leftHand = GameState.player.creature.body.getPart("left hand")
-        val rightWeapon = rightHand.equippedItem
-        val leftWeapon = leftHand.equippedItem
+        val rightWeapon = rightHand.getEquippedItem("right hand grip")
+        val leftWeapon = leftHand.getEquippedItem("left hand grip")
         val weapons = NameSearchableList<Item>()
         if (rightWeapon != null) weapons.add(rightWeapon)
         if (leftWeapon != null) weapons.add(leftWeapon)
@@ -60,7 +60,7 @@ class HandHelper(source: String, desiredSkill: String) {
     }
 
     private fun getWeapon(source: BodyPart): Item? {
-        return source.equippedItem
+        return source.getEquippedItem("right hand grip") ?: source.getEquippedItem("left hand grip")
     }
 
     private fun getHand(source: String, rightHand: BodyPart, leftHand: BodyPart): BodyPart {
@@ -72,7 +72,7 @@ class HandHelper(source: String, desiredSkill: String) {
     }
 
     private fun getHand(weapon: Item, rightHand: BodyPart, leftHand: BodyPart): BodyPart {
-        return if (weapon == rightHand.equippedItem) {
+        return if (weapon == getWeapon(rightHand)) {
             rightHand
         } else {
             leftHand

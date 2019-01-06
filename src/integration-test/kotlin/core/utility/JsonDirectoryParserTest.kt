@@ -2,7 +2,7 @@ package core.utility
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import core.gameState.Body
+import core.gameState.bodies.Body
 import org.junit.Test
 import kotlin.test.assertEquals
 

@@ -8,7 +8,7 @@ import core.commands.Args
 import core.commands.Command
 import core.events.Event
 import core.gameState.Activator
-import core.gameState.BodyPart
+import core.gameState.bodies.BodyPart
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
@@ -50,8 +50,8 @@ class AttackCommand : Command() {
         val cleaned = Args(args, listOf("with"), ignoredWords)
         val scope = ScopeManager.getScope()
         when {
-            cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.equippedName()}?")
-            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player.creature, handHelper.hand.equippedItem!!, scope.getTargets(cleaned.argStrings[0]).first()))
+            cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
+            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player.creature, handHelper.weapon!!, scope.getTargets(cleaned.argStrings[0]).first()))
             scope.getTargets(cleaned.argStrings[0]).isNotEmpty() -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTargets(cleaned.argStrings[0]).first(), direction))
             GameState.player.creature.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0])!!, direction))
             GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
@@ -71,7 +71,7 @@ class AttackCommand : Command() {
     }
 
     private fun isAttackingActivatorWithWeapon(cleaned: Args, handHelper: HandHelper) =
-            ScopeManager.getScope().getTargets(cleaned.argStrings[0]).isNotEmpty() && ScopeManager.getScope().getTargets(cleaned.argStrings[0]).first() is Activator && handHelper.hand.equippedItem != null
+            ScopeManager.getScope().getTargets(cleaned.argStrings[0]).isNotEmpty() && ScopeManager.getScope().getTargets(cleaned.argStrings[0]).first() is Activator && handHelper.weapon != null
 
     private fun getDirection(args: Args): TargetDirection {
         return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()

@@ -2,7 +2,7 @@ package combat.chop
 
 import combat.TargetDirection
 import core.events.Event
-import core.gameState.BodyPart
+import core.gameState.bodies.BodyPart
 import core.gameState.Creature
 import core.gameState.Target
 

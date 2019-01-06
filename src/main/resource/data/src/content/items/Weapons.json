@@ -5,10 +5,10 @@
     "weight": "1",
     "equipSlots": [
       [
-        "Right Hand"
+        "Right Hand Grip"
       ],
       [
-        "Left Hand"
+        "Left Hand Grip"
       ]
     ],
     "properties": {
@@ -19,8 +19,7 @@
       "tags": [
         "Weapon",
         "Sharp",
-        "Small",
-        "Short"
+        "Small"
       ]
     }
   },
@@ -30,10 +29,10 @@
     "weight": "4",
     "equipSlots": [
       [
-        "Right Hand"
+        "Right Hand Grip"
       ],
       [
-        "Left Hand"
+        "Left Hand Grip"
       ]
     ],
     "properties": {
@@ -43,7 +42,7 @@
       "tags": [
         "Weapon",
         "Sharp",
-        "Short"
+        "Small"
       ]
     }
   }
