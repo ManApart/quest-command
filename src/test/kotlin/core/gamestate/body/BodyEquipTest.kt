@@ -1,5 +1,6 @@
 package core.gamestate.body
 
+import combat.battle.position.TargetPosition
 import core.gameState.Item
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
@@ -7,13 +8,13 @@ import core.gameState.body.Slot
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class BodyTest {
+class BodyEquipTest {
 
 
     @Test
     fun equipItem() {
         val item = Item("Dagger", equipSlots = listOf(listOf("Grip")))
-        val part = BodyPart("Hand", listOf("Grip", "Glove"))
+        val part = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
         val body = Body(parts = listOf(part))
 
         body.equip(item)
@@ -26,7 +27,7 @@ class BodyTest {
     @Test
     fun unEquipItem() {
         val item = Item("Dagger", equipSlots = listOf(listOf("Grip")))
-        val part = BodyPart("Hand", listOf("Grip", "Glove"))
+        val part = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
         val body = Body(parts = listOf(part))
 
         body.equip(item)
@@ -40,8 +41,8 @@ class BodyTest {
     fun equipItemToFreeSlot() {
         val dagger = Item("Dagger", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
         val hatchet = Item("Hatchet", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
-        val rightHand = BodyPart("Right Hand", listOf("Right Grip", "Right Glove"))
-        val leftHand = BodyPart("Left Hand", listOf("Left Grip", "Left Glove"))
+        val rightHand = BodyPart("Right Hand", TargetPosition(), listOf("Right Grip", "Right Glove"))
+        val leftHand = BodyPart("Left Hand", TargetPosition(), listOf("Left Grip", "Left Glove"))
         val body = Body(parts = listOf(rightHand, leftHand))
 
         body.equip(dagger)
@@ -56,8 +57,8 @@ class BodyTest {
     fun replaceEquippedItem() {
         val dagger = Item("Dagger", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
         val hatchet = Item("Hatchet", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
-        val rightHand = BodyPart("Right Hand", listOf("Right Grip", "Right Glove"))
-        val leftHand = BodyPart("Left Hand", listOf("Left Grip", "Left Glove"))
+        val rightHand = BodyPart("Right Hand", TargetPosition(), listOf("Right Grip", "Right Glove"))
+        val leftHand = BodyPart("Left Hand", TargetPosition(), listOf("Left Grip", "Left Glove"))
         val body = Body(parts = listOf(rightHand, leftHand))
         val slot = Slot(listOf("Right Grip"))
 
@@ -73,8 +74,8 @@ class BodyTest {
     fun replaceOverlappedEquippedItem() {
         val shoe = Item("Shoe", equipSlots = listOf(listOf("Right Foot")))
         val boot = Item("Boot", equipSlots = listOf(listOf("Right Foot", "Right Leg")))
-        val rightFoot= BodyPart("Right Foot", listOf("Right Foot"))
-        val rightLeg = BodyPart("Right Leg", listOf("Right Leg"))
+        val rightFoot= BodyPart("Right Foot", TargetPosition(), listOf("Right Foot"))
+        val rightLeg = BodyPart("Right Leg", TargetPosition(), listOf("Right Leg"))
         val body = Body(parts = listOf(rightFoot, rightLeg))
 
         body.equip(boot, boot.equipSlots.first())

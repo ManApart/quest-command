@@ -1,11 +1,18 @@
 package core.gameState.body
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import combat.battle.position.TargetPosition
+import combat.battle.position.Horizontal
+import combat.battle.position.Vertical
 import core.gameState.Item
 import core.history.display
 import core.utility.Named
 
-class BodyPart(override val name: String, slots: List<String> = listOf()) : Named {
-    constructor(base: BodyPart) : this(base.name, base.equippedItems.keys.toList())
+class BodyPart(override val name: String, val position: TargetPosition = TargetPosition(), slots: List<String> = listOf()) : Named {
+
+    constructor(base: BodyPart) : this(base.name, base.position, base.equippedItems.keys.toList())
+
+    @JsonCreator constructor(name: String, vertical: Vertical, horizontal: Horizontal, slots: List<String> = listOf()) : this(name, TargetPosition(horizontal, vertical), slots)
 
     private var equippedItems: MutableMap<String, Item?> = slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
 

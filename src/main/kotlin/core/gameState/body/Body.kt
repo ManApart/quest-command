@@ -1,5 +1,7 @@
 package core.gameState.body
 
+import combat.battle.position.HitLevel
+import combat.battle.position.TargetPosition
 import core.gameState.Item
 import core.history.display
 import core.utility.NameSearchableList
@@ -82,6 +84,28 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         getPartsEquippedWith(item).forEach {
             it.unEquip(item)
         }
+    }
+
+    fun getDirectParts(target: TargetPosition, adjustment: TargetPosition = TargetPosition()): List<BodyPart> {
+        val directParts = mutableListOf<BodyPart>()
+        parts.forEach {
+            val position = it.position.shift(adjustment)
+            if (position.equals(target)) {
+                directParts.add(it)
+            }
+        }
+        return directParts
+    }
+
+    fun getGrazedParts(target: TargetPosition, adjustment: TargetPosition = TargetPosition()): List<BodyPart> {
+        val directParts = mutableListOf<BodyPart>()
+        parts.forEach {
+            val position = it.position.shift(adjustment)
+            if (position.getHitLevel(target) == HitLevel.GRAZING) {
+                directParts.add(it)
+            }
+        }
+        return directParts
     }
 
 }
