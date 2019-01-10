@@ -1,5 +1,6 @@
 package combat
 
+import combat.battle.position.TargetDirection
 import combat.chop.ChopEvent
 import combat.crush.CrushEvent
 import combat.slash.SlashEvent
@@ -79,10 +80,10 @@ class AttackCommand : Command() {
 
     private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection) : Event {
         return when (keyword) {
-            "chop" -> ChopEvent(GameState.player.creature, sourcePart, target, direction)
-            "crush" -> CrushEvent(GameState.player.creature, sourcePart, target, direction)
-            "slash" -> SlashEvent(GameState.player.creature, sourcePart, target, direction)
-            else -> StabEvent(GameState.player.creature, sourcePart, target, direction)
+            "chop" -> ChopEvent(GameState.player.creature, sourcePart, target, direction.position)
+            "crush" -> CrushEvent(GameState.player.creature, sourcePart, target, direction.position)
+            "slash" -> SlashEvent(GameState.player.creature, sourcePart, target, direction.position)
+            else -> StabEvent(GameState.player.creature, sourcePart, target, direction.position)
         }
     }
 }

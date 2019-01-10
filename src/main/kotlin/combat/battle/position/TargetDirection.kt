@@ -1,17 +1,17 @@
-package combat
+package combat.battle.position
 
 import core.utility.getRandomRange
 
-enum class TargetDirection(private val aliases: List<String>) {
-    TOP(listOf("Top", "t")),
-    TOP_LEFT(listOf("Top Left", "tl")),
-    TOP_RIGHT(listOf("Top Right", "tr")),
-    MIDDLE(listOf("Middle", "m")),
-    MIDDLE_LEFT(listOf("Middle Left", "ml")),
-    MIDDLE_RIGHT(listOf("Middle Right", "mr")),
-    BOTTOM(listOf("Bottom", "b")),
-    BOTTOM_LEFT(listOf("Bottom Left", "bl")),
-    BOTTOM_RIGHT(listOf("Bottom Right", "br"));
+enum class TargetDirection(val position: TargetPosition, private val aliases: List<String>) {
+    TOP(TargetPosition(vertical = Vertical.HIGH), listOf("Top", "t")),
+    TOP_LEFT(TargetPosition(Horizontal.LEFT, Vertical.HIGH), listOf("Top Left", "High Left", "tl")),
+    TOP_RIGHT(TargetPosition(Horizontal.RIGHT, Vertical.HIGH), listOf("Top Right", "High Right", "tr")),
+    MIDDLE(TargetPosition(), listOf("Middle", "m", "Center")),
+    MIDDLE_LEFT(TargetPosition(Horizontal.LEFT), listOf("Middle Left", "Center Left", "ml")),
+    MIDDLE_RIGHT(TargetPosition(Horizontal.RIGHT), listOf("Middle Right", "Center Right", "mr")),
+    BOTTOM(TargetPosition(vertical = Vertical.LOW), listOf("Bottom", "Low", "b")),
+    BOTTOM_LEFT(TargetPosition(Horizontal.LEFT, Vertical.LOW), listOf("Bottom Left", "Low Left", "bl")),
+    BOTTOM_RIGHT(TargetPosition(Horizontal.RIGHT, Vertical.LOW), listOf("Bottom Right", "Low Right", "br"));
 
     override fun toString(): String {
         return aliases[0]

@@ -101,4 +101,12 @@ class Item(
         }
     }
 
+    fun getDefense(type: String) : Int{
+        return if (properties.stats.has(type)){
+            properties.stats.getInt(type)
+        } else {
+            properties.stats.getInt("defense", 0)
+        }
+    }
+
 }

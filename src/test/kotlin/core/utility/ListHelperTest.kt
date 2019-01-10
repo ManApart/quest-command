@@ -1,9 +1,7 @@
 package core.utility
 
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class ListHelperTest {
 
@@ -43,4 +41,16 @@ class ListHelperTest {
         assertEquals(item1, results[0])
         assertEquals(item3, results[1])
     }
+
+    @Test
+    fun getRandom() {
+        val list = listOf("Test 1", "Test 2")
+        assertNotNull(list.random())
+    }
+
+    @Test
+    fun getRandomFromEmptyList() {
+        assertNull(listOf<String>().random())
+    }
+
 }

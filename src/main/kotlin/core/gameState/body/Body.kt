@@ -12,10 +12,6 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
 
     private val parts = NameSearchableList(parts)
 
-//    fun hasPart(part: String): Boolean {
-//        return parts.exists(part)
-//    }
-
     private fun hasAttachPoint(attachPoint: String): Boolean {
         return parts.any { it.hasAttachPoint(attachPoint) }
     }

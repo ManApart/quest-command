@@ -1,5 +1,7 @@
 package core.utility
 
+import java.util.*
+
 fun List<String>.matches(other: List<String>): Boolean {
     if (size != other.size) {
         return false
@@ -38,11 +40,19 @@ fun <E : Named> List<E>.filterUniqueByName(): List<E> {
     val unique = mutableListOf<String>()
     val results = mutableListOf<E>()
     forEach {
-        if (!unique.contains(it.name)){
+        if (!unique.contains(it.name)) {
             unique.add(it.name)
             results.add(it)
         }
     }
     return results
+}
+
+fun <E> List<E>.random(): E? {
+    return if (isNotEmpty()) {
+        get(Random().nextInt(size-1))
+    } else {
+        null
+    }
 }
 

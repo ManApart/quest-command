@@ -3,6 +3,7 @@ package core.gameState
 import core.utility.apply
 import core.utility.hasAllOf
 import core.utility.matches
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
 
 class Values(properties: Map<String, String> = mapOf()) {
     constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
@@ -46,6 +47,10 @@ class Values(properties: Map<String, String> = mapOf()) {
 
     fun matches(other: Values): Boolean {
         return properties.matches(other.properties)
+    }
+
+    fun has(value: String): Boolean {
+        return properties.containsKey(value.toLowerCase())
     }
 
     fun hasAll(other: Values): Boolean {

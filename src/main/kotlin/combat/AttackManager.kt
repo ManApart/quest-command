@@ -1,68 +1,46 @@
 package combat
 
-import combat.chop.ChopEvent
-import combat.crush.CrushEvent
-import combat.slash.SlashEvent
-import combat.stab.StabEvent
+import combat.battle.position.TargetPosition
 import core.events.Event
-import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.body.Body
 import core.gameState.body.BodyPart
 import core.gameState.getCreature
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
+import core.utility.random
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
 object AttackManager {
-    enum class AttackType(val health: String, val damage: String) {
-        CHOP("chop-health", "chopDamage"),
-        CRUSH("crushHealth", "crushDamage"),
-        SLASH("slashHealth", "slashDamage"),
-        STAB("stabHealth", "stabDamage");
-    }
 
-    class Chop : EventListener<ChopEvent>() {
-        override fun execute(event: ChopEvent) {
-            AttackManager.execute(AttackType.CHOP, event.source, event.sourcePart, event.target, event.direction, event)
-        }
-    }
-
-    class Crush : EventListener<CrushEvent>() {
-        override fun execute(event: CrushEvent) {
-            AttackManager.execute(AttackType.CRUSH, event.source, event.sourcePart, event.target, event.direction, event)
-        }
-    }
-
-    class Stab : EventListener<StabEvent>() {
-        override fun execute(event: StabEvent) {
-            AttackManager.execute(AttackType.STAB, event.source, event.sourcePart, event.target, event.direction, event)
-        }
-    }
-
-    class Slash : EventListener<SlashEvent>() {
-        override fun execute(event: SlashEvent) {
-            AttackManager.execute(AttackType.SLASH, event.source, event.sourcePart, event.target, event.direction, event)
-        }
-    }
-
-    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, direction: TargetDirection, event: Event) {
+    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, targetPosition: TargetPosition, event: Event) {
         val subject = StringFormatter.getSubject(source)
         val possessive = StringFormatter.getSubjectPossessive(source)
-        display("$subject ${type.name.toLowerCase()} the $direction of ${target.name} with $possessive ${sourcePart.getEquippedWeapon()}.")
+        display("$subject ${type.name.toLowerCase()} the $targetPosition of ${target.name} with $possessive ${sourcePart.getEquippedWeapon()}.")
 
-        val creature = target.getCreature()
-        val damageDone = getDamageDone(source, sourcePart, type)
+        val defender = target.getCreature()
+        val offensiveDamage = getOffensiveDamage(source, sourcePart, type)
 
-        if (creature != null && damageDone > 0) {
-            if (hasSpecificHealth(creature, type)) {
-                EventManager.postEvent(StatChangeEvent(creature, sourcePart.getEquippedWeapon()?.name ?: "", type.health, -damageDone))
-            } else if (creature.soul.hasStat(Stat.HEALTH)) {
-                EventManager.postEvent(StatChangeEvent(creature, sourcePart.getEquippedWeapon()?.name ?: "", Stat.HEALTH, -damageDone))
+        if (defender != null && offensiveDamage > 0) {
+            val attackedPart = getAttackedPart(targetPosition, defender.body)
+            if (attackedPart == null) {
+                display("$subject misses!")
+            } else {
+                val grazeModifier = getGrazeModifier(targetPosition, attackedPart)
+                val undefendedDamage = getUndefendedDamage((offensiveDamage*grazeModifier).toInt(), attackedPart, type)
+
+                if (hasSpecificHealth(defender, type)) {
+                    EventManager.postEvent(StatChangeEvent(defender, sourcePart.getEquippedWeapon()?.name
+                            ?: "", type.health, -undefendedDamage))
+                } else if (defender.soul.hasStat(Stat.HEALTH)) {
+                    EventManager.postEvent(StatChangeEvent(defender, sourcePart.getEquippedWeapon()?.name
+                            ?: "", Stat.HEALTH, -undefendedDamage))
+                }
             }
         } else if (sourcePart.getEquippedWeapon() != null) {
             EventManager.postEvent(UseEvent(GameState.player.creature, sourcePart.getEquippedWeapon()!!, target))
@@ -72,15 +50,37 @@ object AttackManager {
         target.consume(event)
     }
 
-    private fun getDamageDone(creature: Creature, source: BodyPart, type: AttackType): Int {
+    private fun getAttackedPart(targetPosition: TargetPosition, defender: Body): BodyPart? {
+        var parts = defender.getDirectParts(targetPosition)
+        if (parts.isEmpty()) {
+            parts = defender.getGrazedParts(targetPosition)
+        }
+        return parts.random()
+    }
+
+    private fun getOffensiveDamage(sourceCreature: Creature, sourcePart: BodyPart, type: AttackType): Int {
         return when {
-            source.getEquippedWeapon() != null -> source.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
-            else -> creature.soul.getCurrent(Stat.BARE_HANDED)
+            sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
+            else -> sourceCreature.soul.getCurrent(Stat.BARE_HANDED)
         }
     }
+
+    private fun getGrazeModifier(targetPosition: TargetPosition, attackedPart: BodyPart): Float {
+        return targetPosition.getHitLevel(attackedPart.position).modifier
+    }
+
+    private fun getUndefendedDamage(damage: Int, attackedPart: BodyPart, attackType: AttackType): Int {
+        var defendedDamage = damage
+        attackedPart.getEquippedItems().forEach {
+            defendedDamage -= it.getDefense(attackType.defense)
+        }
+        return Math.max(defendedDamage, 0)
+    }
+
 
     private fun hasSpecificHealth(target: Creature, attackType: AttackType): Boolean {
         return target.soul.hasStat(attackType.health)
     }
+
 
 }

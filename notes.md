@@ -100,6 +100,8 @@ Each Turn
 - Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
 - Attack direction should use previous target
 - Individual health for body parts, can't use parts that don't have health?
+- Do more AI work.
+  - Rat should only attack with low aim
 
 ### Crafting
 
