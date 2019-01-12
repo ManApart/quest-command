@@ -11,6 +11,7 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
     constructor(base: Body) : this(base.name, base.parts.map { BodyPart(it) })
 
     private val parts = NameSearchableList(parts)
+    var adjustment = TargetPosition()
 
     private fun hasAttachPoint(attachPoint: String): Boolean {
         return parts.any { it.hasAttachPoint(attachPoint) }
@@ -82,7 +83,7 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         }
     }
 
-    fun getDirectParts(target: TargetPosition, adjustment: TargetPosition = TargetPosition()): List<BodyPart> {
+    fun getDirectParts(target: TargetPosition): List<BodyPart> {
         val directParts = mutableListOf<BodyPart>()
         parts.forEach {
             val position = it.position.shift(adjustment)
@@ -93,7 +94,7 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         return directParts
     }
 
-    fun getGrazedParts(target: TargetPosition, adjustment: TargetPosition = TargetPosition()): List<BodyPart> {
+    fun getGrazedParts(target: TargetPosition): List<BodyPart> {
         val directParts = mutableListOf<BodyPart>()
         parts.forEach {
             val position = it.position.shift(adjustment)

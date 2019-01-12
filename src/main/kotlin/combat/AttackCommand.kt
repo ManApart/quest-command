@@ -46,9 +46,9 @@ class AttackCommand : Command() {
         val direction = getDirection(arguments)
         val handHelper = HandHelper(arguments.getGroupString(1), damageType)
 
-        val ignoredWords = mutableListOf("left", "l", "right", "r", "of")
+        val ignoredWords = mutableListOf<String>()
         ignoredWords.addAll(TargetDirection.getAllAliases())
-        val cleaned = Args(args, listOf("with"), ignoredWords)
+        val cleaned = Args(args, listOf("with", "of"), ignoredWords)
         val scope = ScopeManager.getScope()
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
@@ -75,6 +75,7 @@ class AttackCommand : Command() {
             ScopeManager.getScope().getTargets(cleaned.argStrings[0]).isNotEmpty() && ScopeManager.getScope().getTargets(cleaned.argStrings[0]).first() is Activator && handHelper.weapon != null
 
     private fun getDirection(args: Args): TargetDirection {
+        //TODO - ask for response from user
         return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()
     }
 

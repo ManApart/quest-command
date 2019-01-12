@@ -50,7 +50,7 @@ fun <E : Named> List<E>.filterUniqueByName(): List<E> {
 
 fun <E> List<E>.random(): E? {
     return if (isNotEmpty()) {
-        get(Random().nextInt(size-1))
+        get(getRandomRange(size))
     } else {
         null
     }

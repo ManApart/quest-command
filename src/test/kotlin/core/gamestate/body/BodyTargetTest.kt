@@ -26,9 +26,10 @@ class BodyTargetTest {
     fun directTargetAdjusted() {
         val part = BodyPart("Hand", TargetPosition())
         val body = Body(parts = listOf(part))
+        body.adjustment = TargetPosition(Horizontal.LEFT, Vertical.HIGH)
         val attack = TargetPosition(Horizontal.LEFT, Vertical.HIGH)
 
-        val directParts = body.getDirectParts(attack, TargetPosition(Horizontal.LEFT, Vertical.HIGH))
+        val directParts = body.getDirectParts(attack)
 
         assertEquals(1, directParts.size)
         assertEquals(part, directParts.first())
@@ -50,9 +51,10 @@ class BodyTargetTest {
     fun grazedTargetAdjusted() {
         val part = BodyPart("Hand", TargetPosition(Horizontal.RIGHT, Vertical.LOW))
         val body = Body(parts = listOf(part))
+        body.adjustment = TargetPosition(Horizontal.LEFT)
         val attack = TargetPosition()
 
-        val grazedParts = body.getGrazedParts(attack, TargetPosition(Horizontal.LEFT))
+        val grazedParts = body.getGrazedParts(attack)
 
         assertEquals(1, grazedParts.size)
         assertEquals(part, grazedParts.first())

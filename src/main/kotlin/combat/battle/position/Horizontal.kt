@@ -3,6 +3,10 @@ package combat.battle.position
 enum class Horizontal(private val value: Int) {
     LEFT(-1), CENTER(0), RIGHT(1);
 
+    override fun toString(): String {
+        return name.toLowerCase()
+    }
+
     fun isAdjacent(other: Horizontal): Boolean {
         return Math.abs(this.value - other.value) == 1
     }

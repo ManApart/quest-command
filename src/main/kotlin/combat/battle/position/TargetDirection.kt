@@ -2,16 +2,18 @@ package combat.battle.position
 
 import core.utility.getRandomRange
 
-enum class TargetDirection(val position: TargetPosition, private val aliases: List<String>) {
-    TOP(TargetPosition(vertical = Vertical.HIGH), listOf("Top", "t")),
+enum class TargetDirection(val position: TargetPosition, aliases: List<String>) {
+    TOP(TargetPosition(vertical = Vertical.HIGH), listOf("Top", "Top Center", "Top Middle", "High Center", "High Middle", "t")),
     TOP_LEFT(TargetPosition(Horizontal.LEFT, Vertical.HIGH), listOf("Top Left", "High Left", "tl")),
     TOP_RIGHT(TargetPosition(Horizontal.RIGHT, Vertical.HIGH), listOf("Top Right", "High Right", "tr")),
-    MIDDLE(TargetPosition(), listOf("Middle", "m", "Center")),
+    MIDDLE(TargetPosition(), listOf("Middle", "Middle Middle", "Center", "Center Center", "m")),
     MIDDLE_LEFT(TargetPosition(Horizontal.LEFT), listOf("Middle Left", "Center Left", "ml")),
     MIDDLE_RIGHT(TargetPosition(Horizontal.RIGHT), listOf("Middle Right", "Center Right", "mr")),
-    BOTTOM(TargetPosition(vertical = Vertical.LOW), listOf("Bottom", "Low", "b")),
+    BOTTOM(TargetPosition(vertical = Vertical.LOW), listOf("Bottom", "Bottom Center", "Bottom Middle", "Low", "Low Center", "Low Middle", "b")),
     BOTTOM_LEFT(TargetPosition(Horizontal.LEFT, Vertical.LOW), listOf("Bottom Left", "Low Left", "bl")),
     BOTTOM_RIGHT(TargetPosition(Horizontal.RIGHT, Vertical.LOW), listOf("Bottom Right", "Low Right", "br"));
+
+    private val aliases: List<String> = aliases.map { it.toLowerCase() }
 
     override fun toString(): String {
         return aliases[0]
@@ -28,7 +30,7 @@ enum class TargetDirection(val position: TargetPosition, private val aliases: Li
 
         fun getTargetDirection(line: String) : TargetDirection? {
             val targets = getAllPossibleDirections(line)
-            return getBestMatch(targets)
+            return targets.firstOrNull{it.aliases.contains(line.toLowerCase())}
         }
 
         fun getRandom(): TargetDirection {
@@ -51,22 +53,6 @@ enum class TargetDirection(val position: TargetPosition, private val aliases: Li
                 }
             }
             return targets
-        }
-
-        private fun getBestMatch(targets: List<TargetDirection>) : TargetDirection? {
-            return if (targets.isNotEmpty()) {
-                var target = targets[0]
-                var maxLength = target.aliases[0].length
-                targets.forEach {
-                    if (it.aliases[0].length > maxLength){
-                        target = it
-                        maxLength = target.aliases[0].length
-                    }
-                }
-                target
-            } else {
-                null
-            }
         }
 
     }

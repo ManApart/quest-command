@@ -30,6 +30,11 @@
       "burnHealth": 1,
       "itemName": "Brown Pants"
     },
+    "properties": {
+      "stats": {
+        "defense": "1"
+      }
+    },
     "equipSlots": [
       [
         "Right Leg",
@@ -44,6 +49,11 @@
     "params": {
       "burnHealth": 1,
       "itemName": "Old Shirt"
+    },
+    "properties": {
+      "stats": {
+        "defense": "1"
+      }
     },
     "equipSlots": [
       [
