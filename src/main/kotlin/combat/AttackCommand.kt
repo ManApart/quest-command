@@ -75,7 +75,6 @@ class AttackCommand : Command() {
             ScopeManager.getScope().getTargets(cleaned.argStrings[0]).isNotEmpty() && ScopeManager.getScope().getTargets(cleaned.argStrings[0]).first() is Activator && handHelper.weapon != null
 
     private fun getDirection(args: Args): TargetDirection {
-        //TODO - ask for response from user
         return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()
     }
 

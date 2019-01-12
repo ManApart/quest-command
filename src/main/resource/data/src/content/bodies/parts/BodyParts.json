@@ -78,6 +78,22 @@
     ]
   },
   {
+    "name": "Right Foot",
+    "vertical": "LOW",
+    "horizontal": "RIGHT",
+    "slots": [
+      "Right Foot"
+    ]
+  },
+  {
+    "name": "Left Foot",
+    "vertical": "LOW",
+    "horizontal": "LEFT",
+    "slots": [
+      "Left Leg"
+    ]
+  },
+  {
     "name": "Canine Head",
     "vertical": "LOW",
     "horizontal": "CENTER",
