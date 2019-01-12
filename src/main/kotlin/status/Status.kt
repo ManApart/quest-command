@@ -1,7 +1,7 @@
 package status
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.gameState.isPlayer
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
@@ -16,8 +16,9 @@ class Status : EventListener<StatusEvent>() {
     private fun printImportantStats(event: StatusEvent) {
         val soul = event.creature.soul
         if (soul.hasStat("Health") || soul.hasStat("Stamina")) {
-            val subject = StringFormatter.format(event.creature == GameState.player.creature, "You have", "${event.creature.name} has")
-            display("$subject ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} Stamina.")
+            val youHave = StringFormatter.format(event.creature.isPlayer(), "You have", "${event.creature.name} has")
+            val youAre= StringFormatter.format(event.creature.isPlayer(), "You are", "${event.creature.name} is")
+            display("$youHave ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} Stamina. $youAre ${event.creature.inventory.getTotalWeight()}/${event.creature.getTotalCapacity()} encumbered.")
         }
     }
 

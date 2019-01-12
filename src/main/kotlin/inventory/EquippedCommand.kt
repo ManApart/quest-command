@@ -37,7 +37,7 @@ class EquippedCommand : Command() {
         } else {
 
             val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
-            display("You have following items equipped:\n$itemList")
+            display("You have following items equipped:\n\t$itemList")
         }
     }
 

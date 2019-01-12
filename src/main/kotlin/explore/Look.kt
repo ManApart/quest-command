@@ -24,6 +24,7 @@ class Look : EventListener<LookEvent>() {
         var message = target.getDisplayName()
         message += "\n\t${target.description}"
         message += describeStatusEffects(target)
+        message += describeWeight(target)
         message += describeProperties(target)
         display(message)
     }
@@ -41,6 +42,14 @@ class Look : EventListener<LookEvent>() {
             return "\n\t${target.properties}"
         }
         return ""
+    }
+
+    private fun describeWeight(target: Target): String {
+        return if (target is Item) {
+            "\n\tWeight: ${target.weight}"
+        } else {
+            ""
+        }
     }
 
     private fun describeLocation() {

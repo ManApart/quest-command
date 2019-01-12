@@ -30,6 +30,7 @@
       "burnHealth": 1,
       "itemName": "Brown Pants"
     },
+    "weight": "1",
     "properties": {
       "stats": {
         "defense": "1"
@@ -37,19 +38,52 @@
     },
     "equipSlots": [
       [
+        "Waist",
         "Right Leg",
         "Left Leg"
       ]
     ]
   },
   {
+    "name": "Small Pouch",
+    "description": "A pouch for storing small items.",
+    "weight": "1",
+    "properties": {
+      "tags": [
+        "Open",
+        "Container"
+      ],
+      "values": {
+        "Capacity": "5"
+      },
+      "stats": {
+        "defense": "1"
+      }
+    },
+    "equipSlots": [
+      [
+        "Belt Front"
+      ],
+      [
+        "Belt Left"
+      ],
+      [
+        "Belt Right"
+      ],
+      [
+        "Belt Back"
+      ]
+    ]
+  },
+  {
     "name": "Old Shirt",
-    "description": "A faint scent of soil oozes from the worn cloth",
+    "description": "A faint scent of soil oozes from the worn cloth.",
     "extends": "Burnable",
     "params": {
       "burnHealth": 1,
       "itemName": "Old Shirt"
     },
+    "weight": "1",
     "properties": {
       "stats": {
         "defense": "1"

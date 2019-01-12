@@ -2,16 +2,17 @@
   {
     "name": "Human",
     "parts": [
+      "Head",
+      "Chest",
+      "Right Arm",
+      "Left Arm",
       "Right Hand",
       "Left Hand",
+      "Waist",
       "Right Leg",
       "Left Leg",
       "Right Foot",
-      "Left Foot",
-      "Right Arm",
-      "Left Arm",
-      "Head",
-      "Chest"
+      "Left Foot"
     ]
   },
   {

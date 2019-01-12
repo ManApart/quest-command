@@ -39,7 +39,7 @@ object GameManager {
         val inventory = GameState.player.creature.inventory
         val body = GameState.player.creature.body
 
-        listOf("Brown Pants", "Old Shirt", "Rusty Dagger").forEach {
+        listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {
             val item = ItemManager.getItem(it)
             inventory.add(item)
             body.equip(item)

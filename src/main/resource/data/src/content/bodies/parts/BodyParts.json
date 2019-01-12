@@ -58,6 +58,20 @@
     ]
   },
   {
+    "name": "Waist",
+    "vertical": "CENTER",
+    "horizontal": "CENTER",
+    "slots": [
+      "Waist Inner",
+      "Waist",
+      "Waist Outer",
+      "Belt Front",
+      "Belt Left",
+      "Belt Right",
+      "Belt Back"
+    ]
+  },
+  {
     "name": "Right Leg",
     "vertical": "LOW",
     "horizontal": "RIGHT",

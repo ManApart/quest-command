@@ -15,6 +15,7 @@ class Item(
         name: String,
         description: String = "",
         params: Map<String, String> = mapOf(),
+        //TODO - weight should be getter, based on item inventory etc?
         val weight: Int = 0,
         var count: Int = 1,
         equipSlots: List<List<String>> = listOf(),
