@@ -5,6 +5,8 @@ import core.gameState.Direction
 import core.utility.Named
 import system.location.LocationManager
 
+val NOWHERE_NODE = LocationNode("Nowhere")
+
 class LocationNode(
         override val name: String,
         val locationName: String = name,

@@ -1,4 +1,4 @@
-package system
+package system.activator
 
 import core.gameState.Activator
 import core.gameState.Item

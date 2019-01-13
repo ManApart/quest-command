@@ -1,8 +1,9 @@
-package system
+package system.activator
 
 import core.gameState.Activator
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
+import system.DependencyInjector
 
 object ActivatorManager {
     private var parser = DependencyInjector.getImplementation(ActivatorParser::class.java)

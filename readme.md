@@ -231,3 +231,6 @@ Location Paths describe the relationship between locations. They contain
 - A parent name - used only in descriptions (ex: Blue Cave is part of Kanbara Wilds)
 - Restricted - locations are visible but can't be traveled to (for things like climbing trees or opening doors)
 
+## Testing
+
+If tests are running slow, make sure that json parsing and reflection are not happing as part of unit tests. An easy check is to place a debug point in `getImplementation` to catch any time a default implementation is being used in a unit test.

@@ -4,6 +4,8 @@ import core.gameState.*
 import inventory.dropItem.TransferItem
 import org.junit.Test
 import system.*
+import system.item.ItemManager
+import system.item.ItemParser
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue

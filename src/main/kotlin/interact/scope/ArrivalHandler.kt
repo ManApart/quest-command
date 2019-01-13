@@ -2,9 +2,9 @@ package interact.scope
 
 import core.events.EventListener
 import core.gameState.GameState
-import system.ActivatorManager
+import system.activator.ActivatorManager
 import system.CreatureManager
-import system.ItemManager
+import system.item.ItemManager
 import travel.ArriveEvent
 
 class ArrivalHandler : EventListener<ArriveEvent>() {

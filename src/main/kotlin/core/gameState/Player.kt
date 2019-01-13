@@ -6,12 +6,12 @@ import core.gameState.location.Route
 import core.gameState.stat.Stat
 import core.utility.NameSearchableList
 import crafting.Recipe
-import system.BodyManager
+import system.body.BodyManager
 import system.location.LocationManager
 import travel.climb.ClimbJourney
 
-class Player : Target {
-    val creature = Creature("Player", "Our Hero!", BodyManager.getBody("Human"), LocationManager.findLocation("an open field"), null, this)
+class Player(creatureBase: Creature? = null) : Target {
+    val creature = creatureBase ?: Creature("Player", "Our Hero!", BodyManager.getBody("Human"), LocationManager.findLocation("an open field"), null, this)
     var climbJourney: ClimbJourney? = null
     var route: Route? = null
 

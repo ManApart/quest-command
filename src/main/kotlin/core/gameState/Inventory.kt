@@ -1,7 +1,7 @@
 package core.gameState
 
 import core.utility.NameSearchableList
-import system.ItemManager
+import system.item.ItemManager
 
 class Inventory(itemNames: List<String> = listOf()) {
     constructor(base: Inventory) : this(base.getItems().map { it.name })

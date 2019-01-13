@@ -1,27 +1,12 @@
-package system
+package system.item
 
-import core.events.EventListener
 import core.gameState.Item
 import core.gameState.location.LocationTarget
-import core.history.display
-import interact.scope.spawn.ItemSpawnedEvent
-import interact.scope.spawn.SpawnItemEvent
+import system.DependencyInjector
 
 object ItemManager {
     private var parser = DependencyInjector.getImplementation(ItemParser::class.java)
     private var items = parser.loadItems()
-
-    class ItemSpawner : EventListener<SpawnItemEvent>() {
-        override fun execute(event: SpawnItemEvent) {
-            if (itemExists(event.itemName)) {
-                val item = getItem(event.itemName)
-                item.count = event.count
-                EventManager.postEvent(ItemSpawnedEvent(item, event.target))
-            } else {
-                display("Could not spawn ${event.itemName} because it could not be found.")
-            }
-        }
-    }
 
     fun reset() {
         parser = DependencyInjector.getImplementation(ItemParser::class.java)

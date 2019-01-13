@@ -1,15 +1,17 @@
-package system
+package system.behavior
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.behavior.Behavior
-import core.gameState.behavior.BehaviorBase
 import core.gameState.behavior.BehaviorRecipe
-import core.utility.JsonDirectoryParser
+import system.DependencyInjector
 
 object BehaviorManager {
-    private val behaviors = JsonDirectoryParser.parseDirectory("/data/generated/content/behaviors", ::parseFile)
-    private fun parseFile(path: String): List<BehaviorBase> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private var parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
+    private var behaviors = parser.loadBehaviors()
+
+    fun reset() {
+        parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
+        behaviors = parser.loadBehaviors()
+    }
 
     fun behaviorExists(recipe: BehaviorRecipe): Boolean {
         return behaviors.firstOrNull { it.name.toLowerCase() == recipe.name.toLowerCase() } != null

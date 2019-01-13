@@ -1,22 +1,23 @@
-package system
+package system.body
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
 import core.gameState.body.ProtoBody
-import core.utility.JsonDirectoryParser
+import system.DependencyInjector
 
 object BodyManager {
-    private val protoBodies = JsonDirectoryParser.parseDirectory("/data/generated/content/bodies/bodies", ::parseBodiesFile)
-    private fun parseBodiesFile(path: String): List<ProtoBody> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private var parser = DependencyInjector.getImplementation(BodyParser::class.java)
+    private var bodies = createBodies()
 
-    private val bodyParts = JsonDirectoryParser.parseDirectory("/data/generated/content/bodies/parts", ::parsePartsFile)
-    private fun parsePartsFile(path: String): List<BodyPart> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    fun reset() {
+        parser = DependencyInjector.getImplementation(BodyParser::class.java)
+        bodies = createBodies()
+    }
 
-    private val bodies = createBodies(protoBodies, bodyParts)
+    private fun createBodies(): List<Body> {
+        val protoBodies = parser.loadBodies()
+        val bodyParts = parser.loadBodyParts()
 
-    private fun createBodies(protoBodies: List<ProtoBody>, bodyParts: List<BodyPart>): List<Body> {
         val partMap = bodyParts.map { it.name.toLowerCase() to it }.toMap()
         val bodies = mutableListOf<Body>()
 

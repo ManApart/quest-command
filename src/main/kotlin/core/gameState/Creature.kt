@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import core.events.Event
 import core.gameState.body.Body
 import core.gameState.location.LocationNode
+import core.gameState.location.NOWHERE_NODE
 import core.utility.apply
 import system.AIManager
-import system.BodyManager
-import system.location.LocationManager
+import system.body.BodyManager
 
 class Creature(
         override val name: String,
         override val description: String,
         val body: Body = Body(),
-        override var location: LocationNode = LocationManager.NOWHERE_NODE,
+        override var location: LocationNode = NOWHERE_NODE,
         ai: String? = null,
         val parent: Target? = null,
         override val inventory: Inventory = Inventory(),

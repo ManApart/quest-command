@@ -3,12 +3,12 @@ package inventory.dropItem
 import core.events.EventListener
 import core.gameState.*
 import core.gameState.Target
+import core.gameState.location.NOWHERE_NODE
 import core.history.display
 import interact.scope.ScopeManager
 import inventory.equipItem.EquipItemEvent
 import inventory.pickupItem.ItemPickedUpEvent
 import system.EventManager
-import system.location.LocationManager
 
 class TransferItem : EventListener<TransferItemEvent>() {
     override fun execute(event: TransferItemEvent) {
@@ -87,7 +87,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         } else {
             ScopeManager.getScope(destination.location).removeTarget(item)
             item.properties.values.put("locationDescription", "")
-            item.location = LocationManager.NOWHERE_NODE
+            item.location = NOWHERE_NODE
         }
     }
 

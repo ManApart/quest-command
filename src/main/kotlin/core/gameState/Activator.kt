@@ -6,7 +6,7 @@ import core.gameState.behavior.BehaviorRecipe
 import core.gameState.climb.Climbable
 import core.gameState.location.LocationNode
 import core.utility.apply
-import system.BehaviorManager
+import system.behavior.BehaviorManager
 
 class Activator(
         name: String,

@@ -1,7 +1,8 @@
 package validation
 
-import system.ActivatorManager
-import system.BehaviorManager
+import core.gameState.location.NOWHERE_NODE
+import system.activator.ActivatorManager
+import system.behavior.BehaviorManager
 import system.location.LocationManager
 import travel.climb.ClimbPathManager
 
@@ -61,7 +62,7 @@ class ActivatorValidator {
         var warnings = 0
         activators.forEach { activator ->
             if (activator.climb != null) {
-                if (!activator.climb!!.destinationName.startsWith("\$") && activator.climb!!.destination == LocationManager.NOWHERE_NODE) {
+                if (!activator.climb!!.destinationName.startsWith("\$") && activator.climb!!.destination == NOWHERE_NODE) {
                     println("WARN: Activator '${activator.name}' references nonexistent climb path destination.")
                     warnings++
                 }

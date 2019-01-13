@@ -6,7 +6,7 @@ import system.EventManager
 
 object CommandParser {
     private val unknownCommand = UnknownCommand()
-    val commands = loadCommands()
+    val commands by lazy { loadCommands() }
     var responseRequest: ResponseRequest? = null
 
     private fun loadCommands(): List<Command> {

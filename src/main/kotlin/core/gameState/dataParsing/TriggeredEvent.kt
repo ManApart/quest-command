@@ -3,6 +3,7 @@ package core.gameState.dataParsing
 import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
+import core.gameState.location.NOWHERE_NODE
 import core.gameState.quests.CompleteQuestEvent
 import core.gameState.quests.QuestManager
 import core.gameState.quests.SetQuestStageEvent
@@ -11,7 +12,7 @@ import crafting.DiscoverRecipeEvent
 import crafting.Recipe
 import crafting.RecipeManager
 import explore.RestrictLocationEvent
-import interact.scope.*
+import interact.scope.ScopeManager
 import interact.scope.remove.RemoveItemEvent
 import interact.scope.remove.RemoveScopeEvent
 import interact.scope.spawn.SpawnActivatorEvent
@@ -20,7 +21,7 @@ import status.effects.AddEffectEvent
 import status.effects.EffectManager
 import status.effects.RemoveEffectEvent
 import status.statChanged.StatChangeEvent
-import system.ActivatorManager
+import system.activator.ActivatorManager
 import system.EventManager
 import system.MessageEvent
 import system.location.LocationManager
@@ -64,7 +65,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             return null
         }
         val location = LocationManager.findLocation(param)
-        return if (location == LocationManager.NOWHERE_NODE) {
+        return if (location == NOWHERE_NODE) {
             null
         } else {
             location

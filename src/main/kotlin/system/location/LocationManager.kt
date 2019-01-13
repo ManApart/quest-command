@@ -1,16 +1,10 @@
 package system.location
 
-import core.gameState.location.Location
-import core.gameState.location.LocationLink
-import core.gameState.location.LocationNode
+import core.gameState.location.*
 import core.utility.NameSearchableList
 import system.DependencyInjector
 
 object LocationManager {
-    //TODO - move to location and location Node
-    val NOWHERE = Location("Nowhere")
-    val NOWHERE_NODE = LocationNode("Nowhere")
-
     private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
 
     private var locations = parser.loadLocations()

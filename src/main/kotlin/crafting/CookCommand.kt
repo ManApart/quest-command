@@ -8,7 +8,7 @@ import core.gameState.Item
 import core.history.display
 import interact.scope.ScopeManager
 import system.EventManager
-import system.ItemManager
+import system.item.ItemManager
 
 class CookCommand : Command() {
     private val delimiters = listOf(",", "with", "on")

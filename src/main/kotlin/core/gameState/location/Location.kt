@@ -2,6 +2,8 @@ package core.gameState.location
 
 import core.utility.Named
 
+val NOWHERE = Location("Nowhere")
+
 class Location(
         override val name: String,
         val description: String = "",

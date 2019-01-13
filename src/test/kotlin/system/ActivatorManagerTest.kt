@@ -2,11 +2,12 @@ package system
 
 import core.gameState.Activator
 import core.gameState.climb.Climbable
-import core.gameState.location.LocationNode
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
 import org.junit.BeforeClass
 import org.junit.Test
+import system.activator.ActivatorManager
+import system.activator.ActivatorParser
 import system.location.LocationFakeParser
 import system.location.LocationManager
 import system.location.LocationParser

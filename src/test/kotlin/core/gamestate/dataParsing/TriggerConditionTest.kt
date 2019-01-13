@@ -16,7 +16,6 @@ class TriggerConditionTest {
                 "classVal" to "ABOVE"
         ))
         assertTrue(condition.matches(event))
-
     }
 
 
