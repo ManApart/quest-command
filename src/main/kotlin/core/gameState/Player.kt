@@ -1,5 +1,6 @@
 package core.gameState
 
+import core.gameState.location.LocationNode
 import core.gameState.location.Route
 import core.gameState.stat.Stat
 import core.utility.NameSearchableList
@@ -15,6 +16,8 @@ class Player : Target {
 
     override val name: String get() = creature.name
     override val description: String get() = creature.description
+    override val inventory: Inventory get() = creature.inventory
+    override val location: LocationNode get() = creature.location
     override val properties: Properties get() = creature.properties
     var canRest = true
     var canTravel = true

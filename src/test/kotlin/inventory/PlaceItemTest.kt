@@ -5,15 +5,15 @@ import core.gameState.*
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
 import interact.scope.ScopeManager
-import inventory.dropItem.PlaceItem
-import inventory.dropItem.PlaceItemEvent
+import inventory.dropItem.TransferItem
+import inventory.dropItem.TransferItemEvent
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.test.fail
 
 class PlaceItemTest {
+    //TODO - assert not null
 
     @Test
     fun dropItem() {
@@ -22,7 +22,7 @@ class PlaceItemTest {
         creature.inventory.add(item)
         val scope = ScopeManager.getScope(creature.location)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item))
+        TransferItem().execute(TransferItemEvent(item, creature))
         assertTrue(scope.getTargets(item.name).isNotEmpty())
         assertFalse(creature.inventory.getItem(item.name) != null)
     }
@@ -34,7 +34,7 @@ class PlaceItemTest {
         val chest = Activator("name", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(chest.creature.inventory.getItem(item.name) != null)
         assertFalse(creature.inventory.getItem(item.name) != null)
@@ -51,7 +51,7 @@ class PlaceItemTest {
         val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
         chest.inventory.add(pouch)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(chest.inventory.getItem(item.name) != null)
         assertFalse(creature.inventory.getItem(item.name) != null)
@@ -67,7 +67,7 @@ class PlaceItemTest {
         val body = Body(parts = listOf(part))
         val chest = Creature("Name", "", body = body, properties = Properties(Tags(listOf("Container", "Open")), stats = Values(mapOf("Strength" to "1"))))
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(chest.inventory.getItem(item.name) != null)
         assertFalse(creature.inventory.getItem(item.name) != null)
@@ -80,7 +80,7 @@ class PlaceItemTest {
         val chest = Activator("name", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(chest.creature.inventory.getItem(item.name) != null)
         assertFalse(creature.inventory.getItem(item.name) != null)
@@ -93,7 +93,7 @@ class PlaceItemTest {
         val chest = Activator("Name", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(chest.creature.inventory.getItem(item.name) != null)
         assertEquals(1, chest.creature.inventory.getItem(item.name)!!.count)
@@ -109,7 +109,7 @@ class PlaceItemTest {
         val chest = Creature("Name", "", properties = Properties(Tags(listOf("Open")), Values(mapOf("Capacity" to "5"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(creature.inventory.getItem(item.name) != null)
         assertFalse(chest.inventory.getItem(item.name) != null)
@@ -122,7 +122,7 @@ class PlaceItemTest {
         val chest = Creature("Name", "", properties = Properties(Tags(listOf("Container")), Values(mapOf("Capacity" to "5"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(creature.inventory.getItem(item.name) != null)
         assertFalse(chest.inventory.getItem(item.name) != null)
@@ -135,7 +135,7 @@ class PlaceItemTest {
         val chest = Creature("Name", "", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "1"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(creature.inventory.getItem(item.name) != null)
         assertFalse(chest.inventory.getItem(item.name) != null)
@@ -148,7 +148,7 @@ class PlaceItemTest {
         val chest = Creature("Name", "", properties = Properties(Tags(listOf("Container", "Open"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(creature.inventory.getItem(item.name) != null)
         assertFalse(chest.inventory.getItem(item.name) != null)
@@ -161,7 +161,7 @@ class PlaceItemTest {
         val chest = Activator("Name", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5", "CanHold" to "Food,Apparel"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(chest.creature.inventory.getItem(item.name) != null)
         assertFalse(creature.inventory.getItem(item.name) != null)
@@ -174,7 +174,7 @@ class PlaceItemTest {
         val chest = Creature("Name", "", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5", "CanHold" to "Weapon,Apparel"))))
         creature.inventory.add(item)
 
-        PlaceItem().execute(PlaceItemEvent(creature, item, chest))
+        TransferItem().execute(TransferItemEvent(item, creature, chest))
 
         assertTrue(creature.inventory.getItem(item.name) != null)
         assertFalse(chest.inventory.getItem(item.name) != null)

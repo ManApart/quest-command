@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.climb.Climbable
+import core.gameState.location.LocationNode
 import core.utility.apply
 import system.BehaviorManager
 
@@ -30,6 +31,8 @@ class Activator(
     val creature = Creature(name.apply(params), description.apply(params), parent = this, properties = Properties(properties, params), inventory = Inventory(items))
     override val name: String get() = creature.name
     override val description: String get() = creature.description
+    override val inventory: Inventory get() = creature.inventory
+    override val location: LocationNode get() = creature.location
     override val properties: Properties get() = creature.properties
     val climb = climb?.let { Climbable(it, params) }
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()

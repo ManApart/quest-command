@@ -1,12 +1,10 @@
 package crafting
 
 import core.events.EventListener
-import core.gameState.Creature
-import core.gameState.GameState
 import core.gameState.Inventory
 import core.gameState.Item
 import core.history.display
-import inventory.pickupItem.PickupItemEvent
+import inventory.dropItem.TransferItemEvent
 import system.EventManager
 
 class Craft : EventListener<CraftRecipeEvent>() {
@@ -20,7 +18,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
             addResults(results, event)
             EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))
 //            TODO - Add XP
-            display("You ${event.recipe.craftVerb} ${ingredients.joinToString(", ") { it.name }} and get ${results.joinToString(", ") {it.getTaggedItemName()}}.")
+            display("You ${event.recipe.craftVerb} ${ingredients.joinToString(", ") { it.name }} and get ${results.joinToString(", ") { it.getTaggedItemName() }}.")
         } else {
             display("You aren't able to craft ${event.recipe.name}.")
         }
@@ -34,7 +32,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
 
     private fun addResults(results: List<Item>, event: CraftRecipeEvent) {
         results.forEach {
-            EventManager.postEvent(PickupItemEvent(event.source, it, null,true))
+            EventManager.postEvent(TransferItemEvent(it, destination = event.source, silent = true))
         }
     }
 

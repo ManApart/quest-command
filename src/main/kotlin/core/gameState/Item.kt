@@ -5,11 +5,13 @@ import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.body.Body
 import core.gameState.body.Slot
+import core.gameState.location.LocationNode
 import core.utility.apply
 import core.utility.applyNested
 import core.utility.max
 import system.BehaviorManager
 import system.ItemManager
+import system.location.LocationManager
 
 class Item(
         name: String,
@@ -45,7 +47,8 @@ class Item(
     val soul = Soul(this)
     private val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
-    val inventory = Inventory()
+    override val inventory = Inventory()
+    override var location: LocationNode = LocationManager.NOWHERE_NODE
 
     init {
         soul.addStats(this.properties.stats.getAll())

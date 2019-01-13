@@ -21,6 +21,18 @@ class InventoryTest {
     }
 
     @Test
+    fun existsIsNested(){
+        val item = Item("Apple", weight = 2)
+        val pouch = Item("Pouch", weight = 1)
+        pouch.inventory.add(item)
+
+        val inventory = Inventory()
+        inventory.add(pouch)
+
+        assertTrue(inventory.exists(item))
+    }
+
+    @Test
     fun removeItem(){
         val item = Item("Apple", weight = 2)
         val inventory = Inventory()

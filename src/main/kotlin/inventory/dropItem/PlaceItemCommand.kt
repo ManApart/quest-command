@@ -3,7 +3,6 @@ package inventory.dropItem
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
@@ -49,7 +48,7 @@ class PlaceItemCommand : core.commands.Command() {
     private fun dropItem(args: Args) {
         val item = GameState.player.creature.inventory.getItem(args.argStrings[0])
         if (item != null) {
-            EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item))
+            EventManager.postEvent(TransferItemEvent(item, GameState.player.creature))
         } else {
             display("Couldn't find ${args.argStrings[0]}")
         }
@@ -61,7 +60,7 @@ class PlaceItemCommand : core.commands.Command() {
             val destinations = ScopeManager.getScope().getTargets(args.argStrings[1]).filterUniqueByName()
             when{
                 destinations.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
-                destinations.size == 1 -> EventManager.postEvent(PlaceItemEvent(GameState.player.creature, item, destinations.first(), true))
+                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(item, GameState.player.creature, destinations.first(), true))
                 else -> giveToWhat(destinations, args.argStrings[0])
             }
         } else {

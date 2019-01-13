@@ -7,6 +7,7 @@ import core.utility.NameSearchableList
 import system.DependencyInjector
 
 object LocationManager {
+    //TODO - move to location and location Node
     val NOWHERE = Location("Nowhere")
     val NOWHERE_NODE = LocationNode("Nowhere")
 

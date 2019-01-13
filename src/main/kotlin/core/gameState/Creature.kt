@@ -12,10 +12,10 @@ class Creature(
         override val name: String,
         override val description: String,
         val body: Body = Body(),
-        var location: LocationNode = LocationManager.NOWHERE_NODE,
+        override var location: LocationNode = LocationManager.NOWHERE_NODE,
         ai: String? = null,
         val parent: Target? = null,
-        val inventory: Inventory = Inventory(),
+        override val inventory: Inventory = Inventory(),
         override val properties: Properties = Properties()
 ) : Target {
 

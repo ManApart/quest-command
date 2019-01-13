@@ -1,11 +1,14 @@
 package core.gameState
 
 import core.events.Event
+import core.gameState.location.LocationNode
 import core.utility.Named
 
 interface Target : Named {
     val description: String
     val properties: Properties
+    val inventory: Inventory
+    val location: LocationNode
 
     fun canConsume(event: Event) : Boolean {
         return if (this is Activator) {

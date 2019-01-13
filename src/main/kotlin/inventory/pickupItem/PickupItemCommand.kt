@@ -9,6 +9,8 @@ import core.gameState.Item
 import core.history.display
 import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
+import inventory.dropItem.TransferItem
+import inventory.dropItem.TransferItemEvent
 import system.EventManager
 
 class PickupItemCommand : core.commands.Command() {
@@ -50,7 +52,7 @@ class PickupItemCommand : core.commands.Command() {
         val items = ScopeManager.getScope().getItems(args.argStrings[0]).filterUniqueByName()
         when {
             items.isEmpty() -> display("Couldn't find ${args.argStrings[0]}")
-            items.size == 1 -> EventManager.postEvent(PickupItemEvent(GameState.player.creature, items.first()))
+            items.size == 1 -> EventManager.postEvent(TransferItemEvent(items.first(), destination = GameState.player.creature))
             else -> pickupWhat(items)
         }
     }
@@ -79,7 +81,7 @@ class PickupItemCommand : core.commands.Command() {
     private fun takeItemFromContainer(from: Creature, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
-            EventManager.postEvent(PickupItemEvent(GameState.player.creature, item, from))
+            EventManager.postEvent(TransferItemEvent(item, from, GameState.player.creature))
         } else {
             display("Couldn't find $itemName")
         }

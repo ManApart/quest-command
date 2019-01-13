@@ -217,8 +217,8 @@ Possible Stats
 
 
 
-
-
-
+update other target functions
+delete pickup item event and action
+get all pickup item tests running
 
 
