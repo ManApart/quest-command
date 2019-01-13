@@ -217,8 +217,6 @@ Possible Stats
 
 
 quest listener test is too slow
-update other target functions
-delete pickup item event and action
-get all pickup item tests running
+
 
 

@@ -58,11 +58,11 @@ class Item(
         return name
     }
 
-    fun evaluate(event: Event): Boolean {
+    override fun canConsume(event: Event): Boolean {
         return behaviors.any { it.evaluate(event) }
     }
 
-    fun evaluateAndExecute(event: Event) {
+    override fun consume(event: Event) {
         behaviors.filter { it.evaluate(event) }
                 .forEach { it.execute(event, this) }
     }

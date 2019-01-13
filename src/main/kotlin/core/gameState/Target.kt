@@ -10,27 +10,9 @@ interface Target : Named {
     val inventory: Inventory
     val location: LocationNode
 
-    fun canConsume(event: Event) : Boolean {
-        return if (this is Activator) {
-            this.evaluate(event)
-        } else if (this is Creature && this.parent is Activator) {
-            this.parent.evaluate(event)
-        } else if (this is Item) {
-            this.evaluate(event)
-        } else {
-            false
-        }
-    }
+    fun canConsume(event: Event) : Boolean
+    fun consume(event: Event)
 
-    fun consume(event: Event) {
-        if (this is Activator) {
-            this.evaluateAndExecute(event)
-        } else if (this is Creature && this.parent is Activator) {
-            this.parent.evaluateAndExecute(event)
-        } else if (this is Item) {
-            this.evaluateAndExecute(event)
-        }
-    }
 }
 
 fun targetsToString(targets: List<Target>) : String {

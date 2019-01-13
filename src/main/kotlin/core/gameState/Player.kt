@@ -1,5 +1,6 @@
 package core.gameState
 
+import core.events.Event
 import core.gameState.location.LocationNode
 import core.gameState.location.Route
 import core.gameState.stat.Stat
@@ -39,7 +40,13 @@ class Player : Target {
         return name
     }
 
-    fun finishJourney(){
+    override fun canConsume(event: Event): Boolean {
+        return false
+    }
+
+    override fun consume(event: Event) {}
+
+    fun finishJourney() {
         climbJourney = null
         GameState.player.canRest = true
     }

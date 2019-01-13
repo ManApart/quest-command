@@ -1,6 +1,7 @@
 package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import core.events.Event
 import core.gameState.body.Body
 import core.gameState.location.LocationNode
 import core.utility.apply
@@ -50,6 +51,20 @@ class Creature(
 
     override fun toString(): String {
         return name
+    }
+
+    override fun canConsume(event: Event): Boolean {
+        return if (this.parent is Activator) {
+            this.parent.canConsume(event)
+        } else {
+            false
+        }
+    }
+
+    override fun consume(event: Event) {
+        if (this.parent is Activator) {
+            this.parent.consume(event)
+        }
     }
 
     fun getTotalCapacity(): Int {
