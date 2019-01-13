@@ -19,7 +19,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         display("${event.target.name} has died.")
         val creature = event.target as Creature
 
-        creature.inventory.getAllItems().forEach {
+        creature.inventory.getItems().forEach {
             EventManager.postEvent(PlaceItemEvent(creature, it, null,true))
         }
         EventManager.postEvent(RemoveScopeEvent(event.target))

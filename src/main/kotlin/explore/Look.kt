@@ -46,7 +46,7 @@ class Look : EventListener<LookEvent>() {
 
     private fun describeWeight(target: Target): String {
         return if (target is Item) {
-            "\n\tWeight: ${target.weight}"
+            "\n\tWeight: ${target.getWeight()}"
         } else {
             ""
         }

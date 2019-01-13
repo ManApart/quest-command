@@ -17,6 +17,7 @@ object StringFormatter {
         return format(target.isPlayer(), "Your", target.name + "'s")
     }
 
+
 //    fun joinWithAnd(targets: List<Target>) : String {
 //        return targets.joinToString(", ") { it.name }
 //    }

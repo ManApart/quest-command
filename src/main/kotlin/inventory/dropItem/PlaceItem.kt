@@ -1,11 +1,11 @@
 package inventory.dropItem
 
 import core.events.EventListener
-import core.gameState.Creature
-import core.gameState.Item
-import core.gameState.Tags
+import core.gameState.*
+import core.gameState.Target
 import core.history.display
 import interact.scope.ScopeManager
+import inventory.equipItem.EquipItemEvent
 import inventory.pickupItem.ItemPickedUpEvent
 import system.EventManager
 
@@ -24,35 +24,65 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         EventManager.postEvent(ItemDroppedEvent(event.source, event.item, event.silent))
     }
 
-    private fun placeItemInContainer(destination: Creature, event: PlaceItemEvent) {
-        if (!destination.properties.tags.has("Container") || !destination.properties.tags.has("Open") || destination.getTotalCapacity() == 0) {
-            display("Can't place ${event.item.name} in ${destination.name}.")
+    private fun placeItemInContainer(destination: Target, event: PlaceItemEvent) {
+        when {
+            !isOpenContainer(destination) -> display("Can't place ${event.item.name} in ${destination.name}.")
+            destination is Activator -> placeItemInActivator(event, destination)
+            destination is Item -> placeItemInItem(event, destination)
+            destination is Creature -> placeItemInCreature(event, destination)
+        }
 
-        } else if (!containerCanTakeType(event.item, destination)) {
+    }
+
+    private fun isOpenContainer(destination: Target) =
+            destination.properties.tags.has("Container") || !destination.properties.tags.has("Open")
+
+    private fun placeItemInActivator(event: PlaceItemEvent, destination: Activator) {
+        if (!event.item.canBeHeldByContainerWithProperties(destination.properties)) {
             val acceptedTypes = destination.properties.values.getList("CanHold")
             display("${event.item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
 
-        } else if (destination.getTotalCapacity() - destination.inventory.getTotalWeight() < event.item.weight) {
+        } else if (!destination.creature.inventory.hasCapacityFor(event.item, destination.properties.values.getInt("Capacity"))) {
             display("${event.item.name} is too heavy to fit in ${destination.name}.")
 
         } else {
-            placeItem(event, destination)
+            placeItem(event, destination.creature.inventory)
         }
     }
 
-    private fun containerCanTakeType(item: Item, container: Creature): Boolean {
-        val acceptedTypes = container.properties.values.getList("CanHold")
-        return if (acceptedTypes.isEmpty()) {
-            true
+    private fun placeItemInCreature(event: PlaceItemEvent, destination: Creature) {
+        if (event.item.canEquipTo(destination.body) && destination.body.getEmptyEquipSlot(event.item) != null) {
+            val slot = destination.body.getEmptyEquipSlot(event.item)
+            event.source.inventory.remove(event.item)
+            destination.inventory.add(Item(event.item, 1))
+            EventManager.postEvent(EquipItemEvent(destination, event.item, slot))
         } else {
-            item.properties.tags.hasAny(Tags(acceptedTypes))
+            val candidates = destination.inventory.findSubInventoryFor(event.item)
+            if (candidates.isEmpty()) {
+                display("Could not find a place for ${event.item}!")
+            } else {
+                placeItem(event, candidates.first().inventory)
+            }
         }
     }
 
-    private fun placeItem(event: PlaceItemEvent, destination: Creature) {
+    private fun placeItemInItem(event: PlaceItemEvent, destination: Item) {
+        if (!event.item.canBeHeldByContainerWithProperties(destination.properties)) {
+            val acceptedTypes = destination.properties.values.getList("CanHold")
+            display("${event.item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
+
+        } else if (!destination.inventory.hasCapacityFor(event.item, destination.properties.values.getInt("Capacity"))) {
+            display("${event.item.name} is too heavy to fit in ${destination.name}.")
+
+        } else {
+            placeItem(event, destination.inventory)
+        }
+    }
+
+    private fun placeItem(event: PlaceItemEvent, destination: Inventory) {
         event.source.inventory.remove(event.item)
-        destination.inventory.add(Item(event.item, 1))
-        EventManager.postEvent(ItemPickedUpEvent(destination, event.item, event.silent))
+        destination.add(Item(event.item, 1))
+        EventManager.postEvent(ItemPickedUpEvent(event.destination!!, event.item, event.silent))
     }
 
 }

@@ -16,3 +16,11 @@ fun String.apply(params: Map<String, String>): String {
             }
     return modified
 }
+
+fun String.repeat(times: Int) : String {
+    var result = ""
+    for (i in 0 until times){
+        result += this
+    }
+    return result
+}

@@ -218,7 +218,11 @@
       "tags": [
         "Open",
         "Container"
-      ]
+      ],
+      "values": {
+        "Capacity": "3",
+        "CanHold": "Grounded"
+      }
     }
   },
   {

@@ -44,4 +44,14 @@ class StringHelperTest {
 
         assertEquals("Wheat Bundle", base.apply(params))
     }
+
+    @Test
+    fun repeat0TimesIsBlank() {
+        assertEquals("", "test".repeat(0))
+    }
+    @Test
+    fun repeat() {
+        assertEquals("testtest", "test".repeat(2))
+    }
+
 }

@@ -18,7 +18,7 @@ class Status : EventListener<StatusEvent>() {
         if (soul.hasStat("Health") || soul.hasStat("Stamina")) {
             val youHave = StringFormatter.format(event.creature.isPlayer(), "You have", "${event.creature.name} has")
             val youAre= StringFormatter.format(event.creature.isPlayer(), "You are", "${event.creature.name} is")
-            display("$youHave ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} Stamina. $youAre ${event.creature.inventory.getTotalWeight()}/${event.creature.getTotalCapacity()} encumbered.")
+            display("$youHave ${soul.getCurrent("Health")}/${soul.getTotal("Health")} HP and ${soul.getCurrent("Stamina")}/${soul.getTotal("Stamina")} Stamina. $youAre ${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} encumbered.")
         }
     }
 

@@ -15,8 +15,7 @@ class Item(
         name: String,
         description: String = "",
         params: Map<String, String> = mapOf(),
-        //TODO - weight should be getter, based on item inventory etc?
-        val weight: Int = 0,
+        private val weight: Int = 1,
         var count: Int = 1,
         equipSlots: List<List<String>> = listOf(),
         @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
@@ -46,6 +45,7 @@ class Item(
     val soul = Soul(this)
     private val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
+    val inventory = Inventory()
 
     init {
         soul.addStats(this.properties.stats.getAll())
@@ -95,18 +95,31 @@ class Item(
     fun getTaggedItemName(): String {
         val orig = ItemManager.getItem(name)
         val newTags = properties.tags.getAll() - orig.properties.tags.getAll()
-        return if (newTags.isNotEmpty()){
+        return if (newTags.isNotEmpty()) {
             newTags.joinToString(" ") + " " + name
         } else {
             name
         }
     }
 
-    fun getDefense(type: String) : Int{
-        return if (properties.stats.has(type)){
+    fun getDefense(type: String): Int {
+        return if (properties.stats.has(type)) {
             properties.stats.getInt(type)
         } else {
             properties.stats.getInt("defense", 0)
+        }
+    }
+
+    fun getWeight(): Int {
+        return weight + inventory.getWeight()
+    }
+
+    fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {
+        val acceptedTypes = containerProperties.values.getList("CanHold")
+        return if (acceptedTypes.isEmpty()) {
+            true
+        } else {
+            properties.tags.hasAny(Tags(acceptedTypes))
         }
     }
 

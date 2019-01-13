@@ -29,6 +29,10 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
         return items
     }
 
+    fun isEquipped(item: Item) : Boolean {
+        return getEquippedItems().contains(item)
+    }
+
     fun getEquippedItemsAt(attachPoint: String): List<Item> {
         return parts.asSequence().map { it.getEquippedItem(attachPoint) }.filterNotNull().toList()
     }
@@ -54,9 +58,13 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
     }
 
     fun getDefaultSlot(item: Item): Slot {
-        return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
+        return getEmptyEquipSlot(item)
                 ?: item.equipSlots.firstOrNull { canEquip(it) }
                 ?: throw IllegalArgumentException("Found no Slot for $item for body $name. This should not happen!")
+    }
+
+    fun getEmptyEquipSlot(item: Item) : Slot? {
+        return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
     }
 
     fun equip(item: Item, slot: Slot) {

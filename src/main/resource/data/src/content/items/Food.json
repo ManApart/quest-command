@@ -72,7 +72,12 @@
   {
     "name": "Wheat Flour",
     "description": "The finely ground wheat looks almost like silver sand.",
-    "weight": "1"
+    "weight": "1",
+    "properties": {
+      "tags": [
+        "Grounded"
+      ]
+    }
   },
   {
     "name": "Dough",

@@ -22,7 +22,7 @@ class Activator(
             base.description,
             params,
             base.climb,
-            base.creature.inventory.getAllItems().map { it.name },
+            base.creature.inventory.getItems().map { it.name },
             base.behaviorRecipes,
             base.creature.properties
     )

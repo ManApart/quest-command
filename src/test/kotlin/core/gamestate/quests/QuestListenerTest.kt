@@ -14,6 +14,7 @@ import kotlin.test.assertEquals
 class QuestListenerTest {
 
 
+    //TODO - this runs too slowly!
     @Test
     fun questListenerIsRemovedOnExecute() {
         val quest = Quest("Test Quest")
