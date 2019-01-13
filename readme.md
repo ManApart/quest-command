@@ -153,7 +153,7 @@ A couple things to note:
 
 Players can see their own inventory and the inventory of any target that has the `Container` tag.
 
-They can take objects from any container that has the `Open` keyword.
+They can take objects from any container that has the `Container` and `Open` keywords.
 
 They can place items in a container if it has the `Container` and `Open` tags and if the container has remaining capacity. Remaining capacity is determined by a creature's current strength level, or the container's `Capacity` value. Containers may have a CanHold value: `"CanHold": "Dagger,Bow"`. If a container does not have a CanHold property than any type of item can be placed in it. If it does have the property, than only items that have at least one matching tag can be placed in the container.
 

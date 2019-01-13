@@ -14,8 +14,11 @@ class TransferItem : EventListener<TransferItemEvent>() {
     override fun execute(event: TransferItemEvent) {
         when {
             event.destination == null -> dropItem(event.source!!, event.item, event.silent)
-            event.source == null -> pickupItemFromScope(event.destination, event.item, event.silent)
-            else -> transferItem(event.source, event.item, event.destination, event.silent)
+            event.source != null && !isOpen(event.source) -> display("Can't take ${event.item.name} from ${event.source.name}.")
+            !isOpen(event.destination) -> display("Can't place ${event.item.name} in ${event.destination.name}.")
+            event.destination is Activator -> placeItemInActivator(event.source, event.item, event.destination, event.silent)
+            event.destination is Item -> placeItemInItem(event.source, event.item, event.destination, event.silent)
+            event.destination is Creature -> placeItemInCreature(event.source, event.item, event.destination, event.silent)
         }
     }
 
@@ -26,28 +29,11 @@ class TransferItem : EventListener<TransferItemEvent>() {
         EventManager.postEvent(ItemDroppedEvent(source, item, silent))
     }
 
-    private fun pickupItemFromScope(destination: Target, item: Item, silent: Boolean) {
-        item.properties.values.put("locationDescription", "")
-        item.location = LocationManager.NOWHERE_NODE
-        destination.inventory.add(item)
-        ScopeManager.getScope(destination.location).removeTarget(item)
-        EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
+    private fun isOpen(container: Target): Boolean {
+        return container.properties.tags.has("Container") && container.properties.tags.has("Open")
     }
 
-    private fun transferItem(source: Target, item: Item, destination: Target, silent: Boolean) {
-        when {
-            !isOpen(source) -> display("Can't take ${item.name} from ${destination.name}.")
-            !isOpen(destination) -> display("Can't place ${item.name} in ${destination.name}.")
-            destination is Activator -> placeItemInActivator(source, item, destination, silent)
-            destination is Item -> placeItemInItem(source, item, destination, silent)
-            destination is Creature -> placeItemInCreature(source, item, destination, silent)
-        }
-    }
-
-    private fun isOpen(destination: Target) =
-            destination.properties.tags.has("Container") || !destination.properties.tags.has("Open")
-
-    private fun placeItemInActivator(source: Target, item: Item, destination: Activator, silent: Boolean) {
+    private fun placeItemInActivator(source: Target?, item: Item, destination: Activator, silent: Boolean) {
         if (!item.canBeHeldByContainerWithProperties(destination.properties)) {
             val acceptedTypes = destination.properties.values.getList("CanHold")
             display("${item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
@@ -60,10 +46,10 @@ class TransferItem : EventListener<TransferItemEvent>() {
         }
     }
 
-    private fun placeItemInCreature(source: Target, item: Item, destination: Creature, silent: Boolean) {
+    private fun placeItemInCreature(source: Target?, item: Item, destination: Creature, silent: Boolean) {
         if (item.canEquipTo(destination.body) && destination.body.getEmptyEquipSlot(item) != null) {
             val slot = destination.body.getEmptyEquipSlot(item)
-            source.inventory.remove(item)
+            removeFromSource(source, item, destination)
             destination.inventory.add(Item(item, 1))
             EventManager.postEvent(EquipItemEvent(destination, item, slot))
         } else {
@@ -76,7 +62,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         }
     }
 
-    private fun placeItemInItem(source: Target, item: Item, destination: Item, silent: Boolean) {
+    private fun placeItemInItem(source: Target?, item: Item, destination: Item, silent: Boolean) {
         if (!item.canBeHeldByContainerWithProperties(destination.properties)) {
             val acceptedTypes = destination.properties.values.getList("CanHold")
             display("${item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
@@ -89,10 +75,20 @@ class TransferItem : EventListener<TransferItemEvent>() {
         }
     }
 
-    private fun placeItem(source: Target, item: Item, destination: Target, inventory: Inventory, silent: Boolean) {
-        source.inventory.remove(item)
+    private fun placeItem(source: Target?, item: Item, destination: Target, inventory: Inventory, silent: Boolean) {
+        removeFromSource(source, item, destination)
         inventory.add(Item(item, 1))
         EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
+    }
+
+    private fun removeFromSource(source: Target?, item: Item, destination: Target) {
+        if (source != null) {
+            source.inventory.remove(item)
+        } else {
+            ScopeManager.getScope(destination.location).removeTarget(item)
+            item.properties.values.put("locationDescription", "")
+            item.location = LocationManager.NOWHERE_NODE
+        }
     }
 
 }

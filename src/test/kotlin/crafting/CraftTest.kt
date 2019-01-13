@@ -1,8 +1,6 @@
 package crafting
 
-import core.gameState.Item
-import core.gameState.Player
-import core.gameState.Tags
+import core.gameState.*
 import inventory.dropItem.TransferItem
 import org.junit.Test
 import system.*
@@ -14,7 +12,7 @@ class CraftTest {
 
     @Test
     fun recipeReturnsNewItems() {
-        val baker = Player().creature
+        val baker = createBaker()
         val ingredient = Item("Apple")
         baker.inventory.add(ingredient)
 
@@ -39,7 +37,7 @@ class CraftTest {
 
     @Test
     fun recipeReturnsFirstItemWithDifferentTags() {
-        val baker = Player().creature
+        val baker = createBaker()
         val ingredient = Item("Apple")
         baker.inventory.add(ingredient)
 
@@ -54,7 +52,15 @@ class CraftTest {
 
         EventManager.executeEvents()
 
-        assertTrue(baker.inventory.exists(ingredient))
-        assertTrue(ingredient.properties.tags.has("Cooked"))
+        val result = baker.inventory.getItem(ingredient.name)
+        assertNotNull(result)
+        assertTrue(result?.properties?.tags?.has("Cooked") ?: false)
+    }
+
+    private fun createBaker(): Creature {
+        val baker = Player().creature
+        val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
+        baker.inventory.add(pouch)
+        return baker
     }
 }

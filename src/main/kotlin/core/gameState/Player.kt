@@ -31,6 +31,7 @@ class Player : Target {
         creature.soul.addStat(Stat.CLIMBING, 1)
         creature.soul.addStat(Stat.AGILITY, 1)
         creature.soul.addStat(Stat.COOKING, 1)
+        creature.properties.tags.add("Open")
         creature.properties.tags.add("Container")
     }
 

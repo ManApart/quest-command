@@ -27,6 +27,7 @@ class PickupItemTest {
 
         ScopeManager.reset()
     }
+
     @Test
     fun noPickupItemFromScopeIfNoCapacity() {
         ScopeManager.reset()
@@ -85,8 +86,8 @@ class PickupItemTest {
         assertNull(creature.inventory.getItem(item.name))
     }
 
-    private fun getCreatureWithCapacity() : Creature {
-        val creature = Creature("Creature", "")
+    private fun getCreatureWithCapacity(): Creature {
+        val creature = Creature("Creature", "", properties = Properties(Tags(listOf("Container", "Open"))))
         val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
         creature.inventory.add(pouch)
         return creature
