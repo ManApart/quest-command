@@ -11,7 +11,7 @@ class ListInventoryTest {
 
     @Test
     fun listInventory() {
-        val creature = Creature("Chest", "", properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = Creature("Chest",  properties = Properties(tags = Tags(listOf("Container"))))
         creature.inventory.add(Item("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
@@ -20,7 +20,7 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquipped() {
-        val creature = Creature("Soldier", "", body = Body(parts = listOf(BodyPart("Chest", slots = listOf("Chest")))), properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = Creature("Soldier",  body = Body(parts = listOf(BodyPart("Chest", slots = listOf("Chest")))), properties = Properties(tags = Tags(listOf("Container"))))
         val item = Item("Chestplate", equipSlots = listOf(listOf("Chest")))
         creature.inventory.add(item)
         creature.body.equip(item)
@@ -35,7 +35,7 @@ class ListInventoryTest {
         val pouch = Item("Pouch", equipSlots = listOf(listOf("Chest")))
         pouch.inventory.add(item)
 
-        val creature = Creature("Soldier", "", body = Body(parts = listOf(BodyPart("Chest", slots = listOf("Chest")))), properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = Creature("Soldier",  body = Body(parts = listOf(BodyPart("Chest", slots = listOf("Chest")))), properties = Properties(tags = Tags(listOf("Container"))))
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 
@@ -46,7 +46,7 @@ class ListInventoryTest {
 
     @Test
     fun creatureWithoutTagDoesNotListInventory() {
-        val creature = Creature("Chest", "")
+        val creature = Creature("Chest")
         creature.inventory.add(Item("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)

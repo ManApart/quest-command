@@ -10,12 +10,13 @@ import core.gameState.location.NOWHERE_NODE
 import core.utility.apply
 import core.utility.applyNested
 import core.utility.max
+import dialogue.DialogueOptions
 import system.behavior.BehaviorManager
 import system.item.ItemManager
 
 class Item(
         name: String,
-        description: String = "",
+        @JsonProperty("description") private val dynamicDescription: DialogueOptions = DialogueOptions(name),
         params: Map<String, String> = mapOf(),
         private val weight: Int = 1,
         var count: Int = 1,
@@ -26,7 +27,7 @@ class Item(
 
     constructor(base: Item, params: Map<String, String> = mapOf()) : this(
             base.name,
-            base.description,
+            base.dynamicDescription.apply(params),
             params,
             base.weight,
             base.count,
@@ -41,7 +42,7 @@ class Item(
 
 
     override val name = name.apply(params)
-    override val description = description.apply(params)
+    override val description get() = dynamicDescription.getDialogue()
     override val properties: Properties = Properties(properties, params)
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val soul = Soul(this)

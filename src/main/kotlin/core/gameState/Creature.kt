@@ -1,17 +1,19 @@
 package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.body.Body
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
 import core.utility.apply
+import dialogue.DialogueOptions
 import system.AIManager
 import system.body.BodyManager
 
 class Creature(
         override val name: String,
-        override val description: String,
+        private val dynamicDescription: DialogueOptions = DialogueOptions(name),
         val body: Body = Body(),
         override var location: LocationNode = NOWHERE_NODE,
         ai: String? = null,
@@ -23,15 +25,15 @@ class Creature(
     @JsonCreator
     constructor(
             name: String,
-            description: String,
+            @JsonProperty("description") dynamicDescription: DialogueOptions = DialogueOptions(name),
             body: String, ai: String?,
             properties: Properties = Properties(),
             items: List<String>
-    ) : this(name, description, BodyManager.getBody(body), ai = ai, inventory = Inventory(items), properties = properties)
+    ) : this(name, dynamicDescription, BodyManager.getBody(body), ai = ai, inventory = Inventory(items), properties = properties)
 
     constructor(base: Creature, params: Map<String, String> = mapOf()) : this(
             base.name.apply(params),
-            base.description.apply(params),
+            base.dynamicDescription.apply(params),
             base.body,
             base.location,
             base.ai?.name,
@@ -40,6 +42,7 @@ class Creature(
             Properties(base.properties, params)
     )
 
+    override val description get() = dynamicDescription.getDialogue()
     val soul = Soul(this)
     val ai = if (ai != null) AIManager.getAI(ai, this) else null
 

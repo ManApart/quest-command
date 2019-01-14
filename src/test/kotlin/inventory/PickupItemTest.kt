@@ -32,7 +32,7 @@ class PickupItemTest {
     fun noPickupItemFromScopeIfNoCapacity() {
         ScopeManager.reset()
 
-        val creature = Creature("Creature", "")
+        val creature = Creature("Creature")
         val scope = ScopeManager.getScope(creature.location)
         val item = Item("Apple")
         scope.addTarget(item)
@@ -48,7 +48,7 @@ class PickupItemTest {
     fun pickupItemFromContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Creature("Chest", "", properties = Properties(tags = Tags(listOf("Container", "Open"))))
+        val chest = Creature("Chest", properties = Properties(tags = Tags(listOf("Container", "Open"))))
         val item = Item("Apple")
         chest.inventory.add(item)
 
@@ -62,7 +62,7 @@ class PickupItemTest {
     fun doNotPickupFromNonContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Creature("Chest", "", properties = Properties(tags = Tags(listOf("Open"))))
+        val chest = Creature("Chest", properties = Properties(tags = Tags(listOf("Open"))))
         val item = Item("Apple")
         chest.inventory.add(item)
 
@@ -76,7 +76,7 @@ class PickupItemTest {
     fun doNotPickupFromClosedContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Creature("Chest", "", properties = Properties(tags = Tags(listOf("Container"))))
+        val chest = Creature("Chest", properties = Properties(tags = Tags(listOf("Container"))))
         val item = Item("Apple")
         chest.inventory.add(item)
 
@@ -87,7 +87,7 @@ class PickupItemTest {
     }
 
     private fun getCreatureWithCapacity(): Creature {
-        val creature = Creature("Creature", "", properties = Properties(Tags(listOf("Container", "Open"))))
+        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
         val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
         creature.inventory.add(pouch)
         return creature

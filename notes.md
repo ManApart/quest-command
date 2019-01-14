@@ -120,15 +120,7 @@ Each Turn
 
 ### Inventory
 
-- Weapons have a type (tags like short, long, bow, dagger, etc)
-- Bag can hold x amount of weight, any type
-- Character can only hold so much weight.
- - Item could fit in bag weight but then bag be too heavy for character to move
-- Bags / armor can have equip slots for specific types. So a weapon holster can provide a slot but only for hatchets etc
-
-Item Containers
-- Give the player a starting pouch - equips to belt (front, back, left, or right)
-- Any target that is a creature has an inventory
+- Item could fit in bag weight but then bag be too heavy for character to move
 - Looking at a creature will say what the creature has equipped (is wearing)
 - Pickup/Place commands have optional count for item stacks
 
@@ -180,6 +172,10 @@ Possible Stats
 * Realizes that maybe there are other verbs that he’s not capable of thinking of. (NPCs would never think to skin the bark of a tree because that’s not in the game, etc)
 * Magic is based on the understanding of the construct
 
+### Dialogue
+
+Dialogue currently only supports Queries
+
 ### Travel
 
 - Make starting a journey event based / handle replacing an existing event
@@ -212,11 +208,3 @@ Possible Stats
 - Look (examine) object for its description
 - Sheath / unsheath command?
 - Hold Command?
-
-
-
-
-quest listener test is too slow
-
-
-

@@ -41,7 +41,7 @@ class EatCommandTest {
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
 
-        GameState.player = Player(Creature("Player", "Player"))
+        GameState.player = Player(Creature("Player"))
     }
 
     @Test

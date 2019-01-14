@@ -4,6 +4,7 @@ import core.gameState.Activator
 import core.gameState.climb.Climbable
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
+import dialogue.DialogueOptions
 import org.junit.BeforeClass
 import org.junit.Test
 import system.activator.ActivatorManager
@@ -31,7 +32,7 @@ class ActivatorManagerTest {
 
     @Test
     fun topLevelValueIsParameterized() {
-        val activator = Activator("Target", "This is a \$key")
+        val activator = Activator("Target", DialogueOptions("This is a \$key"))
         val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()

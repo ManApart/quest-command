@@ -6,21 +6,22 @@ import core.gameState.behavior.BehaviorRecipe
 import core.gameState.climb.Climbable
 import core.gameState.location.LocationNode
 import core.utility.apply
+import dialogue.DialogueOptions
 import system.behavior.BehaviorManager
 
 class Activator(
         name: String,
-        description: String = "Nothing interesting",
+        @JsonProperty("description") private val dynamicDescription: DialogueOptions = DialogueOptions(name),
         params: Map<String, String> = mapOf(),
         climb: Climbable? = null,
         items: List<String> = listOf(),
         @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = mutableListOf(),
         properties: Properties = Properties()
-
 ) : Target {
+
     constructor(base: Activator, params: Map<String, String> = mapOf()) : this(
             base.name,
-            base.description,
+            base.dynamicDescription.apply(params),
             params,
             base.climb,
             base.creature.inventory.getItems().map { it.name },
@@ -28,7 +29,7 @@ class Activator(
             base.creature.properties
     )
 
-    val creature = Creature(name.apply(params), description.apply(params), parent = this, properties = Properties(properties, params), inventory = Inventory(items))
+    val creature = Creature(name.apply(params), dynamicDescription, parent = this, properties = Properties(properties, params), inventory = Inventory(items))
     override val name: String get() = creature.name
     override val description: String get() = creature.description
     override val inventory: Inventory get() = creature.inventory
