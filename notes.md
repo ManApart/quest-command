@@ -103,6 +103,12 @@ Each Turn
 - Do more AI work.
   - Rat should only attack with low aim
 
+Maybe attack listeners delegate to battle to be told if to execute or not. Battle either stores them and re-fires them after start cost / time it takes to attack, or it fires them itself when its time? Or break out into Attack Start and Attack commands.
+
+- add distance to target position
+- consolidate attacks to single attack with attack type
+
+
 ### Crafting
 
 - Cooking / recipes
@@ -142,6 +148,8 @@ Each Turn
 - Persistence should happen across sessions.
 - Scope Manager needs to do 'garbage collection' and have a 'max loaded locations' in memory etc
 
+- Use time of day to do dynamic descriptions of locations
+- Location Targets can take item names to spawn with (for containers etc)
 
 ### Quests
 
@@ -196,15 +204,17 @@ Dialogue currently only supports Queries
 - Check all behavior receipies have params that match their assigned behaviors
 - Requiring default params breaks everything since params don't override other params, have to remove param satisfied test > is there another way to check variables at compile time?
 
-### Misc / Unsorted
-- Readable behavior / item
-- Be consistent. End all statements with periods.
-- Remove hatchet and apple from starting inventory and place them in world etc
-- Inventory carrying space
-
 
 #### Command ideas
 - Search - skill based, finds scope that's hidden
 - Look (examine) object for its description
 - Sheath / unsheath command?
 - Hold Command?
+
+### Misc / Unsorted
+- Readable behavior / item
+- Be consistent. End all statements with periods.
+- Remove hatchet and apple from starting inventory and place them in world etc
+- Inventory carrying space
+
+Certain quests unlock the ability to start a new character as a different race in the same world
