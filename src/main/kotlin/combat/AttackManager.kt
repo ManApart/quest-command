@@ -4,6 +4,7 @@ import combat.battle.position.HitLevel
 import combat.battle.position.TargetPosition
 import combat.takeDamage.TakeDamageEvent
 import core.events.Event
+import core.events.EventListener
 import core.gameState.*
 import core.gameState.Target
 import core.gameState.body.Body
@@ -16,34 +17,34 @@ import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
-object AttackManager {
+class AttackListener : EventListener<AttackEvent>() {
 
-    fun execute(type: AttackType, source: Creature, sourcePart: BodyPart, target: Target, targetPosition: TargetPosition, event: Event) {
-        val subject = StringFormatter.getSubject(source)
+    override fun execute(event: AttackEvent) {
+        val subject = StringFormatter.getSubject(event.source)
 
-        val defender = target.getCreature()
-        val offensiveDamage = getOffensiveDamage(source, sourcePart, type)
+        val defender = event.target.getCreature()
+        val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
 
         if (defender != null && offensiveDamage > 0) {
-            val attackedPart = getAttackedPart(targetPosition, defender.body)
+            val attackedPart = getAttackedPart(event.targetPosition, defender.body)
             if (attackedPart == null) {
-                display("$subject ${StringFormatter.format(source.isPlayer(), "miss", "misses")}!")
+                display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
             } else {
-                val damageSource = sourcePart.getEquippedWeapon()?.name ?: sourcePart.name
-                val possessive = StringFormatter.getSubjectPossessive(source)
-                val verb = StringFormatter.format(source.isPlayer(), type.name.toLowerCase(), type.verb)
-                val hitLevel = targetPosition.getHitLevel(attackedPart.position)
+                val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
+                val possessive = StringFormatter.getSubjectPossessive(event.source)
+                val verb = StringFormatter.format(event.source.isPlayer(), event.type.name.toLowerCase(), event.type.verb)
+                val hitLevel = event.targetPosition.getHitLevel(attackedPart.position)
                 val hitLevelString = StringFormatter.format(hitLevel == HitLevel.DIRECT, "directly", "grazingly")
-                display("$subject $hitLevelString $verb the ${attackedPart.name} of ${target.name} with $possessive $damageSource.")
+                display("$subject $hitLevelString $verb the ${attackedPart.name} of ${event.target.name} with $possessive $damageSource.")
 
-                EventManager.postEvent(TakeDamageEvent(defender, attackedPart, offensiveDamage,  hitLevel, type, damageSource))
+                EventManager.postEvent(TakeDamageEvent(defender, attackedPart, offensiveDamage,  hitLevel, event.type, damageSource))
             }
-        } else if (sourcePart.getEquippedWeapon() != null) {
-            EventManager.postEvent(UseEvent(GameState.player.creature, sourcePart.getEquippedWeapon()!!, target))
+        } else if (event.sourcePart.getEquippedWeapon() != null) {
+            EventManager.postEvent(UseEvent(GameState.player.creature, event.sourcePart.getEquippedWeapon()!!, event.target))
         } else {
             display("Nothing happens.")
         }
-        target.consume(event)
+        event.target.consume(event)
     }
 
     private fun getAttackedPart(targetPosition: TargetPosition, defender: Body): BodyPart? {

@@ -1,9 +1,6 @@
 package combat.battle
 
-import combat.chop.ChopEvent
-import combat.crush.CrushEvent
-import combat.slash.SlashEvent
-import combat.stab.StabEvent
+import combat.AttackEvent
 import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
@@ -13,26 +10,8 @@ import system.gameTick.GameTickEvent
 
 object StartBattle {
 
-    class Chop : EventListener<ChopEvent>() {
-        override fun execute(event: ChopEvent) {
-            startBattle(event.source, event.target)
-        }
-    }
-
-    class Crush : EventListener<CrushEvent>() {
-        override fun execute(event: CrushEvent) {
-            startBattle(event.source, event.target)
-        }
-    }
-
-    class Stab : EventListener<StabEvent>() {
-        override fun execute(event: StabEvent) {
-            startBattle(event.source, event.target)
-        }
-    }
-
-    class Slash : EventListener<SlashEvent>() {
-        override fun execute(event: SlashEvent) {
+    class AttackListener : EventListener<AttackEvent>() {
+        override fun execute(event: AttackEvent) {
             startBattle(event.source, event.target)
         }
     }

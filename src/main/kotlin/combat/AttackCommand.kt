@@ -1,20 +1,16 @@
 package combat
 
 import combat.battle.position.TargetDirection
-import combat.chop.ChopEvent
-import combat.crush.CrushEvent
-import combat.slash.SlashEvent
-import combat.stab.StabEvent
 import core.commands.Args
 import core.commands.Command
 import core.events.Event
 import core.gameState.Activator
-import core.gameState.body.BodyPart
 import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.body.BodyPart
 import core.history.display
-import interact.scope.ScopeManager
 import interact.UseEvent
+import interact.scope.ScopeManager
 import system.EventManager
 
 //TODO - give choice if more than one target found
@@ -80,10 +76,10 @@ class AttackCommand : Command() {
 
     private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection) : Event {
         return when (keyword) {
-            "chop" -> ChopEvent(GameState.player.creature, sourcePart, target, direction.position)
-            "crush" -> CrushEvent(GameState.player.creature, sourcePart, target, direction.position)
-            "slash" -> SlashEvent(GameState.player.creature, sourcePart, target, direction.position)
-            else -> StabEvent(GameState.player.creature, sourcePart, target, direction.position)
+            "chop" -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CHOP)
+            "crush" -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CRUSH)
+            "slash" -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.SLASH)
+            else -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.STAB)
         }
     }
 }

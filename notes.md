@@ -106,7 +106,6 @@ Each Turn
 Maybe attack listeners delegate to battle to be told if to execute or not. Battle either stores them and re-fires them after start cost / time it takes to attack, or it fires them itself when its time? Or break out into Attack Start and Attack commands.
 
 - add distance to target position
-- consolidate attacks to single attack with attack type
 
 
 ### Crafting
