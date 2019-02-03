@@ -1,6 +1,6 @@
 package combat.battle.position
 
-class TargetPosition(private val horizontal: Horizontal = Horizontal.CENTER, private val vertical: Vertical = Vertical.CENTER) {
+class TargetPosition(private val horizontal: Horizontal = Horizontal.CENTER, private val vertical: Vertical = Vertical.CENTER, private val targetDistance: TargetDistance = TargetDistance.BOW) {
 
     override fun toString(): String {
         return if (vertical == Vertical.CENTER && horizontal == Horizontal.CENTER){

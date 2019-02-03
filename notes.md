@@ -141,6 +141,8 @@ Maybe attack listeners delegate to battle to be told if to execute or not. Battl
 
 ### Locations
 
+Atmospheres that add tags and effects to everything in that location
+
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
   - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
@@ -166,12 +168,20 @@ Other
 - Or stats improve by use, attributes are like stat categories and improve when their stats improve, properties are derived from attributes (health, endurance, etc)
 - Each skill levelup adds 1 xp to attribute
 
-Possible Stats
-- Strong
-- Clever
-- Agile
-- Wise
-- Enduring
+Attribute | Derived Stat | Example Stats/Activities
+--- | --- | ---
+Dexterity | AP Regen | Crafting, jumping, climbing
+Endurance | Stamina | Using stamina
+Fitness | Health | Taking damage, eating food
+Strength | Carry Weight | Attack skills, traveling with high encumbrance
+Wisdom | Focus | Exploration
+
+Skill Ideas
+- Exploration
+  - Traveling to new locations, Finding things through search
+
+
+Fitness, which is affected by eating unhealthy food etc
 
 ### Story
 
@@ -182,6 +192,7 @@ Possible Stats
 ### Dialogue
 
 Dialogue currently only supports Queries
+
 
 ### Travel
 

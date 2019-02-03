@@ -3,21 +3,21 @@ package combat
 import combat.battle.position.HitLevel
 import combat.battle.position.TargetPosition
 import combat.takeDamage.TakeDamageEvent
-import core.events.Event
 import core.events.EventListener
-import core.gameState.*
-import core.gameState.Target
+import core.gameState.Creature
+import core.gameState.GameState
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
+import core.gameState.getCreature
+import core.gameState.isPlayer
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.StringFormatter
 import core.utility.random
 import interact.UseEvent
-import status.statChanged.StatChangeEvent
 import system.EventManager
 
-class AttackListener : EventListener<AttackEvent>() {
+class Attack : EventListener<AttackEvent>() {
 
     override fun execute(event: AttackEvent) {
         val subject = StringFormatter.getSubject(event.source)
