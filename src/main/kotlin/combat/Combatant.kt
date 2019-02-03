@@ -1,22 +1,36 @@
 package combat
 
+import combat.battle.BattleAction
 import core.gameState.Creature
-import core.gameState.GameState
+import core.gameState.isPlayer
 import core.history.display
 
 class Combatant(val creature: Creature) {
     private var actionPoints = 0
+    var action: BattleAction? = null
 
-    fun increaseActionPoints() {
+    fun tick() {
+        if (action == null){
+            increaseActionPoints()
+        } else {
+            action!!.timeLeft --
+        }
+    }
+
+    private fun increaseActionPoints() {
         actionPoints++
     }
 
-    fun canAct() : Boolean {
+    fun isActionReady() : Boolean {
+        return action != null && action!!.timeLeft <= 0
+    }
+
+    fun canChooseAction() : Boolean {
         return actionPoints >= 100
     }
 
-    fun act() {
-        if (GameState.player.creature != creature){
+    fun chooseAction() {
+        if (!creature.isPlayer()){
             if (creature.ai != null){
                 display("${creature.name} considers its choices.")
                 creature.ai.takeAction()
@@ -25,10 +39,6 @@ class Combatant(val creature: Creature) {
             }
         }
         actionPoints = 0
-    }
-
-    fun isPlayer() : Boolean {
-        return creature == GameState.player.creature
     }
 
 }

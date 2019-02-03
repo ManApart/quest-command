@@ -4,45 +4,48 @@ import combat.Combatant
 import combat.battle.position.TargetDistance
 import core.gameState.Creature
 import core.gameState.GameState
-import core.gameState.Item
+import core.gameState.isPlayer
 import core.history.display
 import system.EventManager
 
 class Battle(combatantCreatures: List<Creature>, private var targetDistance: TargetDistance = TargetDistance.BOW) {
     private var lastFired = 0
     val combatants = mutableListOf<Combatant>()
+
     init {
         combatantCreatures.forEach {
             combatants.add(Combatant(it))
         }
     }
+
     var playerLastAttacked = getPlayerCombatant().creature
 
-
     private fun getPlayerCombatant() =
-           getCombatant(GameState.player.creature)!!
+            getCombatant(GameState.player.creature)!!
 
-    fun getCombatant(creature: Creature) : Combatant? {
+    fun getCombatant(creature: Creature): Combatant? {
         return combatants.firstOrNull { it.creature == creature }
     }
+    private fun getOrAddCombatant(creature: Creature) : Combatant {
+        if (getCombatant(creature) == null){
+            combatants.add(Combatant(creature))
+        }
+        return getCombatant(creature)!!
+    }
 
-    fun getDistance() : TargetDistance {
+    fun getDistance(): TargetDistance {
         return targetDistance
     }
 
-//    fun isAttackInRange(weapon: Item) : Boolean {
-//        return targetDistance == TargetDistance.getRangeOfItem(weapon)
-//    }
-
-    fun takeTurn(){
-        if (isOver()){
+    fun takeTurn() {
+        if (isOver()) {
             clearBattle()
         } else {
             executeTurn()
         }
     }
 
-    private fun isOver() : Boolean {
+    private fun isOver(): Boolean {
         return combatants.size <= 1
     }
 
@@ -55,16 +58,18 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
     }
 
     private fun executeTurn() {
-        lastFired ++
+        lastFired++
         var playerTurn = false
 
-        combatants.forEach { it.increaseActionPoints() }
+        combatants.forEach { it.tick() }
         combatants.forEach {
-            if (it.canAct()){
-                if (it.isPlayer()) {
+            if (it.isActionReady()) {
+                EventManager.postEvent(it.action!!.getActionEvent())
+            } else if (it.canChooseAction()) {
+                if (it.creature.isPlayer()) {
                     playerTurn = true
                 }
-                it.act()
+                it.chooseAction()
             }
         }
 
@@ -76,6 +81,11 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
             }
             else -> EventManager.postEvent(BattleTurnEvent())
         }
+    }
+
+    fun addAction(source: Creature, action: BattleAction) {
+        val combatant = getOrAddCombatant(source)
+        combatant.action = action
     }
 
 }

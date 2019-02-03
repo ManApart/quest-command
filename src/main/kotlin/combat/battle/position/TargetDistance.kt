@@ -1,8 +1,5 @@
 package combat.battle.position
 
-import core.gameState.Item
-import core.gameState.Tags
-
 enum class TargetDistance(private val distance: Int) {
     DAGGER(0),
     SWORD(1),

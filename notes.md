@@ -88,9 +88,12 @@ Crush | Slow | Highest | High Damage
 Each Turn
 - Increase combatants AP by their agility level until one person hits 100
 - Combatant choose an attack or any other command (AP reset to 0)
-  - Equip item
-  - Use Item
-  - Battle Commands
+  - Equip item - instant
+  - Use Item - instant
+  - Dodge - takes time
+  - Approach/Retreat - takes time
+  - Block - takes time
+  - Attack - takes time
 - Weapon Size + weight + encumbrance percent determines number of turns taken to deliver the attack
 - Each action drains stamina. The heavier the weapon the more stamina drained for an attack, the more encumbered the more stamina drained per movement
 - Without enough stamina the combatant can’t do anything

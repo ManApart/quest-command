@@ -75,10 +75,10 @@ class AttackCommand : Command() {
 
     private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection) : Event {
         return when (keyword) {
-            "chop" -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CHOP)
-            "crush" -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CRUSH)
-            "slash" -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.SLASH)
-            else -> AttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.STAB)
+            "chop" -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CHOP)
+            "crush" -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CRUSH)
+            "slash" -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.SLASH)
+            else -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.STAB)
         }
     }
 }
