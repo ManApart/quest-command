@@ -1,5 +1,8 @@
 package combat.battle.position
 
+import core.gameState.Item
+import core.gameState.Tags
+
 enum class TargetDistance(private val distance: Int) {
     DAGGER(0),
     SWORD(1),
@@ -22,7 +25,8 @@ enum class TargetDistance(private val distance: Int) {
         }
     }
 
-    private fun greatestValue() : Int {
+    private fun greatestValue(): Int {
         return values().maxBy { it.distance }?.distance ?: 0
     }
+
 }

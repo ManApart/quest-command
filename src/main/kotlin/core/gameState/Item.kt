@@ -1,6 +1,7 @@
 package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import combat.battle.position.TargetDistance
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.body.Body
@@ -124,6 +125,16 @@ class Item(
             true
         } else {
             properties.tags.hasAny(Tags(acceptedTypes))
+        }
+    }
+
+    fun getRange() : TargetDistance {
+        return when {
+            properties.tags.hasAny(Tags(listOf("Small", "Short"))) -> TargetDistance.DAGGER
+            properties.tags.has("Medium") -> TargetDistance.SWORD
+            properties.tags.hasAny(Tags(listOf("Large", "Long"))) -> TargetDistance.SPEAR
+            properties.tags.has("Ranged") -> TargetDistance.BOW
+            else -> TargetDistance.DAGGER
         }
     }
 

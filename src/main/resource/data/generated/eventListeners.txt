@@ -20,7 +20,7 @@ status.rest.Rest
 system.item.ItemSpawner
 interact.actions.StartFire
 interact.eat.EatFood
-travel.TravelStart
+combat.battle.StartBattleListener
 status.journal.ViewQuestList
 interact.actions.UseOnFire
 combat.battle.CombatantDied
@@ -64,7 +64,7 @@ travel.Arrive
 inventory.unEquipItem.UnEquipItem
 interact.interaction.NoInteractionFound
 status.LevelUp
-combat.battle.StartBattle$AttackListener
+travel.TravelStart
 status.ExpGained
 status.statChanged.StatBoosted
 travel.jump.PlayerJump

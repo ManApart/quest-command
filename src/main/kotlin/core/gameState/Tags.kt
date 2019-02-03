@@ -3,6 +3,7 @@ package core.gameState
 import core.utility.apply
 
 class Tags(tags: List<String> = listOf()) {
+    constructor(tag: String): this(listOf(tag))
     constructor(base: Tags, params: Map<String, String> = mapOf()) : this(base.tags.apply(params))
 
     private val tags = tags.toMutableList()

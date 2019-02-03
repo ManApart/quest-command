@@ -1,13 +1,14 @@
 package combat.battle
 
 import combat.Combatant
+import combat.battle.position.TargetDistance
 import core.gameState.Creature
 import core.gameState.GameState
+import core.gameState.Item
 import core.history.display
 import system.EventManager
 
-class Battle(combatantCreatures: List<Creature>) {
-    var distance = 10
+class Battle(combatantCreatures: List<Creature>, private var targetDistance: TargetDistance = TargetDistance.BOW) {
     private var lastFired = 0
     val combatants = mutableListOf<Combatant>()
     init {
@@ -24,6 +25,14 @@ class Battle(combatantCreatures: List<Creature>) {
     fun getCombatant(creature: Creature) : Combatant? {
         return combatants.firstOrNull { it.creature == creature }
     }
+
+    fun getDistance() : TargetDistance {
+        return targetDistance
+    }
+
+//    fun isAttackInRange(weapon: Item) : Boolean {
+//        return targetDistance == TargetDistance.getRangeOfItem(weapon)
+//    }
 
     fun takeTurn(){
         if (isOver()){

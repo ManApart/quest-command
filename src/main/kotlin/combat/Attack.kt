@@ -1,6 +1,7 @@
 package combat
 
 import combat.battle.position.HitLevel
+import combat.battle.position.TargetDistance
 import combat.battle.position.TargetPosition
 import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
@@ -24,20 +25,25 @@ class Attack : EventListener<AttackEvent>() {
 
         val defender = event.target.getCreature()
         val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
+        val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
 
-        if (defender != null && offensiveDamage > 0) {
+        val range = event.sourcePart.getEquippedWeapon()?.getRange() ?: TargetDistance.DAGGER
+        val targetDistance = GameState.battle?.getDistance() ?: range
+
+        if (range < targetDistance) {
+            display("${event.target} is too far away to be hit by $damageSource.")
+        } else if (defender != null && offensiveDamage > 0) {
             val attackedPart = getAttackedPart(event.targetPosition, defender.body)
             if (attackedPart == null) {
                 display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
             } else {
-                val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
                 val possessive = StringFormatter.getSubjectPossessive(event.source)
                 val verb = StringFormatter.format(event.source.isPlayer(), event.type.name.toLowerCase(), event.type.verb)
                 val hitLevel = event.targetPosition.getHitLevel(attackedPart.position)
                 val hitLevelString = StringFormatter.format(hitLevel == HitLevel.DIRECT, "directly", "grazingly")
                 display("$subject $hitLevelString $verb the ${attackedPart.name} of ${event.target.name} with $possessive $damageSource.")
 
-                EventManager.postEvent(TakeDamageEvent(defender, attackedPart, offensiveDamage,  hitLevel, event.type, damageSource))
+                EventManager.postEvent(TakeDamageEvent(defender, attackedPart, offensiveDamage, hitLevel, event.type, damageSource))
             }
         } else if (event.sourcePart.getEquippedWeapon() != null) {
             EventManager.postEvent(UseEvent(GameState.player.creature, event.sourcePart.getEquippedWeapon()!!, event.target))

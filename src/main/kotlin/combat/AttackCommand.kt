@@ -56,7 +56,6 @@ class AttackCommand : Command() {
         }
     }
 
-
     private fun getDamageType(keyword: String) : String {
         return when (keyword) {
             "chop" -> "chopDamage"
