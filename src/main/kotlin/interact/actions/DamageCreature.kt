@@ -4,7 +4,7 @@ import core.events.EventListener
 import core.gameState.Item
 import core.gameState.getCreature
 import core.gameState.hasCreature
-import core.gameState.stat.Stat
+import core.gameState.stat.HEALTH
 import interact.UseEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -14,7 +14,7 @@ class DamageCreature : EventListener<UseEvent>() {
         return event.used is Item
                 && event.used.properties.tags.has("Weapon")
                 && event.target.hasCreature()
-                && event.target.getCreature()!!.soul.hasStat(Stat.HEALTH)
+                && event.target.getCreature()!!.soul.hasStat(HEALTH)
     }
 
     override fun execute(event: UseEvent) {

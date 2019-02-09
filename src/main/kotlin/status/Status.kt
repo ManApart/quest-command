@@ -2,7 +2,8 @@ package status
 
 import core.events.EventListener
 import core.gameState.isPlayer
-import core.gameState.stat.Stat
+import core.gameState.stat.HEALTH
+import core.gameState.stat.STAMINA
 import core.history.display
 import core.utility.StringFormatter
 
@@ -25,7 +26,7 @@ class Status : EventListener<StatusEvent>() {
     private fun printOtherStats(event: StatusEvent) {
         val soul = event.creature.soul
         val subject = StringFormatter.getSubjectPossessive(event.creature)
-        val statString = soul.getStats().asSequence().filter { it != soul.getStatOrNull(Stat.HEALTH) && it != soul.getStatOrNull(Stat.STAMINA) }.joinToString("\n\t") {
+        val statString = soul.getStats().asSequence().filter { it != soul.getStatOrNull(HEALTH) && it != soul.getStatOrNull(STAMINA) }.joinToString("\n\t") {
             "${it.name.capitalize()}: ${it.current}/${it.max} (${it.getCurrentXP().toInt()}/${it.getNextLevelXP().toInt()}xp)"
         }
         display("$subject stats are:\n\t$statString")

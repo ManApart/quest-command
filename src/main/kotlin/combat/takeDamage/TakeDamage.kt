@@ -4,7 +4,7 @@ import combat.AttackType
 import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.body.BodyPart
-import core.gameState.stat.Stat
+import core.gameState.stat.HEALTH
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
@@ -14,8 +14,8 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
 
         if (hasSpecificHealth(event.source, event.attackType)) {
             EventManager.postEvent(StatChangeEvent(event.source, event.damageSource, event.attackType.health, -undefendedDamage))
-        } else if (event.source.soul.hasStat(Stat.HEALTH)) {
-            EventManager.postEvent(StatChangeEvent(event.source, event.damageSource, Stat.HEALTH, -undefendedDamage))
+        } else if (event.source.soul.hasStat(HEALTH)) {
+            EventManager.postEvent(StatChangeEvent(event.source, event.damageSource, HEALTH, -undefendedDamage))
         }
     }
 

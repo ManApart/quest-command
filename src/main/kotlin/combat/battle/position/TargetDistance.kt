@@ -1,6 +1,6 @@
 package combat.battle.position
 
-enum class TargetDistance(private val distance: Int) {
+enum class TargetDistance(val distance: Int) {
     DAGGER(0),
     SWORD(1),
     SPEAR(2),

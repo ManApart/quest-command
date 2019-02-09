@@ -5,8 +5,6 @@ import combat.battle.position.TargetDistance
 import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
-import system.EventManager
-import system.gameTick.GameTickEvent
 
 class StartAttack : EventListener<StartAttackEvent>() {
     override fun execute(event: StartAttackEvent) {
@@ -16,7 +14,7 @@ class StartAttack : EventListener<StartAttackEvent>() {
                 GameState.battle = Battle(listOf(event.source, event.target), range)
                 GameState.player.canRest = false
                 GameState.player.canTravel = false
-                EventManager.postEvent(GameTickEvent())
+                GameState.battle?.addAction(event.source, event)
             } else {
                 GameState.battle?.addAction(event.source, event)
             }

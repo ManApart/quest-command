@@ -1,6 +1,7 @@
 package status.rest
 
 import core.events.EventListener
+import core.gameState.stat.HEALTH
 import core.gameState.stat.Stat
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -16,7 +17,7 @@ class Rest : EventListener<RestEvent>() {
     }
 
     private fun isRecoverable(stat: Stat): Boolean {
-        return stat.name != Stat.HEALTH
+        return stat.name != HEALTH
                 && stat.current < stat.max
     }
 }

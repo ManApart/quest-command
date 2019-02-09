@@ -49,10 +49,10 @@ class AttackCommand : Command() {
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
             isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player.creature, handHelper.weapon!!, scope.getTargets(cleaned.argStrings[0]).first()))
-            scope.getTargets(cleaned.argStrings[0]).isNotEmpty() -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTargets(cleaned.argStrings[0]).first(), direction))
-            GameState.player.creature.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0])!!, direction))
+            scope.getTargets(cleaned.argStrings[1]).isNotEmpty() -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTargets(cleaned.argStrings[1]).first(), direction))
+            GameState.player.creature.inventory.getItem(cleaned.argStrings[1]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[1])!!, direction))
             GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
-            else -> display("Couldn't find ${cleaned.argStrings[0]}")
+            else -> display("Couldn't find ${cleaned.argStrings[1]}.")
         }
     }
 

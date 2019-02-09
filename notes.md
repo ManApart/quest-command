@@ -70,10 +70,11 @@ Balanced weapons are things like swords and daggers. Weighted weapons are things
 
 Stat | Effect
 --- | ---
-Agility | how quickly someone can attack
+Agility | how long an action takes
 Strength | how much the attack does
-Encumbrance | how long the attack takes to land
+Encumbrance | how long an action takes
 Perception | chance of critical
+Wisdom | how often someone can choose an action
 
 **Attack Types**
 
@@ -84,16 +85,18 @@ Stab | Fast | Low | High Critical
 Chop | Medium | High | Consistent Damage
 Crush | Slow | Highest | High Damage
 
+
 #### Turn Walk Through
 Each Turn
-- Increase combatants AP by their agility level until one person hits 100
+- Increase combatants AP by their wisdom level until one person hits 100
 - Combatant choose an attack or any other command (AP reset to 0)
   - Equip item - instant
   - Use Item - instant
   - Dodge - takes time
   - Approach/Retreat - takes time
   - Block - takes time
-  - Attack - takes time
+  - Attack - weapon size + weapon weight + encumberance - agility
+  - Wait - instant and keeps AP point at 100
 - Weapon Size + weight + encumbrance percent determines number of turns taken to deliver the attack
 - Each action drains stamina. The heavier the weapon the more stamina drained for an attack, the more encumbered the more stamina drained per movement
 - Without enough stamina the combatant can’t do anything

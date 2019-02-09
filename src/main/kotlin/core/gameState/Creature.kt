@@ -78,4 +78,11 @@ class Creature(
         }
     }
 
+    /**
+     * Return how encumbered the creature is, as a percent from 0-1
+     */
+    fun getEncumbrance(): Float {
+        return inventory.getWeight() / getTotalCapacity().toFloat()
+    }
+
 }

@@ -3,7 +3,7 @@ package core.gameState
 import core.events.Event
 import core.gameState.location.LocationNode
 import core.gameState.location.Route
-import core.gameState.stat.Stat
+import core.gameState.stat.*
 import core.utility.NameSearchableList
 import crafting.Recipe
 import dialogue.DialogueOptions
@@ -27,12 +27,14 @@ class Player(creatureBase: Creature? = null) : Target {
     val knownRecipes = NameSearchableList<Recipe>()
 
     init {
-        creature.soul.addStat(Stat.HEALTH, 1, 10, 1)
-        creature.soul.addStat(Stat.STAMINA, 1, 100, 1)
-        creature.soul.addStat(Stat.STRENGTH, 1, 1, 1)
-        creature.soul.addStat(Stat.CLIMBING, 1)
-        creature.soul.addStat(Stat.AGILITY, 1)
-        creature.soul.addStat(Stat.COOKING, 1)
+        creature.soul.addStat(HEALTH, 1, 10, 1)
+        creature.soul.addStat(PERCEPTION, 1, 1, 1)
+        creature.soul.addStat(STAMINA, 1, 100, 1)
+        creature.soul.addStat(STRENGTH, 1, 1, 1)
+        creature.soul.addStat(WISDOM, 1, 1, 1)
+        creature.soul.addStat(CLIMBING, 1)
+        creature.soul.addStat(AGILITY, 1)
+        creature.soul.addStat(COOKING, 1)
         creature.properties.tags.add("Open")
         creature.properties.tags.add("Container")
     }

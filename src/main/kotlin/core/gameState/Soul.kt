@@ -35,12 +35,12 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return getEffectOrNull(name) != null
     }
 
-    fun getCurrent(name: String): Int {
-        return getStatOrNull(name)?.current ?: 0
+    fun getCurrent(name: String, default: Int = 0): Int {
+        return getStatOrNull(name)?.current ?: default
     }
 
-    fun getTotal(name: String): Int {
-        return getStatOrNull(name)?.max ?: 0
+    fun getTotal(name: String, default: Int = 0): Int {
+        return getStatOrNull(name)?.max ?: default
     }
 
     private fun getOrCreateStat(name: String): Stat {

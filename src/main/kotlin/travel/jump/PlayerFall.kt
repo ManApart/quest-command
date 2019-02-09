@@ -2,7 +2,8 @@ package travel.jump
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.stat.Stat
+import core.gameState.stat.AGILITY
+import core.gameState.stat.HEALTH
 import core.history.display
 import status.statChanged.StatChangeEvent
 import system.EventManager
@@ -25,9 +26,9 @@ class PlayerFall : EventListener<FallEvent>() {
 
     private fun takeDamage(event: FallEvent) {
         //TODO add defense per their foot defense
-        val amount = Math.max(0, event.fallHeight - event.creature.soul.getCurrent(Stat.AGILITY))
+        val amount = Math.max(0, event.fallHeight - event.creature.soul.getCurrent(AGILITY))
         if (amount != 0) {
-            EventManager.postEvent(StatChangeEvent(event.creature, "Falling", Stat.HEALTH, -amount))
+            EventManager.postEvent(StatChangeEvent(event.creature, "Falling", HEALTH, -amount))
         } else {
             display("You land without taking damage.")
         }

@@ -11,7 +11,7 @@ import core.gameState.body.Body
 import core.gameState.body.BodyPart
 import core.gameState.getCreature
 import core.gameState.isPlayer
-import core.gameState.stat.Stat
+import core.gameState.stat.BARE_HANDED
 import core.history.display
 import core.utility.StringFormatter
 import core.utility.random
@@ -64,7 +64,7 @@ class Attack : EventListener<AttackEvent>() {
     private fun getOffensiveDamage(sourceCreature: Creature, sourcePart: BodyPart, type: AttackType): Int {
         return when {
             sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
-            else -> sourceCreature.soul.getCurrent(Stat.BARE_HANDED)
+            else -> sourceCreature.soul.getCurrent(BARE_HANDED)
         }
     }
 

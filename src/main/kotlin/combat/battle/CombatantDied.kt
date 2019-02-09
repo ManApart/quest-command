@@ -9,7 +9,7 @@ class CombatantDied : EventListener<CreatureDiedEvent>() {
         val battle = GameState.battle
         val combatant = battle?.getCombatant(event.creature)
         if (combatant != null){
-            battle.combatants.remove(combatant)
+            battle.removeCombatant(combatant)
         }
     }
 

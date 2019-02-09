@@ -6,6 +6,20 @@ import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
 
+//Attributes
+const val AGILITY = "Agility"
+const val HEALTH = "Health"
+const val PERCEPTION = "Perception"
+const val STAMINA = "Stamina"
+const val STRENGTH = "Strength"
+const val WISDOM = "Wisdom"
+
+//Skills
+const val CLIMBING = "Climbing"
+const val BARE_FOOT = "Barefoot"
+const val BARE_HANDED = "Bare Handed"
+const val COOKING = "Cooking"
+
 class Stat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
     var max: Int = getBaseMaxAtCurrentLevel(); private set
     var current: Int = max; private set
@@ -83,20 +97,5 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
     fun getNextLevelXP(): Double {
         return getXPAt(level + 1)
     }
-
-    companion object {
-        //Attributes
-        const val AGILITY = "Agility"
-        const val HEALTH = "Health"
-        const val STAMINA = "Stamina"
-        const val STRENGTH = "Strength"
-
-        //Skills
-        const val CLIMBING = "Climbing"
-        const val BARE_FOOT = "Barefoot"
-        const val BARE_HANDED = "Bare Handed"
-        const val COOKING = "Cooking"
-    }
-
 
 }

@@ -3,6 +3,8 @@ package combat
 import combat.battle.BattleAction
 import core.gameState.Creature
 import core.gameState.isPlayer
+import core.gameState.stat.HEALTH
+import core.gameState.stat.WISDOM
 import core.history.display
 
 class Combatant(val creature: Creature) {
@@ -18,7 +20,7 @@ class Combatant(val creature: Creature) {
     }
 
     private fun increaseActionPoints() {
-        actionPoints++
+        actionPoints += creature.soul.getCurrent(WISDOM, 1)
     }
 
     fun isActionReady() : Boolean {
@@ -41,4 +43,7 @@ class Combatant(val creature: Creature) {
         actionPoints = 0
     }
 
+    fun status() : String {
+        return "${creature.name}: ${creature.soul.getCurrent(HEALTH)}/${creature.soul.getTotal(HEALTH)} hp, $actionPoints/100 ap, ${action?.javaClass?.simpleName ?: "None"}."
+    }
 }

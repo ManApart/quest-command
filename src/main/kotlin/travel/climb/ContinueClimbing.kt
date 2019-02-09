@@ -4,6 +4,8 @@ import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.climb.ClimbSegment
+import core.gameState.stat.CLIMBING
+import core.gameState.stat.STAMINA
 import core.gameState.stat.Stat
 import core.history.display
 import core.utility.RandomManager
@@ -33,7 +35,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val distance = journey.getTotalDistance()
         val chance = getChance(journey, event.desiredStep)
 
-        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", Stat.STAMINA, -distance))
+        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", STAMINA, -distance))
         if (RandomManager.isSuccess(chance)) {
             val direction = StringFormatter.format(journey.initialDirection, "up", "down")
             display("You climb $distance ft $direction ${journey.target.name}.")
@@ -48,7 +50,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val distance = journey.getDistanceTo(event.desiredStep)
         val chance = getChance(journey, event.desiredStep)
 
-        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", Stat.STAMINA, -distance))
+        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", STAMINA, -distance))
         if (RandomManager.isSuccess(chance)) {
             val direction = StringFormatter.format(journey.getDirection(event.desiredStep), "up", "down")
             display("You climb $distance ft $direction ${journey.target.name}.")
@@ -75,7 +77,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
 
     private fun getChance(journey: ClimbJourney, desiredStep: Int): Double {
         //TODO - more detailed skill check
-        val skill = GameState.player.creature.soul.getCurrent(Stat.CLIMBING)
+        val skill = GameState.player.creature.soul.getCurrent(CLIMBING)
         val challenge = journey.getSegment(desiredStep).level
         return skill / challenge.toDouble()
     }
@@ -87,7 +89,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
             segment.level * segment.distance
         }
         if (amount > 0) {
-            EventManager.postEvent(ExpGainedEvent(creature, Stat.CLIMBING, amount))
+            EventManager.postEvent(ExpGainedEvent(creature, CLIMBING, amount))
         }
     }
 

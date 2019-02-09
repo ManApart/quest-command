@@ -73,6 +73,13 @@ class CommandComboTest {
     }
 
     @Test
+    fun dontAttackDeadThing() {
+        val input = "s && slash bottom center of rat && slash bottom center of rat && slash bottom center of rat && slash bottom center of rat"
+        CommandParser.parseCommand(input)
+        assertEquals("Couldn't find rat.", ChatHistory.getLastOutput())
+    }
+
+    @Test
     fun useGate() {
         val input = "w && w && use gate"
         CommandParser.parseCommand(input)

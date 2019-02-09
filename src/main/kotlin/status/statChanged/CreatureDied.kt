@@ -3,16 +3,17 @@ package status.statChanged
 import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.GameState
-import core.gameState.stat.Stat
+import core.gameState.isPlayer
+import core.gameState.stat.HEALTH
 import core.history.display
+import interact.scope.remove.RemoveScopeEvent
 import inventory.dropItem.TransferItemEvent
 import status.CreatureDiedEvent
 import system.EventManager
-import interact.scope.remove.RemoveScopeEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return event.target != GameState.player.creature && event.target is Creature && event.stat.toLowerCase() == Stat.HEALTH.toLowerCase()
+        return !event.target.isPlayer() && event.target is Creature && event.stat.toLowerCase() == HEALTH.toLowerCase()
     }
 
     override fun execute(event: StatMinnedEvent) {
