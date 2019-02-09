@@ -13,5 +13,9 @@ class BodyFakeParser(private val protoBodies: List<ProtoBody> = listOf(), privat
         return protoBodies
     }
 
-
+    companion object {
+        fun parserWithFakePlayer() : BodyFakeParser {
+            return BodyFakeParser(listOf(ProtoBody("Human", listOf("right hand", "left hand"))), listOf(BodyPart("right hand"), BodyPart("left hand")))
+        }
+    }
 }

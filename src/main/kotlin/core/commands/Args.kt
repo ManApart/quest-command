@@ -76,7 +76,7 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
     private fun parseArgGroups(): List<List<String>> {
         val groups = mutableListOf<List<String>>()
         if (delimiters.isEmpty()) {
-            groups.add(args)
+            groups.add(removeExcludedWords(args))
         } else {
             splitGroup(args, groups)
         }

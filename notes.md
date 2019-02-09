@@ -234,3 +234,7 @@ Dialogue currently only supports Queries
 - Inventory carrying space
 
 Certain quests unlock the ability to start a new character as a different race in the same world
+
+
+Attack command groups 0 vs 1 - make tests
+ - Mock Player?

@@ -10,7 +10,6 @@ import core.history.display
 import system.EventManager
 
 class Battle(combatantCreatures: List<Creature>, private var targetDistance: TargetDistance = TargetDistance.BOW) {
-    private var lastFired = 0
     private val combatants = mutableListOf<Combatant>()
 
     init {
@@ -32,8 +31,8 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
         combatants.remove(combatant)
     }
 
-    private fun getOrAddCombatant(creature: Creature) : Combatant {
-        if (getCombatant(creature) == null){
+    private fun getOrAddCombatant(creature: Creature): Combatant {
+        if (getCombatant(creature) == null) {
             combatants.add(Combatant(creature))
         }
         return getCombatant(creature)!!
@@ -44,7 +43,6 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
     }
 
     fun takeTurn() {
-//        removeDeadCombatants()
         if (isOver()) {
             clearBattle()
         } else {
@@ -65,37 +63,21 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
     }
 
     private fun executeTurn() {
-        lastFired++
-        var playerTurn = false
-        var actionFired = false
-
+        var takeAnotherTurn = true
         combatants.forEach { it.tick() }
         combatants.forEach {
             if (it.isActionReady()) {
-                actionFired = true
-                inspectBattle()
+                takeAnotherTurn = false
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
             } else if (it.canChooseAction()) {
-                if (it.creature.isPlayer()) {
-                    playerTurn = true
-                }
                 it.chooseAction()
+                takeAnotherTurn = false
             }
         }
-
-        when {
-            playerTurn -> lastFired = 0
-            lastFired > 100 -> {
-                display("You should have been able to do something by now. Something is wrong.")
-                lastFired = 0
-            }
-            !actionFired -> EventManager.postEvent(BattleTurnEvent())
+        if (takeAnotherTurn) {
+            EventManager.postEvent(BattleTurnEvent())
         }
-    }
-
-    private fun removeDeadCombatants() {
-        combatants.removeAll { it.creature.soul.getCurrent(HEALTH) == 0 }
     }
 
     fun addAction(source: Creature, action: BattleAction) {
