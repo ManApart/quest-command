@@ -1,4 +1,4 @@
-package combat
+package combat.attack
 
 import combat.battle.position.HitLevel
 import combat.battle.position.TargetDistance
@@ -24,6 +24,7 @@ class Attack : EventListener<AttackEvent>() {
         val subject = StringFormatter.getSubject(event.source)
 
         val defender = event.target.getCreature()
+
         val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
         val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
 
@@ -33,13 +34,16 @@ class Attack : EventListener<AttackEvent>() {
         if (range < targetDistance) {
             display("${event.target} is too far away to be hit by $damageSource.")
         } else if (defender != null && offensiveDamage > 0) {
-            val attackedPart = getAttackedPart(event.targetPosition, defender.body)
+            val defenderPosition = GameState.battle?.getCombatant(defender)?.position ?: TargetPosition()
+            val adjustedPosition = event.targetPosition.shift(defenderPosition.invert())
+
+            val attackedPart = getAttackedPart(adjustedPosition, defender.body)
             if (attackedPart == null) {
                 display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
             } else {
                 val possessive = StringFormatter.getSubjectPossessive(event.source)
                 val verb = StringFormatter.format(event.source.isPlayer(), event.type.name.toLowerCase(), event.type.verb)
-                val hitLevel = event.targetPosition.getHitLevel(attackedPart.position)
+                val hitLevel = adjustedPosition.getHitLevel(attackedPart.position)
                 val hitLevelString = StringFormatter.format(hitLevel == HitLevel.DIRECT, "directly", "grazingly")
                 display("$subject $hitLevelString $verb the ${attackedPart.name} of ${event.target.name} with $possessive $damageSource.")
 

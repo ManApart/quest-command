@@ -1,6 +1,6 @@
 package combat.takeDamage
 
-import combat.AttackType
+import combat.attack.AttackType
 import core.events.EventListener
 import core.gameState.Creature
 import core.gameState.body.BodyPart

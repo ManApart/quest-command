@@ -1,6 +1,7 @@
 package combat
 
 import combat.battle.BattleAction
+import combat.battle.position.TargetPosition
 import core.gameState.Creature
 import core.gameState.isPlayer
 import core.gameState.stat.HEALTH
@@ -10,6 +11,7 @@ import core.history.display
 class Combatant(val creature: Creature) {
     private var actionPoints = 0
     var action: BattleAction? = null
+    var position = TargetPosition()
 
     fun tick() {
         if (action == null){
@@ -32,6 +34,7 @@ class Combatant(val creature: Creature) {
     }
 
     fun chooseAction() {
+        position = TargetPosition()
         if (!creature.isPlayer()){
             if (creature.ai != null){
                 display("${creature.name} considers its choices.")

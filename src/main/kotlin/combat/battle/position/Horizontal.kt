@@ -1,7 +1,11 @@
 package combat.battle.position
 
 enum class Horizontal(private val value: Int) {
-    LEFT(-1), CENTER(0), RIGHT(1);
+    FAR_LEFT(-2),
+    LEFT(-1),
+    CENTER(0),
+    RIGHT(1),
+    FAR_RIGHT(2);
 
     override fun toString(): String {
         return name.toLowerCase()
@@ -16,10 +20,16 @@ enum class Horizontal(private val value: Int) {
     }
 
     private fun fromValue(value: Int): Horizontal {
+        val match = Horizontal.values().firstOrNull { it.value == value }
+        val minValue = Horizontal.values().minBy { it.value }!!.value
         return when {
-            value <= -1 -> LEFT
-            value >= 1 -> RIGHT
-            else -> CENTER
+            match != null -> match
+            value < minValue -> Horizontal.FAR_LEFT
+            else -> Horizontal.FAR_RIGHT
         }
+    }
+
+    fun invert(): Horizontal {
+        return fromValue(value * -1)
     }
 }

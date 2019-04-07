@@ -1,14 +1,12 @@
-package combat
+package combat.dodge
 
 import combat.battle.BattleAction
-import combat.battle.position.TargetPosition
+import combat.battle.position.TargetDirection
 import core.events.Event
 import core.gameState.Creature
-import core.gameState.Target
-import core.gameState.body.BodyPart
 import core.gameState.stat.AGILITY
 
-class StartApproachEvent(val source: Creature, private val isApproaching: Boolean = true, timeLeft: Int = -1) : Event, BattleAction {
+class StartDodgeEvent(val source: Creature, private val direction: TargetDirection, timeLeft: Int = -1) : Event, BattleAction {
 
     override var timeLeft = calcTimeLeft(timeLeft)
 
@@ -23,7 +21,7 @@ class StartApproachEvent(val source: Creature, private val isApproaching: Boolea
         }
     }
 
-    override fun getActionEvent(): ApproachEvent {
-        return ApproachEvent(source, isApproaching)
+    override fun getActionEvent(): DodgeEvent {
+        return DodgeEvent(source, direction)
     }
 }

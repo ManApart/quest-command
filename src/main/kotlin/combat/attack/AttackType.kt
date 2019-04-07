@@ -1,4 +1,4 @@
-package combat
+package combat.attack
 
 enum class AttackType {
     CHOP,

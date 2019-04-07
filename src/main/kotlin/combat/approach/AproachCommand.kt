@@ -1,4 +1,4 @@
-package combat
+package combat.approach
 
 import core.commands.Command
 import core.gameState.GameState

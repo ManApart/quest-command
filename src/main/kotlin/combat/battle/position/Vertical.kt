@@ -1,9 +1,11 @@
 package combat.battle.position
 
 enum class Vertical(private val value: Int) {
+    VERY_LOW(-2),
     LOW(-1),
     CENTER(0),
-    HIGH(1);
+    HIGH(1),
+    VERY_HIGH(2);
 
     override fun toString(): String {
         return name.toLowerCase()
@@ -18,11 +20,17 @@ enum class Vertical(private val value: Int) {
     }
 
     private fun fromValue(value: Int): Vertical {
+        val match = Vertical.values().firstOrNull { it.value == value }
+        val minValue = Vertical.values().minBy { it.value }!!.value
         return when {
-            value <= -1 -> LOW
-            value >= 1 -> HIGH
-            else -> CENTER
+            match != null -> match
+            value < minValue -> Vertical.VERY_LOW
+            else -> Vertical.VERY_HIGH
         }
+    }
+
+    fun invert(): Vertical {
+        return fromValue(value * -1)
     }
 
 }

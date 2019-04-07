@@ -1,4 +1,4 @@
-package combat
+package combat.approach
 
 import core.events.Event
 import core.gameState.Creature

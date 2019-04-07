@@ -1,7 +1,7 @@
 package core.gameState
 
-import combat.AttackType
-import combat.StartAttackEvent
+import combat.attack.AttackType
+import combat.attack.StartAttackEvent
 import combat.battle.position.TargetPosition
 import system.EventManager
 

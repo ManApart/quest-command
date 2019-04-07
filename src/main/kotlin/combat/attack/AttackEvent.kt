@@ -1,4 +1,4 @@
-package combat
+package combat.attack
 
 import combat.battle.position.TargetPosition
 import core.events.Event

@@ -1,5 +1,6 @@
-package combat
+package combat.attack
 
+import combat.HandHelper
 import combat.battle.position.TargetDirection
 import core.commands.Args
 import core.commands.Command

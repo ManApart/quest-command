@@ -1,10 +1,10 @@
 package combat
 
+import combat.attack.AttackCommand
+import combat.attack.StartAttackEvent
 import core.gameState.Creature
 import core.gameState.GameState
 import core.gameState.Player
-import core.gameState.body.BodyPart
-import core.gameState.body.ProtoBody
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
 import interact.scope.ScopeManager

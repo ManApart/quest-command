@@ -1,7 +1,7 @@
 package balance
 
-import combat.AttackType
-import combat.StartAttackEvent
+import combat.attack.AttackType
+import combat.attack.StartAttackEvent
 import combat.battle.position.TargetPosition
 import core.gameState.Creature
 import core.gameState.Item

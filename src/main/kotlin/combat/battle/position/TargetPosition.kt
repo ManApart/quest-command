@@ -18,6 +18,10 @@ class TargetPosition(private val horizontal: Horizontal = Horizontal.CENTER, pri
         return TargetPosition(this.horizontal.shift(other.horizontal), this.vertical.shift(other.vertical))
     }
 
+    fun invert() : TargetPosition {
+        return TargetPosition(this.horizontal.invert(), this.vertical.invert())
+    }
+
     fun getHitLevel(other: TargetPosition) : HitLevel {
         return when {
             this.vertical == other.vertical && this.horizontal == other.horizontal -> HitLevel.DIRECT
