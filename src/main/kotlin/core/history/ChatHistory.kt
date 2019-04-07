@@ -42,4 +42,8 @@ object ChatHistory {
         return current.outPut
     }
 
+    fun getCurrent() : InputOutput {
+        return current
+    }
+
 }

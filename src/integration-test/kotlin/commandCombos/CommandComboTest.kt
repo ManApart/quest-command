@@ -67,7 +67,8 @@ class CommandComboTest {
 
     @Test
     fun fightRat() {
-        val input = "s && slash bottom center of rat && slash bottom center of rat && slash bottom center of rat"
+        CommandParser.parseCommand("s")
+        val input = "slash bottom center of rat && r && r"
         CommandParser.parseCommand(input)
         assertEquals("The battle ends.", ChatHistory.getLastOutput())
     }

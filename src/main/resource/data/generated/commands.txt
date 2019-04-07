@@ -1,5 +1,5 @@
 explore.LookCommand
-explore.map.ReadMapCommand
+travel.RouteCommand
 crafting.CraftRecipeCommand
 travel.climb.ClimbCommand
 status.rest.RestCommand
@@ -7,16 +7,17 @@ status.StatusCommand
 interact.eat.EatCommand
 inventory.equipItem.EquipItemCommand
 inventory.pickupItem.PickupItemCommand
+inventory.unEquipItem.UnEquipItemCommand
 travel.TravelCommand
 core.commands.UnknownCommand
 crafting.RecipeCommand
-inventory.unEquipItem.UnEquipItemCommand
+explore.map.ReadMapCommand
 travel.jump.JumpCommand
-travel.RouteCommand
+travel.climb.DismountCommand
 crafting.CookCommand
 system.history.HistoryCommand
 interact.UseCommand
-travel.climb.DismountCommand
+system.RedoCommand
 combat.AttackCommand
 system.ExitCommand
 status.journal.JournalCommand

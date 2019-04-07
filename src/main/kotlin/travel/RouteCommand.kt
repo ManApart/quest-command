@@ -12,7 +12,7 @@ import system.location.LocationManager
 
 class RouteCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Route", "r")
+        return arrayOf("Route", "rr")
     }
 
     override fun getDescription(): String {
