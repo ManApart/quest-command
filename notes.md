@@ -6,6 +6,12 @@ An open world rpg with intense levels of interact, experienced through the comma
 
 While the readme should cover how to build and run the game, as well with information on how the game works, these notes are the design docs of the game and should frequently change and be deleted (and changed to readme documentation) once the feature is implemented.
 
+### AI
+
+Rat AI
+  - only attack with low aim
+  - Approach dagger range if not already in dagger range
+
 ### Architecture
 
 - Better package organization for actions
@@ -127,8 +133,6 @@ Each Turn
 - Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
 - Attack direction should use previous target
 - Individual health for body parts, can't use parts that don't have health?
-- Do more AI work.
-  - Rat should only attack with low aim
 
 Maybe attack listeners delegate to battle to be told if to execute or not. Battle either stores them and re-fires them after start cost / time it takes to attack, or it fires them itself when its time? Or break out into Attack Start and Attack commands.
 
@@ -268,7 +272,4 @@ Certain quests unlock the ability to start a new character as a different race i
 
 Attack command groups 0 vs 1 - make tests
  - Mock Player?
-
-
-r command to redo last action
 

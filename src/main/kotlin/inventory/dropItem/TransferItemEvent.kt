@@ -4,6 +4,7 @@ import core.events.Event
 import core.gameState.GameState
 import core.gameState.Item
 import core.gameState.Target
+import core.gameState.isPlayer
 import java.lang.IllegalArgumentException
 
 class TransferItemEvent(val item: Item, val source: Target? = null, val destination: Target? = null, val silent: Boolean = false) : Event {
@@ -14,7 +15,7 @@ class TransferItemEvent(val item: Item, val source: Target? = null, val destinat
     }
 
     override fun gameTicks(): Int {
-        return if (source == GameState.player.creature) {
+        return if (source?.isPlayer() == true) {
             1
         } else {
             0

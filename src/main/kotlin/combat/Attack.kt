@@ -28,7 +28,7 @@ class Attack : EventListener<AttackEvent>() {
         val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
 
         val range = event.sourcePart.getEquippedWeapon()?.getRange() ?: TargetDistance.DAGGER
-        val targetDistance = GameState.battle?.getDistance() ?: range
+        val targetDistance = GameState.battle?.targetDistance ?: range
 
         if (range < targetDistance) {
             display("${event.target} is too far away to be hit by $damageSource.")

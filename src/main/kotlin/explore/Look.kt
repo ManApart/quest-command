@@ -15,6 +15,8 @@ class Look : EventListener<LookEvent>() {
             ClimbLook.describeClimbJourney()
         } else if (event.target != null) {
             describeTarget(event.target)
+        } else if (GameState.battle != null) {
+            GameState.battle?.describe()
         } else {
             describeLocation()
         }

@@ -26,4 +26,12 @@ enum class TargetDistance(val distance: Int) {
         return values().maxBy { it.distance }?.distance ?: 0
     }
 
+    companion object {
+        fun getMaxDistance(): Int {
+            return TargetDistance.values().map { it.distance }.max() ?: 0
+        }
+
+    }
+
 }
+

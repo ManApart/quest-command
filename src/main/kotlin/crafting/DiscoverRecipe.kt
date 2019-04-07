@@ -2,6 +2,7 @@ package crafting
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.isPlayer
 import core.gameState.stat.COOKING
 import core.gameState.stat.Stat
 import core.history.display
@@ -11,7 +12,7 @@ import system.EventManager
 class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
 
     override fun execute(event: DiscoverRecipeEvent) {
-        if (event.source == GameState.player.creature) {
+        if (event.source.isPlayer()) {
             if (!GameState.player.knownRecipes.contains(event.recipe)) {
                 GameState.player.knownRecipes.add(event.recipe)
 

@@ -9,7 +9,7 @@ import core.gameState.stat.HEALTH
 import core.history.display
 import system.EventManager
 
-class Battle(combatantCreatures: List<Creature>, private var targetDistance: TargetDistance = TargetDistance.BOW) {
+class Battle(combatantCreatures: List<Creature>, var targetDistance: TargetDistance = TargetDistance.BOW) {
     private val combatants = mutableListOf<Combatant>()
 
     init {
@@ -36,10 +36,6 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
             combatants.add(Combatant(creature))
         }
         return getCombatant(creature)!!
-    }
-
-    fun getDistance(): TargetDistance {
-        return targetDistance
     }
 
     fun takeTurn() {
@@ -86,11 +82,12 @@ class Battle(combatantCreatures: List<Creature>, private var targetDistance: Tar
         EventManager.postEvent(BattleTurnEvent())
     }
 
-    private fun inspectBattle() {
-        println("Battle:")
+    fun describe() {
+        display(combatants.joinToString(" and ") { it.creature.name } + " are ${targetDistance.name} length from each other.")
         combatants.forEach {
             println("\t${it.status()}")
         }
+
     }
 
 }
