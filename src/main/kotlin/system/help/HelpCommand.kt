@@ -14,6 +14,7 @@ class HelpCommand : Command() {
 
     override fun getDescription(): String {
         return "Help: \n\tHelp Commands - Return a list of other types of commands that can be called." +
+                "\n\tHelp Commands all - Return a list of commands and all their aliases." +
                 "\n\tHelp <Command Group> - Return the list of commands within a group of commands" +
                 "\n\tHelp <Command> - Return the manual for that command" +
                 "\nNotes:" +
@@ -33,6 +34,7 @@ class HelpCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> EventManager.postEvent(ViewHelpEvent())
+            args.size == 2 && args[0] == "commands" && args[1] == "all" -> EventManager.postEvent(ViewHelpEvent(commandGroups = true, args= listOf("all")))
             args[0] == "commands" -> EventManager.postEvent(ViewHelpEvent(commandGroups = true))
             isCommand(args) -> EventManager.postEvent(ViewHelpEvent(commandManual = CommandParser.findCommand(args[0])))
             isCommandGroup(args) -> EventManager.postEvent(ViewHelpEvent(commandGroups = true, args = args))

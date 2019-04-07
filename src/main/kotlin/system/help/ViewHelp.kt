@@ -20,7 +20,8 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
     override fun execute(event: ViewHelpEvent) {
         when {
             event.commandManual != null -> printManual(event.commandManual)
-            event.commandGroups && event.args.isEmpty() -> printCommandGroups()
+            event.commandGroups && event.args.isEmpty() -> printCommandGroupsSummary()
+            event.commandGroups && event.args.isNotEmpty() && event.args[0] == "all" -> printCommandGroupsDetail()
             event.commandGroups && event.args.isNotEmpty() -> printCommandGroup(event.args)
             else -> display(description)
         }
@@ -30,7 +31,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         display(getTitle(command) + command.getManual())
     }
 
-    private fun printCommandGroups() {
+    private fun printCommandGroupsSummary() {
         val groups = HashMap<String, MutableList<String>>()
         CommandParser.commands.forEach { command ->
             run {
@@ -44,6 +45,25 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         groups.toSortedMap().forEach {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
+        }
+        display("Help <Group Name> to learn about one of the following groups:\n$groupList")
+    }
+
+    private fun printCommandGroupsDetail() {
+        val groups = HashMap<String, MutableList<String>>()
+        CommandParser.commands.forEach { command ->
+            run {
+                if (!groups.containsKey(command.getCategory()[0])) {
+                    groups[command.getCategory()[0]] = ArrayList()
+                }
+                val details = command.getName() + ":\n\t\t" + command.getAliases().joinToString(", ")
+                groups[command.getCategory()[0]]?.add(details)
+            }
+        }
+        var groupList = ""
+        groups.toSortedMap().forEach {
+            it.value.sort()
+            groupList += "${it.key}:\n\t${it.value.joinToString("\n\t")}\n"
         }
         display("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }

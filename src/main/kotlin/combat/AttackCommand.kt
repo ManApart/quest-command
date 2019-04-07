@@ -14,6 +14,7 @@ import interact.scope.ScopeManager
 import system.EventManager
 
 //TODO - give choice if more than one target found
+//TODO - give choice if just 'attack' instead of a type of attack
 class AttackCommand : Command() {
     override fun getAliases(): Array<String> {
         return arrayOf("Chop", "Slash", "Stab")
