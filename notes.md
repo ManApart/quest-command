@@ -35,6 +35,27 @@ Paramitization
 - follow param pattern with creatures
 - Eventually param locations and location nodes. Ex: Location Node windmill can pass grain bin node location down to chute.
 
+#### Creature / Activator Re-work
+
+Turn creatures, items, and activators into targets
+- Target has a soul and a body
+- Items (targets) have bodies with no attach points
+- Items’ bodies have body parts with the different materials of an item (a hatchet has a wooden handle and metal head)
+- Target’s have a property (alive) if they are creatures etc
+- If a target doesn't have the alive property (is an activator) and health reaches 0, instead of dying, the activator/item is destroyed
+
+Spacial Nodes
+- Location Node extends Spacial node and has a location
+- Body Node extends Spacial node and has a body part
+- Combat uses Body Nodes for aiming, instead of body part having an arbitrary direction
+
+Climbing
+- Body part has a material
+- Materials are defined in their own file and have properties
+- A bodypart node can have an exit location node. The lowest exit node is used for falling.
+- Rework climbing so that you look at a target’s body nodes and then climbing direction is based on the node connections and difficulty is based on the material properties (slippery, rough, smooth, etc). Distance from lowest node = height for fall damage etc.
+
+
 ### Combat
 
 #### Thoughts and Description
@@ -147,7 +168,9 @@ Maybe attack listeners delegate to battle to be told if to execute or not. Battl
 
 ### Locations
 
-Atmospheres that add tags and effects to everything in that location
+- Atmospheres that add tags and effects to everything in that location.
+- Shallow water, deep water, under water, have effects, based on swimming, etc. Swimming is skill based on agility
+- Time of day affect description, night time make perception go down.
 
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
@@ -188,6 +211,13 @@ Skill Ideas
 
 
 Fitness, which is affected by eating unhealthy food etc
+
+#### Progression
+
+- Skills/commands unlock based on attribute level
+- Show only unlocked commands in help, etc
+- Create cheat/debug commands to level up etc
+
 
 ### Story
 

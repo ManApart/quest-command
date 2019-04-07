@@ -37,7 +37,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
                 if (!groups.containsKey(command.getCategory()[0])) {
                     groups[command.getCategory()[0]] = ArrayList()
                 }
-                groups[command.getCategory()[0]]?.add(command.getAliases()[0])
+                groups[command.getCategory()[0]]?.add(command.getName())
             }
         }
         var groupList = ""

@@ -19,6 +19,10 @@ class AttackCommand : Command() {
         return arrayOf("Chop", "Slash", "Stab")
     }
 
+    override fun getName(): String {
+        return "Chop, Slash, Stab"
+    }
+
     override fun getDescription(): String {
         return "Attack:\n\tChop/Stab/Slash/Crush the target"
     }

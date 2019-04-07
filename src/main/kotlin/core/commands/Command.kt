@@ -7,4 +7,9 @@ abstract class Command {
     abstract fun getManual() : String
     abstract fun getCategory() : List<String>
     abstract fun execute(keyword: String, args: List<String>)
+
+
+    open fun getName() : String {
+        return getAliases()[0]
+    }
 }
