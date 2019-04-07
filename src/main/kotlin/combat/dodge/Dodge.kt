@@ -11,7 +11,7 @@ class Dodge : EventListener<DodgeEvent>() {
             val combatant = GameState.battle!!.getCombatant(event.source)
             if (combatant != null) {
                 combatant.position = event.direction.position
-                display("${event.source} dodged to the ${event.direction}.")
+//                display("${event.source} dodged to the ${event.direction}.")
             }
         }
     }

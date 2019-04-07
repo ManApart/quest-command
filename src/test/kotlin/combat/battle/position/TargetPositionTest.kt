@@ -2,6 +2,10 @@ package combat.battle.position
 
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
+
 /*
 Direct hit when both axis line up
 Grazing hit when one axis lines up
@@ -47,5 +51,17 @@ class TargetPositionTest {
         val defender = TargetPosition(Horizontal.RIGHT, Vertical.LOW)
 
         assertEquals(HitLevel.MISS, attack.getHitLevel(defender))
+    }
+
+    @Test
+    fun equals() {
+        val a = TargetPosition(Horizontal.LEFT, Vertical.HIGH)
+        val b = TargetPosition(Horizontal.LEFT, Vertical.HIGH)
+
+        val equality = a.equals(b)
+        val strictEquality = a == b
+
+        assertTrue(equality)
+        assertFalse(strictEquality)
     }
 }

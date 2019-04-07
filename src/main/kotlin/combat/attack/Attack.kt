@@ -13,6 +13,7 @@ import core.gameState.getCreature
 import core.gameState.isPlayer
 import core.gameState.stat.BARE_HANDED
 import core.history.display
+import core.history.displayIf
 import core.utility.StringFormatter
 import core.utility.random
 import interact.UseEvent
@@ -24,6 +25,7 @@ class Attack : EventListener<AttackEvent>() {
         val subject = StringFormatter.getSubject(event.source)
 
         val defender = event.target.getCreature()
+        val defenderName = StringFormatter.getSubject(event.target)
 
         val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
         val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
@@ -39,12 +41,16 @@ class Attack : EventListener<AttackEvent>() {
 
             val attackedPart = getAttackedPart(adjustedPosition, defender.body)
             if (attackedPart == null) {
+                printDodge(defenderName, defenderPosition)
                 display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
             } else {
                 val possessive = StringFormatter.getSubjectPossessive(event.source)
                 val verb = StringFormatter.format(event.source.isPlayer(), event.type.name.toLowerCase(), event.type.verb)
                 val hitLevel = adjustedPosition.getHitLevel(attackedPart.position)
                 val hitLevelString = StringFormatter.format(hitLevel == HitLevel.DIRECT, "directly", "grazingly")
+
+                displayIf("$subject $verb towards the ${event.targetPosition}.", !event.targetPosition.equals(TargetPosition()))
+                printDodge(defenderName, defenderPosition)
                 display("$subject $hitLevelString $verb the ${attackedPart.name} of ${event.target.name} with $possessive $damageSource.")
 
                 EventManager.postEvent(TakeDamageEvent(defender, attackedPart, offensiveDamage, hitLevel, event.type, damageSource))
@@ -55,6 +61,10 @@ class Attack : EventListener<AttackEvent>() {
             display("Nothing happens.")
         }
         event.target.consume(event)
+    }
+
+    private fun printDodge(defenderName: String, defenderPosition: TargetPosition) {
+        displayIf("$defenderName dodged to the $defenderPosition.", !defenderPosition.equals(TargetPosition()))
     }
 
     private fun getAttackedPart(targetPosition: TargetPosition, defender: Body): BodyPart? {

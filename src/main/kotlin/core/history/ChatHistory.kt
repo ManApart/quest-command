@@ -4,6 +4,12 @@ fun display(message: String){
     ChatHistory.print("NotUsedYet", message)
 }
 
+fun displayIf(message: String, shouldDisplay: Boolean){
+    if (shouldDisplay){
+        display(message)
+    }
+}
+
 object ChatHistory {
     val history = mutableListOf<InputOutput>()
     private var current = InputOutput()
