@@ -67,6 +67,7 @@ class Battle(combatantCreatures: List<Creature>, var targetDistance: TargetDista
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
             } else if (it.canChooseAction()) {
+                it.resetStance()
                 it.chooseAction()
                 takeAnotherTurn = false
             }

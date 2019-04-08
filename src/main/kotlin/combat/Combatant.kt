@@ -3,6 +3,7 @@ package combat
 import combat.battle.BattleAction
 import combat.battle.position.TargetPosition
 import core.gameState.Creature
+import core.gameState.body.BodyPart
 import core.gameState.isPlayer
 import core.gameState.stat.HEALTH
 import core.gameState.stat.WISDOM
@@ -12,6 +13,8 @@ class Combatant(val creature: Creature) {
     private var actionPoints = 0
     var action: BattleAction? = null
     var position = TargetPosition()
+    var blockPosition: TargetPosition? = null
+    var blockBodyPart: BodyPart? = null
 
     fun tick() {
         if (action == null){
@@ -33,8 +36,13 @@ class Combatant(val creature: Creature) {
         return actionPoints >= 100
     }
 
-    fun chooseAction() {
+    fun resetStance() {
         position = TargetPosition()
+        blockPosition = null
+        blockBodyPart = null
+    }
+
+    fun chooseAction() {
         if (!creature.isPlayer()){
             if (creature.ai != null){
                 display("${creature.name} considers its choices.")
