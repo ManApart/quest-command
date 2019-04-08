@@ -1,6 +1,7 @@
 package core.gameState.body
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import combat.battle.position.HitLevel
 import combat.battle.position.TargetPosition
 import combat.battle.position.Horizontal
 import combat.battle.position.Vertical
@@ -54,6 +55,10 @@ class BodyPart(override val name: String, val position: TargetPosition = TargetP
                 equippedItems[it] = null
             }
         }
+    }
+
+    fun getHitLevel(target: TargetPosition): HitLevel {
+        return position.getHitLevel(target)
     }
 
 }

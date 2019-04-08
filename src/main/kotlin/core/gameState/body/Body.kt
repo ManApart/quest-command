@@ -11,7 +11,6 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
     constructor(base: Body) : this(base.name, base.parts.map { BodyPart(it) })
 
     private val parts = NameSearchableList(parts)
-    var adjustment = TargetPosition()
 
     private fun hasAttachPoint(attachPoint: String): Boolean {
         return parts.any { it.hasAttachPoint(attachPoint) }
@@ -92,25 +91,44 @@ class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
     }
 
     fun getDirectParts(target: TargetPosition): List<BodyPart> {
-        val directParts = mutableListOf<BodyPart>()
-        parts.forEach {
-            val position = it.position.shift(adjustment)
-            if (position.equals(target)) {
-                directParts.add(it)
+        val parts = mutableListOf<BodyPart>()
+        this.parts.forEach {
+            if (it.position.equals(target)) {
+                parts.add(it)
             }
         }
-        return directParts
+        return parts
     }
 
     fun getGrazedParts(target: TargetPosition): List<BodyPart> {
-        val directParts = mutableListOf<BodyPart>()
-        parts.forEach {
-            val position = it.position.shift(adjustment)
-            if (position.getHitLevel(target) == HitLevel.GRAZING) {
-                directParts.add(it)
+        val parts = mutableListOf<BodyPart>()
+        this.parts.forEach {
+            if (it.position.getHitLevel(target) == HitLevel.GRAZING) {
+                parts.add(it)
             }
         }
-        return directParts
+        return parts
     }
+//    fun getDirectParts(target: TargetPosition, adjustment: TargetPosition = TargetPosition()): List<BodyPart> {
+//        val directParts = mutableListOf<BodyPart>()
+//        parts.forEach {
+//            val position = it.position.shift(adjustment)
+//            if (position.equals(target)) {
+//                directParts.add(it)
+//            }
+//        }
+//        return directParts
+//    }
+//
+//    fun getGrazedParts(target: TargetPosition, adjustment: TargetPosition = TargetPosition()): List<BodyPart> {
+//        val directParts = mutableListOf<BodyPart>()
+//        parts.forEach {
+//            val position = it.position.shift(adjustment)
+//            if (position.getHitLevel(target) == HitLevel.GRAZING) {
+//                directParts.add(it)
+//            }
+//        }
+//        return directParts
+//    }
 
 }
