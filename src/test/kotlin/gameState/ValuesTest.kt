@@ -2,6 +2,7 @@ package gameState
 
 import core.gameState.Values
 import org.junit.Test
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
 import kotlin.test.assertEquals
 
 class ValuesTest {
@@ -26,4 +27,23 @@ class ValuesTest {
         assertEquals(1, values.getAll().size)
         assertEquals(2, values.getInt("Apple"))
     }
+
+    @Test
+    fun incPositive() {
+        val values = Values(mapOf("Apple" to "1"))
+        values.inc("Apple", 3)
+
+        assertEquals(1, values.getAll().size)
+        assertEquals(4, values.getInt("Apple"))
+    }
+
+    @Test
+    fun incNegative() {
+        val values = Values(mapOf("Apple" to "3"))
+        values.inc("APple", -1)
+
+        assertEquals(1, values.getAll().size)
+        assertEquals(2, values.getInt("Apple"))
+    }
+
 }

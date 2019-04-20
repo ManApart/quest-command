@@ -1,16 +1,13 @@
 package status.effects
 
 import core.events.EventListener
-import core.gameState.getSoul
-import core.gameState.hasSoul
 
 class RemoveEffect: EventListener<RemoveEffectEvent>() {
     override fun shouldExecute(event: RemoveEffectEvent): Boolean {
-        return event.target.hasSoul()
+        return true
     }
 
     override fun execute(event: RemoveEffectEvent) {
-        val soul = event.target.getSoul()!!
-        soul.effects.remove(soul.getEffectOrNull(event.effect.name))
+        event.target.soul.effects.remove(event.target.soul.getEffectOrNull(event.effect.name))
     }
 }

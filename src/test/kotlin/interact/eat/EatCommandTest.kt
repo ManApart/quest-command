@@ -41,15 +41,15 @@ class EatCommandTest {
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
 
-        GameState.player = Player(Creature("Player"))
+        GameState.player = Player()
     }
 
     @Test
     fun eatFood() {
         val timer = PoorMansInstrumenter(10000)
-        val item = Item("Pear", properties = Properties(tags = Tags(listOf("Food"))))
+        val item = Target("Pear", properties = Properties(tags = Tags(listOf("Food"))))
         timer.printElapsed("new item")
-        GameState.player.creature.inventory.add(item)
+        GameState.player.inventory.add(item)
         timer.printElapsed("add item")
         EatCommand().execute("eat", listOf("Pear"))
         timer.printElapsed("execute event")
@@ -64,10 +64,10 @@ class EatCommandTest {
 
     @Test
     fun eatMultipleFoodGivesChoice() {
-        val fruit = Item("Pear", properties = Properties(tags = Tags(listOf("Food"))))
-        val pie = Item("Pear Pie", properties = Properties(tags = Tags(listOf("Food"))))
-        GameState.player.creature.inventory.add(fruit)
-        GameState.player.creature.inventory.add(pie)
+        val fruit = Target("Pear", properties = Properties(tags = Tags(listOf("Food"))))
+        val pie = Target("Pear Pie", properties = Properties(tags = Tags(listOf("Food"))))
+        GameState.player.inventory.add(fruit)
+        GameState.player.inventory.add(pie)
         EatCommand().execute("eat", listOf("Pear"))
         val events = EventManager.getUnexecutedEvents()
 

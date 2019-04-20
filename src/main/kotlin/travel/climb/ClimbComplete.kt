@@ -8,13 +8,13 @@ import travel.ArriveEvent
 
 class ClimbComplete : EventListener<ClimbCompleteEvent>() {
     override fun shouldExecute(event: ClimbCompleteEvent): Boolean {
-        return event.creature == GameState.player.creature
+        return event.creature == GameState.player
     }
 
     override fun execute(event: ClimbCompleteEvent) {
         event.target.consume(event)
         GameState.player.climbJourney = null
-        if (GameState.player.creature.location == event.destination) {
+        if (GameState.player.location == event.destination) {
             display("You climb back off ${event.target.name}")
         } else {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))

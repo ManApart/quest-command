@@ -2,10 +2,10 @@ package combat.dodge
 
 import combat.battle.position.TargetDirection
 import core.events.Event
-import core.gameState.Creature
-import core.gameState.isPlayer
+import core.gameState.Target
 
-class DodgeEvent(val source: Creature, val direction: TargetDirection) : Event {
+
+class DodgeEvent(val source: Target, val direction: TargetDirection) : Event {
     override fun gameTicks(): Int {
         return if (source.isPlayer()) {
             1

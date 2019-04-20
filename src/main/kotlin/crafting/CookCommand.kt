@@ -2,9 +2,8 @@ package crafting
 
 import core.commands.Args
 import core.commands.Command
-import core.gameState.Activator
 import core.gameState.GameState
-import core.gameState.Item
+import core.gameState.Target
 import core.history.display
 import interact.scope.ScopeManager
 import system.EventManager
@@ -36,14 +35,14 @@ class CookCommand : Command() {
         } else {
             val ingredients = getIngredients(arguments)
             val tool = getTool(arguments)
-            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, GameState.player.creature.soul)
+            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, GameState.player.soul)
 
             when {
                 tool == null -> display("Couldn't find something to cook on")
                 ingredients.size != arguments.argStrings.size - 1 -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
                 recipes.isEmpty() -> display("Couldn't find a recipe for those ingredients")
                 recipes.size > 1 -> display("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
-                else -> EventManager.postEvent(CraftRecipeEvent(GameState.player.creature, recipes.first(), tool))
+                else -> EventManager.postEvent(CraftRecipeEvent(GameState.player, recipes.first(), tool))
             }
         }
     }
@@ -52,8 +51,8 @@ class CookCommand : Command() {
         return args.argGroups.size > 1 && (args.args.contains("on") || args.args.contains("with"))
     }
 
-    private fun getIngredients(args: Args): List<Item> {
-        val ingredients = mutableListOf<Item>()
+    private fun getIngredients(args: Args): List<Target> {
+        val ingredients = mutableListOf<Target>()
         args.argStrings.subList(0, args.argStrings.size - 1).forEach {
             if (ItemManager.itemExists(it)) {
                 ingredients.add(ItemManager.getItem(it))
@@ -62,7 +61,7 @@ class CookCommand : Command() {
         return ingredients
     }
 
-    private fun getTool(args: Args): Activator? {
+    private fun getTool(args: Args): Target? {
         val group = args.argGroups.last()
         val scope = ScopeManager.getScope()
         return (scope.getActivators(group.joinToString(" ")) + scope.findActivatorsByTag("Range")).firstOrNull()

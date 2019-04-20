@@ -2,7 +2,6 @@
   {
     "name": "Rusty Dagger",
     "description": "It once held a cutting edge, but those days are little remembered.",
-    "weight": "1",
     "equipSlots": [
       [
         "Right Hand Grip"
@@ -12,6 +11,9 @@
       ]
     ],
     "properties": {
+      "stats": {
+        "weight": "1"
+      },
       "values": {
         "slashDamage": "1",
         "stabDamage": "2"
@@ -26,7 +28,6 @@
   {
     "name": "Dulled Hatchet",
     "description": "The handle has been polished through much use.",
-    "weight": "4",
     "equipSlots": [
       [
         "Right Hand Grip"
@@ -36,6 +37,9 @@
       ]
     ],
     "properties": {
+      "stats": {
+        "weight": "4"
+      },
       "values": {
         "chopDamage": "4"
       },

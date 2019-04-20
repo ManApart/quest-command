@@ -1,8 +1,7 @@
 package inventory.equipItem
 
 import core.events.Event
-import core.gameState.Creature
-import core.gameState.Item
+import core.gameState.Target
 import core.gameState.body.Slot
 
-class EquipItemEvent(val creature: Creature, val item: Item, val slot: Slot? = null) : Event
+class EquipItemEvent(val creature: Target, val item: Target, val slot: Slot? = null) : Event

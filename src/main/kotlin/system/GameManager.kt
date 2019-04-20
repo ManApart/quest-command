@@ -29,15 +29,15 @@ object GameManager {
 //        LocationManager.clear()
 
         newPlayer()
-        EventManager.postEvent(ArriveEvent(destination = GameState.player.creature.location, method = "wake"))
+        EventManager.postEvent(ArriveEvent(destination = GameState.player.location, method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }
 
     private fun newPlayer() {
         GameState.player = Player()
-        val inventory = GameState.player.creature.inventory
-        val body = GameState.player.creature.body
+        val inventory = GameState.player.inventory
+        val body = GameState.player.body
 
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {
             val item = ItemManager.getItem(it)

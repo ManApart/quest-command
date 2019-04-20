@@ -36,7 +36,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationManager.findLocation(params[0]), method = "move"))
             AddEffectEvent::class.simpleName -> EventManager.postEvent(AddEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
-            DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player.creature, getRecipe(0)))
+            DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player, getRecipe(0)))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getLocationNode(params[0]), LocationManager.getLocationNode(params[1]), getParamBoolean(2)))
             RemoveEffectEvent::class.simpleName -> EventManager.postEvent(RemoveEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
@@ -72,18 +72,18 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         }
     }
 
-    private fun getTargetCreatureOrPlayer(paramNumber: Int, location: LocationNode? = null): Creature {
-        return getTargetCreature(paramNumber, location) ?: GameState.player.creature
+    private fun getTargetCreatureOrPlayer(paramNumber: Int, location: LocationNode? = null): Target {
+        return getTargetCreature(paramNumber, location) ?: GameState.player
     }
 
-    private fun getTargetCreature(paramNumber: Int, location: LocationNode? = null): Creature? {
+    private fun getTargetCreature(paramNumber: Int, location: LocationNode? = null): Target? {
         val param = getParam(paramNumber, "none")
-        return ScopeManager.getScope(location).getTargets(param).firstOrNull()?.getCreature()
+        return ScopeManager.getScope(location).getTargets(param).firstOrNull()
     }
 
-    private fun getItemOrParent(paramNumber: Int, source: Creature, parent: Target): Item {
+    private fun getItemOrParent(paramNumber: Int, source: Target, parent: Target): Target {
         val param = getParam(paramNumber, "none")
-        return source.inventory.getItem(param) ?: parent as Item
+        return source.inventory.getItem(param) ?: parent
     }
 
     private fun getRecipe(paramNumber: Int): Recipe {

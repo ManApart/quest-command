@@ -9,7 +9,7 @@ import core.history.display
 
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {
-        if (GameState.player.creature.location == event.target) {
+        if (GameState.player.location == event.target) {
             display("You are in ${event.target.name}.")
         }
         val name = if (event.target.parent != null) {

@@ -46,21 +46,21 @@ class PlaceItemCommand : core.commands.Command() {
     }
 
     private fun dropItem(args: Args) {
-        val item = GameState.player.creature.inventory.getItem(args.argStrings[0])
+        val item = GameState.player.inventory.getItem(args.argStrings[0])
         if (item != null) {
-            EventManager.postEvent(TransferItemEvent(item, GameState.player.creature))
+            EventManager.postEvent(TransferItemEvent(item, GameState.player))
         } else {
             display("Couldn't find ${args.argStrings[0]}")
         }
     }
 
     private fun placeItemInContainer(args: Args) {
-        val item = GameState.player.creature.inventory.getItem(args.argStrings[0])
+        val item = GameState.player.inventory.getItem(args.argStrings[0])
         if (item != null) {
             val destinations = ScopeManager.getScope().getTargets(args.argStrings[1]).filterUniqueByName()
             when{
                 destinations.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
-                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(item, GameState.player.creature, destinations.first(), true))
+                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(item, GameState.player, destinations.first(), true))
                 else -> giveToWhat(destinations, args.argStrings[0])
             }
         } else {

@@ -1,6 +1,6 @@
 package status
 
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 
-class ExpGainedEvent(val creature: Creature, val stat: String, val amount: Int) : Event
+class ExpGainedEvent(val creature: Target, val stat: String, val amount: Int) : Event

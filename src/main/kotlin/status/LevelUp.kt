@@ -1,9 +1,6 @@
 package status
 
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.getCreature
-import core.gameState.isPlayer
 import core.history.display
 
 class LevelUp : EventListener<LevelUpEvent>() {

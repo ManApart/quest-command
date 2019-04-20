@@ -2,7 +2,7 @@ package combat
 
 import combat.attack.AttackCommand
 import combat.attack.StartAttackEvent
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.GameState
 import core.gameState.Player
 import core.gameState.location.LocationNode
@@ -43,12 +43,12 @@ class AttackCommandTest {
         EventManager.clear()
         ScopeManager.reset()
 
-        GameState.player = Player(Creature("Player", body = BodyManager.getBody("Human")))
+        GameState.player = Player()
     }
 
     @Test
     fun attackCreatureWithDirection() {
-        val rat = Creature("Rat")
+        val rat = Target("Rat")
         ScopeManager.getScope().addTarget(rat)
 
         command.execute("slash", "bottom center of rat".split(" "))
@@ -58,7 +58,7 @@ class AttackCommandTest {
 
     @Test
     fun attackCreatureWithoutDirection() {
-        val rat = Creature("Rat")
+        val rat = Target("Rat")
         ScopeManager.getScope().addTarget(rat)
 
         command.execute("slash", "rat".split(" "))

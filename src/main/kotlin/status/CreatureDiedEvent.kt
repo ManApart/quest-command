@@ -1,6 +1,6 @@
 package status
 
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 
-class CreatureDiedEvent(val creature: Creature) : Event
+class CreatureDiedEvent(val creature: Target) : Event

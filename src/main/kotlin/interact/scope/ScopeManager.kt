@@ -15,7 +15,7 @@ object ScopeManager {
     }
 
     fun getScope(targetLocation: LocationNode? = null) : Scope {
-        val location = targetLocation ?: GameState.player.creature.location
+        val location = targetLocation ?: GameState.player.location
         if (!scopes.containsKey(location)){
             scopes[location] = Scope(location)
         }

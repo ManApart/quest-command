@@ -30,7 +30,7 @@ class DodgeCommand : Command() {
             display("This is only relevant in battle.")
         } else {
             val direction = getDirection(Args(args))
-            EventManager.postEvent(StartDodgeEvent(GameState.player.creature, direction))
+            EventManager.postEvent(StartDodgeEvent(GameState.player, direction))
         }
     }
 

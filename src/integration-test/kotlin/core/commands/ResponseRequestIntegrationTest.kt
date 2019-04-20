@@ -1,6 +1,8 @@
 package core.commands
 
-import core.gameState.Item
+import core.gameState.Properties
+import core.gameState.Tags
+import core.gameState.Target
 import core.history.ChatHistory
 import interact.scope.ScopeManager
 import org.junit.Before
@@ -28,8 +30,9 @@ class ResponseRequestIntegrationTest {
 
     @Test
     fun takeSecondObject() {
-        ScopeManager.getScope().addTarget(Item("Wheat Bundle"))
-        ScopeManager.getScope().addTarget(Item("Wheat Flour"))
+        val props = Properties(tags = Tags(listOf("Item")))
+        ScopeManager.getScope().addTarget(Target("Wheat Bundle", properties = props))
+        ScopeManager.getScope().addTarget(Target("Wheat Flour", properties = props))
 
         val input = "pickup wheat && 2"
         CommandParser.parseCommand(input)

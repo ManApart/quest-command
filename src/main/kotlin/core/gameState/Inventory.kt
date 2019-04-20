@@ -8,23 +8,23 @@ class Inventory(itemNames: List<String> = listOf()) {
 
     private val items = NameSearchableList(itemNames.map { ItemManager.getItem(it) })
 
-    fun exists(item: Item): Boolean {
+    fun exists(item: Target): Boolean {
         return items.exists(item) || NameSearchableList(getAllItems()).exists(item)
     }
 
-    fun getItem(name: String): Item? {
+    fun getItem(name: String): Target? {
         return items.getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
     }
 
-    fun getItems(name: String): List<Item> {
+    fun getItems(name: String): List<Target> {
         return NameSearchableList(getAllItems()).getAll(name)
     }
 
-    fun add(item: Item) {
+    fun add(item: Target) {
         if (items.exists(item.name)) {
             val match = items.get(item.name)
             if (item.isStackable(match)) {
-                match.count += item.count
+                match.properties.incCount(item.properties.getCount())
             } else {
                 items.add(item)
             }
@@ -33,11 +33,11 @@ class Inventory(itemNames: List<String> = listOf()) {
         }
     }
 
-    fun remove(item: Item, count: Int = 1) {
+    fun remove(item: Target, count: Int = 1) {
         val inventory = findSubInventoryWithItem(item)
         if (inventory != null){
-            if (item.count > count){
-                item.count -= count
+            if (item.properties.getCount() > count){
+                item.properties.incCount(-count)
             } else {
                 inventory.items.remove(item)
             }
@@ -47,7 +47,7 @@ class Inventory(itemNames: List<String> = listOf()) {
     /**
      * Return all items of this inventory and any sub-inventory
      */
-    fun getAllItems(): List<Item> {
+    fun getAllItems(): List<Target> {
         val items = this.items.toMutableList()
         this.items.forEach {
             if (it.inventory.getItems().isNotEmpty()) {
@@ -57,11 +57,11 @@ class Inventory(itemNames: List<String> = listOf()) {
         return items
     }
 
-    fun getItems(): List<Item> {
+    fun getItems(): List<Target> {
         return items.toList()
     }
 
-    fun findItemsByProperties(properties: Properties): List<Item> {
+    fun findItemsByProperties(properties: Properties): List<Target> {
         return getAllItems().filter { it.properties.hasAll(properties) }
     }
 
@@ -69,23 +69,23 @@ class Inventory(itemNames: List<String> = listOf()) {
         return items.sumBy { it.getWeight() }
     }
 
-    fun hasCapacityFor(item: Item, capacity: Int): Boolean {
+    fun hasCapacityFor(item: Target, capacity: Int): Boolean {
         return capacity - getWeight() >= item.getWeight()
     }
 
-    fun findSubInventoryFor(item: Item): List<Item> {
-        val inventories = mutableListOf<Item>()
+    fun findSubInventoryFor(item: Target): List<Target> {
+        val inventories = mutableListOf<Target>()
         items.forEach {
             if (it.properties.tags.has("Container")
                     && it.properties.tags.has("Open")
-                    && it.canBeHeldByContainerWithProperties(item.properties)) {
+                    && it.properties.canBeHeldByContainerWithProperties(item.properties)) {
                 inventories.add(it)
             }
         }
         return inventories
     }
 
-    private fun findSubInventoryWithItem(item: Item): Inventory? {
+    private fun findSubInventoryWithItem(item: Target): Inventory? {
         if (items.exists(item)) {
             return this
         }

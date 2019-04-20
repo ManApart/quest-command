@@ -25,8 +25,10 @@
   {
     "name": "Apple",
     "description": "It glistens and smells of spring blossoms.",
-    "weight": "1",
     "properties": {
+      "stats": {
+        "weight": "1"
+      },
       "values": {
         "healAmount": 1
       },
@@ -41,8 +43,10 @@
   {
     "name": "Apple Pie",
     "description": "Its golden brown crust smells delicious.",
-    "weight": "1",
     "properties": {
+      "stats": {
+        "weight": "1"
+      },
       "values": {
         "healAmount": 10
       },
@@ -62,8 +66,12 @@
   {
     "name": "Wheat Bundle",
     "description": "It's stems lightly scratch your hands.",
-    "weight": "1",
     "extends": "Burnable",
+    "properties": {
+      "stats": {
+        "weight": "1"
+      }
+    },
     "params": {
       "burnHealth": 1,
       "itemName": "Wheat Bundle"
@@ -72,8 +80,10 @@
   {
     "name": "Wheat Flour",
     "description": "The finely ground wheat looks almost like silver sand.",
-    "weight": "1",
     "properties": {
+      "stats": {
+        "weight": "1"
+      },
       "tags": [
         "Grounded"
       ]
@@ -82,13 +92,19 @@
   {
     "name": "Dough",
     "description": "It may not be of much value alone, but it forms the base of many a great meal.",
-    "weight": "1"
+    "properties": {
+      "stats": {
+        "weight": "1"
+      }
+    }
   },
   {
     "name": "Poor Quality Meat",
     "description": "It's pale and oily.",
-    "weight": "1",
     "properties": {
+      "stats": {
+        "weight": "1"
+      },
       "tags": [
         "Raw",
         "Meat",

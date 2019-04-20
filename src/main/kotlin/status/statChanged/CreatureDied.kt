@@ -1,9 +1,9 @@
 package status.statChanged
 
 import core.events.EventListener
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.GameState
-import core.gameState.isPlayer
+
 import core.gameState.stat.HEALTH
 import core.history.display
 import interact.scope.remove.RemoveScopeEvent
@@ -13,12 +13,12 @@ import system.EventManager
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return !event.target.isPlayer() && event.target is Creature && event.stat.toLowerCase() == HEALTH.toLowerCase()
+        return !event.target.isPlayer() && event.stat.toLowerCase() == HEALTH.toLowerCase()
     }
 
     override fun execute(event: StatMinnedEvent) {
         display("${event.target.name} has died.")
-        val creature = event.target as Creature
+        val creature = event.target
 
         creature.inventory.getItems().forEach {
             EventManager.postEvent(TransferItemEvent(it, creature, silent = true))

@@ -37,7 +37,7 @@ class ReadMapCommand : Command() {
     }
 
     private fun currentLocation(depth: Int){
-        EventManager.postEvent(ReadMapEvent(GameState.player.creature.location, depth))
+        EventManager.postEvent(ReadMapEvent(GameState.player.location, depth))
     }
 
     private fun targetLocation(args: List<String>, depth: Int){

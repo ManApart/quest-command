@@ -33,7 +33,7 @@ class BlockCommand : Command() {
             val arguments = Args(args, listOf("with"))
             val handHelper = HandHelper(arguments.getGroupString(1), "block")
             val direction =  TargetDirection.getTargetDirection(arguments.getGroupString(0)) ?: TargetDirection.getRandom()
-            EventManager.postEvent(StartBlockEvent(GameState.player.creature, handHelper.hand, direction))
+            EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, direction))
         }
     }
 

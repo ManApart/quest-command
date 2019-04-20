@@ -1,6 +1,6 @@
 package status.journal
 
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 
 class ViewQuestListEvent(val justActive: Boolean = false) : Event

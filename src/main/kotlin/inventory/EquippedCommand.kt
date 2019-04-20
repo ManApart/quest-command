@@ -30,7 +30,7 @@ class EquippedCommand : Command() {
     }
 
     private fun listEquipped() {
-        val body = GameState.player.creature.body
+        val body = GameState.player.body
         val items = body.getEquippedItems()
         if (items.isEmpty()) {
             display("You don't have anything equipped!")

@@ -1,6 +1,5 @@
 package crafting
 
-import core.gameState.Item
 import core.gameState.Soul
 import core.gameState.Target
 import system.DependencyInjector
@@ -22,11 +21,11 @@ object RecipeManager {
         return names.map { recipes.getAll(it) }.flatten()
     }
 
-    fun findCraftableRecipes(ingredients: List<Item>, tool: Target?, soul: Soul): List<Recipe> {
+    fun findCraftableRecipes(ingredients: List<Target>, tool: Target?, soul: Soul): List<Recipe> {
         return recipes.filter { it.matches(ingredients, tool) && it.hasSkillsToCraft(soul) }
     }
 
-    fun findRecipes(ingredients: List<Item>, tool: Target?): List<Recipe> {
+    fun findRecipes(ingredients: List<Target>, tool: Target?): List<Recipe> {
         return recipes.filter { it.matches(ingredients, tool) }
     }
 }

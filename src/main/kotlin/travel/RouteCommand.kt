@@ -43,7 +43,7 @@ class RouteCommand : Command() {
     private fun targetLocation(args: List<String>, depth: Int){
         val target = LocationManager.findLocation(args.joinToString(" "))
         if (target != NOWHERE_NODE){
-            EventManager.postEvent(FindRouteEvent(GameState.player.creature.location, target, depth))
+            EventManager.postEvent(FindRouteEvent(GameState.player.location, target, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }

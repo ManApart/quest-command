@@ -36,7 +36,7 @@ class RestCommand : Command() {
     }
 
     private fun rest(hours: Int) {
-        EventManager.postEvent(RestEvent(GameState.player.creature, hours))
+        EventManager.postEvent(RestEvent(GameState.player, hours))
     }
 }
 

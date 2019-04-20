@@ -32,7 +32,7 @@ class TravelCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             val route = GameState.player.route
-            val source = GameState.player.creature.location
+            val source = GameState.player.location
             when {
                 route == null -> display("No route to travel to.")
                 route.destination == source -> display("You're already at the end of the route.")
@@ -46,7 +46,7 @@ class TravelCommand : Command() {
             val found = LocationManager.findLocation(arguments.argGroups[0].joinToString(" "))
 
             if (foundMatch(arguments.argGroups[0], found)) {
-                EventManager.postEvent(FindRouteEvent(GameState.player.creature.location, found, 4, true))
+                EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true))
             } else {
                 display("Could not find $arguments")
             }

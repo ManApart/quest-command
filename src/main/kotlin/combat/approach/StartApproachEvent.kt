@@ -2,10 +2,10 @@ package combat.approach
 
 import combat.battle.BattleAction
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.stat.AGILITY
 
-class StartApproachEvent(val source: Creature, private val isApproaching: Boolean = true, timeLeft: Int = -1) : Event, BattleAction {
+class StartApproachEvent(val source: Target, private val isApproaching: Boolean = true, timeLeft: Int = -1) : Event, BattleAction {
 
     override var timeLeft = calcTimeLeft(timeLeft)
 

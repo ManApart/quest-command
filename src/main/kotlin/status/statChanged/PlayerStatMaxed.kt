@@ -8,7 +8,7 @@ import core.history.display
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override fun shouldExecute(event: StatMaxedEvent): Boolean {
-        return event.target == GameState.player.creature
+        return event.target == GameState.player
     }
 
     override fun execute(event: StatMaxedEvent) {

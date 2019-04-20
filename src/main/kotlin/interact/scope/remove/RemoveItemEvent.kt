@@ -1,8 +1,7 @@
 package interact.scope.remove
 
 import core.events.Event
-import core.gameState.Creature
 import core.gameState.GameState
-import core.gameState.Item
+import core.gameState.Target
 
-class RemoveItemEvent(val source: Creature = GameState.player.creature, val item: Item) : Event
+class RemoveItemEvent(val source: Target = GameState.player, val item: Target) : Event

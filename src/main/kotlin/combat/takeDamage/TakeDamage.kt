@@ -2,7 +2,7 @@ package combat.takeDamage
 
 import combat.attack.AttackType
 import core.events.EventListener
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.gameState.stat.HEALTH
 import status.statChanged.StatChangeEvent
@@ -22,12 +22,12 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
     private fun getUndefendedDamage(damage: Int, attackedPart: BodyPart, attackType: AttackType): Int {
         var damageDefended = 0
         attackedPart.getEquippedItems().forEach {
-            damageDefended += it.getDefense(attackType.defense)
+            damageDefended += it.properties.getDefense(attackType.defense)
         }
         return Math.max(damage-damageDefended, 0)
     }
 
-    private fun hasSpecificHealth(target: Creature, attackType: AttackType): Boolean {
+    private fun hasSpecificHealth(target: Target, attackType: AttackType): Boolean {
         return target.soul.hasStat(attackType.health)
     }
 

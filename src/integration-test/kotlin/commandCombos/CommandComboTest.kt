@@ -27,27 +27,27 @@ class CommandComboTest {
     fun sliceApple() {
         val input = "use dagger on apple"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.creature.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.creature.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        assertTrue(GameState.player.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
     }
 
     @Test
     fun roastApple() {
         val input = "w && s && pickup tinder box && n && e && n && use tinder on tree && use apple on tree"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.creature.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.creature.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
+        assertTrue(GameState.player.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
     }
 
     @Test
     fun cookApple() {
-        val stat = GameState.player.creature.soul.getStats().first { it.name.toLowerCase() == "cooking" }
+        val stat = GameState.player.soul.getStats().first { it.name.toLowerCase() == "cooking" }
         stat.setLevel(2)
 
         val input = "w && s && cook apple on range"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.creature.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.creature.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
+        assertTrue(GameState.player.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
     }
 
     @Test
@@ -104,7 +104,7 @@ class CommandComboTest {
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
 
-        assertNotNull(GameState.player.creature.inventory.getItem("Apple Pie"))
+        assertNotNull(GameState.player.inventory.getItem("Apple Pie"))
         assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
 
     }

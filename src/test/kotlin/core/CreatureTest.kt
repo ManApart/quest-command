@@ -1,7 +1,8 @@
 package core
 
-import core.gameState.Creature
-import core.gameState.Item
+import core.gameState.Properties
+import core.gameState.Target
+import core.gameState.Values
 import core.gameState.stat.STRENGTH
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -10,9 +11,9 @@ class CreatureTest {
 
     @Test
     fun encumbrance0() {
-        val creature = Creature("creature")
+        val creature = Target("creature")
         creature.soul.addStat(STRENGTH, 10)
-        creature.inventory.add(Item("Item", weight = 0))
+        creature.inventory.add(createItem(0))
 
         assertEquals(100, creature.getTotalCapacity())
         assertEquals(0, creature.inventory.getWeight())
@@ -21,9 +22,9 @@ class CreatureTest {
 
     @Test
     fun encumbrance50() {
-        val creature = Creature("creature")
+        val creature = Target("creature")
         creature.soul.addStat(STRENGTH, 10)
-        creature.inventory.add(Item("Item", weight = 50))
+        creature.inventory.add(createItem(50))
 
         assertEquals(100, creature.getTotalCapacity())
         assertEquals(50, creature.inventory.getWeight())
@@ -32,9 +33,9 @@ class CreatureTest {
 
     @Test
     fun encumbrance75() {
-        val creature = Creature("creature")
+        val creature = Target("creature")
         creature.soul.addStat(STRENGTH, 10)
-        creature.inventory.add(Item("Item", weight = 75))
+        creature.inventory.add(createItem(75))
 
         assertEquals(100, creature.getTotalCapacity())
         assertEquals(75, creature.inventory.getWeight())
@@ -43,9 +44,9 @@ class CreatureTest {
 
     @Test
     fun encumbrance100() {
-        val creature = Creature("creature")
+        val creature = Target("creature")
         creature.soul.addStat(STRENGTH, 10)
-        creature.inventory.add(Item("Item", weight = 100))
+        creature.inventory.add(createItem(100))
 
         assertEquals(100, creature.getTotalCapacity())
         assertEquals(100, creature.inventory.getWeight())
@@ -54,13 +55,17 @@ class CreatureTest {
 
     @Test
     fun encumbranceIsAPercent() {
-        val creature = Creature("creature")
+        val creature = Target("creature")
         creature.soul.addStat(STRENGTH, 100)
-        creature.inventory.add(Item("Item", weight = 500))
+        creature.inventory.add(createItem(500))
 
         assertEquals(1000, creature.getTotalCapacity())
         assertEquals(500, creature.inventory.getWeight())
         assertEquals(.5f, creature.getEncumbrance())
     }
 
+
+    private fun createItem(weight: Int) : Target {
+        return Target("Target", properties = Properties(stats = Values(mapOf("weight" to weight.toString()))))
+    }
 }

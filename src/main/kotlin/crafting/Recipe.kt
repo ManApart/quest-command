@@ -6,7 +6,7 @@ import core.utility.Named
 
 data class Recipe(override val name: String, val ingredients: List<RecipeIngredient>, val skills: Map<String, Int> = mapOf(), val toolProperties: Properties = Properties(), val results: List<RecipeResult> = listOf(), val craftVerb: String = "craft") : Named {
 
-    fun matches(ingredients: List<Item>, tool: Target?): Boolean {
+    fun matches(ingredients: List<Target>, tool: Target?): Boolean {
         return toolMatches(tool) && ingredientsMatch(ingredients)
     }
 
@@ -14,7 +14,7 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return (tool?.properties ?: Properties()).hasAll(this.toolProperties)
     }
 
-    fun canBeCraftedBy(creature: Creature, tool: Target?): Boolean {
+    fun canBeCraftedBy(creature: Target, tool: Target?): Boolean {
         return hasSkillsToCraft(creature.soul) && matches(creature.inventory.getAllItems(), tool)
     }
 
@@ -28,9 +28,9 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return true
     }
 
-    fun getUsedIngredients(availableItems: List<Item>): List<Item> {
+    fun getUsedIngredients(availableItems: List<Target>): List<Target> {
         val ingredientsLeft = availableItems.toMutableList()
-        val usedIngredients = mutableListOf<Item>()
+        val usedIngredients = mutableListOf<Target>()
         this.ingredients.forEach {
             val match = it.findMatchingIngredient(ingredientsLeft)
             if (match != null) {
@@ -41,11 +41,11 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return usedIngredients
     }
 
-    fun getResults(usedIngredients: List<Item>): List<Item> {
+    fun getResults(usedIngredients: List<Target>): List<Target> {
         return results.map { it.getResult(usedIngredients) }
     }
 
-    private fun ingredientsMatch(ingredients: List<Item>): Boolean {
+    private fun ingredientsMatch(ingredients: List<Target>): Boolean {
         val ingredientsLeft = ingredients.toMutableList()
         this.ingredients.forEach {
             val match = it.findMatchingIngredient(ingredientsLeft)

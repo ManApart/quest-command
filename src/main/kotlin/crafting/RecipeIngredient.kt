@@ -1,6 +1,6 @@
 package crafting
 
-import core.gameState.Item
+import core.gameState.Target
 import core.gameState.Tags
 import core.utility.wrapNonEmpty
 import java.lang.IllegalArgumentException
@@ -14,7 +14,7 @@ data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
         }
     }
 
-    fun findMatchingIngredient(ingredients: List<Item>): Item? {
+    fun findMatchingIngredient(ingredients: List<Target>): Target? {
         val filtered = if (name != null) {
             ingredients.filter { it.name.toLowerCase() == name.toLowerCase() }
         } else {

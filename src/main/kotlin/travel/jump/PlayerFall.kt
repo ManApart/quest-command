@@ -11,14 +11,14 @@ import travel.ArriveEvent
 
 class PlayerFall : EventListener<FallEvent>() {
     override fun shouldExecute(event: FallEvent): Boolean {
-        return event.creature == GameState.player.creature
+        return event.creature == GameState.player
     }
 
     override fun execute(event: FallEvent) {
         if (event.reason != null) display(event.reason)
         display("You fall ${event.fallHeight}ft.")
         takeDamage(event)
-        if (GameState.player.creature.location != event.destination){
+        if (GameState.player.location != event.destination){
             EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
         }
         GameState.player.finishJourney()

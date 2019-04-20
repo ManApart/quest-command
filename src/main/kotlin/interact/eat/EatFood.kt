@@ -1,8 +1,8 @@
 package interact.eat
 
 import core.events.EventListener
-import core.gameState.Item
-import core.gameState.isPlayer
+import core.gameState.Target
+
 import core.history.display
 import core.utility.StringFormatter
 import interact.scope.ScopeManager
@@ -23,7 +23,7 @@ class EatFood : EventListener<EatFoodEvent>() {
         }
     }
 
-    private fun getHealAmount(item: Item): Int {
+    private fun getHealAmount(item: Target): Int {
         val base = item.properties.values.getInt("healAmount")
         return when  {
             item.properties.tags.has("Sliced") -> base + 1

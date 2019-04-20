@@ -3,6 +3,9 @@
     "name": "Tinder Box",
     "description": "This can light flammable things on fire.",
     "properties": {
+      "stats": {
+        "weight": "1"
+      },
       "tags": [
         "Fire Starter"
       ]
@@ -15,27 +18,47 @@
   {
     "name": "Pie Tin",
     "description": "The tin ring is slightly bronzed from repeated trips through fire.",
-    "weight": 1
+    "properties": {
+      "stats": {
+        "weight": "1"
+      }
+    }
   },
   {
     "name": "Bucket",
     "description": "Any empty bucket that can be filled with liquids. Avoid kicking it.",
-    "weight": 1
+    "properties": {
+      "stats": {
+        "weight": "1"
+      }
+    }
   },
   {
     "name": "Bucket of Water",
     "description": "Looks clean enough.",
-    "weight": 2
+    "properties": {
+      "stats": {
+        "weight": 2
+      }
+    }
   },
   {
     "name": "Pot",
     "description": "Any empty pot that can be filled with fine grained solids.",
-    "weight": 1
+    "properties": {
+      "stats": {
+        "weight": "1"
+      }
+    }
   },
   {
     "name": "Apple Pie Recipe",
     "description": "It's a recipe to make Apple Pie",
-    "weight": 0,
+    "properties": {
+      "stats": {
+        "weight": 0
+      }
+    },
     "behaviors": [
       {
         "name": "Learn Recipe",

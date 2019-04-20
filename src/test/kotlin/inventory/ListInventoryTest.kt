@@ -3,16 +3,21 @@ package inventory
 import core.gameState.*
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
+import core.gameState.body.ProtoBody
 import core.history.ChatHistory
 import org.junit.Test
+import system.BodyFakeParser
+import system.DependencyInjector
+import system.body.BodyManager
+import system.body.BodyParser
 import kotlin.test.assertEquals
 
 class ListInventoryTest {
 
     @Test
     fun listInventory() {
-        val creature = Creature("Chest",  properties = Properties(tags = Tags(listOf("Container"))))
-        creature.inventory.add(Item("Apple"))
+        val creature = Target("Chest",  properties = Properties(tags = Tags(listOf("Container"))))
+        creature.inventory.add(Target("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
         assertEquals("Chest has:\n\tApple", ChatHistory.getLastOutput())
@@ -20,8 +25,14 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquipped() {
-        val creature = Creature("Soldier",  body = Body(parts = listOf(BodyPart("Chest", slots = listOf("Chest")))), properties = Properties(tags = Tags(listOf("Container"))))
-        val item = Item("Chestplate", equipSlots = listOf(listOf("Chest")))
+        val chest = BodyPart("Chest", slots = listOf("Chest"))
+
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("Chest"))), listOf(chest))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val creature = Target("Soldier",  body = "body", properties = Properties(tags = Tags(listOf("Container"))))
+        val item = Target("Chestplate", equipSlots = listOf(listOf("Chest")))
         creature.inventory.add(item)
         creature.body.equip(item)
         val event = ListInventoryEvent(creature)
@@ -31,11 +42,17 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquippedNested() {
-        val item = Item("Apple")
-        val pouch = Item("Pouch", equipSlots = listOf(listOf("Chest")))
+        val item = Target("Apple")
+        val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")))
         pouch.inventory.add(item)
 
-        val creature = Creature("Soldier",  body = Body(parts = listOf(BodyPart("Chest", slots = listOf("Chest")))), properties = Properties(tags = Tags(listOf("Container"))))
+        val chest = BodyPart("Chest", slots = listOf("Chest"))
+
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("Chest"))), listOf(chest))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val creature = Target("Soldier",  body = "body", properties = Properties(tags = Tags(listOf("Container"))))
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 
@@ -46,8 +63,8 @@ class ListInventoryTest {
 
     @Test
     fun creatureWithoutTagDoesNotListInventory() {
-        val creature = Creature("Chest")
-        creature.inventory.add(Item("Apple"))
+        val creature = Target("Chest")
+        creature.inventory.add(Target("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
         assertEquals("Cannot view inventory of Chest", ChatHistory.getLastOutput())

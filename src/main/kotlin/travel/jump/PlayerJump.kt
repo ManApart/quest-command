@@ -12,7 +12,7 @@ import travel.ArriveEvent
 
 class PlayerJump : EventListener<JumpEvent>() {
     override fun shouldExecute(event: JumpEvent): Boolean {
-        return event.creature == GameState.player.creature
+        return event.creature == GameState.player
     }
     override fun execute(event: JumpEvent) {
         display("You jump from ${event.source}")
@@ -21,7 +21,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         GameState.player.finishJourney()
 
         if (damage != 0) {
-            EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Falling", HEALTH, damage))
+            EventManager.postEvent(StatChangeEvent(GameState.player, "Falling", HEALTH, damage))
         } else {
             display("You land without taking damage.")
         }

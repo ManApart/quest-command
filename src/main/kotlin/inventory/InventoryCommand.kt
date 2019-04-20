@@ -1,7 +1,6 @@
 package inventory
 
 import core.commands.Command
-import core.gameState.getCreature
 import core.history.display
 import interact.scope.ScopeManager
 import system.EventManager
@@ -29,7 +28,7 @@ class InventoryCommand : Command() {
             EventManager.postEvent(ListInventoryEvent())
         } else {
             val argString = args.joinToString(" ")
-            val target = ScopeManager.getScope().getTargets(argString).firstOrNull()?.getCreature()
+            val target = ScopeManager.getScope().getTargets(argString).firstOrNull()
             if (target != null) {
                 EventManager.postEvent(ListInventoryEvent(target))
             } else {

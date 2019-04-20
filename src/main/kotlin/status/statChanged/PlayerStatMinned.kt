@@ -8,7 +8,7 @@ import core.history.display
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return event.target == GameState.player.creature
+        return event.target == GameState.player
     }
 
     override fun execute(event: StatMinnedEvent) {

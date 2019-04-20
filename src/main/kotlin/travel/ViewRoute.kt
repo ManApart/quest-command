@@ -13,7 +13,7 @@ class ViewRoute : EventListener<ViewRouteEvent>() {
         val route = GameState.player.route
         when (route) {
             null -> display("You currently don't have a route.")
-            else -> display(route.getRouteProgressString(GameState.player.creature.location))
+            else -> display(route.getRouteProgressString(GameState.player.location))
         }
     }
 

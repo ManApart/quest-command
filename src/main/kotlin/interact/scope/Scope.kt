@@ -34,8 +34,8 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun removeTargetIncludingPlayerInventory(target: Target) {
-        if (target is Item && GameState.player.creature.inventory.exists(target)) {
-            GameState.player.creature.inventory.remove(target)
+        if (GameState.player.inventory.exists(target)) {
+            GameState.player.inventory.remove(target)
         } else {
             targets.remove(target)
         }
@@ -50,60 +50,51 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun getTargetsIncludingPlayerInventory(name: String): List<Target> {
-        return GameState.player.creature.inventory.getItems(name) + getTargets(name)
+        return GameState.player.inventory.getItems(name) + getTargets(name)
     }
 
-    fun getCreatures(name: String): List<Creature> {
-        return targets.getAll(name).asSequence().filter { it is Creature }.map { it as Creature }.toList()
+    fun getCreatures(name: String): List<Target> {
+        return targets.getAll(name).asSequence().filter { it.properties.isCreature() }.toList()
     }
 
-    fun getActivators(name: String): List<Activator> {
-        return targets.getAll(name).asSequence().filter { it is Activator }.map { it as Activator }.toList()
+    fun getActivators(name: String): List<Target> {
+        return targets.getAll(name).asSequence().filter { it.properties.isActivator() }.toList()
     }
 
-    fun getItems(name: String): List<Item> {
-        return targets.getAll(name).asSequence().filter { it is Item }.map { it as Item }.toList()
+    fun getItems(name: String): List<Target> {
+        return targets.getAll(name).asSequence().filter { it.properties.isItem() }.toList()
     }
 
-    fun getItemsIncludingPlayerInventory(name: String): List<Item> {
-        return GameState.player.creature.inventory.getItems(name) + getItems(name)
-    }
-
-    fun getTargetsWithCreatures(name: String): List<Creature> {
-        return getTargets(name).asSequence()
-                .map { it.getCreature() }.toList()
-                .filterNotNull()
+    fun getItemsIncludingPlayerInventory(name: String): List<Target> {
+        return GameState.player.inventory.getItems(name) + getItems(name)
     }
 
     fun findTargetsByTag(tag: String): List<Target> {
         return targets.filter { it.properties.tags.has(tag) }
     }
 
-    fun findActivatorsByTag(tag: String): List<Activator> {
-        return findTargetsByTag(tag).asSequence().filter { it is Activator }.map { it as Activator }.toList()
+    fun findActivatorsByTag(tag: String): List<Target> {
+        return findTargetsByTag(tag).asSequence().filter { it.properties.isActivator() }.toList()
     }
 
-    fun findActivatorsByProperties(properties: Properties): List<Activator> {
-        return targets.asSequence().filter { it is Activator && it.properties.hasAll(properties) }.map { it as Activator }.toList()
+    fun findActivatorsByProperties(properties: Properties): List<Target> {
+        return targets.asSequence().filter { it.properties.isActivator() && it.properties.hasAll(properties) }.toList()
     }
 
     fun getAllSouls(): List<Soul> {
         val souls = mutableListOf<Soul?>()
-        souls.add(GameState.player.creature.soul)
-        souls.addAll(GameState.player.creature.inventory.getAllItems().map { it.soul })
+        souls.add(GameState.player.soul)
+        souls.addAll(GameState.player.inventory.getAllItems().map { it.soul })
 
         targets.forEach {
-            souls.add(it.getCreature()?.soul)
-            it.getCreature()?.inventory?.getAllItems()?.forEach { item -> souls.add(item.soul) }
+            souls.add(it.soul)
+            it.inventory.getAllItems().forEach { item -> souls.add(item.soul) }
         }
-
         return souls.filterNotNull()
     }
 
     fun getAllInventories(): List<Inventory> {
-        return targets.asSequence()
-                .map { it.getCreature()?.inventory }.toList()
-                .filterNotNull()
+        return targets.asSequence().map { it.inventory }.toList()
     }
 
 }

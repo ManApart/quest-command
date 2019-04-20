@@ -4,7 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.gameState.GameState
-import core.gameState.Item
+import core.gameState.Target
 import core.history.display
 import interact.UseEvent
 import interact.scope.ScopeManager
@@ -16,7 +16,7 @@ class EatCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Eat:\n\tEat an Item"
+        return "Eat:\n\tEat an Target"
     }
 
     override fun getManual(): String {
@@ -42,15 +42,15 @@ class EatCommand : Command() {
         }
     }
 
-    private fun eatWhat(food: List<Item>) {
+    private fun eatWhat(food: List<Target>) {
         display("Eat what?\n\t${food.joinToString(", ")}")
         val response = ResponseRequest(food.map { it.name to "eat ${it.name}" }.toMap())
         CommandParser.responseRequest  = response
     }
 
-    private fun eatFood(food: Item) {
+    private fun eatFood(food: Target) {
         if (food.properties.tags.has("food")){
-            EventManager.postEvent(UseEvent(GameState.player.creature, food, GameState.player.creature))
+            EventManager.postEvent(UseEvent(GameState.player, food, GameState.player))
         } else {
             display("${food.name} is inedible.")
         }

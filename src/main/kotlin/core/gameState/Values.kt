@@ -44,6 +44,9 @@ class Values(properties: Map<String, String> = mapOf()) {
     fun put(key: String, value: String) {
         properties[key.toLowerCase()] = value
     }
+    fun put(key: String, value: Int) {
+        properties[key.toLowerCase()] = value.toString()
+    }
 
     fun matches(other: Values): Boolean {
         return properties.matches(other.properties)
@@ -67,6 +70,10 @@ class Values(properties: Map<String, String> = mapOf()) {
 
     fun setFrom(other: Values) {
         other.properties.forEach { properties[it.key] = it.value }
+    }
+
+    fun inc(key: String, amount: Int) {
+        properties[key.toLowerCase()] = (getInt(key, 0) + amount).toString()
     }
 
 }

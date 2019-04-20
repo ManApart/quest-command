@@ -25,6 +25,7 @@ object BodyManager {
             val parts = findAllParts(it, partMap)
             bodies.add(Body(it.name, parts))
         }
+        bodies.add(Body())
         return bodies
     }
 

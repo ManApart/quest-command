@@ -21,7 +21,7 @@ object GameStateQuery {
             display("Wrong number of params to query Target for: ${params.joinToString(", ")}")
             return ""
         }
-        return ScopeManager.getScope().getTargetsWithCreatures(params[0]).first().location.name
+        return ScopeManager.getScope().getCreatures(params[0]).first().location.name
     }
 
     private fun getTargetValues(params: List<String>, all: Boolean): String {

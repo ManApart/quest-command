@@ -3,7 +3,7 @@ package inventory.unEquipItem
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.Item
+import core.gameState.Target
 import core.history.display
 import system.EventManager
 
@@ -34,16 +34,16 @@ class UnEquipItemCommand : Command() {
         } else {
             val item = getItem(arguments)
             if (item != null) {
-                EventManager.postEvent(UnEquipItemEvent(GameState.player.creature, item))
+                EventManager.postEvent(UnEquipItemEvent(GameState.player, item))
             } else {
                 display("Could not find ${arguments.argStrings[0]}")
             }
         }
     }
 
-    private fun getItem(args: Args): Item? {
+    private fun getItem(args: Args): Target? {
         val itemName = args.argGroups[0].joinToString(" ")
-        val items = GameState.player.creature.body.getEquippedItems()
+        val items = GameState.player.body.getEquippedItems()
         return if (items.exists(itemName)){
             items.get(itemName)
         } else {

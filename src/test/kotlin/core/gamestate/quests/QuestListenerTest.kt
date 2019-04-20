@@ -1,9 +1,8 @@
 package core.gamestate.quests
 
-import core.gameState.Creature
 import core.gameState.GameState
-import core.gameState.Item
 import core.gameState.Player
+import core.gameState.Target
 import core.gameState.body.ProtoBody
 import core.gameState.dataParsing.TriggerCondition
 import core.gameState.location.LocationNode
@@ -14,9 +13,9 @@ import interact.interaction.InteractEvent
 import org.junit.BeforeClass
 import org.junit.Test
 import system.BodyFakeParser
+import system.DependencyInjector
 import system.body.BodyManager
 import system.body.BodyParser
-import system.DependencyInjector
 import system.location.LocationFakeParser
 import system.location.LocationManager
 import system.location.LocationParser
@@ -36,7 +35,7 @@ class QuestListenerTest {
             DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
             LocationManager.reset()
 
-            GameState.player = Player(Creature("Player"))
+            GameState.player = Player()
         }
     }
 
@@ -55,7 +54,7 @@ class QuestListenerTest {
         DependencyInjector.setImplementation(QuestParser::class.java, questParser)
         QuestManager.reset()
 
-        val testEvent = InteractEvent(GameState.player, Item("Apple"))
+        val testEvent = InteractEvent(GameState.player, Target("Apple"))
         val listener = QuestListener()
         listener.execute(testEvent)
 
@@ -74,7 +73,7 @@ class QuestListenerTest {
         DependencyInjector.setImplementation(QuestParser::class.java, fakeParser)
         QuestManager.reset()
 
-        val testEvent = InteractEvent(GameState.player, Item("Apple"))
+        val testEvent = InteractEvent(GameState.player, Target("Apple"))
         val listener = QuestListener()
         listener.execute(testEvent)
         val results = listener.getListeners()

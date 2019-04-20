@@ -5,9 +5,8 @@ import combat.battle.position.TargetDirection
 import core.commands.Args
 import core.commands.Command
 import core.events.Event
-import core.gameState.Activator
-import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.GameState
 import core.gameState.body.BodyPart
 import core.history.display
 import interact.UseEvent
@@ -54,10 +53,10 @@ class AttackCommand : Command() {
         val scope = ScopeManager.getScope()
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
-            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player.creature, handHelper.weapon!!, scope.getTargets(cleaned.argStrings[0]).first()))
+            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player, handHelper.weapon!!, scope.getTargets(cleaned.argStrings[0]).first()))
             scope.getTargets(cleaned.argStrings[0]).isNotEmpty() -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTargets(cleaned.argStrings[0]).first(), direction))
-            GameState.player.creature.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.creature.inventory.getItem(cleaned.argStrings[0])!!, direction))
-            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked, direction))
+            GameState.player.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.inventory.getItem(cleaned.argStrings[0])!!, direction))
+            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked.creature, direction))
             else -> display("Couldn't find ${cleaned.argStrings[0]}.")
         }
     }
@@ -73,7 +72,7 @@ class AttackCommand : Command() {
     }
 
     private fun isAttackingActivatorWithWeapon(cleaned: Args, handHelper: HandHelper) =
-            ScopeManager.getScope().getTargets(cleaned.argStrings[0]).isNotEmpty() && ScopeManager.getScope().getTargets(cleaned.argStrings[0]).first() is Activator && handHelper.weapon != null
+            ScopeManager.getScope().getActivators(cleaned.argStrings[0]).isNotEmpty() && handHelper.weapon != null
 
     private fun getDirection(args: Args): TargetDirection {
         return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()
@@ -81,10 +80,10 @@ class AttackCommand : Command() {
 
     private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection) : Event {
         return when (keyword) {
-            "chop" -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CHOP)
-            "crush" -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.CRUSH)
-            "slash" -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.SLASH)
-            else -> StartAttackEvent(GameState.player.creature, sourcePart, target, direction.position, AttackType.STAB)
+            "chop" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.CHOP)
+            "crush" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.CRUSH)
+            "slash" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.SLASH)
+            else -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.STAB)
         }
     }
 }

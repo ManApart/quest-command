@@ -1,6 +1,6 @@
 package crafting
 
-import core.gameState.Item
+import core.gameState.Target
 import core.gameState.Tags
 import core.utility.wrapNonEmpty
 import system.item.ItemManager
@@ -14,7 +14,7 @@ data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsA
         }
     }
 
-    fun getResult(usedIngredients: List<Item>): Item {
+    fun getResult(usedIngredients: List<Target>): Target {
         val item = if (!name.isNullOrBlank()) {
             ItemManager.getItem(name!!)
         } else {

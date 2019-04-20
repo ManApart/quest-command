@@ -26,8 +26,8 @@ class DismountCommand : Command() {
         if (isClimbing()) {
             val journey = GameState.player.climbJourney as ClimbJourney
             when {
-                journey.getCurrentSegment().top -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.top))
-                journey.getCurrentSegment().bottom -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.bottom))
+                journey.getCurrentSegment().top -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.top))
+                journey.getCurrentSegment().bottom -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.bottom))
                 else -> display("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {

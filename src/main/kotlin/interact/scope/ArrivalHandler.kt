@@ -17,7 +17,7 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
         if (scope.isEmpty()) {
 
             val activators = ActivatorManager.getActivatorsFromLocationTargets(location.activators)
-            activators.forEach { it.creature.location = event.destination }
+            activators.forEach { it.location = event.destination }
             scope.addTargets(activators)
 
             val creatures = CreatureManager.getCreaturesFromLocationTargets(location.creatures)

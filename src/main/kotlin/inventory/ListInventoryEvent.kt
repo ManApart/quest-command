@@ -1,7 +1,7 @@
 package inventory
 
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.GameState
 
-class ListInventoryEvent(val target: Creature = GameState.player.creature) : Event
+class ListInventoryEvent(val target: Target = GameState.player) : Event

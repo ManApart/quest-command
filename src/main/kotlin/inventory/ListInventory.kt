@@ -2,9 +2,8 @@ package inventory
 
 import core.events.EventListener
 import core.gameState.Inventory
-import core.gameState.Item
+import core.gameState.Target
 import core.gameState.body.Body
-import core.gameState.getCreature
 import core.history.display
 import core.utility.StringFormatter
 
@@ -13,7 +12,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
     override fun execute(event: ListInventoryEvent) {
         if (event.target.properties.tags.has("Container")) {
             if (event.target.inventory.getItems().isNotEmpty()) {
-                display("${event.target.name} has:${inventoryToString(event.target.inventory, event.target.getCreature()?.body)}")
+                display("${event.target.name} has:${inventoryToString(event.target.inventory, event.target.body)}")
             }else {
                 display("${event.target.name} has no items.")
             }
@@ -33,7 +32,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
         return message
     }
 
-    private fun printItem(item: Item, body: Body?, tabCount: Int): String {
+    private fun printItem(item: Target, body: Body?, tabCount: Int): String {
         val asterisk = StringFormatter.format(body != null && body.isEquipped(item), "* ", "")
         val tabs = "\t".repeat(tabCount)
         return "\n" + tabs + asterisk + item.name

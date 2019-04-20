@@ -2,14 +2,14 @@ package combat.battle
 
 import combat.Combatant
 import combat.battle.position.TargetDistance
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.GameState
-import core.gameState.isPlayer
+
 import core.gameState.stat.HEALTH
 import core.history.display
 import system.EventManager
 
-class Battle(combatantCreatures: List<Creature>, var targetDistance: TargetDistance = TargetDistance.BOW) {
+class Battle(combatantCreatures: List<Target>, var targetDistance: TargetDistance = TargetDistance.BOW) {
     private val combatants = mutableListOf<Combatant>()
 
     init {
@@ -18,12 +18,12 @@ class Battle(combatantCreatures: List<Creature>, var targetDistance: TargetDista
         }
     }
 
-    var playerLastAttacked = getPlayerCombatant().creature
+    var playerLastAttacked = getPlayerCombatant()
 
     private fun getPlayerCombatant() =
-            getCombatant(GameState.player.creature)!!
+            getCombatant(GameState.player)!!
 
-    fun getCombatant(creature: Creature): Combatant? {
+    fun getCombatant(creature: Target): Combatant? {
         return combatants.firstOrNull { it.creature == creature }
     }
 
@@ -31,7 +31,7 @@ class Battle(combatantCreatures: List<Creature>, var targetDistance: TargetDista
         combatants.remove(combatant)
     }
 
-    private fun getOrAddCombatant(creature: Creature): Combatant {
+    private fun getOrAddCombatant(creature: Target): Combatant {
         if (getCombatant(creature) == null) {
             combatants.add(Combatant(creature))
         }
@@ -77,7 +77,7 @@ class Battle(combatantCreatures: List<Creature>, var targetDistance: TargetDista
         }
     }
 
-    fun addAction(source: Creature, action: BattleAction) {
+    fun addAction(source: Target, action: BattleAction) {
         val combatant = getOrAddCombatant(source)
         combatant.action = action
         EventManager.postEvent(BattleTurnEvent())

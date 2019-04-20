@@ -27,7 +27,7 @@ class RetreatCommand : Command() {
         when {
             GameState.battle == null -> display("This is only relevant in battle.")
             GameState.battle?.targetDistance?.distance == TargetDistance.getMaxDistance() -> display("You can't get any further.")
-            else -> EventManager.postEvent(StartApproachEvent(GameState.player.creature, false))
+            else -> EventManager.postEvent(StartApproachEvent(GameState.player, false))
         }
     }
 

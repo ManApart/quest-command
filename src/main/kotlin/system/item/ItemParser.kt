@@ -1,8 +1,8 @@
 package system.item
 
-import core.gameState.Item
+import core.gameState.Target
 import core.utility.NameSearchableList
 
 interface ItemParser {
-    fun loadItems(): NameSearchableList<Item>
+    fun loadItems(): NameSearchableList<Target>
 }

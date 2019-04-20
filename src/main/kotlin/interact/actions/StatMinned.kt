@@ -1,7 +1,7 @@
 package interact.actions
 
 import core.events.EventListener
-import core.gameState.isPlayer
+
 import status.statChanged.StatMinnedEvent
 
 class StatMinned : EventListener<StatMinnedEvent>() {

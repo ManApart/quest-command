@@ -50,7 +50,7 @@ class ClimbCommand : Command() {
         } else {
             val climbTarget = ScopeManager.getScope().findTargetsByTag("Climbable").firstOrNull()
             if (climbTarget != null) {
-                EventManager.postEvent(StartClimbingEvent(GameState.player.creature, climbTarget, force))
+                EventManager.postEvent(StartClimbingEvent(GameState.player, climbTarget, force))
             } else {
                 display("What do you want to climb?")
             }
@@ -79,7 +79,7 @@ class ClimbCommand : Command() {
 
     private fun processNewClimb(argsString: String, force: Boolean, originalArgs: String) {
         if (ScopeManager.getScope().getTargets(argsString).isNotEmpty()) {
-            EventManager.postEvent(StartClimbingEvent(GameState.player.creature, ScopeManager.getScope().getTargets(argsString).first(), force))
+            EventManager.postEvent(StartClimbingEvent(GameState.player, ScopeManager.getScope().getTargets(argsString).first(), force))
         } else {
             display("Unable to climb: $originalArgs")
         }
@@ -87,9 +87,9 @@ class ClimbCommand : Command() {
 
     private fun climbTowardsDirection(upwards: Boolean, journey: ClimbJourney, force: Boolean) {
         if (upwards && journey.getCurrentSegment().top) {
-            EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.top))
+            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.top))
         } else if (!upwards && journey.getCurrentSegment().bottom) {
-            EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.bottom))
+            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.bottom))
         } else {
             val step = journey.getNextSegment(upwards)
             climbStep(step, force)

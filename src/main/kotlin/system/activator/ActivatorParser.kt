@@ -1,9 +1,8 @@
 package system.activator
 
-import core.gameState.Activator
-import core.gameState.Item
+import core.gameState.Target
 import core.utility.NameSearchableList
 
 interface ActivatorParser {
-    fun loadActivators(): NameSearchableList<Activator>
+    fun loadActivators(): NameSearchableList<Target>
 }

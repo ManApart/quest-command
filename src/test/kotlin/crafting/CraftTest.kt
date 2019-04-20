@@ -1,6 +1,7 @@
 package crafting
 
 import core.gameState.*
+import core.gameState.Target
 import inventory.dropItem.TransferItem
 import org.junit.Test
 import system.*
@@ -15,14 +16,14 @@ class CraftTest {
     @Test
     fun recipeReturnsNewItems() {
         val baker = createBaker()
-        val ingredient = Item("Apple")
+        val ingredient = Target("Apple")
         baker.inventory.add(ingredient)
 
         val recipe = Recipe("Apples of Silver and Gold", listOf(RecipeIngredient("Apple")), results = listOf(RecipeResult("Gold"), RecipeResult("Silver")))
 
         val resultItemName1 = "Silver"
         val resultItemName2 = "Gold"
-        val fakeParser = ItemFakeParser(listOf(Item(resultItemName1), Item(resultItemName2)))
+        val fakeParser = ItemFakeParser(listOf(Target(resultItemName1), Target(resultItemName2)))
         DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
         ItemManager.reset()
 
@@ -40,7 +41,7 @@ class CraftTest {
     @Test
     fun recipeReturnsFirstItemWithDifferentTags() {
         val baker = createBaker()
-        val ingredient = Item("Apple")
+        val ingredient = Target("Apple")
         baker.inventory.add(ingredient)
 
         val fakeParser = ItemFakeParser(listOf(ingredient))
@@ -59,9 +60,9 @@ class CraftTest {
         assertTrue(result?.properties?.tags?.has("Cooked") ?: false)
     }
 
-    private fun createBaker(): Creature {
-        val baker = Player().creature
-        val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
+    private fun createBaker(): Target {
+        val baker = Player()
+        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
         baker.inventory.add(pouch)
         return baker
     }

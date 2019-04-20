@@ -5,10 +5,15 @@ import combat.attack.AttackedPartHelper
 import combat.battle.position.Horizontal
 import combat.battle.position.TargetPosition
 import combat.battle.position.Vertical
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
+import core.gameState.body.ProtoBody
 import org.junit.Test
+import system.BodyFakeParser
+import system.DependencyInjector
+import system.body.BodyManager
+import system.body.BodyParser
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -20,7 +25,7 @@ class AttackedPartHelperTest {
         val helper = createHelper(part, TargetPosition())
         val foundPart = helper.getAttackedPart()
 
-        assertEquals(part, foundPart)
+        assertEquals(part.name, foundPart?.name)
     }
 
     @Test
@@ -31,7 +36,7 @@ class AttackedPartHelperTest {
         val helper = createHelper(part, target, adjustment)
         val foundPart = helper.getAttackedPart()
 
-        assertEquals(part, foundPart)
+        assertEquals(part.name, foundPart?.name)
     }
 
     @Test
@@ -42,7 +47,7 @@ class AttackedPartHelperTest {
         val helper = createHelper(part, target)
         val foundPart = helper.getAttackedPart()
 
-        assertEquals(part, foundPart)
+        assertEquals(part.name, foundPart?.name)
     }
 
     @Test
@@ -54,7 +59,7 @@ class AttackedPartHelperTest {
         val helper = createHelper(part, target, adjustment)
         val foundPart = helper.getAttackedPart()
 
-        assertEquals(part, foundPart)
+        assertEquals(part.name, foundPart?.name)
     }
 
     @Test
@@ -70,27 +75,34 @@ class AttackedPartHelperTest {
 
     @Test
     fun directPartReturnedBeforeGrazedPart() {
-        val directPart = BodyPart("Hand", TargetPosition())
-        val grazedPart = BodyPart("Hand", TargetPosition(Horizontal.LEFT))
-        val body = Body(parts = listOf(directPart, grazedPart))
-        val combatant = Combatant(Creature(name = "Creature", body = body))
+        val directPart = BodyPart("directPart", TargetPosition())
+        val grazedPart = BodyPart("grazedPart", TargetPosition(Horizontal.LEFT))
+
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("directPart", "grazedPart"))), listOf(directPart, grazedPart))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val combatant = Combatant(Target(name = "Target", body = "body"))
 
         val helper = AttackedPartHelper(combatant, TargetPosition())
 
         val foundPart = helper.getAttackedPart()
 
-        assertEquals(directPart, foundPart)
+        assertEquals(directPart.name, foundPart?.name)
     }
 
     @Test
     fun blockedPartReturnedBeforeDirectPart() {
         val blockPosition = TargetPosition(Horizontal.LEFT)
 
-        val directPart = BodyPart("Hand", TargetPosition())
-        val grazedPart = BodyPart("Hand", blockPosition)
-        val body = Body(parts = listOf(directPart, grazedPart))
+        val directPart = BodyPart("directPart", TargetPosition())
+        val grazedPart = BodyPart("grazedPart", blockPosition)
 
-        val combatant = Combatant(Creature(name = "Creature", body = body))
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("directPart", "grazedPart"))), listOf(directPart, grazedPart))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val combatant = Combatant(Target(name = "Target", body = "body"))
         combatant.blockBodyPart = grazedPart
         combatant.blockPosition = blockPosition
 
@@ -105,11 +117,14 @@ class AttackedPartHelperTest {
     fun blockedPartNotReturnedWhenBlockPositionMissed() {
         val blockPosition = TargetPosition(Horizontal.LEFT, Vertical.HIGH)
 
-        val directPart = BodyPart("Hand", TargetPosition())
-        val grazedPart = BodyPart("Hand", blockPosition)
-        val body = Body(parts = listOf(directPart, grazedPart))
+        val directPart = BodyPart("directPart", TargetPosition())
+        val grazedPart = BodyPart("grazedPart", blockPosition)
 
-        val combatant = Combatant(Creature(name = "Creature", body = body))
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("directPart", "grazedPart"))), listOf(directPart, grazedPart))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val combatant = Combatant(Target(name = "Target", body = "body"))
         combatant.blockBodyPart = grazedPart
         combatant.blockPosition = blockPosition
 
@@ -117,12 +132,16 @@ class AttackedPartHelperTest {
 
         val foundPart = helper.getAttackedPart()
 
-        assertEquals(directPart, foundPart)
+        assertEquals(directPart.name, foundPart?.name)
     }
 
     private fun createHelper(part: BodyPart, target: TargetPosition, combatantPosition: TargetPosition = TargetPosition()): AttackedPartHelper {
-        val body = Body(parts = listOf(part))
-        val combatant = Combatant(Creature(name = "Creature", body = body))
+
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf(part.name))), listOf(part))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val combatant = Combatant(Target(name = "Target", body = "body"))
         combatant.position = combatantPosition
         return AttackedPartHelper(combatant, target)
     }

@@ -1,6 +1,6 @@
 package gameState
 
-import core.gameState.Item
+import core.gameState.Target
 import core.gameState.Soul
 import core.gameState.stat.Stat
 import org.junit.Test
@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 
 class StatTest {
     private val statName = "Coding"
-    private val parent = Item("Parent")
+    private val parent = Target("Parent")
 
     @Test
     fun statCurrentIsInitializedProperly() {

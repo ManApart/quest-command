@@ -5,8 +5,8 @@ import core.commands.CommandParser
 import core.commands.UnknownCommand
 import core.commands.removeFirstItem
 import core.events.EventListener
-import core.gameState.Item
-import core.gameState.isPlayer
+import core.gameState.Target
+
 import core.history.display
 import core.utility.StringFormatter
 import interact.eat.EatFoodEvent

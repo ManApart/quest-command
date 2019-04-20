@@ -1,7 +1,7 @@
 package core.gamestate
 
-import core.commands.CommandParser
 import core.gameState.*
+import core.gameState.Target
 import core.gameState.body.ProtoBody
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
@@ -10,7 +10,6 @@ import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.DependencyInjector
-import system.EventManager
 import system.behavior.BehaviorManager
 import system.behavior.BehaviorParser
 import system.body.BodyManager
@@ -38,13 +37,13 @@ class InventoryTest {
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
 
-        GameState.player = Player(Creature("Player"))
+        GameState.player = Player()
     }
 
     @Test
     fun getItemIsNested(){
-        val item = Item("Apple", weight = 2)
-        val pouch = Item("Pouch", weight = 1)
+        val item = createItem("Apple", weight = 2)
+        val pouch = createItem("Pouch", weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -55,8 +54,8 @@ class InventoryTest {
 
     @Test
     fun existsIsNested(){
-        val item = Item("Apple", weight = 2)
-        val pouch = Item("Pouch", weight = 1)
+        val item = createItem("Apple", 2)
+        val pouch = createItem("Pouch", weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -67,7 +66,7 @@ class InventoryTest {
 
     @Test
     fun removeItem(){
-        val item = Item("Apple", weight = 2)
+        val item = createItem("Apple", weight = 2)
         val inventory = Inventory()
         inventory.add(item)
         inventory.remove(item)
@@ -77,8 +76,8 @@ class InventoryTest {
 
     @Test
     fun removeNestedItem(){
-        val item = Item("Apple", weight = 2)
-        val pouch = Item("Pouch", weight = 1)
+        val item = createItem("Apple", weight = 2)
+        val pouch = createItem("Pouch", weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -90,7 +89,7 @@ class InventoryTest {
 
     @Test
     fun getWeightOfSingleItem(){
-        val item = Item("Apple", weight = 1)
+        val item = createItem("Apple", weight = 1)
         val inventory = Inventory()
         inventory.add(item)
         assertEquals(1, inventory.getWeight())
@@ -98,8 +97,8 @@ class InventoryTest {
 
     @Test
     fun getWeightIncludingNestedInventory(){
-        val item = Item("Apple", weight = 2)
-        val pouch = Item("Pouch", weight = 1)
+        val item = createItem("Apple", weight = 2)
+        val pouch = createItem("Pouch", weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -109,28 +108,33 @@ class InventoryTest {
 
     @Test
     fun hasRoomForItem(){
-        val item = Item("Apple", weight = 2)
+        val item = createItem("Apple", weight = 2)
         val inventory = Inventory()
         assertTrue(inventory.hasCapacityFor(item, 3))
     }
 
     @Test
     fun doesNotHaveRoomForItem(){
-        val item = Item("Apple", weight = 5)
+        val item = createItem("Apple", weight = 5)
         val inventory = Inventory()
         assertFalse(inventory.hasCapacityFor(item, 3))
     }
 
     @Test
     fun findItemsWithCapacityAndTypeForItem(){
-        val searchItem = Item("Apple", properties = Properties(tags = Tags(listOf("Raw"))))
-        val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
+        val searchItem = Target("Apple", properties = Properties(tags = Tags(listOf("Raw"))))
+        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
         val inventory = Inventory()
         inventory.add(pouch)
-        inventory.add(Item("Noise"))
+        inventory.add(createItem("Noise", 0))
 
         val results = inventory.findSubInventoryFor(searchItem)
         assertEquals(1, results.size)
         assertEquals(pouch, results[0])
     }
+
+    private fun createItem(name: String, weight: Int) : core.gameState.Target {
+        return Target(name, properties = Properties(stats = Values(mapOf("weight" to weight.toString()))))
+    }
+
 }

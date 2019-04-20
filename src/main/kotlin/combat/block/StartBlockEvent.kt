@@ -4,11 +4,11 @@ import combat.battle.BattleAction
 import combat.battle.position.TargetDirection
 import combat.block.BlockEvent
 import core.events.Event
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.gameState.stat.AGILITY
 
-class StartBlockEvent(val source: Creature, private val part: BodyPart, private val direction: TargetDirection, timeLeft: Int = -1) : Event, BattleAction {
+class StartBlockEvent(val source: Target, private val part: BodyPart, private val direction: TargetDirection, timeLeft: Int = -1) : Event, BattleAction {
 
     override var timeLeft = calcTimeLeft(timeLeft)
 

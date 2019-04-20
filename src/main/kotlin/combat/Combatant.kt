@@ -2,14 +2,14 @@ package combat
 
 import combat.battle.BattleAction
 import combat.battle.position.TargetPosition
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.body.BodyPart
-import core.gameState.isPlayer
+
 import core.gameState.stat.HEALTH
 import core.gameState.stat.WISDOM
 import core.history.display
 
-class Combatant(val creature: Creature) {
+class Combatant(val creature: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
     var position = TargetPosition()

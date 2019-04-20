@@ -2,7 +2,7 @@ package crafting
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.isPlayer
+
 import core.gameState.stat.COOKING
 import core.gameState.stat.Stat
 import core.history.display

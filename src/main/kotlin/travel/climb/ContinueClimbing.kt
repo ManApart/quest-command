@@ -1,7 +1,7 @@
 package travel.climb
 
 import core.events.EventListener
-import core.gameState.Creature
+import core.gameState.Target
 import core.gameState.GameState
 import core.gameState.climb.ClimbSegment
 import core.gameState.stat.CLIMBING
@@ -35,12 +35,12 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val distance = journey.getTotalDistance()
         val chance = getChance(journey, event.desiredStep)
 
-        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", STAMINA, -distance))
+        EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance))
         if (RandomManager.isSuccess(chance)) {
             val direction = StringFormatter.format(journey.initialDirection, "up", "down")
             display("You climb $distance ft $direction ${journey.target.name}.")
-            awardEXP(GameState.player.creature, chance, journey.getSegment(event.desiredStep))
-            EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.getInitialDestination()))
+            awardEXP(GameState.player, chance, journey.getSegment(event.desiredStep))
+            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.getInitialDestination()))
         } else {
             fall(journey)
         }
@@ -50,11 +50,11 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
         val distance = journey.getDistanceTo(event.desiredStep)
         val chance = getChance(journey, event.desiredStep)
 
-        EventManager.postEvent(StatChangeEvent(GameState.player.creature, "Climbing", STAMINA, -distance))
+        EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance))
         if (RandomManager.isSuccess(chance)) {
             val direction = StringFormatter.format(journey.getDirection(event.desiredStep), "up", "down")
             display("You climb $distance ft $direction ${journey.target.name}.")
-            awardEXP(GameState.player.creature, chance, journey.getSegment(event.desiredStep))
+            awardEXP(GameState.player, chance, journey.getSegment(event.desiredStep))
             advanceJourney(journey, event)
         } else {
             fall(journey)
@@ -63,7 +63,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
 
     private fun advanceJourney(journey: ClimbJourney, event: ClimbJourneyEvent) {
         if (journey.isPathEnd(event.desiredStep)) {
-            EventManager.postEvent(ClimbCompleteEvent(GameState.player.creature, journey.target, GameState.player.creature.location, journey.getDestination(event.desiredStep)))
+            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.getDestination(event.desiredStep)))
         } else {
             journey.advance(event.desiredStep)
             if (event.force) {
@@ -77,12 +77,12 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
 
     private fun getChance(journey: ClimbJourney, desiredStep: Int): Double {
         //TODO - more detailed skill check
-        val skill = GameState.player.creature.soul.getCurrent(CLIMBING)
+        val skill = GameState.player.soul.getCurrent(CLIMBING)
         val challenge = journey.getSegment(desiredStep).level
         return skill / challenge.toDouble()
     }
 
-    private fun awardEXP(creature: Creature, chance: Double, segment: ClimbSegment) {
+    private fun awardEXP(creature: Target, chance: Double, segment: ClimbSegment) {
         val amount = if (chance >= 1) {
             0
         } else {
@@ -94,7 +94,7 @@ class ContinueClimbing : EventListener<ClimbJourneyEvent>() {
     }
 
     private fun fall(journey: ClimbJourney) {
-        EventManager.postEvent(FallEvent(GameState.player.creature, journey.bottom, journey.getCurrentDistance(), "You lose your grip on ${journey.target.name}."))
+        EventManager.postEvent(FallEvent(GameState.player, journey.bottom, journey.getCurrentDistance(), "You lose your grip on ${journey.target.name}."))
     }
 
 }

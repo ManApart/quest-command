@@ -26,7 +26,7 @@ class AproachCommand : Command() {
         when {
             GameState.battle == null -> display("This is only relevant in battle.")
             GameState.battle?.targetDistance?.distance == 0 -> display("You can't get any closer.")
-            else -> EventManager.postEvent(StartApproachEvent(GameState.player.creature, true))
+            else -> EventManager.postEvent(StartApproachEvent(GameState.player, true))
         }
     }
 

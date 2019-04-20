@@ -4,18 +4,23 @@ import combat.battle.position.TargetPosition
 import core.gameState.*
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
+import core.gameState.body.ProtoBody
 import interact.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
 import org.junit.Test
+import system.BodyFakeParser
+import system.DependencyInjector
+import system.body.BodyManager
+import system.body.BodyParser
 import kotlin.test.*
 
 class PlaceItemTest {
 
     @Test
     fun dropItem() {
-        val creature = Creature("Creature")
-        val item = Item("Apple")
+        val creature = Target("Creature")
+        val item = Target("Apple")
         creature.inventory.add(item)
         val scope = ScopeManager.getScope(creature.location)
 
@@ -26,27 +31,27 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInActivatorContainer() {
-        val item = Item("Apple", weight = 5)
-        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
+        val item = createItem("Apple", weight = 5)
+        val creature = createCreature()
         creature.inventory.add(item)
 
-        val chest = Activator("Chest", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
-        assertNotNull(chest.creature.inventory.getItem(item.name))
+        assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
     }
 
     @Test
     fun placeItemInCreatureContainerSubInventory() {
         //Capacity = 10 * Strength
-        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
-        val item = Item("Apple", weight = 10)
+        val creature = createCreature()
+        val item = createItem("Apple", weight = 10)
         creature.inventory.add(item)
 
-        val chest = Creature("Chest", properties = Properties(Tags(listOf("Container", "Open")), stats = Values(mapOf("Strength" to "1"))))
-        val pouch = Item("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Creature")), stats = Values(mapOf("Strength" to "1"))))
+        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
         chest.inventory.add(pouch)
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
@@ -57,13 +62,17 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
-        val item = Item("Dagger", equipSlots = listOf(listOf("Grip")))
+        val creature = createCreature()
+        val item = Target("Dagger", equipSlots = listOf(listOf("Grip")))
         creature.inventory.add(item)
 
         val part = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
-        val body = Body(parts = listOf(part))
-        val chest = Creature("Chest", body = body, properties = Properties(Tags(listOf("Container", "Open")), stats = Values(mapOf("Strength" to "1"))))
+
+        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("Hand"))), listOf(part))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val chest = Target("Chest", body = "body", properties = Properties(Tags(listOf("Container", "Open", "Creature")), stats = Values(mapOf("Strength" to "1"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -73,11 +82,11 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInItemContainer() {
-        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
-        val item = Item("Apple", weight = 5)
+        val creature = createCreature()
+        val item = createItem("Apple", weight = 5)
         creature.inventory.add(item)
 
-        val chest = Item("Chest", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -87,28 +96,28 @@ class PlaceItemTest {
 
     @Test
     fun placeItemStackInContainer() {
-        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
-        val item = Item("Apple", weight = 5, count = 2)
+        val creature = createCreature()
+        val item = Target("Apple", properties = Properties(stats = Values(mapOf("weight" to "5", "count" to "2"))))
         creature.inventory.add(item)
 
-        val chest = Activator("Chest", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
-        assertNotNull(chest.creature.inventory.getItem(item.name))
-        assertEquals(1, chest.creature.inventory.getItem(item.name)!!.count)
+        assertNotNull(chest.inventory.getItem(item.name))
+        assertEquals(1, chest.inventory.getItem(item.name)!!.properties.getCount())
 
         assertNotNull(creature.inventory.getItem(item.name))
-        assertEquals(1, creature.inventory.getItem(item.name)!!.count)
+        assertEquals(1, creature.inventory.getItem(item.name)!!.properties.getCount())
     }
 
     @Test
     fun doNotPlaceInNonContainer() {
-        val creature = Creature("Creature")
-        val item = Item("Apple", weight = 1)
+        val creature = Target("Creature")
+        val item = createItem("Apple", 1)
         creature.inventory.add(item)
 
-        val chest = Creature("Chest", properties = Properties(Tags(listOf("Open")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Open", "Activator")), Values(mapOf("Capacity" to "5"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -118,11 +127,11 @@ class PlaceItemTest {
 
     @Test
     fun doNotPlaceInNonOpenContainer() {
-        val creature = Creature("Creature")
-        val item = Item("Apple", weight = 1)
+        val creature = Target("Creature")
+        val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
 
-        val chest = Creature("Chest", properties = Properties(Tags(listOf("Container")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Activator")), Values(mapOf("Capacity" to "5"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -132,11 +141,11 @@ class PlaceItemTest {
 
     @Test
     fun doNotPlaceInFullContainer() {
-        val creature = Creature("Creature")
-        val item = Item("Apple", weight = 5)
+        val creature = Target("Creature")
+        val item = createItem("Apple", weight = 5)
         creature.inventory.add(item)
 
-        val chest = Creature("Chest", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "1"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "1"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -146,11 +155,11 @@ class PlaceItemTest {
 
     @Test
     fun doNotPlaceInContainerWithoutCapacity() {
-        val creature = Creature("Creature")
-        val item = Item("Apple", weight = 1)
+        val creature = Target("Creature")
+        val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
 
-        val chest = Creature("Chest", properties = Properties(Tags(listOf("Container", "Open"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -160,25 +169,25 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInContainerThatHasASingleMatchingTag() {
-        val creature = Creature("Creature", properties = Properties(Tags(listOf("Container", "Open"))))
-        val item = Item("Apple", weight = 1, properties = Properties(Tags(listOf("Food", "Fruit"))))
+        val creature = createCreature()
+        val item = Target("Apple", properties = Properties(stats = Values(mapOf("weight" to "1")), tags = Tags(listOf("Food", "Fruit"))))
         creature.inventory.add(item)
 
-        val chest = Activator("Chest", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5", "CanHold" to "Food,Apparel"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5", "CanHold" to "Food,Apparel"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
-        assertNotNull(chest.creature.inventory.getItem(item.name))
+        assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
     }
 
     @Test
     fun doNotPlaceItemInContainerThatHasNoMatchingTags() {
-        val creature = Creature("Creature")
-        val item = Item("Apple", weight = 1, properties = Properties(Tags(listOf("Food", "Fruit"))))
+        val creature = Target("Creature")
+        val item = Target("Apple", properties = Properties(stats = Values(mapOf("weight" to "1")), tags = Tags(listOf("Food", "Fruit"))))
         creature.inventory.add(item)
 
-        val chest = Creature("Chest", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5", "CanHold" to "Weapon,Apparel"))))
+        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5", "CanHold" to "Weapon,Apparel"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -186,5 +195,9 @@ class PlaceItemTest {
         assertNull(chest.inventory.getItem(item.name))
     }
 
+    private fun createItem(name: String, weight: Int): core.gameState.Target {
+        return Target(name, properties = Properties(stats = Values(mapOf("weight" to weight.toString()))))
+    }
 
+    private fun createCreature() = Target("Creature", properties = Properties(Tags(listOf("Container", "Open", "Creature"))))
 }

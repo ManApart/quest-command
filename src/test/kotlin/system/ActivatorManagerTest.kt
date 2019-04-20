@@ -1,6 +1,6 @@
 package system
 
-import core.gameState.Activator
+import core.gameState.Target
 import core.gameState.climb.Climbable
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
@@ -32,7 +32,7 @@ class ActivatorManagerTest {
 
     @Test
     fun topLevelValueIsParameterized() {
-        val activator = Activator("Target", DialogueOptions("This is a \$key"))
+        val activator = Target("Target", dynamicDescription = DialogueOptions("This is a \$key"))
         val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()
@@ -45,7 +45,7 @@ class ActivatorManagerTest {
 
     @Test
     fun nestedClimbableGetsParams() {
-        val activator = Activator("Target", climb = Climbable("\$destination", "", true))
+        val activator = Target("Target", climb = Climbable("\$destination", "", true))
         val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()

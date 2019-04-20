@@ -6,17 +6,13 @@ import combat.battle.position.TargetDistance
 import combat.battle.position.TargetPosition
 import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
-import core.gameState.Creature
 import core.gameState.GameState
-import core.gameState.body.Body
+import core.gameState.Target
 import core.gameState.body.BodyPart
-import core.gameState.getCreature
-import core.gameState.isPlayer
 import core.gameState.stat.BARE_HANDED
 import core.history.display
 import core.history.displayIf
 import core.utility.StringFormatter
-import core.utility.random
 import interact.UseEvent
 import system.EventManager
 
@@ -25,16 +21,16 @@ class Attack : EventListener<AttackEvent>() {
     override fun execute(event: AttackEvent) {
 
         if (isValidAttack(event)) {
-            val defender = GameState.battle!!.getCombatant(event.target.getCreature()!!)!!
+            val defender = GameState.battle!!.getCombatant(event.target)!!
             val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
             val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
-            val weaponRange = event.sourcePart.getEquippedWeapon()?.getRange() ?: TargetDistance.DAGGER
+            val weaponRange = event.sourcePart.getEquippedWeapon()?.properties?.getRange() ?: TargetDistance.DAGGER
             val targetDistance = GameState.battle?.targetDistance ?: weaponRange
 
             when {
                 weaponRange < targetDistance -> display("${event.target} is too far away to be hit by $damageSource.")
                 offensiveDamage > 0 -> processAttack(defender, event, damageSource, offensiveDamage)
-                event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(GameState.player.creature, event.sourcePart.getEquippedWeapon()!!, event.target))
+                event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(GameState.player, event.sourcePart.getEquippedWeapon()!!, event.target))
                 else -> display("Nothing happens.")
             }
         }
@@ -43,15 +39,11 @@ class Attack : EventListener<AttackEvent>() {
 
     private fun isValidAttack(event: AttackEvent): Boolean {
         return when {
-            event.target.getCreature() == null -> {
-                println("Attack had no valid target.")
-                false
-            }
             GameState.battle == null -> {
                 println("Attack has no battle context.")
                 false
             }
-            GameState.battle?.getCombatant(event.target.getCreature()!!) == null -> {
+            GameState.battle?.getCombatant(event.target) == null -> {
                 println("Attack battle has no combatant for target.")
                 false
             }
@@ -90,7 +82,7 @@ class Attack : EventListener<AttackEvent>() {
         displayIf("$defenderName dodged to the $defenderPosition.", !defenderPosition.equals(TargetPosition()))
     }
 
-    private fun getOffensiveDamage(sourceCreature: Creature, sourcePart: BodyPart, type: AttackType): Int {
+    private fun getOffensiveDamage(sourceCreature: Target, sourcePart: BodyPart, type: AttackType): Int {
         return when {
             sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
             else -> sourceCreature.soul.getCurrent(BARE_HANDED)

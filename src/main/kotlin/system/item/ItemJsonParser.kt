@@ -2,15 +2,15 @@ package system.item
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import core.gameState.Item
+import core.gameState.Target
 import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 
 class ItemJsonParser : ItemParser {
-    private fun parseFile(path: String): List<Item> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private fun parseFile(path: String): List<Target> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
-    override fun loadItems(): NameSearchableList<Item> {
-        return NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/items", ::parseFile))
+    override fun loadItems(): NameSearchableList<Target> {
+        return NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/items", ::parseFile).asSequence().onEach { it.properties.tags.add("Item") }.toList())
     }
 
 }

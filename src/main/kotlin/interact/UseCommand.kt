@@ -38,7 +38,7 @@ class UseCommand : Command() {
                 if (arguments.argGroups.size > 1) {
                     val target = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[1]).firstOrNull()
                     if (target != null) {
-                        EventManager.postEvent(UseEvent(GameState.player.creature, used, target))
+                        EventManager.postEvent(UseEvent(GameState.player, used, target))
                     } else {
                         display("Couldn't find ${arguments.argStrings[1]}")
                     }

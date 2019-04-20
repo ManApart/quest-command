@@ -1,10 +1,9 @@
 package inventory.unEquipItem
 
 import core.events.Event
-import core.gameState.Creature
-import core.gameState.Item
+import core.gameState.Target
 
-class UnEquipItemEvent(val creature: Creature, val item: Item) : Event {
+class UnEquipItemEvent(val creature: Target, val item: Target) : Event {
     override fun gameTicks(): Int {
         return 1
     }

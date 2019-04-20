@@ -5,7 +5,7 @@ import combat.battle.position.HitLevel
 import combat.battle.position.TargetPosition
 import combat.battle.position.Horizontal
 import combat.battle.position.Vertical
-import core.gameState.Item
+import core.gameState.Target
 import core.history.display
 import core.utility.Named
 
@@ -15,7 +15,7 @@ class BodyPart(override val name: String, val position: TargetPosition = TargetP
 
     @JsonCreator constructor(name: String, vertical: Vertical, horizontal: Horizontal, slots: List<String> = listOf()) : this(name, TargetPosition(horizontal, vertical), slots)
 
-    private var equippedItems: MutableMap<String, Item?> = slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
+    private var equippedItems: MutableMap<String, Target?> = slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
 
     override fun toString(): String {
         return name
@@ -29,19 +29,19 @@ class BodyPart(override val name: String, val position: TargetPosition = TargetP
         return equippedItems.map { it.key.toLowerCase() }.contains(attachPoint.toLowerCase())
     }
 
-    fun getEquippedItem(slot: String): Item? {
+    fun getEquippedItem(slot: String): Target? {
         return equippedItems[slot.toLowerCase()]
     }
 
-    fun getEquippedItems(): List<Item> {
+    fun getEquippedItems(): List<Target> {
         return equippedItems.values.filterNotNull()
     }
 
-    fun getEquippedWeapon(): Item? {
+    fun getEquippedWeapon(): Target? {
         return equippedItems.values.firstOrNull { it?.properties?.tags?.has("Weapon") ?: false }
     }
 
-    fun equipItem(attachPoint: String, item: Item) {
+    fun equipItem(attachPoint: String, item: Target) {
         if (!equippedItems.containsKey(attachPoint.toLowerCase())) {
             display("Couldn't equip $item to $attachPoint of body part $name. This should never happen!")
         } else {
@@ -49,7 +49,7 @@ class BodyPart(override val name: String, val position: TargetPosition = TargetP
         }
     }
 
-    fun unEquip(item: Item) {
+    fun unEquip(item: Target) {
         equippedItems.keys.forEach {
             if (equippedItems[it] == item) {
                 equippedItems[it] = null

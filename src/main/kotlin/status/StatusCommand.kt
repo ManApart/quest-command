@@ -28,8 +28,8 @@ class StatusCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         when {
-            args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player.creature))
-            ScopeManager.getScope().getTargetsWithCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getTargetsWithCreatures(argsString).filterUniqueByName().first()))
+            args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player))
+            ScopeManager.getScope().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getCreatures(argsString).filterUniqueByName().first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

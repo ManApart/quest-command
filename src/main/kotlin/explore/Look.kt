@@ -32,8 +32,8 @@ class Look : EventListener<LookEvent>() {
     }
 
     private fun describeStatusEffects(target: Target) : String {
-        if (target.hasSoul() && target.getSoul()!!.effects.isNotEmpty()) {
-            val effects = target.getSoul()!!.effects.joinToString(", ") { it.name }
+        if (target.soul.effects.isNotEmpty()) {
+            val effects = target.soul.effects.joinToString(", ") { it.name }
             return "\n\t${target.name} is $effects"
         }
         return ""
@@ -47,7 +47,7 @@ class Look : EventListener<LookEvent>() {
     }
 
     private fun describeWeight(target: Target): String {
-        return if (target is Item) {
+        return if (target.getWeight() > 0) {
             "\n\tWeight: ${target.getWeight()}"
         } else {
             ""
@@ -55,7 +55,7 @@ class Look : EventListener<LookEvent>() {
     }
 
     private fun describeLocation() {
-        display(GameState.player.creature.location.getDescription())
+        display(GameState.player.location.getDescription())
         if (ScopeManager.getScope().getAllTargets().size > 1) {
             val targetList = targetsToString(ScopeManager.getScope().getAllTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")

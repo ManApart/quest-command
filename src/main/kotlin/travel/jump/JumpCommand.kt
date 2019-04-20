@@ -27,15 +27,15 @@ class JumpCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val loc = GameState.player.creature.location
+        val loc = GameState.player.location
         if (GameState.player.climbJourney is ClimbJourney) {
-            val location = GameState.player.creature.location
+            val location = GameState.player.location
             val distance = (GameState.player.climbJourney as ClimbJourney).getCurrentDistance()
             EventManager.postEvent(JumpEvent(source = location, destination = location, fallDistance = distance))
         } else {
             val found = loc.getNeighbors(Direction.BELOW).firstOrNull()
             if (found != null) {
-                EventManager.postEvent(JumpEvent(source = GameState.player.creature.location, destination = found))
+                EventManager.postEvent(JumpEvent(source = GameState.player.location, destination = found))
             } else {
                 display("Couldn't find anything below to jump down to.")
             }

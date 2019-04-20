@@ -1,7 +1,7 @@
 package travel
 
 import core.commands.Command
-import core.gameState.Activator
+import core.gameState.Target
 import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.location.LocationNode
@@ -60,12 +60,12 @@ class TravelInDirectionCommand : Command() {
             climbStep(GameState.player.climbJourney!!.getNextSegment(upwards))
         } else {
             val found = findLocationInDirection(direction)
-            if (found != null && !GameState.player.creature.location.isMovingToRestricted(found)) {
+            if (found != null && !GameState.player.location.isMovingToRestricted(found)) {
                 EventManager.postEvent(TravelStartEvent(destination = found))
             } else {
                 val climbTarget = findClimbTarget(direction)
                 if (climbTarget != null) {
-                    EventManager.postEvent(StartClimbingEvent(GameState.player.creature, climbTarget))
+                    EventManager.postEvent(StartClimbingEvent(GameState.player, climbTarget))
                 } else {
                     display("Could not find anything to climb.")
                 }
@@ -85,16 +85,16 @@ class TravelInDirectionCommand : Command() {
         }
     }
 
-    private fun findClimbTarget(direction: Direction): Activator? {
+    private fun findClimbTarget(direction: Direction): Target? {
         val desireUpwards = direction == Direction.ABOVE
         return ScopeManager.getScope().findTargetsByTag("Climbable")
                 .firstOrNull {
-                    it is Activator && it.climb != null && it.climb.upwards == desireUpwards
-                } as Activator?
+                    it.climb != null && it.climb.upwards == desireUpwards
+                }
     }
 
     private fun findLocationInDirection(direction: Direction): LocationNode? {
-        val loc = GameState.player.creature.location
+        val loc = GameState.player.location
         return loc.getNeighbors(direction).firstOrNull()
     }
 

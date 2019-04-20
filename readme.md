@@ -125,7 +125,7 @@ In the case of baked fruit, we don't know exactly what fruit we'll be given, bec
 ],
 ```
 
-Recipes generally yield a single result: `"results": ["Apple Pie"]`, but they can also yield multiple items, like in the case of Dough: `"results": ["Dough","Bucket of Water"]`.
+Recipes generally yield a single result: `"results": ["Apple Pie"]`, but they can also yield multiple items, like in the case of Dough: `"results": ["Dough","Bucket"]`.
 
 They can also add or remove tags to a passed in ingredient. In the case of baked fruit, the first passed in ingredient (referenced by `"id": 0`) is given the baked tag and loses the raw tag:
 ```

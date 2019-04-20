@@ -1,7 +1,6 @@
 package interact.eat
 
 import core.events.Event
-import core.gameState.Creature
-import core.gameState.Item
+import core.gameState.Target
 
-class EatFoodEvent(val creature: Creature, val food: Item) : Event
+class EatFoodEvent(val creature: Target, val food: Target) : Event

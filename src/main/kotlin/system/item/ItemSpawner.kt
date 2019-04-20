@@ -10,7 +10,7 @@ class ItemSpawner : EventListener<SpawnItemEvent>() {
     override fun execute(event: SpawnItemEvent) {
         if (ItemManager.itemExists(event.itemName)) {
             val item = ItemManager.getItem(event.itemName)
-            item.count = event.count
+            item.properties.stats.put("count", event.count)
             EventManager.postEvent(ItemSpawnedEvent(item, event.target))
         } else {
             display("Could not spawn ${event.itemName} because it could not be found.")

@@ -11,9 +11,9 @@ import system.EventManager
 class SpawnItem : EventListener<ItemSpawnedEvent>() {
     override fun execute(event: ItemSpawnedEvent) {
         if (event.target == null) {
-            val name = StringFormatter.format(event.item.count > 1, "${event.item.count}x ${event.item.name}s", event.item.name)
+            val name = StringFormatter.format(event.item.properties.getCount() > 1, "${event.item.properties.getCount()}x ${event.item.name}s", event.item.name)
             display("$name appeared.")
-            event.item.location = event.targetLocation ?: GameState.player.creature.location
+            event.item.location = event.targetLocation ?: GameState.player.location
             ScopeManager.getScope(event.targetLocation).addTarget(event.item)
         } else {
             event.target.inventory.add(event.item)

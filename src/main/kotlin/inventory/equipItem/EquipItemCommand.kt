@@ -6,7 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.gameState.body.Body
 import core.gameState.GameState
-import core.gameState.Item
+import core.gameState.Target
 import core.gameState.body.Slot
 import core.history.display
 import system.EventManager
@@ -38,7 +38,7 @@ class EquipItemCommand : Command() {
         } else {
             val item = getItem(arguments)
             val attachPointGuess = getAttachPoint(arguments)
-            val body = GameState.player.creature.body
+            val body = GameState.player.body
             val force = arguments.has("f")
 
             if (item == null) {
@@ -55,7 +55,7 @@ class EquipItemCommand : Command() {
                         if (equippedItems.isNotEmpty() && !force) {
                             confirmEquip(item, equippedItems, attachPointGuess)
                         } else {
-                            EventManager.postEvent(EquipItemEvent(GameState.player.creature, item, slot))
+                            EventManager.postEvent(EquipItemEvent(GameState.player, item, slot))
                         }
                     }
                 }
@@ -63,9 +63,9 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun getItem(args: Args): Item? {
+    private fun getItem(args: Args): Target? {
         val itemName = args.argStrings[0]
-        return GameState.player.creature.inventory.getItem(itemName)
+        return GameState.player.inventory.getItem(itemName)
     }
 
     private fun getAttachPoint(args: Args): String? {
@@ -76,7 +76,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun findSlot(attachPointGuess: String?, body: Body, item: Item): Slot? {
+    private fun findSlot(attachPointGuess: String?, body: Body, item: Target): Slot? {
         return if (attachPointGuess == null) {
             body.getDefaultSlot(item)
         } else {
@@ -91,19 +91,19 @@ class EquipItemCommand : Command() {
         CommandParser.responseRequest = response
     }
 
-    private fun getEquipableItems(): List<Item> {
-        val body = GameState.player.creature.body
+    private fun getEquipableItems(): List<Target> {
+        val body = GameState.player.body
         val equippedItems = body.getEquippedItems()
-        return GameState.player.creature.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
+        return GameState.player.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
     }
 
-    private fun suggestAttachPoints(attachPointGuess: String?, item: Item) {
+    private fun suggestAttachPoints(attachPointGuess: String?, item: Target) {
         display("Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}")
         val response = ResponseRequest(item.equipSlots.flatMap { it.attachPoints }.map { it to "equip $item to $it" }.toMap())
         CommandParser.responseRequest = response
     }
 
-    private fun confirmEquip(newEquip: Item, equippedItems: List<Item>, attachPoint: String?) {
+    private fun confirmEquip(newEquip: Target, equippedItems: List<Target>, attachPoint: String?) {
         display("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
 
         val toPart = if (attachPoint.isNullOrBlank()) {

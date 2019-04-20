@@ -1,7 +1,7 @@
 package status
 
 import core.events.EventListener
-import core.gameState.isPlayer
+
 import core.gameState.stat.HEALTH
 import core.gameState.stat.STAMINA
 import core.history.display
