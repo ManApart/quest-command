@@ -33,19 +33,19 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     fun execute(parent: Target = GameState.player) {
         when (className) {
-            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationManager.findLocation(params[0]), method = "move"))
+            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationManager.getNetwork(params[0]).findLocation(params[1]), method = "move"))
             AddEffectEvent::class.simpleName -> EventManager.postEvent(AddEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
             DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player, getRecipe(0)))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
-            RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getLocationNode(params[0]), LocationManager.getLocationNode(params[1]), getParamBoolean(2)))
+            RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getNetwork(params[0]).getLocationNode(params[1]), LocationManager.getNetwork(params[2]).getLocationNode(params[3]), getParamBoolean(4)))
             RemoveEffectEvent::class.simpleName -> EventManager.postEvent(RemoveEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
             RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(0), getItemOrParent(1, getTargetCreatureOrPlayer(0), parent)))
             RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
             SetPropertiesEvent::class.simpleName -> EventManager.postEvent(SetPropertiesEvent(getTargetCreatureOrPlayer(0), getProperties(1, 2, 3)))
             SetQuestStageEvent::class.simpleName -> EventManager.postEvent(SetQuestStageEvent(QuestManager.quests.get(params[0]), getParamInt(1)))
             SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0]), getParamBoolean(1)))
-            SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0], getParamInt(1), getTargetCreature(2, getLocation(3)), getLocation(3)))
+            SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0], getParamInt(1), getTargetCreature(2, getLocation(3, 4)), getLocation(3, 4)))
             StatChangeEvent::class.simpleName -> EventManager.postEvent(StatChangeEvent(getTargetCreatureOrPlayer(0), getParam(1, "event"), getParam(2, "none"), getParamInt(3, 0)))
         }
     }
@@ -59,12 +59,13 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         }
     }
 
-    private fun getLocation(paramNumber: Int): LocationNode? {
-        val param = getParam(paramNumber, "")
-        if (param.isBlank()) {
+    private fun getLocation(paramNetworkNumber: Int, paramLocationNumber: Int): LocationNode? {
+        val networkParam = getParam(paramNetworkNumber, "")
+        val locationParam = getParam(paramNetworkNumber, "")
+        if (networkParam.isBlank() || locationParam.isBlank()) {
             return null
         }
-        val location = LocationManager.findLocation(param)
+        val location = LocationManager.getNetwork(networkParam).findLocation(locationParam)
         return if (location == NOWHERE_NODE) {
             null
         } else {

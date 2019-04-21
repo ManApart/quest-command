@@ -41,7 +41,7 @@ class RouteCommand : Command() {
     }
 
     private fun targetLocation(args: List<String>, depth: Int){
-        val target = LocationManager.findLocation(args.joinToString(" "))
+        val target = LocationManager.getNetwork().findLocation(args.joinToString(" "))
         if (target != NOWHERE_NODE){
             EventManager.postEvent(FindRouteEvent(GameState.player.location, target, depth))
         } else {

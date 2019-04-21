@@ -1,7 +1,11 @@
 package system
 
+import core.gameState.PLAYER_START_LOCATION
+import core.gameState.PLAYER_START_NETWORK
 import core.gameState.Target
 import core.gameState.climb.Climbable
+import core.gameState.location.DEFAULT_NETWORK
+import core.gameState.location.LocationNode
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
 import dialogue.DialogueOptions
@@ -19,14 +23,13 @@ class ActivatorManagerTest {
     companion object {
         @JvmStatic @BeforeClass
         fun setup() {
-            //Run before other tests so object is initialized and we're testing a fresh clear each time
-            val fakeParser = ActivatorFakeParser(NameSearchableList(listOf()))
-            DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
-            ActivatorManager.getAll()
+            val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(
+                    LocationNode(PLAYER_START_LOCATION, parent = PLAYER_START_NETWORK),
+                    LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK))
+            ))
 
-            val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf()))
             DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
-            LocationManager.getLocations()
+            LocationManager.reset()
         }
     }
 

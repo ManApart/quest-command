@@ -11,7 +11,15 @@ import system.body.BodyManager
 import system.location.LocationManager
 import travel.climb.ClimbJourney
 
-class Player : Target(name = "Player", dynamicDescription = DialogueOptions("Our Hero!"), body = "Human", location = LocationManager.findLocation("an open field")) {
+val PLAYER_START_NETWORK = "Kanbara CountrySide"
+val PLAYER_START_LOCATION = "An Open Field"
+
+class Player(
+        name: String = "Player",
+        dynamicDescription: DialogueOptions = DialogueOptions("Our Hero!"),
+        body: String = "Human",
+        location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION))
+    : Target(name = name, dynamicDescription = dynamicDescription, body = body, location = location) {
 
     var climbJourney: ClimbJourney? = null
     var route: Route? = null

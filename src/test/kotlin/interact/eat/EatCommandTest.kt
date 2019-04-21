@@ -4,6 +4,7 @@ import core.commands.CommandParser
 import core.gameState.*
 import core.gameState.body.ProtoBody
 import core.gameState.location.LocationNode
+import core.gameState.location.NOWHERE_NODE
 import core.utility.NameSearchableList
 import core.utility.PoorMansInstrumenter
 import interact.UseEvent
@@ -37,11 +38,11 @@ class EatCommandTest {
         DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
         BehaviorManager.reset()
 
-        val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(LocationNode("an open field"))))
+        val locationParser = LocationFakeParser()
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
 
-        GameState.player = Player()
+        GameState.player = Player(location = NOWHERE_NODE)
     }
 
     @Test

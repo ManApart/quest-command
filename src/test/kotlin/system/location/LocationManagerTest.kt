@@ -30,8 +30,8 @@ class LocationManagerTest {
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
         LocationManager.reset()
 
-        Assert.assertEquals(source, LocationManager.getLocationNode(source.name))
-        Assert.assertEquals(neighborLink.name, LocationManager.findLocation(neighborLink.name).name)
+        Assert.assertEquals(source, LocationManager.getNetwork("Wilderness").getLocationNode(source.name))
+        Assert.assertEquals(neighborLink.name, LocationManager.getNetwork("Wilderness").findLocation(neighborLink.name).name)
     }
 
     @Test
@@ -46,13 +46,13 @@ class LocationManagerTest {
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
         LocationManager.reset()
 
-        val neighborDoesNotExists = LocationManager.findLocation(neighborDoesNotExistsName)
+        val neighborDoesNotExists = LocationManager.getNetwork("Wilderness").findLocation(neighborDoesNotExistsName)
 
         //No Duplicate Nodes
-        Assert.assertEquals(source, LocationManager.getLocationNode(source.name))
-        Assert.assertEquals(neighborExists, LocationManager.findLocation(neighborExists.name))
+        Assert.assertEquals(source, LocationManager.getNetwork("Wilderness").getLocationNode(source.name))
+        Assert.assertEquals(neighborExists, LocationManager.getNetwork("Wilderness").findLocation(neighborExists.name))
         Assert.assertEquals(neighborDoesNotExistsName, neighborDoesNotExists.name)
-        Assert.assertEquals(3, LocationManager.countLocationNodes())
+        Assert.assertEquals(3, LocationManager.getNetwork("Wilderness").countLocationNodes())
 
         //No Duplicate Links
         Assert.assertEquals(2, source.getNeighborLinks().size)
@@ -70,8 +70,8 @@ class LocationManagerTest {
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
         LocationManager.reset()
 
-        Assert.assertEquals(source, LocationManager.getLocationNode(source.name))
-        Assert.assertEquals(neighbor, LocationManager.getLocationNode(neighbor.name))
+        Assert.assertEquals(source, LocationManager.getNetwork("Wilderness").getLocationNode(source.name))
+        Assert.assertEquals(neighbor, LocationManager.getNetwork("Wilderness").getLocationNode(neighbor.name))
         Assert.assertEquals(1, source.getNeighborLinks().size)
         Assert.assertEquals(0, neighbor.getNeighborLinks().size)
 

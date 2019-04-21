@@ -23,7 +23,7 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = ChatHistory.getLastOutput()
-        Assert.assertEquals("My Place has no known neighbors.", actual)
+        Assert.assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
 
     @Test
@@ -35,7 +35,7 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = ChatHistory.getLastOutput()
-        Assert.assertEquals("My Place is neighbored by:\n" +
+        Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name         Distance  Direction Path  \n" +
                 "  Destination  10        N               \n", actual)
     }
@@ -52,7 +52,7 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = ChatHistory.getLastOutput()
-        Assert.assertEquals("My Place is neighbored by:\n" +
+        Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name   Distance  Direction Path  \n" +
                 "  north  10        N               \n" +
                 "  south  10        S               \n" +

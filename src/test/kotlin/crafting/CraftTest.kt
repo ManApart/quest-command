@@ -2,6 +2,8 @@ package crafting
 
 import core.gameState.*
 import core.gameState.Target
+import core.gameState.location.LocationNode
+import core.gameState.location.NOWHERE_NODE
 import inventory.dropItem.TransferItem
 import org.junit.Test
 import system.*
@@ -61,7 +63,7 @@ class CraftTest {
     }
 
     private fun createBaker(): Target {
-        val baker = Player()
+        val baker = Player(location = NOWHERE_NODE)
         val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
         baker.inventory.add(pouch)
         return baker

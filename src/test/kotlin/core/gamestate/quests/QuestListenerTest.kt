@@ -31,7 +31,7 @@ class QuestListenerTest {
             DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
             BodyManager.reset()
 
-            val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(LocationNode("an open field"))))
+            val locationParser = LocationFakeParser()
             DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
             LocationManager.reset()
 

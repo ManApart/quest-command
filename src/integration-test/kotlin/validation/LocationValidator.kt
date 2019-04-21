@@ -11,13 +11,15 @@ class LocationValidator {
 
     private fun noDuplicateLocationNodeNames(): Int {
         var warnings = 0
-        val names = mutableListOf<String>()
-        LocationManager.getLocationNodes().forEach { locationNode ->
-            if (names.contains(locationNode.name)) {
-                println("WARN: Location Node '${locationNode.name}' has a duplicate name.")
-                warnings++
-            } else {
-                names.add(locationNode.name)
+        LocationManager.getNetworks().forEach { network ->
+            val names = mutableListOf<String>()
+            network.getLocationNodes().forEach { locationNode ->
+                if (names.contains(locationNode.name)) {
+                    println("WARN: Location Node '${locationNode.name}' has a duplicate name for network ${network.name}.")
+                    warnings++
+                } else {
+                    names.add(locationNode.name)
+                }
             }
         }
         return warnings

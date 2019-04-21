@@ -12,6 +12,6 @@ class Climbable(
 ) {
     constructor(base: Climbable, params: Map<String, String> = mapOf()) : this(base.name.apply(params), base.destinationName.apply(params), base.upwards)
 
-    @JsonIgnore val destination = LocationManager.findLocation(destinationName)
+    @JsonIgnore val destination = LocationManager.getNetwork().findLocation(destinationName)
 
 }

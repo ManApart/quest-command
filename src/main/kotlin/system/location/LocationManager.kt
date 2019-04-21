@@ -1,45 +1,67 @@
 package system.location
 
+import core.gameState.GameState
 import core.gameState.location.*
 import core.utility.NameSearchableList
 import system.DependencyInjector
 
 object LocationManager {
     private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
-
     private var locations = parser.loadLocations()
-    private var locationNodes = loadLocationNodes()
+    private var networks = loadNetworks()
 
-    private fun loadLocationNodes(): NameSearchableList<LocationNode> {
+
+    private fun loadNetworks(): NameSearchableList<Network> {
         val nodes: List<LocationNode> = parser.loadLocationNodes()
 
-        val locationNodes = NameSearchableList(nodes)
+        val nodeMap = buildInitialMap(nodes)
+        createNeighborsAndNeighborLinks(nodeMap)
+        createLocationIfNeeded(nodeMap)
+
+        val networks = nodeMap.map { entry ->
+            Network(entry.key, entry.value)
+        }
+
+        return NameSearchableList(networks)
+    }
+
+    private fun buildInitialMap(nodes: List<LocationNode>): HashMap<String, MutableList<LocationNode>> {
+        val nodeMap = HashMap<String, MutableList<LocationNode>>()
+
         nodes.forEach { node ->
-            createNeighborLinks(node, locationNodes)
-            createLocationIfNeeded(node)
+            nodeMap.putIfAbsent(node.parent, mutableListOf())
+            nodeMap[node.parent]?.add(node)
         }
-
-        return locationNodes
+        return nodeMap
     }
 
-    private fun createLocationIfNeeded(node: LocationNode) {
-        if (!locationExists(node.locationName)){
-            locations.add(Location(node.locationName))
-        }
-    }
+    private fun createNeighborsAndNeighborLinks(nodeMap: Map<String, MutableList<LocationNode>>) {
+        nodeMap.keys.forEach { key ->
+            val network = nodeMap[key]?.toList() ?: listOf()
+            network.forEach { node ->
+                node.protoLocationLinks.forEach { link ->
+                    var neighbor = getLocationNodeByExactName(link.name, network)
+                    if (neighbor == null) {
+                        neighbor = LocationNode(link.name)
+                        nodeMap[key]?.add(neighbor)
+                    }
+                    val locationLink = LocationLink(node, neighbor, link.position, link.restricted)
+                    node.addLink(locationLink)
 
-    private fun createNeighborLinks(node: LocationNode, locationNodes: NameSearchableList<LocationNode>) {
-        node.protoLocationLinks.forEach { link ->
-            var neighbor = getLocationNodeByExactName(link.name, locationNodes)
-            if (neighbor == null) {
-                neighbor = LocationNode(link.name)
-                locationNodes.add(neighbor)
+                    if (!link.oneWay) {
+                        neighbor.addLink(locationLink.invert())
+                    }
+                }
             }
-            val locationLink = LocationLink(node, neighbor, link.position, link.restricted)
-            node.addLink(locationLink)
+        }
+    }
 
-            if (!link.oneWay) {
-                neighbor.addLink(locationLink.invert())
+    private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>) {
+        nodeMap.values.forEach { network ->
+            network.forEach { node ->
+                if (!locationExists(node.locationName)) {
+                    locations.add(Location(node.locationName))
+                }
             }
         }
     }
@@ -51,67 +73,32 @@ object LocationManager {
     fun reset() {
         parser = DependencyInjector.getImplementation(LocationParser::class.java)
         locations = parser.loadLocations()
-        locationNodes = loadLocationNodes()
+        networks = loadNetworks()
     }
 
     fun getLocation(name: String): Location {
         return locations.getOrNull(name) ?: NOWHERE
     }
 
-    fun getLocations() : List<Location> {
+    fun getLocations(): List<Location> {
         return locations.toList()
     }
 
-    fun getLocationNode(name: String): LocationNode {
-        return locationNodes.get(name)
+    fun getNetwork(): Network {
+        return getNetwork(GameState.player.location.parent)
     }
 
-    fun getLocationNodes() : List<LocationNode> {
-        return locationNodes.toList()
+    fun getNetworks(): List<Network> {
+        return networks.toList()
     }
 
-    fun findLocation(name: String): LocationNode {
-        return when {
-            locationNodes.exists(name) -> locationNodes.get(name)
-            name.startsWith("$") -> NOWHERE_NODE
-            else -> {
-                println("Could not find location: $name")
-                NOWHERE_NODE
-            }
-        }
+    fun getNetwork(name: String): Network {
+        return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
     }
 
-    fun countLocationNodes(): Int {
-        return locationNodes.size
-    }
-
-    fun locationExists(name: String) : Boolean {
+    fun locationExists(name: String): Boolean {
         return locations.exists(name)
     }
 
-
-//    //TODO - test
-//    fun findLeastDistant(locations: List<LocationNode>) : LocationNode {
-//        return locations.sortedBy { position.getDistance(it.position) }.first()
-//    }
-//
-
-//
-//    private fun findOverlap(name: String, args: List<String>): Int {
-//        var wordCount = 0
-//        var remainingWords = name.toLowerCase()
-//        for (i in 0 until args.size) {
-//            when {
-//                remainingWords.isBlank() -> return wordCount
-//                remainingWords.contains(args[i]) -> {
-//                    remainingWords = remainingWords.substring(remainingWords.indexOf(args[i]))
-//                    wordCount++
-//                }
-//                else -> return wordCount
-//            }
-//        }
-//
-//        return wordCount
-//    }
 
 }

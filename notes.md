@@ -58,7 +58,7 @@ Spacial Nodes
 Climbing
 - Body part has a material
 - Materials are defined in their own file and have properties
-- A bodypart node can have an exit location node. The lowest exit node is used for falling.
+- A bodypart node can have an exit location node. <- these are passed in by the parent location node. The lowest exit node is used for falling.
 - Rework climbing so that you look at a target’s body nodes and then climbing direction is based on the node connections and difficulty is based on the material properties (slippery, rough, smooth, etc). Distance from lowest node = height for fall damage etc.
 
 
@@ -273,3 +273,92 @@ Certain quests unlock the ability to start a new character as a different race i
 Attack command groups 0 vs 1 - make tests
  - Mock Player?
 
+
+
+
+-----------------------------
+
+body parts have/are location nodes
+Bodies are deleted
+When a body is created, the parts are found and a network is created per parent name
+Location node can pass in an exit to a body part of a target
+
+rename node locations to connections
+Break locationmanager into manager and network
+
+Location Nodes need only be uniqly named per network
+Finding location nodes are searched by the parent network (kanbara, Human, etc)
+
+Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
+- Possibly good for towns/houses etc
+- assume no for now but once all this done maybe...
+
+For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
+
+
+Location Nodes:
+
+  {
+    "name": "Kanbara Wall",
+    "locationName": "Kanbara Wall",
+    "parent": "Kanbara",
+    "exits": [
+        {
+        "target": "Wall"
+        "part": "Upper Wall"
+        "connection": {
+            "network": "Kanbara"
+            "location": "Kanbara City"
+            "target": "Wall"
+            "part": "Upper Wall"
+            }
+        }
+    ]
+    "locations": [
+      {
+        "name": "Guard Post"
+      }
+    ]
+  },
+
+
+
+Body Parts:
+  {
+    "name": "Head",
+    "parent": "Human"
+    "material": "flesh"
+    "slots": [
+      "Head Inner",
+      "Head",
+      "Head Outer"
+    ],
+     "locations": [
+        {
+          "name": "Chest",
+          "position": {
+            "x": -1
+          }
+        }
+  },
+  {
+    "name": "Canine Body",
+    "parent": "Rat"
+    "material": "fur"
+    "slots": [
+      "Canine Body"
+    ]
+  },
+    {
+      "name": "Trunk",
+      "parent": "Tree"
+      "material": "wood"
+      "locations": [
+        {
+          "name": "Branches",
+          "position": {
+            "x": -1
+          }
+        }
+      ]
+    },

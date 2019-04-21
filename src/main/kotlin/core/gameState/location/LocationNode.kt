@@ -6,11 +6,12 @@ import core.utility.Named
 import system.location.LocationManager
 
 val NOWHERE_NODE = LocationNode("Nowhere")
+const val DEFAULT_NETWORK = "Wilderness"
 
 class LocationNode(
         override val name: String,
         val locationName: String = name,
-        val parent: String? = null,
+        val parent: String = DEFAULT_NETWORK,
         @JsonProperty("locations") val protoLocationLinks: List<ProtoLocationLink> = listOf(),
         private val locationLinks: MutableList<LocationLink> = mutableListOf()
 ) : Named {
