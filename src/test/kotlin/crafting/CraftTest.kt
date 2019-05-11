@@ -2,11 +2,15 @@ package crafting
 
 import core.gameState.*
 import core.gameState.Target
+import core.gameState.body.BodyPart
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
 import inventory.dropItem.TransferItem
+import org.junit.Before
 import org.junit.Test
 import system.*
+import system.body.BodyManager
+import system.body.BodyParser
 import system.item.ItemManager
 import system.item.ItemParser
 import kotlin.test.assertFalse
@@ -14,6 +18,13 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CraftTest {
+
+    @Before
+    fun setup() {
+        val bodyParser = BodyFakeParser()
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+    }
 
     @Test
     fun recipeReturnsNewItems() {

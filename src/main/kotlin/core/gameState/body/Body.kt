@@ -6,13 +6,14 @@ import core.gameState.Target
 import core.gameState.location.Network
 import core.history.display
 import core.utility.NameSearchableList
+import core.utility.Named
 import java.lang.IllegalArgumentException
 
-class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
-//class Body(val name: String = "None", parts: Network = Network(name)) {
-    constructor(base: Body) : this(base.name, base.parts.map { BodyPart(it) })
+class Body(override val name: String = "None", private val layout: Network = Network(name)) : Named {
+    constructor(base: Body) : this(base.name, base.layout)
 
-    private val parts = NameSearchableList(parts)
+    private val parts = NameSearchableList(layout.getLocations().asSequence().map { it.bodyPart }.filterNotNull().toList())
+
 
     private fun hasAttachPoint(attachPoint: String): Boolean {
         return parts.any { it.hasAttachPoint(attachPoint) }

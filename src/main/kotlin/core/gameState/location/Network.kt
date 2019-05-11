@@ -42,29 +42,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locations.exists(name)
     }
 
+    // fun getLowestLocations() : List<LocationNode> {
 
-    //    //TODO - test
-//    fun findLeastDistant(locations: List<LocationNode>) : LocationNode {
-//        return locations.sortedBy { position.getDistance(it.position) }.first()
-//    }
-//
-
-//
-//    private fun findOverlap(name: String, args: List<String>): Int {
-//        var wordCount = 0
-//        var remainingWords = name.toLowerCase()
-//        for (i in 0 until args.size) {
-//            when {
-//                remainingWords.isBlank() -> return wordCount
-//                remainingWords.contains(args[i]) -> {
-//                    remainingWords = remainingWords.substring(remainingWords.indexOf(args[i]))
-//                    wordCount++
-//                }
-//                else -> return wordCount
-//            }
-//        }
-//
-//        return wordCount
-//    }
 
 }

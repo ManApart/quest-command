@@ -1,0 +1,30 @@
+[
+  {
+    "parent": "Rat",
+    "name": "Canine Head"
+  },
+  {
+    "parent": "Rat",
+    "name": "Canine Body",
+    "locations": [
+      {
+        "name": "Canine Head",
+        "restricted": true,
+        "position": {
+          "z": 1
+        }
+      },
+      {
+        "name": "Canine Claws",
+        "restricted": true,
+        "position": {
+          "z": -1
+        }
+      }
+    ]
+  },
+  {
+    "parent": "Rat",
+    "name": "Canine Claws"
+  }
+]

@@ -2,20 +2,36 @@ package inventory
 
 import combat.battle.position.TargetPosition
 import core.gameState.*
-import core.gameState.body.Body
 import core.gameState.body.BodyPart
-import core.gameState.body.ProtoBody
+import core.gameState.location.LocationNode
 import interact.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
+import org.junit.Before
 import org.junit.Test
+import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.DependencyInjector
+import system.behavior.BehaviorManager
+import system.behavior.BehaviorParser
 import system.body.BodyManager
 import system.body.BodyParser
 import kotlin.test.*
 
 class PlaceItemTest {
+
+
+    @Before
+    fun setup() {
+        val bodyParser = BodyFakeParser()
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
+        val behaviorParser = BehaviorFakeParser()
+        DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
+        BehaviorManager.reset()
+
+    }
 
     @Test
     fun dropItem() {
@@ -62,15 +78,19 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
+        val hand = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
+        val part = BodyPart("part")
+
+        val bodyParser = BodyFakeParser(
+                listOf(LocationNode(parent = "body", name = "Hand"), LocationNode(parent = "none", name = "part")),
+                listOf(hand, part))
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+
         val creature = createCreature()
         val item = Target("Dagger", equipSlots = listOf(listOf("Grip")))
         creature.inventory.add(item)
 
-        val part = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
-
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("Hand"))), listOf(part))
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
-        BodyManager.reset()
 
         val chest = Target("Chest", body = "body", properties = Properties(Tags(listOf("Container", "Open", "Creature")), stats = Values(mapOf("Strength" to "1"))))
 

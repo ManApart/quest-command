@@ -2,9 +2,7 @@ package core.gamestate
 
 import core.gameState.*
 import core.gameState.Target
-import core.gameState.body.ProtoBody
 import core.gameState.location.LocationNode
-import core.utility.NameSearchableList
 import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
@@ -25,7 +23,7 @@ class InventoryTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("Human")))
+        val bodyParser = BodyFakeParser()
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 

@@ -5,6 +5,9 @@ import core.gameState.Target
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
 import core.gameState.body.Slot
+import core.gameState.location.Location
+import core.gameState.location.LocationNode
+import core.gameState.location.Network
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -15,7 +18,7 @@ class BodyEquipTest {
     fun equipItem() {
         val item = Target("Dagger", equipSlots = listOf(listOf("Grip")))
         val part = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
-        val body = Body(parts = listOf(part))
+        val body = createBody(part)
 
         body.equip(item)
 
@@ -28,7 +31,7 @@ class BodyEquipTest {
     fun unEquipItem() {
         val item = Target("Dagger", equipSlots = listOf(listOf("Grip")))
         val part = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
-        val body = Body(parts = listOf(part))
+        val body = createBody(part)
 
         body.equip(item)
         body.unEquip(item)
@@ -43,7 +46,7 @@ class BodyEquipTest {
         val hatchet = Target("Hatchet", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
         val rightHand = BodyPart("Right Hand", TargetPosition(), listOf("Right Grip", "Right Glove"))
         val leftHand = BodyPart("Left Hand", TargetPosition(), listOf("Left Grip", "Left Glove"))
-        val body = Body(parts = listOf(rightHand, leftHand))
+        val body = createBody(listOf(rightHand, leftHand))
 
         body.equip(dagger)
         body.equip(hatchet)
@@ -59,7 +62,7 @@ class BodyEquipTest {
         val hatchet = Target("Hatchet", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
         val rightHand = BodyPart("Right Hand", TargetPosition(), listOf("Right Grip", "Right Glove"))
         val leftHand = BodyPart("Left Hand", TargetPosition(), listOf("Left Grip", "Left Glove"))
-        val body = Body(parts = listOf(rightHand, leftHand))
+        val body = createBody(listOf(rightHand, leftHand))
         val slot = Slot(listOf("Right Grip"))
 
         body.equip(dagger, slot)
@@ -76,7 +79,7 @@ class BodyEquipTest {
         val boot = Target("Boot", equipSlots = listOf(listOf("Right Foot", "Right Leg")))
         val rightFoot= BodyPart("Right Foot", TargetPosition(), listOf("Right Foot"))
         val rightLeg = BodyPart("Right Leg", TargetPosition(), listOf("Right Leg"))
-        val body = Body(parts = listOf(rightFoot, rightLeg))
+        val body = createBody(listOf(rightFoot, rightLeg))
 
         body.equip(boot, boot.equipSlots.first())
         body.equip(shoe, shoe.equipSlots.first())

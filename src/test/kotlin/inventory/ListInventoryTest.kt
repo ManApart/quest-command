@@ -1,9 +1,7 @@
 package inventory
 
 import core.gameState.*
-import core.gameState.body.Body
 import core.gameState.body.BodyPart
-import core.gameState.body.ProtoBody
 import core.history.ChatHistory
 import org.junit.Test
 import system.BodyFakeParser
@@ -27,7 +25,7 @@ class ListInventoryTest {
     fun listInventoryEquipped() {
         val chest = BodyPart("Chest", slots = listOf("Chest"))
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("Chest"))), listOf(chest))
+        val bodyParser = BodyFakeParser.parserFromPart(chest)
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 
@@ -48,7 +46,7 @@ class ListInventoryTest {
 
         val chest = BodyPart("Chest", slots = listOf("Chest"))
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("Chest"))), listOf(chest))
+        val bodyParser = BodyFakeParser.parserFromPart(chest)
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 

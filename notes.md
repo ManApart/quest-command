@@ -278,12 +278,11 @@ Attack command groups 0 vs 1 - make tests
 
 -----------------------------
 
-
-location changes should persist within that network, but not affect the 'same' location in another network
-
-locationNode should get it's location from it's parent network
+make parent the first variable of a location node
 
 when parsing a body network, create locations for the body parts
+
+double check parts are properly instanced through scope manager
 
 
 Bodies have a network

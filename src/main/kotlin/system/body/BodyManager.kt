@@ -1,9 +1,13 @@
 package system.body
 
 import core.gameState.body.Body
-import core.gameState.body.BodyPart
-import core.gameState.body.ProtoBody
+import core.gameState.location.Location
+import core.gameState.location.LocationLink
+import core.gameState.location.LocationNode
+import core.gameState.location.Network
+import core.utility.NameSearchableList
 import system.DependencyInjector
+import java.lang.RuntimeException
 
 object BodyManager {
     private var parser = DependencyInjector.getImplementation(BodyParser::class.java)
@@ -14,31 +18,57 @@ object BodyManager {
         bodies = createBodies()
     }
 
-    private fun createBodies(): List<Body> {
-        val protoBodies = parser.loadBodies()
+    private fun createBodies(): NameSearchableList<Body> {
+        val nodes: List<LocationNode> = parser.loadBodies()
         val bodyParts = parser.loadBodyParts()
 
-        val partMap = bodyParts.map { it.name.toLowerCase() to it }.toMap()
-        val bodies = mutableListOf<Body>()
+        val nodeMap = buildInitialMap(nodes)
+        createNeighborsAndNeighborLinks(nodeMap)
+        val locations = NameSearchableList(bodyParts.map { Location(it.name, bodyPart = it) })
 
-        protoBodies.forEach {
-            val parts = findAllParts(it, partMap)
-            bodies.add(Body(it.name, parts))
+        val networks = nodeMap.map { entry ->
+            val networkLocations = entry.value.map { locations.get(it.locationName) }
+            Network(entry.key, entry.value, networkLocations)
         }
-        bodies.add(Body())
-        return bodies
+
+        val bodies = networks.map { Body(it.name, it) }
+
+        return NameSearchableList(bodies)
     }
 
-    private fun findAllParts(it: ProtoBody, partMap: Map<String, BodyPart>): List<BodyPart> {
-        val parts = mutableListOf<BodyPart>()
-        it.parts.forEach { partName ->
-            if (!partMap.containsKey(partName.toLowerCase())) {
-                throw IllegalArgumentException("Part $partName does not exist as a body part!")
-            } else {
-                parts.add(partMap[partName.toLowerCase()]!!)
+    private fun buildInitialMap(nodes: List<LocationNode>): HashMap<String, MutableList<LocationNode>> {
+        val nodeMap = HashMap<String, MutableList<LocationNode>>()
+
+        nodes.forEach { node ->
+            nodeMap.putIfAbsent(node.parent, mutableListOf())
+            nodeMap[node.parent]?.add(node)
+        }
+        return nodeMap
+    }
+
+    private fun createNeighborsAndNeighborLinks(nodeMap: Map<String, MutableList<LocationNode>>) {
+        nodeMap.keys.forEach { networkName ->
+            val network = nodeMap[networkName]?.toList() ?: listOf()
+            network.forEach { node ->
+                node.protoLocationLinks.forEach { link ->
+                    var neighbor = getLocationNodeByExactName(link.name, network)
+                    if (neighbor == null) {
+                        neighbor = LocationNode(link.name, parent = networkName)
+                        nodeMap[networkName]?.add(neighbor)
+                    }
+                    val locationLink = LocationLink(node, neighbor, link.position, link.restricted)
+                    node.addLink(locationLink)
+
+                    if (!link.oneWay) {
+                        neighbor.addLink(locationLink.invert())
+                    }
+                }
             }
         }
-        return parts
+    }
+
+    private fun getLocationNodeByExactName(name: String, nodes: List<LocationNode>): LocationNode? {
+        return nodes.firstOrNull { name == it.name }
     }
 
     fun bodyExists(name: String): Boolean {
@@ -46,6 +76,7 @@ object BodyManager {
     }
 
     fun getBody(name: String): Body {
-        return Body(bodies.first { it.name.toLowerCase() == name.toLowerCase() })
+        val body = bodies.getOrNull(name)
+        return body ?: throw RuntimeException("Could not find body for $name")
     }
 }

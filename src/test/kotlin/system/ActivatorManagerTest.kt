@@ -9,10 +9,13 @@ import core.gameState.location.LocationNode
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
 import dialogue.DialogueOptions
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import system.activator.ActivatorManager
 import system.activator.ActivatorParser
+import system.body.BodyManager
+import system.body.BodyParser
 import system.location.LocationFakeParser
 import system.location.LocationManager
 import system.location.LocationParser
@@ -20,17 +23,19 @@ import kotlin.test.assertEquals
 
 class ActivatorManagerTest {
 
-    companion object {
-        @JvmStatic @BeforeClass
-        fun setup() {
-            val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(
-                    LocationNode(PLAYER_START_LOCATION, parent = PLAYER_START_NETWORK),
-                    LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK))
-            ))
+    @Before
+    fun setup() {
+        val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(
+                LocationNode(PLAYER_START_LOCATION, parent = PLAYER_START_NETWORK),
+                LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK))
+        ))
 
-            DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
-            LocationManager.reset()
-        }
+        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        LocationManager.reset()
+
+        val bodyParser = BodyFakeParser()
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
     }
 
     @Test

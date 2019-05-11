@@ -11,6 +11,10 @@ import system.DependencyInjector
 object LocationManager {
     private var networks = loadNetworks()
 
+    fun reset() {
+        networks = loadNetworks()
+    }
+
     private fun loadNetworks(): NameSearchableList<Network> {
         val parser = DependencyInjector.getImplementation(LocationParser::class.java)
         val locations = parser.loadLocations()
@@ -73,21 +77,15 @@ object LocationManager {
         return nodes.firstOrNull { name == it.name }
     }
 
-    fun reset() {
-        networks = loadNetworks()
-    }
-
-    fun getNetwork(): Network {
-        return getNetwork(GameState.player.location.parent)
+    fun getNetwork(name: String = GameState.player.location.parent): Network {
+        return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
     }
 
     fun getNetworks(): List<Network> {
         return networks.toList()
     }
 
-    fun getNetwork(name: String): Network {
-        return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
-    }
+
 
 
 }

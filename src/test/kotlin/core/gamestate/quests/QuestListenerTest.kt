@@ -3,11 +3,8 @@ package core.gamestate.quests
 import core.gameState.GameState
 import core.gameState.Player
 import core.gameState.Target
-import core.gameState.body.ProtoBody
 import core.gameState.dataParsing.TriggerCondition
-import core.gameState.location.LocationNode
 import core.gameState.quests.*
-import core.utility.NameSearchableList
 import gameState.quests.QuestFakeParser
 import interact.interaction.InteractEvent
 import org.junit.BeforeClass
@@ -27,7 +24,7 @@ class QuestListenerTest {
         @JvmStatic
         @BeforeClass
         fun setup() {
-            val bodyParser = BodyFakeParser(listOf(ProtoBody("Human")))
+            val bodyParser = BodyFakeParser()
             DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
             BodyManager.reset()
 

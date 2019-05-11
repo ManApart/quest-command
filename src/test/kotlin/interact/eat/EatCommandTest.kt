@@ -2,10 +2,7 @@ package interact.eat
 
 import core.commands.CommandParser
 import core.gameState.*
-import core.gameState.body.ProtoBody
-import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
-import core.utility.NameSearchableList
 import core.utility.PoorMansInstrumenter
 import interact.UseEvent
 import org.junit.Before
@@ -30,7 +27,7 @@ class EatCommandTest {
         EventManager.clear()
         CommandParser.responseRequest = null
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("Human")))
+        val bodyParser = BodyFakeParser()
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 

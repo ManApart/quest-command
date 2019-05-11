@@ -6,9 +6,7 @@ import combat.battle.position.Horizontal
 import combat.battle.position.TargetPosition
 import combat.battle.position.Vertical
 import core.gameState.Target
-import core.gameState.body.Body
 import core.gameState.body.BodyPart
-import core.gameState.body.ProtoBody
 import org.junit.Test
 import system.BodyFakeParser
 import system.DependencyInjector
@@ -78,7 +76,7 @@ class AttackedPartHelperTest {
         val directPart = BodyPart("directPart", TargetPosition())
         val grazedPart = BodyPart("grazedPart", TargetPosition(Horizontal.LEFT))
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("directPart", "grazedPart"))), listOf(directPart, grazedPart))
+        val bodyParser = BodyFakeParser.parserFromParts(listOf(directPart, grazedPart))
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 
@@ -98,7 +96,7 @@ class AttackedPartHelperTest {
         val directPart = BodyPart("directPart", TargetPosition())
         val grazedPart = BodyPart("grazedPart", blockPosition)
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("directPart", "grazedPart"))), listOf(directPart, grazedPart))
+        val bodyParser = BodyFakeParser.parserFromParts(listOf(directPart, grazedPart))
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 
@@ -120,7 +118,7 @@ class AttackedPartHelperTest {
         val directPart = BodyPart("directPart", TargetPosition())
         val grazedPart = BodyPart("grazedPart", blockPosition)
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf("directPart", "grazedPart"))), listOf(directPart, grazedPart))
+        val bodyParser = BodyFakeParser.parserFromParts(listOf(directPart, grazedPart))
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 
@@ -137,7 +135,7 @@ class AttackedPartHelperTest {
 
     private fun createHelper(part: BodyPart, target: TargetPosition, combatantPosition: TargetPosition = TargetPosition()): AttackedPartHelper {
 
-        val bodyParser = BodyFakeParser(listOf(ProtoBody("body", listOf(part.name))), listOf(part))
+        val bodyParser = BodyFakeParser.parserFromPart(part)
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 

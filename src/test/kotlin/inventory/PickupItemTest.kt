@@ -2,16 +2,30 @@ package inventory
 
 import core.gameState.*
 import core.gameState.Target
+import core.gameState.body.BodyPart
+import core.gameState.location.LocationNode
 import interact.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
+import org.junit.Before
 import org.junit.Test
+import system.BodyFakeParser
+import system.DependencyInjector
+import system.body.BodyManager
+import system.body.BodyParser
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PickupItemTest {
+
+    @Before
+    fun setup() {
+        val bodyParser = BodyFakeParser()
+        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        BodyManager.reset()
+    }
 
     @Test
     fun pickupItemFromScope() {
