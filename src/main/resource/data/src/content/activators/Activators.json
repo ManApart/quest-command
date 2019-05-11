@@ -136,8 +136,10 @@
       {
         "name": "Restrict Destination",
         "params": {
-          "source": "Kanbara Gate",
-          "destination": "Kanbara City",
+          "sourceNetwork": "Kanbara",
+          "sourceLocation": "Kanbara Gate",
+          "destinationNetwork": "Kanbara",
+          "destinationLocation": "Kanbara City",
           "makeRestricted": true,
           "message": "The gates swing closed.",
           "replacementActivator": "Kanbara Gate (Closed)"
@@ -157,8 +159,10 @@
       {
         "name": "Restrict Destination",
         "params": {
-          "source": "Kanbara Gate",
-          "destination": "Kanbara City",
+          "sourceNetwork": "Kanbara",
+          "sourceLocation": "Kanbara Gate",
+          "destinationNetwork": "Kanbara",
+          "destinationLocation": "Kanbara City",
           "makeRestricted": false,
           "message": "The gates swing open.",
           "replacementActivator": "Kanbara Gate (Open)"
@@ -206,6 +210,7 @@
         "params": {
           "sourceItem": "Wheat Bundle",
           "resultItem": "Wheat Flour",
+          "resultItemNetwork": "Kanbara Countryside",
           "resultItemLocation": "Windmill"
         }
       }

@@ -36,14 +36,14 @@ object LocationManager {
     }
 
     private fun createNeighborsAndNeighborLinks(nodeMap: Map<String, MutableList<LocationNode>>) {
-        nodeMap.keys.forEach { key ->
-            val network = nodeMap[key]?.toList() ?: listOf()
+        nodeMap.keys.forEach { networkName ->
+            val network = nodeMap[networkName]?.toList() ?: listOf()
             network.forEach { node ->
                 node.protoLocationLinks.forEach { link ->
                     var neighbor = getLocationNodeByExactName(link.name, network)
                     if (neighbor == null) {
-                        neighbor = LocationNode(link.name)
-                        nodeMap[key]?.add(neighbor)
+                        neighbor = LocationNode(link.name, parent = networkName)
+                        nodeMap[networkName]?.add(neighbor)
                     }
                     val locationLink = LocationLink(node, neighbor, link.position, link.restricted)
                     node.addLink(locationLink)

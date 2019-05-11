@@ -61,7 +61,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     private fun getLocation(paramNetworkNumber: Int, paramLocationNumber: Int): LocationNode? {
         val networkParam = getParam(paramNetworkNumber, "")
-        val locationParam = getParam(paramNetworkNumber, "")
+        val locationParam = getParam(paramLocationNumber, "")
         if (networkParam.isBlank() || locationParam.isBlank()) {
             return null
         }

@@ -156,8 +156,10 @@
       {
         "className": "RestrictLocationEvent",
         "params": [
-          "$source",
-          "$destination",
+          "$sourceNetwork",
+          "$sourceLocation",
+          "$destinationNetwork",
+          "$destinationLocation",
           "$makeRestricted"
         ]
       },
@@ -201,6 +203,7 @@
           "$resultItem",
           "1",
           "Grain Bin",
+          "$resultItemNetwork",
           "$resultItemLocation"
         ]
       }
