@@ -278,13 +278,22 @@ Attack command groups 0 vs 1 - make tests
 
 -----------------------------
 
-body parts have/are location nodes
-Bodies are deleted
-When a body is created, the parts are found and a network is created per parent name
-Location node can pass in an exit to a body part of a target
 
-rename node locations to connections
-Break locationmanager into manager and network
+location changes should persist within that network, but not affect the 'same' location in another network
+
+locationNode should get it's location from it's parent network
+
+when parsing a body network, create locations for the body parts
+
+
+Bodies have a network
+When a body is created, the parts are found and a network is created per parent name
+Location contains a body part as well as it's creatures, activators etc
+Body Locations are locations that have nothing but a single body part
+Location link can optionaly take a target and part (aka a target and location of it's body's network)
+
+
+Location node can pass in an exit to a body part of a target
 
 Location Nodes need only be uniqly named per network
 Finding location nodes are searched by the parent network (kanbara, Human, etc)
@@ -293,14 +302,18 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 - Possibly good for towns/houses etc
 - assume no for now but once all this done maybe...
 
+Locationnode.getLocation should check for location in locations, then check the body manager for a location created to house a body part
+- eventually the locationNode should just be asking it's parent network?
+
 For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
+rename locationName to targetName?
 
 Location Nodes:
-
+```
   {
     "name": "Kanbara Wall",
-    "locationName": "Kanbara Wall",
+    "targetName": "Kanbara Wall",
     "parent": "Kanbara",
     "exits": [
         {
@@ -320,30 +333,53 @@ Location Nodes:
       }
     ]
   },
+```
 
+
+Bodies (location nodes)
+```
+{
+    "name": "Head",
+    "targetName": "Head",
+    "parent": "Human",
+    "locations": [
+      {
+        "name": "Chest",
+        "position": {
+          "x": -1
+        }
+      }
+    ]
+},
+{
+    "name": "Trunk",
+    "targetName": "Trunk"
+    "parent": "Tree"
+    "locations": [
+      {
+        "name": "Branches",
+        "position": {
+          "x": -1
+        }
+      }
+    ]
+  },
+```
 
 
 Body Parts:
+```
   {
     "name": "Head",
-    "parent": "Human"
     "material": "flesh"
     "slots": [
       "Head Inner",
       "Head",
       "Head Outer"
-    ],
-     "locations": [
-        {
-          "name": "Chest",
-          "position": {
-            "x": -1
-          }
-        }
+    ]
   },
   {
     "name": "Canine Body",
-    "parent": "Rat"
     "material": "fur"
     "slots": [
       "Canine Body"
@@ -351,14 +387,7 @@ Body Parts:
   },
     {
       "name": "Trunk",
-      "parent": "Tree"
       "material": "wood"
-      "locations": [
-        {
-          "name": "Branches",
-          "position": {
-            "x": -1
-          }
-        }
-      ]
     },
+
+```

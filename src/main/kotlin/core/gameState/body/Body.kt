@@ -3,11 +3,13 @@ package core.gameState.body
 import combat.battle.position.HitLevel
 import combat.battle.position.TargetPosition
 import core.gameState.Target
+import core.gameState.location.Network
 import core.history.display
 import core.utility.NameSearchableList
 import java.lang.IllegalArgumentException
 
 class Body(val name: String = "None", parts: List<BodyPart> = listOf()) {
+//class Body(val name: String = "None", parts: Network = Network(name)) {
     constructor(base: Body) : this(base.name, base.parts.map { BodyPart(it) })
 
     private val parts = NameSearchableList(parts)

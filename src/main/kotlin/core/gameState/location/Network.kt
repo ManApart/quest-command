@@ -3,8 +3,9 @@ package core.gameState.location
 import core.utility.NameSearchableList
 import core.utility.Named
 
-class Network(override val name: String, locationNodes: List<LocationNode>) : Named{
+class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locations: List<Location> = listOf()) : Named{
     private val locationNodes = NameSearchableList(locationNodes)
+    private val locations = NameSearchableList(locations)
 
     fun getLocationNode(name: String): LocationNode {
         return locationNodes.get(name)
@@ -27,6 +28,18 @@ class Network(override val name: String, locationNodes: List<LocationNode>) : Na
 
     fun countLocationNodes(): Int {
         return locationNodes.size
+    }
+
+    fun getLocation(name: String): Location {
+        return locations.getOrNull(name) ?: NOWHERE
+    }
+
+    fun getLocations(): List<Location> {
+        return locations.toList()
+    }
+
+    fun locationExists(name: String): Boolean {
+        return locations.exists(name)
     }
 
 

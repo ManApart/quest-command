@@ -1,25 +1,28 @@
 package system.location
 
 import core.gameState.GameState
-import core.gameState.location.*
+import core.gameState.location.Location
+import core.gameState.location.LocationLink
+import core.gameState.location.LocationNode
+import core.gameState.location.Network
 import core.utility.NameSearchableList
 import system.DependencyInjector
 
 object LocationManager {
-    private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
-    private var locations = parser.loadLocations()
     private var networks = loadNetworks()
 
-
     private fun loadNetworks(): NameSearchableList<Network> {
+        val parser = DependencyInjector.getImplementation(LocationParser::class.java)
+        val locations = parser.loadLocations()
         val nodes: List<LocationNode> = parser.loadLocationNodes()
 
         val nodeMap = buildInitialMap(nodes)
         createNeighborsAndNeighborLinks(nodeMap)
-        createLocationIfNeeded(nodeMap)
+        createLocationIfNeeded(nodeMap, locations)
 
         val networks = nodeMap.map { entry ->
-            Network(entry.key, entry.value)
+            val networkLocations = entry.value.map { locations.get(it.locationName) }
+            Network(entry.key, entry.value, networkLocations)
         }
 
         return NameSearchableList(networks)
@@ -56,10 +59,10 @@ object LocationManager {
         }
     }
 
-    private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>) {
+    private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>, locations: NameSearchableList<Location>) {
         nodeMap.values.forEach { network ->
             network.forEach { node ->
-                if (!locationExists(node.locationName)) {
+                if (!locations.exists(node.locationName)) {
                     locations.add(Location(node.locationName))
                 }
             }
@@ -71,17 +74,7 @@ object LocationManager {
     }
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(LocationParser::class.java)
-        locations = parser.loadLocations()
         networks = loadNetworks()
-    }
-
-    fun getLocation(name: String): Location {
-        return locations.getOrNull(name) ?: NOWHERE
-    }
-
-    fun getLocations(): List<Location> {
-        return locations.toList()
     }
 
     fun getNetwork(): Network {
@@ -94,10 +87,6 @@ object LocationManager {
 
     fun getNetwork(name: String): Network {
         return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
-    }
-
-    fun locationExists(name: String): Boolean {
-        return locations.exists(name)
     }
 
 
