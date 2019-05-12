@@ -39,7 +39,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     fun get(name: String): N {
-        return getOrNull(name)!!
+        return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toString()}")
     }
 
     fun getAll(name: String): List<N> {

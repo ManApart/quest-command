@@ -278,10 +278,6 @@ Attack command groups 0 vs 1 - make tests
 
 -----------------------------
 
-make parent the first variable of a location node
-
-when parsing a body network, create locations for the body parts
-
 double check parts are properly instanced through scope manager
 
 
@@ -289,6 +285,8 @@ Bodies have a network
 When a body is created, the parts are found and a network is created per parent name
 Location contains a body part as well as it's creatures, activators etc
 Body Locations are locations that have nothing but a single body part
+
+
 Location link can optionaly take a target and part (aka a target and location of it's body's network)
 
 

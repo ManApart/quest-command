@@ -12,16 +12,11 @@ class ReadMap : EventListener<ReadMapEvent>() {
         if (GameState.player.location == event.target) {
             display("You are in ${event.target.name}.")
         }
-        val name = if (event.target.parent != null) {
-            "${event.target.name} is a part of ${event.target.parent}. It"
-        } else {
-            event.target.name
-        }
-
+        val name = "${event.target.name} is a part of ${event.target.parent}. It"
         display("$name ${getRoutesString(event)}")
     }
 
-    private fun getRoutesString(event: ReadMapEvent) : String {
+    private fun getRoutesString(event: ReadMapEvent): String {
         val routes = RouteNeighborFinder(event.target, event.depth).getNeighbors()
 
         return if (routes.isNotEmpty()) {
@@ -35,7 +30,7 @@ class ReadMap : EventListener<ReadMapEvent>() {
         }
     }
 
-    private fun getRouteString(route: Route) : List<String> {
+    private fun getRouteString(route: Route): List<String> {
         return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString())
     }
 

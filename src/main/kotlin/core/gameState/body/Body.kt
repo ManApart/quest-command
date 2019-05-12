@@ -9,6 +9,8 @@ import core.utility.NameSearchableList
 import core.utility.Named
 import java.lang.IllegalArgumentException
 
+val NONE = Body("None")
+
 class Body(override val name: String = "None", private val layout: Network = Network(name)) : Named {
     constructor(base: Body) : this(base.name, base.layout)
 

@@ -1,13 +1,13 @@
 package system.body
 
 import core.gameState.body.Body
+import core.gameState.body.NONE
 import core.gameState.location.Location
 import core.gameState.location.LocationLink
 import core.gameState.location.LocationNode
 import core.gameState.location.Network
 import core.utility.NameSearchableList
 import system.DependencyInjector
-import java.lang.RuntimeException
 
 object BodyManager {
     private var parser = DependencyInjector.getImplementation(BodyParser::class.java)
@@ -31,7 +31,7 @@ object BodyManager {
             Network(entry.key, entry.value, networkLocations)
         }
 
-        val bodies = networks.map { Body(it.name, it) }
+        val bodies = (networks.map { Body(it.name, it) }).plus(NONE)
 
         return NameSearchableList(bodies)
     }
@@ -76,7 +76,6 @@ object BodyManager {
     }
 
     fun getBody(name: String): Body {
-        val body = bodies.getOrNull(name)
-        return body ?: throw RuntimeException("Could not find body for $name")
+        return bodies.get(name)
     }
 }

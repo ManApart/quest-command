@@ -15,7 +15,7 @@
         }
       },
       {
-        "name": "Canine Claws",
+        "name": "Small Claws",
         "restricted": true,
         "position": {
           "z": -1
@@ -25,6 +25,6 @@
   },
   {
     "parent": "Rat",
-    "name": "Canine Claws"
+    "name": "Small Claws"
   }
 ]

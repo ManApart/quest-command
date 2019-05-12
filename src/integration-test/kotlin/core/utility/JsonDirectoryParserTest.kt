@@ -2,25 +2,33 @@ package core.utility
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import core.gameState.location.Location
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 class JsonDirectoryParserTest {
 
     @Test
     fun multipleJsonFilesAreParsedAndAppendedToList() {
-        val bodies = JsonDirectoryParser.parseDirectory("/test/core/utility/bodies", ::parseFile)
+        val locations = NameSearchableList(JsonDirectoryParser.parseDirectory("/test/core/utility/locations", ::parseFile))
 
-        assertEquals(2, bodies.size)
-        assertEquals("FirstBody", bodies[0].name)
-        assert(bodies[0].parts.contains("Head"))
-        assert(bodies[0].parts.contains("Body"))
-        assert(bodies[0].parts.contains("Claws"))
+        assertEquals(3, locations.size)
 
-        assertEquals("SecondBody", bodies[1].name)
-        assert(bodies[1].parts.contains("Goo"))
-        assert(bodies[1].parts.contains("Antenna"))
+        val kanbara = locations.getOrNull("Kanbara")
+        val gate = locations.getOrNull("Kanbara Gate")
+        val city = locations.getOrNull("Kanbara City")
+
+        assertNotNull(kanbara)
+        assertNotNull(city)
+        assertNotNull(gate)
+
+
+        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", city?.description)
+        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", kanbara?.description)
+        assertEquals(1, gate?.activators?.size)
+
     }
 
-    private fun parseFile(path: String): List<ProtoBody> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private fun parseFile(path: String): List<Location> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 }
