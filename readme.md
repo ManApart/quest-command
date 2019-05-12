@@ -34,14 +34,12 @@ You can find and kill a rat, and then use its meat on the range in the nearby fa
 
 You can also pipe commands together using `&&`.
 
-
 Here are some example commands you can run:
-
-`w && use tinder on tree && use apple on tree`
-`w && use tinder on tree && bag && pickup apple && bag && use apple on tree`
-`travel tree && climb tree`
-`travel an open field barren patch && equip hatchet && chop rat && slash rat`
-`travel farmer's hut interior && cook Raw Poor Quality Meat on range`
+- `w && use tinder on tree && use apple on tree`
+- `w && use tinder on tree && bag && pickup apple && bag && use apple on tree`
+- `travel tree && climb tree`
+- `travel an open field barren patch && equip hatchet && chop rat && slash rat`
+- `travel farmer's hut interior && cook Raw Poor Quality Meat on range`
 
 
 ## Design
@@ -52,22 +50,16 @@ Create a world more interactive than Skyrim by trading presentation layer for hi
 
 ### Design Pillars
 
-- Architecture is flat and increases in complexity relative to project size in as small of increments as possible.
-- Classes are small, decoupled, and do just one thing
-- Dependency and coupling are kept to a minimum
 - Least effort possible for content creation
   - Content should be as concise as possible without losing clarity
   - Everything should have a reasonable default
   - Content creators should only need to specify what makes an item etc unique
-
-
-### Design Principles
-
-- Commands simply parse / understand user input and then create events
-- Commands do not handle or change state
-- Commands should be unknown to game state, events, and logic
-- All intents and actions are created through events
-- Listeners subscribe to individual events, update gamestate and print to console.
+- Command/Event/Listener model
+  - Commands simply parse / understand user input and then create events
+  - Commands do not handle or change state
+  - Commands should be unknown to game state, events, and logic
+  - All intents and actions are created through events
+  - Listeners subscribe to individual events, update gamestate and print to console.
 
 ### General Design Notes
 
@@ -205,6 +197,35 @@ See the `GameStateQuery` class to see a list of queryable values and their param
 
 ### Locations
 
+#### Networks
+
+A network is an isolated collection of locations. Networks provide routes and allow you to travel from one place to another. Bodies also have a network that describes the spacial relationships of body parts.
+
+Network names must be globally unique.
+
+#### Location Nodes
+
+Location Nodes contain the spacial relationship data for a location, as opposed to a `Location` that contains the contents of a location. They contain a parent network, the name of their content location, and links to other locations.
+
+Location Node names must be unique within their parent network.
+
+
+```
+  {
+    "name": "Kanbara Wall",
+    "locationName": "Kanbara Wall",
+    "parent": "Kanbara",
+    "locations": [
+      {
+        "name": "Guard Post",
+        "position": {
+          "x": -1
+        }
+      }
+    ]
+  },
+```
+
 #### Locations
 Locations describe an area and contain
 
@@ -213,6 +234,9 @@ Locations describe an area and contain
 - A list of items
 - A list of activators
 - A list of creatures
+- Possibly a body part, if this is a location within a body
+
+Location names must be globally unique.
 
 When specifying a list of targets (items, activators, creatures), you can give just their name, or their name and location within the location. This is just a string of flavor text used for the look command:
 ```

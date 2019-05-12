@@ -33,10 +33,10 @@ class RouteNeighborFinder(private val source: LocationNode, private val depth: I
             current.forEach { route ->
                 if (!examined.contains(route.destination)) {
                     examined.add(route.destination)
-                    route.destination.getNeighborLinks().forEach { link ->
-                        if (!examined.contains(link.destination)) {
+                    route.destination.getNeighborLinks().forEach { connection ->
+                        if (!examined.contains(connection.destination.location)) {
                             val newRoute = Route(route)
-                            newRoute.addLink(link)
+                            newRoute.addLink(connection)
                             neighbors.add(newRoute)
                             potentials.add(newRoute)
                         }

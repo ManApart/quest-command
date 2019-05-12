@@ -31,7 +31,7 @@ class PlayerJump : EventListener<JumpEvent>() {
 
     private fun calculateJumpDamage(event: JumpEvent): Int {
         val soul = event.creature.soul
-        val position = event.source.getLink(event.destination)?.position ?: NO_POSITION
+        val position = event.source.getLink(event.destination)?.vector ?: NO_POSITION
         val height = event.fallDistance ?: Math.abs(position.z)
         val damage = height - 2*soul.getCurrent(AGILITY)
 

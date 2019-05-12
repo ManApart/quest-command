@@ -278,66 +278,60 @@ Attack command groups 0 vs 1 - make tests
 
 -----------------------------
 
+location node exits
+
+remove climb paths
+
+body materials
+
+
 double check parts are properly instanced through scope manager
 
 
-Bodies have a network
-When a body is created, the parts are found and a network is created per parent name
-Location contains a body part as well as it's creatures, activators etc
-Body Locations are locations that have nothing but a single body part
-
-
-Location link can optionaly take a target and part (aka a target and location of it's body's network)
-
-
+Location link can optionally take a target and part (aka a target and location of it's body's network)
 Location node can pass in an exit to a body part of a target
 
-Location Nodes need only be uniqly named per network
-Finding location nodes are searched by the parent network (kanbara, Human, etc)
 
 Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
 - Possibly good for towns/houses etc
 - assume no for now but once all this done maybe...
 
-Locationnode.getLocation should check for location in locations, then check the body manager for a location created to house a body part
-- eventually the locationNode should just be asking it's parent network?
-
 For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
-rename locationName to targetName?
 
 Location Nodes:
 ```
-  {
+
+{
     "name": "Kanbara Wall",
-    "targetName": "Kanbara Wall",
+    "locationName": "Kanbara Wall",
     "parent": "Kanbara",
-    "exits": [
+    "locations": [
         {
-        "target": "Wall"
-        "part": "Upper Wall"
-        "connection": {
-            "network": "Kanbara"
-            "location": "Kanbara City"
+            "name": "Guard Post",
+            "position": {
+              "x": -1
+            }
+        },
+        {
             "target": "Wall"
             "part": "Upper Wall"
+            "connection": {
+                "network": "Kanbara"
+                "location": "Kanbara City"
+                "target": "Wall"
+                "part": "Upper Wall"
             }
         }
     ]
-    "locations": [
-      {
-        "name": "Guard Post"
-      }
-    ]
-  },
+},
 ```
-
 
 Bodies (location nodes)
 ```
 {
     "name": "Head",
-    "targetName": "Head",
+    "locationName": "Head",
     "parent": "Human",
     "locations": [
       {
@@ -350,7 +344,7 @@ Bodies (location nodes)
 },
 {
     "name": "Trunk",
-    "targetName": "Trunk"
+    "locationName": "Trunk"
     "parent": "Tree"
     "locations": [
       {

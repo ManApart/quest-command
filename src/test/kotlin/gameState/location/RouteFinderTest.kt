@@ -2,8 +2,9 @@ package gameState.location
 
 import core.gameState.Direction
 import core.gameState.Position
-import core.gameState.location.LocationLink
+import core.gameState.location.Connection
 import core.gameState.location.LocationNode
+import core.gameState.location.LocationPoint
 import core.gameState.location.RouteFinder
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -14,7 +15,7 @@ class RouteFinderTest {
     @Test
     fun findRouteDepth1() {
         val source = createLocations(1)
-        val destination = source.getNeighborLinks().last().destination
+        val destination = source.getNeighborLinks().last().destination.location
         val routeFinder = RouteFinder(source, destination, 1)
 
         assertTrue(routeFinder.hasRoute())
@@ -29,7 +30,7 @@ class RouteFinderTest {
     @Test
     fun findRouteDepth2() {
         val source = createLocations(2)
-        val destination = source.getNeighborLinks().last().destination.getNeighborLinks().last().destination
+        val destination = source.getNeighborLinks().last().destination.location.getNeighborLinks().last().destination.location
         val routeFinder = RouteFinder(source, destination, 2)
 
         assertTrue(routeFinder.hasRoute())
@@ -47,7 +48,7 @@ class RouteFinderTest {
         listOf(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST)
                 .forEach { direction ->
                     val neighbor = LocationNode(direction.toString())
-                    val link = LocationLink(source, neighbor, Position.fromDirection(direction))
+                    val link = Connection(LocationPoint( source), LocationPoint(neighbor), Position.fromDirection(direction))
                     source.addLink(link)
                     neighbor.addLink(link.invert())
                     createLocations(neighbor, direction, depth - 1, depth)
@@ -61,7 +62,7 @@ class RouteFinderTest {
             return
         }
         val neighbor = LocationNode(direction.toString() + (totalDepth-depth))
-        val link = LocationLink(source, neighbor, Position.fromDirection(direction))
+        val link = Connection(LocationPoint(source), LocationPoint(neighbor), Position.fromDirection(direction))
         source.addLink(link)
         neighbor.addLink(link.invert())
         createLocations(neighbor, direction, depth - 1, totalDepth)

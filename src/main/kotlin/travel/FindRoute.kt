@@ -33,7 +33,7 @@ class FindRoute : EventListener<FindRouteEvent>() {
         val source = GameState.player.location
         when {
             route.destination == source -> display("You're already at the end of the route.")
-            route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination))
+            route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination.location))
         }
     }
 

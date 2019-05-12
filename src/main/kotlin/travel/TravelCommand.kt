@@ -36,7 +36,7 @@ class TravelCommand : Command() {
             when {
                 route == null -> display("No route to travel to.")
                 route.destination == source -> display("You're already at the end of the route.")
-                route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination))
+                route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination.location))
                 else -> display("You're not on a route right now.")
             }
         } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {

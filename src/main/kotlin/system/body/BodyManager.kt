@@ -2,10 +2,7 @@ package system.body
 
 import core.gameState.body.Body
 import core.gameState.body.NONE
-import core.gameState.location.Location
-import core.gameState.location.LocationLink
-import core.gameState.location.LocationNode
-import core.gameState.location.Network
+import core.gameState.location.*
 import core.utility.NameSearchableList
 import system.DependencyInjector
 
@@ -50,13 +47,13 @@ object BodyManager {
         nodeMap.keys.forEach { networkName ->
             val network = nodeMap[networkName]?.toList() ?: listOf()
             network.forEach { node ->
-                node.protoLocationLinks.forEach { link ->
+                node.protoConnections.forEach { link ->
                     var neighbor = getLocationNodeByExactName(link.name, network)
                     if (neighbor == null) {
                         neighbor = LocationNode(link.name, parent = networkName)
                         nodeMap[networkName]?.add(neighbor)
                     }
-                    val locationLink = LocationLink(node, neighbor, link.position, link.restricted)
+                    val locationLink = Connection(LocationPoint(node), LocationPoint(neighbor), link.position, link.restricted)
                     node.addLink(locationLink)
 
                     if (!link.oneWay) {

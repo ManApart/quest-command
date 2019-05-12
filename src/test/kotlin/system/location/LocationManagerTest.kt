@@ -1,7 +1,7 @@
 package system.location
 
 import core.gameState.location.LocationNode
-import core.gameState.location.ProtoLocationLink
+import core.gameState.location.ProtoConnection
 import core.utility.NameSearchableList
 import org.junit.Assert
 import org.junit.BeforeClass
@@ -23,8 +23,8 @@ class LocationManagerTest {
 
     @Test
     fun linksCreateNeighborsIfTheyDoNotExist() {
-        val neighborLink = ProtoLocationLink("neighbor")
-        val source = LocationNode("source", protoLocationLinks = mutableListOf(neighborLink))
+        val neighborLink = ProtoConnection("neighbor")
+        val source = LocationNode("source", protoConnections = mutableListOf(neighborLink))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
@@ -39,7 +39,7 @@ class LocationManagerTest {
         val neighborExistsName = "neighbor exists"
         val neighborDoesNotExistsName = "neighbor doesn't exists"
 
-        val source = LocationNode("source", protoLocationLinks = mutableListOf(ProtoLocationLink(neighborExistsName), ProtoLocationLink(neighborDoesNotExistsName)))
+        val source = LocationNode("source", protoConnections = mutableListOf(ProtoConnection(neighborExistsName), ProtoConnection(neighborDoesNotExistsName)))
         val neighborExists = LocationNode(neighborExistsName)
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighborExists)))
 
@@ -64,7 +64,7 @@ class LocationManagerTest {
     fun oneWayLinksDontLinkBack() {
 
         val neighbor = LocationNode("neighbor")
-        val source = LocationNode("source", protoLocationLinks = mutableListOf(ProtoLocationLink(neighbor.name, oneWay = true)))
+        val source = LocationNode("source", protoConnections = mutableListOf(ProtoConnection(neighbor.name, oneWay = true)))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighbor)))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)

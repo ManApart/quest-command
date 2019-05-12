@@ -18,9 +18,9 @@ class RouteFinder(private val source: LocationNode, private val destination: Loc
     }
 
     private fun findRoute() {
-        if (source.getNeighborLinks().any { it.destination == destination }) {
+        if (source.getNeighborLinks().any { it.destination.location == destination }) {
             solution = Route(source)
-            solution?.addLink(source.getNeighborLinks().first { it.destination == destination })
+            solution?.addLink(source.getNeighborLinks().first { it.destination.location == destination })
         } else {
             source.getNeighborLinks().forEach {
                 val route = Route(source)
@@ -45,10 +45,10 @@ class RouteFinder(private val source: LocationNode, private val destination: Loc
             current.forEach { route ->
                 if (!examined.contains(route.destination)) {
                     examined.add(route.destination)
-                    route.destination.getNeighborLinks().forEach { link ->
-                        if (!examined.contains(link.destination) && solution == null) {
+                    route.destination.getNeighborLinks().forEach { connection ->
+                        if (!examined.contains(connection.destination.location) && solution == null) {
                             val newRoute = Route(route)
-                            newRoute.addLink(link)
+                            newRoute.addLink(connection)
                             potentials.add(newRoute)
                             if (newRoute.destination == destination){
                                 solution = newRoute
