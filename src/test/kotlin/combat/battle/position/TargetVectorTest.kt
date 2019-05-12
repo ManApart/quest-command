@@ -11,7 +11,7 @@ Direct hit when both axis line up
 Grazing hit when one axis lines up
 Miss when neither axis lines up
  */
-class TargetPositionTest {
+class TargetVectorTest {
 
     @Test
     fun directHit() {

@@ -1,33 +1,33 @@
 package gameState
 
 import core.gameState.Direction
-import core.gameState.Position
+import core.gameState.Vector
 import org.junit.Assert
 import org.junit.Test
 
-class PositionTest {
+class VectorTest {
 
     @Test
     fun distanceIsCorrect(){
-        val pos1 = Position()
-        val pos2 = Position(5,5,5)
+        val pos1 = Vector()
+        val pos2 = Vector(5,5,5)
 
         Assert.assertEquals(pos1.getDistance(pos2), pos1.getDistance(pos2))
     }
 
     @Test
     fun directions(){
-        val center = Position()
-        val north = Position(0, 10)
-        val west = Position(-10 )
-        val east = Position(10 )
-        val south = Position(0, -10)
-        val above = Position(0, 0, 10)
-        val below = Position(0, 0, -10)
-        val northWest = Position(-10, 10)
-        val northEast = Position(10, 10)
-        val southWest = Position(-10, -10)
-        val southEast = Position(10, -10)
+        val center = Vector()
+        val north = Vector(0, 10)
+        val west = Vector(-10 )
+        val east = Vector(10 )
+        val south = Vector(0, -10)
+        val above = Vector(0, 0, 10)
+        val below = Vector(0, 0, -10)
+        val northWest = Vector(-10, 10)
+        val northEast = Vector(10, 10)
+        val southWest = Vector(-10, -10)
+        val southEast = Vector(10, -10)
 
         Assert.assertEquals(Direction.NORTH, center.getDirection(north))
         Assert.assertEquals(Direction.WEST, center.getDirection(west))
@@ -44,10 +44,10 @@ class PositionTest {
 
     @Test
     fun directionsAreBasedOnLargestDistance(){
-        val center = Position()
-        val northEast = Position(7, 10)
-        val northWest = Position(-7, 10)
-        val below = Position(7, 9, -20)
+        val center = Vector()
+        val northEast = Vector(7, 10)
+        val northWest = Vector(-7, 10)
+        val below = Vector(7, 9, -20)
 
         Assert.assertEquals(Direction.NORTH_EAST, center.getDirection(northEast))
         Assert.assertEquals(Direction.NORTH_WEST, center.getDirection(northWest))

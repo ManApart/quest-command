@@ -6,6 +6,7 @@ import core.utility.NameSearchableList
 import system.DependencyInjector
 
 object LocationManager {
+    private val locationHelper = LocationHelper()
     private var networks = loadNetworks()
 
     fun reset() {
@@ -17,8 +18,8 @@ object LocationManager {
         val locations = parser.loadLocations()
         val nodes: List<LocationNode> = parser.loadLocationNodes()
 
-        val nodeMap = buildInitialMap(nodes)
-        createNeighborsAndNeighborLinks(nodeMap)
+        val nodeMap = locationHelper.buildInitialMap(nodes)
+        locationHelper.createNeighborsAndNeighborLinks(nodeMap)
         createLocationIfNeeded(nodeMap, locations)
 
         val networks = nodeMap.map { entry ->
@@ -29,37 +30,6 @@ object LocationManager {
         return NameSearchableList(networks)
     }
 
-    private fun buildInitialMap(nodes: List<LocationNode>): HashMap<String, MutableList<LocationNode>> {
-        val nodeMap = HashMap<String, MutableList<LocationNode>>()
-
-        nodes.forEach { node ->
-            nodeMap.putIfAbsent(node.parent, mutableListOf())
-            nodeMap[node.parent]?.add(node)
-        }
-        return nodeMap
-    }
-
-    private fun createNeighborsAndNeighborLinks(nodeMap: Map<String, MutableList<LocationNode>>) {
-        nodeMap.keys.forEach { networkName ->
-            val network = nodeMap[networkName]?.toList() ?: listOf()
-            network.forEach { node ->
-                node.protoConnections.forEach { link ->
-                    var neighbor = getLocationNodeByExactName(link.name, network)
-                    if (neighbor == null) {
-                        neighbor = LocationNode(link.name, parent = networkName)
-                        nodeMap[networkName]?.add(neighbor)
-                    }
-                    val locationLink = Connection(LocationPoint(node), LocationPoint(neighbor), link.position, link.restricted)
-                    node.addLink(locationLink)
-
-                    if (!link.oneWay) {
-                        neighbor.addLink(locationLink.invert())
-                    }
-                }
-            }
-        }
-    }
-
     private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>, locations: NameSearchableList<Location>) {
         nodeMap.values.forEach { network ->
             network.forEach { node ->
@@ -68,10 +38,6 @@ object LocationManager {
                 }
             }
         }
-    }
-
-    private fun getLocationNodeByExactName(name: String, nodes: List<LocationNode>): LocationNode? {
-        return nodes.firstOrNull { name == it.name }
     }
 
     fun getNetwork(name: String = GameState.player.location.parent): Network {

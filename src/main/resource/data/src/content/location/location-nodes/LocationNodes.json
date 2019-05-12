@@ -7,7 +7,7 @@
       {
         "name": "Kanbara Wall South",
         "restricted": true,
-        "position": {
+        "vector": {
           "x": -1,
           "y": -1
         }
@@ -15,7 +15,7 @@
       {
         "name": "Kanbara Wall North",
         "restricted": true,
-        "position": {
+        "vector": {
           "x": -1,
           "y": 1
         }
@@ -23,7 +23,7 @@
       {
         "name": "Kanbara City",
         "restricted": true,
-        "position": {
+        "vector": {
           "x": -1
         }
       }
@@ -49,19 +49,19 @@
     "locations": [
       {
         "name": "Farmer's Hut Interior",
-        "position": {
+        "vector": {
           "y": -5
         }
       },
       {
         "name": "Kanbara Gate",
-        "position": {
+        "vector": {
           "x": -10
         }
       },
       {
         "name": "An Open Field",
-        "position": {
+        "vector": {
           "x": 1
         }
       }
@@ -74,19 +74,19 @@
     "locations": [
       {
         "name": "Apple Tree",
-        "position": {
+        "vector": {
           "y": 1
         }
       },
       {
         "name": "Barren Patch",
-        "position": {
+        "vector": {
           "y": -1
         }
       },
       {
         "name": "Windmill",
-        "position": {
+        "vector": {
           "x": 1,
           "y": 1
         }
@@ -99,7 +99,7 @@
     "locations": [
       {
         "name": "Windmill - Second Floor",
-        "position": {
+        "vector": {
           "z": 1
         },
         "restricted": true
@@ -113,7 +113,7 @@
       {
         "name": "Windmill - Third Floor",
         "restricted": true,
-        "position": {
+        "vector": {
           "z": 1
         }
       }
@@ -125,10 +125,14 @@
     "parent": "Kanbara Countryside",
     "locations": [
       {
-        "name": "Apple Tree Branches",
-        "restricted": true,
-        "position": {
+        "target": "Apple Tree",
+        "part": "Branches",
+        "vector": {
           "z": 1
+        },
+        "connection": {
+          "network": "Kanbara Countryside",
+          "location": "Apple Tree Branches"
         }
       }
     ]

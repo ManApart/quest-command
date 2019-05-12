@@ -23,7 +23,7 @@ class LocationManagerTest {
 
     @Test
     fun linksCreateNeighborsIfTheyDoNotExist() {
-        val neighborLink = ProtoConnection("neighbor")
+        val neighborLink = ProtoConnection(name = "neighbor")
         val source = LocationNode("source", protoConnections = mutableListOf(neighborLink))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(source))
 
@@ -31,7 +31,7 @@ class LocationManagerTest {
         LocationManager.reset()
 
         Assert.assertEquals(source, LocationManager.getNetwork("Wilderness").getLocationNode(source.name))
-        Assert.assertEquals(neighborLink.name, LocationManager.getNetwork("Wilderness").findLocation(neighborLink.name).name)
+        Assert.assertEquals(neighborLink.connection.location, LocationManager.getNetwork("Wilderness").findLocation(neighborLink.connection.location).name)
     }
 
     @Test
@@ -39,7 +39,7 @@ class LocationManagerTest {
         val neighborExistsName = "neighbor exists"
         val neighborDoesNotExistsName = "neighbor doesn't exists"
 
-        val source = LocationNode("source", protoConnections = mutableListOf(ProtoConnection(neighborExistsName), ProtoConnection(neighborDoesNotExistsName)))
+        val source = LocationNode("source", protoConnections = mutableListOf(ProtoConnection(name = neighborExistsName), ProtoConnection(name = neighborDoesNotExistsName)))
         val neighborExists = LocationNode(neighborExistsName)
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighborExists)))
 
@@ -64,7 +64,7 @@ class LocationManagerTest {
     fun oneWayLinksDontLinkBack() {
 
         val neighbor = LocationNode("neighbor")
-        val source = LocationNode("source", protoConnections = mutableListOf(ProtoConnection(neighbor.name, oneWay = true)))
+        val source = LocationNode("source", protoConnections = mutableListOf(ProtoConnection(name = neighbor.name, oneWay = true)))
         val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(source, neighbor)))
 
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)

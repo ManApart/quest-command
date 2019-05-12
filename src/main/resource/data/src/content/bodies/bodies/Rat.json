@@ -9,15 +9,13 @@
     "locations": [
       {
         "name": "Canine Head",
-        "restricted": true,
-        "position": {
+        "vector": {
           "z": 1
         }
       },
       {
         "name": "Small Claws",
-        "restricted": true,
-        "position": {
+        "vector": {
           "z": -1
         }
       }

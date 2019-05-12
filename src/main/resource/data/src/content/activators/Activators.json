@@ -63,6 +63,26 @@
     ]
   },
   {
+    "name": "Apple Tree Branches",
+    "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
+    "extends": "Burnable",
+    "params": {
+      "burnHealth": 5,
+      "itemName": "Apple Tree Branches"
+    },
+    "properties": {
+      "tags": [
+        "Climbable",
+        "Wood"
+      ]
+    },
+    "climb": {
+      "name": "Tree",
+      "destination": "apple tree",
+      "upwards": false
+    }
+  },
+  {
     "name": "Wheat Field",
     "description": "The golden shafts of wheat whisper as they brush against each other.",
     "extends": "Burnable",
@@ -104,26 +124,7 @@
       ]
     }
   },
-  {
-    "name": "Apple Tree Branches",
-    "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
-    "extends": "Burnable",
-    "params": {
-      "burnHealth": 5,
-      "itemName": "Apple Tree Branches"
-    },
-    "properties": {
-      "tags": [
-        "Climbable",
-        "Wood"
-      ]
-    },
-    "climb": {
-      "name": "Tree",
-      "destination": "apple tree",
-      "upwards": false
-    }
-  },
+
   {
     "name": "Kanbara Gate (Open)",
     "description": "The gate is large but not immovable.",

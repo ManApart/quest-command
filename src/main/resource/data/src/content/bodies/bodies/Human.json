@@ -9,25 +9,25 @@
     "locations": [
       {
         "name": "Head",
-        "position": {
+        "vector": {
           "z": 1
         }
       },
       {
         "name": "Right Arm",
-        "position": {
+        "vector": {
           "x": 1
         }
       },
       {
         "name": "Left Arm",
-        "position": {
+        "vector": {
           "x": -1
         }
       },
       {
         "name": "Waist",
-        "position": {
+        "vector": {
           "z": -1
         }
       }
@@ -39,7 +39,7 @@
     "locations": [
       {
         "name": "Right Hand",
-        "position": {
+        "vector": {
           "z": -1
         }
       }
@@ -51,7 +51,7 @@
     "locations": [
       {
         "name": "Left Hand",
-        "position": {
+        "vector": {
           "z": -1
         }
       }
@@ -63,14 +63,14 @@
     "locations": [
       {
         "name": "Right Leg",
-        "position": {
+        "vector": {
           "x": 1,
           "z": -1
         }
       },
       {
         "name": "Left Leg",
-        "position": {
+        "vector": {
           "x": -1,
           "z": -1
         }
@@ -91,7 +91,7 @@
     "locations": [
       {
         "name": "Right Foot",
-        "position": {
+        "vector": {
           "z": -1
         }
       }
@@ -103,7 +103,7 @@
     "locations": [
       {
         "name": "Left Foot",
-        "position": {
+        "vector": {
           "z": -1
         }
       }

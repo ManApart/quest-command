@@ -1,6 +1,6 @@
 package explore.map
 
-import core.gameState.Position
+import core.gameState.Vector
 import core.gameState.location.Connection
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
@@ -30,7 +30,7 @@ class ReadMapTest {
     @Test
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
-        target.addLink(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Position(0,10,0)))
+        target.addLink(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Vector(0,10,0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()
@@ -45,10 +45,10 @@ class ReadMapTest {
     fun neighborsAreProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         val targetPoint = LocationPoint(target)
-        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("north")), Position(0,10,0)))
-        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("south")), Position(0,-10,0)))
-        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("east")), Position(10,0,0)))
-        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("west")), Position(-10,0,0)))
+        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("north")), Vector(0,10,0)))
+        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("south")), Vector(0,-10,0)))
+        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("east")), Vector(10,0,0)))
+        target.addLink(Connection(targetPoint, LocationPoint(LocationNode("west")), Vector(-10,0,0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()

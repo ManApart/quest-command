@@ -1,7 +1,7 @@
 package gameState.location
 
 import core.gameState.Direction
-import core.gameState.Position
+import core.gameState.Vector
 import core.gameState.location.Connection
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
@@ -57,7 +57,7 @@ class RouteNeighborFinderTest {
         listOf(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST)
                 .forEach { direction ->
                     val neighbor = LocationNode(direction.toString())
-                    val link = Connection(LocationPoint( source), LocationPoint(neighbor), Position.fromDirection(direction))
+                    val link = Connection(LocationPoint( source), LocationPoint(neighbor), Vector.fromDirection(direction))
                     source.addLink(link)
                     neighbor.addLink(link.invert())
                     createLocations(neighbor, direction, depth - 1, depth)
@@ -71,7 +71,7 @@ class RouteNeighborFinderTest {
             return
         }
         val neighbor = LocationNode(direction.toString() + (totalDepth -depth))
-        val link = Connection(LocationPoint(source), LocationPoint(neighbor), Position.fromDirection(direction))
+        val link = Connection(LocationPoint(source), LocationPoint(neighbor), Vector.fromDirection(direction))
         source.addLink(link)
         neighbor.addLink(link.invert())
         createLocations(neighbor, direction, depth - 1, totalDepth)

@@ -18,7 +18,7 @@ class DodgeCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tDodge <direction> - Attempt to dodge a blow (only works in battle)." +
-                "\n\tYou return to a neutral position next time you choose an action."
+                "\n\tYou return to a neutral vector next time you choose an action."
     }
 
     override fun getCategory(): List<String> {

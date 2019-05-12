@@ -1,6 +1,6 @@
 package core.gameState.location
 
-import core.gameState.Position
+import core.gameState.Vector
 import java.lang.IllegalArgumentException
 
 
@@ -13,7 +13,7 @@ class Route(val source: LocationNode, private val links: MutableList<Connection>
     }
 
     var destination: LocationNode = source
-    val position: Position = Position()
+    val vector: Vector = Vector()
 
     override fun toString(): String {
         return "Route : ${source.name} - ${destination.name}; Steps: ${getLinks().size}"

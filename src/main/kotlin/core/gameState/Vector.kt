@@ -2,22 +2,22 @@ package core.gameState
 
 import kotlin.math.pow
 
-val NO_POSITION: Position = Position()
+val NO_VECTOR: Vector = Vector()
 
-class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
+class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
 
     companion object {
-        fun fromDirection(direction: Direction) : Position {
+        fun fromDirection(direction: Direction) : Vector {
             return when (direction) {
-                Direction.EAST -> Position(1)
-                Direction.WEST -> Position(-1)
-                Direction.NORTH_EAST -> Position(1, 1)
-                Direction.NORTH_WEST -> Position(-1, 1)
-                Direction.NORTH-> Position(0, 1)
-                Direction.SOUTH-> Position(0, -1)
-                Direction.SOUTH_EAST-> Position(1, -1)
-                Direction.SOUTH_WEST-> Position(-1, -1)
-                else -> Position()
+                Direction.EAST -> Vector(1)
+                Direction.WEST -> Vector(-1)
+                Direction.NORTH_EAST -> Vector(1, 1)
+                Direction.NORTH_WEST -> Vector(-1, 1)
+                Direction.NORTH-> Vector(0, 1)
+                Direction.SOUTH-> Vector(0, -1)
+                Direction.SOUTH_EAST-> Vector(1, -1)
+                Direction.SOUTH_WEST-> Vector(-1, -1)
+                else -> Vector()
             }
         }
     }
@@ -26,23 +26,23 @@ class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         return "Pos: $x, $y, $z"
     }
 
-    fun add(other: Position): Position {
-        return Position(x + other.x, y + other.y, z + other.z)
+    fun add(other: Vector): Vector {
+        return Vector(x + other.x, y + other.y, z + other.z)
     }
 
     /**
-     * Return the direction this position is relative to 0.0.0
+     * Return the direction this vector is relative to 0.0.0
      * The same as calling (0.0.0).getDirection(this)
      */
     fun getDirection(): Direction {
-        return NO_POSITION.getDirection(this)
+        return NO_VECTOR.getDirection(this)
     }
 
     /**
-     * Return the direction to go in order to arrive at the other position
+     * Return the direction to go in order to arrive at the other vector
      * (0,0,0).getDirection(10,0,0) would return EAST
      */
-    fun getDirection(other: Position): Direction {
+    fun getDirection(other: Vector): Direction {
         val zVal = z - other.z
         val zAbs = Math.abs(zVal)
         val xyDist = getDistanceXY(other)
@@ -69,31 +69,31 @@ class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     /**
      * Floor.isDirection(below, roof) == true
      */
-    fun isDirection(direction: Direction, other: Position): Boolean {
+    fun isDirection(direction: Direction, other: Vector): Boolean {
         return direction == other.getDirection(this)
     }
 
-    fun getDistance(other: Position = Position()): Int {
+    fun getDistance(other: Vector = Vector()): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
         val z = (z - other.z).toDouble().pow(2)
         return Math.sqrt(x + y + z).toInt()
     }
 
-    private fun getDistanceXY(other: Position): Int {
+    private fun getDistanceXY(other: Vector): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
         return Math.sqrt(x + y).toInt()
     }
 
-    fun getDistanceZ(other: Position): Int {
+    fun getDistanceZ(other: Vector): Int {
         return Math.abs(z - other.z)
     }
 
     /**
      * (0,0,0).getAngleXY(10,0,0) would return 90 degrees
      */
-    private fun getAngleXY(other: Position): Int {
+    private fun getAngleXY(other: Vector): Int {
         val dx = (other.x - x)
         val dy = (other.y - y)
         val rads = Math.atan2(dy.toDouble(), dx.toDouble())
@@ -110,8 +110,8 @@ class Position(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         }
     }
 
-    fun invert(): Position {
-        return Position(-x, -y, -z)
+    fun invert(): Vector {
+        return Vector(-x, -y, -z)
     }
 
 
