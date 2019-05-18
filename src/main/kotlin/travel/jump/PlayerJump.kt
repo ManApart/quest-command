@@ -18,7 +18,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         display("You jump from ${event.source}")
         val damage = calculateJumpDamage(event)
 
-        GameState.player.finishJourney()
+        GameState.player.finishClimbing()
 
         if (damage != 0) {
             EventManager.postEvent(StatChangeEvent(GameState.player, "Falling", HEALTH, damage))

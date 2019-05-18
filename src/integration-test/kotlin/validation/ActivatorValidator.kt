@@ -1,10 +1,9 @@
 package validation
 
-import core.gameState.location.NOWHERE_NODE
 import system.activator.ActivatorManager
 import system.behavior.BehaviorManager
-import system.location.LocationManager
-import travel.climb.ClimbPathManager
+
+//TODO - check that connections with connection networks exist
 
 class ActivatorValidator {
 
@@ -12,9 +11,7 @@ class ActivatorValidator {
 
     fun validate(): Int {
         return noDuplicateNames() +
-                behaviorsExist() +
-                climbPathsExist() +
-                climbDestinationsExist()
+                behaviorsExist()
 
     }
 
@@ -38,32 +35,6 @@ class ActivatorValidator {
             activator.behaviorRecipes.forEach { recipe ->
                 if (!BehaviorManager.behaviorExists(recipe)) {
                     println("WARN: Activator '${activator.name}' references nonexistent behavior: ${recipe.name}.")
-                    warnings++
-                }
-            }
-        }
-        return warnings
-    }
-
-    private fun climbPathsExist(): Int {
-        var warnings = 0
-        activators.forEach { activator ->
-            if (activator.climb != null) {
-                if (!ClimbPathManager.pathExists(activator.climb!!.name)) {
-                    println("WARN: Activator '${activator.name}' references nonexistent path: ${activator.climb!!.name}.")
-                    warnings++
-                }
-            }
-        }
-        return warnings
-    }
-
-    private fun climbDestinationsExist(): Int {
-        var warnings = 0
-        activators.forEach { activator ->
-            if (activator.climb != null) {
-                if (!activator.climb!!.destinationName.startsWith("\$") && activator.climb!!.destination == NOWHERE_NODE) {
-                    println("WARN: Activator '${activator.name}' references nonexistent climb path destination.")
                     warnings++
                 }
             }

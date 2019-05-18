@@ -13,14 +13,11 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
 
     override fun execute(event: ClimbCompleteEvent) {
         event.target.consume(event)
-        GameState.player.climbJourney = null
         if (GameState.player.location == event.destination) {
             display("You climb back off ${event.target.name}")
         } else {
             EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))
         }
-        GameState.player.canRest = true
-        GameState.player.canTravel = true
-        GameState.player.canInteract = true
+        GameState.player.finishClimbing()
     }
 }

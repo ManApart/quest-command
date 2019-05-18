@@ -163,12 +163,17 @@ Maybe attack listeners delegate to battle to be told if to execute or not. Battl
 
 ### General UI
 
-- find a way to allow auto complete with tab
 - preferences for what messages show
 - Possible CLI Tools
     - [Clink](http://mridgers.github.io/clink/)
     - [Picocli](https://github.com/remkop/picocli)
     - [JLine](https://jline.github.io/)
+
+
+Bash completion
+- https://iridakos.com/tutorials/2018/03/01/bash-programmable-completion-tutorial.html
+- Dynamic complete?
+- Could be seperate from main app
 
 ### Locations
 
@@ -221,6 +226,14 @@ Fitness, which is affected by eating unhealthy food etc
 - Skills/commands unlock based on attribute level
 - Show only unlocked commands in help, etc
 - Create cheat/debug commands to level up etc
+
+#### Morality
+
+Morality/infamy system
+- Morality based on what the player does good or bad, regardless of being noticed/caught
+- Fame/Infamy based on deeds that you’ve done. The more witnessed/bigger deal the more fame/infamy
+- Morality is carried by the player
+- Fame is based on value for current location + an average of all other locations
 
 
 ### Story
@@ -279,6 +292,10 @@ Attack command groups 0 vs 1 - make tests
 -----------------------------
 
 location node exits
+On arrive, add connections to target/body parts if they exist
+If climable, climbing an activator changes your location node to the body part of the activator
+if the body part has a connection, send player to connected location
+on arrive to connected location, re-connect path back if connection had a target + part
 
 remove climb paths
 
@@ -297,6 +314,21 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 - assume no for now but once all this done maybe...
 
 For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
+
+
+Climb Location
+- Player has location and climb location
+- Climb target: > set player climb location to target’s mount part
+- Dismount - Remove climb location, possibly take fall damage
+- Look operates differently if player has a climb location: it explains what they can climb etc
+- Climb in a direction to climb the part in that direction, or climb a specific part, or default to the next part in a direction if there is only one part
+- All climb parts have an exit node: either the input connection/exit or the location of the target itself.
+- Exiting to the connected location will add a special ‘climb target’ that has the connected climb part, for climbing back down
+
+Dismounting
+- If part has exit connection, exit to that connection
+- Spawn should give exit nodes to all lowest body parts + any inherited /connection nodes
+- If Jump, take fall damage and place at climb target's parent location
 
 
 Location Nodes:
@@ -382,3 +414,7 @@ Body Parts:
     },
 
 ```
+
+Tests:
+
+- Startclimbing only executes for climable property

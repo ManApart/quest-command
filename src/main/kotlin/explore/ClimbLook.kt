@@ -1,62 +1,47 @@
 package explore
 
+import core.gameState.Direction
 import core.gameState.GameState
+import core.gameState.location.*
+import core.history.StringTable
 import core.history.display
 import core.utility.wrapNonEmpty
-import travel.climb.ClimbJourney
 
 object ClimbLook {
 
     fun describeClimbJourney() {
-        val journey = GameState.player.climbJourney as ClimbJourney
-        val distance = getDistance(journey).wrapNonEmpty("", " ")
-        val abovePaths = getAbovePaths(journey).wrapNonEmpty("", " ")
-        val belowPaths = getBelowPaths(journey)
+        val location = GameState.player.location
+        val distance = getDistance(location).wrapNonEmpty("", " ")
 
-        display("$distance$abovePaths$belowPaths")
+        display("You are on ${location.name}, $distance above the ground.")
+        display(getRoutesString(location))
     }
 
-    private fun getDistance(journey: ClimbJourney): String {
-        return if (journey.getCurrentDistance() > 1) {
-            "You are ${journey.getCurrentDistance()}ft up."
+    private fun getDistance(location: LocationNode): String {
+        val lowestNode = location.getNetwork().getFurthestLocations(Direction.BELOW).first()
+        val route = RouteFinder(location, lowestNode)
+        return if (route.hasRoute()) {
+            "${route.getRoute().getDistance()} ft"
         } else {
-            ""
+            "an unknown distance"
         }
     }
 
-    private fun getAbovePaths(journey: ClimbJourney): String {
-        return if (journey.getHigherSegments().size > 1) {
-            var i = 0
-            "Above you are path choices " + journey.getHigherSegments().joinToString(", ") {
-                i++
-                "$i"
-            } + "."
-        } else if (journey.getHigherSegments().size == 1) {
-            ""
+    private fun getRoutesString(location: LocationNode): String {
+        val routes = RouteNeighborFinder(location, 1).getNeighbors()
+
+        return if (routes.isNotEmpty()) {
+            val input = mutableListOf(listOf("Name", "Distance", "Direction", "Difficulty"))
+            input.addAll(routes.map { getRouteString(it) })
+            val table = StringTable(input, 2, rightPadding = 2)
+
+            "Options:\n${table.getString()}"
         } else {
-            if (journey.getCurrentSegment().top) {
-                "You are at the top of ${journey.target.name}."
-            } else {
-                "Above you is nothing to climb on."
-            }
+            "There is nothing to climb to."
         }
     }
 
-    private fun getBelowPaths(journey: ClimbJourney): String {
-        return if (journey.getLowerSegments().size > 1) {
-            var i = journey.getHigherSegments().size
-            "Below you are path choices " + journey.getLowerSegments().joinToString(",") {
-                i++
-                "$i"
-            } + "."
-        } else if (journey.getLowerSegments().size == 1) {
-            ""
-        } else {
-            if (journey.getCurrentSegment().bottom) {
-                "You are at the bottom of ${journey.target.name}."
-            } else {
-                "Below you is nothing to climb on."
-            }
-        }
+    private fun getRouteString(route: Route): List<String> {
+        return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString(), "1")
     }
 }

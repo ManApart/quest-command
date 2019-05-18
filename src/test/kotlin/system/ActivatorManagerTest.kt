@@ -3,14 +3,12 @@ package system
 import core.gameState.PLAYER_START_LOCATION
 import core.gameState.PLAYER_START_NETWORK
 import core.gameState.Target
-import core.gameState.climb.Climbable
 import core.gameState.location.DEFAULT_NETWORK
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationTarget
 import core.utility.NameSearchableList
 import dialogue.DialogueOptions
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import system.activator.ActivatorManager
 import system.activator.ActivatorParser
@@ -53,7 +51,8 @@ class ActivatorManagerTest {
 
     @Test
     fun nestedClimbableGetsParams() {
-        val activator = Target("Target", climb = Climbable("\$destination", "", true))
+//        val activator = Target("Target", climb = Climbable("\$destination", "", true))
+        val activator = Target("Target", dynamicDescription = DialogueOptions("\$destination"))
         val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()
@@ -61,7 +60,7 @@ class ActivatorManagerTest {
         val target = LocationTarget("Target", null, mapOf("destination" to "resort"))
         val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
 
-        assertEquals("resort", result.climb?.name ?: "")
+        assertEquals("resort", result.description)
     }
 
 }

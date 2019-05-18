@@ -5,20 +5,16 @@ import core.gameState.*
 import core.gameState.Target
 import core.history.display
 import interact.scope.ScopeManager
-import travel.climb.ClimbJourney
 
 class Look : EventListener<LookEvent>() {
 
 
     override fun execute(event: LookEvent) {
-        if (GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney) {
-            ClimbLook.describeClimbJourney()
-        } else if (event.target != null) {
-            describeTarget(event.target)
-        } else if (GameState.battle != null) {
-            GameState.battle?.describe()
-        } else {
-            describeLocation()
+        when {
+            GameState.player.isClimbing -> ClimbLook.describeClimbJourney()
+            event.target != null -> describeTarget(event.target)
+            GameState.battle != null -> GameState.battle?.describe()
+            else -> describeLocation()
         }
     }
 

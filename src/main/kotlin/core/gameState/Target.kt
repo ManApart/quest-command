@@ -5,7 +5,6 @@ import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.body.Body
 import core.gameState.body.Slot
-import core.gameState.climb.Climbable
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
 import core.utility.Named
@@ -25,7 +24,6 @@ open class Target(
         @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = base?.behaviorRecipes
                 ?: mutableListOf(),
         body: String? = base?.body?.name,
-        climb: Climbable? = base?.climb,
         equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
         @JsonProperty("description") dynamicDescription: DialogueOptions = base?.dynamicDescription
                 ?: DialogueOptions(name),
@@ -39,7 +37,6 @@ open class Target(
     val ai = if (ai != null) AIManager.getAI(ai, this) else null
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = if (body == null) Body() else BodyManager.getBody(body)
-    val climb = climb?.let { Climbable(it, params) }
     val description get() = dynamicDescription.getDialogue()
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val inventory: Inventory = Inventory(items)

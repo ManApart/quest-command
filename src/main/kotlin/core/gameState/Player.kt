@@ -1,5 +1,6 @@
 package core.gameState
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import core.events.Event
 import core.gameState.location.LocationNode
 import core.gameState.location.Route
@@ -7,12 +8,10 @@ import core.gameState.stat.*
 import core.utility.NameSearchableList
 import crafting.Recipe
 import dialogue.DialogueOptions
-import system.body.BodyManager
 import system.location.LocationManager
-import travel.climb.ClimbJourney
 
-val PLAYER_START_NETWORK = "Kanbara CountrySide"
-val PLAYER_START_LOCATION = "An Open Field"
+const val PLAYER_START_NETWORK = "Kanbara CountrySide"
+const val PLAYER_START_LOCATION = "An Open Field"
 
 class Player(
         name: String = "Player",
@@ -21,9 +20,10 @@ class Player(
         location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION))
     : Target(name = name, dynamicDescription = dynamicDescription, body = body, location = location) {
 
-    var climbJourney: ClimbJourney? = null
+    var climbTarget: Target? = null
     var route: Route? = null
 
+    var isClimbing = false
     var canRest = true
     var canTravel = true
     var canInteract = true
@@ -53,9 +53,20 @@ class Player(
 
     override fun consume(event: Event) {}
 
-    fun finishJourney() {
-        climbJourney = null
-        GameState.player.canRest = true
+    fun setClimbing(target: Target) {
+        isClimbing = true
+        climbTarget = target
+        canRest = false
+        canTravel = false
+        canInteract = false
+    }
+
+    fun finishClimbing() {
+        isClimbing = false
+        climbTarget = null
+        canRest = true
+        canTravel = true
+        canInteract = true
     }
 
 

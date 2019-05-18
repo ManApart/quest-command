@@ -2,6 +2,9 @@ package travel.climb
 
 import core.commands.Command
 import core.gameState.GameState
+import core.gameState.location.Connection
+import core.gameState.location.LocationNode
+import core.gameState.location.NOWHERE_NODE
 import core.history.display
 import system.EventManager
 
@@ -23,11 +26,14 @@ class DismountCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (isClimbing()) {
-            val journey = GameState.player.climbJourney as ClimbJourney
+        if (GameState.player.isClimbing) {
+            //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
+            val exit = getExitLocation(GameState.player.location)
+
+
             when {
-                journey.getCurrentSegment().top -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.top))
-                journey.getCurrentSegment().bottom -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.bottom))
+                exit != null -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, exit))
+                GameState.player.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, GameState.player.location))
                 else -> display("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {
@@ -35,8 +41,10 @@ class DismountCommand : Command() {
         }
     }
 
-    private fun isClimbing(): Boolean {
-        return GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney
+    //TODO - could this be a bad test for if the network location exit is not climbing related?
+    private fun getExitLocation(location: LocationNode) : LocationNode? {
+        return location.getNeighborLinks().firstOrNull { it.isNetworkConnection() }?.destination?.location
     }
+
 
 }

@@ -1,5 +1,7 @@
 package core.gameState.location
 
+import core.gameState.Direction
+import core.gameState.Vector
 import core.utility.NameSearchableList
 import core.utility.Named
 
@@ -42,7 +44,14 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locations.exists(name)
     }
 
-    // fun getLowestLocations() : List<LocationNode> {
+    //TODO - test
+    fun getFurthestLocations(direction: Direction = Direction.BELOW) : List<LocationNode> {
+        return getFurthestLocations(Vector.fromDirection(direction))
+    }
+
+    fun getFurthestLocations(vector: Vector) : List<LocationNode> {
+        return locationNodes
+    }
 
 
 }

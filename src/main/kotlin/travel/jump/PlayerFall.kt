@@ -21,7 +21,7 @@ class PlayerFall : EventListener<FallEvent>() {
         if (GameState.player.location != event.destination){
             EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
         }
-        GameState.player.finishJourney()
+        GameState.player.finishClimbing()
     }
 
     private fun takeDamage(event: FallEvent) {

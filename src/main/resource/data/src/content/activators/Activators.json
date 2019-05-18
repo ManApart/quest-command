@@ -38,11 +38,6 @@
         "Wood"
       ]
     },
-    "climb": {
-      "name": "Tree",
-      "destination": "apple tree branches",
-      "upwards": true
-    },
     "items": [
       "Apple"
     ],
@@ -75,11 +70,6 @@
         "Climbable",
         "Wood"
       ]
-    },
-    "climb": {
-      "name": "Tree",
-      "destination": "apple tree",
-      "upwards": false
     }
   },
   {
@@ -234,25 +224,6 @@
   {
     "name": "Stairs Up",
     "description": "The stairs lead up to another floor.",
-    "climb": {
-      "name": "One Step",
-      "destination": "$destination",
-      "upwards": true
-    },
-    "properties": {
-      "tags": [
-        "Climbable"
-      ]
-    }
-  },
-  {
-    "name": "Stairs Down",
-    "description": "The stairs lead down to another floor.",
-    "climb": {
-      "name": "One Step",
-      "destination": "$destination",
-      "upwards": false
-    },
     "properties": {
       "tags": [
         "Climbable"

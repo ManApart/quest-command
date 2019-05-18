@@ -1,6 +1,6 @@
 package core.gameState.location
 
-class RouteFinder(private val source: LocationNode, private val destination: LocationNode, private val depth: Int) {
+class RouteFinder(private val source: LocationNode, private val destination: LocationNode, private val depth: Int = 10) {
     private val potentials: MutableList<Route> = mutableListOf()
     private val examined: MutableList<LocationNode> = mutableListOf()
     private var solution: Route? = null

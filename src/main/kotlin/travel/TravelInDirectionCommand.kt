@@ -8,9 +8,7 @@ import core.gameState.location.LocationNode
 import core.history.display
 import interact.scope.ScopeManager
 import system.EventManager
-import travel.climb.ClimbJourney
-import travel.climb.ClimbJourneyEvent
-import travel.climb.StartClimbingEvent
+import travel.climb.AttemptClimbEvent
 
 class TravelInDirectionCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -55,17 +53,16 @@ class TravelInDirectionCommand : Command() {
     }
 
     private fun processClimbing(direction: Direction) {
-        if (isClimbing()) {
-            val upwards= direction == Direction.ABOVE
-            climbStep(GameState.player.climbJourney!!.getNextSegment(upwards))
+        if (GameState.player.isClimbing) {
+            climbInDirection(GameState.player.climbTarget!!, direction)
         } else {
             val found = findLocationInDirection(direction)
             if (found != null && !GameState.player.location.isMovingToRestricted(found)) {
                 EventManager.postEvent(TravelStartEvent(destination = found))
             } else {
-                val climbTarget = findClimbTarget(direction)
-                if (climbTarget != null) {
-                    EventManager.postEvent(StartClimbingEvent(GameState.player, climbTarget))
+                val climbableTarget = ScopeManager.getScope().findTargetsByTag("Climbable").firstOrNull()
+                if (climbableTarget != null) {
+                    climbInDirection(climbableTarget, direction)
                 } else {
                     display("Could not find anything to climb.")
                 }
@@ -73,24 +70,13 @@ class TravelInDirectionCommand : Command() {
         }
     }
 
-    private fun isClimbing(): Boolean {
-        return GameState.player.climbJourney != null && GameState.player.climbJourney is ClimbJourney
-    }
-
-    private fun climbStep(step: Int) {
-        if (step != 0) {
-            EventManager.postEvent(ClimbJourneyEvent(step))
+    private fun climbInDirection(target: Target, direction: Direction) {
+        val climbTarget = findLocationInDirection(direction)
+        if (climbTarget != null) {
+            EventManager.postEvent(AttemptClimbEvent(GameState.player, target, climbTarget))
         } else {
-            display("Couldn't find the next place to climb to!")
+            display("Could not find anything to climb.")
         }
-    }
-
-    private fun findClimbTarget(direction: Direction): Target? {
-        val desireUpwards = direction == Direction.ABOVE
-        return ScopeManager.getScope().findTargetsByTag("Climbable")
-                .firstOrNull {
-                    it.climb != null && it.climb.upwards == desireUpwards
-                }
     }
 
     private fun findLocationInDirection(direction: Direction): LocationNode? {

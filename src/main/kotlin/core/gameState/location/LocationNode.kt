@@ -51,8 +51,12 @@ class LocationNode(
                 .toList()
     }
 
+    fun getNetwork(): Network{
+        return LocationManager.getNetwork(parent)
+    }
+
     fun getLocation(): Location {
-        return LocationManager.getNetwork(parent).getLocation(locationName)
+        return getNetwork().getLocation(locationName)
     }
 
     fun nameMatches(args: List<String>): Boolean {
@@ -90,6 +94,15 @@ class LocationNode(
         }
     }
 
+    fun getDistanceToLowestNodeInNetwork() : Int {
+        val lowestNode = getNetwork().getFurthestLocations(Direction.BELOW).first()
+        val route = RouteFinder(this, lowestNode)
+        return if (route.hasRoute()) {
+            route.getRoute().getDistance()
+        } else {
+            0
+        }
+    }
 
 
 }

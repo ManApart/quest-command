@@ -12,4 +12,10 @@ class Connection(val source: LocationPoint, val destination: LocationPoint, val 
     fun invert(): Connection {
         return Connection(destination, source, vector.invert(), restricted)
     }
+
+    fun isNetworkConnection() : Boolean {
+        return source.location.parent != destination.location.parent
+    }
+
+
 }
