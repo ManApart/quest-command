@@ -5,44 +5,45 @@ import kotlin.math.pow
 val NO_VECTOR: Vector = Vector()
 
 class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
-
-    companion object {
-        fun fromDirection(direction: Direction) : Vector {
-            return when (direction) {
-                Direction.EAST -> Vector(1)
-                Direction.WEST -> Vector(-1)
-                Direction.NORTH_EAST -> Vector(1, 1)
-                Direction.NORTH_WEST -> Vector(-1, 1)
-                Direction.NORTH-> Vector(0, 1)
-                Direction.SOUTH-> Vector(0, -1)
-                Direction.SOUTH_EAST-> Vector(1, -1)
-                Direction.SOUTH_WEST-> Vector(-1, -1)
-                else -> Vector()
-            }
-        }
-    }
+    /**
+     * The direction this vector is relative to 0.0.0
+     * The same as calling (0.0.0).calculateDirection(this)
+     */
+    val direction: Direction by lazy { calculateDirection() }
 
     override fun toString(): String {
         return "Pos: $x, $y, $z"
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is Vector) {
+            x == other.x && y == other.y && z == other.z
+        } else {
+            super.equals(other)
+        }
+    }
+
+    override fun hashCode(): Int {
+        var result = x
+        result = 31 * result + y
+        result = 31 * result + z
+        return result
+    }
+
+
     fun add(other: Vector): Vector {
         return Vector(x + other.x, y + other.y, z + other.z)
     }
 
-    /**
-     * Return the direction this vector is relative to 0.0.0
-     * The same as calling (0.0.0).getDirection(this)
-     */
-    fun getDirection(): Direction {
-        return NO_VECTOR.getDirection(this)
+    private fun calculateDirection(): Direction {
+        return NO_VECTOR.calculateDirection(this)
     }
 
     /**
      * Return the direction to go in order to arrive at the other vector
-     * (0,0,0).getDirection(10,0,0) would return EAST
+     * (0,0,0).calculateDirection(10,0,0) would return EAST
      */
-    fun getDirection(other: Vector): Direction {
+    fun calculateDirection(other: Vector): Direction {
         val zVal = z - other.z
         val zAbs = Math.abs(zVal)
         val xyDist = getDistanceXY(other)
@@ -70,7 +71,7 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
      * Floor.isDirection(below, roof) == true
      */
     fun isDirection(direction: Direction, other: Vector): Boolean {
-        return direction == other.getDirection(this)
+        return direction == other.calculateDirection(this)
     }
 
     fun getDistance(other: Vector = Vector()): Int {
@@ -113,6 +114,5 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     fun invert(): Vector {
         return Vector(-x, -y, -z)
     }
-
 
 }

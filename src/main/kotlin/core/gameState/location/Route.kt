@@ -4,10 +4,10 @@ import core.gameState.Vector
 import java.lang.IllegalArgumentException
 
 
-class Route(val source: LocationNode, private val links: MutableList<Connection> = mutableListOf()) {
+class Route(val source: LocationNode, private val connections: MutableList<Connection> = mutableListOf()) {
 
     constructor(base: Route) : this(base.source) {
-        base.getLinks().forEach {
+        base.getConnections().forEach {
             addLink(it)
         }
     }
@@ -16,42 +16,42 @@ class Route(val source: LocationNode, private val links: MutableList<Connection>
     val vector: Vector = Vector()
 
     override fun toString(): String {
-        return "Route : ${source.name} - ${destination.name}; Steps: ${getLinks().size}"
+        return "Route : ${source.name} - ${destination.name}; Steps: ${getConnections().size}"
     }
 
-    fun addLink(link: Connection) {
-        if (link.source.location != destination) {
-            throw IllegalArgumentException("Route starting with '${source.name}' was passed a link whose source '${link.source.location.name}' did not match current destination '${destination.name}'.")
+    fun addLink(connection: Connection) {
+        if (connection.source.location != destination) {
+            throw IllegalArgumentException("Route starting with '${source.name}' was passed a connection whose source '${connection.source.location.name}' did not match current destination '${destination.name}'.")
         }
-        links.add(link)
-        destination = link.destination.location
+        connections.add(connection)
+        destination = connection.destination.location
     }
 
-    fun getLinks(): List<Connection> {
-        return links.toList()
+    fun getConnections(): List<Connection> {
+        return connections.toList()
     }
 
     fun getDistance(): Int {
-        return links.asSequence().map { it.vector.getDistance() }.sum()
+        return connections.asSequence().map { it.vector.getDistance() }.sum()
     }
 
     fun getDirectionString(): String {
-        return links.asSequence()
-                .map { it.vector.getDirection().shortcut }
+        return connections.asSequence()
+                .map { it.vector.direction.shortcut }
                 .joinToString(", ")
                 .toUpperCase()
     }
 
     fun isOnRoute(location: LocationNode): Boolean {
-        return location == source || links.any { location == it.destination.location }
+        return location == source || connections.any { location == it.destination.location }
     }
 
     fun getNextStep(location: LocationNode) : Connection {
-        return links.first { it.source.location == location }
+        return connections.first { it.source.location == location }
     }
 
     fun getRouteProgressString(currentLocation: LocationNode): String {
-        val names = links.asSequence()
+        val names = connections.asSequence()
                 .map { it.source.location.name }
                 .toMutableList()
 

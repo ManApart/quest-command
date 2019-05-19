@@ -55,9 +55,9 @@ class LocationManagerTest {
         Assert.assertEquals(3, LocationManager.getNetwork("Wilderness").countLocationNodes())
 
         //No Duplicate Links
-        Assert.assertEquals(2, source.getNeighborLinks().size)
-        Assert.assertEquals(1, neighborExists.getNeighborLinks().size)
-        Assert.assertEquals(1, neighborDoesNotExists.getNeighborLinks().size)
+        Assert.assertEquals(2, source.getNeighborConnections().size)
+        Assert.assertEquals(1, neighborExists.getNeighborConnections().size)
+        Assert.assertEquals(1, neighborDoesNotExists.getNeighborConnections().size)
     }
 
     @Test
@@ -72,8 +72,8 @@ class LocationManagerTest {
 
         Assert.assertEquals(source, LocationManager.getNetwork("Wilderness").getLocationNode(source.name))
         Assert.assertEquals(neighbor, LocationManager.getNetwork("Wilderness").getLocationNode(neighbor.name))
-        Assert.assertEquals(1, source.getNeighborLinks().size)
-        Assert.assertEquals(0, neighbor.getNeighborLinks().size)
+        Assert.assertEquals(1, source.getNeighborConnections().size)
+        Assert.assertEquals(0, neighbor.getNeighborConnections().size)
 
     }
 

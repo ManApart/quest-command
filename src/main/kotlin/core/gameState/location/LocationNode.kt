@@ -13,7 +13,7 @@ class LocationNode(
         val locationName: String = name,
         val parent: String = DEFAULT_NETWORK,
         @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
-        private val locationLinks: MutableList<Connection> = mutableListOf()
+        private val connections: MutableList<Connection> = mutableListOf()
 ) : Named {
 
     override fun toString(): String {
@@ -24,29 +24,29 @@ class LocationNode(
         return name
     }
 
-    fun addLink(link: Connection) {
-        if (!hasLink(link)) {
-            locationLinks.add(link)
+    fun addConnection(connection: Connection) {
+        if (!hasConnection(connection)) {
+            connections.add(connection)
         }
     }
 
-    private fun hasLink(link: Connection): Boolean {
-        return locationLinks.any {
-            it.source == link.source && it.destination == link.destination
+    private fun hasConnection(connection: Connection): Boolean {
+        return connections.any {
+            it.source == connection.source && it.destination == connection.destination
         }
     }
 
-    fun getNeighborLinks(): List<Connection> {
-        return locationLinks.toList()
+    fun getNeighborConnections(): List<Connection> {
+        return connections.toList()
     }
 
     fun getNeighbors(): List<LocationNode> {
-        return locationLinks.map { it.destination.location }
+        return connections.map { it.destination.location }
     }
 
     fun getNeighbors(direction: Direction): List<LocationNode> {
-        return locationLinks.asSequence()
-                .filter { it.vector.getDirection() == direction }
+        return connections.asSequence()
+                .filter { it.vector.direction == direction }
                 .map { it.destination.location }
                 .toList()
     }
@@ -63,12 +63,12 @@ class LocationNode(
         return name.toLowerCase().split(" ").contains(args[0])
     }
 
-    fun getLink(destination: LocationNode): Connection? {
-        return locationLinks.firstOrNull { it.destination.location == destination }
+    fun getConnection(destination: LocationNode): Connection? {
+        return connections.firstOrNull { it.destination.location == destination }
     }
 
     fun getSiblings(): String {
-        val locations = getNeighborLinks()
+        val locations = getNeighborConnections()
         return if (locations.isNotEmpty()) {
             val siblings = locations.joinToString(", ") { getLocationWithDirection(it, false) }
             "is neighbored by $siblings"
@@ -78,12 +78,12 @@ class LocationNode(
     }
 
     fun isMovingToRestricted(destination: LocationNode): Boolean {
-        val link = getLink(destination)
+        val link = getConnection(destination)
         return link == null || link.restricted
     }
 
     private fun getLocationWithDirection(neighbor: Connection, far: Boolean): String {
-        val direction = neighbor.vector.getDirection()
+        val direction = neighbor.vector.direction
         return if (direction == Direction.NONE) {
             neighbor.destination.location.name
         } else {

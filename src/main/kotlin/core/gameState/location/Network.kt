@@ -44,13 +44,17 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locations.exists(name)
     }
 
-    //TODO - test
     fun getFurthestLocations(direction: Direction = Direction.BELOW) : List<LocationNode> {
-        return getFurthestLocations(Vector.fromDirection(direction))
-    }
+        val bottomNodes = mutableListOf<LocationNode>()
+        val inverted = direction.invert()
 
-    fun getFurthestLocations(vector: Vector) : List<LocationNode> {
-        return locationNodes
+        locationNodes.forEach {node ->
+            if (node.getNeighbors(inverted).isNotEmpty() && node.getNeighbors(direction).isEmpty()) {
+                bottomNodes.add(node)
+            }
+        }
+
+        return bottomNodes
     }
 
 

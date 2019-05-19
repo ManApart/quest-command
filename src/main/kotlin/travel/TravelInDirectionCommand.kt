@@ -52,6 +52,7 @@ class TravelInDirectionCommand : Command() {
         }
     }
 
+    //TODO Should this just call the climb command?
     private fun processClimbing(direction: Direction) {
         if (GameState.player.isClimbing) {
             climbInDirection(GameState.player.climbTarget!!, direction)

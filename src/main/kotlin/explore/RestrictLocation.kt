@@ -7,8 +7,8 @@ class RestrictLocation : EventListener<RestrictLocationEvent>() {
 
 
     override fun execute(event: RestrictLocationEvent) {
-        event.source.getLink(event.destination)?.restricted = event.makeRestricted
-        event.destination.getLink(event.source)?.restricted = event.makeRestricted
+        event.source.getConnection(event.destination)?.restricted = event.makeRestricted
+        event.destination.getConnection(event.source)?.restricted = event.makeRestricted
 
         if (!event.silent) {
             if (event.makeRestricted) {

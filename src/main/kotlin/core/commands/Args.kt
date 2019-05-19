@@ -30,11 +30,11 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
     }
 
     /**
-     * Returns if the any one of the input words matches one of the words in the arg list
+     * Returns any of the input words that match one of the words in the arg list
      * An optional condition can be passed in. The condition must be true in order to evaluate hasAny. If the condition is false, hasAny will always return false.
      */
-    fun hasAny(words: List<String>, condition: Boolean = true): Boolean {
-        return words.any { has(it, condition) }
+    fun hasAny(words: List<String>, condition: Boolean = true): List<String> {
+        return words.filter { has(it, condition) }
     }
 
     /**

@@ -14,7 +14,7 @@ class RouteNeighborFinder(private val source: LocationNode, private val depth: I
     }
 
     private fun findNeighbors() {
-        source.getNeighborLinks().forEach {
+        source.getNeighborConnections().forEach {
             val route = Route(source)
             route.addLink(it)
             neighbors.add(route)
@@ -26,14 +26,14 @@ class RouteNeighborFinder(private val source: LocationNode, private val depth: I
     }
 
     private fun buildNeighbors() {
-        if (potentials.isNotEmpty() && depth > potentials.first().getLinks().size) {
+        if (potentials.isNotEmpty() && depth > potentials.first().getConnections().size) {
             val current = potentials.toList()
             potentials.clear()
 
             current.forEach { route ->
                 if (!examined.contains(route.destination)) {
                     examined.add(route.destination)
-                    route.destination.getNeighborLinks().forEach { connection ->
+                    route.destination.getNeighborConnections().forEach { connection ->
                         if (!examined.contains(connection.destination.location)) {
                             val newRoute = Route(route)
                             newRoute.addLink(connection)

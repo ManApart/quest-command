@@ -2,9 +2,7 @@ package travel.climb
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.location.Connection
 import core.gameState.location.LocationNode
-import core.gameState.location.NOWHERE_NODE
 import core.history.display
 import system.EventManager
 
@@ -43,7 +41,7 @@ class DismountCommand : Command() {
 
     //TODO - could this be a bad test for if the network location exit is not climbing related?
     private fun getExitLocation(location: LocationNode) : LocationNode? {
-        return location.getNeighborLinks().firstOrNull { it.isNetworkConnection() }?.destination?.location
+        return location.getNeighborConnections().firstOrNull { it.isNetworkConnection() }?.destination?.location
     }
 
 

@@ -2,9 +2,16 @@ package travel.climb
 
 import core.commands.Args
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
+import core.gameState.Direction
 import core.gameState.GameState
+import core.gameState.Target
+import core.gameState.location.LocationNode
 import core.history.display
 import interact.scope.ScopeManager
+import netscape.security.Target.findTarget
+import org.reflections.vfs.Vfs
 import system.EventManager
 
 class ClimbCommand : Command() {
@@ -17,8 +24,9 @@ class ClimbCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tClimb <target> *<direction> - Climb the target" +
-                "\n\t"
+        return "\n\tClimb <part> of <target> - Climb (onto) the target" +
+                "\n\tClimb <direction> - Continue climbing in <direction>" +
+                "\n\tClimb to <part> - Climb to <part>"
     }
 
     override fun getCategory(): List<String> {
@@ -26,100 +34,79 @@ class ClimbCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val arguments = Args(args)
-
-        val adjustedArgs = arguments.argsWithout(listOf("f", "up", "u", "down", "d"))
-        val argsString = adjustedArgs.joinToString(" ")
-
-//        if (adjustedArgs.isEmpty() && !up && !down) {
-//            processNoArgs(force)
-//        } else {
-//            processWithArgs(adjustedArgs, force, up, down, args.joinToString(" "), argsString)
-//        }
+        val arguments = Args(args, delimiters = listOf("of", "to"))
+        if (GameState.player.isClimbing) {
+            processClimbing(arguments, GameState.player.climbTarget!!)
+        } else {
+            processNewClimb(arguments)
+        }
     }
 
-//    private fun processNoArgs(force: Boolean) {
-//        if (isClimbing()) {
-//            val step = getStep(GameState.player.climbJourney as ClimbJourney)
-//            climbStep(step, force)
-//        } else {
-//            val climbTarget = ScopeManager.getScope().findTargetsByTag("Climbable").firstOrNull()
-//            if (climbTarget != null) {
-//                EventManager.postEvent(AttemptClimbEvent(GameState.player, climbTarget, force))
-//            } else {
-//                display("What do you want to climb?")
-//            }
-//        }
-//    }
+    private fun processNewClimb(arguments: Args) {
+        val target = findTarget(arguments)
+        if (target == null) {
+            clarifyClimbTarget()
+        } else if (!target.properties.tags.has("Climbable")) {
+            display("${target.name} cannot be climbed.")
+        } else {
+            val parts = target.body.getClimbEntryParts()
+            when {
+                parts.isEmpty() -> display("${target.name} does not have any parts to climb.")
+                parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(GameState.player, target, parts.first()))
+                parts.size > 1 -> clarifyClimbPart(target)
+            }
+        }
+    }
 
-//    private fun processWithArgs(adjustedArgs: List<String>, force: Boolean, up: Boolean, down: Boolean, originalArgs: String, argsString: String) {
-//        if (isClimbing()) {
-//            processClimbContinue(adjustedArgs, force, up, down, originalArgs)
-//        } else {
-//            processNewClimb(argsString, force, originalArgs)
-//        }
-//    }
-//
-//    private fun processClimbContinue(adjustedArgs: List<String>, force: Boolean, up: Boolean, down: Boolean, originalArgs: String) {
-//        val journey = GameState.player.climbJourney as ClimbJourney
-//        if (adjustedArgs.isNotEmpty() && isStep(adjustedArgs[0])) {
-//            val step = getStep(journey, adjustedArgs[0])
-//            climbStep(step, force)
-//        } else if (up || down) {
-//            climbTowardsDirection(up, journey, force)
-//        } else {
-//            display("Unable to climb: $originalArgs")
-//        }
-//    }
-//
-//    private fun processNewClimb(argsString: String, force: Boolean, originalArgs: String) {
-//        if (ScopeManager.getScope().getTargets(argsString).isNotEmpty()) {
-//            EventManager.postEvent(AttemptClimbEvent(GameState.player, ScopeManager.getScope().getTargets(argsString).first(), force))
-//        } else {
-//            display("Unable to climb: $originalArgs")
-//        }
-//    }
-//
-//    private fun climbTowardsDirection(upwards: Boolean, journey: ClimbJourney, force: Boolean) {
-//        if (upwards && journey.getCurrentSegment().top) {
-//            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.top))
-//        } else if (!upwards && journey.getCurrentSegment().bottom) {
-//            EventManager.postEvent(ClimbCompleteEvent(GameState.player, journey.target, GameState.player.location, journey.bottom))
-//        } else {
-//            val step = journey.getNextSegment(upwards)
-//            climbStep(step, force)
-//        }
-//    }
-//
-//    private fun isClimbing(): Boolean {
-//        return GameState.player.climbLocation != null
-//    }
-//
-//    private fun isStep(word: String): Boolean {
-//        return word.toIntOrNull() != null
-//    }
-//
-//    private fun getStep(journey: ClimbJourney): Int {
-//        return journey.getNextSegments().firstOrNull()?.id ?: 0
-//    }
-//
-//    private fun getStep(journey: ClimbJourney, choiceWord: String): Int {
-//        val choice = choiceWord.toInt() - 1
-//        val segments = journey.getHigherSegments().toMutableList()
-//        segments.addAll(journey.getLowerSegments())
-//        return if (choice < segments.size) {
-//            segments[choice].id
-//        } else {
-//            0
-//        }
-//    }
-//
-//    private fun climbStep(step: Int, force: Boolean) {
-//        if (step != 0) {
-//            EventManager.postEvent(ClimbJourneyEvent(step, force))
-//        } else {
-//            display("Couldn't find the next place to climb to!")
-//        }
-//    }
+    private fun clarifyClimbTarget() {
+        val options = ScopeManager.getScope().findTargetsByTag("Climbable")
+        if (options.isEmpty()) {
+            display("There doesn't seem to be anything to climb.")
+        } else {
+            display("Climb what?\n\t${options.joinToString(", ")}")
+            val response = ResponseRequest(options.map { it.name to "climb ${it.name}" }.toMap())
+            CommandParser.responseRequest = response
+        }
+    }
+
+    private fun findTarget(arguments: Args): Target? {
+        return ScopeManager.getScope().getTargets(arguments.argStrings.last()).first()
+    }
+
+    private fun clarifyClimbPart(target: Target) {
+        val options = target.body.getClimbEntryParts()
+        if (options.isEmpty()) {
+            display("${target.name} doesn't seem to have anything to climb.")
+        } else {
+            display("Climb what part of ${target.name}?\n\t${options.joinToString(", ")}")
+            val response = ResponseRequest(options.map { it.name to "climb ${it.name} of ${target.name}" }.toMap())
+            CommandParser.responseRequest = response
+        }
+    }
+
+    private fun processClimbing(arguments: Args, target: Target) {
+        val directionNames: List<String> = listOf(Direction.values().map { it.name }, Direction.values().map { it.shortcut }).flatten()
+        val direction = arguments.hasAny(directionNames).firstOrNull()
+        if (direction != null) {
+            climbInDirection(Direction.getDirection(direction), target)
+        } else {
+            climbToPart(arguments, target)
+        }
+    }
+
+    private fun climbInDirection(direction: Direction, target: Target) {
+        val location = GameState.player.location.getNeighbors(direction).first()
+        EventManager.postEvent(AttemptClimbEvent(GameState.player, target, location))
+    }
+
+    private fun climbToPart(arguments: Args, target: Target) {
+        val filteredArgs = arguments.argsWithout(listOf("to", "of", target.name)).joinToString(" ")
+        if (target.body.hasPart(filteredArgs)) {
+            val part = target.body.getPartLocation(filteredArgs)
+            EventManager.postEvent(AttemptClimbEvent(GameState.player, target, part))
+        } else {
+            clarifyClimbPart(target)
+        }
+    }
 
 }

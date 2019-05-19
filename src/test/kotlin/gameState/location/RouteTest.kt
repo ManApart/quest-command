@@ -1,7 +1,6 @@
 package gameState.location
 
 import core.gameState.Direction
-import core.gameState.Vector
 import core.gameState.location.Connection
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
@@ -18,7 +17,7 @@ class RouteTest {
         val route = Route(source)
         route.addLink(Connection(LocationPoint( source), LocationPoint(destination)))
 
-        assertEquals(1, route.getLinks().size)
+        assertEquals(1, route.getConnections().size)
         assertEquals(source, route.source)
         assertEquals(destination, route.destination)
     }
@@ -37,7 +36,7 @@ class RouteTest {
         val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
 
         directions.forEach {
-            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), Vector.fromDirection(it)))
+            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
         }
 
         assertEquals("N, NE, NW, E, W, S, SW, SE", route.getDirectionString())

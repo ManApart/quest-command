@@ -42,6 +42,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toString()}")
     }
 
+    //TODO - eventually sort by best match
     fun getAll(name: String): List<N> {
         val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } +
                 proxies.filter { it.key.contains(name) }.map { it.value }

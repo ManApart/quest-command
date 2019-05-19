@@ -27,10 +27,10 @@ class LocationHelper {
                         nodeMap[networkName]?.add(neighbor)
                     }
                     val locationLink = Connection(LocationPoint(node), LocationPoint(neighbor), link.vector, link.restricted)
-                    node.addLink(locationLink)
+                    node.addConnection(locationLink)
 
                     if (!link.oneWay) {
-                        neighbor.addLink(locationLink.invert())
+                        neighbor.addConnection(locationLink.invert())
                     }
                 }
             }
