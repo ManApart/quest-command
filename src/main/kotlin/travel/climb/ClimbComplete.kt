@@ -13,12 +13,13 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
 
     override fun execute(event: ClimbCompleteEvent) {
         event.target.consume(event)
-        if (event.destination == GameState.player.climbTarget?.location) {
+        val climbBackOff = event.destination == GameState.player.climbTarget?.location
+
+        if (climbBackOff) {
             display("You climb back off ${event.target.name}")
-            EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb", true))
-        } else {
-            EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb"))
         }
+
+        EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb", climbBackOff))
         GameState.player.finishClimbing()
     }
 }

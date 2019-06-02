@@ -314,6 +314,8 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 
 For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
+climb look should include exits and dismounts
+
 
 Climb Location
 - Player has location and climb location

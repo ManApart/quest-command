@@ -20,16 +20,20 @@ class LocationHelper {
         nodeMap.keys.forEach { networkName ->
             val network = nodeMap[networkName]?.toList() ?: listOf()
             network.forEach { node ->
-                node.protoConnections.forEach { link ->
-                    var neighbor = getLocationNodeByExactName(link.connection.location, network)
+                node.protoConnections.forEach { protoConnection ->
+                    var neighbor = getLocationNodeByExactName(protoConnection.connection.location, network)
+
                     if (neighbor == null) {
-                        neighbor = LocationNode(link.connection.location, parent = networkName)
+                        neighbor = LocationNode(protoConnection.connection.location, parent = networkName)
                         nodeMap[networkName]?.add(neighbor)
                     }
-                    val locationLink = Connection(LocationPoint(node), LocationPoint(neighbor), link.vector, link.restricted)
+
+                    val originPoint = LocationPoint(node, protoConnection.target, protoConnection.part)
+                    val destinationPoint = LocationPoint(neighbor, protoConnection.connection.target, protoConnection.connection.part)
+                    val locationLink = Connection(originPoint, destinationPoint, protoConnection.vector, protoConnection.restricted)
                     node.addConnection(locationLink)
 
-                    if (!link.oneWay) {
+                    if (!protoConnection.oneWay) {
                         neighbor.addConnection(locationLink.invert())
                     }
                 }

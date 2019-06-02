@@ -26,6 +26,11 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
 
             val items = ItemManager.getItemsFromLocationTargets(location.items)
             scope.addTargets(items)
+
+            //Get any connections to this node that come from a climb target
+//            event.destination.getNeighborConnections().forEach {connection ->
+//                if ()
+//            }
         }
 
         scope.addTarget(GameState.player, listOf("me", "self"))

@@ -8,7 +8,7 @@ import system.EventManager
 
 class DismountCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Dismount")
+        return arrayOf("Dismount", "dis")
     }
 
     override fun getDescription(): String {
@@ -26,7 +26,7 @@ class DismountCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         if (GameState.player.isClimbing) {
             //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
-            val exit = getExitLocation(GameState.player.location)
+            val exit = getExitLocation()
 
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, exit))
@@ -39,8 +39,14 @@ class DismountCommand : Command() {
     }
 
     //TODO - could this be a bad test for if the network location exit is not climbing related?
-    private fun getExitLocation(location: LocationNode) : LocationNode? {
-        return location.getNeighborConnections().firstOrNull { it.isNetworkConnection() }?.destination?.location
+    private fun getExitLocation() : LocationNode? {
+        val climbTarget = GameState.player.climbTarget!!
+        val location = climbTarget.location
+        val part = climbTarget.body.getPart(GameState.player.location.name)
+
+        return climbTarget.location.getNeighborConnections().firstOrNull {
+            it.source.equals(location, climbTarget, part)
+        }?.destination?.location
     }
 
 
