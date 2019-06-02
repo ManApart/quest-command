@@ -24,12 +24,13 @@ object BodyManager {
 
         val nodeMap = locationHelper.buildInitialMap(nodes)
         locationHelper.createNeighborsAndNeighborLinks(nodeMap)
-//        val locations = NameSearchableList(bodyParts.map { Location(it.name, bodyPart = it) })
         val locations = createLocations(bodyParts, nodeMap.values.flatten())
 
         val networks = nodeMap.map { entry ->
             val networkLocations = entry.value.map { locations.get(it.locationName) }
-            Network(entry.key, entry.value, networkLocations)
+            val network = Network(entry.key, entry.value, networkLocations)
+            entry.value.forEach { it.network = network }
+            network
         }
 
         val bodies = (networks.map { Body(it.name, it) }).plus(NONE)

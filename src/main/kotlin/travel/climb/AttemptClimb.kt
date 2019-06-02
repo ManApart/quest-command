@@ -50,21 +50,21 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
         val direction = getDirectionString(event.creature.location, event.targetPart)
-        display("You climb $distance ft $direction towards ${event.targetPart.name}.")
+        display("You climb $distance ft$direction towards ${event.targetPart.name}.")
         GameState.player.setClimbing(event.target)
         awardEXP(GameState.player, chance)
-        EventManager.postEvent(ArriveEvent(event.creature, event.creature.location, event.targetPart, "Climb"))
+        EventManager.postEvent(ArriveEvent(event.creature, event.creature.location, event.targetPart, "Climb", true))
         EventManager.postEvent(LookEvent())
     }
 
-    private fun getDirectionString(source: LocationNode, destination: LocationNode): Direction {
+    private fun getDirectionString(source: LocationNode, destination: LocationNode): String {
         if (source.parent == destination.parent) {
             val routeFinder = RouteFinder(source, destination)
             if (routeFinder.hasRoute()) {
-                return routeFinder.getRoute().getConnections().first().vector.direction
+                return " " + routeFinder.getRoute().getConnections().first().vector.direction.name
             }
         }
-        return Direction.NONE
+        return ""
     }
 
 

@@ -24,7 +24,9 @@ object LocationManager {
 
         val networks = nodeMap.map { entry ->
             val networkLocations = entry.value.map { locations.get(it.locationName) }
-            Network(entry.key, entry.value, networkLocations)
+            val network = Network(entry.key, entry.value, networkLocations)
+            entry.value.forEach { it.network = network }
+            network
         }
 
         return NameSearchableList(networks)

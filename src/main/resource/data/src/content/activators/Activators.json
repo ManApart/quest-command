@@ -25,6 +25,7 @@
   {
     "name": "Apple Tree",
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
+    "body": "tree",
     "properties": {
       "stats": {
         "chopHealth": 5,
@@ -67,7 +68,6 @@
     },
     "properties": {
       "tags": [
-        "Climbable",
         "Wood"
       ]
     }

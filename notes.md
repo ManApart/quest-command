@@ -28,6 +28,7 @@ Rat AI
 - make target class instead of interface?
 - Break triggered event class out into multiple classes
 - delete existing generated files on buildData so renamed files don't leave artifacts
+- It'd be cool to eventually make an android app fork that allows tap menus to pic commands: Starts with categories, then uses the ResponseRequest to generate suggestions etc
 
 Json
 - Json inherits from other files in same folder?
@@ -296,8 +297,6 @@ On arrive, add connections to target/body parts if they exist
 If climable, climbing an activator changes your location node to the body part of the activator
 if the body part has a connection, send player to connected location
 on arrive to connected location, re-connect path back if connection had a target + part
-
-remove climb paths
 
 body materials
 

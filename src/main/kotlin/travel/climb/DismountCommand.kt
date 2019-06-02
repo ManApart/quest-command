@@ -28,10 +28,9 @@ class DismountCommand : Command() {
             //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
             val exit = getExitLocation(GameState.player.location)
 
-
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, exit))
-                GameState.player.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, GameState.player.location))
+                GameState.player.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, GameState.player.climbTarget!!.location))
                 else -> display("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {

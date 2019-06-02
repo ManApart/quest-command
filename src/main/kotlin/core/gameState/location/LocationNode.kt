@@ -3,7 +3,6 @@ package core.gameState.location
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.gameState.Direction
 import core.utility.Named
-import system.location.LocationManager
 
 val NOWHERE_NODE = LocationNode("Nowhere")
 const val DEFAULT_NETWORK = "Wilderness"
@@ -15,6 +14,8 @@ class LocationNode(
         @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
         private val connections: MutableList<Connection> = mutableListOf()
 ) : Named {
+
+    lateinit var network: Network
 
     override fun toString(): String {
         return name
@@ -51,12 +52,8 @@ class LocationNode(
                 .toList()
     }
 
-    fun getNetwork(): Network{
-        return LocationManager.getNetwork(parent)
-    }
-
     fun getLocation(): Location {
-        return getNetwork().getLocation(locationName)
+        return network.getLocation(locationName)
     }
 
     fun nameMatches(args: List<String>): Boolean {
@@ -95,13 +92,17 @@ class LocationNode(
     }
 
     fun getDistanceToLowestNodeInNetwork() : Int {
-        val lowestNode = getNetwork().getFurthestLocations(Direction.BELOW).first()
+        val lowestNode = network.getFurthestLocations(Direction.BELOW).first()
         val route = RouteFinder(this, lowestNode)
         return if (route.hasRoute()) {
             route.getRoute().getDistance()
         } else {
             0
         }
+    }
+
+    fun isAnOuterNode(direction: Direction) : Boolean {
+        return network.getFurthestLocations(direction).contains(this)
     }
 
 

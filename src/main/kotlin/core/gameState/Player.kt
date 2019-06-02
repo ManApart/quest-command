@@ -1,6 +1,5 @@
 package core.gameState
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import core.events.Event
 import core.gameState.location.LocationNode
 import core.gameState.location.Route
