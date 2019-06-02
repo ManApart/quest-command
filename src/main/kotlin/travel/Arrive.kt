@@ -7,9 +7,9 @@ import core.history.display
 class Arrive : EventListener<ArriveEvent>() {
     override fun execute(event: ArriveEvent) {
         if (event.origin != event.destination) {
-            GameState.player.location = event.destination
+            GameState.player.location = event.destination.location
             if (!event.silent) {
-                display("You ${event.method} to ${event.destination}. It ${event.destination.getSiblings()}.")
+                display("You ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings()}.")
             }
         }
     }

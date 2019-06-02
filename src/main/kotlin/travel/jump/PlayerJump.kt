@@ -3,6 +3,7 @@ package travel.jump
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.NO_VECTOR
+import core.gameState.location.LocationPoint
 import core.gameState.stat.AGILITY
 import core.gameState.stat.HEALTH
 import core.history.display
@@ -26,7 +27,7 @@ class PlayerJump : EventListener<JumpEvent>() {
             display("You land without taking damage.")
         }
 
-        EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
+        EventManager.postEvent(ArriveEvent(destination = LocationPoint(event.destination), method = "fall"))
     }
 
     private fun calculateJumpDamage(event: JumpEvent): Int {

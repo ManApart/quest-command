@@ -9,9 +9,8 @@ import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.history.display
+import core.utility.NameSearchableList
 import interact.scope.ScopeManager
-import netscape.security.Target.findTarget
-import org.reflections.vfs.Vfs
 import system.EventManager
 
 class ClimbCommand : Command() {
@@ -43,44 +42,60 @@ class ClimbCommand : Command() {
     }
 
     private fun processNewClimb(arguments: Args) {
-        val target = findTarget(arguments)
-        if (target == null) {
-            clarifyClimbTarget()
-        } else if (!target.properties.tags.has("Climbable")) {
-            display("${target.name} cannot be climbed.")
+        val targetName = arguments.argStrings.last()
+        val targets = findAllTargets()
+        val bestMatch = targets.getOrNull(targetName)
+
+        if (bestMatch == null) {
+            clarifyClimbTarget(targets)
+        } else if (!bestMatch.properties.tags.has("Climbable")) {
+            display("${bestMatch.name} cannot be climbed.")
         } else {
-            val parts = target.body.getClimbEntryParts()
+            val parts = getEntryPoints(bestMatch)
             when {
-                parts.isEmpty() -> display("${target.name} does not have any parts to climb.")
-                parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(GameState.player, target, parts.first()))
-                parts.size > 1 -> clarifyClimbPart(target)
+                parts.isEmpty() -> display("${bestMatch.name} does not have any parts to climb.")
+                parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(GameState.player, bestMatch, parts.first()))
+                parts.size > 1 -> clarifyClimbPart(bestMatch)
             }
         }
     }
 
-    private fun clarifyClimbTarget() {
-        val options = ScopeManager.getScope().findTargetsByTag("Climbable")
-        if (options.isEmpty()) {
-            display("There doesn't seem to be anything to climb.")
-        } else {
-            display("Climb what?\n\t${options.joinToString(", ")}")
-            val response = ResponseRequest(options.map { it.name to "climb ${it.name}" }.toMap())
-            CommandParser.responseRequest = response
+    private fun findAllTargets(): NameSearchableList<Target> {
+        val connections = GameState.player.location.getNeighborConnections().filter { it.destination.hasTargetAndPart() }
+        val connectedTargets = connections.map { ScopeManager.getScope(it.destination.location).getTargets(it.destination.targetName!!) }.flatten()
+        val localClimbableTargets = ScopeManager.getScope().findTargetsByTag("Climbable")
+        return NameSearchableList( localClimbableTargets + connectedTargets)
+    }
+
+    private fun clarifyClimbTarget(options: NameSearchableList<Target>) {
+        when {
+            options.isEmpty() -> display("There doesn't seem to be anything to climb.")
+            options.size == 1 -> CommandParser.parseCommand("climb ${options[0]}")
+            else -> {
+                display("Climb what?\n\t${options.joinToString(", ")}")
+                val response = ResponseRequest(options.map { it.name to "climb ${it.name}" }.toMap())
+                CommandParser.responseRequest = response
+            }
         }
     }
 
-    private fun findTarget(arguments: Args): Target? {
-        return ScopeManager.getScope().getTargets(arguments.argStrings.last()).first()
-    }
-
     private fun clarifyClimbPart(target: Target) {
-        val options = target.body.getClimbEntryParts()
+        val options = getEntryPoints(target)
         if (options.isEmpty()) {
             display("${target.name} doesn't seem to have anything to climb.")
         } else {
             display("Climb what part of ${target.name}?\n\t${options.joinToString(", ")}")
             val response = ResponseRequest(options.map { it.name to "climb ${it.name} of ${target.name}" }.toMap())
             CommandParser.responseRequest = response
+        }
+    }
+
+    private fun getEntryPoints(target: Target): List<LocationNode> {
+        val connection = GameState.player.location.getNeighborConnections().firstOrNull { it.destination.hasTargetAndPart() && it.destination.targetName == target.name }
+        return if (connection != null && target.body.hasPart(connection.destination.partName ?: "")) {
+            listOf(target.body.getPartLocation(connection.destination.partName!!))
+        } else {
+            target.body.getClimbEntryParts()
         }
     }
 

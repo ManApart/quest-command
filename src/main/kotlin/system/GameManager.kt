@@ -3,6 +3,7 @@ package system
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Player
+import core.gameState.location.LocationPoint
 import core.gameState.quests.QuestManager
 import core.history.ChatHistory
 import core.history.display
@@ -29,7 +30,7 @@ object GameManager {
 //        LocationManager.clear()
 
         newPlayer()
-        EventManager.postEvent(ArriveEvent(destination = GameState.player.location, method = "wake"))
+        EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }

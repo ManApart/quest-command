@@ -42,6 +42,10 @@ object LocationManager {
         }
     }
 
+    fun networkExists(name: String = GameState.player.location.parent): Boolean {
+        return networks.getOrNull(name) != null
+    }
+
     fun getNetwork(name: String = GameState.player.location.parent): Network {
         return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
     }

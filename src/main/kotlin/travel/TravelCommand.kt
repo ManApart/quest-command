@@ -30,7 +30,9 @@ class TravelCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (args.isEmpty()) {
+        if (!GameState.player.canTravel) {
+            display("You can't travel right now.")
+        } else if (args.isEmpty()) {
             val route = GameState.player.route
             val source = GameState.player.location
             when {
@@ -43,10 +45,16 @@ class TravelCommand : Command() {
             CommandParser.parseCommand(args.joinToString(" "))
         } else {
             val arguments = Args(args, excludedWords = listOf("to"))
-            val found = LocationManager.getNetwork().findLocation(arguments.argGroups[0].joinToString(" "))
+            val foundName = arguments.argGroups[0].joinToString(" ")
 
-            if (foundMatch(arguments.argGroups[0], found)) {
-                EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true))
+            if (LocationManager.networkExists()) {
+                val found = LocationManager.getNetwork().findLocation(foundName)
+
+                if (foundMatch(arguments.argGroups[0], found)) {
+                    EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true))
+                } else {
+                    display("Could not find $arguments")
+                }
             } else {
                 display("Could not find $arguments")
             }

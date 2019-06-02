@@ -5,6 +5,7 @@ import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.location.LocationNode
+import core.gameState.location.LocationPoint
 import core.gameState.location.RouteFinder
 import core.gameState.stat.CLIMBING
 import core.gameState.stat.STAMINA
@@ -53,7 +54,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         display("You climb $distance ft$direction towards ${event.targetPart.name}.")
         GameState.player.setClimbing(event.target)
         awardEXP(GameState.player, chance)
-        EventManager.postEvent(ArriveEvent(event.creature, event.creature.location, event.targetPart, "Climb", true))
+        EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", true))
         EventManager.postEvent(LookEvent())
     }
 

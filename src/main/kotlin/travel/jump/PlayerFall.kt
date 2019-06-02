@@ -2,6 +2,7 @@ package travel.jump
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.location.LocationPoint
 import core.gameState.stat.AGILITY
 import core.gameState.stat.HEALTH
 import core.history.display
@@ -19,7 +20,7 @@ class PlayerFall : EventListener<FallEvent>() {
         display("You fall ${event.fallHeight}ft.")
         takeDamage(event)
         if (GameState.player.location != event.destination){
-            EventManager.postEvent(ArriveEvent(destination = event.destination, method = "fall"))
+            EventManager.postEvent(ArriveEvent(destination = LocationPoint(event.destination), method = "fall"))
         }
         GameState.player.finishClimbing()
     }

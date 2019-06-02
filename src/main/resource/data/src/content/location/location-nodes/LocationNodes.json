@@ -133,7 +133,8 @@
         "connection": {
           "network": "Kanbara Countryside",
           "location": "Apple Tree Branches"
-        }
+        },
+        "restricted": true
       }
     ]
   },

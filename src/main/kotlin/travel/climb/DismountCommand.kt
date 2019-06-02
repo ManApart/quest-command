@@ -3,6 +3,7 @@ package travel.climb
 import core.commands.Command
 import core.gameState.GameState
 import core.gameState.location.LocationNode
+import core.gameState.location.LocationPoint
 import core.history.display
 import system.EventManager
 
@@ -27,10 +28,14 @@ class DismountCommand : Command() {
         if (GameState.player.isClimbing) {
             //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
             val exit = getExitLocation()
+            val climbTarget = GameState.player.climbTarget!!
+            val targetLocation = climbTarget.location
+            val part = GameState.player.location
+            val origin = LocationPoint(targetLocation, climbTarget.name, part.name)
 
             when {
-                exit != null -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, exit))
-                GameState.player.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, GameState.player.location, GameState.player.climbTarget!!.location))
+                exit != null -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, origin, exit))
+                GameState.player.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, origin, targetLocation))
                 else -> display("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {
@@ -38,7 +43,6 @@ class DismountCommand : Command() {
         }
     }
 
-    //TODO - could this be a bad test for if the network location exit is not climbing related?
     private fun getExitLocation() : LocationNode? {
         val climbTarget = GameState.player.climbTarget!!
         val location = climbTarget.location

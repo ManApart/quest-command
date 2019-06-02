@@ -3,6 +3,7 @@ package core.gameState.dataParsing
 import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
+import core.gameState.location.LocationPoint
 import core.gameState.location.NOWHERE_NODE
 import core.gameState.quests.CompleteQuestEvent
 import core.gameState.quests.QuestManager
@@ -33,7 +34,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     fun execute(parent: Target = GameState.player) {
         when (className) {
-            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationManager.getNetwork(params[0]).findLocation(params[1]), method = "move"))
+            ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationPoint(LocationManager.getNetwork(params[0]).findLocation(params[1])), method = "move"))
             AddEffectEvent::class.simpleName -> EventManager.postEvent(AddEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
             DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player, getRecipe(0)))

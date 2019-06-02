@@ -3,7 +3,11 @@ package core.gameState.location
 import core.gameState.Target
 import core.gameState.body.BodyPart
 
-class LocationPoint(val location: LocationNode, private val targetName: String? = null, private val partName: String? = null) {
+class LocationPoint(val location: LocationNode, val targetName: String? = null, val partName: String? = null) {
+
+    override fun toString(): String {
+        return getName()
+    }
 
     fun getName(): String {
         return when {
@@ -17,5 +21,9 @@ class LocationPoint(val location: LocationNode, private val targetName: String? 
         return location == this.location
                 && (target == null || target.name == targetName)
                 && (part == null || part.name == partName)
+    }
+
+    fun hasTargetAndPart() : Boolean {
+        return !targetName.isNullOrBlank() && !partName.isNullOrBlank()
     }
 }

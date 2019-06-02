@@ -2,6 +2,7 @@ package travel.climb
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.location.LocationPoint
 import core.history.display
 import system.EventManager
 import travel.ArriveEvent
@@ -12,14 +13,14 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
     }
 
     override fun execute(event: ClimbCompleteEvent) {
-        event.target.consume(event)
-        val climbBackOff = event.destination == GameState.player.climbTarget?.location
+        event.climbTarget.consume(event)
+        val climbBackOff = event.destination == event.origin.location
 
         if (climbBackOff) {
-            display("You climb back off ${event.target.name}")
+            display("You climb back off ${event.climbTarget.name}.")
         }
 
-        EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb", climbBackOff))
+        EventManager.postEvent(ArriveEvent(event.creature, event.origin, LocationPoint(event.destination), "Climb", climbBackOff))
         GameState.player.finishClimbing()
     }
 }

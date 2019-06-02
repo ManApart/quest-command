@@ -9,28 +9,23 @@ import travel.ArriveEvent
 
 class ArrivalHandler : EventListener<ArriveEvent>() {
     override fun execute(event: ArriveEvent) {
-        ScopeManager.getScope(event.origin).removeTarget(GameState.player)
+        ScopeManager.getScope(event.origin.location).removeTarget(GameState.player)
 
-        val location = event.destination.getLocation()
-        val scope = ScopeManager.getScope(event.destination)
+        val location = event.destination.location.getLocation()
+        val scope = ScopeManager.getScope(event.destination.location)
 
         if (scope.isEmpty()) {
 
             val activators = ActivatorManager.getActivatorsFromLocationTargets(location.activators)
-            activators.forEach { it.location = event.destination }
+            activators.forEach { it.location = event.destination.location }
             scope.addTargets(activators)
 
             val creatures = CreatureManager.getCreaturesFromLocationTargets(location.creatures)
-            creatures.forEach { it.location = event.destination }
+            creatures.forEach { it.location = event.destination.location }
             scope.addTargets(creatures)
 
             val items = ItemManager.getItemsFromLocationTargets(location.items)
             scope.addTargets(items)
-
-            //Get any connections to this node that come from a climb target
-//            event.destination.getNeighborConnections().forEach {connection ->
-//                if ()
-//            }
         }
 
         scope.addTarget(GameState.player, listOf("me", "self"))

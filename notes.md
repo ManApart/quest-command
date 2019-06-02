@@ -332,6 +332,11 @@ Dismounting
 - If Jump, take fall damage and place at climb target's parent location
 
 
+TODO
+- make auto dismount?
+- test both ways over kanbara wall (target and part on both sides)
+- eventually retain climb direction
+
 Location Nodes:
 ```
 

@@ -1,6 +1,8 @@
 package travel
 
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.Target
 import core.gameState.Direction
 import core.gameState.GameState
@@ -37,52 +39,28 @@ class TravelInDirectionCommand : Command() {
             display(getManual())
         } else {
             val direction = Direction.getDirection(keyword)
-            if (direction == Direction.NONE) {
-                display("Could not find direction $keyword")
-            } else if (direction == Direction.ABOVE || direction == Direction.BELOW) {
-                processClimbing(direction)
-            } else {
-                val found = findLocationInDirection(direction)
-                if (found != null) {
-                    EventManager.postEvent(TravelStartEvent(destination = found))
-                } else {
-                    display("Could not find a location to the $direction.")
+            when {
+                direction == Direction.NONE -> display("Could not find direction $keyword")
+                GameState.player.isClimbing -> CommandParser.parseCommand("climb $direction")
+                else -> {
+                    val neighbors = GameState.player.location.getNeighbors(direction)
+                    val openNeighbors = neighbors.filter { !GameState.player.location.isMovingToRestricted(it) }
+
+                    when {
+                        openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(destination = openNeighbors.first()))
+                        openNeighbors.size > 1 -> requestLocation(openNeighbors)
+                        openNeighbors.isEmpty() && neighbors.isNotEmpty() -> CommandParser.parseCommand("climb $direction")
+                        else -> display("Could not find a location to the $direction.")
+                    }
                 }
             }
         }
     }
 
-    //TODO Should this just call the climb command?
-    private fun processClimbing(direction: Direction) {
-        if (GameState.player.isClimbing) {
-            climbInDirection(GameState.player.climbTarget!!, direction)
-        } else {
-            val found = findLocationInDirection(direction)
-            if (found != null && !GameState.player.location.isMovingToRestricted(found)) {
-                EventManager.postEvent(TravelStartEvent(destination = found))
-            } else {
-                val climbableTarget = ScopeManager.getScope().findTargetsByTag("Climbable").firstOrNull()
-                if (climbableTarget != null) {
-                    climbInDirection(climbableTarget, direction)
-                } else {
-                    display("Could not find anything to climb.")
-                }
-            }
-        }
-    }
-
-    private fun climbInDirection(target: Target, direction: Direction) {
-        val climbTarget = findLocationInDirection(direction)
-        if (climbTarget != null) {
-            EventManager.postEvent(AttemptClimbEvent(GameState.player, target, climbTarget))
-        } else {
-            display("Could not find anything to climb.")
-        }
-    }
-
-    private fun findLocationInDirection(direction: Direction): LocationNode? {
-        val loc = GameState.player.location
-        return loc.getNeighbors(direction).firstOrNull()
+    private fun requestLocation(openNeighbors: List<LocationNode>) {
+        display("Travel towards what location?\n\t${openNeighbors.joinToString(", ")}")
+        val response = ResponseRequest(openNeighbors.map { it.name to "travel ${it.name}" }.toMap())
+        CommandParser.responseRequest  = response
     }
 
 

@@ -3,6 +3,7 @@ package travel
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.location.LocationNode
+import core.gameState.location.LocationPoint
 import core.gameState.stat.STAMINA
 import core.gameState.stat.Stat
 import core.history.display
@@ -19,7 +20,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             else -> {
                 display("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", STAMINA, -1))
-                EventManager.postEvent(ArriveEvent(destination = event.destination, method = "travel"))
+                EventManager.postEvent(ArriveEvent(destination = LocationPoint(event.destination), method = "travel"))
             }
         }
     }
