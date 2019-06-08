@@ -18,6 +18,9 @@ class Body(override val name: String = "None", private val layout: Network = Net
 
     private val parts = NameSearchableList(layout.getLocations().asSequence().map { it.bodyPart }.filterNotNull().toList())
 
+    override fun toString(): String {
+        return name +": [" + layout.getLocations().joinToString{it.name} +"]"
+    }
 
     private fun hasAttachPoint(attachPoint: String): Boolean {
         return parts.any { it.hasAttachPoint(attachPoint) }

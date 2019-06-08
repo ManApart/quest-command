@@ -98,9 +98,14 @@
     "parent": "Kanbara Countryside",
     "locations": [
       {
-        "name": "Windmill - Second Floor",
+        "target": "Stairs",
+        "part": "Stairs",
         "vector": {
           "z": 1
+        },
+        "connection": {
+          "network": "Kanbara Countryside",
+          "location": "Windmill - Second Floor"
         },
         "restricted": true
       }
@@ -111,11 +116,16 @@
     "parent": "Kanbara Countryside",
     "locations": [
       {
-        "name": "Windmill - Third Floor",
-        "restricted": true,
+        "target": "Stairs",
+        "part": "Stairs",
         "vector": {
           "z": 1
-        }
+        },
+        "connection": {
+          "network": "Kanbara Countryside",
+          "location": "Windmill - Third Floor"
+        },
+        "restricted": true
       }
     ]
   },

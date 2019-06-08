@@ -222,8 +222,9 @@
     }
   },
   {
-    "name": "Stairs Up",
-    "description": "The stairs lead up to another floor.",
+    "name": "Stairs",
+    "description": "The stairs lead to another floor.",
+    "body": "Stairs",
     "properties": {
       "tags": [
         "Climbable"

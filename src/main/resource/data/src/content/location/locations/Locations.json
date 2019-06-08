@@ -102,7 +102,7 @@
     "activators": [
       "Grain Bin",
       {
-        "name": "Stairs Up",
+        "name": "Stairs",
         "params": {
           "destination": "Windmill - Second Floor"
         }
@@ -116,15 +116,9 @@
     "name": "Windmill - Second Floor",
     "activators": [
       {
-        "name": "Stairs Up",
+        "name": "Stairs",
         "params": {
           "destination": "Windmill - Third Floor"
-        }
-      },
-      {
-        "name": "Stairs Down",
-        "params": {
-          "destination": "Windmill"
         }
       }
     ]
@@ -132,13 +126,7 @@
   {
     "name": "Windmill - Third Floor",
     "activators": [
-      "Grain Chute",
-      {
-        "name": "Stairs Down",
-        "params": {
-          "destination": "Windmill - Second Floor"
-        }
-      }
+      "Grain Chute"
     ]
   }
 ]

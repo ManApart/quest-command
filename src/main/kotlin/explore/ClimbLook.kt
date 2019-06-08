@@ -18,12 +18,11 @@ object ClimbLook {
     }
 
     private fun getDistance(location: LocationNode): String {
-        val lowestNode = location.network.getFurthestLocations(Direction.BELOW).first()
-        val route = RouteFinder(location, lowestNode)
-        return when {
-            location.isAnOuterNode(Direction.BELOW) -> "0 ft"
-            route.hasRoute() -> "${route.getRoute().getDistance()} ft"
-            else -> "an unknown distance"
+        val distance = location.getDistanceToLowestNodeInNetwork()
+        return if (location.isAnOuterNode(Direction.BELOW)) {
+            "0 ft"
+        } else {
+            "$distance ft"
         }
     }
 

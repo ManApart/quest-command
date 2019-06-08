@@ -50,22 +50,60 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
-        val direction = getDirectionString(event.creature.location, event.targetPart)
-        display("You climb $distance ft$direction towards ${event.targetPart.name}.")
+        //Extract get direction for climb command and use that
+        val direction = getDirection(event.creature.location, event.targetPart)
+        val directionString = getDirectionString(direction)
+        if (distance == 0){
+            display("You climb ${event.targetPart.name}.")
+        } else {
+            display("You climb $distance ft$directionString towards ${event.targetPart.name}.")
+        }
+
         GameState.player.setClimbing(event.target)
         awardEXP(GameState.player, chance)
-        EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", true))
-        EventManager.postEvent(LookEvent())
+
+        if (isDemountableEdgeNode(event)) {
+            val origin = LocationPoint(event.target.location, event.target.name, event.targetPart.name)
+            val connectedLocation = getConnectedLocation(event.target.location, event.target, event.targetPart)
+            val destination = connectedLocation ?: event.target.location
+
+            EventManager.postEvent(ClimbCompleteEvent(event.creature, event.target, origin, destination))
+        } else {
+            EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", true))
+            EventManager.postEvent(LookEvent())
+        }
     }
 
-    private fun getDirectionString(source: LocationNode, destination: LocationNode): String {
+    /**
+     * Target part is at the edge of the network (in the desired direction) and is either 0 feet from the ground or has a connected exit)
+     */
+    private fun isDemountableEdgeNode(event: AttemptClimbEvent): Boolean {
+        return event.targetPart.isAnOuterNode(event.desiredDirection)
+                && (event.targetPart.getDistanceToLowestNodeInNetwork() == 0 || getConnectedLocation(event.target.location, event.target, event.targetPart) != null)
+    }
+
+    private fun getConnectedLocation(targetLocation: LocationNode, climbTarget: Target, part: LocationNode): LocationNode? {
+        return targetLocation.getNeighborConnections()
+                .firstOrNull { it.source.equals(targetLocation, climbTarget, climbTarget.body.getPart(part.name)) }
+                ?.destination?.location
+    }
+
+    private fun getDirection(source: LocationNode, destination: LocationNode): Direction {
         if (source.parent == destination.parent) {
             val routeFinder = RouteFinder(source, destination)
             if (routeFinder.hasRoute()) {
-                return " " + routeFinder.getRoute().getConnections().first().vector.direction.name
+                return routeFinder.getRoute().getConnections().first().vector.direction
             }
         }
-        return ""
+        return Direction.NONE
+    }
+
+    private fun getDirectionString(direction: Direction): String {
+        return if (direction == Direction.NONE) {
+            ""
+        } else {
+            " " + direction.name
+        }
     }
 
 

@@ -91,18 +91,24 @@ class LocationNode(
         }
     }
 
-    fun getDistanceToLowestNodeInNetwork() : Int {
-        val lowestNode = network.getFurthestLocations(Direction.BELOW).first()
-        val route = RouteFinder(this, lowestNode)
-        return if (route.hasRoute()) {
-            route.getRoute().getDistance()
-        } else {
+    fun getDistanceToLowestNodeInNetwork(): Int {
+        val lowestNodes = network.getFurthestLocations(Direction.BELOW)
+        return if (lowestNodes.isEmpty()) {
             0
+        } else {
+            val lowestNode = lowestNodes.first()
+            val route = RouteFinder(this, lowestNode)
+            if (route.hasRoute()) {
+                route.getRoute().getDistance()
+            } else {
+                0
+            }
         }
     }
 
-    fun isAnOuterNode(direction: Direction) : Boolean {
-        return network.getFurthestLocations(direction).contains(this)
+    fun isAnOuterNode(direction: Direction): Boolean {
+        val furthestNodes = network.getFurthestLocations(direction)
+        return direction != Direction.NONE && (furthestNodes.isEmpty() || furthestNodes.contains(this))
     }
 
 
