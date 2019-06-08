@@ -13,7 +13,7 @@ import java.lang.IllegalArgumentException
 
 val NONE = Body("None")
 
-class Body(override val name: String = "None", private val layout: Network = Network(name)) : Named {
+class Body(override val name: String = "None", val layout: Network = Network(name)) : Named {
     constructor(base: Body) : this(base.name, base.layout)
 
     private val parts = NameSearchableList(layout.getLocations().asSequence().map { it.bodyPart }.filterNotNull().toList())
@@ -52,6 +52,10 @@ class Body(override val name: String = "None", private val layout: Network = Net
 
     fun getPart(part: String): BodyPart {
         return parts.get(part)
+    }
+
+    fun getParts(): List<BodyPart> {
+        return parts.toList()
     }
 
     fun getPartLocation(part: String): LocationNode {

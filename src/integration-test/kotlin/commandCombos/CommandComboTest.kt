@@ -60,9 +60,9 @@ class CommandComboTest {
     @Test
     fun climbTree() {
         //TODO - somehow remove random element and test full climb
-        val input = "n && climb tree && climb && dismount && d && d"
+        val input = "n && climb tree && climb && d && d"
         CommandParser.parseCommand(input)
-        assertEquals("You Climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW).", ChatHistory.history[1].outPut[10])
+        assertEquals("You Climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW).", ChatHistory.history[1].outPut[8])
         assertEquals("You climb back off Apple Tree.", ChatHistory.getLastOutput())
     }
 

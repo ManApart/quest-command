@@ -29,6 +29,8 @@ Rat AI
 - Break triggered event class out into multiple classes
 - delete existing generated files on buildData so renamed files don't leave artifacts
 - It'd be cool to eventually make an android app fork that allows tap menus to pic commands: Starts with categories, then uses the ResponseRequest to generate suggestions etc
+- double check body parts are properly instanced through scope manager
+- For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
 Json
 - Json inherits from other files in same folder?
@@ -61,6 +63,8 @@ Climbing
 - Materials are defined in their own file and have properties
 - A bodypart node can have an exit location node. <- these are passed in by the parent location node. The lowest exit node is used for falling.
 - Rework climbing so that you look at a target’s body nodes and then climbing direction is based on the node connections and difficulty is based on the material properties (slippery, rough, smooth, etc). Distance from lowest node = height for fall damage etc.
+
+Body Parts should have a material
 
 
 ### Combat
@@ -182,6 +186,10 @@ Bash completion
 - Shallow water, deep water, under water, have effects, based on swimming, etc. Swimming is skill based on agility
 - Time of day affect description, night time make perception go down.
 
+Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
+- Possibly good for towns/houses etc
+- assume no for now but once all this done maybe...
+
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
   - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
@@ -292,135 +300,8 @@ Attack command groups 0 vs 1 - make tests
 
 -----------------------------
 
-location node exits
-On arrive, add connections to target/body parts if they exist
-If climable, climbing an activator changes your location node to the body part of the activator
-if the body part has a connection, send player to connected location
-on arrive to connected location, re-connect path back if connection had a target + part
-
-body materials
-
-
-double check parts are properly instanced through scope manager
-
-
-Location link can optionally take a target and part (aka a target and location of it's body's network)
-Location node can pass in an exit to a body part of a target
-
-
-Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
-- Possibly good for towns/houses etc
-- assume no for now but once all this done maybe...
-
-For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
-
-climb look should include exits and dismounts
-
-
-Climb Location
-- Player has location and climb location
-- Climb target: > set player climb location to target’s mount part
-- Dismount - Remove climb location, possibly take fall damage
-- Look operates differently if player has a climb location: it explains what they can climb etc
-- Climb in a direction to climb the part in that direction, or climb a specific part, or default to the next part in a direction if there is only one part
-- All climb parts have an exit node: either the input connection/exit or the location of the target itself.
-- Exiting to the connected location will add a special ‘climb target’ that has the connected climb part, for climbing back down
-
-Dismounting
-- If part has exit connection, exit to that connection
-- Spawn should give exit nodes to all lowest body parts + any inherited /connection nodes
-- If Jump, take fall damage and place at climb target's parent location
-
-
-TODO
-- make auto dismount?
-- test both ways over kanbara wall (target and part on both sides)
-- eventually retain climb direction
-
-Location Nodes:
-```
-
-{
-    "name": "Kanbara Wall",
-    "locationName": "Kanbara Wall",
-    "parent": "Kanbara",
-    "locations": [
-        {
-            "name": "Guard Post",
-            "position": {
-              "x": -1
-            }
-        },
-        {
-            "target": "Wall"
-            "part": "Upper Wall"
-            "connection": {
-                "network": "Kanbara"
-                "location": "Kanbara City"
-                "target": "Wall"
-                "part": "Upper Wall"
-            }
-        }
-    ]
-},
-```
-
-Bodies (location nodes)
-```
-{
-    "name": "Head",
-    "locationName": "Head",
-    "parent": "Human",
-    "locations": [
-      {
-        "name": "Chest",
-        "position": {
-          "x": -1
-        }
-      }
-    ]
-},
-{
-    "name": "Trunk",
-    "locationName": "Trunk"
-    "parent": "Tree"
-    "locations": [
-      {
-        "name": "Branches",
-        "position": {
-          "x": -1
-        }
-      }
-    ]
-  },
-```
-
-
-Body Parts:
-```
-  {
-    "name": "Head",
-    "material": "flesh"
-    "slots": [
-      "Head Inner",
-      "Head",
-      "Head Outer"
-    ]
-  },
-  {
-    "name": "Canine Body",
-    "material": "fur"
-    "slots": [
-      "Canine Body"
-    ]
-  },
-    {
-      "name": "Trunk",
-      "material": "wood"
-    },
-
-```
 
 Tests:
+- test both ways over kanbara wall (target and part on both sides)
 
-- Startclimbing only executes for climable property
+

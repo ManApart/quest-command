@@ -2,6 +2,7 @@ package explore
 
 import core.gameState.Direction
 import core.gameState.GameState
+import core.gameState.Target
 import core.gameState.location.*
 import core.history.StringTable
 import core.history.display
@@ -12,8 +13,14 @@ object ClimbLook {
     fun describeClimbJourney() {
         val location = GameState.player.location
         val distance = getDistance(location).wrapNonEmpty("", " ")
+        val exits = getExits(location, GameState.player.climbTarget!!)
+        val exitString = if (exits.isEmpty()) {
+            ""
+        } else {
+            " It is connected to ${exits.joinToString(", ")}."
+        }
 
-        display("You are on ${location.name}, $distance above the ground.")
+        display("You are on ${location.name}, ${distance}above the ground.$exitString")
         display(getRoutesString(location))
     }
 
@@ -30,7 +37,7 @@ object ClimbLook {
         val routes = RouteNeighborFinder(location, 1).getNeighbors()
 
         return if (routes.isNotEmpty()) {
-            val input = mutableListOf(listOf("Name", "Distance", "Direction", "Difficulty"))
+            val input = mutableListOf(listOf("Name", "Distance", "Direction", "Difficulty", "Exits"))
             input.addAll(routes.map { getRouteString(it) })
             val table = StringTable(input, 2, rightPadding = 2)
 
@@ -41,6 +48,21 @@ object ClimbLook {
     }
 
     private fun getRouteString(route: Route): List<String> {
-        return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString(), "1")
+        val exits = getExits(route.destination, GameState.player.climbTarget!!)
+        return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString(), "1", exits.joinToString(", "))
+    }
+
+    private fun getExits(location: LocationNode, climbTarget: Target) : List<String> {
+       val dismountLocation= if (climbTarget.body.getClimbEntryParts().contains(location)){
+            climbTarget.location.name
+        } else {
+           null
+       }
+
+        val targets = climbTarget.location.getNeighborConnections()
+                .filter { (it.source.targetName == climbTarget.name && it.source.partName == location.name) }
+                .map { it.destination.location.name }
+
+        return (targets + dismountLocation).filterNotNull()
     }
 }
