@@ -1,5 +1,7 @@
 package core.commands
 
+import core.gameState.Direction
+
 class Args(val args: List<String>, private val delimiters: List<String> = listOf(), private val excludedWords: List<String> = listOf()) {
     private val argsString = args.joinToString(" ")
     val argGroups = parseArgGroups()
@@ -71,6 +73,15 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
     fun argsWithout(words: List<String>): List<String> {
         val lowerCaseWords = words.map { it.toLowerCase() }
         return args.filterNot { lowerCaseWords.contains(it.toLowerCase()) }
+    }
+
+    fun getDirection(): Direction {
+        val directions = hasAny(Direction.values().map { it.name })
+        return if (directions.isNotEmpty()) {
+            Direction.getDirection(directions.first())
+        } else {
+            Direction.NONE
+        }
     }
 
     private fun parseArgGroups(): List<List<String>> {

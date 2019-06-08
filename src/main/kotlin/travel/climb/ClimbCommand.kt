@@ -4,8 +4,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.Direction
-import core.gameState.GameState
+import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.history.display
@@ -14,6 +13,9 @@ import interact.scope.ScopeManager
 import system.EventManager
 
 class ClimbCommand : Command() {
+
+    private class ClimbOption(val target: Target, val direction: Direction)
+
     override fun getAliases(): Array<String> {
         return arrayOf("Climb", "c", "Scale")
     }
@@ -44,7 +46,7 @@ class ClimbCommand : Command() {
     private fun processNewClimb(arguments: Args) {
         val targetName = arguments.argStrings.last()
         val targets = findAllTargets()
-        val desiredDirection = getDirection(arguments)
+        val desiredDirection = arguments.getDirection()
         val matchByName = targets.getOrNull(targetName)
         val matchByDirection = getDirectionMatches(targets, desiredDirection)
         val confidentMatch = getConfidentMatch(matchByName, matchByDirection)
@@ -70,42 +72,6 @@ class ClimbCommand : Command() {
             directionMatches.first().target
         } else {
             null
-        }
-    }
-
-    private fun getDirection(argDirection: Direction, target: Target, part: LocationNode): Direction {
-        return if (argDirection != Direction.NONE) {
-            argDirection
-        } else {
-            getDirection(target, part)
-        }
-    }
-
-    private fun getDirection(arguments: Args): Direction {
-        val directions = arguments.hasAny(Direction.values().map { it.name })
-        return if (directions.isNotEmpty()) {
-            Direction.getDirection(directions.first())
-        } else {
-            Direction.NONE
-        }
-    }
-
-    private fun getDirection(target: Target, part: LocationNode): Direction {
-        return if (part.network.getLocations().size > 1) {
-            // or if we have multiple parts
-            if (part.isAnOuterNode(Direction.ABOVE)) {
-                //if we enter from the top part, we're going down
-                Direction.BELOW
-            } else {
-                Direction.ABOVE
-            }
-        } else if (part.network.getLocations().size == 1) {
-            //Or if it's a single part with a connection to another place, we're going in that direction
-            val sourceConnection = target.location.getNeighborConnections().firstOrNull { it.source.location == GameState.player.location && it.source.targetName == target.name && it.source.partName == part.name }
-            val destConnection = target.location.getNeighborConnections().firstOrNull { it.destination.location == GameState.player.location && it.source.targetName == target.name && it.source.partName == part.name }
-            sourceConnection?.vector?.direction ?: destConnection?.vector?.invert()?.direction ?: Direction.NONE
-        } else {
-            Direction.NONE
         }
     }
 
@@ -200,6 +166,6 @@ class ClimbCommand : Command() {
         }
     }
 
-    private class ClimbOption(val target: Target, val direction: Direction)
+
 
 }
