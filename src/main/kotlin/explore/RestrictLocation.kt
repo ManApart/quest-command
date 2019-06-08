@@ -5,7 +5,6 @@ import core.history.display
 
 class RestrictLocation : EventListener<RestrictLocationEvent>() {
 
-
     override fun execute(event: RestrictLocationEvent) {
         event.source.getConnection(event.destination)?.restricted = event.makeRestricted
         event.destination.getConnection(event.source)?.restricted = event.makeRestricted
@@ -18,6 +17,5 @@ class RestrictLocation : EventListener<RestrictLocationEvent>() {
             }
         }
     }
-
 
 }

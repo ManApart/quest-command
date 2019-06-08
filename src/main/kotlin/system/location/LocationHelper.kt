@@ -16,16 +16,21 @@ class LocationHelper {
         return nodeMap
     }
 
-    fun createNeighborsAndNeighborLinks(nodeMap: Map<String, MutableList<LocationNode>>) {
+    fun createNeighborsAndNeighborLinks(nodeMap: MutableMap<String, MutableList<LocationNode>>) {
         nodeMap.keys.forEach { networkName ->
             val network = nodeMap[networkName]?.toList() ?: listOf()
             network.forEach { node ->
                 node.protoConnections.forEach { protoConnection ->
-                    var neighbor = getLocationNodeByExactName(protoConnection.connection.location, network)
+                    val connectionNetworkName = protoConnection.connection.network ?: networkName
+                    if (nodeMap[connectionNetworkName] == null) {
+                        nodeMap[connectionNetworkName] = mutableListOf()
+                    }
+                    val connectionNetwork = nodeMap[connectionNetworkName] ?: error("Network $connectionNetworkName does not exist, though it is referenced by location ${node.name}")
+                    var neighbor = getLocationNodeByExactName(protoConnection.connection.location, connectionNetwork)
 
                     if (neighbor == null) {
-                        neighbor = LocationNode(protoConnection.connection.location, parent = networkName)
-                        nodeMap[networkName]?.add(neighbor)
+                        neighbor = LocationNode(protoConnection.connection.location, parent = connectionNetworkName)
+                        connectionNetwork.add(neighbor)
                     }
 
                     val originPoint = LocationPoint(node, protoConnection.target, protoConnection.part)

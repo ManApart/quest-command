@@ -54,7 +54,10 @@
         }
       },
       {
-        "name": "Kanbara Gate",
+        "connection": {
+          "network": "Kanbara",
+          "location": "Kanbara Gate"
+        },
         "vector": {
           "x": -10
         }
