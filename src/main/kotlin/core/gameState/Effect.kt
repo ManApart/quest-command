@@ -1,13 +1,14 @@
 package core.gameState
 
 import core.gameState.stat.Stat
+import core.utility.Named
 import status.effects.EffectAppliedEvent
 import status.effects.RemoveEffectEvent
 import status.statChanged.StatBoostEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
-class Effect(val name: String, private val type: EffectType, private val statName: String, val amount: Int = 1, private var duration: Int = -1) {
+class Effect(override val name: String, private val type: EffectType, private val statName: String, val amount: Int = 1, private var duration: Int = -1) : Named{
     enum class EffectType { DRAIN, REDUCE, HEAL, BOOST }
 
     private var doOnce = true

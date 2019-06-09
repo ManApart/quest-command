@@ -1,18 +1,22 @@
-package system
+package system.creature
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.gameState.Target
 import core.gameState.location.LocationTarget
-import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
+import system.DependencyInjector
 
 object CreatureManager {
-    private val creatures = NameSearchableList(JsonDirectoryParser.parseDirectory("/data/generated/content/creatures", CreatureManager::parseFile))
-    private fun parseFile(path: String): List<Target> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private var creatures = loadCreatures()
 
-    init {
-        creatures.map { it.properties.tags.add("Creature") }
+    fun reset() {
+        creatures = loadCreatures()
+    }
+
+    private fun loadCreatures(): NameSearchableList<Target> {
+        val parser = DependencyInjector.getImplementation(CreatureParser::class.java)
+        val creatures = parser.loadCreatures()
+        creatures.forEach { it.properties.tags.add("Creature") }
+        return NameSearchableList(creatures)
     }
 
     private fun getCreature(name: String) : Target {

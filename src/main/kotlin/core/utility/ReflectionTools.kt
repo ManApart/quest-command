@@ -5,6 +5,7 @@ import core.events.Event
 import core.events.EventListener
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
+import system.DependencyInjector
 import java.io.File
 import kotlin.reflect.full.memberProperties
 
@@ -15,10 +16,11 @@ object ReflectionTools {
     private const val eventsFile = "/data/generated/events.txt"
     private const val eventListenersFile = "/data/generated/eventListeners.txt"
     private val reflections = Reflections(SubTypesScanner(false))
+    private val parser = DependencyInjector.getImplementation(ReflectionParser::class.java)
 
-    val events: List<Class<out Event>> by lazy { getAllEvents()}
-    val commands: List<Class<out Command>> by lazy { getAllCommands()}
-    val eventListeners: List<Class<out EventListener<*>>> by lazy { getAllEventListeners()}
+    val events: List<Class<out Event>> by lazy { parser.events }
+    val commands: List<Class<out Command>> by lazy { parser.commands }
+    val eventListeners: List<Class<out EventListener<*>>> by lazy { parser.eventListeners }
 
     fun saveAllCommands() {
         val allClasses = reflections.getSubTypesOf(Command::class.java)
@@ -51,43 +53,6 @@ object ReflectionTools {
                 out.println(it.name)
             }
         }
-    }
-
-    fun getEvent(className: String): Class<out Event> {
-        return events.first { className == it.name.substring(it.name.lastIndexOf(".") + 1) }
-    }
-
-    private fun getAllCommands(): List<Class<out Command>> {
-        return getClassesFromFile(commandsFile)
-    }
-
-    private fun getAllEvents(): List<Class<out Event>> {
-        return getClassesFromFile(eventsFile)
-    }
-
-    private fun getAllEventListeners(): List<Class<out EventListener<*>>> {
-        return getClassesFromFile(eventListenersFile)
-    }
-
-    private fun <E> getClassesFromFile(file: String): List<Class<E>> {
-        val classes = mutableListOf<Class<E>>()
-        val content = this::class.java.getResource(file).readText()
-        content.trim().lines().forEach {
-            try {
-                @Suppress("UNCHECKED_CAST")
-                val kClass = Class.forName(it) as Class<E>
-                classes.add(kClass)
-            } catch (e: ClassNotFoundException) {
-                println("Couldn't find class $it")
-                throw e
-            }
-        }
-        return classes.toList()
-    }
-
-    fun <R : Any> getProperty(instance: Any, propertyName: String): R {
-        @Suppress("UNCHECKED_CAST")
-        return instance.javaClass.kotlin.memberProperties.first { it.name == propertyName }.get(instance) as R
     }
 
 }

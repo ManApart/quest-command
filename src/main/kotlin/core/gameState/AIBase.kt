@@ -1,6 +1,8 @@
 package core.gameState
 
-class AIBase(val name: String) {
+import core.utility.Named
+
+class AIBase(override val name: String) : Named {
 
     fun create(creature: Target) : AI {
         return AI(name, creature)

@@ -29,7 +29,6 @@ object LocationManager {
             network
         }
 
-
         return NameSearchableList(networks)
     }
 

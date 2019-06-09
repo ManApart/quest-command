@@ -3,7 +3,7 @@ package interact.scope
 import core.events.EventListener
 import core.gameState.GameState
 import system.activator.ActivatorManager
-import system.CreatureManager
+import system.creature.CreatureManager
 import system.item.ItemManager
 import travel.ArriveEvent
 

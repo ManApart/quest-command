@@ -12,7 +12,7 @@ import core.utility.apply
 import core.utility.applyNested
 import core.utility.max
 import dialogue.DialogueOptions
-import system.AIManager
+import system.ai.AIManager
 import system.behavior.BehaviorManager
 import system.body.BodyManager
 
