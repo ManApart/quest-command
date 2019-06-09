@@ -4,8 +4,21 @@ import core.gameState.Direction
 import core.gameState.Vector
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class VectorTest {
+    private val center = Vector()
+    private val north = Vector(0, 1)
+    private val west = Vector(-1 )
+    private val east = Vector(1 )
+    private val south = Vector(0, -1)
+    private val above = Vector(0, 0, 1)
+    private val below = Vector(0, 0, -1)
+    private val northWest = Vector(-1, 1)
+    private val northEast = Vector(1, 1)
+    private val southWest = Vector(-1, -1)
+    private val southEast = Vector(1, -1)
 
     @Test
     fun distanceIsCorrect(){
@@ -17,18 +30,6 @@ class VectorTest {
 
     @Test
     fun directions(){
-        val center = Vector()
-        val north = Vector(0, 1)
-        val west = Vector(-1 )
-        val east = Vector(1 )
-        val south = Vector(0, -1)
-        val above = Vector(0, 0, 1)
-        val below = Vector(0, 0, -1)
-        val northWest = Vector(-1, 1)
-        val northEast = Vector(1, 1)
-        val southWest = Vector(-1, -1)
-        val southEast = Vector(1, -1)
-
         assertEquals(Direction.NORTH, center.calculateDirection(north))
         assertEquals(north, Direction.NORTH.vector)
 
@@ -74,4 +75,25 @@ class VectorTest {
         assertEquals(Direction.NORTH_WEST, center.calculateDirection(northWest))
         assertEquals(Direction.BELOW, center.calculateDirection(below))
     }
+
+    @Test
+    fun isInGeneralDirection(){
+        assertTrue(north.isInGeneralDirection(Direction.NORTH))
+        assertTrue(center.isInGeneralDirection(Direction.SOUTH, north))
+
+        assertTrue(north.isInGeneralDirection(Direction.NORTH, center))
+        assertTrue(northEast.isInGeneralDirection(Direction.NORTH, center))
+        assertTrue(northWest.isInGeneralDirection(Direction.NORTH, center))
+
+        assertTrue(northWest.isInGeneralDirection(Direction.WEST, center))
+        assertTrue(west.isInGeneralDirection(Direction.WEST, center))
+        assertTrue(southWest.isInGeneralDirection(Direction.WEST, center))
+
+        assertFalse(south.isInGeneralDirection(Direction.NORTH, center))
+        assertFalse(west.isInGeneralDirection(Direction.NORTH, center))
+        assertFalse(east.isInGeneralDirection(Direction.NORTH, center))
+
+        assertFalse(north.isInGeneralDirection(Direction.NORTH_WEST, center))
+    }
+
 }

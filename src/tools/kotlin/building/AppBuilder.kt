@@ -13,7 +13,7 @@ Currently it runs:
 
 */
 
-fun main(args: Array<String>) {
+fun main() {
     ReflectionTools.saveAllCommands()
     ReflectionTools.saveAllEvents()
     ReflectionTools.saveAllEventListeners()

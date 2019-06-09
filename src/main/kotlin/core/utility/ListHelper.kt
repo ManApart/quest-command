@@ -1,7 +1,5 @@
 package core.utility
 
-import java.util.*
-
 fun List<String>.matches(other: List<String>): Boolean {
     if (size != other.size) {
         return false

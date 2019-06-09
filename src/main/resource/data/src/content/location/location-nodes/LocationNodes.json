@@ -6,7 +6,6 @@
     "locations": [
       {
         "name": "Kanbara Wall South",
-        "restricted": true,
         "vector": {
           "x": -1,
           "y": -1
@@ -14,7 +13,6 @@
       },
       {
         "name": "Kanbara Wall North",
-        "restricted": true,
         "vector": {
           "x": -1,
           "y": 1
@@ -39,6 +37,56 @@
       },
       {
         "name": "Mapmaker Manor"
+      },
+      {
+        "name": "Kanbara City South"
+      }
+    ]
+  },
+  {
+    "name": "Kanbara City South",
+    "parent": "Kanbara",
+    "locationName": "Kanbara City"
+  },
+  {
+    "name": "Kanbara Wall North",
+    "parent": "Kanbara",
+    "locationName": "City Wall",
+    "locations": [
+      {
+        "target": "City Wall",
+        "part": "Wall Top",
+        "connection": {
+          "network": "Kanbara",
+          "location": "Kanbara City",
+          "target": "City Wall",
+          "part": "Wall Top"
+        },
+        "restricted": true,
+        "vector": {
+          "y": 1
+        }
+      }
+    ]
+  },
+  {
+    "name": "Kanbara Wall South",
+    "parent": "Kanbara",
+    "locationName": "City Wall",
+    "locations": [
+      {
+        "target": "City Wall",
+        "part": "Wall Top",
+        "connection": {
+          "network": "Kanbara",
+          "location": "Kanbara City South",
+          "target": "City Wall",
+          "part": "Wall Top"
+        },
+        "restricted": true,
+        "vector": {
+          "y": -1
+        }
       }
     ]
   },

@@ -1,7 +1,6 @@
 package core.gameState.location
 
 import core.gameState.Direction
-import core.gameState.Vector
 import core.utility.NameSearchableList
 import core.utility.Named
 
@@ -49,7 +48,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         val inverted = direction.invert()
 
         locationNodes.forEach {node ->
-            if (node.getNeighbors(inverted).isNotEmpty() && node.getNeighbors(direction).isEmpty()) {
+            if (node.getNeighborsInGeneralDirection(inverted).isNotEmpty() && node.getNeighborsInGeneralDirection(direction).isEmpty()) {
                 bottomNodes.add(node)
             }
         }

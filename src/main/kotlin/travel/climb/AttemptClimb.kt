@@ -107,14 +107,14 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
                 && (event.targetPart.getDistanceToLowestNodeInNetwork() == 0 || getConnectedLocation(event.target.location, event.target, event.targetPart) != null)
     }
 
-    private fun getConnectedLocation(targetLocation: LocationNode, climbTarget: Target, part: LocationNode): LocationNode? {
+    private fun getConnectedLocation(targetLocation: LocationNode, climbTarget: Target, part: LocationNode): LocationPoint? {
         return targetLocation.getNeighborConnections()
                 .firstOrNull { it.source.equals(targetLocation, climbTarget, climbTarget.body.getPart(part.name)) }
-                ?.destination?.location
+                ?.destination
     }
 
-    private fun creatureIsComingFromConnection(event: AttemptClimbEvent, connectedLocation: LocationNode?): Boolean {
-        return connectedLocation == event.creature.location
+    private fun creatureIsComingFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?): Boolean {
+        return connectedLocation?.location == event.creature.location
     }
 
 
@@ -127,17 +127,16 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         EventManager.postEvent(FallEvent(event.creature, event.target.location, event.creature.location.getDistanceToLowestNodeInNetwork(), "You lose your grip on ${event.targetPart.name}."))
     }
 
-    private fun dismountFromConnection(event: AttemptClimbEvent, connectedLocation: LocationNode?) {
-        val destination = event.target.location
-        val origin = LocationPoint(connectedLocation
-                ?: event.target.location, event.target.name, event.targetPart.name)
+    private fun dismountFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
+        val destination = LocationPoint(event.target.location)
+        val origin = connectedLocation ?: LocationPoint(event.target.location, event.target.name, event.targetPart.name)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.target, origin, destination))
     }
 
-    private fun dismountToConnection(event: AttemptClimbEvent, connectedLocation: LocationNode?) {
+    private fun dismountToConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
         val origin = LocationPoint(event.target.location, event.target.name, event.targetPart.name)
-        val destination = connectedLocation ?: event.target.location
+        val destination = connectedLocation ?: LocationPoint(event.target.location)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.target, origin, destination))
     }

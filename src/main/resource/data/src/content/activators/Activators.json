@@ -230,5 +230,15 @@
         "Climbable"
       ]
     }
+  },
+  {
+    "name": "City Wall",
+    "description": "The squared stones rise high above you.",
+    "body": "City Wall",
+    "properties": {
+      "tags": [
+        "Climbable"
+      ]
+    }
   }
 ]

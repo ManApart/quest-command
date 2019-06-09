@@ -27,7 +27,7 @@ object BodyManager {
         val locations = createLocations(bodyParts, nodeMap.values.flatten())
 
         val networks = nodeMap.map { entry ->
-            val networkLocations = entry.value.map { locations.get(it.locationName) }
+            val networkLocations = entry.value.map { locations.get(it.locationName) }.distinct()
             val network = Network(entry.key, entry.value, networkLocations)
             entry.value.forEach { it.network = network }
             network

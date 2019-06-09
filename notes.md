@@ -69,6 +69,8 @@ Body Parts should have a material
 
 ### Combat
 
+Should be reworked to use new body system
+
 #### Thoughts and Description
 
 Battle commands (attack, defend etc) allow a hand to be specified or default to the hand that has the weapon with the most damage etc for that skill
@@ -304,4 +306,4 @@ Attack command groups 0 vs 1 - make tests
 Tests:
 - test both ways over kanbara wall (target and part on both sides)
 
-
+cleanup compiler warnings

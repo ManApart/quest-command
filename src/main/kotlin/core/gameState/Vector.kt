@@ -35,6 +35,10 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         return Vector(x + other.x, y + other.y, z + other.z)
     }
 
+    fun subtract(other: Vector): Vector {
+        return add(other.invert())
+    }
+
     private fun calculateDirection(): Direction {
         return NO_VECTOR.calculateDirection(this)
     }
@@ -68,10 +72,30 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     }
 
     /**
-     * Floor.isDirection(below, roof) == true
+     * floor.isDirection(below, roof) == true
      */
     fun isDirection(direction: Direction, other: Vector): Boolean {
         return direction == other.calculateDirection(this)
+    }
+
+    fun isInGeneralDirection(direction: Direction, other: Vector = Vector()): Boolean {
+        val diffVector = subtract(other)
+        return when {
+            direction.vector.x != 0 && !sameSign(direction.vector.x, diffVector.x) -> false
+            direction.vector.y != 0 && !sameSign(direction.vector.y, diffVector.y) -> false
+            direction.vector.z != 0 && !sameSign(direction.vector.z, diffVector.z) -> false
+            else -> true
+        }
+
+    }
+
+    private fun sameSign(a: Int, b: Int) : Boolean {
+        return when {
+            a == b -> true
+            a > 0 && b > 0 -> true
+            a < 0 && b < 0 -> true
+            else -> false
+        }
     }
 
     fun getDistance(other: Vector = Vector()): Int {

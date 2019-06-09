@@ -52,6 +52,13 @@ class LocationNode(
                 .toList()
     }
 
+    fun getNeighborsInGeneralDirection(direction: Direction): List<LocationNode> {
+        return connections.asSequence()
+                .filter { it.vector.isInGeneralDirection(direction) }
+                .map { it.destination.location }
+                .toList()
+    }
+
     fun getLocation(): Location {
         return network.getLocation(locationName)
     }

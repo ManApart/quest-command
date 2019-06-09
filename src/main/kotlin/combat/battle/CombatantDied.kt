@@ -13,7 +13,7 @@ class CombatantDied : EventListener<CreatureDiedEvent>() {
         }
     }
 
-    override fun getPriority(): Int {
+    override fun getPriorityRank(): Int {
         return 1
     }
 }

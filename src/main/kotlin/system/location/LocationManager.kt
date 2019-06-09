@@ -23,11 +23,12 @@ object LocationManager {
         createLocationIfNeeded(nodeMap, locations)
 
         val networks = nodeMap.map { entry ->
-            val networkLocations = entry.value.map { locations.get(it.locationName) }
+            val networkLocations = entry.value.map { locations.get(it.locationName) }.distinct()
             val network = Network(entry.key, entry.value, networkLocations)
             entry.value.forEach { it.network = network }
             network
         }
+
 
         return NameSearchableList(networks)
     }

@@ -15,7 +15,10 @@ abstract class EventListener<T : Event> {
         return true
     }
 
-    open fun getPriority() : Int {
+    /**
+     * The lower the priority rank, the sooner it will execute (sorted against others listening for the same type of events)
+     */
+    open fun getPriorityRank() : Int {
         return 0
     }
 

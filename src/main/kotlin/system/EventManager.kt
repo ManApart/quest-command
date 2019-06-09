@@ -29,7 +29,7 @@ object EventManager {
             listenerMap[listenerClass] = ArrayList()
         }
         listenerMap[listenerClass]?.add(listener)
-//        listenerMap[listenerClass] = ArrayList(listenerMap[listenerClass]?.sortedWith(compareBy { it.getPriority() }))
+//        listenerMap[listenerClass] = ArrayList(listenerMap[listenerClass]?.sortedWith(compareBy { it.getPriorityRank() }))
     }
 
     fun <E : Event> unRegisterListener(listener: EventListener<E>) {
@@ -87,7 +87,7 @@ object EventManager {
                     (it as EventListener<Event>).event = event
                     listeners.add(it)
                 }
-        listeners.sortBy { it.getPriority() }
+        listeners.sortBy { it.getPriorityRank() }
         listeners.forEach { it.execute() }
     }
 

@@ -11,7 +11,7 @@ class EventManagerTest {
 
     class TestEvent : Event
     class TestListener(private val parent: EventManagerTest, private val priorityLevel: Int, private val id: String) : EventListener<TestEvent>() {
-        override fun getPriority(): Int {
+        override fun getPriorityRank(): Int {
             return priorityLevel
         }
 

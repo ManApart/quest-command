@@ -8,7 +8,16 @@
   },
   {
     "name": "Kanbara City",
-    "description": "The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia"
+    "description": "The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia",
+    "activators": [
+      "City Wall"
+    ]
+  },
+  {
+    "name": "City Wall",
+    "activators": [
+      "City Wall"
+    ]
   },
   {
     "name": "Kanbara Gate",
@@ -101,12 +110,7 @@
     "name": "Windmill",
     "activators": [
       "Grain Bin",
-      {
-        "name": "Stairs",
-        "params": {
-          "destination": "Windmill - Second Floor"
-        }
-      }
+      "Stairs"
     ],
     "items": [
       "Pot"
@@ -115,12 +119,7 @@
   {
     "name": "Windmill - Second Floor",
     "activators": [
-      {
-        "name": "Stairs",
-        "params": {
-          "destination": "Windmill - Third Floor"
-        }
-      }
+      "Stairs"
     ]
   },
   {
@@ -129,4 +128,5 @@
       "Grain Chute"
     ]
   }
+
 ]

@@ -10,7 +10,7 @@ class QuestListener : EventListener<Event>() {
         return listeners
     }
 
-    override fun getPriority(): Int {
+    override fun getPriorityRank(): Int {
         return 100
     }
 

@@ -92,14 +92,14 @@ class CommandComboTest {
     fun enterKanbaraThroughGate() {
         val input = "w && w && use gate && w"
         CommandParser.parseCommand(input)
-        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Mapmaker Manor.", ChatHistory.getLastOutput())
+        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Mapmaker Manor, Kanbara City South, Kanbara Wall North (SOUTH).", ChatHistory.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && w && use gate"
+        val input = "w && w && sw && c && c && c && c && d && d && d && ls"
         CommandParser.parseCommand(input)
-        assertEquals("You can now access Kanbara City from Kanbara Gate.", ChatHistory.getLastOutput())
+        assertEquals("Kanbara City South", ChatHistory.getCurrent().outPut[3])
     }
 
     @Test

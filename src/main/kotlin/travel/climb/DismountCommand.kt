@@ -29,9 +29,9 @@ class DismountCommand : Command() {
             //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
             val exit = getExitLocation()
             val climbTarget = GameState.player.climbTarget!!
-            val targetLocation = climbTarget.location
+            val targetLocation = LocationPoint(climbTarget.location)
             val part = GameState.player.location
-            val origin = LocationPoint(targetLocation, climbTarget.name, part.name)
+            val origin = LocationPoint(climbTarget.location, climbTarget.name, part.name)
 
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, origin, exit))
@@ -43,14 +43,14 @@ class DismountCommand : Command() {
         }
     }
 
-    private fun getExitLocation() : LocationNode? {
+    private fun getExitLocation() : LocationPoint? {
         val climbTarget = GameState.player.climbTarget!!
         val location = climbTarget.location
         val part = climbTarget.body.getPart(GameState.player.location.name)
 
         return climbTarget.location.getNeighborConnections().firstOrNull {
             it.source.equals(location, climbTarget, part)
-        }?.destination?.location
+        }?.destination
     }
 
 
