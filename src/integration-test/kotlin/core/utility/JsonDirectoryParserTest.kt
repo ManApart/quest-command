@@ -24,9 +24,9 @@ class JsonDirectoryParserTest {
         assertNotNull(gate)
 
 
-        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", city?.description)
-        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", kanbara?.description)
-        assertEquals(1, gate?.activators?.size)
+        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", city.description)
+        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", kanbara.description)
+        assertEquals(1, gate.activators.size)
 
     }
 

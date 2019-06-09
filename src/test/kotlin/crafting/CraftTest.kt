@@ -70,7 +70,7 @@ class CraftTest {
 
         val result = baker.inventory.getItem(ingredient.name)
         assertNotNull(result)
-        assertTrue(result?.properties?.tags?.has("Cooked") ?: false)
+        assertTrue(result.properties.tags.has("Cooked"))
     }
 
     private fun createBaker(): Target {

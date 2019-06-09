@@ -29,7 +29,7 @@ object ItemManager {
         return targets.map {
             val item = Target(it.name, items.get(it.name), it.params)
             if (!it.location.isNullOrBlank()) {
-                item.properties.values.put("locationDescription", it.location!!)
+                item.properties.values.put("locationDescription", it.location)
             }
             item
         }

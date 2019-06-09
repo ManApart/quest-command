@@ -16,7 +16,7 @@ data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsA
 
     fun getResult(usedIngredients: List<Target>): Target {
         val item = if (!name.isNullOrBlank()) {
-            ItemManager.getItem(name!!)
+            ItemManager.getItem(name)
         } else {
             if (usedIngredients.size <= id!!) {
                 throw IllegalArgumentException("Recipe Result had id $id but only ${usedIngredients.size} used ingredients")

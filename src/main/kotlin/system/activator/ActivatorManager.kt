@@ -28,7 +28,7 @@ object ActivatorManager {
         return targets.map {
             val activator = Target(it.name, activators.get(it.name), it.params)
             if (!it.location.isNullOrBlank()) {
-                activator.properties.values.put("locationDescription", it.location!!)
+                activator.properties.values.put("locationDescription", it.location)
             }
             activator
         }

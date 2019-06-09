@@ -296,14 +296,3 @@ Certain quests unlock the ability to start a new character as a different race i
 
 Attack command groups 0 vs 1 - make tests
  - Mock Player?
-
-
-
-
------------------------------
-
-
-Tests:
-- test both ways over kanbara wall (target and part on both sides)
-
-cleanup compiler warnings
