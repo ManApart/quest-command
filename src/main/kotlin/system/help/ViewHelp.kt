@@ -38,7 +38,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
                 if (!groups.containsKey(command.getCategory()[0])) {
                     groups[command.getCategory()[0]] = ArrayList()
                 }
-                groups[command.getCategory()[0]]?.add(command.getName())
+                groups[command.getCategory()[0]]?.add(command.name)
             }
         }
         var groupList = ""
@@ -56,7 +56,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
                 if (!groups.containsKey(command.getCategory()[0])) {
                     groups[command.getCategory()[0]] = ArrayList()
                 }
-                val details = command.getName() + ":\n\t\t" + command.getAliases().joinToString(", ")
+                val details = command.name + ":\n\t\t" + command.getAliases().joinToString(", ")
                 groups[command.getCategory()[0]]?.add(details)
             }
         }

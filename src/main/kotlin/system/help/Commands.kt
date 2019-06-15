@@ -1,0 +1,50 @@
+package system.help
+
+import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
+import core.history.display
+
+class Commands : Command() {
+
+    override fun getAliases(): Array<String> {
+        return arrayOf("Commands")
+    }
+
+    override fun getDescription(): String {
+        return "Commands: \n\tCommands <Group> <Command> - Execute a command."
+    }
+
+    override fun getManual(): String {
+        return getDescription()
+    }
+
+    override fun getCategory(): List<String> {
+        return listOf("System")
+    }
+
+    override fun execute(keyword: String, args: List<String>) {
+        when {
+            args.isEmpty() -> clarifyCommandGroup()
+            args.size == 1 && isCommand(args) -> CommandParser.parseCommand(args[1])
+            args.size == 1 && isCommandGroup(args) -> clarifyCommand(args[0])
+            args.size == 2 -> CommandParser.parseCommand(args[2])
+        }
+    }
+
+    private fun clarifyCommandGroup() {
+        val groups = getCommandGroups()
+        display("Do what type of thing?\n\t${groups.joinToString(", ")}")
+        val response = ResponseRequest(groups.map { it to "commands $it" }.toMap())
+        CommandParser.responseRequest = response
+    }
+
+    private fun clarifyCommand(group: String) {
+        val commands = getCommands(group).map { it.name }
+        display("Do what?\n\t${commands.joinToString(", ")}")
+        val response = ResponseRequest(commands.map { it to it }.toMap())
+        CommandParser.responseRequest = response
+    }
+
+
+}

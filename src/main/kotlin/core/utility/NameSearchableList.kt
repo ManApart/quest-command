@@ -3,6 +3,12 @@ package core.utility
 class NameSearchableList<N : Named>() : ArrayList<N>() {
     private val proxies = HashMap<String, N>()
 
+    companion object {
+        fun from(items: List<String>) : NameSearchableList<NamedString> {
+            return NameSearchableList(items.map { NamedString(it) })
+        }
+    }
+
     constructor(item: N) : this() {
         add(item)
     }

@@ -1,6 +1,7 @@
 package core.commands
 
 import core.history.ChatHistory
+import core.utility.NameSearchableList
 import core.utility.ReflectionTools
 import system.EventManager
 
@@ -9,16 +10,22 @@ object CommandParser {
     val commands by lazy { loadCommands() }
     var responseRequest: ResponseRequest? = null
 
-    private fun loadCommands(): List<Command> {
-        return ReflectionTools.commands.asSequence()
+    private fun loadCommands(): NameSearchableList<Command> {
+        val commands = NameSearchableList(ReflectionTools.commands.asSequence()
                 .map { it.newInstance() }
                 .filter { it!!::class != UnknownCommand::class }
-                .toList()
+                .toList())
+
+        commands.forEach {
+            commands.addProxy(it, it.getAliases().toList())
+        }
+
+        return commands
     }
 
     fun parseInitialCommand(args: Array<String>) {
         val initialCommand = if (args.isEmpty()) {
-            "look"
+            "look all"
         } else {
             args.joinToString(" ")
         }
@@ -60,17 +67,7 @@ object CommandParser {
     }
 
     fun findCommand(alias: String): Command {
-        return commands.firstOrNull { containsIgnoreCase(it.getAliases(), alias) } ?: unknownCommand
-    }
-
-    private fun containsIgnoreCase(textList: Array<String>, matchText: String): Boolean {
-        val match = matchText.toLowerCase().trim()
-        textList.forEach {
-            if (it.toLowerCase().trim() == match) {
-                return true
-            }
-        }
-        return false
+        return commands.getOrNull(alias) ?: unknownCommand
     }
 
     inline fun <reified C : Command> getCommand(): C {
@@ -89,6 +86,7 @@ object CommandParser {
 
 }
 
+//TODO -move to args parser?
 fun removeFirstItem(list: List<String>): List<String> {
     return if (list.size > 1) list.subList(1, list.size) else listOf()
 }

@@ -1,15 +1,14 @@
 package core.commands
 
-abstract class Command {
+import core.utility.Named
 
-    abstract fun getAliases() : Array<String>
-    abstract fun getDescription() : String
-    abstract fun getManual() : String
-    abstract fun getCategory() : List<String>
+abstract class Command : Named {
+
+    abstract fun getAliases(): Array<String>
+    abstract fun getDescription(): String
+    abstract fun getManual(): String
+    abstract fun getCategory(): List<String>
     abstract fun execute(keyword: String, args: List<String>)
 
-
-    open fun getName() : String {
-        return getAliases()[0]
-    }
+    override val name = getAliases()[0]
 }

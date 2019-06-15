@@ -20,9 +20,7 @@ class AttackCommand : Command() {
         return arrayOf("Chop", "Slash", "Stab")
     }
 
-    override fun getName(): String {
-        return "Chop, Slash, Stab"
-    }
+    override val name = "Chop, Slash, Stab"
 
     override fun getDescription(): String {
         return "Attack:\n\tChop/Stab/Slash/Crush the target"
@@ -61,7 +59,7 @@ class AttackCommand : Command() {
         }
     }
 
-    private fun getDamageType(keyword: String) : String {
+    private fun getDamageType(keyword: String): String {
         return when (keyword) {
             "chop" -> "chopDamage"
             "crush" -> "crushDamage"
@@ -78,7 +76,7 @@ class AttackCommand : Command() {
         return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()
     }
 
-    private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection) : Event {
+    private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection): Event {
         return when (keyword) {
             "chop" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.CHOP)
             "crush" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.CRUSH)
