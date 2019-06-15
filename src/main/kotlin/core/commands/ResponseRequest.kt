@@ -40,6 +40,10 @@ class ResponseRequest(responses: Map<String, String>) {
         return null
     }
 
+    fun getOptions(): List<String>{
+        return responseKeys.map { it.name }.toList()
+    }
+
     companion object {
         fun new(keys: List<String>, values: List<String>) : ResponseRequest {
             if (keys.size != values.size) {

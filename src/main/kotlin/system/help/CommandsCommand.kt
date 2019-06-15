@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.history.display
 
-class Commands : Command() {
+class CommandsCommand : Command() {
 
     override fun getAliases(): Array<String> {
         return arrayOf("Commands")
@@ -34,14 +34,12 @@ class Commands : Command() {
 
     private fun clarifyCommandGroup() {
         val groups = getCommandGroups()
-        display("Do what type of thing?\n\t${groups.joinToString(", ")}")
         val response = ResponseRequest(groups.map { it to "commands $it" }.toMap())
         CommandParser.responseRequest = response
     }
 
     private fun clarifyCommand(group: String) {
         val commands = getCommands(group).map { it.name }
-        display("Do what?\n\t${commands.joinToString(", ")}")
         val response = ResponseRequest(commands.map { it to it }.toMap())
         CommandParser.responseRequest = response
     }

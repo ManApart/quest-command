@@ -4,14 +4,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class NameSearchableListTest {
-    private class TestSearchable(override val name: String) : Named
 
     @Test
     fun targetExistsFull() {
-        val target = TestSearchable("Full Match")
-        val badTarget = TestSearchable("No Match")
+        val target = NamedString("Full Match")
+        val badTarget = NamedString("No Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val baseline = list.exists(badTarget.name)
@@ -23,10 +22,10 @@ class NameSearchableListTest {
 
     @Test
     fun targetExistsPartial() {
-        val target = TestSearchable("Partial Match")
-        val badTarget = TestSearchable("No Match")
+        val target = NamedString("Partial Match")
+        val badTarget = NamedString("No Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val baseline = list.exists(badTarget.name)
@@ -38,10 +37,10 @@ class NameSearchableListTest {
 
     @Test
     fun targetExistsUsingListFull() {
-        val target = TestSearchable("Full Match")
-        val badTarget = TestSearchable("No Match")
+        val target = NamedString("Full Match")
+        val badTarget = NamedString("No Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val baseline = list.exists(badTarget.name)
@@ -53,10 +52,10 @@ class NameSearchableListTest {
 
     @Test
     fun targetExistsUsingListPartial() {
-        val target = TestSearchable("Partial Match")
-        val badTarget = TestSearchable("No Match")
+        val target = NamedString("Partial Match")
+        val badTarget = NamedString("No Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val baseline = list.exists(badTarget.name)
@@ -68,9 +67,9 @@ class NameSearchableListTest {
 
     @Test
     fun getTargetFull() {
-        val target = TestSearchable("Full Match")
+        val target = NamedString("Full Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val actual = list.get(target.name)
@@ -80,9 +79,9 @@ class NameSearchableListTest {
 
     @Test
     fun getTargetPartial() {
-        val target = TestSearchable("Partial Match")
+        val target = NamedString("Partial Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val actual = list.get("Partial")
@@ -92,9 +91,9 @@ class NameSearchableListTest {
 
     @Test
     fun getTargetUsingListFull() {
-        val target = TestSearchable("Full Match")
+        val target = NamedString("Full Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val actual = list.get(target.name)
@@ -104,13 +103,41 @@ class NameSearchableListTest {
 
     @Test
     fun getTargetUsingListPartial() {
-        val target = TestSearchable("Partial Match")
+        val target = NamedString("Partial Match")
 
-        val list = NameSearchableList<TestSearchable>()
+        val list = NameSearchableList<NamedString>()
         list.add(target)
 
         val actual = list.get("Partial")
 
         assertEquals(target, actual)
     }
+    
+    @Test
+    fun getOrNullProxy() {
+        val target = NamedString("Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.addProxy(target, listOf("proxy"))
+
+        val actual = list.get("proxy")
+
+        assertEquals(target, actual)
+    }
+
+    @Test
+    fun getOrNullProxyCaseInsensitive() {
+        val target = NamedString("Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.addProxy(target, listOf("PROXY"))
+
+        val actual = list.get("proxy")
+
+        assertEquals(target, actual)
+    }
+
+    
 }
+
+

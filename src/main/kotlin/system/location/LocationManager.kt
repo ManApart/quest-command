@@ -3,6 +3,7 @@ package system.location
 import core.gameState.GameState
 import core.gameState.location.*
 import core.utility.NameSearchableList
+import netscape.security.Target.findTarget
 import system.DependencyInjector
 
 object LocationManager {
@@ -55,6 +56,24 @@ object LocationManager {
     }
 
 
+    fun findLocationInAnyNetwork(name: String): LocationNode? {
+        val network = getNetwork()
+        var target = findTarget(name, network)
+        var i = 0
+        while (target == null && i < getNetworks().size) {
+            target = findTarget(name, getNetworks()[i])
+            i++
+        }
+        return target
+    }
+
+    private fun findTarget(name: String, network: Network): LocationNode? {
+        return if (network.locationExists(name)) {
+            network.findLocation(name)
+        } else {
+            null
+        }
+    }
 
 
 }

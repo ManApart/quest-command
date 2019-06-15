@@ -10,6 +10,7 @@ import core.gameState.location.LocationNode
 import core.history.display
 import interact.scope.ScopeManager
 import system.EventManager
+import system.help.getCommandGroups
 import travel.climb.AttemptClimbEvent
 
 class TravelInDirectionCommand : Command() {
@@ -36,7 +37,7 @@ class TravelInDirectionCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         if (keyword.toLowerCase() == "direction") {
-            display(getManual())
+            clarifyDirection()
         } else {
             val direction = Direction.getDirection(keyword)
             when {
@@ -55,6 +56,12 @@ class TravelInDirectionCommand : Command() {
                 }
             }
         }
+    }
+
+    private fun clarifyDirection() {
+        val targets = Direction.values().map { it.name }
+        display("Travel in which direction?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to it }.toMap())
     }
 
     private fun requestLocation(openNeighbors: List<LocationNode>) {

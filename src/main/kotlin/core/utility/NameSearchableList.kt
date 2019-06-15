@@ -27,10 +27,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     private fun addProxy(item: N, name: String) {
-        if (!contains(item)) {
+        if (!exists(item)) {
             add(item)
         }
-        proxies[name] = item
+        proxies[name.toLowerCase()] = item
     }
 
     fun exists(target: N): Boolean {
@@ -59,7 +59,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     fun getOrNull(name: String): N? {
-        if (proxies.containsKey(name)) {
+        if (containsProxy(name)) {
             return proxies[name]
         }
         val matches = getAll(name)
@@ -68,6 +68,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
             matches.size == 1 -> matches[0]
             else -> bestMatch(matches, name)
         }
+    }
+
+    private fun containsProxy(name: String) : Boolean {
+        return proxies.containsKey(name.toLowerCase())
     }
 
     private fun bestMatch(matches: List<N>, name: String): N {
