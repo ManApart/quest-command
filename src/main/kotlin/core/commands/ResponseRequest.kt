@@ -3,8 +3,8 @@ package core.commands
 import core.utility.NameSearchableList
 
 class ResponseRequest(responses: Map<String, String>) {
-    private val responseKeys = NameSearchableList.from(responses.keys.map { it.toLowerCase() })
     private val responses: Map<String, String> = processResponses(responses)
+    private val responseKeys = NameSearchableList.from(this.responses.keys.map { it.toLowerCase() })
 
     private fun processResponses(responses: Map<String, String>): Map<String, String> {
         val newMap = mutableMapOf<String, String>()
@@ -25,7 +25,6 @@ class ResponseRequest(responses: Map<String, String>) {
     fun getCommand(input: String): String? {
         val cleaned = input.trim().toLowerCase()
 
-        //Get Nth response
         if (cleaned.toIntOrNull() != null && cleaned.toInt() <= responses.keys.size) {
             return responses[responseKeys[cleaned.toInt()-1].name]
         }
@@ -33,9 +32,6 @@ class ResponseRequest(responses: Map<String, String>) {
         if (responseKeys.exists(cleaned)) {
             return responses[responseKeys.getOrNull(cleaned)!!.name]
         }
-//        if (responses.containsKey(cleaned)) {
-//            return responses[cleaned]
-//        }
 
         return null
     }

@@ -2,6 +2,8 @@ package interact
 
 import core.commands.Args
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.GameState
 import core.history.display
 import interact.interaction.InteractEvent
@@ -29,26 +31,49 @@ class UseCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters)
-
-        if (arguments.isEmpty()) {
-            display("What do you want to use?")
+        val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[0]).firstOrNull()
+        val target = if (arguments.argGroups.size > 1) {
+            ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[1]).firstOrNull()
         } else {
-            val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[0]).firstOrNull()
-            if (used != null) {
-                if (arguments.argGroups.size > 1) {
-                    val target = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[1]).firstOrNull()
-                    if (target != null) {
-                        EventManager.postEvent(UseEvent(GameState.player, used, target))
-                    } else {
-                        display("Couldn't find ${arguments.argStrings[1]}")
-                    }
-                } else {
-                    EventManager.postEvent(InteractEvent(GameState.player, used))
-                }
-            } else {
-                display("Couldn't find $arguments")
-            }
+            null
         }
+
+        when {
+            arguments.isEmpty() -> clarifyAction()
+            arguments.fullString == "item on target" -> clarifyItemForTarget()
+            arguments.argStrings.size == 1 && arguments.argStrings[0] == "item" -> clarifyItem()
+            used == null -> display("Couldn't find $arguments")
+
+            arguments.argStrings.size <= 1 -> EventManager.postEvent(InteractEvent(GameState.player, used))
+            arguments.argStrings.size > 1 && arguments.argStrings[1].isBlank() -> clarifyTarget(used.name)
+            target == null -> display("Couldn't find ${arguments.argStrings[1]}")
+
+            else -> EventManager.postEvent(UseEvent(GameState.player, used, target))
+        }
+    }
+
+    private fun clarifyAction() {
+        val targets = listOf("Use Item", "Use Item on Target")
+        display("Do what?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to it }.toMap())
+    }
+
+    private fun clarifyItem() {
+        val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
+        display("Use what?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "use $it" }.toMap())
+    }
+
+    private fun clarifyItemForTarget() {
+        val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
+        display("Use what?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "use $it on" }.toMap())
+    }
+
+    private fun clarifyTarget(used: String) {
+        val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
+        display("Use $used on what?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "use $used on $it" }.toMap())
     }
 
 }

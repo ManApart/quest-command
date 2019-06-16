@@ -6,6 +6,7 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
     private val argsString = args.joinToString(" ")
     val argGroups = parseArgGroups()
     val argStrings = argGroups.map { it.joinToString(" ") }
+    val fullString = args.joinToString(" ")
 
     override fun toString(): String {
         return argsString

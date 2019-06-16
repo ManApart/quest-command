@@ -41,7 +41,7 @@ class Scope(val locationNode: LocationNode) {
         }
     }
 
-    fun getAllTargets(): List<Target> {
+    fun getTargets(): List<Target> {
         return targets.toList()
     }
 
@@ -49,8 +49,16 @@ class Scope(val locationNode: LocationNode) {
         return targets.getAll(name)
     }
 
+    fun getTargetsIncludingPlayerInventory(): List<Target> {
+        return GameState.player.inventory.getItems() + getTargets()
+    }
+
     fun getTargetsIncludingPlayerInventory(name: String): List<Target> {
         return GameState.player.inventory.getItems(name) + getTargets(name)
+    }
+
+    fun getCreatures(): List<Target> {
+        return targets.asSequence().filter { it.properties.isCreature() }.toList()
     }
 
     fun getCreatures(name: String): List<Target> {
@@ -61,8 +69,20 @@ class Scope(val locationNode: LocationNode) {
         return targets.getAll(name).asSequence().filter { it.properties.isActivator() }.toList()
     }
 
+    fun getActivators(): List<Target> {
+        return targets.asSequence().filter { it.properties.isActivator() }.toList()
+    }
+
+    fun getItems(): List<Target> {
+        return targets.asSequence().filter { it.properties.isItem() }.toList()
+    }
+
     fun getItems(name: String): List<Target> {
         return targets.getAll(name).asSequence().filter { it.properties.isItem() }.toList()
+    }
+
+    fun getItemsIncludingPlayerInventory(): List<Target> {
+        return GameState.player.inventory.getItems() + getItems()
     }
 
     fun getItemsIncludingPlayerInventory(name: String): List<Target> {

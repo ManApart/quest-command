@@ -16,7 +16,7 @@ class EatCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Eat:\n\tEat an Target"
+        return "Eat:\n\tEat an item"
     }
 
     override fun getManual(): String {
@@ -29,27 +29,27 @@ class EatCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
-        if (args.isEmpty()) {
-            display("${args.joinToString(" ")} not found!")
-        } else {
-            val food = ScopeManager.getScope().getItemsIncludingPlayerInventory(argsString)
+        val allFood = ScopeManager.getScope().getItemsIncludingPlayerInventory().filter { it.properties.tags.has("food") }
+        val pickedFood = ScopeManager.getScope().getItemsIncludingPlayerInventory(argsString)
+        val topChoice = pickedFood.firstOrNull { it.name.toLowerCase() == argsString }
 
-            when {
-                food.isEmpty() -> display("Couldn't find $argsString")
-                food.size > 1 -> eatWhat(food)
-                else -> eatFood(food.first())
-            }
+        when {
+            args.isEmpty() -> eatWhat(allFood)
+            pickedFood.isEmpty() -> display("Couldn't find $argsString")
+            topChoice != null -> eatFood(topChoice)
+            pickedFood.size > 1 -> eatWhat(pickedFood)
+            else -> eatFood(pickedFood.first())
         }
     }
 
     private fun eatWhat(food: List<Target>) {
         display("Eat what?\n\t${food.joinToString(", ")}")
         val response = ResponseRequest(food.map { it.name to "eat ${it.name}" }.toMap())
-        CommandParser.responseRequest  = response
+        CommandParser.responseRequest = response
     }
 
     private fun eatFood(food: Target) {
-        if (food.properties.tags.has("food")){
+        if (food.properties.tags.has("food")) {
             EventManager.postEvent(UseEvent(GameState.player, food, GameState.player))
         } else {
             display("${food.name} is inedible.")

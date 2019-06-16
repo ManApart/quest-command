@@ -52,8 +52,8 @@ class Look : EventListener<LookEvent>() {
 
     private fun describeLocation() {
         display(GameState.player.location.getDescription())
-        if (ScopeManager.getScope().getAllTargets().size > 1) {
-            val targetList = targetsToString(ScopeManager.getScope().getAllTargets().filterNot { it == GameState.player })
+        if (ScopeManager.getScope().getTargets().size > 1) {
+            val targetList = targetsToString(ScopeManager.getScope().getTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")
         } else {
             display("You don't see anything of use.")

@@ -1,11 +1,14 @@
 package status
 
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.GameState
 import core.history.display
 import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
 import system.EventManager
+import system.help.getCommandGroups
 
 class StatusCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -28,10 +31,17 @@ class StatusCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         when {
+            args.isEmpty() && keyword == "status" -> clarifyStatus()
             args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player))
             ScopeManager.getScope().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getCreatures(argsString).filterUniqueByName().first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
+    }
+
+    private fun clarifyStatus() {
+        val targets = ScopeManager.getScope().getCreatures().map { it.name }
+        display("Status of what?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "status $it" }.toMap())
     }
 
 

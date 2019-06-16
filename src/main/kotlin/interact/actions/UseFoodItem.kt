@@ -11,7 +11,7 @@ class UseFoodItem : EventListener<UseEvent>() {
         //TODO - check event source, don't hardcode to player
         return GameState.player.canInteract
                 && event.used.properties.tags.has("Food")
-                && event.target.properties.tags.has("Target")
+                && event.target.properties.tags.has("Creature")
     }
 
     override fun execute(event: UseEvent) {

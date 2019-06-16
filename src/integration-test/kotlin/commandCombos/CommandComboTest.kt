@@ -11,6 +11,7 @@ import system.EventManager
 import system.GameManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class CommandComboTest {
@@ -29,6 +30,14 @@ class CommandComboTest {
         CommandParser.parseCommand(input)
         assertTrue(GameState.player.inventory.getItem("Apple") != null)
         assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+    }
+
+    @Test
+    fun eatApple() {
+        val input = "eat apple"
+        CommandParser.parseCommand(input)
+        assertNull(GameState.player.inventory.getItem("Apple"))
+        assertEquals("You feel the fullness of life beating in your bosom.", ChatHistory.getLastOutput())
     }
 
     @Test
@@ -115,7 +124,7 @@ class CommandComboTest {
                 "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple" +
                 "&& t interior && t && t && take pie tin" +
-                "&& read recipe && rest" +
+                "&& read recipe && wait" +
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
 

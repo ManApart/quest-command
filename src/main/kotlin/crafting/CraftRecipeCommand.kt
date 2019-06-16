@@ -18,8 +18,7 @@ class CraftRecipeCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tCraft - View the Recipes that you know." +
-                "\n\tCraft <Recipe> - Craft a recipe."
+        return "\n\tCraft <Recipe> - Craft a recipe."
     }
 
     override fun getCategory(): List<String> {
@@ -28,22 +27,23 @@ class CraftRecipeCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
-        if (args.isEmpty()) {
-            EventManager.postEvent(CheckRecipeEvent(GameState.player))
-        } else {
-            val recipes = GameState.player.knownRecipes.getAll(argString)
-            when {
-                recipes.size > 1 -> chooseRecipe(recipes)
-                recipes.size == 1 -> processRecipe(GameState.player.knownRecipes.get(argString))
-                else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
-            }
+        val knownRecipes = GameState.player.knownRecipes
+        val pickedRecipes = GameState.player.knownRecipes.getAll(argString)
+
+        when {
+            args.isEmpty() && knownRecipes.isEmpty() -> display("You don't know any recipes.")
+            args.isEmpty() -> chooseRecipe(knownRecipes)
+            pickedRecipes.isEmpty() -> chooseRecipe(knownRecipes)
+            pickedRecipes.size == 1 -> processRecipe(GameState.player.knownRecipes.get(argString))
+            pickedRecipes.size > 1 -> chooseRecipe(pickedRecipes)
+            else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
 
     private fun chooseRecipe(recipes: List<Recipe>) {
         display("Craft which recipe?\n\t${recipes.joinToString(", ")}")
         val response = ResponseRequest(recipes.map { it.name to "craft ${it.name}" }.toMap())
-        CommandParser.responseRequest  = response
+        CommandParser.responseRequest = response
     }
 
     private fun processRecipe(recipe: Recipe) {

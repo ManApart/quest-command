@@ -1,6 +1,8 @@
 package status.journal
 
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.quests.QuestManager
 import core.history.display
 import system.EventManager
@@ -15,7 +17,7 @@ class JournalCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tQuest - View active Quests." +
+        return "\n\tQuest active - View active Quests." +
                 "\n\tQuest all - View all quests." +
                 "\n\tQuest <quest> - View entries for a specific quest."
     }
@@ -26,8 +28,15 @@ class JournalCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         when {
+            args.isEmpty() && keyword == "Quest" -> clarifyQuest()
+
             args.isEmpty() -> EventManager.postEvent(ViewQuestListEvent(justActive = true))
-            args.size == 1 && args[0].toLowerCase() == "all" -> EventManager.postEvent(ViewQuestListEvent(justActive = false))
+            args.size == 1 && args[0] == "active" -> EventManager.postEvent(ViewQuestListEvent(justActive = true))
+
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ViewQuestListEvent(justActive = false))
+
+            args.size == 1 && args[0] == "quest" -> clarifyWhichQuest()
+
             else -> {
                 val quest = QuestManager.quests.getOrNull(args.joinToString())
                 if (quest != null) {
@@ -37,6 +46,18 @@ class JournalCommand : Command() {
                 }
             }
         }
+    }
+
+    private fun clarifyQuest() {
+        val targets = listOf("Active", "All", "Quest")
+        display("Info about what type?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "quest $it" }.toMap())
+    }
+
+    private fun clarifyWhichQuest() {
+        val targets = QuestManager.getAllPlayerQuests().map { it.name }
+        display("Info about which quest?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "quest $it" }.toMap())
     }
 
 }

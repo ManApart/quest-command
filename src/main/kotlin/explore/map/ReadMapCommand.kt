@@ -2,10 +2,13 @@ package explore.map
 
 import core.commands.Args
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.GameState
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
 import core.gameState.location.Network
+import core.history.display
 import system.EventManager
 import system.location.LocationManager
 
@@ -33,9 +36,16 @@ class ReadMapCommand : Command() {
         val otherArgs = args.minus(depth.toString())
 
         when{
+            arguments.isEmpty() && keyword == "map" -> clarifyDepth()
             otherArgs.isEmpty() -> currentLocation(depth)
             else -> targetLocation(otherArgs, depth)
         }
+    }
+
+    private fun clarifyDepth() {
+        val targets = listOf("1", "3", "5", "10", "20")
+        display("View how many hops?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { it to "map $it" }.toMap())
     }
 
     private fun currentLocation(depth: Int){

@@ -30,18 +30,11 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (args.isNotEmpty()) {
-            pickupItem(args)
-        } else {
-            display("Pickup what?")
-        }
-    }
-
-    private fun pickupItem(arguments: List<String>) {
-        val args = Args(arguments, delimiters = listOf("from"))
+        val arguments = Args(args, delimiters = listOf("from"))
         when {
-            args.argStrings.size == 1 -> pickupItemFromScope(args)
-            args.argStrings.size == 2 -> pickupItemFromContainer(args)
+            args.isEmpty() -> pickupWhat(ScopeManager.getScope().getItems().filterUniqueByName())
+            arguments.argStrings.size == 1 -> pickupItemFromScope(arguments)
+            arguments.argStrings.size == 2 -> pickupItemFromContainer(arguments)
             else -> display("Take what from what? Try 'pickup <item>' or 'take <item> from <target>'.")
         }
     }
@@ -56,9 +49,13 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupWhat(items: List<Target>) {
-        display("Pickup which item?\n\t${items.joinToString(", ")}")
-        val response = ResponseRequest(items.map { it.name to "take ${it.name}" }.toMap())
-        CommandParser.responseRequest  = response
+        if (items.isEmpty()) {
+            display("Nothing to pickup!")
+        } else {
+            display("Pickup which item?\n\t${items.joinToString(", ")}")
+            val response = ResponseRequest(items.map { it.name to "take ${it.name}" }.toMap())
+            CommandParser.responseRequest = response
+        }
     }
 
     private fun pickupItemFromContainer(args: Args) {
@@ -73,7 +70,7 @@ class PickupItemCommand : core.commands.Command() {
     private fun takeFromWhat(creatures: List<Target>, itemName: String) {
         display("Take $itemName from what?\n\t${creatures.joinToString(", ")}")
         val response = ResponseRequest(creatures.map { it.name to "take $itemName from ${it.name}" }.toMap())
-        CommandParser.responseRequest  = response
+        CommandParser.responseRequest = response
     }
 
     private fun takeItemFromContainer(from: Target, itemName: String) {
