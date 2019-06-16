@@ -60,7 +60,7 @@ class TravelInDirectionCommand : Command() {
 
     private fun clarifyDirection() {
         val targets = Direction.values().map { it.name }
-        display("Travel in which direction?\n\t${targets.joinToString(", ")}")
+        display("Travel in which direction?")
         CommandParser.responseRequest = ResponseRequest(targets.map { it to it }.toMap())
     }
 

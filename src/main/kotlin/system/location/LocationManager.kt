@@ -1,9 +1,10 @@
 package system.location
 
 import core.gameState.GameState
-import core.gameState.location.*
+import core.gameState.location.Location
+import core.gameState.location.LocationNode
+import core.gameState.location.Network
 import core.utility.NameSearchableList
-import netscape.security.Target.findTarget
 import system.DependencyInjector
 
 object LocationManager {

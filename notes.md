@@ -11,6 +11,11 @@ While the readme should cover how to build and run the game, as well with inform
 Rat AI
   - only attack with low aim
   - Approach dagger range if not already in dagger range
+  
+Combat training dummy
+- Player controlled ai
+- Used to test fights
+
 
 ### Architecture
 
@@ -47,15 +52,11 @@ Paramitization
 #### Creature / Activator Re-work
 
 Turn creatures, items, and activators into targets
-- Target has a soul and a body
-- Items (targets) have bodies with no attach points
 - Items’ bodies have body parts with the different materials of an item (a hatchet has a wooden handle and metal head)
 - Target’s have a property (alive) if they are creatures etc
 - If a target doesn't have the alive property (is an activator) and health reaches 0, instead of dying, the activator/item is destroyed
 
 Spacial Nodes
-- Location Node extends Spacial node and has a location
-- Body Node extends Spacial node and has a body part
 - Combat uses Body Nodes for aiming, instead of body part having an arbitrary direction
 
 Climbing
@@ -64,7 +65,25 @@ Climbing
 - A bodypart node can have an exit location node. <- these are passed in by the parent location node. The lowest exit node is used for falling.
 - Rework climbing so that you look at a target’s body nodes and then climbing direction is based on the node connections and difficulty is based on the material properties (slippery, rough, smooth, etc). Distance from lowest node = height for fall damage etc.
 
-Body Parts should have a material
+Materials have a name and properties
+Effects stored in soul but can have reference to affected target parts?
+
+
+#### Debug Mode
+When on
+- All locations revealed on map
+- All commands unlocked
+
+Debug command is hidden by default, but can be called to be turned on
+Command line arg can also turn debug on at start
+
+Commands can be hidden, locked, or unlocked
+State is stored per command or in game properties?
+Hidden commands can still be called, but don’t show up in help
+Locked commands give error if called (you don’t know how to do that)
+
+GameState has Values file for game level properties, like if debug is on or off
+
 
 
 ### Combat
@@ -91,6 +110,8 @@ Balanced weapons are things like swords and daggers. Weighted weapons are things
 - Archery
 - Block
 - Dodge
+  - Crouch left
+  - Jump right
 - Large Balanced Weapons
 - Large Weighted Weapons
 - Small Balanced Weapons Left Handed
@@ -135,6 +156,13 @@ Each Turn
 - Each action drains stamina. The heavier the weapon the more stamina drained for an attack, the more encumbered the more stamina drained per movement
 - Without enough stamina the combatant can’t do anything
 - A Combatant can rest to recover stamina points
+
+#### Body Location Rework
+
+- Allow advance/ dodge commands to specify a distance?
+- Give all weapons a range
+- Create dagger base etc that can be inherited by all daggers
+
 
 #### Other
 - Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
@@ -184,9 +212,17 @@ Bash completion
 
 ### Locations
 
+Atmospheric Effects
+- Attached to location
 - Atmospheres that add tags and effects to everything in that location.
 - Shallow water, deep water, under water, have effects, based on swimming, etc. Swimming is skill based on agility
+
+Query Based effects
 - Time of day affect description, night time make perception go down.
+- Storming: if outside + random chance
+- Locations should have tags
+- Day night cycle
+- Dynamic description for location based on effects
 
 Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
 - Possibly good for towns/houses etc
@@ -253,6 +289,12 @@ Morality/infamy system
 * Realizes that maybe there are other verbs that he’s not capable of thinking of. (NPCs would never think to skin the bark of a tree because that’s not in the game, etc)
 * Magic is based on the understanding of the construct
 
+
+#### Races
+
+Lentil - best smiths, can smith lentil weapons
+Vix - can climb really well, weild razor ropes, disliked by other races
+
 ### Dialogue
 
 Dialogue currently only supports Queries
@@ -265,9 +307,7 @@ Dialogue currently only supports Queries
 
 #### Climbing
 - You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall (jump down locations added in link)
-- Convert climbing paths to generic paths with directions dictating next path instead of up/down only?
 - Burning the apple tree branches should make the user fall
-- Climb paths should be capable of one step that is both top and bottom (for stairs and ladders)
 
 ### Validation tools
 
