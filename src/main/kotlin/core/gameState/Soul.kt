@@ -1,9 +1,12 @@
 package core.gameState
 
 import core.gameState.stat.Stat
+import interact.magic.Condition
+import interact.magic.ElementInteraction
 
 class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableListOf()) {
     var effects = mutableListOf<Effect>()
+    val conditions = mutableListOf<Condition>()
 
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
@@ -66,6 +69,24 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         effects.toList().forEach {
             it.applyEffect(this, time)
         }
+    }
+
+
+    fun onFirstApply(condition: Condition, soul: Soul) {
+        soul.conditions.toList().forEach { onFirstConditionApply(condition, it) }
+    }
+
+    private fun onFirstConditionApply(newCondition: Condition, existingCondition: Condition) {
+        val interaction = newCondition.element.getReaction(newCondition.elementStrength, existingCondition.element, existingCondition.elementStrength)
+
+        when (interaction){
+            ElementInteraction.STRONGER -> null //Clear existing condition
+            ElementInteraction.WEAKER -> null // Prevent new condition from being applied
+            ElementInteraction.CRITICAL -> null // Apply critical bonus to new condition
+            ElementInteraction.REVERSE_CRITICAL -> null //Apply critical bonus to old condition
+            else -> return
+        }
+
     }
 
 }

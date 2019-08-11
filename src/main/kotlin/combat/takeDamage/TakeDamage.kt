@@ -7,6 +7,7 @@ import core.gameState.body.BodyPart
 import core.gameState.stat.HEALTH
 import status.statChanged.StatChangeEvent
 import system.EventManager
+import kotlin.math.max
 
 class TakeDamage : EventListener<TakeDamageEvent>() {
     override fun execute(event: TakeDamageEvent) {
@@ -24,7 +25,7 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
         attackedPart.getEquippedItems().forEach {
             damageDefended += it.properties.getDefense(attackType.defense)
         }
-        return Math.max(damage-damageDefended, 0)
+        return max(damage-damageDefended, 0)
     }
 
     private fun hasSpecificHealth(target: Target, attackType: AttackType): Boolean {
