@@ -7,7 +7,6 @@ import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import system.DependencyInjector
 import java.io.File
-import kotlin.reflect.full.memberProperties
 
 
 object ReflectionTools {

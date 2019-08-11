@@ -1,12 +1,12 @@
 package core.gameState
 
 import core.gameState.stat.Stat
-import interact.magic.Condition
-import interact.magic.ElementInteraction
+import core.utility.NameSearchableList
+import status.effects.Condition
+import status.effects.ElementInteraction
 
 class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableListOf()) {
-    var effects = mutableListOf<Effect>()
-    val conditions = mutableListOf<Condition>()
+    private val conditions = NameSearchableList<Condition>()
 
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
@@ -34,8 +34,12 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return getStatOrNull(name) != null
     }
 
-    fun hasEffect(name: String): Boolean {
-        return getEffectOrNull(name) != null
+    fun hasCondition(name: String): Boolean {
+        return conditions.exists(name)
+    }
+
+    fun getConditions() : List<Condition> {
+        return conditions.toList()
     }
 
     fun getCurrent(name: String, default: Int = 0): Int {
@@ -57,36 +61,49 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
     }
 
-    fun getEffectOrNull(name: String): Effect? {
-        return effects.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
-    }
-
-    fun getStats() : List<Stat> {
+    fun getStats(): List<Stat> {
         return stats.toList()
     }
 
-    fun applyEffects(time: Int) {
-        effects.toList().forEach {
-            it.applyEffect(this, time)
+    fun applyConditions() {
+        conditions.toList().forEach {
+            it.apply(this)
         }
     }
 
-
-    fun onFirstApply(condition: Condition, soul: Soul) {
-        soul.conditions.toList().forEach { onFirstConditionApply(condition, it) }
-    }
-
-    private fun onFirstConditionApply(newCondition: Condition, existingCondition: Condition) {
-        val interaction = newCondition.element.getReaction(newCondition.elementStrength, existingCondition.element, existingCondition.elementStrength)
-
-        when (interaction){
-            ElementInteraction.STRONGER -> null //Clear existing condition
-            ElementInteraction.WEAKER -> null // Prevent new condition from being applied
-            ElementInteraction.CRITICAL -> null // Apply critical bonus to new condition
-            ElementInteraction.REVERSE_CRITICAL -> null //Apply critical bonus to old condition
-            else -> return
+    fun addNewCondition(newCondition: Condition) {
+        val existingCondition = conditions.firstOrNull { existingCondition ->
+            newCondition.getReaction(existingCondition) != ElementInteraction.NONE
         }
 
+        if (existingCondition != null) {
+            when (newCondition.getReaction(existingCondition)) {
+                ElementInteraction.STRONGER -> {
+                    removeCondition(existingCondition)
+                    conditions.add(newCondition)
+                }
+                ElementInteraction.WEAKER -> {
+                    existingCondition.elementStrength -= newCondition.elementStrength
+                }
+                ElementInteraction.CRITICAL -> {
+                    newCondition.isCritical = true
+                    conditions.add(newCondition)
+                }
+                ElementInteraction.REVERSE_CRITICAL -> {
+                    newCondition.isCritical = true
+                }
+                else -> {
+                    conditions.add(newCondition)
+                }
+            }
+        } else {
+            conditions.add(newCondition)
+        }
+    }
+
+    fun removeCondition(condition: Condition) {
+        condition.removeEffects(this)
+        conditions.remove(condition)
     }
 
 }

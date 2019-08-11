@@ -1,4 +1,4 @@
-package interact.magic
+package status.effects
 
 enum class StatEffect {
     DRAIN, //Each turn reduce current stat by this amount

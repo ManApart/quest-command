@@ -1,4 +1,4 @@
-package interact.magic
+package status.effects
 
 enum class AmountType {
     FLAT_NUMBER,

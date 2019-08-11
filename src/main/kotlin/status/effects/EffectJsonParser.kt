@@ -2,7 +2,6 @@ package status.effects
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import core.gameState.Effect
 import core.utility.JsonDirectoryParser
 import core.utility.NameSearchableList
 

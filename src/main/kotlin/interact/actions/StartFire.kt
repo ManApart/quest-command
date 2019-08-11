@@ -1,11 +1,10 @@
 package interact.actions
 
 import core.events.EventListener
-import core.gameState.Target
 import core.gameState.GameState
 import core.history.display
 import interact.UseEvent
-import status.effects.AddEffectEvent
+import status.effects.AddConditionEvent
 import status.effects.EffectManager
 import system.EventManager
 
@@ -20,7 +19,7 @@ class StartFire : EventListener<UseEvent>() {
     override fun execute(event: UseEvent) {
         display("${event.target.name} catches on fire.")
         val creature = event.target
-        EventManager.postEvent(AddEffectEvent(creature, EffectManager.getEffect("Burning")))
-        EventManager.postEvent(AddEffectEvent(creature, EffectManager.getEffect("On Fire")))
+        EventManager.postEvent(AddConditionEvent(creature, EffectManager.getEffect("Burning")))
+        EventManager.postEvent(AddConditionEvent(creature, EffectManager.getEffect("On Fire")))
     }
 }

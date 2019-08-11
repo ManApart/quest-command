@@ -3,8 +3,10 @@ package status.statChanged
 import core.events.EventListener
 import core.history.display
 import core.utility.StringFormatter
+import kotlin.math.abs
 
 class StatChanged : EventListener<StatChangeEvent>() {
+    //TODO - can we get rid of these?
     private val hiddenStats = listOf("burnHealth", "chopHealth")
 
     override fun shouldExecute(event: StatChangeEvent): Boolean {
@@ -21,7 +23,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
             val subject = StringFormatter.getSubjectPossessive(event.target)
             val current = soul.getCurrent(event.type)
             val max = soul.getTotal(event.type)
-            display("${event.source} $change $subject ${event.type} by ${Math.abs(event.amount)} ($current/$max).")
+            display("${event.source} $change $subject ${event.type} by ${abs(event.amount)} ($current/$max).")
         }
     }
 }

@@ -18,9 +18,9 @@ import interact.scope.remove.RemoveItemEvent
 import interact.scope.remove.RemoveScopeEvent
 import interact.scope.spawn.SpawnActivatorEvent
 import interact.scope.spawn.SpawnItemEvent
-import status.effects.AddEffectEvent
+import status.effects.AddConditionEvent
 import status.effects.EffectManager
-import status.effects.RemoveEffectEvent
+import status.effects.RemoveConditionEvent
 import status.statChanged.StatChangeEvent
 import system.activator.ActivatorManager
 import system.EventManager
@@ -35,12 +35,12 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     fun execute(parent: Target = GameState.player) {
         when (className) {
             ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationPoint(LocationManager.getNetwork(params[0]).findLocation(params[1])), method = "move"))
-            AddEffectEvent::class.simpleName -> EventManager.postEvent(AddEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
+            AddConditionEvent::class.simpleName -> EventManager.postEvent(AddConditionEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
             DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player, getRecipe(0)))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getNetwork(params[0]).getLocationNode(params[1]), LocationManager.getNetwork(params[2]).getLocationNode(params[3]), getParamBoolean(4)))
-            RemoveEffectEvent::class.simpleName -> EventManager.postEvent(RemoveEffectEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
+            RemoveConditionEvent::class.simpleName -> EventManager.postEvent(RemoveConditionEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
             RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(0), getItemOrParent(1, getTargetCreatureOrPlayer(0), parent)))
             RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
             SetPropertiesEvent::class.simpleName -> EventManager.postEvent(SetPropertiesEvent(getTargetCreatureOrPlayer(0), getProperties(1, 2, 3)))

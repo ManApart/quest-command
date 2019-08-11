@@ -578,3 +578,8 @@ Attack command groups 0 vs 1 - make tests
 Move conditional effects (if target was wet, double duration etc) to the casting spell, not the effect. That way the effect doesn’t have special logic.
 
 Special conditions (onApply) expressed in the class.
+
+-----------------
+
+
+What if damage taken is recorded and we trigger off of that? (after so much burning damage, tree falls over?)

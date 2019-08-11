@@ -8,7 +8,7 @@ class ApplyEffects : EventListener<GameTickEvent>() {
     override fun execute(event: GameTickEvent) {
         //TODO - all scopes
         ScopeManager.getScope().getAllSouls().forEach {
-            it.applyEffects(event.time)
+            it.applyConditions()
         }
     }
 

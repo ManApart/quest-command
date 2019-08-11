@@ -1,4 +1,4 @@
-package interact.magic
+package status.effects
 
 
 enum class Element(val getReaction: (strength: Int, other: Element, otherStrength: Int) -> ElementInteraction) {
@@ -45,6 +45,8 @@ enum class Element(val getReaction: (strength: Int, other: Element, otherStrengt
             else -> ElementInteraction.NONE
         }
     }),
+
+    NONE({ _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
 
     STONE({ _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
 

@@ -28,8 +28,8 @@ class Look : EventListener<LookEvent>() {
     }
 
     private fun describeStatusEffects(target: Target) : String {
-        if (target.soul.effects.isNotEmpty()) {
-            val effects = target.soul.effects.joinToString(", ") { it.name }
+        if (target.soul.getConditions().isNotEmpty()) {
+            val effects = target.soul.getConditions().joinToString(", ") { it.name }
             return "\n\t${target.name} is $effects"
         }
         return ""
