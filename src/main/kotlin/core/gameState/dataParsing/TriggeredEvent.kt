@@ -18,9 +18,8 @@ import interact.scope.remove.RemoveItemEvent
 import interact.scope.remove.RemoveScopeEvent
 import interact.scope.spawn.SpawnActivatorEvent
 import interact.scope.spawn.SpawnItemEvent
-import status.effects.AddConditionEvent
-import status.effects.EffectManager
-import status.effects.RemoveConditionEvent
+import status.effects.*
+import status.effects.Condition
 import status.statChanged.StatChangeEvent
 import system.activator.ActivatorManager
 import system.EventManager
@@ -35,12 +34,12 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     fun execute(parent: Target = GameState.player) {
         when (className) {
             ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationPoint(LocationManager.getNetwork(params[0]).findLocation(params[1])), method = "move"))
-            AddConditionEvent::class.simpleName -> EventManager.postEvent(AddConditionEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
+            AddConditionEvent::class.simpleName -> EventManager.postEvent(AddConditionEvent(getTargetCreatureOrPlayer(0), createCondition()))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
             DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player, getRecipe(0)))
             MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getNetwork(params[0]).getLocationNode(params[1]), LocationManager.getNetwork(params[2]).getLocationNode(params[3]), getParamBoolean(4)))
-            RemoveConditionEvent::class.simpleName -> EventManager.postEvent(RemoveConditionEvent(getTargetCreatureOrPlayer(0), EffectManager.getEffect(params[1])))
+            RemoveConditionEvent::class.simpleName -> EventManager.postEvent(RemoveConditionEvent(getTargetCreatureOrPlayer(0), getTargetCondition()))
             RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(0), getItemOrParent(1, getTargetCreatureOrPlayer(0), parent)))
             RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
             SetPropertiesEvent::class.simpleName -> EventManager.postEvent(SetPropertiesEvent(getTargetCreatureOrPlayer(0), getProperties(1, 2, 3)))
@@ -126,5 +125,15 @@ class TriggeredEvent(private val className: String, private val params: List<Str
             return params[i].toBoolean()
         }
         return default
+    }
+
+    //TODO - this should be replaced with a reference to an existing/json hard coded condition
+    private fun createCondition(): Condition {
+        return Condition(getParam(1, ""), Element.valueOf(getParam(2, "NONE")), getParamInt(3), getParamInt(4), effects = listOf(EffectManager.getEffect(getParam(5, ""), getParamInt(6))))
+    }
+
+    private fun getTargetCondition(): Condition {
+        val target = getTargetCreatureOrPlayer(0)
+        return target.soul.getCondition(params[1])
     }
 }

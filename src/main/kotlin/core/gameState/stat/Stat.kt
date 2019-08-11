@@ -1,7 +1,9 @@
 package core.gameState.stat
 
+import combat.DamageType
 import core.gameState.Target
 import status.LevelUpEvent
+import status.effects.Element
 import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
@@ -74,6 +76,10 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
         levelUp(desiredLevel)
         incStatMax(desiredLevel)
         incStat(desiredLevel)
+    }
+
+    fun isHealth() : Boolean {
+        return name.toLowerCase().endsWith("health")
     }
 
     private fun determineLevel() {

@@ -42,6 +42,10 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return conditions.toList()
     }
 
+    fun getCondition(name: String) : Condition {
+        return conditions.get(name)
+    }
+
     fun getCurrent(name: String, default: Int = 0): Int {
         return getStatOrNull(name)?.current ?: default
     }

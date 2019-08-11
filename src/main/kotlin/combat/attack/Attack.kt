@@ -1,6 +1,7 @@
 package combat.attack
 
 import combat.Combatant
+import combat.DamageType
 import combat.battle.position.HitLevel
 import combat.battle.position.TargetDistance
 import combat.battle.position.TargetPosition
@@ -82,7 +83,7 @@ class Attack : EventListener<AttackEvent>() {
         displayIf("$defenderName dodged to the $defenderPosition.", !defenderPosition.equals(TargetPosition()))
     }
 
-    private fun getOffensiveDamage(sourceCreature: Target, sourcePart: BodyPart, type: AttackType): Int {
+    private fun getOffensiveDamage(sourceCreature: Target, sourcePart: BodyPart, type: DamageType): Int {
         return when {
             sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
             else -> sourceCreature.soul.getCurrent(BARE_HANDED)

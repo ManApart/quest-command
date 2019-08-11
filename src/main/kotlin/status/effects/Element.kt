@@ -1,8 +1,10 @@
 package status.effects
 
+import combat.DamageType
 
-enum class Element(val getReaction: (strength: Int, other: Element, otherStrength: Int) -> ElementInteraction) {
-    AIR({ strength: Int, other: Element, otherStrength: Int ->
+
+enum class Element(val damageType: DamageType, val getReaction: (strength: Int, other: Element, otherStrength: Int) -> ElementInteraction) {
+    AIR(DamageType.AIR, { strength: Int, other: Element, otherStrength: Int ->
         when {
             other == WATER && strength >= otherStrength -> ElementInteraction.STRONGER
             other == WATER && strength < otherStrength -> ElementInteraction.WEAKER
@@ -13,7 +15,7 @@ enum class Element(val getReaction: (strength: Int, other: Element, otherStrengt
         }
     }),
 
-    EARTH({ strength: Int, other: Element, otherStrength: Int ->
+    EARTH(DamageType.EARTH, { strength: Int, other: Element, otherStrength: Int ->
         when {
             other in listOf(LIGHTNING, FIRE) && strength >= otherStrength -> ElementInteraction.STRONGER
             other == AIR && strength > otherStrength -> ElementInteraction.CRITICAL
@@ -21,7 +23,7 @@ enum class Element(val getReaction: (strength: Int, other: Element, otherStrengt
         }
     }),
 
-    FIRE({ strength: Int, other: Element, otherStrength: Int ->
+    FIRE(DamageType.FIRE, { strength: Int, other: Element, otherStrength: Int ->
         when {
             other in listOf(WATER, ICE) && strength >= otherStrength -> ElementInteraction.STRONGER
             other in listOf(WATER, ICE) && strength < otherStrength -> ElementInteraction.WEAKER
@@ -30,7 +32,7 @@ enum class Element(val getReaction: (strength: Int, other: Element, otherStrengt
         }
     }),
 
-    ICE({ strength: Int, other: Element, otherStrength: Int ->
+    ICE(DamageType.ICE, { strength: Int, other: Element, otherStrength: Int ->
         when {
             other == FIRE && strength >= otherStrength -> ElementInteraction.STRONGER
             other == FIRE && strength < otherStrength -> ElementInteraction.WEAKER
@@ -39,18 +41,18 @@ enum class Element(val getReaction: (strength: Int, other: Element, otherStrengt
         }
     }),
 
-    LIGHTNING({ _: Int, other: Element, _: Int ->
+    LIGHTNING(DamageType.LIGHTNING, { _: Int, other: Element, _: Int ->
         when (other) {
             WATER -> ElementInteraction.CRITICAL
             else -> ElementInteraction.NONE
         }
     }),
 
-    NONE({ _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
+    NONE(DamageType.NONE, { _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
 
-    STONE({ _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
+    STONE(DamageType.STONE, { _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
 
-    WATER({ strength: Int, other: Element, otherStrength: Int ->
+    WATER(DamageType.WATER, { strength: Int, other: Element, otherStrength: Int ->
         when {
             other in listOf(FIRE, AIR) && strength >= otherStrength -> ElementInteraction.STRONGER
             other in listOf(FIRE, AIR) && strength < otherStrength -> ElementInteraction.WEAKER

@@ -2,12 +2,12 @@
   {
     "name": "Burnable",
     "params": {
-      "burnHealth": 1,
+      "fireHealth": 1,
       "itemName": "Item"
     },
     "properties": {
       "stats": {
-        "burnHealth": "$burnHealth"
+        "fireHealth": "$fireHealth"
       },
       "tags": [
         "Flammable"
@@ -73,7 +73,7 @@
       }
     },
     "params": {
-      "burnHealth": 1,
+      "fireHealth": 1,
       "itemName": "Wheat Bundle"
     }
   },

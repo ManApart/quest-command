@@ -4,8 +4,7 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
 import interact.UseEvent
-import status.effects.AddConditionEvent
-import status.effects.EffectManager
+import status.effects.*
 import system.EventManager
 
 class StartFire : EventListener<UseEvent>() {
@@ -18,8 +17,8 @@ class StartFire : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         display("${event.target.name} catches on fire.")
-        val creature = event.target
-        EventManager.postEvent(AddConditionEvent(creature, EffectManager.getEffect("Burning")))
-        EventManager.postEvent(AddConditionEvent(creature, EffectManager.getEffect("On Fire")))
+        val condition = Condition("Burning", Element.FIRE, 1, 5, effects = listOf(EffectManager.getEffect("Burning", 1)))
+        EventManager.postEvent(AddConditionEvent(event.target, condition))
     }
+
 }

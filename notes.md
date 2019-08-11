@@ -579,7 +579,3 @@ Move conditional effects (if target was wet, double duration etc) to the casting
 
 Special conditions (onApply) expressed in the class.
 
------------------
-
-
-What if damage taken is recorded and we trigger off of that? (after so much burning damage, tree falls over?)

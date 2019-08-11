@@ -8,7 +8,7 @@
         "healAmount": 1
       },
       "stats": {
-        "burnHealth": 1
+        "fireHealth": 1
       },
       "tags": [
         "Food"
@@ -33,7 +33,7 @@
         "healAmount": 2
       },
       "stats": {
-        "burnHealth": 1
+        "fireHealth": 1
       },
       "tags": [
         "Food"

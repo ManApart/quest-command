@@ -1,5 +1,6 @@
 package combat.attack
 
+import combat.DamageType
 import combat.HandHelper
 import combat.battle.position.TargetDirection
 import core.commands.Args
@@ -78,10 +79,10 @@ class AttackCommand : Command() {
 
     private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection): Event {
         return when (keyword) {
-            "chop" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.CHOP)
-            "crush" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.CRUSH)
-            "slash" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.SLASH)
-            else -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, AttackType.STAB)
+            "chop" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.CHOP)
+            "crush" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.CRUSH)
+            "slash" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.SLASH)
+            else -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.STAB)
         }
     }
 }

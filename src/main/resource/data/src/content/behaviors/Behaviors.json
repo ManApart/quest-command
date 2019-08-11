@@ -55,7 +55,7 @@
     "condition": {
       "callingEvent": "StatMinnedEvent",
       "params": {
-        "stat": "burnHealth"
+        "stat": "fireHealth"
       }
     },
     "events": [
@@ -81,7 +81,7 @@
     "condition": {
       "callingEvent": "StatMinnedEvent",
       "params": {
-        "stat": "burnHealth"
+        "stat": "fireHealth"
       }
     },
     "events": [
@@ -103,8 +103,8 @@
         "params": [
           "$target",
           "lighting",
-          "burnHealth",
-          "$burnHealth"
+          "fireHealth",
+          "$fireHealth"
         ]
       }
     ]

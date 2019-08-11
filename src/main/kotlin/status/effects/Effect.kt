@@ -1,5 +1,7 @@
 package status.effects
 
+import combat.battle.position.HitLevel
+import combat.takeDamage.TakeDamageEvent
 import core.gameState.Soul
 import core.gameState.body.BodyPart
 import core.gameState.stat.Stat
@@ -61,7 +63,12 @@ class Effect(val base: EffectBase, val amount: Int, val target: BodyPart?) {
     }
 
     private fun changeStat(soul: Soul, stat: Stat, amount: Int) {
-        EventManager.postEvent(StatChangeEvent(soul.parent, base.name, stat.name, amount))
+        if (stat.isHealth()) {
+            val bodyPart = target ?: soul.parent.body.getParts().random()
+            EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, amount, HitLevel.DIRECT, base.damageType, base.name))
+        } else {
+            EventManager.postEvent(StatChangeEvent(soul.parent, base.name, stat.name, amount))
+        }
     }
 
 }

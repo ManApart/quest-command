@@ -2,12 +2,12 @@
   {
     "name": "Burnable",
     "params": {
-      "burnHealth": 1,
+      "fireHealth": 1,
       "itemName": "Item"
     },
     "properties": {
       "stats": {
-        "burnHealth": "$burnHealth"
+        "fireHealth": "$fireHealth"
       },
       "tags": [
         "Flammable"
@@ -27,7 +27,7 @@
     "description": "These pants used to be white.",
     "extends": "Burnable",
     "params": {
-      "burnHealth": 1,
+      "fireHealth": 1,
       "itemName": "Brown Pants"
     },
     "properties": {
@@ -80,7 +80,7 @@
     "description": "A faint scent of soil oozes from the worn cloth.",
     "extends": "Burnable",
     "params": {
-      "burnHealth": 1,
+      "fireHealth": 1,
       "itemName": "Old Shirt"
     },
     "properties": {

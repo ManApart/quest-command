@@ -1,10 +1,21 @@
 package combat
 
 enum class DamageType {
+    AIR,
+    EARTH,
     CHOP,
     CRUSH,
-    ENERGY,
+    FIRE,
+    ICE,
+    LIGHTNING,
     NONE,
     SLASH,
-    STAB
+    STONE,
+    STAB,
+    WATER;
+
+    val verb get() = name.toLowerCase() + "es"
+    val damage get() = name.toLowerCase() + "Damage"
+    val health get() = name.toLowerCase() + "Health"
+    val defense get() = name.toLowerCase() + "Defense"
 }

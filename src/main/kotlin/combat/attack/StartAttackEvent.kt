@@ -1,5 +1,6 @@
 package combat.attack
 
+import combat.DamageType
 import combat.battle.BattleAction
 import combat.battle.position.TargetPosition
 import core.events.Event
@@ -7,7 +8,7 @@ import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.gameState.stat.AGILITY
 
-class StartAttackEvent(val source: Target, val sourcePart: BodyPart, val target: Target, private val targetPosition: TargetPosition, val type: AttackType, timeLeft: Int = -1) : Event, BattleAction {
+class StartAttackEvent(val source: Target, val sourcePart: BodyPart, val target: Target, private val targetPosition: TargetPosition, val type: DamageType, timeLeft: Int = -1) : Event, BattleAction {
 
     override var timeLeft = calcTimeLeft(timeLeft)
 

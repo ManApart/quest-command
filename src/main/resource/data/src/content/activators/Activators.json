@@ -2,12 +2,12 @@
   {
     "name": "Burnable",
     "params": {
-      "burnHealth": 1,
+      "fireHealth": 1,
       "itemName": "Item"
     },
     "properties": {
       "stats": {
-        "burnHealth": "$burnHealth"
+        "fireHealth": "$fireHealth"
       },
       "tags": [
         "Flammable"
@@ -29,7 +29,7 @@
     "properties": {
       "stats": {
         "chopHealth": 5,
-        "burnHealth": 5
+        "fireHealth": 5
       },
       "tags": [
         "Climbable",
@@ -63,7 +63,7 @@
     "description": "The branches are too thin to sit on comfortably, but their leaves rustle contentedly.",
     "extends": "Burnable",
     "params": {
-      "burnHealth": 5,
+      "fireHealth": 5,
       "itemName": "Apple Tree Branches"
     },
     "properties": {
@@ -77,7 +77,7 @@
     "description": "The golden shafts of wheat whisper as they brush against each other.",
     "extends": "Burnable",
     "params": {
-      "burnHealth": 2,
+      "fireHealth": 2,
       "itemName": "Wheat Field"
     },
     "behaviors": [
@@ -96,7 +96,7 @@
     "description": "A pile of logs.",
     "extends": "Burnable",
     "params": {
-      "burnHealth": 5,
+      "fireHealth": 5,
       "itemName": "Logs"
     },
     "properties": {
@@ -166,7 +166,7 @@
     "description": "The old metal is pitted, but its belly glows a contented orange.",
     "properties": {
       "stats": {
-        "burnHealth": "2"
+        "fireHealth": "2"
       },
       "tags": [
         "Metal",
@@ -178,7 +178,7 @@
       {
         "name": "Burn Out",
         "params": {
-          "burnHealth": "5"
+          "fireHealth": "5"
         }
       }
     ]

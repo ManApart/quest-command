@@ -6,8 +6,6 @@ import core.utility.StringFormatter
 import kotlin.math.abs
 
 class StatChanged : EventListener<StatChangeEvent>() {
-    //TODO - can we get rid of these?
-    private val hiddenStats = listOf("burnHealth", "chopHealth")
 
     override fun shouldExecute(event: StatChangeEvent): Boolean {
         return event.amount != 0
@@ -17,13 +15,13 @@ class StatChanged : EventListener<StatChangeEvent>() {
         val change = StringFormatter.format(event.amount > 0, "increases", "decreases")
         val soul = event.target.soul
 
-        soul.incStat(event.type, event.amount)
+        soul.incStat(event.statName, event.amount)
 
-        if (!hiddenStats.contains(event.type)) {
+        if (!event.statName.toLowerCase().endsWith("health")) {
             val subject = StringFormatter.getSubjectPossessive(event.target)
-            val current = soul.getCurrent(event.type)
-            val max = soul.getTotal(event.type)
-            display("${event.source} $change $subject ${event.type} by ${abs(event.amount)} ($current/$max).")
+            val current = soul.getCurrent(event.statName)
+            val max = soul.getTotal(event.statName)
+            display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
         }
     }
 }

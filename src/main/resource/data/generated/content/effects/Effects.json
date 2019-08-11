@@ -1,1 +1,1 @@
-[{"name":"Burning","type":"DRAIN","statName":"Health"},{"name":"On Fire","type":"DRAIN","statName":"burnHealth"}]
+[{"name":"Burning","description":"Flames linger and lick, curling into the air.","statTarget":"Health","statEffect":"DRAIN","damageType":"FIRE"},{"name":"On Fire","description":"Flames linger and lick, curling into the air.","statTarget":"BurnHealth","statEffect":"DRAIN","damageType":"FIRE"}]

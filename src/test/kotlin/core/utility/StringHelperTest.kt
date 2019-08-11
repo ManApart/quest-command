@@ -7,18 +7,18 @@ class StringHelperTest {
 
     @Test
     fun caseInsensitive() {
-        val base = "\$burnhealth"
-        val params = mapOf("burnHealth" to "1")
+        val base = "\$fireHealth"
+        val params = mapOf("fireHealth" to "1")
 
         assertEquals("1", base.apply(params))
     }
 
     @Test
     fun onlyEscapedVariablesReplaced() {
-        val base = "\$burnHealth burnHealth"
-        val params = mapOf("burnHealth" to "1")
+        val base = "\$fireHealth fireHealth"
+        val params = mapOf("fireHealth" to "1")
 
-        assertEquals("1 burnHealth", base.apply(params))
+        assertEquals("1 fireHealth", base.apply(params))
     }
 
     @Test
