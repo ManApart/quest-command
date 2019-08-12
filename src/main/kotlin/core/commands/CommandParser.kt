@@ -2,7 +2,7 @@ package core.commands
 
 import core.history.ChatHistory
 import core.utility.NameSearchableList
-import core.utility.ReflectionTools
+import core.utility.reflection.ReflectionTools
 import system.EventManager
 
 object CommandParser {
@@ -11,9 +11,8 @@ object CommandParser {
     var responseRequest: ResponseRequest? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
-        val commands = NameSearchableList(ReflectionTools.commands.asSequence()
-                .map { it.newInstance() }
-                .filter { it!!::class != UnknownCommand::class }
+        val commands = NameSearchableList(core.utility.reflection.commands.asSequence()
+                .filter { it::class != UnknownCommand::class }
                 .toList())
 
         commands.forEach {

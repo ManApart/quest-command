@@ -7,6 +7,7 @@ import core.gameState.location.LocationPoint
 import core.gameState.quests.QuestManager
 import core.history.ChatHistory
 import core.history.display
+import core.utility.reflection.eventListeners
 import interact.scope.ScopeManager
 import system.item.ItemManager
 import travel.ArriveEvent
@@ -28,6 +29,8 @@ object GameManager {
         QuestManager.reset()
         ScopeManager.reset()
 //        LocationManager.clear()
+
+        eventListeners.forEach { it.reset() }
 
         newPlayer()
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))

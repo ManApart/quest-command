@@ -2,7 +2,6 @@ package gameState
 
 import core.gameState.Values
 import org.junit.Test
-import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
 import kotlin.test.assertEquals
 
 class ValuesTest {

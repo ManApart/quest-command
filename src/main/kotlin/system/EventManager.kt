@@ -2,7 +2,7 @@ package system
 
 import core.events.Event
 import core.events.EventListener
-import core.utility.ReflectionTools
+import core.utility.reflection.eventListeners
 import java.lang.reflect.ParameterizedType
 import java.util.*
 
@@ -12,9 +12,7 @@ object EventManager {
     private val eventQueue = mutableListOf<Event>()
 
     fun registerListeners() {
-        ReflectionTools.eventListeners.map {
-            registerListener(it.newInstance())
-        }
+        eventListeners.forEach{ registerListener(it)}
     }
 
     fun clear() {
@@ -23,7 +21,6 @@ object EventManager {
     }
 
     fun <E : Event> registerListener(listener: EventListener<E>) {
-//        display("registering $listener")
         val listenerClass = getListenedForClass(listener)
         if (!listenerMap.containsKey(listenerClass)) {
             listenerMap[listenerClass] = ArrayList()

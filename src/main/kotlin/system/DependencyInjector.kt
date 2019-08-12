@@ -2,9 +2,7 @@ package system
 
 import core.gameState.quests.QuestJsonParser
 import core.gameState.quests.QuestParser
-import core.utility.KotlinReflectionParser
 import core.utility.KotlinResourceHelper
-import core.utility.ReflectionParser
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
@@ -60,7 +58,6 @@ object DependencyInjector {
                 LocationParser::class.java to LocationJsonParser(),
                 QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser(),
-                ReflectionParser::class.java to KotlinReflectionParser(),
                 ResourceHelper::class.java to KotlinResourceHelper()
         )
     }

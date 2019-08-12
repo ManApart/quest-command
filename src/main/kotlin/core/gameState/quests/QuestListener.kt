@@ -34,7 +34,7 @@ class QuestListener : EventListener<Event>() {
         }
     }
 
-    fun reset() {
+    override fun reset() {
         listeners.clear()
         buildListeners()
     }
