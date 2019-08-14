@@ -9,10 +9,10 @@ class Condition(
         private val element: Element = Element.NONE,
         var elementStrength: Int = 0,
         private var duration: Int = 1,
-        private val permenant: Boolean = false,
+        private val permanent: Boolean = false,
         private val effects: List<Effect>,
         private val criticalEffects: List<Effect> = listOf()
-): Named {
+) : Named {
     var isCritical = false
     private var isFirstApply = true
 
@@ -21,8 +21,8 @@ class Condition(
     }
 
     private fun getEffects(): List<Effect> {
-        return if (isCritical) {
-            effects + criticalEffects
+        return if (isCritical && criticalEffects.isNotEmpty()) {
+            criticalEffects
         } else {
             effects
         }
@@ -35,7 +35,7 @@ class Condition(
     }
 
     private fun decreaseDuration(soul: Soul) {
-        if (!permenant) {
+        if (!permanent) {
             if (duration > 0) duration--
             if (duration == 0) {
                 EventManager.postEvent(RemoveConditionEvent(soul.parent, this))

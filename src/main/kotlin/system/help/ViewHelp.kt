@@ -14,6 +14,7 @@ import interact.scope.ScopeManager
 import status.statChanged.StatChangeEvent
 import system.EventManager
 
+//TODO - can this and ViewWordHelp share code?
 class ViewHelp : EventListener<ViewHelpEvent>() {
     val description = HelpCommand().getDescription()
 

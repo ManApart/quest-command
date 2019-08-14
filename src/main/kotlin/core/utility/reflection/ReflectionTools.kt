@@ -1,51 +1,42 @@
 package core.utility.reflection
 
-import core.commands.Command
-import core.events.Event
-import core.events.EventListener
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
-import system.DependencyInjector
 import java.io.File
 
 
 object ReflectionTools {
-    private const val srcPrefix = "./src/main/resource"
-    private const val commandsFile = "/../kotlin/core/utility/reflection/Commands.kt"
-    private const val eventListenersFile = "/../kotlin/core/utility/reflection/EventListeners.kt"
+    private const val srcPrefix = "./src/main/kotlin/core/utility/reflection/"
     private val reflections = Reflections(SubTypesScanner(false))
 
     fun saveAllCommands() {
-        val allClasses = reflections.getSubTypesOf(Command::class.java)
-        println("Saving ${allClasses.size} classes for Command")
+        saveGeneric("core.commands.Command")
+    }
 
-        val top = """
-            package core.utility.reflection
-            val commands: List<core.commands.Command> = listOf(
-                """.trimIndent()
-
-        val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
-
-        File(srcPrefix + commandsFile).printWriter().use { out ->
-            out.println(top)
-            out.println(classes)
-            out.println(")")
-        }
+    fun saveAllSpellCommands() {
+        saveGeneric("interact.magic.spellCommands.SpellCommand")
     }
 
     fun saveAllEventListeners() {
-        val allClasses = reflections.getSubTypesOf(EventListener::class.java)
-        println("Saving ${allClasses.size} classes for Event Listener")
+        saveGeneric("core.events.EventListener<*>")
+    }
 
-        val top = """
-            package core.utility.reflection
-            val eventListeners: List<core.events.EventListener<*>> = listOf(
-                """.trimIndent()
+    private fun saveGeneric(classPackageName: String) {
+        val regex = Regex("[^A-Za-z.]")
+        val cleanedPackageName = regex.replace(classPackageName, "")
 
+        val kClass = Class.forName(cleanedPackageName) as Class<*>
+        val allClasses = reflections.getSubTypesOf(kClass)
+        println("Saving ${allClasses.size} classes for $classPackageName")
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
 
-        File(srcPrefix + eventListenersFile).printWriter().use { out ->
-            out.println(top)
+        val variableName = cleanedPackageName.substringAfterLast(".").decapitalize() + "s"
+        val fileName = variableName.capitalize() + ".kt"
+        File(srcPrefix + fileName).printWriter().use { out ->
+            out.println("""
+            package core.utility.reflection
+            val $variableName: List<$classPackageName> = listOf(
+                """.trimIndent())
             out.println(classes)
             out.println(")")
         }
