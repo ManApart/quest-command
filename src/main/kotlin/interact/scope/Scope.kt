@@ -5,7 +5,7 @@ import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
 
-class Scope(val locationNode: LocationNode) {
+class Scope(private val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
 
     fun isEmpty(): Boolean {

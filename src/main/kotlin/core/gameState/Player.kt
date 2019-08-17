@@ -9,7 +9,7 @@ import crafting.Recipe
 import dialogue.DialogueOptions
 import system.location.LocationManager
 
-const val PLAYER_START_NETWORK = "Kanbara CountrySide"
+const val PLAYER_START_NETWORK = "Kanbara Countryside"
 const val PLAYER_START_LOCATION = "An Open Field"
 
 class Player(

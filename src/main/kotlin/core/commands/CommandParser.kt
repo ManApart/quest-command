@@ -3,15 +3,19 @@ package core.commands
 import core.history.ChatHistory
 import core.utility.NameSearchableList
 import core.utility.reflection.ReflectionTools
+import core.utility.reflection.Reflections
+import system.DependencyInjector
 import system.EventManager
+import system.activator.ActivatorParser
 
 object CommandParser {
     private val unknownCommand = UnknownCommand()
+    private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
     val commands by lazy { loadCommands() }
     var responseRequest: ResponseRequest? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
-        val commands = NameSearchableList(core.utility.reflection.commands.asSequence()
+        val commands = NameSearchableList(reflections.getCommands().asSequence()
                 .filter { it::class != UnknownCommand::class }
                 .toList())
 

@@ -1,7 +1,9 @@
 import core.events.Event
 import core.events.EventListener
-import org.junit.Assert
-import org.junit.Test
+import core.utility.reflection.MockReflections
+import core.utility.reflection.Reflections
+import org.junit.*
+import system.DependencyInjector
 import system.EventManager
 
 class EventManagerTest {
@@ -20,6 +22,19 @@ class EventManagerTest {
         }
 
     }
+
+    companion object {
+        @BeforeClass
+        @JvmStatic fun setupAll() {
+            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+        }
+
+        @AfterClass
+        @JvmStatic fun teardown() {
+            DependencyInjector.clearImplementation(Reflections::class.java)
+        }
+    }
+
 
     @Test
     fun higherPriorityRunsSooner(){

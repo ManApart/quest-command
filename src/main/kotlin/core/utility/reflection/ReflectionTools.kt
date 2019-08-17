@@ -7,21 +7,46 @@ import java.io.File
 
 object ReflectionTools {
     private const val srcPrefix = "./src/main/kotlin/core/utility/reflection/"
+    private const val fileName = "GeneratedReflections.kt"
     private val reflections = Reflections(SubTypesScanner(false))
 
-    fun saveAllCommands() {
-        saveGeneric("core.commands.Command")
+
+    fun generateFile() {
+        val variables = listOf(
+                getInstanceList("core.commands.Command"),
+                getInstanceList("interact.magic.spellCommands.SpellCommand"),
+                getInstanceList("core.events.EventListener<*>")
+        )
+
+        File(srcPrefix + fileName).printWriter().use { out ->
+            out.println("""
+            package core.utility.reflection
+
+            import core.commands.Command
+            import core.events.EventListener
+            import interact.magic.spellCommands.SpellCommand
+            
+            class GeneratedReflections : Reflections {
+                override fun getCommands(): List<Command> {
+                    return commands
+                }
+            
+                override fun getSpellCommands(): List<SpellCommand> {
+                    return spellCommands
+                }
+            
+                override fun getEventListeners(): List<EventListener<*>> {
+                    return eventListeners
+                }
+            }
+            
+                """.trimIndent())
+            variables.forEach { out.println(it) }
+        }
     }
 
-    fun saveAllSpellCommands() {
-        saveGeneric("interact.magic.spellCommands.SpellCommand")
-    }
 
-    fun saveAllEventListeners() {
-        saveGeneric("core.events.EventListener<*>")
-    }
-
-    private fun saveGeneric(classPackageName: String) {
+    private fun getInstanceList(classPackageName: String): String {
         val regex = Regex("[^A-Za-z.]")
         val cleanedPackageName = regex.replace(classPackageName, "")
 
@@ -29,17 +54,8 @@ object ReflectionTools {
         val allClasses = reflections.getSubTypesOf(kClass)
         println("Saving ${allClasses.size} classes for $classPackageName")
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
-
         val variableName = cleanedPackageName.substringAfterLast(".").decapitalize() + "s"
-        val fileName = variableName.capitalize() + ".kt"
-        File(srcPrefix + fileName).printWriter().use { out ->
-            out.println("""
-            package core.utility.reflection
-            val $variableName: List<$classPackageName> = listOf(
-                """.trimIndent())
-            out.println(classes)
-            out.println(")")
-        }
+        return "private val $variableName: List<$classPackageName> = listOf($classes)\n"
     }
 
 }

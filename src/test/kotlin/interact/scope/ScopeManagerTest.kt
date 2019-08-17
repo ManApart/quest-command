@@ -1,4 +1,4 @@
-package interact
+package interact.scope
 
 import core.gameState.Player
 import core.gameState.location.Location

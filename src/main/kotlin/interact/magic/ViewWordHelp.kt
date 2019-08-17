@@ -1,14 +1,15 @@
 package interact.magic
 
-import core.commands.CommandParser
 import core.events.EventListener
 import core.history.display
 import core.utility.NameSearchableList
-import core.utility.reflection.spellCommands
+import core.utility.reflection.Reflections
 import interact.magic.spellCommands.SpellCommand
+import system.DependencyInjector
 
 class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
-    private val wordsOfPower = NameSearchableList(spellCommands)
+    private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
+    private val wordsOfPower = NameSearchableList(reflections.getSpellCommands())
 
     override fun execute(event: ViewWordHelpEvent) {
         when {

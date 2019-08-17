@@ -4,8 +4,12 @@ import core.commands.CommandParser
 import core.gameState.*
 import core.gameState.location.NOWHERE_NODE
 import core.utility.PoorMansInstrumenter
+import core.utility.reflection.MockReflections
+import core.utility.reflection.Reflections
 import interact.UseEvent
+import org.junit.AfterClass
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import system.*
 import system.behavior.BehaviorManager
@@ -21,6 +25,20 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class EatCommandTest {
+
+    companion object {
+        @BeforeClass
+        @JvmStatic fun setupAll() {
+            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+        }
+
+        @AfterClass
+        @JvmStatic fun teardown() {
+            DependencyInjector.clearImplementation(Reflections::class.java)
+            DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(LocationParser::class.java)
+        }
+    }
 
     @Before
     fun setup() {

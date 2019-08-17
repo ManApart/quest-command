@@ -4,6 +4,8 @@ import core.gameState.quests.QuestJsonParser
 import core.gameState.quests.QuestParser
 import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
+import core.utility.reflection.GeneratedReflections
+import core.utility.reflection.Reflections
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
 import status.effects.EffectJsonParser
@@ -25,11 +27,15 @@ import system.location.LocationParser
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
-    private val defaultImplementations = createDefaultImplementations()
+    private val defaultImplementations by lazy { createDefaultImplementations() }
 
 
     fun <T : E, E : Any> setImplementation(targetInterface: Class<E>, implementation: T) {
         interfaces[targetInterface] = implementation
+    }
+
+    fun <E : Any> clearImplementation(targetInterface: Class<E>) {
+        interfaces.remove(targetInterface)
     }
 
     fun <T : E, E : Any> getImplementation(targetInterface: Class<E>): T {
@@ -58,6 +64,7 @@ object DependencyInjector {
                 LocationParser::class.java to LocationJsonParser(),
                 QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser(),
+                Reflections::class.java to GeneratedReflections(),
                 ResourceHelper::class.java to KotlinResourceHelper()
         )
     }
