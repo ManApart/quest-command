@@ -38,11 +38,11 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return conditions.exists(name)
     }
 
-    fun getConditions() : List<Condition> {
+    fun getConditions(): List<Condition> {
         return conditions.toList()
     }
 
-    fun getCondition(name: String) : Condition {
+    fun getCondition(name: String): Condition {
         return conditions.get(name)
     }
 
@@ -61,8 +61,12 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return getStatOrNull(name)!!
     }
 
-    fun getStatOrNull(name: String): Stat? {
-        return stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
+    fun getStatOrNull(name: String?): Stat? {
+        return if (name == null) {
+            null
+        } else {
+            stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
+        }
     }
 
     fun getStats(): List<Stat> {

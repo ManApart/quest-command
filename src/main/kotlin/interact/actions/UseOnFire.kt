@@ -17,7 +17,7 @@ class UseOnFire : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         display("You place ${event.used.name} in the fire burning the ${event.target.name}.")
-        val condition = Condition("Burning", Element.FIRE, 1, 1, effects = listOf(EffectManager.getEffect("Burning", 1)))
+        val condition = Condition("Burning", Element.FIRE, 1, effects = listOf(EffectManager.getEffect("Burning", 1, 1)))
         EventManager.postEvent(AddConditionEvent(event.used, condition))
     }
 }

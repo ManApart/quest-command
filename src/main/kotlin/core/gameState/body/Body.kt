@@ -47,7 +47,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun hasPart(part: String): Boolean {
-        return parts.getOrNull(part) != null
+        return parts.exists(part)
     }
 
     fun getPart(part: String): BodyPart {
@@ -56,6 +56,10 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
 
     fun getParts(): List<BodyPart> {
         return parts.toList()
+    }
+
+    fun getAnyParts(names: List<String>): List<BodyPart> {
+        return parts.getAny(names)
     }
 
     fun getPartLocation(part: String): LocationNode {

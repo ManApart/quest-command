@@ -1,14 +1,13 @@
 package interact.magic
 
+import core.commands.parseTargets
 import core.commands.Args
 import core.commands.Command
-import core.gameState.GameState
-import core.gameState.Target
+import core.commands.CommandParser
 import core.history.display
 import core.utility.NameSearchableList
 import core.utility.reflection.Reflections
 import interact.magic.spellCommands.SpellCommand
-import interact.scope.ScopeManager
 import system.DependencyInjector
 import system.EventManager
 
@@ -32,8 +31,10 @@ class CastCommand : Command() {
         return "\n\tword list - list known words." +
                 "\n\tword <word> - view the manual for that word." +
                 "\n\tCast <word> <word args> on *<target>" +
-                "\n\tCast <word> on *<target> and *<target>" +
-                "\n\tCast <word> <word args> on *<body part> of *<target>. NOT IMPLEMENTED"
+                "\n\tSimple Example:" +
+                "\n\t\t'Cast shard 5 on bandit'. This would cast an ice shard with 5 points of damage at a random body part of the bandit." +
+                "\n\tComplicated Example:" +
+                "\n\t\t'Cast shard 5 on left arm chest of bandit and head of rat'. This would cast an ice shard with five damage at the left arm of the bandit, another at the bandit's chest, and a third at the head of the rat."
     }
 
     override fun getCategory(): List<String> {
@@ -72,14 +73,19 @@ class CastCommand : Command() {
     }
 
     private fun castWord(args: List<String>) {
-        val spellCommand = getSpellCommand(args)
-        if (spellCommand != null) {
-            val arguments = Args(args, delimiters = listOf("on"))
-            val targets = parseTargets(arguments)
-            val spellArgs = parseSpellArgs(arguments)
-            spellCommand.execute(spellArgs, targets)
+        if (args.isEmpty()) {
+            //TODO -request response what to cast etc
+            CommandParser.parseCommand("help cast")
         } else {
-            display("Unknown word ${args.first()}")
+            val spellCommand = getSpellCommand(args)
+            if (spellCommand != null) {
+                val arguments = Args(args, delimiters = listOf("on"))
+                val spellArgs = parseSpellArgs(arguments)
+                val targets = parseTargets("cast ${spellCommand.name} ${spellArgs.fullString}", arguments.getGroup(1))
+                spellCommand.execute(spellArgs, targets)
+            } else {
+                display("Unknown word ${args.first()}")
+            }
         }
     }
 
@@ -91,24 +97,11 @@ class CastCommand : Command() {
         }
     }
 
-    private fun parseSpellArgs(args: Args): List<String> {
+    private fun parseSpellArgs(args: Args): Args {
         val words = args.getGroup(0)
         if (words.size > 1) {
-            return words.subList(1, words.size)
+            return Args(words.subList(1, words.size))
         }
-        return listOf()
-    }
-
-    private fun parseTargets(args: Args): List<Target> {
-        val targetWords = args.getGroup(1)
-        if (targetWords.isNotEmpty()){
-            val targetArgs = Args(targetWords, delimiters = listOf("and"))
-            return targetArgs.argStrings.map { getTarget(it) }.flatten()
-        }
-        return listOf()
-    }
-
-    private fun getTarget(name: String) : List<Target> {
-        return ScopeManager.getScope(GameState.player.location).getTargets(name)
+        return Args(listOf())
     }
 }

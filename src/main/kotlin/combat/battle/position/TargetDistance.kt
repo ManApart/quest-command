@@ -1,5 +1,6 @@
 package combat.battle.position
 
+//TODO - replace with comparing target positions in location
 enum class TargetDistance(val distance: Int) {
     DAGGER(0),
     SWORD(1),

@@ -5,6 +5,7 @@ import core.commands.Command
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
+import core.utility.NameSearchableList
 import system.EventManager
 
 class UnEquipItemCommand : Command() {
@@ -30,24 +31,42 @@ class UnEquipItemCommand : Command() {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {
+            //TODO - make request response
             display("What do you want to un-equip?")
         } else {
             val item = getItem(arguments)
             if (item != null) {
                 EventManager.postEvent(UnEquipItemEvent(GameState.player, item))
             } else {
-                display("Could not find ${arguments.argStrings[0]}")
+                val unEquippedItem = getUnequippedItem(arguments)
+                if (unEquippedItem != null) {
+                    display("${unEquippedItem.name} is already unequipped.")
+                } else {
+                    display("Could not find ${arguments.argStrings[0]}")
+                }
             }
         }
     }
 
     private fun getItem(args: Args): Target? {
-        val itemName = args.argGroups[0].joinToString(" ")
+        val itemName = args.getGroup(0).joinToString(" ")
         val items = GameState.player.body.getEquippedItems()
-        return if (items.exists(itemName)){
+        return if (items.exists(itemName)) {
             items.get(itemName)
         } else {
             null
         }
     }
+
+    private fun getUnequippedItem(args: Args): Target? {
+        val itemName = args.getGroup(0).joinToString(" ")
+        val equippedItems = GameState.player.body.getEquippedItems()
+        val items = NameSearchableList(GameState.player.inventory.getItems().filter { !equippedItems.contains(it) })
+        return if (items.exists(itemName)) {
+            items.get(itemName)
+        } else {
+            null
+        }
+    }
+
 }

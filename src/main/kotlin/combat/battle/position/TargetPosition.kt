@@ -6,7 +6,7 @@ class TargetPosition(private val horizontal: Horizontal = Horizontal.CENTER, pri
         return if (vertical == Vertical.CENTER && horizontal == Horizontal.CENTER){
             "center"
         } else {
-            vertical.toString() + " " + horizontal.toString()
+            "$vertical $horizontal"
         }
     }
 

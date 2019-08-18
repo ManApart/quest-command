@@ -7,12 +7,12 @@ import system.EventManager
 class Condition(
         override val name: String,
         private val element: Element = Element.NONE,
-        var elementStrength: Int = 0,
-        private var duration: Int = 1,
-        private val permanent: Boolean = false,
-        private val effects: List<Effect>,
-        private val criticalEffects: List<Effect> = listOf()
+        var elementStrength: Int = 1,
+        private val effects: List<Effect> = listOf(),
+        private val criticalEffects: List<Effect> = listOf(),
+        private val permanent: Boolean = false
 ) : Named {
+    private var age = 0
     var isCritical = false
     private var isFirstApply = true
 
@@ -29,18 +29,19 @@ class Condition(
     }
 
     fun apply(soul: Soul) {
-        getEffects().forEach { it.apply(soul, isFirstApply) }
-        decreaseDuration(soul)
-        isFirstApply = false
-    }
-
-    private fun decreaseDuration(soul: Soul) {
-        if (!permanent) {
-            if (duration > 0) duration--
-            if (duration == 0) {
-                EventManager.postEvent(RemoveConditionEvent(soul.parent, this))
+        var effectApplied = false
+        getEffects().forEach { effect ->
+            if (permanent || age <= effect.duration) {
+                effect.apply(soul, isFirstApply)
+                effectApplied = true
             }
         }
+
+        if (!effectApplied) {
+            EventManager.postEvent(RemoveConditionEvent(soul.parent, this))
+        }
+
+        isFirstApply = false
     }
 
     fun removeEffects(soul: Soul) {

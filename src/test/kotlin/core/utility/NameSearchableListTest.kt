@@ -2,6 +2,9 @@ package core.utility
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class NameSearchableListTest {
 
@@ -16,8 +19,8 @@ class NameSearchableListTest {
         val baseline = list.exists(badTarget.name)
         val actual = list.exists(target.name)
 
-        assertEquals(false, baseline)
-        assertEquals(true, actual)
+        assertFalse(baseline)
+        assertTrue(actual)
     }
 
     @Test
@@ -31,8 +34,19 @@ class NameSearchableListTest {
         val baseline = list.exists(badTarget.name)
         val actual = list.exists("Partial")
 
-        assertEquals(false, baseline)
-        assertEquals(true, actual)
+        assertFalse(baseline)
+        assertTrue(actual)
+    }
+
+    @Test
+    fun blankTargetDoesNotReturnResults() {
+        val list = NameSearchableList<NamedString>()
+        list.add(NamedString("Match"))
+
+        assertFalse(list.exists(""))
+        assertNull(list.getOrNull(""))
+        assertTrue(list.getAll("").isEmpty())
+        assertTrue(list.getAny(listOf("")).isEmpty())
     }
 
     @Test
@@ -46,8 +60,8 @@ class NameSearchableListTest {
         val baseline = list.exists(badTarget.name)
         val actual = list.exists(target.name)
 
-        assertEquals(false, baseline)
-        assertEquals(true, actual)
+        assertFalse(baseline)
+        assertTrue(actual)
     }
 
     @Test
@@ -61,8 +75,8 @@ class NameSearchableListTest {
         val baseline = list.exists(badTarget.name)
         val actual = list.exists("Partial")
 
-        assertEquals(false, baseline)
-        assertEquals(true, actual)
+        assertFalse(baseline)
+        assertTrue(actual)
     }
 
     @Test
@@ -112,7 +126,7 @@ class NameSearchableListTest {
 
         assertEquals(target, actual)
     }
-    
+
     @Test
     fun getOrNullProxy() {
         val target = NamedString("Target")
@@ -137,7 +151,7 @@ class NameSearchableListTest {
         assertEquals(target, actual)
     }
 
-    
+
 }
 
 

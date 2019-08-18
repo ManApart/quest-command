@@ -129,7 +129,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
 
     //TODO - this should be replaced with a reference to an existing/json hard coded condition
     private fun createCondition(): Condition {
-        return Condition(getParam(1, ""), Element.valueOf(getParam(2, "NONE")), getParamInt(3), getParamInt(4), effects = listOf(EffectManager.getEffect(getParam(5, ""), getParamInt(6))))
+        return Condition(getParam(1, ""), Element.valueOf(getParam(2, "NONE")), elementStrength =  getParamInt(3))
     }
 
     private fun getTargetCondition(): Condition {

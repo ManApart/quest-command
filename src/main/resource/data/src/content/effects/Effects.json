@@ -12,5 +12,16 @@
     "statTarget": "BurnHealth",
     "statEffect": "DRAIN",
     "damageType": "FIRE"
+  },
+  {
+    "name": "Wet",
+    "description": "Wet"
+  },
+  {
+    "name": "Water Slice",
+    "description": "Water slices and smashes.",
+    "statTarget": "Health",
+    "statEffect": "DRAIN",
+    "damageType": "WATER"
   }
 ]

@@ -4,7 +4,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     private val proxies = HashMap<String, N>()
 
     companion object {
-        fun from(items: List<String>) : NameSearchableList<NamedString> {
+        fun from(items: List<String>): NameSearchableList<NamedString> {
             return NameSearchableList(items.map { NamedString(it) })
         }
     }
@@ -44,12 +44,16 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return getOrNull(name) != null
     }
 
+
     fun get(name: String): N {
         return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toString()}")
     }
 
     //TODO - eventually sort by best match
     fun getAll(name: String): List<N> {
+        if (name.isBlank()) {
+            return listOf()
+        }
         val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } +
                 proxies.filter { it.key.contains(name) }.map { it.value }
 
@@ -70,7 +74,28 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         }
     }
 
-    private fun containsProxy(name: String) : Boolean {
+    /**
+     * Attempts to find a named match for each name (either the name alone or combined with its neighbor names)
+     */
+    fun getAny(names: List<String>): List<N> {
+        return getAnyRecursive(names)
+    }
+
+    private fun getAnyRecursive(thisTry: List<String>, stripped: List<String> = listOf()) : List<N> {
+        if (thisTry.isEmpty()) {
+            return listOf()
+        }
+        val items = mutableListOf<N>()
+        items.addAll(getAll(thisTry.joinToString(" ")))
+        if (items.isEmpty() && thisTry.size > 1) {
+            items.addAll(getAnyRecursive(thisTry.subList(0, thisTry.size-1), stripped + thisTry.subList(thisTry.size-1, thisTry.size)))
+        }
+        items.addAll(getAnyRecursive(stripped))
+        return items
+    }
+
+
+    private fun containsProxy(name: String): Boolean {
         return proxies.containsKey(name.toLowerCase())
     }
 

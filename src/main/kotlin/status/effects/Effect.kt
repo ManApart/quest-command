@@ -9,7 +9,7 @@ import status.statChanged.StatChangeEvent
 import system.EventManager
 import kotlin.math.min
 
-class Effect(val base: EffectBase, val amount: Int, val target: BodyPart?) {
+class Effect(val base: EffectBase, val amount: Int, val duration: Int, private val bodyPartTargets: List<BodyPart> = listOf()) {
     private var originalValue = 0
 
     fun apply(soul: Soul, firstApply: Boolean) {
@@ -64,8 +64,9 @@ class Effect(val base: EffectBase, val amount: Int, val target: BodyPart?) {
 
     private fun changeStat(soul: Soul, stat: Stat, amount: Int) {
         if (stat.isHealth()) {
-            val bodyPart = target ?: soul.parent.body.getParts().random()
-            EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, amount, HitLevel.DIRECT, base.damageType, base.name))
+            bodyPartTargets.forEach { bodyPart ->
+                EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, amount, HitLevel.DIRECT, base.damageType, base.name))
+            }
         } else {
             EventManager.postEvent(StatChangeEvent(soul.parent, base.name, stat.name, amount))
         }

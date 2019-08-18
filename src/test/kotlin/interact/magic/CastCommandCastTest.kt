@@ -1,10 +1,8 @@
 package interact.magic
 
 import core.gameState.Target
-import core.gameState.location.LocationNode
 import core.utility.reflection.MockReflections
 import core.utility.reflection.Reflections
-import interact.scope.Scope
 import interact.scope.ScopeManager
 import org.junit.AfterClass
 import org.junit.Before
@@ -17,12 +15,12 @@ import system.behavior.BehaviorParser
 import system.body.BodyParser
 import system.location.LocationFakeParser
 import system.location.LocationParser
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class CastCommandCastTest {
 
     companion object {
-
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
             DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
@@ -44,6 +42,8 @@ class CastCommandCastTest {
         fun teardown() {
             DependencyInjector.clearImplementation(Reflections::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(LocationParser::class.java)
+            DependencyInjector.clearImplementation(BodyParser::class.java)
         }
     }
 
@@ -72,7 +72,7 @@ class CastCommandCastTest {
 
         CastCommand().execute("cast", "testspellA 1 2".split(" "))
 
-        assertTrue(splitStringEqualsList("1 2", spellCommand.args))
+        assertEquals("1 2", spellCommand.args.fullString)
         assertTrue(spellCommand.targets.isEmpty())
     }
 
@@ -85,9 +85,8 @@ class CastCommandCastTest {
         CastCommand().execute("cast", "testspellA on targetA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
-        assertTrue(spellCommand.targets.contains(targetA))
+        assertTrue(spellCommand.targets.map { it.target }.contains(targetA))
     }
-
 
     @Test
     fun castWordWithTargetsAndParams() {
@@ -97,9 +96,9 @@ class CastCommandCastTest {
 
         CastCommand().execute("cast", "testspellA 1 2 on targetA and targetB".split(" "))
 
-        assertTrue(splitStringEqualsList("1 2", spellCommand.args))
-        assertTrue(spellCommand.targets.contains(targetA))
-        assertTrue(spellCommand.targets.contains(targetB))
+        assertEquals("1 2", spellCommand.args.fullString)
+        assertTrue(spellCommand.targets.map { it.target }.contains(targetA))
+        assertTrue(spellCommand.targets.map { it.target }.contains(targetB))
     }
 
     private fun splitStringEqualsList(expected: String, actual: List<String>): Boolean {

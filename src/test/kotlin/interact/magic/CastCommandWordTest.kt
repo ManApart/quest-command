@@ -2,7 +2,6 @@ package interact.magic
 
 import core.utility.reflection.MockReflections
 import core.utility.reflection.Reflections
-import interact.UseEvent
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass

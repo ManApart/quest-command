@@ -410,7 +410,7 @@ Type | Name | Description | Effects | Params | Cost
 ---| --- | --- | --- | --- | --- 
 Water |  Heal | Recover Health | | Target, Amount |  Can use up to max focus/or max skill level, (whichever is lower)
 Water |  Poison | Take damage over time | | Target, damage per tick, number of ticks | Damager per tick * number of ticks
-Water | Jet | Burst of water that does one time damage to one or more targets | Wet | Targets, damage amount | Damage * number of targets
+Water | Jet | Burst of water that does one time damage to all bodyparts of one or more targets | Wet | Targets, damage amount | Damage * number of targets
 Air | Push | Push the target backwards | Air Blasted | Target, Distance | Uses very few action points  
 Air | Pull | Pull the target closer | Air Blasted | Target, Distance | Uses very few action points  
 Air | Adrenaline | Increase action point gain. Better the more dexterity and the higher the wind skill. Hurt by encumberance etc
@@ -420,7 +420,7 @@ Fire | Ember | Fire damage immunity | | Target, length of time immune, percent i
 Fire | Flame Spout | High damage short range attack that leaves the target burning. Burns caster a proportional amount of damage (minus immunity). Does more damage if target is already burning | Burning | Target, Amount
 Lightning | Shock | Shock target and chain to nearby targets. Caster recieves a portion of the attack | Shocked | Target, Amount
 Ice | Freeze | Encase close-range target in ice | Frozen | Target, Duration
-Ice | Ice Shard | Ranged attack with high stab damage | | Target, Damage Amount
+Ice | Shard | Ranged attack with high stab damage | | Target, Damage Amount
 Stone | Crush | Do a large amount of crush damage. If target is encased, triple the damage and remove encased
 Smoke | Confuse | Reduce target perception
 Rain | Syphon | Transfer health from first to second target
