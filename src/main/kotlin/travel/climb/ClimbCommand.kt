@@ -27,7 +27,8 @@ class ClimbCommand : Command() {
     override fun getManual(): String {
         return "\n\tClimb <part> of <target> - Climb (onto) the target" +
                 "\n\tClimb <direction> - Continue climbing in <direction>" +
-                "\n\tClimb to <part> - Climb to <part>"
+                "\n\tClimb to <part> - Climb to <part>" +
+                "\n\tClimb s - The s flag silences travel, meaning a minimum amount of output"
     }
 
     override fun getCategory(): List<String> {
@@ -50,6 +51,7 @@ class ClimbCommand : Command() {
         val matchByName = targets.getOrNull(targetName)
         val matchByDirection = getDirectionMatches(targets, desiredDirection)
         val confidentMatch = getConfidentMatch(matchByName, matchByDirection)
+        val quiet = arguments.hasFlag("s")
 
         if (confidentMatch != null) {
             if (!confidentMatch.properties.tags.has("Climbable")) {
@@ -58,7 +60,7 @@ class ClimbCommand : Command() {
                 val parts = getEntryPoints(confidentMatch)
                 when {
                     parts.isEmpty() -> display("${confidentMatch.name} does not have any parts to climb.")
-                    parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(GameState.player, confidentMatch, parts.first(), getDirection(desiredDirection, confidentMatch, parts.first())))
+                    parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(GameState.player, confidentMatch, parts.first(), getDirection(desiredDirection, confidentMatch, parts.first()), quiet))
                     parts.size > 1 -> clarifyClimbPart(GameState.player.location, confidentMatch)
                 }
             }
@@ -156,7 +158,11 @@ class ClimbCommand : Command() {
         val direction = arguments.getDirection()
         when {
             arguments.isEmpty() -> {
-                val keywordDirection = if (keyword == "descend") {Direction.BELOW} else {Direction.ABOVE}
+                val keywordDirection = if (keyword == "descend") {
+                    Direction.BELOW
+                } else {
+                    Direction.ABOVE
+                }
                 climbInDirection(keywordDirection, target)
             }
             direction != Direction.NONE -> climbInDirection(direction, target)

@@ -572,10 +572,6 @@ Attack command groups 0 vs 1 - make tests
  - Mock Player?
 
 
-#### Scrapped
-
-
-Move conditional effects (if target was wet, double duration etc) to the casting spell, not the effect. That way the effect doesn’t have special logic.
-
-Special conditions (onApply) expressed in the class.
+add stat categories?
+add option to travel silently (just 'you travel to tree')
 

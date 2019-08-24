@@ -20,7 +20,7 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
             display("You climb back off ${event.climbTarget.name}.")
         }
 
-        EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb", climbBackOff))
+        EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb", silent = climbBackOff))
         GameState.player.finishClimbing()
     }
 }

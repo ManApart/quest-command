@@ -27,7 +27,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         val distance = getDistance(event.creature.location, event.targetPart)
         val chance = getChance(event.creature, distance)
 
-        EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance))
+        EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance, event.quiet))
         if (RandomManager.isSuccess(chance)) {
             advance(event, distance, chance)
         } else {
@@ -119,7 +119,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
 
     private fun continueClimbing(event: AttemptClimbEvent) {
-        EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", true))
+        EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", silent = true))
         EventManager.postEvent(LookEvent())
     }
 

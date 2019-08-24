@@ -22,6 +22,7 @@ class TravelCommand : Command() {
     override fun getManual(): String {
         return "\n\tTravel to <location> - Start traveling to a location, if a route can be found." +
                 "\n\tTravel - Continue traveling to a goal location." +
+                "\n\tTravel s - The s flag silences travel, meaning a minimum amount of output" +
                 "\n\tTo view a route, see the Route command"
     }
 
@@ -44,14 +45,14 @@ class TravelCommand : Command() {
         } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
             CommandParser.parseCommand(args.joinToString(" "))
         } else {
-            val arguments = Args(args, excludedWords = listOf("to"))
+            val arguments = Args(args, excludedWords = listOf("to"), flags = listOf("s"))
             val foundName = arguments.argGroups[0].joinToString(" ")
 
             if (LocationManager.networkExists()) {
                 val found = LocationManager.getNetwork().findLocation(foundName)
 
                 if (foundMatch(arguments.argGroups[0], found)) {
-                    EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true))
+                    EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true, arguments.hasFlag("s")))
                 } else {
                     display("Could not find $arguments")
                 }

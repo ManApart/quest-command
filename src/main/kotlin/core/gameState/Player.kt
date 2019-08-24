@@ -32,6 +32,7 @@ class Player(
         soul.addStat(HEALTH, 1, 10, 1)
         soul.addStat(PERCEPTION, 1, 1, 1)
         soul.addStat(STAMINA, 1, 100, 1)
+        soul.addStat(FOCUS, 1, 100, 1)
         soul.addStat(STRENGTH, 1, 1, 1)
         soul.addStat(WISDOM, 1, 1, 1)
         soul.addStat(CLIMBING, 1)

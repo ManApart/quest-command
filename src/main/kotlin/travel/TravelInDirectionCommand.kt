@@ -1,5 +1,6 @@
 package travel
 
+import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
@@ -28,7 +29,8 @@ class TravelInDirectionCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\t<direction> - Start moving to the nearest location in that direction, if it exists."
+        return "\n\t<direction> - Start moving to the nearest location in that direction, if it exists." +
+                "\n\t<direction> s - The s flag silences travel, meaning a minimum amount of output"
     }
 
     override fun getCategory(): List<String> {
@@ -46,11 +48,13 @@ class TravelInDirectionCommand : Command() {
                 else -> {
                     val neighbors = GameState.player.location.getNeighbors(direction)
                     val openNeighbors = neighbors.filter { !GameState.player.location.isMovingToRestricted(it) }
+                    val quiet = Args(args).hasFlag("s")
+                    val quietFlag = if (quiet){"s"} else {""}
 
                     when {
-                        openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(destination = openNeighbors.first()))
+                        openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(destination = openNeighbors.first(), quiet = quiet))
                         openNeighbors.size > 1 -> requestLocation(openNeighbors)
-                        openNeighbors.isEmpty() && neighbors.isNotEmpty() -> CommandParser.parseCommand("climb $direction")
+                        openNeighbors.isEmpty() && neighbors.isNotEmpty() -> CommandParser.parseCommand("climb $direction $quietFlag")
                         else -> display("Could not find a location to the $direction.")
                     }
                 }
@@ -67,7 +71,7 @@ class TravelInDirectionCommand : Command() {
     private fun requestLocation(openNeighbors: List<LocationNode>) {
         display("Travel towards what location?\n\t${openNeighbors.joinToString(", ")}")
         val response = ResponseRequest(openNeighbors.map { it.name to "travel ${it.name}" }.toMap())
-        CommandParser.responseRequest  = response
+        CommandParser.responseRequest = response
     }
 
 

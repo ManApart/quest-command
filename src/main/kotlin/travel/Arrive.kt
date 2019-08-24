@@ -24,7 +24,11 @@ class Arrive : EventListener<ArriveEvent>() {
             } else {
                 GameState.player.location = event.destination.location
                 if (!event.silent) {
-                    display("You ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings()}.")
+                    if (event.quiet) {
+                        display("You ${event.method} to ${event.destination}.")
+                    } else {
+                        display("You ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings()}.")
+                    }
                 }
             }
         }

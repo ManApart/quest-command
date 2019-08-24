@@ -2,8 +2,11 @@ package core.commands
 
 import core.gameState.Direction
 
-class Args(val args: List<String>, private val delimiters: List<String> = listOf(), private val excludedWords: List<String> = listOf()) {
+//TODO Make this all lowercase / to lower case
+class Args(val args: List<String>, private val delimiters: List<String> = listOf(), private val excludedWords: List<String> = listOf(), private val flags: List<String> = listOf()) {
     private val argsString = args.joinToString(" ")
+    private val foundFlags = findFlags()
+
     val argGroups = parseArgGroups()
     val argStrings = argGroups.map { it.joinToString(" ") }
     val fullString = args.joinToString(" ")
@@ -85,6 +88,11 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
         }
     }
 
+    fun hasFlag(flag: String): Boolean {
+        val flagAlt = if (flag.startsWith("-")) {flag.substring(1)} else { "-$flag"}
+        return foundFlags.contains(flag.toLowerCase()) || foundFlags.contains(flagAlt.toLowerCase())
+    }
+
     private fun parseArgGroups(): List<List<String>> {
         val groups = mutableListOf<List<String>>()
         if (delimiters.isEmpty()) {
@@ -107,7 +115,7 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
     }
 
     private fun removeExcludedWords(list: List<String>): List<String> {
-        return list.subtract(excludedWords).toList()
+        return list.subtract(excludedWords).subtract(foundFlags).toList()
     }
 
     private fun findDelimiter(args: List<String>): Int {
@@ -118,6 +126,11 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
             }
         }
         return -1
+    }
+
+    private fun findFlags(): List<String> {
+        val flagVariants = flags.map { it.toLowerCase() } + flags.map { "-${it.toLowerCase()}" }
+        return args.filter { flagVariants.contains(it.toLowerCase()) }
     }
 
 }

@@ -21,7 +21,9 @@ class StatChanged : EventListener<StatChangeEvent>() {
             val subject = StringFormatter.getSubjectPossessive(event.target)
             val current = soul.getCurrent(event.statName)
             val max = soul.getTotal(event.statName)
-            display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
+            if (!event.silent) {
+                display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
+            }
         }
     }
 }

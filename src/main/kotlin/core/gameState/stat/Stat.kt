@@ -1,9 +1,7 @@
 package core.gameState.stat
 
-import combat.DamageType
 import core.gameState.Target
 import status.LevelUpEvent
-import status.effects.Element
 import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
@@ -15,12 +13,19 @@ const val PERCEPTION = "Perception"
 const val STAMINA = "Stamina"
 const val STRENGTH = "Strength"
 const val WISDOM = "Wisdom"
+const val FOCUS = "Focus"
 
 //Skills
 const val CLIMBING = "Climbing"
 const val BARE_FOOT = "Barefoot"
 const val BARE_HANDED = "Bare Handed"
 const val COOKING = "Cooking"
+
+//Magic Skills
+const val AIR_MAGIC = "AirMagic"
+const val EARTH_MAGIC = "EarthMagic"
+const val FIRE_MAGIC = "FireMagic"
+const val WATER_MAGIC = "WaterMagic"
 
 class Stat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
     var max: Int = getBaseMaxAtCurrentLevel(); private set

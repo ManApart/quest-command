@@ -3,9 +3,11 @@ package interact.magic.spellCommands.water
 import combat.battle.position.TargetAim
 import core.commands.Args
 import core.gameState.GameState
+import core.gameState.stat.WATER_MAGIC
 import interact.magic.Spell
 import interact.magic.StartCastSpellEvent
 import interact.magic.spellCommands.SpellCommand
+import interact.magic.spellCommands.executeWithWarns
 import status.effects.Condition
 import status.effects.EffectManager
 import status.effects.Element
@@ -29,20 +31,24 @@ class Jet : SpellCommand {
     override fun execute(args: Args, targets: List<TargetAim>) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
-        val cost = damageAmount * targets.sumBy { it.target.body.getParts().size }
+        val hitCount = targets.sumBy { it.target.body.getParts().size }
+        val totalCost = damageAmount * hitCount
+        val levelRequirement = damageAmount / 2
 
-        targets.forEach { target ->
-            val parts = target.target.body.getParts()
-            val effects = listOf(
-                    EffectManager.getEffect("Water Slice", damageAmount, 1, parts),
-                    EffectManager.getEffect("Wet", 0, 5, parts)
-            )
+        executeWithWarns(WATER_MAGIC, levelRequirement, totalCost, targets) {
+            targets.forEach { target ->
+                val parts = target.target.body.getParts()
+                val effects = listOf(
+                        EffectManager.getEffect("Water Slice", damageAmount, 1, parts),
+                        EffectManager.getEffect("Wet", 0, 5, parts)
+                )
 
-            val condition = Condition("Water Blasted", Element.WATER, cost, effects)
-            val spell = Spell("Jet", condition, cost)
-            EventManager.postEvent(StartCastSpellEvent(GameState.player, target.target, spell))
+                val cost = damageAmount * target.target.body.getParts().size
+                val condition = Condition("Water Blasted", Element.WATER, cost, effects)
+                val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement)
+                EventManager.postEvent(StartCastSpellEvent(GameState.player, target.target, spell))
+            }
         }
     }
-
 
 }
