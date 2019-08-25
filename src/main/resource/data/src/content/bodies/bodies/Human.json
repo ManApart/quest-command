@@ -6,6 +6,7 @@
   {
     "parent": "Human",
     "name": "Chest",
+    "isRoot": true,
     "locations": [
       {
         "name": "Head",

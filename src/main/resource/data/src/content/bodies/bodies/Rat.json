@@ -6,6 +6,7 @@
   {
     "parent": "Rat",
     "name": "Canine Body",
+    "isRoot": true,
     "locations": [
       {
         "name": "Canine Head",

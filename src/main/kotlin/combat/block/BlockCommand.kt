@@ -1,9 +1,9 @@
 package combat.block
 
 import combat.HandHelper
-import combat.battle.position.TargetDirection
 import core.commands.Args
 import core.commands.Command
+import core.commands.parseBodyParts
 import core.gameState.GameState
 import core.history.display
 import system.EventManager
@@ -32,8 +32,8 @@ class BlockCommand : Command() {
         } else {
             val arguments = Args(args, listOf("with"))
             val handHelper = HandHelper(arguments.getGroupString(1), "block")
-            val direction =  TargetDirection.getTargetDirection(arguments.getGroupString(0)) ?: TargetDirection.getRandom()
-            EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, direction))
+            val shieldedPart = parseBodyParts(GameState.player, arguments.getGroup(0)).firstOrNull() ?: handHelper.hand
+            EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, shieldedPart))
         }
     }
 

@@ -46,22 +46,12 @@ class AttackCommandTest {
     }
 
     @Test
-    fun attackCreatureWithDirection() {
-        val rat = Target("Rat")
-        ScopeManager.getScope().addTarget(rat)
-
-        command.execute("slash", "bottom center of rat".split(" "))
-        val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
-        assertEquals(rat, event.target)
-    }
-
-    @Test
     fun attackCreatureWithoutDirection() {
         val rat = Target("Rat")
         ScopeManager.getScope().addTarget(rat)
 
         command.execute("slash", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
-        assertEquals(rat, event.target)
+        assertEquals(rat, event.target.target)
     }
 }

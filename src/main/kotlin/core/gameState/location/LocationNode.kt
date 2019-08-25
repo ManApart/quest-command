@@ -2,6 +2,7 @@ package core.gameState.location
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.gameState.Direction
+import core.gameState.Vector
 import core.utility.Named
 
 val NOWHERE_NODE = LocationNode("Nowhere")
@@ -11,6 +12,7 @@ class LocationNode(
         override val name: String,
         val locationName: String = name,
         val parent: String = DEFAULT_NETWORK,
+        val isRoot: Boolean = false,
         @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
         private val connections: MutableList<Connection> = mutableListOf()
 ) : Named {
@@ -103,13 +105,25 @@ class LocationNode(
         return if (lowestNodes.isEmpty()) {
             0
         } else {
-            val lowestNode = lowestNodes.first()
-            val route = RouteFinder(this, lowestNode)
-            if (route.hasRoute()) {
-                route.getRoute().getDistance()
-            } else {
-                0
-            }
+            getDistanceTo(lowestNodes.first())
+        }
+    }
+
+    fun getVectorDistanceTo(other: LocationNode): Vector {
+        val route = RouteFinder(this, other)
+        return if (route.hasRoute()) {
+            route.getRoute().getVectorDistance()
+        } else {
+            Vector()
+        }
+    }
+
+    fun getDistanceTo(other: LocationNode): Int {
+        val route = RouteFinder(this, other)
+        return if (route.hasRoute()) {
+            route.getRoute().getDistance()
+        } else {
+            0
         }
     }
 

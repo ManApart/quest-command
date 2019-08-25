@@ -1,6 +1,5 @@
 package core.commands
 
-import combat.battle.position.TargetDirection
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -11,7 +10,7 @@ class ArgsTest {
     @Test
     fun groupsByIgnoredWordsAndDelimiters() {
         val input = "bottom center of rat".split(" ")
-        val ignoredWords = TargetDirection.getAllAliases()
+        val ignoredWords = listOf("bottom", "center", "top")
         val delimiters = listOf("with", "of")
 
         val args = Args(input, delimiters, ignoredWords)

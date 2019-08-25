@@ -6,6 +6,7 @@
   {
     "parent": "Tree",
     "name": "Trunk",
+    "isRoot": true,
     "locations": [
       {
         "name": "Branches",

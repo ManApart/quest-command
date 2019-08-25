@@ -1,7 +1,11 @@
 package core.gameState
 
-import combat.battle.position.TargetDistance
-import core.utility.*
+import combat.battle.Distances.BOW_RANGE
+import combat.battle.Distances.DAGGER_RANGE
+import combat.battle.Distances.MIN_RANGE
+import combat.battle.Distances.SPEAR_RANGE
+import combat.battle.Distances.SWORD_RANGE
+import core.utility.wrapNonEmpty
 
 data class Properties(val tags: Tags = Tags(), val values: Values = Values(), var stats: Values =  Values()) {
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
@@ -67,13 +71,13 @@ data class Properties(val tags: Tags = Tags(), val values: Values = Values(), va
         }
     }
 
-    fun getRange() : TargetDistance {
+    fun getRange() : Int {
         return when {
-            tags.hasAny(Tags(listOf("Small", "Short"))) -> TargetDistance.DAGGER
-            tags.has("Medium") -> TargetDistance.SWORD
-            tags.hasAny(Tags(listOf("Large", "Long"))) -> TargetDistance.SPEAR
-            tags.has("Ranged") -> TargetDistance.BOW
-            else -> TargetDistance.DAGGER
+            tags.hasAny(Tags(listOf("Small", "Short"))) -> DAGGER_RANGE
+            tags.has("Medium") -> SWORD_RANGE
+            tags.hasAny(Tags(listOf("Large", "Long"))) -> SPEAR_RANGE
+            tags.has("Ranged") -> BOW_RANGE
+            else -> MIN_RANGE
         }
     }
 

@@ -2,9 +2,10 @@ package combat.attack
 
 import combat.DamageType
 import combat.HandHelper
-import combat.battle.position.TargetDirection
+import combat.battle.position.TargetAim
 import core.commands.Args
 import core.commands.Command
+import core.commands.parseTargets
 import core.events.Event
 import core.gameState.Target
 import core.gameState.GameState
@@ -30,8 +31,7 @@ class AttackCommand : Command() {
     override fun getManual(): String {
         return "\n\t<attack> <target> - Chop, crush, slash, or stab the target with the item in your right hand" +
                 "\n\t<attack> <target> with <hand> - Attack the target with the item in your left/right hand" +
-                "\n\t<attack> <direction> of <target> - Attack the target, aiming in a direction (${TargetDirection.getPrimaryAliases().joinToString(", ")})" +
-                "\n\t<attack> <direction> - Attack the target you are battling, aiming in a direction (${TargetDirection.getPrimaryAliases().joinToString(", ")}) X" +
+                "\n\t<attack> <part> of <target> - Attack the target, aiming for a specific body part" +
                 "\n\t<attack> <target> with <item> - Attack the target with the item in your left/right hand" +
                 "\n\tAttacking a target damages it based on the chop/stab/slash damage of the item you're holding in that hand, or the damage you do if empty handed"
     }
@@ -43,19 +43,18 @@ class AttackCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with", "of"))
         val damageType = getDamageType(keyword)
-        val direction = getDirection(arguments)
         val handHelper = HandHelper(arguments.getGroupString(1), damageType)
 
-        val ignoredWords = mutableListOf<String>()
-        ignoredWords.addAll(TargetDirection.getAllAliases())
-        val cleaned = Args(args, excludedWords = listOf("with", "of") + ignoredWords)
+        val cleaned = Args(args, excludedWords = listOf("with", "of"))
         val scope = ScopeManager.getScope()
+        val target = parseTargets("", arguments.getGroup(0)).firstOrNull()
+
         when {
             cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
             isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player, handHelper.weapon!!, scope.getTargets(cleaned.argStrings[0]).first()))
-            scope.getTargets(cleaned.argStrings[0]).isNotEmpty() -> EventManager.postEvent(createEvent(keyword, handHelper.hand, scope.getTargets(cleaned.argStrings[0]).first(), direction))
-            GameState.player.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.player.inventory.getItem(cleaned.argStrings[0])!!, direction))
-            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, GameState.battle!!.playerLastAttacked.creature, direction))
+            target != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, target))
+            GameState.player.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, TargetAim(GameState.player.inventory.getItem(cleaned.argStrings[0])!!)))
+            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, TargetAim(GameState.battle!!.playerLastAttacked.creature)))
             else -> display("Couldn't find ${cleaned.argStrings[0]}.")
         }
     }
@@ -73,16 +72,13 @@ class AttackCommand : Command() {
     private fun isAttackingActivatorWithWeapon(cleaned: Args, handHelper: HandHelper) =
             ScopeManager.getScope().getActivators(cleaned.argStrings[0]).isNotEmpty() && handHelper.weapon != null
 
-    private fun getDirection(args: Args): TargetDirection {
-        return TargetDirection.getTargetDirection(args.getGroupString(0)) ?: TargetDirection.getRandom()
-    }
 
-    private fun createEvent(keyword: String, sourcePart: BodyPart, target: Target, direction: TargetDirection): Event {
+    private fun createEvent(keyword: String, sourcePart: BodyPart, target: TargetAim): StartAttackEvent {
         return when (keyword) {
-            "chop" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.CHOP)
-            "crush" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.CRUSH)
-            "slash" -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.SLASH)
-            else -> StartAttackEvent(GameState.player, sourcePart, target, direction.position, DamageType.STAB)
+            "chop" -> StartAttackEvent(GameState.player, sourcePart, target, DamageType.CHOP)
+            "crush" -> StartAttackEvent(GameState.player, sourcePart, target, DamageType.CRUSH)
+            "slash" -> StartAttackEvent(GameState.player, sourcePart, target, DamageType.SLASH)
+            else -> StartAttackEvent(GameState.player, sourcePart, target, DamageType.STAB)
         }
     }
 }

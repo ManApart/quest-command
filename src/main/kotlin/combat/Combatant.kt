@@ -1,7 +1,6 @@
 package combat
 
 import combat.battle.BattleAction
-import combat.battle.position.TargetPosition
 import core.gameState.Target
 import core.gameState.body.BodyPart
 
@@ -12,9 +11,8 @@ import core.history.display
 class Combatant(val creature: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
-    var position = TargetPosition()
-    var blockPosition: TargetPosition? = null
     var blockBodyPart: BodyPart? = null
+    val blockedBodyParts: MutableList<BodyPart> = mutableListOf()
 
     fun tick() {
         if (action == null){
@@ -37,8 +35,7 @@ class Combatant(val creature: Target) {
     }
 
     fun resetStance() {
-        position = TargetPosition()
-        blockPosition = null
+        blockedBodyParts.clear()
         blockBodyPart = null
     }
 

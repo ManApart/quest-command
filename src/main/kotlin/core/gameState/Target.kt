@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.body.Body
+import core.gameState.body.BodyPart
 import core.gameState.body.Slot
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
@@ -42,6 +43,7 @@ open class Target(
     val inventory: Inventory = Inventory(items)
     val properties = Properties(properties, params)
     val soul = Soul(this)
+    var position = Vector()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
     private val dynamicDescription = dynamicDescription.apply(params)
 
@@ -61,7 +63,6 @@ open class Target(
             " $locationDescription"
         }
     }
-
 
     fun isPlayer(): Boolean {
         return this == GameState.player || this == GameState.player
@@ -133,7 +134,9 @@ open class Target(
         return Target(name, base = this, properties = props)
     }
 
-
+    fun getPositionInLocation(part: BodyPart) : Vector{
+        return body.getPositionInLocation(part, position)
+    }
 }
 
 fun targetsToString(targets: List<Target>): String {

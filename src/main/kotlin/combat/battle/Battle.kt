@@ -1,15 +1,13 @@
 package combat.battle
 
 import combat.Combatant
-import combat.battle.position.TargetDistance
 import core.gameState.Target
 import core.gameState.GameState
 
-import core.gameState.stat.HEALTH
 import core.history.display
 import system.EventManager
 
-class Battle(combatantCreatures: List<Target>, var targetDistance: TargetDistance = TargetDistance.BOW) {
+class Battle(combatantCreatures: List<Target>) {
     private val combatants = mutableListOf<Combatant>()
 
     init {
@@ -25,6 +23,10 @@ class Battle(combatantCreatures: List<Target>, var targetDistance: TargetDistanc
 
     fun getCombatant(creature: Target): Combatant? {
         return combatants.firstOrNull { it.creature == creature }
+    }
+
+    fun getOponent(creature: Target): Combatant? {
+        return combatants.firstOrNull { it.creature != creature }
     }
 
     fun removeCombatant(combatant: Combatant) {
@@ -84,11 +86,14 @@ class Battle(combatantCreatures: List<Target>, var targetDistance: TargetDistanc
     }
 
     fun describe() {
-        display(combatants.joinToString(" and ") { it.creature.name } + " are ${targetDistance.name} length from each other.")
+        display(combatants.joinToString(" and ") { it.creature.name } + " are ${getCombatantDistance()} away from each other.")
         combatants.forEach {
             println("\t${it.status()}")
         }
+    }
 
+    fun getCombatantDistance() : Int {
+        return combatants.first().creature.position.getDistance(combatants.last().creature.position)
     }
 
 }

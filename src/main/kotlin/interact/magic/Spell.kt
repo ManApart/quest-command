@@ -1,6 +1,5 @@
 package interact.magic
 
-import combat.battle.position.TargetDistance
 import status.effects.Condition
 
 class Spell(
@@ -9,7 +8,7 @@ class Spell(
         val cost: Int,
         val statRequired: String,
         val levelRequired: Int,
-        val range: TargetDistance = TargetDistance.SPEAR,
+        val range: Int =1,
         val castTime: Int = cost,
         val isHostile: Boolean = true
 )

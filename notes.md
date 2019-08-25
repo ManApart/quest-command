@@ -575,3 +575,33 @@ Attack command groups 0 vs 1 - make tests
 add stat categories?
 add option to travel silently (just 'you travel to tree')
 
+
+##### Bodies
+
+Object | Length
+--- | ---
+human | 10
+fist range | 1
+dagger range | 2
+sword range | 5
+axe range | 5
+spear range | 7
+bow range | 20
+
+A attacks arm of B
+B dodges
+If A still in range of arm, still hits arm
+if not, miss for now
+
+slash should attack all objects within weapon range of root object
+
+attack force override
+
+Shield sizes (radius)
+Traveling to a target puts you at 0,0,0
+locations can dictate position of targets
+interacting with objects moves you to their position
+what if targeting a body part targets that position within the location, and hits whatever is in that position
+
+
+position of a sublocation (body part) is it's position + the position of the parent

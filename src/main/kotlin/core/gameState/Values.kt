@@ -25,6 +25,7 @@ class Values(properties: Map<String, String> = mapOf()) {
         return parsed
     }
 
+    //TODO - if not of int type, return default (create test)
     fun getInt(key: String, default: Int = 0): Int {
         if (properties.containsKey(key.toLowerCase())) {
             return Integer.parseInt(properties[key.toLowerCase()])

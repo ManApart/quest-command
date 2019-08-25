@@ -1,6 +1,7 @@
 package core.gameState.location
 
 import core.gameState.Vector
+import core.gameState.sum
 import java.lang.IllegalArgumentException
 
 
@@ -33,6 +34,10 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
 
     fun getDistance(): Int {
         return connections.asSequence().map { it.vector.getDistance() }.sum()
+    }
+
+    fun getVectorDistance(): Vector {
+        return connections.asSequence().map { it.vector }.sum()
     }
 
     fun getDirectionString(): String {

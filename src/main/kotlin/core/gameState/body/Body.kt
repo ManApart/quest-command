@@ -1,29 +1,27 @@
 package core.gameState.body
 
-import combat.battle.position.HitLevel
-import combat.battle.position.TargetPosition
 import core.gameState.Direction
 import core.gameState.Target
+import core.gameState.Vector
 import core.gameState.location.LocationNode
 import core.gameState.location.Network
 import core.history.display
 import core.utility.NameSearchableList
 import core.utility.Named
-import java.lang.IllegalArgumentException
 
 val NONE = Body("None")
 
 class Body(override val name: String = "None", val layout: Network = Network(name)) : Named {
     constructor(base: Body) : this(base.name, base.layout)
 
-    private val parts = NameSearchableList(layout.getLocations().asSequence().map { it.bodyPart }.filterNotNull().toList())
+    private val parts = createParts()
 
-    override fun toString(): String {
-        return name +": [" + layout.getLocations().joinToString{it.name} +"]"
+    private fun createParts(): NameSearchableList<BodyPart> {
+        return NameSearchableList(layout.getLocations().asSequence().map { it.bodyPart }.filterNotNull().toList())
     }
 
-    private fun hasAttachPoint(attachPoint: String): Boolean {
-        return parts.any { it.hasAttachPoint(attachPoint) }
+    override fun toString(): String {
+        return name + ": [" + layout.getLocations().joinToString { it.name } + "]"
     }
 
     fun getEquippedItems(): NameSearchableList<Target> {
@@ -78,6 +76,10 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return slot.attachPoints.all { hasAttachPoint(it) }
     }
 
+    private fun hasAttachPoint(attachPoint: String): Boolean {
+        return parts.any { it.hasAttachPoint(attachPoint) }
+    }
+
     fun equip(item: Target) {
         equip(item, getDefaultSlot(item))
     }
@@ -116,28 +118,12 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         }
     }
 
-    fun getDirectParts(target: TargetPosition): List<BodyPart> {
-        val parts = mutableListOf<BodyPart>()
-        this.parts.forEach {
-            if (it.position.equals(target)) {
-                parts.add(it)
-            }
-        }
-        return parts
-    }
-
-    fun getGrazedParts(target: TargetPosition): List<BodyPart> {
-        val parts = mutableListOf<BodyPart>()
-        this.parts.forEach {
-            if (it.position.getHitLevel(target) == HitLevel.GRAZING) {
-                parts.add(it)
-            }
-        }
-        return parts
-    }
-
     fun getClimbEntryParts(): List<LocationNode> {
         return layout.getFurthestLocations(Direction.BELOW)
+    }
+
+    fun getPositionInLocation(part: BodyPart, parentOffset: Vector): Vector {
+        return parentOffset + layout.rootNode.getVectorDistanceTo(getPartLocation(part.name))
     }
 
 }

@@ -1,6 +1,9 @@
 package core.gameState
 
+import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 val NO_VECTOR: Vector = Vector()
 
@@ -30,6 +33,9 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         return result
     }
 
+    operator fun plus(other: Vector): Vector {
+       return this.add(other)
+    }
 
     fun add(other: Vector): Vector {
         return Vector(x + other.x, y + other.y, z + other.z)
@@ -37,6 +43,14 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
 
     fun subtract(other: Vector): Vector {
         return add(other.invert())
+    }
+
+    fun closer(other: Vector, amount: Int): Vector {
+        return Vector()
+    }
+
+    fun further(other: Vector, amount: Int): Vector {
+        return Vector()
     }
 
     private fun calculateDirection(): Direction {
@@ -89,7 +103,7 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
 
     }
 
-    private fun sameSign(a: Int, b: Int) : Boolean {
+    private fun sameSign(a: Int, b: Int): Boolean {
         return when {
             a == b -> true
             a > 0 && b > 0 -> true
@@ -102,17 +116,17 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
         val z = (z - other.z).toDouble().pow(2)
-        return Math.sqrt(x + y + z).toInt()
+        return sqrt(x + y + z).toInt()
     }
 
     private fun getDistanceXY(other: Vector): Int {
         val x = (x - other.x).toDouble().pow(2)
         val y = (y - other.y).toDouble().pow(2)
-        return Math.sqrt(x + y).toInt()
+        return sqrt(x + y).toInt()
     }
 
     fun getDistanceZ(other: Vector): Int {
-        return Math.abs(z - other.z)
+        return abs(z - other.z)
     }
 
     /**
@@ -121,9 +135,9 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     private fun getAngleXY(other: Vector): Int {
         val dx = (other.x - x)
         val dy = (other.y - y)
-        val rads = Math.atan2(dy.toDouble(), dx.toDouble())
+        val rads = atan2(dy.toDouble(), dx.toDouble())
         val adjustedRads = if (rads < 0)
-            Math.abs(rads)
+            abs(rads)
         else
             2 * Math.PI - rads
 
@@ -139,4 +153,12 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
         return Vector(-x, -y, -z)
     }
 
+}
+
+fun Sequence<Vector>.sum(): Vector {
+    var sum = Vector()
+    for (element in this) {
+        sum += element
+    }
+    return sum
 }

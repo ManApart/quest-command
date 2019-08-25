@@ -1,8 +1,6 @@
 [
   {
     "name": "Head",
-    "vertical": "HIGH",
-    "horizontal": "CENTER",
     "slots": [
       "Head Inner",
       "Head",
@@ -11,8 +9,6 @@
   },
   {
     "name": "Chest",
-    "vertical": "CENTER",
-    "horizontal": "CENTER",
     "slots": [
       "Chest Inner",
       "Chest",
@@ -21,8 +17,6 @@
   },
   {
     "name": "Right Arm",
-    "vertical": "CENTER",
-    "horizontal": "RIGHT",
     "slots": [
       "Right Arm Inner",
       "Right Arm",
@@ -31,8 +25,6 @@
   },
   {
     "name": "Left Arm",
-    "vertical": "CENTER",
-    "horizontal": "LEFT",
     "slots": [
       "Left Arm Inner",
       "Left Arm",
@@ -41,8 +33,6 @@
   },
   {
     "name": "Right Hand",
-    "vertical": "CENTER",
-    "horizontal": "RIGHT",
     "slots": [
       "Right Hand",
       "Right Hand Grip"
@@ -50,8 +40,6 @@
   },
   {
     "name": "Left Hand",
-    "vertical": "CENTER",
-    "horizontal": "LEFT",
     "slots": [
       "Left Hand",
       "Left Hand Grip"
@@ -59,8 +47,6 @@
   },
   {
     "name": "Waist",
-    "vertical": "CENTER",
-    "horizontal": "CENTER",
     "slots": [
       "Waist Inner",
       "Waist",
@@ -73,8 +59,6 @@
   },
   {
     "name": "Right Leg",
-    "vertical": "LOW",
-    "horizontal": "RIGHT",
     "slots": [
       "Right Leg Inner",
       "Right Leg",
@@ -83,8 +67,6 @@
   },
   {
     "name": "Left Leg",
-    "vertical": "LOW",
-    "horizontal": "LEFT",
     "slots": [
       "Left Leg Inner",
       "Left Leg",
@@ -93,40 +75,30 @@
   },
   {
     "name": "Right Foot",
-    "vertical": "LOW",
-    "horizontal": "RIGHT",
     "slots": [
       "Right Foot"
     ]
   },
   {
     "name": "Left Foot",
-    "vertical": "LOW",
-    "horizontal": "LEFT",
     "slots": [
       "Left Leg"
     ]
   },
   {
     "name": "Canine Head",
-    "vertical": "LOW",
-    "horizontal": "CENTER",
     "slots": [
       "Canine Head"
     ]
   },
   {
     "name": "Canine Body",
-    "vertical": "LOW",
-    "horizontal": "CENTER",
     "slots": [
       "Canine Body"
     ]
   },
   {
     "name": "Small Claws",
-    "vertical": "LOW",
-    "horizontal": "CENTER",
     "slots": [
       "Small Claws"
     ]

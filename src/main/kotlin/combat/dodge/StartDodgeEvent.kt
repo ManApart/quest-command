@@ -1,12 +1,13 @@
 package combat.dodge
 
 import combat.battle.BattleAction
-import combat.battle.position.TargetDirection
 import core.events.Event
 import core.gameState.Target
+import core.gameState.Vector
 import core.gameState.stat.AGILITY
+import kotlin.math.max
 
-class StartDodgeEvent(val source: Target, private val direction: TargetDirection, timeLeft: Int = -1) : Event, BattleAction {
+class StartDodgeEvent(val source: Target, private val direction: Vector, timeLeft: Int = -1) : Event, BattleAction {
 
     override var timeLeft = calcTimeLeft(timeLeft)
 
@@ -15,9 +16,9 @@ class StartDodgeEvent(val source: Target, private val direction: TargetDirection
             defaultTimeLeft
         } else {
             val encumbrance = source.getEncumbrance()
-            val agility = Math.max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
+            val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
 
-            Math.max(1, 100 / agility)
+            max(1, 100 / agility)
         }
     }
 

@@ -9,7 +9,7 @@ class StartCastSpell : EventListener<StartCastSpellEvent>() {
     override fun execute(event: StartCastSpellEvent) {
         if (event.spell.isHostile) {
             if (GameState.battle == null) {
-                GameState.battle = Battle(listOf(event.source, event.target), event.spell.range)
+                GameState.battle = Battle(listOf(event.source, event.target))
                 //TODO - this should be pulled out into battle.start or something
                 GameState.player.canRest = false
                 GameState.player.canTravel = false

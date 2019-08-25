@@ -3,18 +3,20 @@ package combat.approach
 import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
+import core.utility.StringFormatter
 
 class Approach : EventListener<ApproachEvent>() {
 
     override fun execute(event: ApproachEvent) {
         if (GameState.battle != null) {
-            val currentDistance = GameState.battle!!.targetDistance
             if (event.isApproaching) {
-                GameState.battle!!.targetDistance = currentDistance.closer()
+                event.source.position.closer(GameState.battle!!.getOponent(event.source)!!.creature.position, event.amount)
             } else {
-                GameState.battle!!.targetDistance = currentDistance.farther()
+                event.source.position.further(GameState.battle!!.getOponent(event.source)!!.creature.position, event.amount)
             }
-            display("${event.source} moved from ${currentDistance.name} range to ${GameState.battle!!.targetDistance.name} range.")
+            //TODO - adjust amount by max allowed to move and max distances
+            val approachString = StringFormatter.format(event.isApproaching, "closer", "further")
+            display("${event.source} moved ${event.amount} $approachString.")
         }
     }
 

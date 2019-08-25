@@ -1,11 +1,11 @@
 package combat.dodge
 
-import combat.battle.position.TargetDirection
 import core.events.Event
 import core.gameState.Target
+import core.gameState.Vector
 
 
-class DodgeEvent(val source: Target, val direction: TargetDirection) : Event {
+class DodgeEvent(val source: Target, val direction: Vector) : Event {
     override fun gameTicks(): Int {
         return if (source.isPlayer()) {
             1

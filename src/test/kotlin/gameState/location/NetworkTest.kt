@@ -62,7 +62,48 @@ class NetworkTest {
         val bottomNodes = network.getFurthestLocations(Direction.BELOW)
         assertEquals(1, bottomNodes.size)
         assertEquals(bottom, bottomNodes.first())
+    }
 
+    @Test
+    fun rootNodeIfOnlyOne() {
+        val bottom = LocationNode("Bottom")
+        val top = LocationNode("Top", isRoot = true)
+
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z=1))
+
+        bottom.addConnection(bottomUp)
+        top.addConnection(bottomUp.invert())
+
+        val network = Network("Network", listOf(bottom, top))
+        assertEquals(top, network.rootNode)
+    }
+
+    @Test
+    fun rootNodeIfNoNodes() {
+        val bottom = LocationNode("Bottom")
+        val top = LocationNode("Top")
+
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z=1))
+
+        bottom.addConnection(bottomUp)
+        top.addConnection(bottomUp.invert())
+
+        val network = Network("Network", listOf(bottom, top))
+        assertEquals(bottom, network.rootNode)
+    }
+
+    @Test
+    fun rootNodeIfManyRoots() {
+        val bottom = LocationNode("Bottom", isRoot = true)
+        val top = LocationNode("Top", isRoot = true)
+
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z=1))
+
+        bottom.addConnection(bottomUp)
+        top.addConnection(bottomUp.invert())
+
+        val network = Network("Network", listOf(bottom, top))
+        assertEquals(bottom, network.rootNode)
     }
 
 }

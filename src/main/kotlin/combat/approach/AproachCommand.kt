@@ -1,5 +1,6 @@
 package combat.approach
 
+import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
@@ -23,10 +24,13 @@ class AproachCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        //TODO - request response
+        //TODO - default to max movement allowed by agility
+        val amount = Args(args).getNumber() ?: 2
         when {
             GameState.battle == null -> display("This is only relevant in battle.")
-            GameState.battle?.targetDistance?.distance == 0 -> display("You can't get any closer.")
-            else -> EventManager.postEvent(StartApproachEvent(GameState.player, true))
+            GameState.battle?.getCombatantDistance() ?: 0 <= 1 -> display("You can't get any closer.")
+            else -> EventManager.postEvent(StartApproachEvent(GameState.player, amount,true))
         }
     }
 

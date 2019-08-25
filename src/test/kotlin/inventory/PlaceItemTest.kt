@@ -1,6 +1,5 @@
 package inventory
 
-import combat.battle.position.TargetPosition
 import core.gameState.*
 import core.gameState.body.BodyPart
 import core.gameState.location.LocationNode
@@ -78,7 +77,7 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val hand = BodyPart("Hand", TargetPosition(), listOf("Grip", "Glove"))
+        val hand = BodyPart("Hand", listOf("Grip", "Glove"))
         val part = BodyPart("part")
 
         val bodyParser = BodyFakeParser(

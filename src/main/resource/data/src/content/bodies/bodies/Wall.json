@@ -2,6 +2,7 @@
   {
     "parent": "City Wall",
     "name": "Foundation",
+    "isRoot": true,
     "locations": [
       {
         "name": "Lower Shelf",

@@ -4,15 +4,22 @@ import core.gameState.Direction
 import core.utility.NameSearchableList
 import core.utility.Named
 
-class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locations: List<Location> = listOf()) : Named{
+class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locations: List<Location> = listOf()) : Named {
     private val locationNodes = NameSearchableList(locationNodes)
     private val locations = NameSearchableList(locations)
+    val rootNode by lazy { findRootNode() }
+
+    private fun findRootNode(): LocationNode {
+        return locationNodes.firstOrNull { it.isRoot }
+                ?: locationNodes.firstOrNull()
+                ?: throw IllegalStateException("Network $name has no nodes")
+    }
 
     fun getLocationNode(name: String): LocationNode {
         return locationNodes.get(name)
     }
 
-    fun getLocationNodes() : List<LocationNode> {
+    fun getLocationNodes(): List<LocationNode> {
         return locationNodes.toList()
     }
 
@@ -43,11 +50,11 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locations.exists(name)
     }
 
-    fun getFurthestLocations(direction: Direction = Direction.BELOW) : List<LocationNode> {
+    fun getFurthestLocations(direction: Direction = Direction.BELOW): List<LocationNode> {
         val bottomNodes = mutableListOf<LocationNode>()
         val inverted = direction.invert()
 
-        locationNodes.forEach {node ->
+        locationNodes.forEach { node ->
             if (node.getNeighborsInGeneralDirection(inverted).isNotEmpty() && node.getNeighborsInGeneralDirection(direction).isEmpty()) {
                 bottomNodes.add(node)
             }

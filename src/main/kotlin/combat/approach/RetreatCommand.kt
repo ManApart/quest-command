@@ -1,6 +1,7 @@
 package combat.approach
 
-import combat.battle.position.TargetDistance
+import combat.battle.Distances.MAX_RANGE
+import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
 import core.history.display
@@ -24,10 +25,11 @@ class RetreatCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val amount = Args(args).getNumber() ?: 2
         when {
             GameState.battle == null -> display("This is only relevant in battle.")
-            GameState.battle?.targetDistance?.distance == TargetDistance.getMaxDistance() -> display("You can't get any further.")
-            else -> EventManager.postEvent(StartApproachEvent(GameState.player, false))
+            GameState.battle?.getCombatantDistance() ?: 0 >= MAX_RANGE -> display("You can't get any further.")
+            else -> EventManager.postEvent(StartApproachEvent(GameState.player, amount, false))
         }
     }
 

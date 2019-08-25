@@ -37,7 +37,7 @@ private fun parseTargetOnly(name: String): TargetAim? {
 private fun parseTargetAndParts(args: Args): TargetAim? {
     val target = parseTarget(args.getGroupString(1))
     if (target != null) {
-        val parts = parseParts(target, args.getGroup(0))
+        val parts = parseBodyParts(target, args.getGroup(0))
         return TargetAim(target, parts)
     }
     return null
@@ -49,7 +49,7 @@ private fun parseTarget(name: String): Target? {
     return targets.firstOrNull()
 }
 
-private fun parseParts(target: Target, names: List<String>): List<BodyPart> {
+fun parseBodyParts(target: Target, names: List<String>): List<BodyPart> {
     if (names.size == 1 && names.first().toLowerCase() == "all"){
         return target.body.getParts()
     }

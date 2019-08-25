@@ -1,19 +1,14 @@
 package core.gameState.body
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import combat.battle.position.HitLevel
-import combat.battle.position.TargetPosition
-import combat.battle.position.Horizontal
-import combat.battle.position.Vertical
 import core.gameState.Target
 import core.history.display
 import core.utility.Named
 
-class BodyPart(override val name: String, val position: TargetPosition = TargetPosition(), slots: List<String> = listOf()) : Named {
+//TODO - can body part be replaced with location, slots be sublocations, and equipped items be items in those locations?
+class BodyPart(override val name: String, slots: List<String> = listOf()) : Named {
 
-    constructor(base: BodyPart) : this(base.name, base.position, base.equippedItems.keys.toList())
-
-    @JsonCreator constructor(name: String, vertical: Vertical, horizontal: Horizontal, slots: List<String> = listOf()) : this(name, TargetPosition(horizontal, vertical), slots)
+    constructor(base: BodyPart) : this(base.name, base.equippedItems.keys.toList())
 
     private var equippedItems: MutableMap<String, Target?> = slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
 
@@ -55,10 +50,6 @@ class BodyPart(override val name: String, val position: TargetPosition = TargetP
                 equippedItems[it] = null
             }
         }
-    }
-
-    fun getHitLevel(target: TargetPosition): HitLevel {
-        return position.getHitLevel(target)
     }
 
 }
