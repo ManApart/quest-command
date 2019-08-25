@@ -15,9 +15,6 @@ Currently it runs:
 
 fun main() {
     ReflectionTools.generateFile()
-//    ReflectionTools.saveAllCommands()
-//    ReflectionTools.saveAllSpellCommands()
-//    ReflectionTools.saveAllEventListeners()
     JsonGenerator.generate("./src/main/resource", "/data/src/content", "/data/generated/content")
     println("Build complete")
 }

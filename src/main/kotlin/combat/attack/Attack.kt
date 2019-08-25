@@ -7,6 +7,7 @@ import combat.battle.position.HitLevel
 import combat.battle.position.TargetAim
 import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
+import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.body.BodyPart
@@ -57,10 +58,12 @@ class Attack : EventListener<AttackEvent>() {
 
         if (attackedParts.isEmpty()) {
             val direction = event.source.position.calculateDirection(event.target.target.position)
-            display("$defenderName is too far $direction. $subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
+            val isAre = StringFormatter.getIsAre(defender.target)
+            val directionString = StringFormatter.format(direction == Direction.NONE, "", "$defenderName $isAre too far $direction. ")
+            display("$directionString$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
         } else {
             val verb = StringFormatter.format(event.source.isPlayer(), event.type.verbPlural, event.type.verb)
-            display("$subject $verb $defenderName.")
+            display("$subject $verb at $defenderName.")
             attackedParts.forEach { attackedPart ->
                 processAttackHit(event, attackedPart, subject, verb, defenderName, damageSource, defender, offensiveDamage)
             }
@@ -80,7 +83,7 @@ class Attack : EventListener<AttackEvent>() {
     private fun processAttackHit(event: AttackEvent, attackedPart: BodyPart, subject: String, verb: String, defenderName: String, damageSource: String, defender: Combatant, offensiveDamage: Int) {
         val possessive = StringFormatter.getSubjectPossessive(event.source)
         display("$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource.")
-        EventManager.postEvent(TakeDamageEvent(defender.creature, attackedPart, offensiveDamage, HitLevel.DIRECT, event.type, damageSource))
+        EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, HitLevel.DIRECT, event.type, damageSource))
     }
 
     private fun getOffensiveDamage(sourceCreature: Target, sourcePart: BodyPart, type: DamageType): Int {

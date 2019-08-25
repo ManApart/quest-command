@@ -16,6 +16,10 @@ object StringFormatter {
         return format(target.isPlayer(), "Your", target.name + "'s")
     }
 
+    fun getIsAre(target: Target): String {
+        return format(target.isPlayer(), "are", "is")
+    }
+
 
 //    fun joinWithAnd(targets: List<Target>) : String {
 //        return targets.joinToString(", ") { it.name }

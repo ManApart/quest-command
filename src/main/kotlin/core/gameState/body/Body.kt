@@ -123,7 +123,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun getPositionInLocation(part: BodyPart, parentOffset: Vector): Vector {
-        return parentOffset + layout.rootNode.getVectorDistanceTo(getPartLocation(part.name))
+        return parentOffset + (layout.rootNode?.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
     }
 
 }

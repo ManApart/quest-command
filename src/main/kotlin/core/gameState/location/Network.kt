@@ -9,10 +9,9 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     private val locations = NameSearchableList(locations)
     val rootNode by lazy { findRootNode() }
 
-    private fun findRootNode(): LocationNode {
+    private fun findRootNode(): LocationNode? {
         return locationNodes.firstOrNull { it.isRoot }
                 ?: locationNodes.firstOrNull()
-                ?: throw IllegalStateException("Network $name has no nodes")
     }
 
     fun getLocationNode(name: String): LocationNode {

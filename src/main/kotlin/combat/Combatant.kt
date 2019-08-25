@@ -8,7 +8,7 @@ import core.gameState.stat.HEALTH
 import core.gameState.stat.WISDOM
 import core.history.display
 
-class Combatant(val creature: Target) {
+class Combatant(val target: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
     var blockBodyPart: BodyPart? = null
@@ -23,7 +23,7 @@ class Combatant(val creature: Target) {
     }
 
     private fun increaseActionPoints() {
-        actionPoints += creature.soul.getCurrent(WISDOM, 1)
+        actionPoints += target.soul.getCurrent(WISDOM, 1)
     }
 
     fun isActionReady() : Boolean {
@@ -40,18 +40,18 @@ class Combatant(val creature: Target) {
     }
 
     fun chooseAction() {
-        if (!creature.isPlayer()){
-            if (creature.ai != null){
-                display("${creature.name} considers its choices.")
-                creature.ai.takeAction()
+        if (!target.isPlayer()){
+            if (target.ai != null){
+                display("${target.name} considers its choices.")
+                target.ai.takeAction()
             } else {
-                display("${creature.name} does nothing!")
+                display("${target.name} does nothing!")
             }
         }
         actionPoints = 0
     }
 
     fun status() : String {
-        return "${creature.name}: ${creature.soul.getCurrent(HEALTH)}/${creature.soul.getTotal(HEALTH)} hp, $actionPoints/100 ap, ${action?.javaClass?.simpleName ?: "None"}."
+        return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} hp, $actionPoints/100 ap, ${action?.javaClass?.simpleName ?: "None"}."
     }
 }

@@ -10,9 +10,9 @@ class Approach : EventListener<ApproachEvent>() {
     override fun execute(event: ApproachEvent) {
         if (GameState.battle != null) {
             if (event.isApproaching) {
-                event.source.position.closer(GameState.battle!!.getOponent(event.source)!!.creature.position, event.amount)
+                event.source.position.closer(GameState.battle!!.getOponent(event.source)!!.target.position, event.amount)
             } else {
-                event.source.position.further(GameState.battle!!.getOponent(event.source)!!.creature.position, event.amount)
+                event.source.position.further(GameState.battle!!.getOponent(event.source)!!.target.position, event.amount)
             }
             //TODO - adjust amount by max allowed to move and max distances
             val approachString = StringFormatter.format(event.isApproaching, "closer", "further")

@@ -6,8 +6,6 @@ import combat.battle.position.TargetAim
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseTargets
-import core.events.Event
-import core.gameState.Target
 import core.gameState.GameState
 import core.gameState.body.BodyPart
 import core.history.display
@@ -17,6 +15,7 @@ import system.EventManager
 
 //TODO - give choice if more than one target found
 //TODO - give choice if just 'attack' instead of a type of attack
+//TODO -response request for what part to attack
 class AttackCommand : Command() {
     override fun getAliases(): Array<String> {
         return arrayOf("Chop", "Slash", "Stab")
@@ -41,21 +40,25 @@ class AttackCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val arguments = Args(args, listOf("with", "of"))
+        val arguments = Args(args, listOf("with"))
         val damageType = getDamageType(keyword)
         val handHelper = HandHelper(arguments.getGroupString(1), damageType)
 
-        val cleaned = Args(args, excludedWords = listOf("with", "of"))
         val scope = ScopeManager.getScope()
-        val target = parseTargets("", arguments.getGroup(0)).firstOrNull()
+        var target = parseTargets("", arguments.getGroup(0)).firstOrNull()
+
+        //TODO - use response request
+        if (target?.bodyPartTargets?.isEmpty() == true && target.target.body.layout.rootNode?.getLocation()?.bodyPart != null){
+            target = TargetAim(target.target, listOf(target.target.body.layout.rootNode?.getLocation()?.bodyPart!!))
+        }
 
         when {
-            cleaned.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
-            isAttackingActivatorWithWeapon(cleaned, handHelper) -> EventManager.postEvent(UseEvent(GameState.player, handHelper.weapon!!, scope.getTargets(cleaned.argStrings[0]).first()))
+            arguments.argGroups.isEmpty() -> display("${keyword.capitalize()} what with your ${handHelper.hand.getEquippedWeapon()}?")
+            isAttackingActivatorWithWeapon(arguments, handHelper) -> EventManager.postEvent(UseEvent(GameState.player, handHelper.weapon!!, scope.getTargets(arguments.argStrings[0]).first()))
             target != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, target))
-            GameState.player.inventory.getItem(cleaned.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, TargetAim(GameState.player.inventory.getItem(cleaned.argStrings[0])!!)))
-            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, TargetAim(GameState.battle!!.playerLastAttacked.creature)))
-            else -> display("Couldn't find ${cleaned.argStrings[0]}.")
+            GameState.player.inventory.getItem(arguments.argStrings[0]) != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, TargetAim(GameState.player.inventory.getItem(arguments.argStrings[0])!!)))
+            GameState.battle != null -> EventManager.postEvent(createEvent(keyword, handHelper.hand, TargetAim(GameState.battle!!.playerLastAttacked.target)))
+            else -> display("Couldn't find ${arguments.argStrings[0]}.")
         }
     }
 

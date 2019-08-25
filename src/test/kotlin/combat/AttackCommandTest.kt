@@ -47,7 +47,7 @@ class AttackCommandTest {
 
     @Test
     fun attackCreatureWithoutDirection() {
-        val rat = Target("Rat")
+        val rat = Target("Rat", body = "human")
         ScopeManager.getScope().addTarget(rat)
 
         command.execute("slash", "rat".split(" "))

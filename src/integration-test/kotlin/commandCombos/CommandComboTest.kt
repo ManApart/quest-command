@@ -63,7 +63,7 @@ class CommandComboTest {
     fun chopTree() {
         val input = "n && pickup hatchet && equip hatchet && y && chop tree"
         CommandParser.parseCommand(input)
-        assertEquals("The Dulled Hatchet hacks at Apple Tree.", ChatHistory.getLastOutput())
+        assertEquals("Dulled Hatchet decreases Apple Tree's chopHealth by 4 (1/5).", ChatHistory.getLastOutput())
     }
 
     @Test
@@ -78,14 +78,14 @@ class CommandComboTest {
     @Test
     fun fightRat() {
         CommandParser.parseCommand("s")
-        val input = "slash bottom center of rat && r && r"
+        val input = "slash body of rat && r && r"
         CommandParser.parseCommand(input)
         assertEquals("The battle ends.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun dontAttackDeadThing() {
-        val input = "s && slash bottom center of rat && slash bottom center of rat && slash bottom center of rat && slash bottom center of rat"
+        val input = "s && slash rat && slash rat && slash rat && slash rat"
         CommandParser.parseCommand(input)
         assertEquals("Couldn't find rat.", ChatHistory.getLastOutput())
     }

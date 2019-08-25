@@ -17,13 +17,11 @@ class StatChanged : EventListener<StatChangeEvent>() {
 
         soul.incStat(event.statName, event.amount)
 
-        if (!event.statName.toLowerCase().endsWith("health")) {
-            val subject = StringFormatter.getSubjectPossessive(event.target)
-            val current = soul.getCurrent(event.statName)
-            val max = soul.getTotal(event.statName)
-            if (!event.silent) {
-                display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
-            }
+        val subject = StringFormatter.getSubjectPossessive(event.target)
+        val current = soul.getCurrent(event.statName)
+        val max = soul.getTotal(event.statName)
+        if (!event.silent) {
+            display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
         }
     }
 }

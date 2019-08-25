@@ -22,11 +22,11 @@ class Battle(combatantCreatures: List<Target>) {
             getCombatant(GameState.player)!!
 
     fun getCombatant(creature: Target): Combatant? {
-        return combatants.firstOrNull { it.creature == creature }
+        return combatants.firstOrNull { it.target == creature }
     }
 
     fun getOponent(creature: Target): Combatant? {
-        return combatants.firstOrNull { it.creature != creature }
+        return combatants.firstOrNull { it.target != creature }
     }
 
     fun removeCombatant(combatant: Combatant) {
@@ -86,14 +86,14 @@ class Battle(combatantCreatures: List<Target>) {
     }
 
     fun describe() {
-        display(combatants.joinToString(" and ") { it.creature.name } + " are ${getCombatantDistance()} away from each other.")
+        display(combatants.joinToString(" and ") { it.target.name } + " are ${getCombatantDistance()} away from each other.")
         combatants.forEach {
             println("\t${it.status()}")
         }
     }
 
     fun getCombatantDistance() : Int {
-        return combatants.first().creature.position.getDistance(combatants.last().creature.position)
+        return combatants.first().target.position.getDistance(combatants.last().target.position)
     }
 
 }
