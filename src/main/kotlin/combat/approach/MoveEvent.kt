@@ -2,9 +2,10 @@ package combat.approach
 
 import core.events.Event
 import core.gameState.Target
+import core.gameState.Vector
 
 
-class ApproachEvent(val source: Target, val amount: Int = 1, val isApproaching: Boolean = true) : Event {
+class MoveEvent(val source: Target, val target: Vector = Vector()) : Event {
     override fun gameTicks(): Int {
         return if (source.isPlayer()) {
             1

@@ -34,7 +34,7 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     }
 
     operator fun plus(other: Vector): Vector {
-       return this.add(other)
+        return this.add(other)
     }
 
     fun add(other: Vector): Vector {
@@ -151,6 +151,22 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
 
     fun invert(): Vector {
         return Vector(-x, -y, -z)
+    }
+
+    fun getInverse(other: Vector): Vector{
+        val difference = other.add(this.invert())
+        return add(difference.invert())
+    }
+
+    fun getVectorInDirection(target: Vector, distance: Int): Vector {
+        val percent = distance / getDistance(target).toFloat()
+        val inversePercent = 1 - percent
+
+        val newX = x * inversePercent + target.x * percent
+        val newY = y * inversePercent + target.y * percent
+        val newZ = z * inversePercent + target.z * percent
+
+        return Vector(newX.toInt(), newY.toInt(), newZ.toInt())
     }
 
 }

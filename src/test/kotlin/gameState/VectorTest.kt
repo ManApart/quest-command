@@ -96,4 +96,51 @@ class VectorTest {
         assertFalse(north.isInGeneralDirection(Direction.NORTH_WEST, center))
     }
 
+    @Test
+    fun inDirection50Percent() {
+        val result = Vector().getVectorInDirection(Vector(10), 5)
+        assertEquals(Vector(5), result)
+    }
+
+    @Test
+    fun inDirection100Percent() {
+        val source = Vector()
+        val target = Vector(10,10,10)
+        val distance = source.getDistance(target)
+        val result = source.getVectorInDirection(target, distance)
+        assertEquals(target, result)
+    }
+
+    @Test
+    fun inDirection200Percent() {
+        val source = Vector()
+        val target = Vector(10,10,10)
+        val further = Vector(20,20,20)
+        val distance = source.getDistance(further)
+        val result = source.getVectorInDirection(target, distance)
+        assertEquals(further, result)
+    }
+
+    @Test
+    fun inverseOfOtherSimple() {
+        val result = Vector().getInverse(Vector(10))
+        assertEquals(Vector(-10), result)
+    }
+
+    @Test
+    fun inverseOfOther() {
+        val source = Vector()
+        val target = Vector(10,10,10)
+        val result = source.getInverse(target)
+        assertEquals(target.invert(), result)
+    }
+
+    @Test
+    fun inverseOfOther2() {
+        val source = Vector(10,10,10)
+        val target = Vector()
+        val result = source.getInverse(target)
+        assertEquals(Vector(20, 20, 20), result)
+    }
+
 }

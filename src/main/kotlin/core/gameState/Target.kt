@@ -96,6 +96,14 @@ open class Target(
         return inventory.getWeight() / getTotalCapacity().toFloat()
     }
 
+    /**
+     * Return the inverse (1-percent) how encumbered the creature is, as a percent from 0-1.
+     * Useful if multiplying this by some other stat. At 0% encumbered the stat is at 100%. At 100% encumbered the stat is 0%.
+     */
+    fun getEncumbranceInverted(): Float {
+        return 1 - (inventory.getWeight() / getTotalCapacity().toFloat())
+    }
+
     fun canEquipTo(body: Body): Boolean {
         equipSlots.forEach { slot ->
             if (body.canEquip(slot)) {
