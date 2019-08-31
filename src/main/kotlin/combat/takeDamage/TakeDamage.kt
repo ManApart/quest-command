@@ -11,7 +11,7 @@ import kotlin.math.max
 
 class TakeDamage : EventListener<TakeDamageEvent>() {
     override fun execute(event: TakeDamageEvent) {
-        val undefendedDamage = getUndefendedDamage((event.damage * event.hitLevel.modifier).toInt(), event.sourcePart, event.attackType)
+        val undefendedDamage = getUndefendedDamage(event.damage, event.sourcePart, event.attackType)
 
         if (hasSpecificHealth(event.source, event.attackType)) {
             EventManager.postEvent(StatChangeEvent(event.source, event.damageSource, event.attackType.health, -undefendedDamage))

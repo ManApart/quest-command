@@ -1,6 +1,5 @@
 package core.gameState.body
 
-import combat.battle.position.HitLevel
 import core.gameState.Target
 import core.history.display
 import core.utility.Named

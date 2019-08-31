@@ -2,6 +2,8 @@ package inventory.unEquipItem
 
 import core.commands.Args
 import core.commands.Command
+import core.commands.CommandParser
+import core.commands.ResponseRequest
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display
@@ -31,8 +33,7 @@ class UnEquipItemCommand : Command() {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {
-            //TODO - make request response
-            display("What do you want to un-equip?")
+            clarifyItem()
         } else {
             val item = getItem(arguments)
             if (item != null) {
@@ -67,6 +68,12 @@ class UnEquipItemCommand : Command() {
         } else {
             null
         }
+    }
+
+    private fun clarifyItem() {
+        val targets = GameState.player.body.getEquippedItems()
+        display("What do you want to un-equip?\n\t${targets.joinToString(", ")}")
+        CommandParser.responseRequest = ResponseRequest(targets.map { "$it" to "unequip $it" }.toMap())
     }
 
 }

@@ -13,7 +13,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
         if (event.target.properties.tags.has("Container")) {
             if (event.target.inventory.getItems().isNotEmpty()) {
                 display("${event.target.name} has:${inventoryToString(event.target.inventory, event.target.body)}")
-            }else {
+            } else {
                 display("${event.target.name} has no items.")
             }
         } else {
@@ -21,20 +21,27 @@ class ListInventory : EventListener<ListInventoryEvent>() {
         }
     }
 
-    private fun inventoryToString(inventory: Inventory, body: Body?, depth: Int = 0) : String {
+    private fun inventoryToString(inventory: Inventory, body: Body, depth: Int = 0): String {
         var message = ""
-        inventory.getItems().forEach {
-            message += printItem(it, body, depth+1)
-            if (it.inventory.getItems().isNotEmpty()){
-                message += inventoryToString(it.inventory, body, depth+1)
-            }
-        }
+        getSortedInventory(inventory, body)
+                .forEach {
+                    message += printItem(it, body, depth + 1)
+                    if (it.inventory.getItems().isNotEmpty()) {
+                        message += inventoryToString(it.inventory, body, depth + 1)
+                    }
+                }
         return message
     }
 
-    private fun printItem(item: Target, body: Body?, tabCount: Int): String {
-        val asterisk = StringFormatter.format(body != null && body.isEquipped(item), "* ", "")
+    private fun printItem(item: Target, body: Body, tabCount: Int): String {
+        val asterisk = StringFormatter.format(body.isEquipped(item), "* ", "")
         val tabs = "\t".repeat(tabCount)
         return "\n" + tabs + asterisk + item.name
+    }
+
+    private fun getSortedInventory(inventory: Inventory, body: Body): List<Target> {
+        val equippedItems = inventory.getItems().filter { body.isEquipped(it) }.sortedBy { it.name }
+        val unEquippedItems = inventory.getItems().filter { !body.isEquipped(it) }.sortedBy { it.name }
+        return equippedItems + unEquippedItems
     }
 }

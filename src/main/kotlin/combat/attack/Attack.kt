@@ -3,7 +3,6 @@ package combat.attack
 import combat.Combatant
 import combat.DamageType
 import combat.battle.Distances
-import combat.battle.position.HitLevel
 import combat.battle.position.TargetAim
 import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
@@ -83,7 +82,7 @@ class Attack : EventListener<AttackEvent>() {
     private fun processAttackHit(event: AttackEvent, attackedPart: BodyPart, subject: String, verb: String, defenderName: String, damageSource: String, defender: Combatant, offensiveDamage: Int) {
         val possessive = StringFormatter.getSubjectPossessive(event.source)
         display("$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource.")
-        EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, HitLevel.DIRECT, event.type, damageSource))
+        EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, event.type, damageSource))
     }
 
     private fun getOffensiveDamage(sourceCreature: Target, sourcePart: BodyPart, type: DamageType): Int {
