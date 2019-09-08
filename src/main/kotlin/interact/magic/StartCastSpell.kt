@@ -10,9 +10,7 @@ class StartCastSpell : EventListener<StartCastSpellEvent>() {
         if (event.spell.isHostile) {
             if (GameState.battle == null) {
                 GameState.battle = Battle(listOf(event.source, event.source))
-                //TODO - this should be pulled out into battle.start or something
-                GameState.player.canRest = false
-                GameState.player.canTravel = false
+                GameState.battle?.start()
                 GameState.battle?.addAction(event.source, event)
             } else {
                 GameState.battle?.addAction(event.source, event)

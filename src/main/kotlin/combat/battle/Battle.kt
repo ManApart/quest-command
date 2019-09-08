@@ -50,6 +50,11 @@ class Battle(combatantCreatures: List<Target>) {
         return combatants.size <= 1
     }
 
+    fun start() {
+        GameState.player.canRest = false
+        GameState.player.canTravel = false
+    }
+
     private fun clearBattle() {
         GameState.battle = null
         GameState.player.canTravel = true
