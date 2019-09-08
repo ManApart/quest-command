@@ -2,17 +2,9 @@ package system.help
 
 import core.commands.Command
 import core.commands.CommandParser
-import core.commands.UnknownCommand
-import core.commands.removeFirstItem
 import core.events.EventListener
-import core.gameState.Target
-
 import core.history.display
-import core.utility.StringFormatter
-import interact.eat.EatFoodEvent
-import interact.scope.ScopeManager
-import status.statChanged.StatChangeEvent
-import system.EventManager
+import core.utility.removeFirstItem
 
 //TODO - can this and ViewWordHelp share code?
 class ViewHelp : EventListener<ViewHelpEvent>() {
@@ -83,7 +75,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
 
     private fun getTitle(command: Command): String {
         val title = command.getAliases()[0]
-        val aliases = removeFirstItem(command.getAliases()).joinToString(", ")
+        val aliases = command.getAliases().removeFirstItem().joinToString(", ")
         return "$title ($aliases):"
     }
 

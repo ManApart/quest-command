@@ -54,3 +54,14 @@ fun <E> List<E>.random(): E? {
     }
 }
 
+fun List<String>.toLowerCase(): List<String> {
+    return this.map { it.toLowerCase() }
+}
+
+fun List<String>.removeFirstItem(): List<String> {
+    return if (size > 1) subList(1, size) else listOf()
+}
+
+fun Array<String>.removeFirstItem(): Array<String> {
+    return if (size > 1) toList().subList(1, size).toTypedArray() else arrayOf()
+}

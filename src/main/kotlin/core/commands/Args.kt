@@ -1,15 +1,19 @@
 package core.commands
 
 import core.gameState.Direction
+import core.utility.toLowerCase
 
-//TODO Make this all lowercase / to lower case
-class Args(val args: List<String>, private val delimiters: List<String> = listOf(), private val excludedWords: List<String> = listOf(), private val flags: List<String> = listOf()) {
+class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
+    val args = origArgs.toLowerCase()
+    private val delimiters = delimiters.toLowerCase()
+    private val excludedWords = excludedWords.toLowerCase()
+    private val flags = flags.toLowerCase()
     private val argsString = args.joinToString(" ")
     private val foundFlags = findFlags()
 
     val argGroups = parseArgGroups()
     val argStrings = argGroups.map { it.joinToString(" ") }
-    val fullString = args.joinToString(" ")
+    val fullString = origArgs.joinToString(" ")
 
     override fun toString(): String {
         return argsString
@@ -49,7 +53,7 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
      */
     fun has(word: String, condition: Boolean = true): Boolean {
         return if (condition) {
-            args.any { it.toLowerCase() == word.toLowerCase() }
+            args.any { it == word.toLowerCase() }
         } else {
             false
         }
@@ -59,7 +63,7 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
      * Returns if the word is contained in any of the words in the arg list
      */
     fun contains(word: String): Boolean {
-        return args.any { it.toLowerCase().contains(word.toLowerCase()) }
+        return args.any { it.contains(word.toLowerCase()) }
     }
 
     /**
@@ -76,7 +80,7 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
 
     fun argsWithout(words: List<String>): List<String> {
         val lowerCaseWords = words.map { it.toLowerCase() }
-        return args.filterNot { lowerCaseWords.contains(it.toLowerCase()) }
+        return args.filterNot { lowerCaseWords.contains(it) }
     }
 
     fun getDirection(): Direction {
@@ -129,8 +133,8 @@ class Args(val args: List<String>, private val delimiters: List<String> = listOf
     }
 
     private fun findFlags(): List<String> {
-        val flagVariants = flags.map { it.toLowerCase() } + flags.map { "-${it.toLowerCase()}" }
-        return args.filter { flagVariants.contains(it.toLowerCase()) }
+        val flagVariants = flags + flags.map { "-$it" }
+        return args.filter { flagVariants.contains(it) }
     }
 
 }

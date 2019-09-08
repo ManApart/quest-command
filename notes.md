@@ -605,3 +605,15 @@ what if targeting a body part targets that position within the location, and hit
 
 
 position of a sublocation (body part) is it's position + the position of the parent
+
+
+
+-------------
+
+TODOS
+Block
+Start Block Event
+Direction Parser
+Target Aim Parser
+CastCommand
+StartCastSpell

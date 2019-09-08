@@ -4,6 +4,7 @@ import core.history.ChatHistory
 import core.utility.NameSearchableList
 import core.utility.reflection.ReflectionTools
 import core.utility.reflection.Reflections
+import core.utility.removeFirstItem
 import system.DependencyInjector
 import system.EventManager
 import system.activator.ActivatorParser
@@ -59,7 +60,7 @@ object CommandParser {
             if (command == unknownCommand) {
                 unknownCommand.execute(listOf(line))
             } else {
-                val trimmedArgs = removeFirstItem(args)
+                val trimmedArgs = args.removeFirstItem()
                 command.execute(args[0], trimmedArgs)
             }
         }
@@ -87,13 +88,4 @@ object CommandParser {
         return categories
     }
 
-}
-
-//TODO -move to args parser?
-fun removeFirstItem(list: List<String>): List<String> {
-    return if (list.size > 1) list.subList(1, list.size) else listOf()
-}
-
-fun removeFirstItem(list: Array<String>): Array<String> {
-    return if (list.size > 1) list.toList().subList(1, list.size).toTypedArray() else arrayOf()
 }
