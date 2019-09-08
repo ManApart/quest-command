@@ -16,16 +16,14 @@ class Battle(combatantCreatures: List<Target>) {
         }
     }
 
-    var playerLastAttacked = getPlayerCombatant()
-
-    private fun getPlayerCombatant() =
+    fun getPlayerCombatant() =
             getCombatant(GameState.player)!!
 
     fun getCombatant(creature: Target): Combatant? {
         return combatants.firstOrNull { it.target == creature }
     }
 
-    fun getOponent(creature: Target): Combatant? {
+    fun getOpponent(creature: Target): Combatant? {
         return combatants.firstOrNull { it.target != creature }
     }
 
@@ -67,6 +65,7 @@ class Battle(combatantCreatures: List<Target>) {
             if (it.isActionReady()) {
                 takeAnotherTurn = false
                 EventManager.postEvent(it.action!!.getActionEvent())
+                it.lastAttacked = it.action?.actionTarget ?: it.lastAttacked
                 it.action = null
             } else if (it.canChooseAction()) {
                 it.resetStance()

@@ -2,6 +2,7 @@ package commandCombos
 
 import core.commands.CommandParser
 import core.gameState.GameState
+import core.gameState.Player
 import core.gameState.quests.QuestManager
 import core.history.ChatHistory
 import org.junit.Before
@@ -61,7 +62,7 @@ class CommandComboTest {
 
     @Test
     fun chopTree() {
-        val input = "n && pickup hatchet && equip hatchet && y && chop tree"
+        val input = "n && pickup hatchet && equip hatchet && y && ch tree"
         CommandParser.parseCommand(input)
         assertEquals("Dulled Hatchet decreases Apple Tree's chopHealth by 4 (1/5).", ChatHistory.getLastOutput())
     }
@@ -85,9 +86,10 @@ class CommandComboTest {
 
     @Test
     fun dontAttackDeadThing() {
-        val input = "s && slash rat && slash rat && slash rat && slash rat"
+        val input = "s && slash body of rat && sl rat && sl && slash rat"
         CommandParser.parseCommand(input)
-        assertEquals("Couldn't find rat.", ChatHistory.getLastOutput())
+        val expected = "slash what with Rusty Dagger?\n\tPlayer, Poor Quality Meat"
+        assertEquals(expected, ChatHistory.getLastOutput())
     }
 
     @Test

@@ -81,7 +81,8 @@ class CastCommand : Command() {
             if (spellCommand != null) {
                 val arguments = Args(args, delimiters = listOf("on"))
                 val spellArgs = parseSpellArgs(arguments)
-                val targets = parseTargets("cast ${spellCommand.name} ${spellArgs.fullString}", arguments.getGroup(1))
+                //"cast ${spellCommand.name} ${spellArgs.fullString}"
+                val targets = parseTargets(arguments.getGroup(1))
                 spellCommand.execute(spellArgs, targets)
             } else {
                 display("Unknown word ${args.first()}")

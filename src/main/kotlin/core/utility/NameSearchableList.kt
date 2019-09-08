@@ -13,8 +13,13 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         add(item)
     }
 
-    constructor(items: List<N>) : this() {
+    constructor(items: Iterable<N>) : this() {
         addAll(items)
+    }
+
+    constructor(items: NameSearchableList<N>) : this() {
+        addAll(items)
+        items.proxies.forEach { (proxy, item) -> this.addProxy(item, proxy) }
     }
 
     override fun clear() {
@@ -50,16 +55,16 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     //TODO - eventually sort by best match
-    fun getAll(name: String): List<N> {
+    fun getAll(name: String): NameSearchableList<N> {
         if (name.isBlank()) {
-            return listOf()
+            return NameSearchableList()
         }
         val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } +
                 proxies.filter { it.key.contains(name) }.map { it.value }
 
         val results = mutableSetOf<N>()
         includingDuplicates.forEach { results.add(it) }
-        return results.toList()
+        return results.toNameSearchableList()
     }
 
     fun getOrNull(name: String): N? {
@@ -77,13 +82,13 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     /**
      * Attempts to find a named match for each name (either the name alone or combined with its neighbor names)
      */
-    fun getAny(names: List<String>): List<N> {
+    fun getAny(names: List<String>): NameSearchableList<N> {
         return getAnyRecursive(names)
     }
 
-    private fun getAnyRecursive(thisTry: List<String>, stripped: List<String> = listOf()) : List<N> {
+    private fun getAnyRecursive(thisTry: List<String>, stripped: List<String> = listOf()) : NameSearchableList<N> {
         if (thisTry.isEmpty()) {
-            return listOf()
+            return NameSearchableList()
         }
         val items = mutableListOf<N>()
         items.addAll(getAll(thisTry.joinToString(" ")))
@@ -91,7 +96,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
             items.addAll(getAnyRecursive(thisTry.subList(0, thisTry.size-1), stripped + thisTry.subList(thisTry.size-1, thisTry.size)))
         }
         items.addAll(getAnyRecursive(stripped))
-        return items
+        return items.toNameSearchableList()
     }
 
 
@@ -104,4 +109,8 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
                 ?: matches[0]
     }
 
+}
+
+fun <T : Named> Iterable<T>.toNameSearchableList(): NameSearchableList<T> {
+    return NameSearchableList(this)
 }

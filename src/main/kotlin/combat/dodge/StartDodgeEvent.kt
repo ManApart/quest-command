@@ -7,8 +7,8 @@ import core.gameState.Vector
 import core.gameState.stat.AGILITY
 import kotlin.math.max
 
-class StartDodgeEvent(val source: Target, private val direction: Vector, timeLeft: Int = -1) : Event, BattleAction {
-
+class StartDodgeEvent(override val source: Target, private val direction: Vector, timeLeft: Int = -1) : Event, BattleAction {
+    override val actionTarget: Target? = null
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {

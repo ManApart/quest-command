@@ -8,8 +8,8 @@ import core.gameState.Vector
 import core.gameState.stat.AGILITY
 import kotlin.math.max
 
-class StartMoveEvent(val source: Target, val target: Vector, timeLeft: Int = -1) : Event, BattleAction {
-
+class StartMoveEvent(override val source: Target, val target: Vector, timeLeft: Int = -1) : Event, BattleAction {
+    override val actionTarget: Target? = null
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {

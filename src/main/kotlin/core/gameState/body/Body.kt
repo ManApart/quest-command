@@ -64,6 +64,10 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return layout.getLocationNode(part)
     }
 
+    fun getRootPart() : BodyPart? {
+        return layout.rootNode?.getLocation()?.bodyPart
+    }
+
     private fun getPartsWithAttachPoint(attachPoint: String): List<BodyPart> {
         return parts.filter { it.hasAttachPoint(attachPoint) }
     }

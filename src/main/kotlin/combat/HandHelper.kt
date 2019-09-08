@@ -31,11 +31,7 @@ class HandHelper(source: String, desiredSkill: String) {
                 weapon = getWeapon(source, weapons)
                 hand = getHand(weapon!!, rightHand, leftHand)
             }
-            isHighestDamage(rightWeapon, leftWeapon, desiredSkill) -> {
-                weapon = rightWeapon
-                hand = rightHand
-            }
-            isHighestDamage(leftWeapon, rightWeapon, desiredSkill) -> {
+            leftWeapon?.properties?.values?.getInt(desiredSkill) ?: 0 > rightWeapon?.properties?.values?.getInt(desiredSkill) ?: 0 -> {
                 weapon = leftWeapon
                 hand = leftHand
             }
@@ -78,23 +74,5 @@ class HandHelper(source: String, desiredSkill: String) {
             leftHand
         }
     }
-
-    private fun isHighestDamage(expectedHigher: Target?, expectedLower: Target?, skill: String): Boolean {
-        if (expectedHigher == null){
-            return false
-        }
-        if (expectedHigher.properties.values.getInt(skill) == 0){
-            return false
-        }
-        if (expectedLower == null){
-            return true
-        }
-        if (expectedLower.properties.values.getInt(skill) == 0){
-            return true
-        }
-
-        return expectedHigher.properties.values.getInt(skill) >= expectedLower.properties.values.getInt(skill)
-    }
-
 
 }

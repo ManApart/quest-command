@@ -2,7 +2,6 @@ package combat.attack
 
 import combat.battle.Battle
 import core.events.EventListener
-import core.gameState.Direction
 import core.gameState.GameState
 
 class StartAttack : EventListener<StartAttackEvent>() {

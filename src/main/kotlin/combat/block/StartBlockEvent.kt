@@ -5,9 +5,10 @@ import core.events.Event
 import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.gameState.stat.AGILITY
+import kotlin.math.max
 
-class StartBlockEvent(val source: Target, private val partThatWillShield: BodyPart, val partThatWillBeShielded: BodyPart, timeLeft: Int = -1) : Event, BattleAction {
-
+class StartBlockEvent(override val source: Target, private val partThatWillShield: BodyPart, val partThatWillBeShielded: BodyPart, timeLeft: Int = -1) : Event, BattleAction {
+    override val actionTarget: Target? = null
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {
@@ -16,9 +17,9 @@ class StartBlockEvent(val source: Target, private val partThatWillShield: BodyPa
         } else {
             //TODO - better calculation for block, take into account the shield etc
             val encumbrance = source.getEncumbrance()
-            val agility = Math.max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
+            val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
 
-            Math.max(1, 100 / agility)
+            max(1, 100 / agility)
         }
     }
 

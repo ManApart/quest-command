@@ -151,6 +151,51 @@ class NameSearchableListTest {
         assertEquals(target, actual)
     }
 
+    @Test
+    fun constructFromItem() {
+        val target = NamedString("Target")
+
+        val list = NameSearchableList(target)
+        assertEquals(1, list.size)
+        assertEquals(target, list.get("Target"))
+    }
+
+    @Test
+    fun constructFromIterable() {
+        val target = NamedString("Target")
+        val target2 = NamedString("Target2")
+
+        val list = NameSearchableList(listOf(target, target2))
+        assertEquals(2, list.size)
+        assertEquals(target, list.get("Target"))
+        assertEquals(target2, list.get("Target2"))
+
+    }
+
+    @Test
+    fun constructFromNameSearchable() {
+        val target = NamedString("Target")
+        val target2 = NamedString("Target2")
+
+        val firstList = NameSearchableList(target)
+        firstList.addProxy(target2, listOf("proxy"))
+
+        val list = NameSearchableList(firstList)
+
+        assertEquals(2, list.size)
+        assertEquals(target, list.get("Target"))
+        assertEquals(target2, list.get("proxy"))
+    }
+
+    @Test
+    fun toList() {
+        val target = NamedString("Target")
+
+        val list = listOf(target).toNameSearchableList()
+        assertEquals(1, list.size)
+        assertEquals(target, list.get("Target"))
+    }
+
 
 }
 

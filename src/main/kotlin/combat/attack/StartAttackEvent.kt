@@ -9,8 +9,8 @@ import core.gameState.body.BodyPart
 import core.gameState.stat.AGILITY
 import kotlin.math.max
 
-class StartAttackEvent(val source: Target, val sourcePart: BodyPart, val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, BattleAction {
-
+class StartAttackEvent(override val source: Target, val sourcePart: BodyPart, val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, BattleAction {
+    override val actionTarget: Target? = target.target
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {

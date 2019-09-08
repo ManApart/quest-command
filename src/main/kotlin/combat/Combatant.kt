@@ -12,6 +12,7 @@ class Combatant(val target: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
     var blockBodyPart: BodyPart? = null
+    var lastAttacked: Target? = null
     val blockedBodyParts: MutableList<BodyPart> = mutableListOf()
 
     fun tick() {

@@ -46,7 +46,7 @@ class RetreatCommand : Command() {
     }
 
     private fun retreat(amount: Int) {
-        val opponent = GameState.battle!!.getOponent(GameState.player)!!.target
+        val opponent = GameState.battle!!.getOpponent(GameState.player)!!.target
         val oppositeOfOpponent = GameState.player.position.getInverse(opponent.position)
         val target = GameState.player.position.getVectorInDirection(oppositeOfOpponent, amount)
         EventManager.postEvent(StartMoveEvent(GameState.player, target))

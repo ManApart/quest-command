@@ -41,8 +41,8 @@ class Scope(private val locationNode: LocationNode) {
         }
     }
 
-    fun getTargets(): List<Target> {
-        return targets.toList()
+    fun getTargets(): NameSearchableList<Target> {
+        return NameSearchableList(targets)
     }
 
     fun getTargets(name: String): List<Target> {

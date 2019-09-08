@@ -4,8 +4,6 @@ import combat.attack.AttackCommand
 import combat.attack.StartAttackEvent
 import core.gameState.*
 import core.gameState.Target
-import core.gameState.location.LocationNode
-import core.utility.NameSearchableList
 import interact.scope.ScopeManager
 import org.junit.Before
 import org.junit.Test
@@ -50,7 +48,7 @@ class AttackCommandTest {
         val rat = Target("Rat", body = "human")
         ScopeManager.getScope().addTarget(rat)
 
-        command.execute("slash", "rat".split(" "))
+        command.execute("sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
         assertEquals(rat, event.target.target)
     }

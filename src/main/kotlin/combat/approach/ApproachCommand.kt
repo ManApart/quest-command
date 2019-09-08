@@ -39,7 +39,7 @@ class ApproachCommand : Command() {
     }
 
     private fun getDefaultAmount(): Int {
-        return GameState.player.position.getDistance(GameState.battle!!.getOponent(GameState.player)!!.target.position)
+        return GameState.player.position.getDistance(GameState.battle!!.getOpponent(GameState.player)!!.target.position)
     }
 
     private fun clarifyAmount() {
@@ -50,7 +50,7 @@ class ApproachCommand : Command() {
     }
 
     private fun approach(amount: Int) {
-        val target = GameState.player.position.getVectorInDirection(GameState.battle!!.getOponent(GameState.player)!!.target.position, amount)
+        val target = GameState.player.position.getVectorInDirection(GameState.battle!!.getOpponent(GameState.player)!!.target.position, amount)
         EventManager.postEvent(StartMoveEvent(GameState.player, target))
     }
 

@@ -5,19 +5,29 @@ import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.history.display
+import core.utility.NameSearchableList
 import interact.scope.ScopeManager
 
-fun parseTargets(commandPrefix: String, arguments: List<String>): List<TargetAim> {
+//TODO - allow for response requests?
+fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameState.player): List<TargetAim> {
     val args = Args(arguments, delimiters = listOf("and"))
-    return args.argGroups.mapNotNull { getTarget(it) }
+    val targets = NameSearchableList(target.inventory.getAllItems())
+    return args.argGroups.mapNotNull { getTarget(it, targets) }
 }
 
-private fun getTarget(arguments: List<String>): TargetAim? {
+//TODO - make location paramatized
+fun parseTargets(arguments: List<String>): List<TargetAim> {
+    val args = Args(arguments, delimiters = listOf("and"))
+    val targets = NameSearchableList(ScopeManager.getScope().getTargets())
+    return args.argGroups.mapNotNull { getTarget(it, targets) }
+}
+
+private fun getTarget(arguments: List<String>, targets: NameSearchableList<Target>): TargetAim? {
     val args = Args(arguments, delimiters = listOf("of"))
     return when (args.argGroups.size) {
         0 -> null
-        1 -> parseTargetOnly(args.fullString)
-        2 -> parseTargetAndParts(args)
+        1 -> parseTargetOnly(args.fullString, targets)
+        2 -> parseTargetAndParts(args, targets)
         else -> {
             display("Could not parse targets for: ${arguments.joinToString(" ")}")
             null
@@ -25,8 +35,8 @@ private fun getTarget(arguments: List<String>): TargetAim? {
     }
 }
 
-private fun parseTargetOnly(name: String): TargetAim? {
-    val target = parseTarget(name)
+private fun parseTargetOnly(name: String, targets: NameSearchableList<Target>): TargetAim? {
+    val target = parseTarget(name, targets)
     return if (target != null) {
         TargetAim(target)
     } else {
@@ -34,8 +44,8 @@ private fun parseTargetOnly(name: String): TargetAim? {
     }
 }
 
-private fun parseTargetAndParts(args: Args): TargetAim? {
-    val target = parseTarget(args.getGroupString(1))
+private fun parseTargetAndParts(args: Args, targets: NameSearchableList<Target>): TargetAim? {
+    val target = parseTarget(args.getGroupString(1), targets)
     if (target != null) {
         val parts = parseBodyParts(target, args.getGroup(0))
         return TargetAim(target, parts)
@@ -43,10 +53,9 @@ private fun parseTargetAndParts(args: Args): TargetAim? {
     return null
 }
 
-private fun parseTarget(name: String): Target? {
-    val targets = ScopeManager.getScope(GameState.player.location).getTargets(name)
+private fun parseTarget(name: String, targets: NameSearchableList<Target>): Target? {
     //TODO - clarify if too many or too few targets
-    return targets.firstOrNull()
+    return targets.getOrNull(name)
 }
 
 fun parseBodyParts(target: Target, names: List<String>): List<BodyPart> {
