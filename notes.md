@@ -611,7 +611,5 @@ position of a sublocation (body part) is it's position + the position of the par
 -------------
 
 TODOS
-Block
-Start Block Event
 Direction Parser
 CastCommand

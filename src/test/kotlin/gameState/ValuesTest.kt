@@ -45,4 +45,12 @@ class ValuesTest {
         assertEquals(2, values.getInt("Apple"))
     }
 
+    @Test
+    fun intOfWrongTypeReturnsDefault() {
+        val values = Values(mapOf("Apple" to "string"))
+
+        assertEquals(0, values.getInt("Apple"))
+        assertEquals(2, values.getInt("Apple", 2))
+    }
+
 }

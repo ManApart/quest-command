@@ -3,6 +3,7 @@ package core.gameState
 import core.utility.apply
 import core.utility.hasAllOf
 import core.utility.matches
+import java.lang.NumberFormatException
 
 class Values(properties: Map<String, String> = mapOf()) {
     constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
@@ -25,10 +26,13 @@ class Values(properties: Map<String, String> = mapOf()) {
         return parsed
     }
 
-    //TODO - if not of int type, return default (create test)
     fun getInt(key: String, default: Int = 0): Int {
         if (properties.containsKey(key.toLowerCase())) {
-            return Integer.parseInt(properties[key.toLowerCase()])
+            return try {
+                Integer.parseInt(properties[key.toLowerCase()])
+            } catch (e: NumberFormatException) {
+                default
+            }
         }
         return default
     }
