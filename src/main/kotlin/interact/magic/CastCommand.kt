@@ -1,9 +1,6 @@
 package interact.magic
 
-import core.commands.parseTargets
-import core.commands.Args
-import core.commands.Command
-import core.commands.CommandParser
+import core.commands.*
 import core.history.display
 import core.utility.NameSearchableList
 import core.utility.reflection.Reflections
@@ -74,8 +71,7 @@ class CastCommand : Command() {
 
     private fun castWord(args: List<String>) {
         if (args.isEmpty()) {
-            //TODO -request response what to cast etc
-            CommandParser.parseCommand("help cast")
+            clarifyWord()
         } else {
             val spellCommand = getSpellCommand(args)
             if (spellCommand != null) {
@@ -88,6 +84,13 @@ class CastCommand : Command() {
                 display("Unknown word ${args.first()}")
             }
         }
+    }
+
+    private fun clarifyWord() {
+        val options = spellCommands.map { it.name }
+        display("Cast what?\n\t${options.joinToString(", ")}")
+        val response = ResponseRequest(options.map { it to "cast $it" }.toMap())
+        CommandParser.responseRequest = response
     }
 
     private fun getSpellCommand(args: List<String>): SpellCommand? {

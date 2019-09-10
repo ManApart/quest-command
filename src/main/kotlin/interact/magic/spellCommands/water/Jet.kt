@@ -7,13 +7,12 @@ import core.gameState.stat.WATER_MAGIC
 import interact.magic.Spell
 import interact.magic.StartCastSpellEvent
 import interact.magic.spellCommands.SpellCommand
-import interact.magic.spellCommands.executeWithWarns
 import status.effects.Condition
 import status.effects.EffectManager
 import status.effects.Element
 import system.EventManager
 
-class Jet : SpellCommand {
+class Jet : SpellCommand() {
     override val name = "Jet"
 
     override fun getDescription(): String {
