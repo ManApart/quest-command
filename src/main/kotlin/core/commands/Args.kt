@@ -59,6 +59,12 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         }
     }
 
+    fun has(regex: Regex): List<String> {
+        return argStrings.filter {
+            regex.matches(it)
+        }
+    }
+
     /**
      * Returns if the word is contained in any of the words in the arg list
      */
@@ -78,6 +84,16 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return null
     }
 
+    /**
+     * Returns the number of the indexed arg string if it exists and is a number. Otherwise returns 0
+     */
+    fun getNumber(index: Int): Int {
+        if (index >= 0 && index < args.size) {
+            return args[index].toIntOrNull() ?: 0
+        }
+        return 0
+    }
+
     fun argsWithout(words: List<String>): List<String> {
         val lowerCaseWords = words.map { it.toLowerCase() }
         return args.filterNot { lowerCaseWords.contains(it) }
@@ -93,7 +109,11 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     }
 
     fun hasFlag(flag: String): Boolean {
-        val flagAlt = if (flag.startsWith("-")) {flag.substring(1)} else { "-$flag"}
+        val flagAlt = if (flag.startsWith("-")) {
+            flag.substring(1)
+        } else {
+            "-$flag"
+        }
         return foundFlags.contains(flag.toLowerCase()) || foundFlags.contains(flagAlt.toLowerCase())
     }
 

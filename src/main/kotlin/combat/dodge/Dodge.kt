@@ -9,7 +9,7 @@ class Dodge : EventListener<DodgeEvent>() {
         if (GameState.battle != null) {
             val combatant = GameState.battle!!.getCombatant(event.source)
             if (combatant != null) {
-                combatant.target.position = combatant.target.position.add(event.direction)
+                combatant.target.position = combatant.target.position + event.direction
 //                display("${event.source} dodged to the ${event.direction}.")
             }
         }

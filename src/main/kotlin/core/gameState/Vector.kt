@@ -34,15 +34,19 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     }
 
     operator fun plus(other: Vector): Vector {
-        return this.add(other)
-    }
-
-    fun add(other: Vector): Vector {
         return Vector(x + other.x, y + other.y, z + other.z)
     }
 
-    fun subtract(other: Vector): Vector {
-        return add(other.invert())
+    operator fun minus(other: Vector): Vector {
+        return Vector(x - other.x, y - other.y, z - other.z)
+    }
+
+    operator fun times(magnitude: Int): Vector {
+        return Vector(x * magnitude, y * magnitude, z * magnitude)
+    }
+
+    operator fun times(other: Vector): Vector {
+        return Vector(x * other.x, y * other.y, z * other.z)
     }
 
     fun closer(other: Vector, amount: Int): Vector {
@@ -63,7 +67,7 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
      */
     fun calculateDirection(other: Vector): Direction {
         val zVal = z - other.z
-        val zAbs = Math.abs(zVal)
+        val zAbs = abs(zVal)
         val xyDist = getDistanceXY(other)
         val angle = getAngleXY(other)
 
@@ -93,7 +97,7 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     }
 
     fun isInGeneralDirection(direction: Direction, other: Vector = Vector()): Boolean {
-        val diffVector = subtract(other)
+        val diffVector = this - other
         return when {
             direction.vector.x != 0 && !sameSign(direction.vector.x, diffVector.x) -> false
             direction.vector.y != 0 && !sameSign(direction.vector.y, diffVector.y) -> false
@@ -154,8 +158,8 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     }
 
     fun getInverse(other: Vector): Vector{
-        val difference = other.add(this.invert())
-        return add(difference.invert())
+        val difference = other - this
+        return this - difference
     }
 
     fun getVectorInDirection(target: Vector, distance: Int): Vector {

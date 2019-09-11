@@ -1,8 +1,7 @@
 package combat.dodge
 
-import core.commands.Args
 import core.commands.Command
-import core.commands.parseVector
+import core.commands.parseDirection
 import core.gameState.GameState
 import core.history.display
 import system.EventManager
@@ -17,8 +16,7 @@ class DodgeCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tDodge <direction> *<distance> - Attempt to dodge a blow (only works in battle)." +
-                "\n\tYou return to a neutral vector next time you choose an action."
+        return "\n\tDodge <direction> *<distance> - Attempt to dodge a blow (only works in battle)."
     }
 
     override fun getCategory(): List<String> {
@@ -29,7 +27,7 @@ class DodgeCommand : Command() {
         if (GameState.battle == null) {
             display("This is only relevant in battle.")
         } else {
-            val direction = parseVector(args)
+            val direction = parseDirection(args).vector * 10
             EventManager.postEvent(StartDodgeEvent(GameState.player, direction))
         }
     }
