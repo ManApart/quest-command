@@ -16,6 +16,11 @@ Combat training dummy
 - Player controlled ai
 - Used to test fights
 
+Player Controlled AI
+- All commands have an execute(source, keyword, args). Default delegates to execute(keyword, args). Supported commands create their event using source instead of player.
+- Command parser is passed the Target that is issuing the command. 99% of the time it’s the player, but could be a player controlled AI.
+
+
 
 ### Architecture
 
@@ -48,6 +53,22 @@ Paramitization
 - paramatize numbers/boolean like weight?
 - follow param pattern with creatures
 - Eventually param locations and location nodes. Ex: Location Node windmill can pass grain bin node location down to chute.
+
+Command parsing
+- Sub command parser / command parser can operate on sub-commands (like spell commands)? Probably not worth it unless we have more sub-commands than casting spells.
+
+Player.isKnown(command)
+- Checks against list of known commands
+- First populated by reading through all commands and finding ones that have initiallyKnown set to true (default is false)
+
+
+Turn bodypart into just location
+- Equipped items are just the items in that location
+- Slots could be location poperties
+
+Codebase stats
+- Lines of code
+- Number of commands, events, listeners
 
 #### Creature / Activator Re-work
 
@@ -184,11 +205,12 @@ Each Turn
 - Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
 - Attack direction should use previous target
 - Individual health for body parts, can't use parts that don't have health?
+- slash should attack all objects within weapon range of root object
 
 Maybe attack listeners delegate to battle to be told if to execute or not. Battle either stores them and re-fires them after start cost / time it takes to attack, or it fires them itself when its time? Or break out into Attack Start and Attack commands.
 
 - add distance to target position
-
+- what if targeting a body part targets that position within the location, and hits whatever is in that position
 
 Flee stops combat, combatants stay in location (for now)
 Every target within a location can have an x,y,z position
@@ -200,6 +222,20 @@ Every target within a location can have an x,y,z position
   - Burn if not enough skill (first warn), consume ingredients
   - Gain xp for cooking
 - Current manner of matching recipes with ingredients has a possible bug that the order of ingredients in an inventory could determine whether a recipe could be used or not - write a test and fix it
+
+
+#### Combined Items
+Items can be combined / crafted together
+- For each ingredient in a recipe it can include a bodypart/location that the ingredient will be equipped to in the constructed item
+- Items can have bodyparts/locations with 'equipped' items 
+- An item’s combined properties include the adjustments from the sub-equiped items
+- Maybe crafted item has taglist of adjusted stats, and only those stats are changed by equipped items?
+
+Ex: Hilt + blade = sword. Iron blade gives 2 attack to sword, but steel blade gives 3 etc
+
+Ex2: Leather gauntlet can be crafted into casting gauntlet. Casting gauntlet has location/slots for liner, gem, and decoration. Liner could have a steel mesh that ups defence or a fur liner that increases heat. In battle / targeting these sub locations are ignored and only used to build the item’s total properties
+
+
 
 Ideas
 - Fletching
@@ -304,6 +340,7 @@ Stunned | | | None | | Deplete 50 action points. Immediately clears
 
 Should effects be an effect group with an element and then child effects?
 
+trigger off effect/condition instead of tag
 
 
 ### Interaction
@@ -313,6 +350,34 @@ Should effects be an effect group with an element and then child effects?
   - eat Food
   - no use found
   - ChopWood
+  
+  
+#### Look/Examine
+Skill check based on
+- Perception: the current level of the skill
+- Atmosphere can decrease perception (night, water, caves, etc)
+- Clarity is perception x 10
+- Stealth level of the object being examined
+    - Stealth is increased by
+    - Sneak level
+    - Size of object
+    - Items equipped
+    - Effects 
+- Conditional stealth effects: black adds stealth at night, but not day. Royal gown adds stealth at a nobility party but not out in the woods
+- The difficulty of the examine task
+
+Examine is successful if Clarity >= task difficulty * stealth level
+- When using perception on self, stealth level is always 1
+
+
+Task | Base difficulty
+--- | ---
+View targets | 1
+View anatomy | 5
+View equipped items | 3
+View effects | 7
+View hidden properties | 10
+
 
 
 
@@ -342,10 +407,21 @@ Bash completion
 
 ### Locations
 
-Atmospheric Effects
+#### Atmospheric Effects
 - Attached to location
 - Atmospheres that add tags and effects to everything in that location.
 - Shallow water, deep water, under water, have effects, based on swimming, etc. Swimming is skill based on agility
+- Atmospheric effects like fog and water, cast words can interact with them
+
+Temperature
+- Range from -10 to 10 on average, though temp could exceed these extremes
+- -10 is freezing point of water
+- 10 is boiling / spontaneous combustion
+- Locations have a temperature depending on location properties + current effects, burnining fires, snowstorms etc
+- Player has own temperature rating that is the location temp + effects, equipped items, etc
+
+
+#### Other
 
 Query Based effects
 - Time of day affect description, night time make perception go down.
@@ -357,6 +433,9 @@ Query Based effects
 Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
 - Possibly good for towns/houses etc
 - assume no for now but once all this done maybe...
+
+- locations can dictate position of targets
+- interacting with objects moves you to their position
 
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
@@ -375,6 +454,17 @@ The point of words of power / magic is to increase world immersion (elements sho
 Skill is based on type (water, air, earth, fire)
 Words of power learned indiviually / unlocked from quests and artifacts. Some words of power require a minimum level to use.
 Same spells scale up in potency as their skill increases
+
+Equippable gauntlets that help words from a certain element
+
+Atmospheric effects should effect spell cost / power
+- Super hot, buff fire
+- Super windy, buff wind
+- Underwater, buff water
+- In a cave, buff earth
+- In a dense forest / cave, nerf air
+- Spell that makes things more windy etc
+
 
 **Upgrades**
 
@@ -416,6 +506,7 @@ Air | Pull | Pull the target closer | Air Blasted | Target, Distance | Uses very
 Air | Adrenaline | Increase action point gain. Better the more dexterity and the higher the wind skill. Hurt by encumberance etc
 Earth | Rooted | Defense increased by level encumbered | Encased | Target, Amount, Duration | Amount only. Duration does not increase cost
 Earth | Rock | Small size can be rapidly fired while larger sizes do more than linearly more damage, can cause stun, and take longer to fire. 100% crush damage (no magic damage) | | Target, size (1-3)
+Fire | Candle | Adds an effect that drains focus each tick but increases light level by spell strength | Candle Effect | Light Level | Initial cost (off/on) is free, effect drains over time
 Fire | Ember | Fire damage immunity | | Target, length of time immune, percent immunity | time * percent immunity. Max of focus/fire skill 
 Fire | Flame Spout | High damage short range attack that leaves the target burning. Burns caster a proportional amount of damage (minus immunity). Does more damage if target is already burning | Burning | Target, Amount
 Lightning | Shock | Shock target and chain to nearby targets. Caster recieves a portion of the attack | Shocked | Target, Amount
@@ -426,6 +517,8 @@ Smoke | Confuse | Reduce target perception
 Rain | Syphon | Transfer health from first to second target
 Storm |  Thunderstorm | Summon thunderstorm effect on current location. Lighting has a 10% chance of striking a random target (any target in scene) every battle tick
 
+
+Quake with 4 levels, 1 being passive
 
 #### Misc
 
@@ -450,6 +543,11 @@ Other
 - Stats have skills that are improved by XP, attributes that improve through level up points, and derived stats like health
 - Or stats improve by use, attributes are like stat categories and improve when their stats improve, properties are derived from attributes (health, endurance, etc)
 - Each skill levelup adds 1 xp to attribute
+
+Resting restores 10% of stamina and focus per hour
+Traveling uses 1 stamina per AREA traveled (distance being from the scale class, an AREA being 10 HUMANs)
+
+
 
 Attribute | Derived Stat | Example Stats/Activities
 --- | --- | ---
@@ -492,16 +590,28 @@ Morality/infamy system
 * Magic is based on the understanding of the construct
 
 
+Antagonist
+- female
+- Realises world is fake/computer construct
+- Make player attached to antagonist / create friendship
+- Over time she turns evil / believes she needs to destroy the world because it is fake
+- Make conflict between understanding her motive and needing to defeat her to save the world
+
+
+
 #### Races
 
-
-New characters are locked in the ‘time frost’ and can be unlocked to be playable
-Encounter time frost frozen character before you can unlock them. Later gain unlock and new character, and know you can go back to get the first one.
-
+- New characters are locked in the ‘time frost’ and can be unlocked to be playable
+- Encounter time frost frozen character before you can unlock them. Later gain unlock and new character, and know you can go back to get the first one.
+- Certain quests unlock the ability to start a new character as a different race in the same world
 
 Lentil 
-- best smiths, can smith lentil weapons
+- best smiths, can forge organic metal into special lentil weapons
 - Can be planted, where self heals on turn but can’t move
+
+Raku
+- Can breathe under water
+- Strong with water magic and healing
 
 Vix 
 - can climb really well, weild razor ropes, disliked by other races
@@ -565,9 +675,6 @@ Weight of armor gives more damage
 - Remove hatchet and apple from starting inventory and place them in world etc
 - Inventory carrying space
 
-Certain quests unlock the ability to start a new character as a different race in the same world
-
-
 Attack command groups 0 vs 1 - make tests
  - Mock Player?
 
@@ -576,39 +683,6 @@ add stat categories?
 add option to travel silently (just 'you travel to tree')
 
 
-##### Bodies
-
-Object | Length
---- | ---
-human | 10
-fist range | 1
-dagger range | 2
-sword range | 5
-axe range | 5
-spear range | 7
-bow range | 20
-
-A attacks arm of B
-B dodges
-If A still in range of arm, still hits arm
-if not, miss for now
-
-slash should attack all objects within weapon range of root object
-
-attack force override
-
-Shield sizes (radius)
-Traveling to a target puts you at 0,0,0
-locations can dictate position of targets
-interacting with objects moves you to their position
-what if targeting a body part targets that position within the location, and hits whatever is in that position
-
-
-position of a sublocation (body part) is it's position + the position of the parent
 
 
 
--------------
-
-TODOS
-Direction Parser

@@ -74,6 +74,13 @@ Ex:
 - Look
 - PlayerLook
 
+Design note
+- If a keyword is parsed without args, always show response request
+- If an alias is parsed without args, use a reasonable default if it exists, otherwise response request
+- A user that knows what he is doing will want the default to be used and will use an alias. A user that doen’t know what he wants will probably use the full default keyword, and will want to know his options
+
+
+
 ### Research
 - manic mansion SCUM
 - ducktype

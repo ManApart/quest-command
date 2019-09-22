@@ -2,6 +2,7 @@ package travel
 
 import core.events.EventListener
 import core.gameState.GameState
+import core.gameState.Vector
 import core.history.display
 import interact.scope.ScopeManager
 
@@ -13,6 +14,7 @@ class Arrive : EventListener<ArriveEvent>() {
 
     override fun execute(event: ArriveEvent) {
         if (event.origin != event.destination) {
+            GameState.player.position = Vector()
             if (!event.destination.targetName.isNullOrBlank() && !event.destination.partName.isNullOrBlank()) {
                 val climbTarget = ScopeManager.getScope(event.destination.location).getTargets(event.destination.targetName).first()
                 val part = climbTarget.body.getPartLocation(event.destination.partName)
