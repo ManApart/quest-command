@@ -16,10 +16,10 @@ class Combatant(val target: Target) {
     val blockedBodyParts: MutableList<BodyPart> = mutableListOf()
 
     fun tick() {
-        if (action == null){
+        if (action == null) {
             increaseActionPoints()
         } else {
-            action!!.timeLeft --
+            action!!.timeLeft--
         }
     }
 
@@ -27,11 +27,11 @@ class Combatant(val target: Target) {
         actionPoints += target.soul.getCurrent(WISDOM, 1)
     }
 
-    fun isActionReady() : Boolean {
+    fun isActionReady(): Boolean {
         return action != null && action!!.timeLeft <= 0
     }
 
-    fun canChooseAction() : Boolean {
+    fun canChooseAction(): Boolean {
         return actionPoints >= 100
     }
 
@@ -41,18 +41,14 @@ class Combatant(val target: Target) {
     }
 
     fun chooseAction() {
-        if (!target.isPlayer()){
-            if (target.ai != null){
-                display("${target.name} considers its choices.")
-                target.ai.takeAction()
-            } else {
-                display("${target.name} does nothing!")
-            }
+        if (!target.isPlayer()) {
+            display("${target.name} considers its choices.")
+            target.ai.takeAction()
         }
         actionPoints = 0
     }
 
-    fun status() : String {
+    fun status(): String {
         return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} hp, $actionPoints/100 ap, ${action?.javaClass?.simpleName ?: "None"}."
     }
 }

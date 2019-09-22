@@ -1,6 +1,6 @@
 package system.ai
 
-import core.gameState.AIBase
+import core.gameState.ai.AIBase
 import core.utility.NameSearchableList
 
 interface AIParser {

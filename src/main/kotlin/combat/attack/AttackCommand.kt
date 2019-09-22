@@ -4,6 +4,7 @@ import combat.HandHelper
 import combat.battle.position.TargetAim
 import core.commands.*
 import core.gameState.GameState
+import core.gameState.Target
 import core.history.display
 import interact.UseEvent
 import interact.scope.ScopeManager
@@ -38,6 +39,10 @@ class AttackCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        execute(GameState.player, keyword, args)
+    }
+
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         if (keyword.toLowerCase() == "attack") {
             clarifyAttackType(args)
         } else {
@@ -50,11 +55,11 @@ class AttackCommand : Command() {
             if (target != null) {
                 //Go ahead and process a target that has aimed for body parts or no body parts at all
                 if (target.bodyPartTargets.isNotEmpty() || target.target.body.getRootPart() == null) {
-                    processAttack(arguments, attackType, handHelper, target)
+                    processAttack(source, arguments, attackType, handHelper, target)
                 } else {
                     //If we got an alias, process with a default value of the body root part
                     if (isAlias(keyword)) {
-                        processAttack(arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart()!!)))
+                        processAttack(source, arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart()!!)))
                         //Otherwise clarify body parts.
                     } else {
                         clarifyTargetPart(keyword, target, weaponName)
@@ -118,12 +123,12 @@ class AttackCommand : Command() {
         CommandParser.responseRequest = response
     }
 
-    private fun processAttack(arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {
+    private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {
         when {
-            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(UseEvent(GameState.player, handHelper.weapon!!, target!!.target))
-            target != null && target.target.isPlayer() && handHelper.weapon != null -> EventManager.postEvent(UseEvent(GameState.player, handHelper.weapon!!, GameState.player))
-            target != null -> EventManager.postEvent(StartAttackEvent(GameState.player, handHelper.hand, target, attackType.damageType))
-            GameState.battle?.getPlayerCombatant()?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(GameState.player, handHelper.hand, TargetAim(GameState.battle!!.getPlayerCombatant().lastAttacked!!), attackType.damageType))
+            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target!!.target))
+            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, source))
+            target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
+            GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
             else -> display("Couldn't find ${arguments.argStrings[0]}.")
         }
     }

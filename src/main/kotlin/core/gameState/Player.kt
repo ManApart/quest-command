@@ -17,7 +17,7 @@ class Player(
         dynamicDescription: DialogueOptions = DialogueOptions("Our Hero!"),
         body: String = "Human",
         location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION))
-    : Target(name = name, dynamicDescription = dynamicDescription, body = body, location = location) {
+    : Target(name = name, dynamicDescription = dynamicDescription, aiName= core.gameState.ai.PLAYER_CONTROLLED_ID, body = body, location = location) {
 
     var climbTarget: Target? = null
     var route: Route? = null

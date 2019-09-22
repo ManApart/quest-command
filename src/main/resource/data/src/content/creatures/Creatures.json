@@ -3,7 +3,7 @@
     "name": "Rat",
     "description": "Mangy and red eyed.",
     "body": "Rat",
-    "ai": "Cowardly Predator",
+    "aiName": "Cowardly Predator",
     "properties": {
       "stats": {
         "Health": 3,

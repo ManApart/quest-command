@@ -1,5 +1,6 @@
 package core.commands
 
+import core.gameState.Target
 import core.history.ChatHistory
 import core.utility.NameSearchableList
 import core.utility.reflection.ReflectionTools
@@ -14,6 +15,7 @@ object CommandParser {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
     val commands by lazy { loadCommands() }
     var responseRequest: ResponseRequest? = null
+    var commandSource: Target? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
         val commands = NameSearchableList(reflections.getCommands().asSequence()
@@ -61,7 +63,11 @@ object CommandParser {
                 unknownCommand.execute(listOf(line))
             } else {
                 val trimmedArgs = args.removeFirstItem()
-                command.execute(args[0], trimmedArgs)
+                if (commandSource != null) {
+                    command.execute(commandSource!!, args[0], trimmedArgs)
+                } else {
+                    command.execute(args[0], trimmedArgs)
+                }
             }
         }
     }

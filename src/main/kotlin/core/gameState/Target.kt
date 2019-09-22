@@ -2,6 +2,7 @@ package core.gameState
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
+import core.gameState.ai.AI
 import core.gameState.behavior.BehaviorRecipe
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
@@ -21,7 +22,8 @@ open class Target(
         name: String,
         base: Target? = null,
         params: Map<String, String> = mapOf(),
-        ai: String? = base?.ai?.name,
+        ai: AI? = null,
+        aiName: String? = base?.ai?.name,
         @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = base?.behaviorRecipes
                 ?: mutableListOf(),
         body: String? = base?.body?.name,
@@ -35,7 +37,7 @@ open class Target(
 ) : Named {
 
     override val name = name.apply(params)
-    val ai = if (ai != null) AIManager.getAI(ai, this) else null
+    val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = if (body == null) Body() else BodyManager.getBody(body)
     val description get() = dynamicDescription.getDialogue()
