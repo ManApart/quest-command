@@ -12,7 +12,7 @@ import core.utility.Named
 val NONE = Body("None")
 
 class Body(override val name: String = "None", val layout: Network = Network(name)) : Named {
-    constructor(base: Body) : this(base.name, base.layout)
+    constructor(base: Body) : this(base.name, Network(base.layout))
 
     private val parts = createParts()
 

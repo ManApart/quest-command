@@ -683,6 +683,6 @@ add stat categories?
 add option to travel silently (just 'you travel to tree')
 
 
-
+dummy is sharing same body as player
 
 

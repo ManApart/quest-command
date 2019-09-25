@@ -48,7 +48,7 @@ class AttackCommand : Command() {
         } else {
             val arguments = Args(args, listOf("with"))
             val attackType = fromString(keyword)
-            val handHelper = HandHelper(arguments.getGroupString(1), attackType.damageType.damage.toLowerCase())
+            val handHelper = HandHelper(source, arguments.getGroupString(1), attackType.damageType.damage.toLowerCase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
             val target = getTarget(keyword, arguments, weaponName)
 
@@ -125,15 +125,16 @@ class AttackCommand : Command() {
 
     private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {
         when {
-            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target!!.target))
-            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, source))
-            target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
-            GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
+            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEventAndSetPlayerTurn(UseEvent(source, handHelper.weapon!!, target!!.target))
+            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEventAndSetPlayerTurn(UseEvent(source, handHelper.weapon!!, source))
+            target != null -> EventManager.postEventAndSetPlayerTurn(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
+            GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEventAndSetPlayerTurn(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
             else -> display("Couldn't find ${arguments.argStrings[0]}.")
         }
     }
 
     private fun isAttackingActivatorWithWeapon(target: TargetAim?, handHelper: HandHelper) =
             target != null && handHelper.weapon != null && target.target.properties.isActivator()
+
 
 }

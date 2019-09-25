@@ -1,7 +1,9 @@
 package system
 
+import core.commands.CommandParser
 import core.events.Event
 import core.events.EventListener
+import core.gameState.GameState
 import core.utility.reflection.Reflections
 import java.lang.reflect.ParameterizedType
 import java.util.*
@@ -45,6 +47,11 @@ object EventManager {
      * Posted events will be executed in a FIFO manner
      */
     fun <E : Event> postEvent(event: E) {
+        eventQueue.add(event)
+    }
+
+    fun <E : Event> postEventAndSetPlayerTurn(event: E) {
+        CommandParser.commandSource = GameState.player
         eventQueue.add(event)
     }
 

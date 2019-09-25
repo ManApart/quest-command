@@ -13,6 +13,19 @@ class Location(
         val items: List<LocationTarget> = listOf(),
         val bodyPart: BodyPart? = null
 ) : Named {
+    constructor(base: Location) : this(
+            base.name,
+            base.description,
+            base.activators.toList(),
+            base.creatures.toList(),
+            base.items.toList(),
+            if (base.bodyPart != null) {
+                BodyPart(base.bodyPart)
+            } else {
+                null
+            }
+
+    )
 
     override fun toString(): String {
         return name

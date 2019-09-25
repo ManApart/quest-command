@@ -5,6 +5,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.parseBodyParts
 import core.gameState.GameState
+import core.gameState.Target
 import core.history.display
 import system.EventManager
 
@@ -27,11 +28,15 @@ class BlockCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        execute(GameState.player, keyword, args)
+    }
+
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         if (GameState.battle == null) {
             display("This is only relevant in battle.")
         } else {
             val arguments = Args(args, listOf("with"))
-            val handHelper = HandHelper(arguments.getGroupString(1), "block")
+            val handHelper = HandHelper(source, arguments.getGroupString(1), "block")
             val shieldedPart = parseBodyParts(GameState.player, arguments.getGroup(0)).firstOrNull() ?: handHelper.hand
             EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, shieldedPart))
         }

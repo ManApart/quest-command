@@ -14,7 +14,13 @@ enum class DamageType {
     STAB,
     WATER;
 
-    val verb get() = name.toLowerCase() + "es"
+    val verb
+        get() = if (this == CHOP) {
+            name.toLowerCase()
+        } else {
+            name.toLowerCase() + "es"
+        }
+
     val verbPlural get() = name.toLowerCase()
     val damage get() = name.toLowerCase() + "Damage"
     val health get() = name.toLowerCase() + "Health"

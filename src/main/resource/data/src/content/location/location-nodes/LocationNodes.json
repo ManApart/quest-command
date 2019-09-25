@@ -136,6 +136,12 @@
         }
       },
       {
+        "name": "Training Circle",
+        "vector": {
+          "x": 1
+        }
+      },
+      {
         "name": "Windmill",
         "vector": {
           "x": 1,

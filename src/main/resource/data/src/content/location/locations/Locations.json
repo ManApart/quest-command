@@ -107,6 +107,13 @@
     ]
   },
   {
+    "name": "Training Circle",
+    "description": "The small sandy field is soft in its center; the pooled sand is churned from its often use. The edges of the circle are worn and nearly hard as rock.",
+    "creatures": [
+      "Magical Dummy"
+    ]
+  },
+  {
     "name": "Windmill",
     "activators": [
       "Grain Bin",

@@ -55,6 +55,6 @@ object BodyManager {
     }
 
     fun getBody(name: String): Body {
-        return bodies.get(name)
+        return Body(bodies.get(name))
     }
 }

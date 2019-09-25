@@ -5,17 +5,17 @@ import core.gameState.GameState
 import core.gameState.Target
 import core.utility.NameSearchableList
 
-class HandHelper(source: String, desiredSkill: String) {
+class HandHelper(creature: Target, source: String, desiredSkill: String) {
     lateinit var hand: BodyPart; private set
     var weapon: Target? = null
 
     init {
-        determineHand(source, desiredSkill)
+        determineHand(creature, source, desiredSkill)
     }
 
-    private fun determineHand(source: String, desiredSkill: String) {
-        val rightHand = GameState.player.body.getPart("right hand")
-        val leftHand = GameState.player.body.getPart("left hand")
+    private fun determineHand(creature: Target, source: String, desiredSkill: String) {
+        val rightHand = creature.body.getPart("right hand")
+        val leftHand = creature.body.getPart("left hand")
         val rightWeapon = rightHand.getEquippedItem("right hand grip")
         val leftWeapon = leftHand.getEquippedItem("left hand grip")
         val weapons = NameSearchableList<Target>()

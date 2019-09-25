@@ -18,5 +18,22 @@
     "items": [
       "Poor Quality Meat"
     ]
+  },
+  {
+    "name": "Magical Dummy",
+    "description": "It's jerky movement is deeply unsettling.",
+    "body": "Human",
+    "aiName": "Player Controlled",
+    "properties": {
+      "stats": {
+        "Health": 10,
+        "Strength": 1,
+        "Bare Handed": 2
+      },
+      "tags": [
+      ]
+    },
+    "items": [
+    ]
   }
 ]
