@@ -21,7 +21,7 @@ object SessionHistory {
 
     fun saveSessionStats() {
         val date = SimpleDateFormat("dd-MM-yyyy").format(Date())
-        val fileName = "./session_stats_$date.txt"
+        val fileName = "./session-stats-$date.txt"
         File(fileName).printWriter().use { out ->
             eventCounts.forEach { (eventName, count) ->
                 out.println("$eventName: $count")
@@ -30,6 +30,5 @@ object SessionHistory {
                 out.println(line)
             }
         }
-        println("Saved!")
     }
 }

@@ -6,5 +6,6 @@ import system.GameManager
 class Save : EventListener<SaveEvent>() {
     override fun execute(event: SaveEvent) {
         GameManager.saveGame()
+        println("Saved!")
     }
 }

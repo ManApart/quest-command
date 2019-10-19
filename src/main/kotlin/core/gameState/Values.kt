@@ -37,6 +37,13 @@ class Values(properties: Map<String, String> = mapOf()) {
         return default
     }
 
+    fun getBoolean(key: String, default: Boolean = false): Boolean {
+        if (properties.containsKey(key.toLowerCase())) {
+            return properties[key.toLowerCase()]!!.toBoolean()
+        }
+        return default
+    }
+
     fun getString(key: String, default: String = ""): String {
         return properties[key.toLowerCase()] ?: default
     }
@@ -48,7 +55,12 @@ class Values(properties: Map<String, String> = mapOf()) {
     fun put(key: String, value: String) {
         properties[key.toLowerCase()] = value
     }
+
     fun put(key: String, value: Int) {
+        properties[key.toLowerCase()] = value.toString()
+    }
+
+    fun put(key: String, value: Boolean) {
         properties[key.toLowerCase()] = value.toString()
     }
 

@@ -2,6 +2,7 @@ package system
 
 import core.commands.CommandParser
 import core.events.EventListener
+import core.gameState.AUTO_SAVE
 import core.gameState.GameState
 import core.gameState.Player
 import core.gameState.location.LocationPoint
@@ -32,6 +33,8 @@ object GameManager {
         ScopeManager.reset()
         EventManager.reset()
 //        LocationManager.clear()
+
+        GameState.properties.values.put(AUTO_SAVE, true)
 
         newPlayer()
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))

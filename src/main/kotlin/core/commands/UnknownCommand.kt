@@ -1,7 +1,10 @@
 package core.commands
 
+import core.gameState.AUTO_SAVE
+import core.gameState.GameState
 import core.history.SessionHistory
 import core.history.display
+import system.GameManager
 
 class UnknownCommand : Command() {
 
@@ -27,8 +30,11 @@ class UnknownCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val line = args.joinToString(" ")
-        SessionHistory.addUnknownCommand(line)
         if (line.isNotBlank()) {
+            SessionHistory.addUnknownCommand(line)
+            if (GameState.properties.values.getBoolean(AUTO_SAVE)){
+                SessionHistory.saveSessionStats()
+            }
             display("Unknown command: $line")
         }
     }
