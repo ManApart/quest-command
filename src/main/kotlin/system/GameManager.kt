@@ -1,5 +1,6 @@
 package system
 
+import core.commands.CommandParser
 import core.events.EventListener
 import core.gameState.GameState
 import core.gameState.Player
@@ -23,6 +24,7 @@ object GameManager {
     }
 
     fun newGame() {
+        CommandParser.reset()
         ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()

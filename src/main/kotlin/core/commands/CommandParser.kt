@@ -13,7 +13,7 @@ import system.activator.ActivatorParser
 object CommandParser {
     private val unknownCommand = UnknownCommand()
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
-    val commands by lazy { loadCommands() }
+    var commands = loadCommands()
     var responseRequest: ResponseRequest? = null
     var commandSource: Target? = null
 
@@ -27,6 +27,12 @@ object CommandParser {
         }
 
         return commands
+    }
+
+    fun reset() {
+        responseRequest = null
+        commandSource = null
+        commands = loadCommands()
     }
 
     fun parseInitialCommand(args: Array<String>) {

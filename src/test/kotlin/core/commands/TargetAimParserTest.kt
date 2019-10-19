@@ -1,5 +1,7 @@
 package core.commands
 
+import assertContainsByName
+import assertEqualsByName
 import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.gameState.location.LocationNode
@@ -17,7 +19,6 @@ import system.body.BodyParser
 import system.location.LocationFakeParser
 import system.location.LocationParser
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 //TODO - use for more than just spells (attacks, interact etc)
 //TODO - test inventory target parsing
@@ -72,6 +73,8 @@ class TargetAimParserTest {
         }
     }
 
+
+
     @Test
     fun noTarget() {
         val results = parseTargets("".split(" "))
@@ -93,8 +96,8 @@ class TargetAimParserTest {
         assertEquals(1, results.size)
         assertEquals(1, results.first().bodyPartTargets.size)
 
-        assertEquals(targetA, results.first().target)
-        assertEquals(bodyPartB, results.first().bodyPartTargets.first())
+        assertEqualsByName(targetA, results.first().target)
+        assertEqualsByName(bodyPartB, results.first().bodyPartTargets.first())
     }
 
     @Test
@@ -106,9 +109,9 @@ class TargetAimParserTest {
 
         assertEquals(targetA, results.first().target)
         val parts = results.first().bodyPartTargets
-        assertTrue(parts.contains(bodyPartA))
-        assertTrue(parts.contains(bodyPartB))
-        assertTrue(parts.contains(bodyPartC))
+        assertContainsByName(parts, bodyPartA)
+        assertContainsByName(parts, bodyPartB)
+        assertContainsByName(parts, bodyPartC)
     }
 
     @Test
@@ -120,8 +123,8 @@ class TargetAimParserTest {
         val result = results.first()
         assertEquals(2, result.bodyPartTargets.size)
         assertEquals(targetA, result.target)
-        assertEquals(bodyPartA, result.bodyPartTargets.first())
-        assertEquals(bodyPartB, result.bodyPartTargets.last())
+        assertEqualsByName(bodyPartA, result.bodyPartTargets.first())
+        assertEqualsByName(bodyPartB, result.bodyPartTargets.last())
     }
 
     @Test
@@ -149,7 +152,7 @@ class TargetAimParserTest {
         assertEquals(2, results.size)
         assertEquals(targetA, results.first().target)
         assertEquals(1, results.first().bodyPartTargets.size)
-        assertEquals(bodyPartC, results.first().bodyPartTargets.first())
+        assertEqualsByName(bodyPartC, results.first().bodyPartTargets.first())
 
         assertEquals(targetB, results.last().target)
         assertEquals(0, results.last().bodyPartTargets.size)
@@ -166,13 +169,13 @@ class TargetAimParserTest {
 
         assertEquals(targetA, resultA.target)
         assertEquals(2, resultA.bodyPartTargets.size)
-        assertEquals(bodyPartA, resultA.bodyPartTargets.first())
-        assertEquals(bodyPartB, resultA.bodyPartTargets.last())
+        assertEqualsByName(bodyPartA, resultA.bodyPartTargets.first())
+        assertEqualsByName(bodyPartB, resultA.bodyPartTargets.last())
 
         assertEquals(targetB, resultB.target)
         assertEquals(2, resultB.bodyPartTargets.size)
-        assertEquals(bodyPartB, resultB.bodyPartTargets.first())
-        assertEquals(bodyPartC, resultB.bodyPartTargets.last())
+        assertEqualsByName(bodyPartB, resultB.bodyPartTargets.first())
+        assertEqualsByName(bodyPartC, resultB.bodyPartTargets.last())
     }
 
 
