@@ -1,5 +1,6 @@
 package core.commands
 
+import core.history.SessionHistory
 import core.history.display
 
 class UnknownCommand : Command() {
@@ -26,6 +27,7 @@ class UnknownCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val line = args.joinToString(" ")
+        SessionHistory.addUnknownCommand(line)
         if (line.isNotBlank()) {
             display("Unknown command: $line")
         }

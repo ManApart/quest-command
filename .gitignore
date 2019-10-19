@@ -130,3 +130,5 @@ gradle-app.setting
 
 
 # End of https://www.gitignore.io/api/code,kotlin,gradle,intellij
+
+session_stats*

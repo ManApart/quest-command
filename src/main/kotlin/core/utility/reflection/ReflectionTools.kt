@@ -6,8 +6,7 @@ import java.io.File
 
 
 object ReflectionTools {
-    private const val srcPrefix = "./src/main/kotlin/core/utility/reflection/"
-    private const val fileName = "GeneratedReflections.kt"
+    private const val fileName = "./src/main/kotlin/core/utility/reflection/GeneratedReflections.kt"
     private val reflections = Reflections(SubTypesScanner(false))
 
 
@@ -18,7 +17,7 @@ object ReflectionTools {
                 getInstanceList("core.events.EventListener<*>")
         )
 
-        File(srcPrefix + fileName).printWriter().use { out ->
+        File(fileName).printWriter().use { out ->
             out.println("""
             package core.utility.reflection
 

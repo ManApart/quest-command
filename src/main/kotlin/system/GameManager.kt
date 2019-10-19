@@ -7,6 +7,7 @@ import core.gameState.Player
 import core.gameState.location.LocationPoint
 import core.gameState.quests.QuestManager
 import core.history.ChatHistory
+import core.history.SessionHistory
 import core.history.display
 import interact.scope.ScopeManager
 import system.item.ItemManager
@@ -16,7 +17,7 @@ object GameManager {
     var playing = false
 
     fun saveGame() {
-        TODO("not implemented") //To change body of created functions interact File | Settings | File Templates.
+        SessionHistory.saveSessionStats()
     }
 
     fun loadGame() {
