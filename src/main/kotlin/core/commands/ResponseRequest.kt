@@ -29,7 +29,7 @@ class ResponseRequest(responses: Map<String, String>) {
             return responses[responseKeys[cleaned.toInt()-1].name]
         }
 
-        if (responseKeys.exists(cleaned)) {
+        if (responseKeys.existsExact(cleaned)) {
             return responses[responseKeys.getOrNull(cleaned)!!.name]
         }
 

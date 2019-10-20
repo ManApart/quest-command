@@ -135,4 +135,22 @@ class CommandComboTest {
 
     }
 
+    @Test
+    fun viewMapByAliasIgnoringResponseRequest() {
+        val input = "commands && m"
+        CommandParser.parseCommand(input)
+
+        val expected = """
+            An Open Field is a part of Kanbara Countryside. It is neighbored by:
+              Name             Distance  Direction Path  
+              Farmer's Hut     1         W               
+              Apple Tree       1         N               
+              Barren Patch     1         S               
+              Training Circle  1         E               
+              Windmill         1         NE
+              """.trimIndent().trim()
+
+        assertEquals(expected, ChatHistory.getLastOutput().trimIndent().trim())
+    }
+
 }

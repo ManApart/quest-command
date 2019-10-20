@@ -31,7 +31,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         names.forEach { addProxy(item, it) }
     }
 
-    private fun addProxy(item: N, name: String) {
+    fun addProxy(item: N, name: String) {
         if (!exists(item)) {
             add(item)
         }
@@ -49,6 +49,13 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return getOrNull(name) != null
     }
 
+    fun existsExact(name: String): Boolean {
+        if (name.isNotBlank()) {
+            val cleaned = name.toLowerCase().trim()
+            return containsProxy(cleaned) || any { cleaned == it.name.toLowerCase() }
+        }
+        return false
+    }
 
     fun get(name: String): N {
         return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toString()}")
@@ -86,14 +93,14 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return getAnyRecursive(names)
     }
 
-    private fun getAnyRecursive(thisTry: List<String>, stripped: List<String> = listOf()) : NameSearchableList<N> {
+    private fun getAnyRecursive(thisTry: List<String>, stripped: List<String> = listOf()): NameSearchableList<N> {
         if (thisTry.isEmpty()) {
             return NameSearchableList()
         }
         val items = mutableListOf<N>()
         items.addAll(getAll(thisTry.joinToString(" ")))
         if (items.isEmpty() && thisTry.size > 1) {
-            items.addAll(getAnyRecursive(thisTry.subList(0, thisTry.size-1), stripped + thisTry.subList(thisTry.size-1, thisTry.size)))
+            items.addAll(getAnyRecursive(thisTry.subList(0, thisTry.size - 1), stripped + thisTry.subList(thisTry.size - 1, thisTry.size)))
         }
         items.addAll(getAnyRecursive(stripped))
         return items.toNameSearchableList()

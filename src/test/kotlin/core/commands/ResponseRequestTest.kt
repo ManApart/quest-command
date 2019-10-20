@@ -46,4 +46,20 @@ class ResponseRequestTest {
         assertEquals("just right", response.getCommand("  3  "))
     }
 
+    @Test
+    fun getExactName() {
+        val input = mapOf("hot" to "false", "cold" to "false", "warm" to "just right")
+        val response = ResponseRequest(input)
+
+        assertEquals("false", response.getCommand("  hot  "))
+    }
+
+    @Test
+    fun ignorePartialMatch() {
+        val input = mapOf("hot" to "false", "cold" to "false", "warm" to "just right")
+        val response = ResponseRequest(input)
+
+        assertEquals(null, response.getCommand("  c  "))
+    }
+
 }

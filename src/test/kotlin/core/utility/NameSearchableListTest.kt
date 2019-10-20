@@ -196,6 +196,31 @@ class NameSearchableListTest {
         assertEquals(target, list.get("Target"))
     }
 
+    @Test
+    fun existsExactCleansString() {
+        val target = NamedString("Target")
+
+        val list = listOf(target).toNameSearchableList()
+        assertTrue(list.existsExact(" TARGET "))
+    }
+
+    @Test
+    fun existsExactMatchesProxy() {
+        val target = NamedString("Target")
+
+        val list = listOf(target).toNameSearchableList()
+        list.addProxy(target, "Carget")
+        assertTrue(list.existsExact(" carget "))
+    }
+
+    @Test
+    fun existsExactDoesNotReturnPartialMatch() {
+        val target = NamedString("Target")
+
+        val list = listOf(target).toNameSearchableList()
+        assertFalse(list.existsExact("tar"))
+    }
+
 
 }
 
