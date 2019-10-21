@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object SessionHistory {
+    private val date = SimpleDateFormat("yyyy-MM-dd-hh-mm").format(Date())
+    private val fileName = "./session-stats-$date.txt"
+
     private val unknownCommands = mutableListOf<String>()
     private val eventCounts = mutableMapOf<String, Int>()
 
@@ -20,14 +23,20 @@ object SessionHistory {
     }
 
     fun saveSessionStats() {
-        val date = SimpleDateFormat("dd-MM-yyyy").format(Date())
-        val fileName = "./session-stats-$date.txt"
         File(fileName).printWriter().use { out ->
+            out.println("---Event Counts--")
             eventCounts.forEach { (eventName, count) ->
                 out.println("$eventName: $count")
             }
+
+            out.println("\n---Unknown Commands--")
             unknownCommands.forEach { line ->
                 out.println(line)
+            }
+
+            out.println("\n---Input History--")
+            ChatHistory.history.forEach { inOut ->
+                out.println(inOut.input)
             }
         }
     }
