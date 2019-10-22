@@ -2,6 +2,8 @@
 
 An open world rpg with intense levels of interact, experienced through the command prompt
 
+This doc should be in constant flux; it's a collection of ideas and notes for dreamed of or in progress features. As features are implemented, any necessary feature explanation should move to [the design doc](./design_doc.md) and any user facing explanation should move to the [main readme](readme.md).
+
 ## Planning and Ideas
 
 While the readme should cover how to build and run the game, as well with information on how the game works, these notes are the design docs of the game and should frequently change and be deleted (and changed to readme documentation) once the feature is implemented.
