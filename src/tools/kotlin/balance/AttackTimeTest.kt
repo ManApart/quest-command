@@ -10,7 +10,7 @@ import core.gameState.stat.AGILITY
 import core.gameState.stat.STRENGTH
 
 
-fun main(args: Array<String>) {
+fun main() {
     println("\nIncrease Agility")
     println("Agility \tStrength \tEncumbrance \tWeapon size \tWeapon weight \tTime needed")
     testAttackTime(1, 1, "Small", 1, 0)

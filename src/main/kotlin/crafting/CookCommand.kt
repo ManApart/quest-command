@@ -21,7 +21,7 @@ class CookCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tCraft <ingredient>, <ingredient2> on <range>"
+        return "\n\tCraft <ingredient>, <ingredient2> on <range> - Craft one or more ingredients on a range."
     }
 
     override fun getCategory(): List<String> {

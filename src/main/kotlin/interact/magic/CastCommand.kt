@@ -10,6 +10,7 @@ import system.EventManager
 
 class CastCommand : Command() {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
+    //Should this go to the command parser?
     private val spellCommands by lazy { loadSpellCommands() }
 
     private fun loadSpellCommands(): NameSearchableList<SpellCommand> {
@@ -27,7 +28,7 @@ class CastCommand : Command() {
     override fun getManual(): String {
         return "\n\tword list - list known words." +
                 "\n\tword <word> - view the manual for that word." +
-                "\n\tCast <word> <word args> on *<target>" +
+                "\n\tCast <word> <word args> on *<target> - cast a spell with specific arguments on a target" +
                 "\n\tSimple Example:" +
                 "\n\t\t'Cast shard 5 on bandit'. This would cast an ice shard with 5 points of damage at a random body part of the bandit." +
                 "\n\tComplicated Example:" +

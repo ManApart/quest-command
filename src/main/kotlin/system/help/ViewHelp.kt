@@ -25,19 +25,12 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
     }
 
     private fun printCommandGroupsSummary() {
-        val groups = HashMap<String, MutableList<String>>()
-        CommandParser.commands.forEach { command ->
-            run {
-                if (!groups.containsKey(command.getCategory()[0])) {
-                    groups[command.getCategory()[0]] = ArrayList()
-                }
-                groups[command.getCategory()[0]]?.add(command.name)
-            }
-        }
+        val groups = CommandParser.getGroupedCommands()
+
         var groupList = ""
-        groups.toSortedMap().forEach {
-            it.value.sort()
-            groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
+        groups.forEach { entry ->
+            val commandNames = entry.value.joinToString(", ") { it.name }
+            groupList += "${entry.key}:\n\t${commandNames}\n"
         }
         display("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }

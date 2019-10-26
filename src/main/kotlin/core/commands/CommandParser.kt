@@ -100,4 +100,20 @@ object CommandParser {
         return categories
     }
 
+    fun getGroupedCommands(): Map<String, List<Command>> {
+        val groups = HashMap<String, MutableList<Command>>()
+        commands.forEach { command ->
+            run {
+                if (!groups.containsKey(command.getCategory()[0])) {
+                    groups[command.getCategory()[0]] = ArrayList()
+                }
+                groups[command.getCategory()[0]]?.add(command)
+            }
+        }
+        groups.forEach { entry ->
+            entry.value.sortBy { it.name }
+        }
+        return groups.toSortedMap()
+    }
+
 }
