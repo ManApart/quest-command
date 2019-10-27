@@ -3,6 +3,7 @@ package interact.magic
 import combat.battle.BattleAction
 import core.events.Event
 import core.gameState.Target
+import interact.magic.spells.Spell
 
 class StartCastSpellEvent(override val source: Target, override val actionTarget: Target, val spell: Spell) : Event, BattleAction {
 

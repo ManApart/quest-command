@@ -11,7 +11,7 @@ import kotlin.math.max
 
 class TakeDamage : EventListener<TakeDamageEvent>() {
     override fun execute(event: TakeDamageEvent) {
-        val undefendedDamage = getUndefendedDamage(event.damage, event.sourcePart, event.attackType)
+        val undefendedDamage = getUndefendedDamage(event.source, event.damage, event.sourcePart, event.attackType)
 
         if (hasSpecificHealth(event.source, event.attackType)) {
             EventManager.postEvent(StatChangeEvent(event.source, event.damageSource, event.attackType.health, -undefendedDamage))
@@ -20,8 +20,8 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
         }
     }
 
-    private fun getUndefendedDamage(damage: Int, attackedPart: BodyPart, attackType: DamageType): Int {
-        var damageDefended = 0
+    private fun getUndefendedDamage(source: Target, damage: Int, attackedPart: BodyPart, attackType: DamageType): Int {
+        var damageDefended = source.soul.getStatOrNull(attackType.defense)?.current ?: 0
         attackedPart.getEquippedItems().forEach {
             damageDefended += it.properties.getDefense(attackType.defense)
         }

@@ -2,7 +2,6 @@ package combat.approach
 
 import combat.battle.Distances
 import core.events.EventListener
-import core.gameState.Target
 import core.gameState.stat.STAMINA
 import core.history.display
 import status.statChanged.StatChangeEvent
@@ -13,10 +12,9 @@ import kotlin.math.min
 class Move : EventListener<MoveEvent>() {
 
     override fun execute(event: MoveEvent) {
-        val actualDistance = event.source.position.getDistance(event.target)
-        val abilityToMove = getDistanceAbleToMove(event.source)
-        val amount = min(abilityToMove, actualDistance)
-        if (amount == actualDistance) {
+        val desiredDistance = event.source.position.getDistance(event.target)
+        val amount = getAmount(event, desiredDistance)
+        if (amount == desiredDistance) {
             event.source.position = event.target
             display("${event.source} moved to ${event.target}.")
         } else {
@@ -24,11 +22,18 @@ class Move : EventListener<MoveEvent>() {
             event.source.position = newPos
             display("${event.source} moved $amount towards ${event.target} and is now at ${event.source.position}.")
         }
-        EventManager.postEvent(StatChangeEvent(event.source, "moving", STAMINA, -amount/Distances.HUMAN_LENGTH, true))
+        if (event.useStamina) {
+            EventManager.postEvent(StatChangeEvent(event.source, "moving", STAMINA, -amount / Distances.HUMAN_LENGTH, true))
+        }
     }
 
-    private fun getDistanceAbleToMove(target: Target) : Int {
-        return target.soul.getCurrent(STAMINA) * Distances.HUMAN_LENGTH
+    private fun getAmount(event: MoveEvent, desiredDistance: Int): Int {
+        val abilityToMove = event.source.soul.getCurrent(STAMINA) * Distances.HUMAN_LENGTH
+        return if (event.useStamina) {
+            min(abilityToMove, desiredDistance)
+        } else {
+            desiredDistance
+        }
     }
 }
 

@@ -4,7 +4,7 @@ import combat.battle.position.TargetAim
 import core.commands.Args
 import core.gameState.GameState
 import core.gameState.stat.WATER_MAGIC
-import interact.magic.Spell
+import interact.magic.spells.Spell
 import interact.magic.StartCastSpellEvent
 import interact.magic.spellCommands.SpellCommand
 import status.effects.Condition

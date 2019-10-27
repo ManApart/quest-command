@@ -11,8 +11,7 @@ class CastSpell : EventListener<CastSpellEvent>() {
 
     override fun execute(event: CastSpellEvent) {
         if (canCast(event)){
-            EventManager.postEvent(StatChangeEvent(event.source, "casting", FOCUS, -event.spell.cost))
-            EventManager.postEvent(AddConditionEvent(event.target, event.spell.condition))
+            event.spell.cast(event)
         }
     }
 

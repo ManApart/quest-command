@@ -13,7 +13,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
 
     fun apply(soul: Soul, firstApply: Boolean) {
         soul.parent.getTopParent().properties.tags.add(base.name)
-        val stat = soul.getStatOrNull(base.statTarget)
+        val stat = getEffectedStat(soul)
         if (stat != null) {
             val appliedAmount = getAppliedAmount(stat)
             when {
@@ -34,6 +34,10 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
                 }
             }
         }
+    }
+
+    private fun getEffectedStat(soul: Soul) : Stat? {
+        return soul.getStatOrNull(base.statTarget)
     }
 
     private fun getAppliedAmount(stat: Stat): Int {

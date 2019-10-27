@@ -3,6 +3,7 @@ package combat
 import combat.battle.BattleAction
 import core.gameState.Target
 import core.gameState.body.BodyPart
+import core.gameState.stat.ACTION_POINTS
 
 import core.gameState.stat.HEALTH
 import core.gameState.stat.WISDOM
@@ -32,7 +33,8 @@ class Combatant(val target: Target) {
     }
 
     fun canChooseAction(): Boolean {
-        return actionPoints >= 100
+        val soulPoints = target.soul.getStatOrNull(ACTION_POINTS)?.current ?: 0
+        return actionPoints + soulPoints >= 100
     }
 
     fun resetStance() {

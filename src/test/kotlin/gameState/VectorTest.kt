@@ -10,8 +10,8 @@ import kotlin.test.assertTrue
 class VectorTest {
     private val center = Vector()
     private val north = Vector(0, 1)
-    private val west = Vector(-1 )
-    private val east = Vector(1 )
+    private val west = Vector(-1)
+    private val east = Vector(1)
     private val south = Vector(0, -1)
     private val above = Vector(0, 0, 1)
     private val below = Vector(0, 0, -1)
@@ -21,15 +21,15 @@ class VectorTest {
     private val southEast = Vector(1, -1)
 
     @Test
-    fun distanceIsCorrect(){
+    fun distanceIsCorrect() {
         val pos1 = Vector()
-        val pos2 = Vector(5,5,5)
+        val pos2 = Vector(5, 5, 5)
 
         assertEquals(pos1.getDistance(pos2), pos1.getDistance(pos2))
     }
 
     @Test
-    fun directions(){
+    fun directions() {
         assertEquals(Direction.NORTH, center.calculateDirection(north))
         assertEquals(north, Direction.NORTH.vector)
 
@@ -65,7 +65,7 @@ class VectorTest {
     }
 
     @Test
-    fun directionsAreBasedOnLargestDistance(){
+    fun directionsAreBasedOnLargestDistance() {
         val center = Vector()
         val northEast = Vector(7, 10)
         val northWest = Vector(-7, 10)
@@ -77,7 +77,7 @@ class VectorTest {
     }
 
     @Test
-    fun isInGeneralDirection(){
+    fun isInGeneralDirection() {
         assertTrue(north.isInGeneralDirection(Direction.NORTH))
         assertTrue(center.isInGeneralDirection(Direction.SOUTH, north))
 
@@ -105,7 +105,7 @@ class VectorTest {
     @Test
     fun inDirection100Percent() {
         val source = Vector()
-        val target = Vector(10,10,10)
+        val target = Vector(10, 10, 10)
         val distance = source.getDistance(target)
         val result = source.getVectorInDirection(target, distance)
         assertEquals(target, result)
@@ -114,8 +114,8 @@ class VectorTest {
     @Test
     fun inDirection200Percent() {
         val source = Vector()
-        val target = Vector(10,10,10)
-        val further = Vector(20,20,20)
+        val target = Vector(10, 10, 10)
+        val further = Vector(20, 20, 20)
         val distance = source.getDistance(further)
         val result = source.getVectorInDirection(target, distance)
         assertEquals(further, result)
@@ -130,17 +130,69 @@ class VectorTest {
     @Test
     fun inverseOfOther() {
         val source = Vector()
-        val target = Vector(10,10,10)
+        val target = Vector(10, 10, 10)
         val result = source.getInverse(target)
         assertEquals(target.invert(), result)
     }
 
     @Test
     fun inverseOfOther2() {
-        val source = Vector(10,10,10)
+        val source = Vector(10, 10, 10)
         val target = Vector()
         val result = source.getInverse(target)
         assertEquals(Vector(20, 20, 20), result)
+    }
+
+    @Test
+    fun closerWithSameStart() {
+        val source = Vector()
+        assertEquals(source, source.closer(source, 5))
+        assertEquals(source, source.closer(source, 10))
+        assertEquals(source, source.closer(source, -105))
+    }
+
+    @Test
+    fun furtherWithSameStartDefaultsNorth() {
+        val source = Vector()
+        assertEquals(Vector(y=5), source.further(source, 5))
+        assertEquals(Vector(y=10), source.further(source, 10))
+        assertEquals(Vector(y=-105), source.further(source, -105))
+    }
+
+    @Test
+    fun closerIsSourcePlusDistanceTowardTarget() {
+        val source = Vector(y = 0)
+        val direction  = Vector(y = 10)
+        val expected = Vector(y = 5)
+        val actual = source.closer(direction, 5)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun closerPlusGreatDistanceContinuesInDirection() {
+        val source = Vector(y = 0)
+        val direction  = Vector(y = 10)
+        val expected = Vector(y = 50)
+        val actual = source.closer(direction, 50)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun furtherIsTargetPlusAdditionalDistanceInSameDirectionFromSource() {
+        val source = Vector(y = 0)
+        val direction  = Vector(y = 10)
+        val expected = Vector(y = 15)
+        val actual = source.further(direction, 5)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun furtherWest() {
+        val source = Vector( 0)
+        val direction  = Vector(10)
+        val expected = Vector(15)
+        val actual = source.further(direction, 5)
+        assertEquals(expected, actual)
     }
 
 }

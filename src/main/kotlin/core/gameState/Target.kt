@@ -9,6 +9,7 @@ import core.gameState.body.BodyPart
 import core.gameState.body.Slot
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
+import core.gameState.stat.ENCUMBRANCE
 import core.utility.Named
 import core.utility.apply
 import core.utility.applyNested
@@ -17,6 +18,8 @@ import dialogue.DialogueOptions
 import system.ai.AIManager
 import system.behavior.BehaviorManager
 import system.body.BodyManager
+import kotlin.math.max
+import kotlin.math.min
 
 open class Target(
         name: String,
@@ -95,7 +98,9 @@ open class Target(
      * Return how encumbered the creature is, as a percent from 0-1
      */
     fun getEncumbrance(): Float {
-        return inventory.getWeight() / getTotalCapacity().toFloat()
+        val soulEncumbrance = (soul.getStatOrNull(ENCUMBRANCE)?.current ?: 0) / 100f
+        val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
+        return max(0f, min(1f, soulEncumbrance + physicalEncumbrance))
     }
 
     /**
@@ -103,7 +108,7 @@ open class Target(
      * Useful if multiplying this by some other stat. At 0% encumbered the stat is at 100%. At 100% encumbered the stat is 0%.
      */
     fun getEncumbranceInverted(): Float {
-        return 1 - (inventory.getWeight() / getTotalCapacity().toFloat())
+        return 1 - getEncumbrance()
     }
 
     fun canEquipTo(body: Body): Boolean {

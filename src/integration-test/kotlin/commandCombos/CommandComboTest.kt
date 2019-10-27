@@ -110,7 +110,7 @@ class CommandComboTest {
     fun enterKanbaraThroughWall() {
         val input = "w && w && sw && c && c && c && c && d && d && d && ls"
         CommandParser.parseCommand(input)
-        assertEquals("Kanbara City South", ChatHistory.getCurrent().outPut[3])
+        assertEquals("You are at Kanbara City South", ChatHistory.getCurrent().outPut[3])
     }
 
     @Test

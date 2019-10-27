@@ -7,7 +7,7 @@ import kotlin.math.sqrt
 
 val NO_VECTOR: Vector = Vector()
 
-class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
+class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     /**
      * The direction this vector is relative to 0.0.0
      * The same as calling (0.0.0).calculateDirection(this)
@@ -50,11 +50,14 @@ class Vector(val x: Int = 0, private val y: Int = 0, val z: Int = 0) {
     }
 
     fun closer(other: Vector, amount: Int): Vector {
-        return Vector()
+        return getVectorInDirection(other, amount)
     }
 
     fun further(other: Vector, amount: Int): Vector {
-        return Vector()
+        if (this == NO_VECTOR && other == NO_VECTOR){
+            return getVectorInDirection(Vector(y=1), amount)
+        }
+        return other + getVectorInDirection(other, amount)
     }
 
     private fun calculateDirection(): Direction {

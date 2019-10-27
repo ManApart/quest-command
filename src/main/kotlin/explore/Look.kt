@@ -27,7 +27,7 @@ class Look : EventListener<LookEvent>() {
         display(message)
     }
 
-    private fun describeStatusEffects(target: Target) : String {
+    private fun describeStatusEffects(target: Target): String {
         if (target.soul.getConditions().isNotEmpty()) {
             val effects = target.soul.getConditions().joinToString(", ") { it.name }
             return "\n\t${target.name} is $effects"
@@ -35,7 +35,7 @@ class Look : EventListener<LookEvent>() {
         return ""
     }
 
-    private fun describeProperties(target: Target) : String {
+    private fun describeProperties(target: Target): String {
         if (!target.properties.isEmpty()) {
             return "\n\t${target.properties}"
         }
@@ -51,7 +51,12 @@ class Look : EventListener<LookEvent>() {
     }
 
     private fun describeLocation() {
-        display(GameState.player.location.getDescription())
+        val pos = GameState.player.position
+        if (pos == NO_VECTOR) {
+            display("You are at ${GameState.player.location.getDescription()}")
+        } else {
+            display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.getDescription()}")
+        }
         if (ScopeManager.getScope().getTargets().size > 1) {
             val targetList = targetsToString(ScopeManager.getScope().getTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")
@@ -59,6 +64,8 @@ class Look : EventListener<LookEvent>() {
             display("You don't see anything of use.")
         }
     }
+
+
 
 
 }
