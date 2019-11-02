@@ -102,8 +102,8 @@ class PickupItemTest {
     }
 
     private fun getCreatureWithCapacity(): Target {
-        val creature = Target("Target", properties = Properties(Tags(listOf("Container", "Open", "Creature"))))
-        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
+        val creature = Target("Target", properties = Properties(tags = Tags(listOf("Container", "Open", "Creature"))))
+        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open"))))
         creature.inventory.add(pouch)
         return creature
     }

@@ -4,12 +4,14 @@
     "description": "Mangy and red eyed.",
     "body": "Rat",
     "aiName": "Cowardly Predator",
-    "properties": {
+    "soul": {
       "stats": {
         "Health": 3,
         "Strength": 1,
         "Bare Handed": 2
-      },
+      }
+    },
+    "properties": {
       "tags": [
         "Predator",
         "Small"
@@ -24,12 +26,14 @@
     "description": "It's jerky movement is deeply unsettling.",
     "body": "Human",
     "aiName": "Player Controlled",
-    "properties": {
+    "soul": {
       "stats": {
         "Health": 10,
         "Strength": 1,
         "Bare Handed": 2
-      },
+      }
+    },
+    "properties": {
       "tags": [
       ]
     },

@@ -6,7 +6,7 @@
       "itemName": "Item"
     },
     "properties": {
-      "stats": {
+      "values": {
         "fireHealth": "$fireHealth"
       },
       "tags": [
@@ -27,7 +27,7 @@
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
     "body": "tree",
     "properties": {
-      "stats": {
+      "values": {
         "chopHealth": 5,
         "fireHealth": 5
       },
@@ -165,7 +165,7 @@
     "name": "Range",
     "description": "The old metal is pitted, but its belly glows a contented orange.",
     "properties": {
-      "stats": {
+      "values": {
         "fireHealth": "2"
       },
       "tags": [

@@ -75,7 +75,7 @@ class CraftTest {
 
     private fun createBaker(): Target {
         val baker = Player(location = NOWHERE_NODE)
-        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
+        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open"))))
         baker.inventory.add(pouch)
         return baker
     }

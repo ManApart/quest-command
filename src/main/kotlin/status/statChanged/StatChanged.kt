@@ -1,6 +1,7 @@
 package status.statChanged
 
 import core.events.EventListener
+import core.gameState.Target
 import core.history.display
 import core.utility.StringFormatter
 import kotlin.math.abs
@@ -24,4 +25,5 @@ class StatChanged : EventListener<StatChangeEvent>() {
             display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
         }
     }
+
 }

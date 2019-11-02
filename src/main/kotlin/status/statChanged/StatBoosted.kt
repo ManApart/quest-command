@@ -3,6 +3,7 @@ package status.statChanged
 import core.events.EventListener
 import core.history.display
 import core.utility.StringFormatter
+import kotlin.math.abs
 
 class StatBoosted : EventListener<StatBoostEvent>() {
 
@@ -18,6 +19,6 @@ class StatBoosted : EventListener<StatBoostEvent>() {
 
         val current = soul.getCurrent(event.type)
         val max = soul.getTotal(event.type)
-        display("${event.source} $change $subject max ${event.type} by ${Math.abs(event.amount)} ($current/$max).")
+        display("${event.source} $change $subject max ${event.type} by ${abs(event.amount)} ($current/$max).")
     }
 }

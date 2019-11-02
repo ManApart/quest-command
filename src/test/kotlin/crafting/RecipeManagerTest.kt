@@ -26,7 +26,7 @@ class RecipeManagerTest {
     @Test
     fun findRecipeByTags() {
         val recipe = Recipe("Baked Pear", listOf(RecipeIngredient(tags = Tags(listOf("Raw", "Fruit")))))
-        val ingredients = listOf(Target("Pear", properties = Properties(Tags(listOf("Raw", "Fruit")))))
+        val ingredients = listOf(Target("Pear", properties = Properties(tags = Tags(listOf("Raw", "Fruit")))))
         val tool = Target("Range", properties = Properties(tags = Tags(listOf("Range"))))
         val baker = Player()
 
@@ -41,7 +41,7 @@ class RecipeManagerTest {
     @Test
     fun findRecipeByItemWithTags() {
         val recipe = Recipe("Baked Apple", listOf(RecipeIngredient("Apple", tags = Tags(listOf("Raw", "Fruit")))))
-        val ingredients = listOf(Target("Apple", properties = Properties(Tags(listOf("Raw", "Fruit")))))
+        val ingredients = listOf(Target("Apple", properties = Properties(tags = Tags(listOf("Raw", "Fruit")))))
         val tool = Target("Range", properties = Properties(tags = Tags(listOf("Range"))))
         val baker = Player()
 

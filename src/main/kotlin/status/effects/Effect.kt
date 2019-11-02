@@ -3,7 +3,7 @@ package status.effects
 import combat.takeDamage.TakeDamageEvent
 import core.gameState.Soul
 import core.gameState.body.BodyPart
-import core.gameState.stat.Stat
+import core.gameState.stat.LeveledStat
 import status.statChanged.StatChangeEvent
 import system.EventManager
 import kotlin.math.min
@@ -36,15 +36,15 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
         }
     }
 
-    private fun getEffectedStat(soul: Soul) : Stat? {
+    private fun getEffectedStat(soul: Soul) : LeveledStat? {
         return soul.getStatOrNull(base.statTarget)
     }
 
-    private fun getAppliedAmount(stat: Stat): Int {
+    private fun getAppliedAmount(leveledStat: LeveledStat): Int {
         return if (base.amountType == AmountType.FLAT_NUMBER) {
             amount
         } else {
-            ((amount / 100f) * stat.getBaseMaxAtCurrentLevel()).toInt()
+            ((amount / 100f) * leveledStat.getBaseMaxAtCurrentLevel()).toInt()
         }
     }
 
@@ -58,20 +58,20 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
         }
     }
 
-    private fun restoreValue(soul: Soul, stat: Stat, amount: Int) {
-        if (stat.current >= originalValue) {
-            val adjustment = min(amount, stat.current - originalValue)
-            changeStat(soul, stat, -adjustment)
+    private fun restoreValue(soul: Soul, leveledStat: LeveledStat, amount: Int) {
+        if (leveledStat.current >= originalValue) {
+            val adjustment = min(amount, leveledStat.current - originalValue)
+            changeStat(soul, leveledStat, -adjustment)
         }
     }
 
-    private fun changeStat(soul: Soul, stat: Stat, amount: Int) {
-        if (stat.isHealth()) {
+    private fun changeStat(soul: Soul, leveledStat: LeveledStat, amount: Int) {
+        if (leveledStat.isHealth()) {
             bodyPartTargets.forEach { bodyPart ->
                 EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, amount, base.damageType, base.name))
             }
         } else {
-            EventManager.postEvent(StatChangeEvent(soul.parent, base.name, stat.name, amount))
+            EventManager.postEvent(StatChangeEvent(soul.parent, base.name, leveledStat.name, amount))
         }
     }
 

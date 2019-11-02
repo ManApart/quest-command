@@ -9,7 +9,6 @@ import core.gameState.body.BodyPart
 import core.gameState.body.Slot
 import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
-import core.gameState.stat.ENCUMBRANCE
 import core.utility.Named
 import core.utility.apply
 import core.utility.applyNested
@@ -36,6 +35,7 @@ open class Target(
         items: List<String> = base?.inventory?.getItems()?.map { it.name } ?: listOf(),
         var location: LocationNode = base?.location ?: NOWHERE_NODE,
         val parent: Target? = null,
+        @JsonProperty("soul") soulStats: ProtoSoul = ProtoSoul(),
         properties: Properties = base?.properties ?: Properties()
 ) : Named {
 
@@ -47,14 +47,10 @@ open class Target(
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val inventory: Inventory = Inventory(items)
     val properties = Properties(properties, params)
-    val soul = Soul(this)
+    val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
     private val dynamicDescription = dynamicDescription.apply(params)
-
-    init {
-        soul.addStats(this.properties.stats.getAll())
-    }
 
     override fun toString(): String {
         return getDisplayName()
@@ -140,16 +136,16 @@ open class Target(
     }
 
     fun getWeight(): Int {
-        return properties.stats.getInt("weight", 1) + inventory.getWeight()
+        return properties.values.getInt("weight", 1) + inventory.getWeight()
     }
 
     fun copy(count: Int): Target {
         val props = Properties(properties)
-        props.stats.put("count", count)
+        props.values.put("count", count)
         return Target(name, base = this, properties = props)
     }
 
-    fun getPositionInLocation(part: BodyPart) : Vector{
+    fun getPositionInLocation(part: BodyPart): Vector {
         return body.getPositionInLocation(part, position)
     }
 }

@@ -1,9 +1,9 @@
 package combat
 
 import combat.battle.BattleAction
+import core.gameState.ACTION_POINTS
 import core.gameState.Target
 import core.gameState.body.BodyPart
-import core.gameState.stat.ACTION_POINTS
 
 import core.gameState.stat.HEALTH
 import core.gameState.stat.WISDOM

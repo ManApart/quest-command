@@ -11,10 +11,10 @@ class Values(properties: Map<String, String> = mapOf()) {
     private val properties = parseProperties(properties)
 
     override fun toString(): String {
-        return if (properties.isEmpty()){
+        return if (properties.isEmpty()) {
             ""
-        } else{
-            properties.entries.joinToString(", ") { "${it.value} ${it.key}"}
+        } else {
+            properties.entries.joinToString(", ") { "${it.value} ${it.key}" }
         }
     }
 
@@ -72,6 +72,10 @@ class Values(properties: Map<String, String> = mapOf()) {
         return properties.containsKey(value.toLowerCase())
     }
 
+    fun hasInt(value: String): Boolean {
+        return has(value) && getInt(value, Int.MAX_VALUE) != Int.MAX_VALUE
+    }
+
     fun hasAll(other: Values): Boolean {
         return properties.hasAllOf(other.properties)
     }
@@ -80,7 +84,7 @@ class Values(properties: Map<String, String> = mapOf()) {
         return properties.isEmpty()
     }
 
-    fun getAll() : Map<String, String> {
+    fun getAll(): Map<String, String> {
         return properties.toMap()
     }
 

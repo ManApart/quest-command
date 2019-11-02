@@ -34,7 +34,7 @@ object GameManager {
         EventManager.reset()
 //        LocationManager.clear()
 
-        GameState.properties.values.put(AUTO_SAVE, true)
+//        GameState.properties.values.put(AUTO_SAVE, true)
 
         newPlayer()
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))

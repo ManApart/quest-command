@@ -6,7 +6,7 @@
       "itemName": "Item"
     },
     "properties": {
-      "stats": {
+      "values": {
         "fireHealth": "$fireHealth"
       },
       "tags": [
@@ -26,7 +26,7 @@
     "name": "Apple",
     "description": "It glistens and smells of spring blossoms.",
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1"
       },
       "values": {
@@ -44,7 +44,7 @@
     "name": "Apple Pie",
     "description": "Its golden brown crust smells delicious.",
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1"
       },
       "values": {
@@ -68,7 +68,7 @@
     "description": "It's stems lightly scratch your hands.",
     "extends": "Burnable",
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1"
       }
     },
@@ -81,7 +81,7 @@
     "name": "Wheat Flour",
     "description": "The finely ground wheat looks almost like silver sand.",
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1"
       },
       "tags": [
@@ -93,7 +93,7 @@
     "name": "Dough",
     "description": "It may not be of much value alone, but it forms the base of many a great meal.",
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1"
       }
     }
@@ -102,7 +102,7 @@
     "name": "Poor Quality Meat",
     "description": "It's pale and oily.",
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1"
       },
       "tags": [

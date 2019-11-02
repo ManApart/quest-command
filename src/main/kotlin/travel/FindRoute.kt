@@ -2,12 +2,9 @@ package travel
 
 import core.events.EventListener
 import core.gameState.GameState
-import core.gameState.location.LocationNode
 import core.gameState.location.Route
 import core.gameState.location.RouteFinder
-import core.gameState.stat.Stat
 import core.history.display
-import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class FindRoute : EventListener<FindRouteEvent>() {

@@ -64,7 +64,7 @@ class CommandComboTest {
     fun chopTree() {
         val input = "n && pickup hatchet && equip hatchet && y && ch tree"
         CommandParser.parseCommand(input)
-        assertEquals("Dulled Hatchet decreases Apple Tree's chopHealth by 4 (1/5).", ChatHistory.getLastOutput())
+        assertEquals("Dulled Hatchet decreases Apple Tree's chopHealth from 5 to 1.", ChatHistory.getLastOutput())
     }
 
     @Test

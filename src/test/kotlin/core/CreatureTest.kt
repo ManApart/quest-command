@@ -66,6 +66,6 @@ class CreatureTest {
 
 
     private fun createItem(weight: Int) : Target {
-        return Target("Target", properties = Properties(stats = Values(mapOf("weight" to weight.toString()))))
+        return Target("Target", properties = Properties(Values(mapOf("weight" to weight.toString()))))
     }
 }

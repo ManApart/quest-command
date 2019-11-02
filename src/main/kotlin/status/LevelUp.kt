@@ -9,6 +9,6 @@ class LevelUp : EventListener<LevelUpEvent>() {
     }
 
     override fun execute(event: LevelUpEvent) {
-        display("${event.stat.name} leveled up to ${event.level}.")
+        display("${event.leveledStat.name} leveled up to ${event.level}.")
     }
 }

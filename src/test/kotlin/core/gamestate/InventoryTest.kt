@@ -121,7 +121,7 @@ class InventoryTest {
     @Test
     fun findItemsWithCapacityAndTypeForItem(){
         val searchItem = Target("Apple", properties = Properties(tags = Tags(listOf("Raw"))))
-        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "5"))))
+        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open"))))
         val inventory = Inventory()
         inventory.add(pouch)
         inventory.add(createItem("Noise", 0))
@@ -132,7 +132,7 @@ class InventoryTest {
     }
 
     private fun createItem(name: String, weight: Int) : core.gameState.Target {
-        return Target(name, properties = Properties(stats = Values(mapOf("weight" to weight.toString()))))
+        return Target(name, properties = Properties(Values(mapOf("weight" to weight.toString()))))
     }
 
 }

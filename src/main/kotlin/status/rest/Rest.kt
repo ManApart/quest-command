@@ -2,7 +2,7 @@ package status.rest
 
 import core.events.EventListener
 import core.gameState.stat.HEALTH
-import core.gameState.stat.Stat
+import core.gameState.stat.LeveledStat
 import core.history.display
 import core.utility.StringFormatter.format
 import status.statChanged.StatChangeEvent
@@ -23,8 +23,8 @@ class Rest : EventListener<RestEvent>() {
         }
     }
 
-    private fun isRecoverable(stat: Stat): Boolean {
-        return stat.name != HEALTH
-                && stat.current < stat.max
+    private fun isRecoverable(leveledStat: LeveledStat): Boolean {
+        return leveledStat.name != HEALTH
+                && leveledStat.current < leveledStat.max
     }
 }

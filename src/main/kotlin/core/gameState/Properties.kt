@@ -7,58 +7,56 @@ import combat.battle.Distances.SPEAR_RANGE
 import combat.battle.Distances.SWORD_RANGE
 import core.utility.wrapNonEmpty
 
-data class Properties(val tags: Tags = Tags(), val values: Values = Values(), var stats: Values =  Values()) {
+//Effects
+const val ACTION_POINTS = "Action Points"
+const val ENCUMBRANCE = "Encumbrance"
+
+data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
+    constructor(tags: Tags) : this(Values(), tags)
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
-            Tags(base.tags, params),
             Values(base.values, params),
-            Values(base.stats, params)
+            Tags(base.tags, params)
     )
 
     override fun toString(): String {
         return tags.toString().wrapNonEmpty("(Tags: ", ") ") +
-                values.toString().wrapNonEmpty("(Values: ", ") ") +
-                stats.toString().wrapNonEmpty("(Stats: ", ") ")
+                values.toString().wrapNonEmpty("(Values: ", ") ")
     }
 
     fun matches(other: Properties): Boolean {
-        return tags.matches(other.tags) && values.matches(other.values) && matchesStats(other)
+        return tags.matches(other.tags) && values.matches(other.values)
     }
 
     fun hasAll(other: Properties): Boolean {
-        return tags.hasAll(other.tags) && values.hasAll(other.values) && stats.hasAll(other.stats)
+        return tags.hasAll(other.tags) && values.hasAll(other.values)
     }
 
     fun isEmpty(): Boolean {
-        return tags.isEmpty() && values.isEmpty() && stats.isEmpty()
+        return tags.isEmpty() && values.isEmpty()
     }
 
     fun setFrom(other: Properties) {
-        stats.setFrom(other.stats)
         tags.addAll(other.tags)
         values.setFrom(other.values)
     }
 
-    private fun matchesStats(other: Properties): Boolean {
-        return stats.matches(other.stats)
-    }
-
     fun getCount(): Int {
-        return stats.getInt("count", 1)
+        return values.getInt("count", 1)
     }
 
     fun incCount(amount: Int) {
-        stats.inc("count", amount)
+        values.inc("count", amount)
     }
 
-    fun isItem() : Boolean {
+    fun isItem(): Boolean {
         return tags.has("Item")
     }
 
-    fun isActivator() : Boolean {
+    fun isActivator(): Boolean {
         return tags.has("Activator")
     }
 
-    fun isCreature() : Boolean {
+    fun isCreature(): Boolean {
         return tags.has("Creature")
     }
 
@@ -71,7 +69,7 @@ data class Properties(val tags: Tags = Tags(), val values: Values = Values(), va
         }
     }
 
-    fun getRange() : Int {
+    fun getRange(): Int {
         return when {
             tags.hasAny(Tags(listOf("Small", "Short"))) -> DAGGER_RANGE
             tags.has("Medium") -> SWORD_RANGE
@@ -82,10 +80,10 @@ data class Properties(val tags: Tags = Tags(), val values: Values = Values(), va
     }
 
     fun getDefense(type: String): Int {
-        return if (stats.has(type)) {
-            stats.getInt(type)
+        return if (values.has(type)) {
+            values.getInt(type)
         } else {
-            stats.getInt("defense", 0)
+            values.getInt("defense", 0)
         }
     }
 

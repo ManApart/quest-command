@@ -6,7 +6,7 @@
       "itemName": "Item"
     },
     "properties": {
-      "stats": {
+      "values": {
         "fireHealth": "$fireHealth"
       },
       "tags": [
@@ -31,7 +31,7 @@
       "itemName": "Brown Pants"
     },
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1",
         "defense": "1"
       }
@@ -55,7 +55,7 @@
       "values": {
         "Capacity": "5"
       },
-      "stats": {
+      "values": {
         "weight": "1",
         "defense": "1"
       }
@@ -84,7 +84,7 @@
       "itemName": "Old Shirt"
     },
     "properties": {
-      "stats": {
+      "values": {
         "weight": "1",
         "defense": "1"
       }

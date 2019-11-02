@@ -4,7 +4,6 @@ import core.events.EventListener
 import core.gameState.GameState
 
 import core.gameState.stat.COOKING
-import core.gameState.stat.Stat
 import core.history.display
 import status.ExpGainedEvent
 import system.EventManager

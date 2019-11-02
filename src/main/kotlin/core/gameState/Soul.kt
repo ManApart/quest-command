@@ -1,12 +1,17 @@
 package core.gameState
 
-import core.gameState.stat.Stat
+import core.gameState.stat.LeveledStat
 import core.utility.NameSearchableList
 import status.effects.Condition
 import status.effects.ElementInteraction
 
-class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableListOf()) {
+class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats: Map<String, Int> = mapOf()) {
+    private val leveledStats = leveledStats.map { LeveledStat(parent, it) }.toMutableList()
     private val conditions = NameSearchableList<Condition>()
+
+    init {
+        addStats(stats)
+    }
 
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
@@ -22,12 +27,12 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         }
     }
 
-    fun addStats(stats: Map<String, String>) {
-        stats.forEach { addStat(it.key, Integer.parseInt(it.value)) }
+    fun addStats(stats: Map<String, Int>) {
+        stats.forEach { addStat(it.key, it.value) }
     }
 
     fun addStat(name: String, level: Int = 1, maxMultiplier: Int = 1, expExponential: Int = 2) {
-        stats.add(Stat(name, parent, level, maxMultiplier, expExponential))
+        leveledStats.add(LeveledStat(name, parent, level, maxMultiplier, expExponential))
     }
 
     fun hasStat(name: String): Boolean {
@@ -54,23 +59,23 @@ class Soul(val parent: Target, private val stats: MutableList<Stat> = mutableLis
         return getStatOrNull(name)?.max ?: default
     }
 
-    private fun getOrCreateStat(name: String): Stat {
+    private fun getOrCreateStat(name: String): LeveledStat {
         if (getStatOrNull(name) == null) {
             addStat(name)
         }
         return getStatOrNull(name)!!
     }
 
-    fun getStatOrNull(name: String?): Stat? {
+    fun getStatOrNull(name: String?): LeveledStat? {
         return if (name == null) {
             null
         } else {
-            stats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
+            leveledStats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
         }
     }
 
-    fun getStats(): List<Stat> {
-        return stats.toList()
+    fun getStats(): List<LeveledStat> {
+        return leveledStats.toList()
     }
 
     fun applyConditions() {

@@ -48,9 +48,9 @@ private fun testAttackTime(agility: Int, strength: Int, weaponSize: String, weap
     creature.soul.addStat(STRENGTH, strength)
 
     val part = BodyPart("hand", slots = listOf("hand"))
-    val weapon = Target("Weapon", properties = Properties(stats = Values(mapOf("weight" to weaponWeight.toString())), tags = Tags(listOf("Weapon", weaponSize))))
+    val weapon = Target("Weapon", properties = Properties(Values(mapOf("weight" to weaponWeight.toString())), Tags(listOf("Weapon", weaponSize))))
     creature.inventory.add(weapon)
-    creature.inventory.add(Target("Dead weight", properties = Properties(stats = Values(mapOf("weight" to otherWeight.toString())))))
+    creature.inventory.add(Target("Dead weight", properties = Properties(Values(mapOf("weight" to otherWeight.toString())))))
     part.equipItem("hand", weapon)
 
     val event = StartAttackEvent(creature, part, TargetAim(Target("Target")), DamageType.SLASH)

@@ -31,11 +31,8 @@ const val FIRE_MAGIC = "FireMagic"
 const val WATER_MAGIC = "WaterMagic"
 
 
-//Effects
-const val ACTION_POINTS = "Action Points"
-const val ENCUMBRANCE = "Encumbrance"
-
-class Stat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
+class LeveledStat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
+    constructor(parent: Target, base: LeveledStat) : this(base.name, parent, base.level, base.maxMultiplier, base.expExponential)
     var max: Int = getBaseMaxAtCurrentLevel(); private set
     var current: Int = max; private set
     private var xp: Double = getXPAt(level)

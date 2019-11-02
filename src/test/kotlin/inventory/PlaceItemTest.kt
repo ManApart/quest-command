@@ -50,7 +50,7 @@ class PlaceItemTest {
         val creature = createCreature()
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -65,8 +65,8 @@ class PlaceItemTest {
         val item = createItem("Apple", weight = 10)
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Creature")), stats = Values(mapOf("Strength" to "1"))))
-        val pouch = Target("Pouch", properties = Properties(Tags(listOf("Container", "Open")), Values(mapOf("Capacity" to "15"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Strength" to "1")), Tags(listOf("Container", "Open", "Creature"))))
+        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open"))))
         chest.inventory.add(pouch)
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
@@ -91,7 +91,7 @@ class PlaceItemTest {
         creature.inventory.add(item)
 
 
-        val chest = Target("Chest", body = "body", properties = Properties(Tags(listOf("Container", "Open", "Creature")), stats = Values(mapOf("Strength" to "1"))))
+        val chest = Target("Chest", body = "body", properties = Properties(Values(mapOf("Strength" to "1")), Tags(listOf("Container", "Open", "Creature"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -105,7 +105,7 @@ class PlaceItemTest {
         val item = createItem("Apple", weight = 5)
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -116,10 +116,10 @@ class PlaceItemTest {
     @Test
     fun placeItemStackInContainer() {
         val creature = createCreature()
-        val item = Target("Apple", properties = Properties(stats = Values(mapOf("weight" to "5", "count" to "2"))))
+        val item = Target("Apple", properties = Properties(Values(mapOf("weight" to "5", "count" to "2"))))
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -136,7 +136,7 @@ class PlaceItemTest {
         val item = createItem("Apple", 1)
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Open", "Activator")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -150,7 +150,7 @@ class PlaceItemTest {
         val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Activator")), Values(mapOf("Capacity" to "5"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -164,7 +164,7 @@ class PlaceItemTest {
         val item = createItem("Apple", weight = 5)
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "1"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "1")), Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -189,10 +189,10 @@ class PlaceItemTest {
     @Test
     fun placeItemInContainerThatHasASingleMatchingTag() {
         val creature = createCreature()
-        val item = Target("Apple", properties = Properties(stats = Values(mapOf("weight" to "1")), tags = Tags(listOf("Food", "Fruit"))))
+        val item = Target("Apple", properties = Properties(Values(mapOf("weight" to "1")), Tags(listOf("Food", "Fruit"))))
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5", "CanHold" to "Food,Apparel"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5", "CanHold" to "Food,Apparel")), Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -203,10 +203,10 @@ class PlaceItemTest {
     @Test
     fun doNotPlaceItemInContainerThatHasNoMatchingTags() {
         val creature = Target("Creature")
-        val item = Target("Apple", properties = Properties(stats = Values(mapOf("weight" to "1")), tags = Tags(listOf("Food", "Fruit"))))
+        val item = Target("Apple", properties = Properties(Values(mapOf("weight" to "1")), Tags(listOf("Food", "Fruit"))))
         creature.inventory.add(item)
 
-        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator")), Values(mapOf("Capacity" to "5", "CanHold" to "Weapon,Apparel"))))
+        val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5", "CanHold" to "Weapon,Apparel")), Tags(listOf("Container", "Open", "Activator"))))
 
         TransferItem().execute(TransferItemEvent(item, creature, chest))
 
@@ -215,7 +215,7 @@ class PlaceItemTest {
     }
 
     private fun createItem(name: String, weight: Int): core.gameState.Target {
-        return Target(name, properties = Properties(stats = Values(mapOf("weight" to weight.toString()))))
+        return Target(name, properties = Properties(Values(mapOf("weight" to weight.toString()))))
     }
 
     private fun createCreature() = Target("Creature", properties = Properties(Tags(listOf("Container", "Open", "Creature"))))

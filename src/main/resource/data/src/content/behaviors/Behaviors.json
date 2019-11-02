@@ -18,7 +18,7 @@
   {
     "name": "Chop Tree",
     "condition": {
-      "callingEvent": "StatMinnedEvent",
+      "callingEvent": "PropertyStatMinnedEvent",
       "params": {
         "stat": "chopHealth"
       }
@@ -53,7 +53,7 @@
   {
     "name": "Burn to Ash",
     "condition": {
-      "callingEvent": "StatMinnedEvent",
+      "callingEvent": "PropertyStatMinnedEvent",
       "params": {
         "stat": "fireHealth"
       }
@@ -79,7 +79,7 @@
   {
     "name": "Burn Out",
     "condition": {
-      "callingEvent": "StatMinnedEvent",
+      "callingEvent": "PropertyStatMinnedEvent",
       "params": {
         "stat": "fireHealth"
       }
