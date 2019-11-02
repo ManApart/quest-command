@@ -590,3 +590,4 @@ add option to travel silently (just 'you travel to tree')
 
 move (position) within a location command
 
+Are casting spells taking a turn in combat?

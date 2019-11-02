@@ -76,6 +76,13 @@
     "statTarget": "Health",
     "statEffect": "DRAIN",
     "damageType": "WATER"
+  },
+  {
+    "name": "Heal",
+    "description": "Rejuvenate and restore health.",
+    "statTarget": "Health",
+    "statEffect": "RECOVER",
+    "damageType": "WATER"
   }
 
 

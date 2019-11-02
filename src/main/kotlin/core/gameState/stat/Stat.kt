@@ -5,6 +5,9 @@ import status.LevelUpEvent
 import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
 import system.EventManager
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.pow
 
 //Attributes
 const val AGILITY = "Agility"
@@ -57,7 +60,7 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
 
     fun incStat(amount: Int) {
         if (amount != 0) {
-            current = Math.max(Math.min(current + amount, max), 0)
+            current = max(min(current + amount, max), 0)
 
             if (current == 0) {
                 EventManager.postEvent(StatMinnedEvent(parent, name))
@@ -69,8 +72,8 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
 
     fun incStatMax(amount: Int) {
         if (amount != 0) {
-            max = Math.max(max + amount, 0)
-            current = Math.min(max, current)
+            max = max(max + amount, 0)
+            current = min(max, current)
 
             if (current == 0) {
                 EventManager.postEvent(StatMinnedEvent(parent, name))
@@ -103,7 +106,7 @@ class Stat(val name: String, private val parent: Target, private var level: Int 
     }
 
     private fun getXPAt(level: Int): Double {
-        return Math.pow(level.toDouble(), expExponential.toDouble())
+        return level.toDouble().pow(expExponential.toDouble())
     }
 
     fun getCurrentXP() : Double {
