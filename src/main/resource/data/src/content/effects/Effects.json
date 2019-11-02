@@ -14,14 +14,15 @@
   {
     "name": "Encased Encumbrance",
     "description": "Encased in a think layer of dirt.",
+    "statKind": "PROP_VAL",
     "statTarget": "Encumbrance",
     "statEffect": "DEPLETE",
-    "amountType": "PERCENT",
     "damageType": "EARTH"
   },
   {
     "name": "Encased Slash Defense",
     "description": "Encased in a think layer of dirt.",
+    "statKind": "PROP_VAL",
     "statTarget": "slashDefense",
     "statEffect": "BOOST",
     "damageType": "EARTH"
@@ -29,6 +30,7 @@
   {
     "name": "Encased Chop Defense",
     "description": "Encased in a think layer of dirt.",
+    "statKind": "PROP_VAL",
     "statTarget": "chopDefense",
     "statEffect": "BOOST",
     "damageType": "EARTH"
@@ -43,6 +45,7 @@
   {
     "name": "On Fire",
     "description": "Flames linger and lick, curling into the air.",
+    "statKind": "PROP_VAL",
     "statTarget": "BurnHealth",
     "statEffect": "DRAIN",
     "damageType": "FIRE"
