@@ -3,7 +3,6 @@ package status.propValChanged
 import core.events.EventListener
 import core.history.display
 import core.utility.StringFormatter
-import sun.plugin2.message.EventMessage
 import system.EventManager
 
 class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
