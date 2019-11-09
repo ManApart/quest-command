@@ -29,6 +29,8 @@
     "soul": {
       "stats": {
         "Health": 10,
+        "Stamina": 100,
+        "Focus": 100,
         "Strength": 1,
         "Bare Handed": 2
       }

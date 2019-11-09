@@ -4,7 +4,9 @@ import core.commands.CommandParser
 import core.events.Event
 import core.events.EventListener
 import core.gameState.GameState
+import core.history.display
 import core.utility.reflection.Reflections
+import system.message.DisplayMessageEvent
 import java.lang.reflect.ParameterizedType
 import java.util.*
 
@@ -15,7 +17,7 @@ object EventManager {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
 
     fun registerListeners() {
-        reflections.getEventListeners().forEach{ registerListener(it)}
+        reflections.getEventListeners().forEach { registerListener(it) }
     }
 
     fun reset() {
@@ -50,11 +52,6 @@ object EventManager {
         eventQueue.add(event)
     }
 
-    fun <E : Event> postEventAndSetPlayerTurn(event: E) {
-        CommandParser.commandSource = GameState.player
-        eventQueue.add(event)
-    }
-
     /**
      * Called by the main method to execute the queue of events
      */
@@ -79,7 +76,7 @@ object EventManager {
         return listeners.size
     }
 
-    fun getUnexecutedEvents() : List<Event>{
+    fun getUnexecutedEvents(): List<Event> {
         return eventQueue.toList()
     }
 

@@ -33,9 +33,14 @@ const val WATER_MAGIC = "WaterMagic"
 
 class LeveledStat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
     constructor(parent: Target, base: LeveledStat) : this(base.name, parent, base.level, base.maxMultiplier, base.expExponential)
+
     var max: Int = getBaseMaxAtCurrentLevel(); private set
     var current: Int = max; private set
     private var xp: Double = getXPAt(level)
+
+    override fun toString(): String {
+        return "$name: lvl $level, $current/$max"
+    }
 
     fun addEXP(amount: Int) {
         if (amount > 0) {
@@ -57,12 +62,15 @@ class LeveledStat(val name: String, private val parent: Target, private var leve
 
     fun incStat(amount: Int) {
         if (amount != 0) {
+            val oldVal = current
             current = max(min(current + amount, max), 0)
 
-            if (current == 0) {
-                EventManager.postEvent(StatMinnedEvent(parent, name))
-            } else if (current == max) {
-                EventManager.postEvent(StatMaxedEvent(parent, name))
+            if (current != oldVal) {
+                if (current == 0) {
+                    EventManager.postEvent(StatMinnedEvent(parent, name))
+                } else if (current == max) {
+                    EventManager.postEvent(StatMaxedEvent(parent, name))
+                }
             }
         }
     }
@@ -88,7 +96,7 @@ class LeveledStat(val name: String, private val parent: Target, private var leve
         incStat(desiredLevel)
     }
 
-    fun isHealth() : Boolean {
+    fun isHealth(): Boolean {
         return name.toLowerCase().endsWith("health")
     }
 
@@ -106,7 +114,7 @@ class LeveledStat(val name: String, private val parent: Target, private var leve
         return level.toDouble().pow(expExponential.toDouble())
     }
 
-    fun getCurrentXP() : Double {
+    fun getCurrentXP(): Double {
         return xp
     }
 

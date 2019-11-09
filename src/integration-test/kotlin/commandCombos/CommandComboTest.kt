@@ -34,8 +34,16 @@ class CommandComboTest {
     }
 
     @Test
+    fun chopApple() {
+        val input = "chop apple"
+        CommandParser.parseCommand(input)
+        assertTrue(GameState.player.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+    }
+
+    @Test
     fun eatApple() {
-        val input = "eat apple"
+        val input = "sl head of self && eat apple && n && eat apple"
         CommandParser.parseCommand(input)
         assertNull(GameState.player.inventory.getItem("Apple"))
         assertEquals("You feel the fullness of life beating in your bosom.", ChatHistory.getLastOutput())
@@ -108,7 +116,7 @@ class CommandComboTest {
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && w && sw && c && c && c && c && d && d && d && ls"
+        val input = "w && w && sw && cl && cl && cl && cl && d && d && d && ls"
         CommandParser.parseCommand(input)
         assertEquals("You are at Kanbara City South", ChatHistory.getCurrent().outPut[3])
     }
@@ -126,7 +134,7 @@ class CommandComboTest {
                 "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple" +
                 "&& t interior && t && t && take pie tin" +
-                "&& read recipe && wait" +
+                "&& read recipe && rs" +
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
 

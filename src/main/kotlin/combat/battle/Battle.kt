@@ -1,6 +1,7 @@
 package combat.battle
 
 import combat.Combatant
+import core.commands.CommandParser
 import core.gameState.Target
 import core.gameState.GameState
 
@@ -70,7 +71,7 @@ class Battle(combatantCreatures: List<Target>) {
             if (it.isActionReady()) {
                 takeAnotherTurn = false
                 EventManager.postEvent(it.action!!.getActionEvent())
-                it.lastAttacked = it.action?.actionTarget ?: it.lastAttacked
+                it.lastAttacked = it.action?.target?.target ?: it.lastAttacked
                 it.action = null
             } else if (it.canChooseAction()) {
                 it.resetStance()
@@ -91,6 +92,9 @@ class Battle(combatantCreatures: List<Target>) {
 
     fun describe() {
         display(combatants.joinToString(" and ") { it.target.name } + " are ${getCombatantDistance()} away from each other.")
+        if (!CommandParser.isPlayersTurn()) {
+            display("It is ${CommandParser.commandSource}'s turn.")
+        }
         combatants.forEach {
             println("\t${it.status()}")
         }

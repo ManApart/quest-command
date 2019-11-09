@@ -18,7 +18,7 @@ open class Spell(
         val isHostile: Boolean = true
 ) {
     open fun cast(event: CastSpellEvent) {
-        EventManager.postEvent(StatChangeEvent(event.source, "casting", FOCUS, -event.spell.cost))
-        EventManager.postEvent(AddConditionEvent(event.target, event.spell.condition))
+        EventManager.postEvent(StatChangeEvent(event.source, "Casting", FOCUS, -event.spell.cost))
+        EventManager.postEvent(AddConditionEvent(event.target.target, event.spell.condition))
     }
 }

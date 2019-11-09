@@ -39,6 +39,10 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         return getStatOrNull(name) != null
     }
 
+    fun hasCondition(condition: Condition): Boolean {
+        return conditions.contains(condition)
+    }
+
     fun hasCondition(name: String): Boolean {
         return conditions.exists(name)
     }

@@ -15,8 +15,8 @@ import system.activator.ActivatorParser
 object CommandParser {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
     var commands = loadCommands()
-    private val unknownCommand = commands.first { it::class == UnknownCommand::class } as UnknownCommand
-    private val castCommand = commands.first { it::class == CastCommand::class } as CastCommand
+    private val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
+    private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     var responseRequest: ResponseRequest? = null
     var commandSource: Target? = null
 

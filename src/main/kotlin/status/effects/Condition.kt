@@ -31,7 +31,7 @@ class Condition(
     fun apply(soul: Soul) {
         var effectApplied = false
         getEffects().forEach { effect ->
-            if (permanent || age <= effect.duration) {
+            if (permanent || age < effect.duration) {
                 effect.apply(soul, isFirstApply)
                 effectApplied = true
             }
@@ -42,6 +42,7 @@ class Condition(
         }
 
         isFirstApply = false
+        age++
     }
 
     fun removeEffects(soul: Soul) {

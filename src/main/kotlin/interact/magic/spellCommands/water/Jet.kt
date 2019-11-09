@@ -3,9 +3,11 @@ package interact.magic.spellCommands.water
 import combat.battle.position.TargetAim
 import core.commands.Args
 import core.gameState.GameState
+import core.gameState.Target
 import core.gameState.stat.WATER_MAGIC
 import interact.magic.spells.Spell
 import interact.magic.StartCastSpellEvent
+import interact.magic.getTargetedParts
 import interact.magic.spellCommands.SpellCommand
 import status.effects.Condition
 import status.effects.EffectManager
@@ -27,25 +29,26 @@ class Jet : SpellCommand() {
         return listOf("Water")
     }
 
-    override fun execute(args: Args, targets: List<TargetAim>) {
+    override fun execute(source: Target, args: Args, targets: List<TargetAim>) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
-        val hitCount = targets.sumBy { it.target.body.getParts().size }
+        val hitCount = targets.sumBy { getTargetedParts(it).size }
         val totalCost = damageAmount * hitCount
-        val levelRequirement = damageAmount / 2
+//        val levelRequirement = damageAmount + (hitCount / 2)
+        val levelRequirement = damageAmount/2
 
         executeWithWarns(WATER_MAGIC, levelRequirement, totalCost, targets) {
             targets.forEach { target ->
-                val parts = target.target.body.getParts()
+                val parts = getTargetedParts(target)
                 val effects = listOf(
                         EffectManager.getEffect("Water Slice", damageAmount, 1, parts),
                         EffectManager.getEffect("Wet", 0, 5, parts)
                 )
 
-                val cost = damageAmount * target.target.body.getParts().size
+                val cost = damageAmount * parts.size
                 val condition = Condition("Water Blasted", Element.WATER, cost, effects)
                 val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement)
-                EventManager.postEvent(StartCastSpellEvent(GameState.player, target.target, spell))
+                EventManager.postEvent(StartCastSpellEvent(source, target, spell))
             }
         }
     }

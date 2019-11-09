@@ -5,6 +5,7 @@ import combat.battle.position.TargetAim
 import core.commands.*
 import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.stat.HEALTH
 import core.history.display
 import interact.UseEvent
 import interact.scope.ScopeManager
@@ -125,10 +126,11 @@ class AttackCommand : Command() {
 
     private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {
         when {
-            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEventAndSetPlayerTurn(UseEvent(source, handHelper.weapon!!, target!!.target))
-            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEventAndSetPlayerTurn(UseEvent(source, handHelper.weapon!!, source))
-            target != null -> EventManager.postEventAndSetPlayerTurn(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
-            GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEventAndSetPlayerTurn(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
+            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target!!.target))
+            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, source))
+            target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target.target))
+            target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
+            GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
             else -> display("Couldn't find ${arguments.argStrings[0]}.")
         }
     }

@@ -62,7 +62,7 @@ class Attack : EventListener<AttackEvent>() {
             display("$directionString$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
         } else {
             val verb = StringFormatter.format(event.source.isPlayer(), event.type.verbPlural, event.type.verb)
-            display("$subject $verb at $defenderName.")
+//            display("$subject $verb at $defenderName.")
             attackedParts.forEach { attackedPart ->
                 processAttackHit(event, attackedPart, subject, verb, defenderName, damageSource, defender, offensiveDamage)
             }

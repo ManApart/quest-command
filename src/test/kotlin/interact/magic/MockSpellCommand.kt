@@ -21,7 +21,7 @@ class MockSpellCommand(override val name: String = "testspell", private val cate
         return category
     }
 
-    override fun execute(args: Args, targets: List<TargetAim>) {
+    override fun execute(source: Target, args: Args, targets: List<TargetAim>) {
         this.args = args
         this.targets = targets
     }

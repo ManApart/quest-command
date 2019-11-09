@@ -1,6 +1,10 @@
 package interact.magic
 
+import combat.battle.position.TargetAim
 import core.commands.*
+import core.gameState.GameState
+import core.gameState.Target
+import core.gameState.body.BodyPart
 import core.history.display
 import core.utility.NameSearchableList
 import core.utility.reflection.Reflections
@@ -18,7 +22,7 @@ class CastCommand : Command() {
     }
 
     override fun getAliases(): Array<String> {
-        return arrayOf("Cast", "word")
+        return arrayOf("Cast", "word", "c")
     }
 
     override fun getDescription(): String {
@@ -39,10 +43,18 @@ class CastCommand : Command() {
         return listOf("Combat")
     }
 
+    fun hasWord(keyword: String) : Boolean {
+        return spellCommands.exists(keyword)
+    }
+
     override fun execute(keyword: String, args: List<String>) {
+        execute(GameState.player, keyword, args)
+    }
+
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         when (keyword) {
             "word" -> executeWord(args)
-            else -> castWord(args)
+            else -> castWord(source, keyword != "cast", args)
         }
     }
 
@@ -70,7 +82,7 @@ class CastCommand : Command() {
         return categories.contains(word)
     }
 
-    private fun castWord(args: List<String>) {
+    private fun castWord(source: Target, isAlias: Boolean, args: List<String>) {
         if (args.isEmpty()) {
             clarifyWord()
         } else {
@@ -78,9 +90,11 @@ class CastCommand : Command() {
             if (spellCommand != null) {
                 val arguments = Args(args, delimiters = listOf("on"))
                 val spellArgs = parseSpellArgs(arguments)
-                //"cast ${spellCommand.name} ${spellArgs.fullString}"
-                val targets = parseTargets(arguments.getGroup(1))
-                spellCommand.execute(spellArgs, targets)
+                val targets = parseTargets(arguments.getGroup(1)).toMutableList()
+                if (isAlias && targets.isEmpty()) {
+                    targets.add(TargetAim(source, parseBodyParts(source, args)))
+                }
+                spellCommand.execute(source, spellArgs, targets)
             } else {
                 display("Unknown word ${args.first()}")
             }
@@ -108,5 +122,13 @@ class CastCommand : Command() {
             return Args(words.subList(1, words.size))
         }
         return Args(listOf())
+    }
+}
+
+fun getTargetedParts(targetAim: TargetAim) : List<BodyPart> {
+    return if (targetAim.bodyPartTargets.isNotEmpty()){
+        targetAim.bodyPartTargets
+    } else {
+        targetAim.target.body.getParts()
     }
 }

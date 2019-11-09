@@ -590,4 +590,10 @@ add option to travel silently (just 'you travel to tree')
 
 move (position) within a location command
 
-Are casting spells taking a turn in combat?
+chop apple throws exception
+
+not properly to-stringing something?
+use stairs should climb them
+
+push / pull is not honoring a specific distance 
+

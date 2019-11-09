@@ -11,6 +11,9 @@ import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.DependencyInjector
 import system.EventManager
+import system.ai.AIFakeParser
+import system.ai.AIManager
+import system.ai.AIParser
 import system.behavior.BehaviorManager
 import system.behavior.BehaviorParser
 import system.body.BodyManager
@@ -28,6 +31,10 @@ class AttackCommandTest {
         val bodyParser = BodyFakeParser.parserWithFakePlayer()
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
+
+        val aiParser = AIFakeParser()
+        DependencyInjector.setImplementation(AIParser::class.java, aiParser)
+        AIManager.reset()
 
         val behaviorParser = BehaviorFakeParser()
         DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)

@@ -12,6 +12,10 @@ import kotlin.math.min
 class Effect(val base: EffectBase, val amount: Int, val duration: Int, private val bodyPartTargets: List<BodyPart> = listOf()) {
     private var originalValue = 0
 
+    override fun toString(): String {
+        return "${base.name} ${base.statEffect} $amount (${base.amountType}) to ${base.statTarget} for $duration (${base.statKind})"
+    }
+
     fun apply(soul: Soul, firstApply: Boolean) {
         soul.parent.getTopParent().properties.tags.add(base.name)
 
@@ -100,9 +104,9 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
     }
 
     private fun changeStat(soul: Soul, leveledStat: LeveledStat, amount: Int) {
-        if (leveledStat.isHealth()) {
+        if (leveledStat.isHealth() && amount < 0) {
             bodyPartTargets.forEach { bodyPart ->
-                EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, amount, base.damageType, base.name))
+                EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, -amount, base.damageType, base.name))
             }
         } else {
             EventManager.postEvent(StatChangeEvent(soul.parent, base.name, leveledStat.name, amount))

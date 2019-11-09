@@ -1,5 +1,6 @@
 package status.rest
 
+import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
@@ -10,7 +11,7 @@ import system.help.getCommandGroups
 
 class RestCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Rest", "Sleep", "Camp", "Wait", "rs")
+        return arrayOf("Rest", "Sleep", "Camp", "rs")
     }
 
     override fun getDescription(): String {
@@ -19,7 +20,7 @@ class RestCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tRest - Rest for an hour." +
-                "\n\tRest <amount> - Rest for a set amount of time."
+                "\n\tRest <duration> - Rest for a set amount of time."
     }
 
     override fun getCategory(): List<String> {
@@ -30,10 +31,11 @@ class RestCommand : Command() {
         if (!GameState.player.canRest) {
             display("You can't rest right now!")
         } else {
+            val arguments = Args(args)
             when {
                 args.isEmpty() && keyword == "rest" -> clarifyHours()
                 args.isEmpty() -> rest(1)
-                args.size == 1 && args[0].toIntOrNull() != null -> rest(args[0].toInt())
+                args.size == 1 && arguments.getNumber() != null -> rest(arguments.getNumber()!!)
                 else -> display("Unknown params for rest: ${args.joinToString(" ")}")
             }
         }

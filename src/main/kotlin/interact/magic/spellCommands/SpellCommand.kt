@@ -5,6 +5,7 @@ import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.gameState.GameState
+import core.gameState.Target
 import core.gameState.stat.FOCUS
 import core.history.display
 import core.utility.Named
@@ -14,7 +15,7 @@ abstract class SpellCommand : Named {
     abstract fun getDescription(): String
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>
-    abstract fun execute(args: Args, targets: List<TargetAim>)
+    abstract fun execute(source: Target, args: Args, targets: List<TargetAim>)
 
     fun executeWithWarns(levelStat: String, levelRequirement: Int, totalCost: Int, targets: List<TargetAim>, minTargetCount: Int = 1, maxTargetCount: Int = 100, execute: () -> Unit) {
         val level = GameState.player.soul.getCurrent(levelStat)

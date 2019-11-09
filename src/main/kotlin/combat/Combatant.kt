@@ -44,7 +44,7 @@ class Combatant(val target: Target) {
 
     fun chooseAction() {
         if (!target.isPlayer()) {
-            display("${target.name} considers its choices.")
+//            display("${target.name} considers its choices.")
             target.ai.takeAction()
         }
         actionPoints = 0

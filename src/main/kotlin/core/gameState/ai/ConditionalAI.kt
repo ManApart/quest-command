@@ -12,13 +12,12 @@ class ConditionalAI(name: String, creature: Target, val actions: List<TriggeredE
 
     override fun takeAction() {
         //TODO - replace hardcoding with script informed / generic
-        if (actions.isEmpty()){
+        if (actions.isEmpty()) {
             defaultHardCodedAction()
         } else {
             //TODO - evaluate triggered events
         }
     }
-
 
     private fun defaultHardCodedAction() {
         if (GameState.battle != null) {
@@ -30,7 +29,14 @@ class ConditionalAI(name: String, creature: Target, val actions: List<TriggeredE
                     playerBody.getPart("Left Leg")
             )
             val targetPart = listOf(possibleParts.random())
-            EventManager.postEvent(StartAttackEvent(creature, creature.body.getPart("Small Claws"), TargetAim(GameState.player, targetPart), DamageType.SLASH))
+            val defaultPart = if (creature.body.hasPart("Small Claws")) {
+                creature.body.getPart("Small Claws")
+            } else {
+                creature.body.getRootPart() ?: creature.body.getParts().firstOrNull()
+            }
+            if (defaultPart != null) {
+                EventManager.postEvent(StartAttackEvent(creature, defaultPart, TargetAim(GameState.player, targetPart), DamageType.SLASH))
+            }
         }
     }
 

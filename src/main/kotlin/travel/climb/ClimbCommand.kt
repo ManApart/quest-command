@@ -17,7 +17,7 @@ class ClimbCommand : Command() {
     private class ClimbOption(val target: Target, val direction: Direction)
 
     override fun getAliases(): Array<String> {
-        return arrayOf("Climb", "c", "scale", "descend")
+        return arrayOf("Climb", "cl", "scale", "descend")
     }
 
     override fun getDescription(): String {

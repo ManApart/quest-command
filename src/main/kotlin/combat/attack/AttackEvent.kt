@@ -8,11 +8,6 @@ import core.gameState.body.BodyPart
 
 
 class AttackEvent(val source: Target, val sourcePart: BodyPart, val target: TargetAim, val type: DamageType) : Event {
-    override fun gameTicks(): Int {
-        return if (source.isPlayer()) {
-            1
-        } else {
-            0
-        }
-    }
+    override fun gameTicks(): Int = 1
+    override fun isExecutableByAI(): Boolean = true
 }
