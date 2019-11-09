@@ -1,25 +1,27 @@
 package core.commands
 
+import core.gameState.GameState
 import core.gameState.Target
 import core.history.ChatHistory
 import core.utility.NameSearchableList
 import core.utility.reflection.ReflectionTools
 import core.utility.reflection.Reflections
 import core.utility.removeFirstItem
+import interact.magic.CastCommand
 import system.DependencyInjector
 import system.EventManager
 import system.activator.ActivatorParser
 
 object CommandParser {
-    private val unknownCommand = UnknownCommand()
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
     var commands = loadCommands()
+    private val unknownCommand = commands.first { it::class == UnknownCommand::class } as UnknownCommand
+    private val castCommand = commands.first { it::class == CastCommand::class } as CastCommand
     var responseRequest: ResponseRequest? = null
     var commandSource: Target? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
         val commands = NameSearchableList(reflections.getCommands().asSequence()
-                .filter { it::class != UnknownCommand::class }
                 .toList())
 
         commands.forEach {
@@ -66,15 +68,23 @@ object CommandParser {
         } else {
             val command = findCommand(args[0])
             if (command == unknownCommand) {
-                unknownCommand.execute(listOf(line))
-            } else {
-                val trimmedArgs = args.removeFirstItem()
-                if (commandSource != null) {
-                    command.execute(commandSource!!, args[0], trimmedArgs)
+                if (castCommand.hasWord(args[0])) {
+                    executeCommand(castCommand, listOf("c") + args)
                 } else {
-                    command.execute(args[0], trimmedArgs)
+                    unknownCommand.execute(listOf(line))
                 }
+            } else {
+                executeCommand(command, args)
             }
+        }
+    }
+
+    private fun executeCommand(command: Command, args: List<String>) {
+        val trimmedArgs = args.removeFirstItem()
+        if (commandSource != null) {
+            command.execute(commandSource!!, args[0], trimmedArgs)
+        } else {
+            command.execute(args[0], trimmedArgs)
         }
     }
 
@@ -114,6 +124,10 @@ object CommandParser {
             entry.value.sortBy { it.name }
         }
         return groups.toSortedMap()
+    }
+
+    fun isPlayersTurn(): Boolean {
+        return commandSource == null || commandSource == GameState.player
     }
 
 }
