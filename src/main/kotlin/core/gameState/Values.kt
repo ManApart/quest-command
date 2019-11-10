@@ -14,7 +14,7 @@ class Values(properties: Map<String, String> = mapOf()) {
         return if (properties.isEmpty()) {
             ""
         } else {
-            properties.entries.joinToString(", ") { "${it.value} ${it.key}" }
+            properties.entries.joinToString(", ") { "${it.key} - ${it.value}" }
         }
     }
 

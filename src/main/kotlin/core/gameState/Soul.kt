@@ -27,6 +27,17 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         }
     }
 
+    /**
+     * Forcibly sets a stat to a specific level. Should only be used for debug purposes.
+     */
+    fun setStat(name: String, level: Int) {
+        val stat = getStatOrNull(name)
+        if (stat != null) {
+            leveledStats.remove(stat)
+        }
+        addStat(name, level, stat?.getMaxMultiplier() ?: 1, stat?.expExponential ?: 2)
+    }
+
     fun addStats(stats: Map<String, Int>) {
         stats.forEach { addStat(it.key, it.value) }
     }

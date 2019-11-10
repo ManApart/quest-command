@@ -597,3 +597,6 @@ use stairs should climb them
 
 push / pull is not honoring a specific distance 
 
+
+Debug
+ignore encumberance?

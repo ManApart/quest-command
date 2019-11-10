@@ -17,3 +17,4 @@ object GameState {
 
 
 const val AUTO_SAVE = "autosave"
+

@@ -122,4 +122,8 @@ class LeveledStat(val name: String, private val parent: Target, private var leve
         return getXPAt(level + 1)
     }
 
+    fun getMaxMultiplier(): Int {
+        return maxMultiplier
+    }
+
 }

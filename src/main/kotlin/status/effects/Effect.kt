@@ -4,6 +4,7 @@ import combat.takeDamage.TakeDamageEvent
 import core.gameState.Soul
 import core.gameState.body.BodyPart
 import core.gameState.stat.LeveledStat
+import core.gameState.stat.StatKind
 import status.propValChanged.PropertyStatChangeEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager

@@ -1,9 +1,10 @@
 package status.statChanged
 
 import core.events.EventListener
-import core.gameState.Target
+import core.gameState.GameState
 import core.history.display
 import core.utility.StringFormatter
+import system.debug.DebugType
 import kotlin.math.abs
 
 class StatChanged : EventListener<StatChangeEvent>() {
@@ -18,7 +19,9 @@ class StatChanged : EventListener<StatChangeEvent>() {
 
         val oldVal = soul.getCurrent(event.statName)
 
-        soul.incStat(event.statName, event.amount)
+        if (!GameState.properties.values.getBoolean(DebugType.STAT_CHANGES.propertyName)) {
+            soul.incStat(event.statName, event.amount)
+        }
 
         val subject = StringFormatter.getSubjectPossessive(event.target)
         val current = soul.getCurrent(event.statName)

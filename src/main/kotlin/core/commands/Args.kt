@@ -41,7 +41,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
 
     /**
      * Returns any of the input words that match one of the words in the arg list
-     * An optional condition can be passed in. The condition must be true in order to evaluate hasAny. If the condition is false, hasAny will always return false.
+     * An optional condition can be passed in. The condition must be true in order to evaluate hasAny. If the condition is false, hasAny will always return an empty list.
      */
     fun hasAny(words: List<String>, condition: Boolean = true): List<String> {
         return words.filter { has(it, condition) }

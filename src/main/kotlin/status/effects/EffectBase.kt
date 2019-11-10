@@ -1,9 +1,8 @@
 package status.effects
 
 import combat.DamageType
+import core.gameState.stat.StatKind
 import core.utility.Named
-
-enum class StatKind {LEVELED, PROP_VAL}
 
 data class EffectBase(
         override val name: String,
