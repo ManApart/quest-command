@@ -15,10 +15,11 @@ class ArgsTest {
 
         val args = Args(input, delimiters, ignoredWords)
 
-        assertEquals(2, args.argGroups.size)
-        assertEquals(2, args.argStrings.size)
-        assertEquals("", args.argStrings[0])
-        assertEquals("rat", args.argStrings[1])
+        assertEquals(3, args.argGroups.size)
+        assertEquals(3, args.argStrings.size)
+        assertEquals("", args.getDelimited("base"))
+        assertEquals("rat", args.getDelimited("of"))
+        assertEquals("", args.getDelimited("with"))
     }
 
     @Test
@@ -62,19 +63,34 @@ class ArgsTest {
     }
 
     @Test
+    fun delimiterMapWithTwoEmptyDelimiters() {
+        val input = "cast heal 5 on for none".split(" ")
+        val args = Args(input, delimiters = listOf("on", "for", "none"))
+
+        assertEquals(4, args.argGroups.size)
+        assertEquals(4, args.argStrings.size)
+        assertEquals("cast heal 5 on for none", args.fullString)
+        assertEquals("cast heal 5", args.argStrings[0])
+        assertEquals("", args.argStrings[1])
+        assertEquals("", args.argStrings[2])
+        assertEquals("", args.getDelimited("on"))
+        assertEquals("", args.getDelimited("for"))
+        assertEquals("", args.getDelimited("none"))
+    }
+
+    @Test
     fun delimiterMap() {
         val input = "cast heal 5 on self for 4".split(" ")
         val args = Args(input, delimiters = listOf("on", "for", "none"))
 
-        assertEquals(3, args.argGroups.size)
-        assertEquals(3, args.argStrings.size)
         assertEquals("cast heal 5 on self for 4", args.fullString)
         assertEquals("cast heal 5", args.argStrings[0])
-        assertEquals("self", args.argStrings[1])
-        assertEquals("4", args.argStrings[2])
         assertEquals("self", args.getDelimited("on"))
         assertEquals("4", args.getDelimited("for"))
         assertEquals("", args.getDelimited("none"))
+//        assertEquals("self", args.getDelimited("on"))
+//        assertEquals("4", args.getDelimited("for"))
+//        assertEquals("", args.getDelimited("none"))
     }
 
 }

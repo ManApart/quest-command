@@ -53,4 +53,34 @@ class ListHelperTest {
         assertNull(listOf<String>().random())
     }
 
+    @Test
+    fun safeSubListPreventsStartBefore0() {
+        val sublist = listOf(0,1,2,3).safeSubList(-1)
+        assertEquals(listOf(0,1,2,3), sublist)
+    }
+
+    @Test
+    fun safeSubListPreventsEndBefore0() {
+        val sublist = listOf(0,1,2,3).safeSubList(0, -1)
+        assertEquals(listOf(), sublist)
+    }
+
+    @Test
+    fun safeSubListPreventsEndBeforeStart() {
+        val sublist = listOf(0,1,2,3).safeSubList(2, 1)
+        assertEquals(listOf(), sublist)
+    }
+
+    @Test
+    fun safeSubListPreventsEndGreaterThanSize() {
+        val sublist = listOf(0,1,2,3).safeSubList(0, 5)
+        assertEquals(listOf(0,1,2,3), sublist)
+    }
+
+    @Test
+    fun safeSubListPreventsStartGreaterThanSize() {
+        val sublist = listOf(0,1,2,3).safeSubList(5, 6)
+        assertEquals(listOf(), sublist)
+    }
+
 }

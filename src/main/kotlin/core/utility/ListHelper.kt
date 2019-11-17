@@ -65,3 +65,21 @@ fun List<String>.removeFirstItem(): List<String> {
 fun Array<String>.removeFirstItem(): Array<String> {
     return if (size > 1) toList().subList(1, size).toTypedArray() else arrayOf()
 }
+
+fun <E> List<E>.safeSubList(start: Int = 0, end: Int = this.size): List<E> {
+
+    val cleanEnd = when {
+        end < 0 -> 0
+        end >= this.size -> this.size
+        else -> end
+    }
+
+    val cleanStart = when {
+        start < 0 -> 0
+        start >= this.size -> this.size
+        start > cleanEnd -> cleanEnd
+        else -> start
+    }
+
+    return subList(cleanStart, cleanEnd)
+}

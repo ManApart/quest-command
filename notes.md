@@ -601,6 +601,8 @@ push / pull is not honoring a specific distance
 Debug
 ignore encumberance?
 
+delimiters can have aliases?
+
 
 delimiters - should not be included in arg strings
 cast command - pass args from all groups other than targets (take args after targets if they are there)

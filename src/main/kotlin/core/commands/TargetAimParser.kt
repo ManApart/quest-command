@@ -24,10 +24,9 @@ fun parseTargets(arguments: List<String>): List<TargetAim> {
 
 private fun getTarget(arguments: List<String>, targets: NameSearchableList<Target>): TargetAim? {
     val args = Args(arguments, delimiters = listOf("of"))
-    return when (args.argGroups.size) {
-        0 -> null
-        1 -> parseTargetOnly(args.fullString, targets)
-        2 -> parseTargetAndParts(args, targets)
+    return when {
+        args.hasGroup("base") && args.hasGroup("of") -> parseTargetAndParts(args, targets)
+        args.hasGroup("base") -> parseTargetOnly(args.fullString, targets)
         else -> {
             display("Could not parse targets for: ${arguments.joinToString(" ")}")
             null
@@ -59,7 +58,7 @@ private fun parseTarget(name: String, targets: NameSearchableList<Target>): Targ
 }
 
 fun parseBodyParts(target: Target, names: List<String>): List<BodyPart> {
-    if (names.size == 1 && names.first().toLowerCase() == "all"){
+    if (names.size == 1 && names.first().toLowerCase() == "all") {
         return target.body.getParts()
     }
     return target.body.getAnyParts(names)
