@@ -10,6 +10,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     private val flags = flags.toLowerCase()
     private val argsString = args.joinToString(" ")
     private val foundFlags = findFlags()
+    private val delimitedGroups = delimiters.map { it to "" }.toMap().toMutableMap()
 
     val argGroups = parseArgGroups()
     val argStrings = argGroups.map { it.joinToString(" ") }
@@ -129,12 +130,17 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     }
 
     private fun splitGroup(args: List<String>, groups: MutableList<List<String>>) {
-        val delimiter = findDelimiter(args)
+        val delimiter = indexOfFirstDelimiter(args)
         if (delimiter != -1) {
-            groups.add(removeExcludedWords(args.subList(0, delimiter)))
-            splitGroup(args.subList(delimiter + 1, args.size), groups)
+            val subGroup = removeExcludedWords(args.subList(0, delimiter))
+            if (subGroup.isEmpty()) {
+                lookForward(args, delimiter, groups)
+            } else {
+                addWordsToGroup(groups, subGroup, args[delimiter])
+                splitGroup(args.subList(delimiter, args.size), groups)
+            }
         } else {
-            groups.add(removeExcludedWords(args))
+            addWordsToGroup(groups, removeExcludedWords(args))
         }
     }
 
@@ -142,7 +148,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return list.subtract(excludedWords).subtract(foundFlags).toList()
     }
 
-    private fun findDelimiter(args: List<String>): Int {
+    private fun indexOfFirstDelimiter(args: List<String>): Int {
         delimiters.forEach {
             val i = args.indexOf(it)
             if (i != -1) {
@@ -152,9 +158,33 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return -1
     }
 
+    private fun lookForward(args: List<String>, delimiter: Int, groups: MutableList<List<String>>) {
+        val nextDelimiter = indexOfFirstDelimiter(args.subList(1, args.size))
+        when {
+            nextDelimiter != -1 -> {
+                val nextSubGroup = removeExcludedWords(args.subList(delimiter + 1, nextDelimiter + 1))
+                addWordsToGroup(groups, nextSubGroup, args[delimiter])
+                splitGroup(args.subList(nextDelimiter + 1, args.size), groups)
+            }
+            delimiter == 0 -> addWordsToGroup(groups, removeExcludedWords(args.subList(1, args.size)), args[delimiter])
+            else -> addWordsToGroup(groups, removeExcludedWords(args))
+        }
+    }
+
+    private fun addWordsToGroup(groups: MutableList<List<String>>, words: List<String>, delimiter: String? = null) {
+        groups.add(words)
+        if (delimiter != null) {
+            delimitedGroups[delimiter] = words.joinToString(" ")
+        }
+    }
+
     private fun findFlags(): List<String> {
         val flagVariants = flags + flags.map { "-$it" }
         return args.filter { flagVariants.contains(it) }
+    }
+
+    fun getDelimited(delimiter: String): String {
+        return delimitedGroups[delimiter] ?: ""
     }
 
 }

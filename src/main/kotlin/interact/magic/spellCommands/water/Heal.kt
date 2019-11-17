@@ -22,7 +22,7 @@ class Heal : SpellCommand() {
     }
 
     override fun getManual(): String {
-        return "\n\tCast Heal <amount> on *<targets> - Heals damage taken over time."
+        return "\n\tCast Heal <amount> for <duration> on *<targets> - Heals damage taken over time."
     }
 
     override fun getCategory(): List<String> {
@@ -31,6 +31,8 @@ class Heal : SpellCommand() {
 
     override fun execute(source: Target, args: Args, targets: List<TargetAim>) {
         //TODO - response request instead of hard coded default
+        //TODO - get amount
+        
         val amount = args.getNumber() ?: 1
         val hitCount = targets.count()
         val totalCost = amount * hitCount

@@ -600,3 +600,9 @@ push / pull is not honoring a specific distance
 
 Debug
 ignore encumberance?
+
+
+delimiters - should not be included in arg strings
+cast command - pass args from all groups other than targets (take args after targets if they are there)
+
+recursive explosion if 2 delimiters in a row

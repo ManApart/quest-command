@@ -61,4 +61,20 @@ class ArgsTest {
         assertTrue(args.hasFlag("-f"))
     }
 
+    @Test
+    fun delimiterMap() {
+        val input = "cast heal 5 on self for 4".split(" ")
+        val args = Args(input, delimiters = listOf("on", "for", "none"))
+
+        assertEquals(3, args.argGroups.size)
+        assertEquals(3, args.argStrings.size)
+        assertEquals("cast heal 5 on self for 4", args.fullString)
+        assertEquals("cast heal 5", args.argStrings[0])
+        assertEquals("self", args.argStrings[1])
+        assertEquals("4", args.argStrings[2])
+        assertEquals("self", args.getDelimited("on"))
+        assertEquals("4", args.getDelimited("for"))
+        assertEquals("", args.getDelimited("none"))
+    }
+
 }
