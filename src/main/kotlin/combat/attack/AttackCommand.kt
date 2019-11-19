@@ -49,7 +49,7 @@ class AttackCommand : Command() {
         } else {
             val arguments = Args(args, listOf("with"))
             val attackType = fromString(keyword)
-            val handHelper = HandHelper(source, arguments.getGroupString(1), attackType.damageType.damage.toLowerCase())
+            val handHelper = HandHelper(source, arguments.getString("with"), attackType.damageType.damage.toLowerCase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
             val target = getTarget(keyword, arguments, weaponName)
 
@@ -71,7 +71,7 @@ class AttackCommand : Command() {
     }
 
     private fun getTarget(keyword: String, arguments: Args, weaponName: String): TargetAim? {
-        val targets = parseTargets(arguments.getGroup(0)) + parseTargetsFromInventory(arguments.getGroup(0))
+        val targets = parseTargets(arguments.getBaseGroup()) +  parseTargetsFromInventory(arguments.getBaseGroup())
         return if (targets.isEmpty() && !isAlias(keyword)) {
             clarifyTarget(keyword, weaponName)
             null
@@ -131,7 +131,7 @@ class AttackCommand : Command() {
             target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target.target))
             target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
             GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
-            else -> display("Couldn't find ${arguments.argStrings[0]}.")
+            else -> display("Couldn't find ${arguments.getBaseString()}.")
         }
     }
 

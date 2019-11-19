@@ -46,12 +46,12 @@ class TravelCommand : Command() {
             CommandParser.parseCommand(args.joinToString(" "))
         } else {
             val arguments = Args(args, excludedWords = listOf("to"), flags = listOf("s"))
-            val foundName = arguments.argGroups[0].joinToString(" ")
+            val foundName = arguments.getBaseString()
 
             if (LocationManager.networkExists()) {
                 val found = LocationManager.getNetwork().findLocation(foundName)
 
-                if (foundMatch(arguments.argGroups[0], found)) {
+                if (foundMatch(arguments.getBaseGroup(), found)) {
                     EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true, arguments.hasFlag("s")))
                 } else {
                     display("Could not find $arguments")

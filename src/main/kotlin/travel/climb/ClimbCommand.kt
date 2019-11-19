@@ -45,7 +45,11 @@ class ClimbCommand : Command() {
     }
 
     private fun processNewClimb(arguments: Args) {
-        val targetName = arguments.argStrings.last()
+        val targetName = if (arguments.getString("to") != "") {
+            arguments.getString("to")
+        } else {
+            arguments.getBaseString()
+        }
         val targets = findAllTargets()
         val desiredDirection = arguments.getDirection()
         val matchByName = targets.getOrNull(targetName)
@@ -180,7 +184,7 @@ class ClimbCommand : Command() {
     }
 
     private fun climbToPart(arguments: Args, target: Target) {
-        val partArgs = arguments.argStrings[0]
+        val partArgs = arguments.getBaseString()
         if (target.body.hasPart(partArgs)) {
             val part = target.body.getPartLocation(partArgs)
             val direction = getDirection(target, part)

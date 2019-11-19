@@ -43,14 +43,14 @@ class UnEquipItemCommand : Command() {
                 if (unEquippedItem != null) {
                     display("${unEquippedItem.name} is already unequipped.")
                 } else {
-                    display("Could not find ${arguments.argStrings[0]}")
+                    display("Could not find ${arguments.getBaseString()}")
                 }
             }
         }
     }
 
     private fun getItem(args: Args): Target? {
-        val itemName = args.getGroup(0).joinToString(" ")
+        val itemName = args.getBaseString()
         val items = GameState.player.body.getEquippedItems()
         return if (items.exists(itemName)) {
             items.get(itemName)
@@ -60,7 +60,7 @@ class UnEquipItemCommand : Command() {
     }
 
     private fun getUnequippedItem(args: Args): Target? {
-        val itemName = args.getGroup(0).joinToString(" ")
+        val itemName = args.getBaseString()
         val equippedItems = GameState.player.body.getEquippedItems()
         val items = NameSearchableList(GameState.player.inventory.getItems().filter { !equippedItems.contains(it) })
         return if (items.exists(itemName)) {

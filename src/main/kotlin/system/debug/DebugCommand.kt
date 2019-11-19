@@ -63,7 +63,7 @@ class DebugCommand : Command() {
     }
 
     private fun sendDebugStatEvent(type: StatKind, args: Args) {
-        val target = parseTargets(args.getGroup(1)).firstOrNull()?.target ?: GameState.player
+        val target = parseTargets(args.getGroup("on")).firstOrNull()?.target ?: GameState.player
         val level = args.getNumber()
 
         if (level == null) {
@@ -76,7 +76,7 @@ class DebugCommand : Command() {
     }
 
     private fun sendDebugTagEvent(args: Args) {
-        val target = parseTargets(args.getGroup(1)).firstOrNull()?.target ?: GameState.player
+        val target = parseTargets(args.getGroup("on")).firstOrNull()?.target ?: GameState.player
         val tagName = args.argsWithout(listOf("remove", args.args.first())).joinToString(" ")
         val isAdding = !args.contains("remove")
 

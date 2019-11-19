@@ -42,7 +42,7 @@ class EquipItemCommand : Command() {
             val force = arguments.has("f")
 
             if (item == null) {
-                display("Could not find ${arguments.argStrings[0]}. (Did you mean 'equip <item> to <body part>?")
+                display("Could not find ${arguments.getBaseString()}. (Did you mean 'equip <item> to <body part>?")
             } else {
                 if (!item.canEquipTo(body)) {
                     display("You can't equip ${item.name}.")
@@ -64,13 +64,13 @@ class EquipItemCommand : Command() {
     }
 
     private fun getItem(args: Args): Target? {
-        val itemName = args.argStrings[0]
+        val itemName = args.getBaseString()
         return GameState.player.inventory.getItem(itemName)
     }
 
     private fun getAttachPoint(args: Args): String? {
-        return if (args.argGroups.size > 1) {
-            args.argStrings[1]
+        return if (args.hasGroup("to")) {
+            args.getString("to")
         } else {
             null
         }

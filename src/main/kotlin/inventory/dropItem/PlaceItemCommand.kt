@@ -34,32 +34,33 @@ class PlaceItemCommand : core.commands.Command() {
         when {
             arguments.isEmpty() && keyword == "drop" -> clarifyItemToDrop()
             arguments.isEmpty() && keyword == "place" -> clarifyItemToPlace()
-            arguments.argStrings.size == 1 -> dropItem(arguments)
-            arguments.argStrings.size == 2 -> placeItemInContainer(arguments)
+            arguments.hasBase() && arguments.hasGroup("in") -> placeItemInContainer(arguments)
+            arguments.hasBase() -> dropItem(arguments)
             else -> display("Place what where? Try 'drop <item>' or 'place <item> in <target>'.")
         }
     }
 
     private fun dropItem(args: Args) {
-        val item = GameState.player.inventory.getItem(args.argStrings[0])
+        val item = GameState.player.inventory.getItem(args.getBaseString())
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(item, GameState.player))
         } else {
-            display("Couldn't find ${args.argStrings[0]}")
+            display("Couldn't find ${args.getBaseString()}")
         }
     }
 
     private fun placeItemInContainer(args: Args) {
-        val item = GameState.player.inventory.getItem(args.argStrings[0])
+        val item = GameState.player.inventory.getItem(args.getBaseString())
         if (item != null) {
-            val destinations = ScopeManager.getScope().getTargets(args.argStrings[1]).filterUniqueByName()
+            val targetString = args.getString("in")
+            val destinations = ScopeManager.getScope().getTargets(targetString).filterUniqueByName()
             when {
-                args.argStrings[1].isNotBlank() && destinations.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
+                targetString.isNotBlank() && destinations.isEmpty() -> display("Couldn't find $targetString")
                 destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(item, GameState.player, destinations.first(), true))
-                else -> giveToWhat(destinations, args.argStrings[0])
+                else -> giveToWhat(destinations, args.getBaseString())
             }
         } else {
-            display("Couldn't find ${args.argStrings[0]}")
+            display("Couldn't find ${args.getBaseString()}")
         }
     }
 

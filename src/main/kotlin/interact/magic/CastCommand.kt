@@ -90,7 +90,7 @@ class CastCommand : Command() {
             if (spellCommand != null) {
                 val arguments = Args(args, delimiters = listOf("on"))
                 val spellArgs = parseSpellArgs(arguments)
-                val targets = parseTargets(arguments.getGroup(1)).toMutableList()
+                val targets = parseTargets(arguments.getGroup("on")).toMutableList()
                 if (isAlias && targets.isEmpty()) {
                     targets.add(TargetAim(source, parseBodyParts(source, args)))
                 }
@@ -117,7 +117,7 @@ class CastCommand : Command() {
     }
 
     private fun parseSpellArgs(args: Args): Args {
-        val words = args.getGroup(0)
+        val words = args.getBaseGroup()
         if (words.size > 1) {
             return Args(words.subList(1, words.size))
         }

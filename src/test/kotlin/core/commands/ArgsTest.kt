@@ -15,11 +15,13 @@ class ArgsTest {
 
         val args = Args(input, delimiters, ignoredWords)
 
-        assertEquals(3, args.argGroups.size)
-        assertEquals(3, args.argStrings.size)
-        assertEquals("", args.getDelimited("base"))
-        assertEquals("rat", args.getDelimited("of"))
-        assertEquals("", args.getDelimited("with"))
+        assertEquals("", args.getString("base"))
+        assertEquals("rat", args.getString("of"))
+        assertEquals("", args.getString("with"))
+
+        assertEquals(listOf(), args.getGroup("base"))
+        assertEquals(listOf("rat"), args.getGroup("of"))
+        assertEquals(listOf(), args.getGroup("with"))
     }
 
     @Test
@@ -27,9 +29,7 @@ class ArgsTest {
         val input = "t apple tree s".split(" ")
         val args = Args(input, flags = listOf("s"))
 
-        assertEquals(1, args.argGroups.size)
-        assertEquals(1, args.argStrings.size)
-        assertEquals("t apple tree", args.argStrings[0])
+        assertEquals("t apple tree", args.getBaseString())
         assertEquals("t apple tree s", args.fullString)
         assertFalse(args.hasFlag("t"))
         assertTrue(args.hasFlag("S"))
@@ -40,9 +40,7 @@ class ArgsTest {
         val input = "t apple a tree".split(" ")
         val args = Args(input, flags = listOf("a"))
 
-        assertEquals(1, args.argGroups.size)
-        assertEquals(1, args.argStrings.size)
-        assertEquals("t apple tree", args.argStrings[0])
+        assertEquals("t apple tree", args.getBaseString())
         assertEquals("t apple a tree", args.fullString)
         assertFalse(args.hasFlag("apple"))
         assertTrue(args.hasFlag("a"))
@@ -53,9 +51,7 @@ class ArgsTest {
         val input = "t apple tree -f".split(" ")
         val args = Args(input, flags = listOf("f"))
 
-        assertEquals(1, args.argGroups.size)
-        assertEquals(1, args.argStrings.size)
-        assertEquals("t apple tree", args.argStrings[0])
+        assertEquals("t apple tree", args.getBaseString())
         assertEquals("t apple tree -f", args.fullString)
         assertFalse(args.hasFlag("s"))
         assertTrue(args.hasFlag("f"))
@@ -67,15 +63,11 @@ class ArgsTest {
         val input = "cast heal 5 on for none".split(" ")
         val args = Args(input, delimiters = listOf("on", "for", "none"))
 
-        assertEquals(4, args.argGroups.size)
-        assertEquals(4, args.argStrings.size)
         assertEquals("cast heal 5 on for none", args.fullString)
-        assertEquals("cast heal 5", args.argStrings[0])
-        assertEquals("", args.argStrings[1])
-        assertEquals("", args.argStrings[2])
-        assertEquals("", args.getDelimited("on"))
-        assertEquals("", args.getDelimited("for"))
-        assertEquals("", args.getDelimited("none"))
+        assertEquals("cast heal 5", args.getBaseString())
+        assertEquals("", args.getString("on"))
+        assertEquals("", args.getString("for"))
+        assertEquals("", args.getString("none"))
     }
 
     @Test
@@ -84,13 +76,36 @@ class ArgsTest {
         val args = Args(input, delimiters = listOf("on", "for", "none"))
 
         assertEquals("cast heal 5 on self for 4", args.fullString)
-        assertEquals("cast heal 5", args.argStrings[0])
-        assertEquals("self", args.getDelimited("on"))
-        assertEquals("4", args.getDelimited("for"))
-        assertEquals("", args.getDelimited("none"))
-//        assertEquals("self", args.getDelimited("on"))
-//        assertEquals("4", args.getDelimited("for"))
-//        assertEquals("", args.getDelimited("none"))
+        assertEquals("cast heal 5", args.getBaseString())
+        assertEquals("self", args.getString("on"))
+        assertEquals("4", args.getString("for"))
+        assertEquals("", args.getString("none"))
     }
+
+    @Test
+    fun characterDelimiters() {
+        val input = "cook apple, pear on knife".split(" ")
+        val args = Args(input, delimiters = listOf(",", "on"))
+
+        assertEquals("cook apple", args.getBaseString())
+        assertEquals("pear", args.getString(","))
+        assertEquals("knife", args.getString("on"))
+    }
+
+    @Test
+    fun repeatedDelimiters() {
+        val input = "cook apple and pear and banana on knife".split(" ")
+        val args = Args(input, delimiters = listOf("and", "on"))
+
+        assertEquals("cook apple", args.getBaseString())
+        assertEquals(listOf(listOf("cook", "apple"), listOf("pear"), listOf("banana")), args.getBaseAndGroups("and"))
+        assertEquals(listOf("cook apple", "pear", "banana"), args.getBaseAndStrings("and"))
+
+        assertEquals("pear", args.getString("and"))
+        assertEquals(listOf("pear", "banana"), args.getStrings("and"))
+        assertEquals("knife", args.getString("on"))
+    }
+
+
 
 }

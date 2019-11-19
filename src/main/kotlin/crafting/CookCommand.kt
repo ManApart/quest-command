@@ -17,11 +17,11 @@ class CookCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Craft:\n\tCraft food"
+        return "Cook:\n\tCook food"
     }
 
     override fun getManual(): String {
-        return "\n\tCraft <ingredient>, <ingredient2> on <range> - Craft one or more ingredients on a range."
+        return "\n\tCook <ingredient>, <ingredient2> on <range> - Cook one or more ingredients on a range."
     }
 
     override fun getCategory(): List<String> {
@@ -39,7 +39,7 @@ class CookCommand : Command() {
 
             when {
                 tool == null -> display("Couldn't find something to cook on")
-                ingredients.size != arguments.argStrings.size - 1 -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
+                ingredients.size != arguments.getBaseAndStrings(",").size -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
                 recipes.isEmpty() -> display("Couldn't find a recipe for those ingredients")
                 recipes.size > 1 -> display("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
                 else -> EventManager.postEvent(CraftRecipeEvent(GameState.player, recipes.first(), tool))
@@ -48,12 +48,12 @@ class CookCommand : Command() {
     }
 
     private fun isValidInput(args: Args): Boolean {
-        return args.argGroups.size > 1 && (args.args.contains("on") || args.args.contains("with"))
+        return args.hasBase() && args.hasGroup("on")
     }
 
     private fun getIngredients(args: Args): List<Target> {
         val ingredients = mutableListOf<Target>()
-        args.argStrings.subList(0, args.argStrings.size - 1).forEach {
+        args.getBaseAndStrings(",").forEach {
             if (ItemManager.itemExists(it)) {
                 ingredients.add(ItemManager.getItem(it))
             }
@@ -62,7 +62,7 @@ class CookCommand : Command() {
     }
 
     private fun getTool(args: Args): Target? {
-        val group = args.argGroups.last()
+        val group = args.getGroup("on")
         val scope = ScopeManager.getScope()
         return (scope.getActivators(group.joinToString(" ")) + scope.findActivatorsByTag("Range")).firstOrNull()
     }

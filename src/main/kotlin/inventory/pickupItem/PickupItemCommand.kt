@@ -33,16 +33,15 @@ class PickupItemCommand : core.commands.Command() {
         val arguments = Args(args, delimiters = listOf("from"))
         when {
             args.isEmpty() -> pickupWhat(ScopeManager.getScope().getItems().filterUniqueByName())
-            arguments.argStrings.size == 1 -> pickupItemFromScope(arguments)
-            arguments.argStrings.size == 2 -> pickupItemFromContainer(arguments)
-            else -> display("Take what from what? Try 'pickup <item>' or 'take <item> from <target>'.")
+            arguments.hasGroup("from") -> pickupItemFromContainer(arguments)
+            else -> pickupItemFromScope(arguments)
         }
     }
 
     private fun pickupItemFromScope(args: Args) {
-        val items = ScopeManager.getScope().getItems(args.argStrings[0]).filterUniqueByName()
+        val items = ScopeManager.getScope().getItems(args.getBaseString()).filterUniqueByName()
         when {
-            items.isEmpty() -> display("Couldn't find ${args.argStrings[0]}")
+            items.isEmpty() -> display("Couldn't find ${args.getBaseString()}")
             items.size == 1 -> EventManager.postEvent(TransferItemEvent(items.first(), destination = GameState.player))
             else -> pickupWhat(items)
         }
@@ -59,11 +58,11 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupItemFromContainer(args: Args) {
-        val from = ScopeManager.getScope().getTargets(args.argStrings[1]).filterUniqueByName()
+        val from = ScopeManager.getScope().getTargets(args.getString("from")).filterUniqueByName()
         when {
-            from.isEmpty() -> display("Couldn't find ${args.argStrings[1]}")
-            from.size == 1 -> takeItemFromContainer(from.first(), args.argStrings[0])
-            else -> takeFromWhat(from, args.argStrings[0])
+            from.isEmpty() -> display("Couldn't find ${args.getString("from")}")
+            from.size == 1 -> takeItemFromContainer(from.first(), args.getBaseString())
+            else -> takeFromWhat(from, args.getBaseString())
         }
     }
 

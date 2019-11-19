@@ -4,42 +4,47 @@ import core.gameState.Direction
 import core.utility.safeSubList
 import core.utility.toLowerCase
 
+private const val BASE = "base"
+
 class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
-    val args = origArgs.toLowerCase()
+
     private val delimiters = delimiters.toLowerCase()
     private val excludedWords = excludedWords.toLowerCase()
     private val flags = flags.toLowerCase()
-    private val argsString = args.joinToString(" ")
+    val args = cleanArgs(origArgs)
     private val foundFlags = findFlags()
-    val delimitedGroups = parseArgGroups()
 
-    //TODO - replace arg groups and arg strings with get by delimited
-    val argGroups = delimitedGroups.values.toList()
-    val argStrings = argGroups.map { it.joinToString(" ") }
+    private val groups = parseArgGroups()
+    private val argStrings = groups.mapValues { delimiterGroups -> delimiterGroups.value.map { wordGroup -> wordGroup.joinToString(" ") } }
     val fullString = origArgs.joinToString(" ")
 
     override fun toString(): String {
-        return argsString
+        return fullString
+    }
+
+    private fun cleanArgs(origArgs: List<String>): List<String> {
+        return extractCommas(origArgs).toLowerCase()
+    }
+
+    private fun extractCommas(args: List<String>): List<String> {
+        return if (delimiters.contains(",")) {
+            args.map { extractCommas(it) }.flatten()
+        } else {
+            args
+        }
+    }
+
+    private fun extractCommas(word: String): List<String> {
+        val i = word.indexOf(",")
+        return if (i != -1) {
+            word.split(",").filter { it != "" }.map { listOf(it, ",") }.flatten()
+        } else {
+            listOf(word)
+        }
     }
 
     fun isEmpty(): Boolean {
         return args.isEmpty()
-    }
-
-    fun getGroup(i: Int): List<String> {
-        return if (i < argGroups.size) {
-            argGroups[i]
-        } else {
-            listOf()
-        }
-    }
-
-    fun getGroupString(i: Int): String {
-        return if (i < argStrings.size) {
-            argStrings[i]
-        } else {
-            ""
-        }
     }
 
     /**
@@ -63,7 +68,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     }
 
     fun has(regex: Regex): List<String> {
-        return argStrings.filter {
+        return argStrings.values.flatten().filter {
             regex.matches(it)
         }
     }
@@ -120,15 +125,17 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return foundFlags.contains(flag.toLowerCase()) || foundFlags.contains(flagAlt.toLowerCase())
     }
 
-    private fun parseArgGroups(): Map<String, List<String>> {
+    private fun parseArgGroups(): Map<String, List<List<String>>> {
         return if (delimiters.isEmpty()) {
-            mapOf("base" to removeExcludedWords(args))
+            mapOf(BASE to listOf(removeExcludedWords(args)))
         } else {
-            mapOf("base" to getBaseGroup()) + delimiters.map { it to getDelimitedGroup(it) }
+            val map = mutableMapOf(BASE to listOf(findBaseGroup()))
+            delimiters.forEach { map[it] = findDelimitedGroup(it) }
+            map
         }
     }
 
-    private fun getBaseGroup(): List<String> {
+    private fun findBaseGroup(): List<String> {
         val firstDelimiter = indexOfFirstDelimiter(args)
         return if (firstDelimiter == -1) {
             removeExcludedWords(args)
@@ -137,7 +144,19 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         }
     }
 
-    private fun getDelimitedGroup(delimiter: String): List<String> {
+    private fun findDelimitedGroup(delimiter: String): List<List<String>> {
+        val groups = mutableListOf<List<String>>()
+        var startIndex = this.args.indexOf(delimiter) + 1
+        var newList = findDelimitedGroup(this.args, delimiter)
+        while (newList.isNotEmpty()) {
+            groups.add(newList)
+            startIndex += newList.size
+            newList = findDelimitedGroup(args.subList(startIndex, args.size), delimiter)
+        }
+        return groups
+    }
+
+    private fun findDelimitedGroup(args: List<String>, delimiter: String): List<String> {
         val index = args.indexOf(delimiter)
         return if (index == -1) {
             listOf()
@@ -151,7 +170,6 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
             }
         }
     }
-
 
     private fun removeExcludedWords(list: List<String>): List<String> {
         return list.subtract(excludedWords).subtract(foundFlags).toList()
@@ -172,12 +190,45 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return args.filter { flagVariants.contains(it) }
     }
 
-    fun getDelimited(delimiter: String): String {
-        return delimitedGroups[delimiter]?.joinToString(" ") ?: ""
+    fun hasBase(): Boolean {
+        return hasGroup(BASE)
     }
 
-    fun hasGroup(delimiter: String) : Boolean {
-        return !delimitedGroups[delimiter].isNullOrEmpty()
+    fun hasGroup(delimiter: String): Boolean {
+        return !groups[delimiter].isNullOrEmpty()
     }
+
+    fun getBaseGroup(): List<String> {
+        return getGroup(BASE)
+    }
+
+    fun getGroup(delimiter: String): List<String> {
+        return getGroups(delimiter).firstOrNull() ?: listOf()
+    }
+
+    fun getGroups(delimiter: String): List<List<String>> {
+        return groups[delimiter] ?: listOf()
+    }
+
+    fun getBaseAndGroups(delimiter: String): List<List<String>> {
+        return getGroups(BASE) + getGroups(delimiter)
+    }
+
+    fun getBaseString(): String {
+        return getString(BASE)
+    }
+
+    fun getString(delimiter: String): String {
+        return getStrings(delimiter).firstOrNull() ?: ""
+    }
+
+    fun getStrings(delimiter: String): List<String> {
+        return argStrings[delimiter] ?: listOf()
+    }
+
+    fun getBaseAndStrings(delimiter: String): List<String> {
+        return getStrings(BASE) + getStrings(delimiter)
+    }
+
 
 }

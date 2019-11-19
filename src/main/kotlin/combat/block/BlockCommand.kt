@@ -36,8 +36,8 @@ class BlockCommand : Command() {
             display("This is only relevant in battle.")
         } else {
             val arguments = Args(args, listOf("with"))
-            val handHelper = HandHelper(source, arguments.getGroupString(1), "block")
-            val shieldedPart = parseBodyParts(GameState.player, arguments.getGroup(0)).firstOrNull() ?: handHelper.hand
+            val handHelper = HandHelper(source, arguments.getString("with"), "block")
+            val shieldedPart = parseBodyParts(GameState.player, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
             EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, shieldedPart))
         }
     }

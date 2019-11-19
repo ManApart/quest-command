@@ -11,6 +11,7 @@ import interact.scope.ScopeManager
 import system.EventManager
 
 class UseCommand : Command() {
+    //TODO - delimiter aliases
     private val delimiters = listOf("to", "with", "on")
     override fun getAliases(): Array<String> {
         return arrayOf("Use", "u", "Read")
@@ -31,9 +32,9 @@ class UseCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters)
-        val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[0]).firstOrNull()
-        val target = if (arguments.argGroups.size > 1) {
-            ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.argStrings[1]).firstOrNull()
+        val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.getBaseString()).firstOrNull()
+        val target = if (arguments.hasGroup("on")) {
+            ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.getString("on")).firstOrNull()
         } else {
             null
         }
@@ -41,12 +42,12 @@ class UseCommand : Command() {
         when {
             arguments.isEmpty() -> clarifyAction()
             arguments.fullString == "item on target" -> clarifyItemForTarget()
-            arguments.argStrings.size == 1 && arguments.argStrings[0] == "item" -> clarifyItem()
+            arguments.getBaseString() == "item" && !arguments.hasGroup("on") -> clarifyItem()
             used == null -> display("Couldn't find $arguments")
 
-            arguments.argStrings.size <= 1 -> EventManager.postEvent(InteractEvent(GameState.player, used))
-            arguments.argStrings.size > 1 && arguments.argStrings[1].isBlank() -> clarifyTarget(used.name)
-            target == null -> display("Couldn't find ${arguments.argStrings[1]}")
+            !arguments.hasGroup("on") && args.contains("on") -> clarifyTarget(used.name)
+            !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(GameState.player, used))
+            target == null -> display("Couldn't find ${arguments.getString("on")}")
 
             else -> EventManager.postEvent(UseEvent(GameState.player, used, target))
         }
