@@ -1,5 +1,6 @@
 package interact.magic
 
+import combat.battle.position.TargetAim
 import core.gameState.Target
 import core.utility.reflection.MockReflections
 import core.utility.reflection.Reflections
@@ -16,7 +17,6 @@ import system.body.BodyParser
 import system.location.LocationFakeParser
 import system.location.LocationParser
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CastCommandCastTest {
@@ -86,7 +86,7 @@ class CastCommandCastTest {
         CastCommand().execute("cast", "testspellA on targetA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
-        assertNotNull(spellCommand.targets.map { it.target }.firstOrNull { targetA.name == it.name })
+        assertTrue(targetsContainByName(spellCommand.targets, targetA))
     }
 
     @Test
@@ -98,9 +98,12 @@ class CastCommandCastTest {
         CastCommand().execute("cast", "testspellA 1 2 on targetA and targetB".split(" "))
 
         assertEquals("1 2", spellCommand.args.fullString)
-        val spellTargets = spellCommand.targets.map { it.target }
-        assertTrue(spellTargets.contains(targetA), "Target A was not found in $spellTargets")
-        assertTrue(spellTargets.contains(targetB))
+        assertTrue(targetsContainByName(spellCommand.targets, targetA))
+        assertTrue(targetsContainByName(spellCommand.targets, targetB))
+    }
+
+    private fun targetsContainByName(targetAims: List<TargetAim>, target: Target) : Boolean {
+        return targetAims.map { it.target }.firstOrNull { target.name == it.name } != null
     }
 
 
