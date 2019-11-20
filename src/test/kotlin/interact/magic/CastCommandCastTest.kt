@@ -16,6 +16,7 @@ import system.body.BodyParser
 import system.location.LocationFakeParser
 import system.location.LocationParser
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CastCommandCastTest {
@@ -85,7 +86,7 @@ class CastCommandCastTest {
         CastCommand().execute("cast", "testspellA on targetA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
-        assertTrue(spellCommand.targets.map { it.target }.contains(targetA))
+        assertNotNull(spellCommand.targets.map { it.target }.firstOrNull { targetA.name == it.name })
     }
 
     @Test
@@ -97,12 +98,9 @@ class CastCommandCastTest {
         CastCommand().execute("cast", "testspellA 1 2 on targetA and targetB".split(" "))
 
         assertEquals("1 2", spellCommand.args.fullString)
-        assertTrue(spellCommand.targets.map { it.target }.contains(targetA))
-        assertTrue(spellCommand.targets.map { it.target }.contains(targetB))
-    }
-
-    private fun splitStringEqualsList(expected: String, actual: List<String>): Boolean {
-        return actual.toTypedArray() contentEquals expected.split(" ").toTypedArray()
+        val spellTargets = spellCommand.targets.map { it.target }
+        assertTrue(spellTargets.contains(targetA), "Target A was not found in $spellTargets")
+        assertTrue(spellTargets.contains(targetB))
     }
 
 
