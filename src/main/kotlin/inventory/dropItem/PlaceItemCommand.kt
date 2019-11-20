@@ -1,5 +1,6 @@
 package inventory.dropItem
 
+import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
@@ -12,6 +13,7 @@ import interact.scope.ScopeManager
 import system.EventManager
 
 class PlaceItemCommand : core.commands.Command() {
+
     override fun getAliases(): Array<String> {
         return arrayOf("Place", "Drop", "Give", "Put")
     }
@@ -30,7 +32,8 @@ class PlaceItemCommand : core.commands.Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val arguments = Args(args, delimiters = listOf("to", "in"))
+        val delimiters = listOf(ArgDelimiter(listOf("to", "in")))
+        val arguments = Args(args, delimiters)
         when {
             arguments.isEmpty() && keyword == "drop" -> clarifyItemToDrop()
             arguments.isEmpty() && keyword == "place" -> clarifyItemToPlace()

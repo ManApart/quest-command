@@ -1,9 +1,6 @@
 package interact
 
-import core.commands.Args
-import core.commands.Command
-import core.commands.CommandParser
-import core.commands.ResponseRequest
+import core.commands.*
 import core.gameState.GameState
 import core.history.display
 import interact.interaction.InteractEvent
@@ -11,8 +8,6 @@ import interact.scope.ScopeManager
 import system.EventManager
 
 class UseCommand : Command() {
-    //TODO - delimiter aliases
-    private val delimiters = listOf("to", "with", "on")
     override fun getAliases(): Array<String> {
         return arrayOf("Use", "u", "Read")
     }
@@ -31,6 +26,7 @@ class UseCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val delimiters = listOf(ArgDelimiter(listOf("to", "with", "on")))
         val arguments = Args(args, delimiters)
         val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.getBaseString()).firstOrNull()
         val target = if (arguments.hasGroup("on")) {

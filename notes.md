@@ -601,11 +601,5 @@ push / pull is not honoring a specific distance
 Debug
 ignore encumberance?
 
-delimiters
-- delimiters can have aliases?
-  - for now making assumption that you can't
-  - cook, use, placeItem, equipitem, climb
-- what about multiple occurances?
-  - see cooking,  , 
 
 cast command - pass args from all groups other than targets (take args after targets if they are there)

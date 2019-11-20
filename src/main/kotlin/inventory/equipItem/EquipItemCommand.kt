@@ -1,9 +1,6 @@
 package inventory.equipItem
 
-import core.commands.Args
-import core.commands.Command
-import core.commands.CommandParser
-import core.commands.ResponseRequest
+import core.commands.*
 import core.gameState.body.Body
 import core.gameState.GameState
 import core.gameState.Target
@@ -31,7 +28,8 @@ class EquipItemCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val arguments = Args(args, listOf("to", "on"), listOf("f"))
+        val delimiters = listOf(ArgDelimiter(listOf("to", "on")))
+        val arguments = Args(args, delimiters, listOf("f"))
 
         if (arguments.isEmpty()) {
             suggestEquippableItems()

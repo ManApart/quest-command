@@ -11,8 +11,7 @@ class ArgsTest {
     fun groupsByIgnoredWordsAndDelimiters() {
         val input = "bottom center of rat".split(" ")
         val ignoredWords = listOf("bottom", "center", "top")
-        val delimiters = listOf("with", "of")
-
+        val delimiters = listOf(ArgDelimiter("with"), ArgDelimiter("of"))
         val args = Args(input, delimiters, ignoredWords)
 
         assertEquals("", args.getString("base"))
@@ -106,6 +105,22 @@ class ArgsTest {
         assertEquals("knife", args.getString("on"))
     }
 
+    @Test
+    fun delimiterByAlias() {
+        val input = "cook apple and pear on knife".split(" ")
+        val args = Args(input, delimiters = listOf(ArgDelimiter(listOf(",", "and")), ArgDelimiter("on")))
+
+        assertEquals("cook apple", args.getBaseString())
+
+        assertEquals(true, args.hasGroup(","))
+        assertEquals("pear", args.getString(","))
+
+        assertEquals(true, args.hasGroup("and"))
+        assertEquals("pear", args.getString("and"))
+
+        assertEquals(true, args.hasGroup("on"))
+        assertEquals("knife", args.getString("on"))
+    }
 
 
 }

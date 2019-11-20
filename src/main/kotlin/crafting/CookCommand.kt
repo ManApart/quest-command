@@ -1,5 +1,6 @@
 package crafting
 
+import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.Command
 import core.gameState.GameState
@@ -10,7 +11,6 @@ import system.EventManager
 import system.item.ItemManager
 
 class CookCommand : Command() {
-    private val delimiters = listOf(",", "with", "on")
 
     override fun getAliases(): Array<String> {
         return arrayOf("Cook", "Bake")
@@ -29,6 +29,7 @@ class CookCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
+        val delimiters = listOf(ArgDelimiter(","), ArgDelimiter(listOf("with", "on")))
         val arguments = Args(args, delimiters)
         if (!isValidInput(arguments)) {
             display("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")

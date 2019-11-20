@@ -6,9 +6,9 @@ import core.utility.toLowerCase
 
 private const val BASE = "base"
 
-class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
+class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
+    constructor(origArgs: List<String>, delimiters: List<String>) : this(origArgs, delimiters.map { ArgDelimiter(listOf(it)) })
 
-    private val delimiters = delimiters.toLowerCase()
     private val excludedWords = excludedWords.toLowerCase()
     private val flags = flags.toLowerCase()
     val args = cleanArgs(origArgs)
@@ -92,6 +92,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return null
     }
 
+    //TODO - replace index with delimiter
     /**
      * Returns the number of the indexed arg string if it exists and is a number. Otherwise returns 0
      */
@@ -107,6 +108,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return args.filterNot { lowerCaseWords.contains(it) }
     }
 
+    //TODO - move to direction parser
     fun getDirection(): Direction {
         val directions = hasAny(Direction.values().map { it.name })
         return if (directions.isNotEmpty()) {
@@ -130,7 +132,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
             mapOf(BASE to listOf(removeExcludedWords(args)))
         } else {
             val map = mutableMapOf(BASE to listOf(findBaseGroup()))
-            delimiters.forEach { map[it] = findDelimitedGroup(it) }
+            delimiters.forEach { map[it.key] = findDelimitedGroup(it) }
             map
         }
     }
@@ -144,9 +146,9 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         }
     }
 
-    private fun findDelimitedGroup(delimiter: String): List<List<String>> {
+    private fun findDelimitedGroup(delimiter: ArgDelimiter): List<List<String>> {
         val groups = mutableListOf<List<String>>()
-        var startIndex = this.args.indexOf(delimiter) + 1
+        var startIndex = delimiter.indexIn(this.args) + 1
         var newList = findDelimitedGroup(this.args, delimiter)
         while (newList.isNotEmpty()) {
             groups.add(newList)
@@ -156,8 +158,8 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
         return groups
     }
 
-    private fun findDelimitedGroup(args: List<String>, delimiter: String): List<String> {
-        val index = args.indexOf(delimiter)
+    private fun findDelimitedGroup(args: List<String>, delimiter: ArgDelimiter): List<String> {
+        val index = delimiter.indexIn(args)
         return if (index == -1) {
             listOf()
         } else {
@@ -177,7 +179,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
 
     private fun indexOfFirstDelimiter(args: List<String>): Int {
         delimiters.forEach {
-            val i = args.indexOf(it)
+            val i = it.indexIn(args)
             if (i != -1) {
                 return i
             }
@@ -195,7 +197,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     }
 
     fun hasGroup(delimiter: String): Boolean {
-        return !groups[delimiter].isNullOrEmpty()
+        return !groups[getKey(delimiter)].isNullOrEmpty()
     }
 
     fun getBaseGroup(): List<String> {
@@ -207,7 +209,7 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     }
 
     fun getGroups(delimiter: String): List<List<String>> {
-        return groups[delimiter] ?: listOf()
+        return groups[getKey(delimiter)] ?: listOf()
     }
 
     fun getBaseAndGroups(delimiter: String): List<List<String>> {
@@ -223,11 +225,19 @@ class Args(origArgs: List<String>, delimiters: List<String> = listOf(), excluded
     }
 
     fun getStrings(delimiter: String): List<String> {
-        return argStrings[delimiter] ?: listOf()
+        return argStrings[getKey(delimiter)] ?: listOf()
     }
 
     fun getBaseAndStrings(delimiter: String): List<String> {
         return getStrings(BASE) + getStrings(delimiter)
+    }
+
+    private fun getKey(delimiter: String): String {
+        return if (delimiter == BASE) {
+            BASE
+        } else {
+            delimiters.firstOrNull { it.contains(delimiter) }?.key ?: ""
+        }
     }
 
 

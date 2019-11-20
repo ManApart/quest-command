@@ -1,9 +1,6 @@
 package travel.climb
 
-import core.commands.Args
-import core.commands.Command
-import core.commands.CommandParser
-import core.commands.ResponseRequest
+import core.commands.*
 import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
@@ -36,7 +33,8 @@ class ClimbCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val arguments = Args(args, delimiters = listOf("of", "to"))
+        val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
+        val arguments = Args(args, delimiters)
         if (GameState.player.isClimbing) {
             processClimbing(keyword, arguments, GameState.player.climbTarget!!)
         } else {
