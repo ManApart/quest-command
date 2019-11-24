@@ -4,9 +4,7 @@ import combat.battle.position.TargetAim
 import core.commands.Args
 import core.commands.parseDirection
 import core.gameState.Direction
-import core.gameState.GameState
 import core.gameState.Target
-import core.gameState.Vector
 import core.gameState.stat.AIR_MAGIC
 import interact.magic.StartCastSpellEvent
 import interact.magic.spellCommands.SpellCommand
@@ -41,7 +39,7 @@ class Push : SpellCommand() {
         val levelRequirement = power / 2
         val direction = parseDirection(args.getGroup("towards"))
 
-        executeWithWarns(AIR_MAGIC, levelRequirement, totalCost, targets) {
+        executeWithWarns(source, AIR_MAGIC, levelRequirement, totalCost, targets) {
             targets.forEach { target ->
                 val parts = target.target.body.getParts()
                 val effects = listOf(EffectManager.getEffect("Air Blasted", 0, 0, parts))

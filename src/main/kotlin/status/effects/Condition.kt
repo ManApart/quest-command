@@ -20,7 +20,7 @@ class Condition(
         return element.getReaction(elementStrength, other.element, other.elementStrength)
     }
 
-    private fun getEffects(): List<Effect> {
+    fun getEffects(): List<Effect> {
         return if (isCritical && criticalEffects.isNotEmpty()) {
             criticalEffects
         } else {

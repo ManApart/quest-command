@@ -2,7 +2,6 @@ package interact.magic.spellCommands.water
 
 import combat.battle.position.TargetAim
 import core.commands.Args
-import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.stat.WATER_MAGIC
 import interact.magic.spells.Spell
@@ -37,7 +36,7 @@ class Jet : SpellCommand() {
 //        val levelRequirement = damageAmount + (hitCount / 2)
         val levelRequirement = damageAmount/2
 
-        executeWithWarns(WATER_MAGIC, levelRequirement, totalCost, targets) {
+        executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
             targets.forEach { target ->
                 val parts = getTargetedParts(target)
                 val effects = listOf(
