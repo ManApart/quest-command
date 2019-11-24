@@ -23,23 +23,32 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     private fun cleanArgs(origArgs: List<String>): List<String> {
-        return extractCommas(origArgs).toLowerCase()
+//        return origArgs.extractCommas().filter { it != "" }.toLowerCase()
+        return origArgs.extractCommas().filter { it != "" }.addSpaces().toLowerCase()
     }
 
-    private fun extractCommas(args: List<String>): List<String> {
+    private fun List<String>.extractCommas(): List<String> {
         return if (delimiters.contains(",")) {
-            args.map { extractCommas(it) }.flatten()
+            map { extractCommas(it) }.flatten()
         } else {
-            args
+            this
+        }
+    }
+
+    private fun List<String>.addSpaces(): List<String> {
+        //I don't like that this knows about extract commas
+        return if (delimiters.contains(" ") && !contains(",")) {
+            map { listOf(it, " ") }.flatten()
+        } else {
+            this
         }
     }
 
     private fun extractCommas(word: String): List<String> {
         val i = word.indexOf(",")
-        return if (i != -1) {
-            word.split(",").filter { it != "" }.map { listOf(it, ",") }.flatten()
-        } else {
-            listOf(word)
+        return when {
+            word == "," || i == -1 -> listOf(word)
+            else -> word.split(",").filter { it != "" && it != "," }.map { listOf(it, ",") }.flatten()
         }
     }
 
@@ -92,15 +101,22 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return null
     }
 
-    //TODO - replace index with delimiter
-    /**
-     * Returns the number of the indexed arg string if it exists and is a number. Otherwise returns 0
-     */
-    fun getNumber(index: Int): Int {
-        if (index >= 0 && index < args.size) {
-            return args[index].toIntOrNull() ?: 0
+    fun getNumber(delimiter: String, includeBaseString: Boolean = false): Int? {
+        val strings = if (includeBaseString) {
+            getBaseAndStrings(delimiter)
+        } else {
+            getStrings(delimiter)
         }
-        return 0
+        return strings.firstOrNull { it.toIntOrNull() != null }?.toIntOrNull()
+    }
+
+    fun getNumbers(delimiter: String, includeBaseString: Boolean = false): List<Int?> {
+        val strings = if (includeBaseString) {
+            getBaseAndStrings(delimiter)
+        } else {
+            getStrings(delimiter)
+        }
+        return strings.map { it.toIntOrNull() }
     }
 
     fun argsWithout(words: List<String>): List<String> {

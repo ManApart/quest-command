@@ -82,13 +82,64 @@ class ArgsTest {
     }
 
     @Test
-    fun characterDelimiters() {
+    fun commaDelimiter() {
         val input = "cook apple, pear on knife".split(" ")
         val args = Args(input, delimiters = listOf(",", "on"))
 
         assertEquals("cook apple", args.getBaseString())
         assertEquals("pear", args.getString(","))
         assertEquals("knife", args.getString("on"))
+    }
+
+    @Test
+    fun commaDelimiterWithSpace() {
+        val input = "a , b, c".split(" ")
+        val args = Args(input, delimiters = listOf(","))
+        val delimited = args.getBaseAndStrings(",")
+
+        assertEquals("a , b, c", args.fullString)
+        assertEquals("a", args.getBaseString())
+        assertEquals("a", delimited[0])
+        assertEquals("b", delimited[1])
+        assertEquals("c", delimited[2])
+    }
+
+    @Test
+    fun commaDelimiterWithNoSpaces() {
+        val input = "a,b,c".split(" ")
+        val args = Args(input, listOf(ArgDelimiter(listOf(",", " "))))
+        val delimited = args.getBaseAndStrings(",")
+        val spaceDelimited = args.getBaseAndStrings(" ")
+
+        assertEquals("a,b,c", args.fullString)
+        assertEquals("a", args.getBaseString())
+
+        assertEquals("a", delimited[0])
+        assertEquals("b", delimited[1])
+        assertEquals("c", delimited[2])
+
+        assertEquals("a", spaceDelimited[0])
+        assertEquals("b", spaceDelimited[1])
+        assertEquals("c", spaceDelimited[2])
+    }
+
+    @Test
+    fun spaceDelimiter() {
+        val input = "a  b c".split(" ")
+        val args = Args(input, listOf(ArgDelimiter(listOf(",", " "))))
+        val delimited = args.getBaseAndStrings(",")
+        val spaceDelimited = args.getBaseAndStrings(" ")
+
+        assertEquals("a  b c", args.fullString)
+        assertEquals("a", args.getBaseString())
+
+        assertEquals("a", delimited[0])
+        assertEquals("b", delimited[1])
+        assertEquals("c", delimited[2])
+
+        assertEquals("a", spaceDelimited[0])
+        assertEquals("b", spaceDelimited[1])
+        assertEquals("c", spaceDelimited[2])
     }
 
     @Test
@@ -120,6 +171,25 @@ class ArgsTest {
 
         assertEquals(true, args.hasGroup("on"))
         assertEquals("knife", args.getString("on"))
+    }
+
+    @Test
+    fun getNumber() {
+        val input = "1, two, 3".split(" ")
+        val args = Args(input, delimiters = listOf(","))
+        val numbers = args.getNumbers(",")
+        val baseNumbers = args.getNumbers(",", true)
+
+        assertEquals("1", args.getBaseString())
+        assertEquals(1, args.getNumber())
+        assertEquals(3, args.getNumber(","))
+        assertEquals(null, numbers[0])
+        assertEquals(3, numbers[1])
+
+        assertEquals(1, args.getNumber(",", true))
+        assertEquals(1, baseNumbers[0])
+        assertEquals(null, baseNumbers[1])
+        assertEquals(3, baseNumbers[2])
     }
 
 

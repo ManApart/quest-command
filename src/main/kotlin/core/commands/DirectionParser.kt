@@ -14,24 +14,11 @@ fun parseDirection(arguments: List<String>): Direction {
 }
 
 fun parseVector(arguments: List<String>): Vector {
-    val args = Args(arguments)
+    val args = Args(arguments, listOf(ArgDelimiter(listOf(",", " "))))
+    val numbers = args.getNumbers(",", true)
     return when {
-        isSpaceSeparatedPosition(args) -> Vector(args.getNumber(0), args.getNumber(1), args.getNumber(2))
-        isCommaSeparatedPosition(args) -> parseCommaVector(args)
+        numbers.size == 3 && numbers.all { it != null } -> Vector(numbers[0]!!, numbers[1]!!, numbers[2]!!)
         else -> Vector()
     }
-}
-
-fun isCommaSeparatedPosition(args: Args): Boolean {
-    return args.has(commaSeparateDigits).isNotEmpty()
-}
-
-fun isSpaceSeparatedPosition(args: Args): Boolean {
-    return args.args.size == 3 && args.args.all { it.toIntOrNull() != null }
-}
-
-fun parseCommaVector(args: Args): Vector {
-    val coords = args.has(commaSeparateDigits).first().split(",").map { it.toInt() }
-    return Vector(coords[0], coords[1], coords[2])
 }
 

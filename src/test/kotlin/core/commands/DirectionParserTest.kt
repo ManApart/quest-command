@@ -22,7 +22,6 @@ class DirectionParserTest {
         assertEquals(Vector(4, 3, 2), result)
     }
 
-
     @Test
     fun directionNames() {
         Direction.values().forEach {

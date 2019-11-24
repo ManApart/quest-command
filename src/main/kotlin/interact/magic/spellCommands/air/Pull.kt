@@ -20,12 +20,12 @@ class Pull : SpellCommand() {
     override val name = "Pull"
 
     override fun getDescription(): String {
-        return "Cast Pull:\n\tPull targets closer to you."
+        return "Cast Pull:\n\tPull targets closer to you. The higher the power, the further the target will be pulled. Lighter targets are pulled further."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Pull <distance> on *<targets> - Pull the targets a set distance closer to you." +
-                "\n\tCast Pull <direction> <distance> on *<targets> - Pull the targets a set distance in the given direction."
+        return "\n\tCast Pull <power> on *<targets> - Pull the targets a set distance closer to you." +
+                "\n\tCast Pull <power> towards <direction> on *<targets> - Pull the targets a set distance in the given direction."
     }
 
     override fun getCategory(): List<String> {
@@ -34,26 +34,36 @@ class Pull : SpellCommand() {
 
     override fun execute(source: Target, args: Args, targets: List<TargetAim>) {
         //TODO - response request instead of hard coded default
-        val distance = args.getNumber() ?: 1
+        val power = args.getNumber() ?: 1
         val hitCount = targets.count()
-        //TODO - eventually take into account weight of targets
-        val totalCost = distance * hitCount
-        val levelRequirement = distance / 2
-        val direction = parseDirection(args.args)
+        val perTargetCost = power/10
+        val totalCost = perTargetCost * hitCount
+        val levelRequirement = power / 2
+        val direction = parseDirection(args.getGroup("towards"))
 
         executeWithWarns(AIR_MAGIC, levelRequirement, totalCost, targets) {
             targets.forEach { target ->
                 val parts = target.target.body.getParts()
                 val effects = listOf(EffectManager.getEffect("Air Blasted", 0, 0, parts))
-                val condition = Condition("Air Blasted", Element.AIR, distance, effects)
+                val condition = Condition("Air Blasted", Element.AIR, power, effects)
+                val distance = calcDistance(target.target, power)
                 val vector = if (direction != Direction.NONE) {
                     target.target.position.closer(direction.vector + source.position, distance)
                 } else {
                     target.target.position.closer(source.position, distance)
                 }
-                val spell = MoveTargetSpell("Push", vector, condition, distance, AIR_MAGIC, levelRequirement)
+                val spell = MoveTargetSpell("Push", vector, condition, perTargetCost, AIR_MAGIC, levelRequirement)
                 EventManager.postEvent(StartCastSpellEvent(source, target, spell))
             }
+        }
+    }
+
+    private fun calcDistance(target: Target, power: Int) : Int{
+        val weight = target.getWeight()
+        return if (weight > power){
+            0
+        } else {
+            power/weight
         }
     }
 
