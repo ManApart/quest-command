@@ -4,6 +4,7 @@ import core.commands.CommandParser
 import core.gameState.GameState
 import core.gameState.Player
 import core.gameState.quests.QuestManager
+import core.gameState.stat.HEALTH
 import core.history.ChatHistory
 import org.junit.Before
 import org.junit.BeforeClass
@@ -159,6 +160,19 @@ class CommandComboTest {
               """.trimIndent().trim()
 
         assertEquals(expected, ChatHistory.getLastOutput().trimIndent().trim())
+    }
+
+    @Test
+    fun poisonSelf() {
+        CommandParser.parseCommand("poison 1 for 5 on self")
+        assertEquals(1, GameState.player.soul.getConditions().size)
+        assertEquals("Poison decreases Your Health by 1 (9/10).", ChatHistory.getLastOutput())
+
+        CommandParser.parseCommand("wait 5")
+        CommandParser.parseCommand("wait 1")
+        assertEquals(0, GameState.player.soul.getConditions().size)
+        assertEquals(5, GameState.player.soul.getCurrent(HEALTH))
+        assertEquals("Player is no longer Poisoned.", ChatHistory.getLastOutput())
     }
 
 }

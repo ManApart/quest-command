@@ -49,5 +49,9 @@ class Condition(
         getEffects().forEach { it.remove(soul) }
     }
 
+    fun getAge() : Int {
+        return age
+    }
+
 }
 

@@ -9,7 +9,7 @@ import core.commands.ResponseRequestWrapper
 import core.gameState.Target
 import core.gameState.stat.WATER_MAGIC
 import interact.magic.StartCastSpellEvent
-import interact.magic.getTargetedParts
+import interact.magic.getTargetedPartsOrRootPart
 import interact.magic.spellCommands.SpellCommand
 import interact.magic.spells.Spell
 import status.effects.Condition
@@ -56,7 +56,7 @@ class Poison : SpellCommand() {
 
             executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
                 targets.forEach { target ->
-                    val parts = getTargetedParts(target)
+                    val parts = getTargetedPartsOrRootPart(target)
                     val effects = listOf(
                             EffectManager.getEffect("Poison", amount, duration, parts),
                             EffectManager.getEffect("Wet", 0, duration + 1, parts)

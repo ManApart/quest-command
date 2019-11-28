@@ -6,7 +6,7 @@ import core.gameState.Target
 import core.gameState.stat.WATER_MAGIC
 import interact.magic.spells.Spell
 import interact.magic.StartCastSpellEvent
-import interact.magic.getTargetedParts
+import interact.magic.getTargetedPartsOrAll
 import interact.magic.spellCommands.SpellCommand
 import status.effects.Condition
 import status.effects.EffectManager
@@ -31,14 +31,14 @@ class Jet : SpellCommand() {
     override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
-        val hitCount = targets.sumBy { getTargetedParts(it).size }
+        val hitCount = targets.sumBy { getTargetedPartsOrAll(it).size }
         val totalCost = damageAmount * hitCount
 //        val levelRequirement = damageAmount + (hitCount / 2)
         val levelRequirement = damageAmount/2
 
         executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
             targets.forEach { target ->
-                val parts = getTargetedParts(target)
+                val parts = getTargetedPartsOrAll(target)
                 val effects = listOf(
                         EffectManager.getEffect("Water Slice", damageAmount, 1, parts),
                         EffectManager.getEffect("Wet", 0, 5, parts)

@@ -125,10 +125,18 @@ class CastCommand : Command() {
     }
 }
 
-fun getTargetedParts(targetAim: TargetAim): List<BodyPart> {
+fun getTargetedPartsOrAll(targetAim: TargetAim): List<BodyPart> {
     return if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
         targetAim.target.body.getParts()
+    }
+}
+
+fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<BodyPart> {
+    return if (targetAim.bodyPartTargets.isNotEmpty()) {
+        targetAim.bodyPartTargets
+    } else {
+        listOfNotNull(targetAim.target.body.getRootPart() ?: targetAim.target.body.getParts().firstOrNull())
     }
 }

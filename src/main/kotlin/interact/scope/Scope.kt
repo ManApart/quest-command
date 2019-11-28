@@ -103,12 +103,15 @@ class Scope(private val locationNode: LocationNode) {
 
     fun getAllSouls(): List<Soul> {
         val souls = mutableListOf<Soul?>()
-        souls.add(GameState.player.soul)
         souls.addAll(GameState.player.inventory.getAllItems().map { it.soul })
 
         targets.forEach {
             souls.add(it.soul)
             it.inventory.getAllItems().forEach { item -> souls.add(item.soul) }
+        }
+
+        if (!souls.contains(GameState.player.soul)) {
+            souls.add(GameState.player.soul)
         }
         return souls.filterNotNull()
     }

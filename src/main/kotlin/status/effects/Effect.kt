@@ -14,7 +14,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
     private var originalValue = 0
 
     override fun toString(): String {
-        return "${base.name} ${base.statEffect} $amount (${base.amountType}) to ${base.statTarget} for $duration (${base.statKind})"
+        return "${base.name} ${base.statEffect} $amount (${base.amountType}) ${base.statTarget} (${base.statKind}) for $duration."
     }
 
     fun apply(soul: Soul, firstApply: Boolean) {
