@@ -69,20 +69,20 @@ class PlaceItemCommand : core.commands.Command() {
 
     private fun clarifyItemToDrop() {
         val targets = GameState.player.inventory.getItems().map { it.name }
-        display("Drop what item?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "drop $it" }.toMap())
+        val message = "Drop what item?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "drop $it" }.toMap()))
     }
 
     private fun clarifyItemToPlace() {
         val targets = GameState.player.inventory.getItems().map { it.name }
-        display("Give what item?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "place $it in" }.toMap())
+        val message = "Give what item?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "place $it in" }.toMap()))
     }
 
     private fun giveToWhat(creatures: List<Target>, itemName: String) {
-        display("Give $itemName to what?\n\t${creatures.joinToString(", ")}")
-        val response = ResponseRequest(creatures.map { it.name to "give $itemName to ${it.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "Give $itemName to what?\n\t${creatures.joinToString(", ")}"
+        val response = ResponseRequest(message, creatures.map { it.name to "give $itemName to ${it.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
 

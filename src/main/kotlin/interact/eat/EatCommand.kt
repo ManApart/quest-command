@@ -43,9 +43,9 @@ class EatCommand : Command() {
     }
 
     private fun eatWhat(food: List<Target>) {
-        display("Eat what?\n\t${food.joinToString(", ")}")
-        val response = ResponseRequest(food.map { it.name to "eat ${it.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "Eat what?\n\t${food.joinToString(", ")}"
+        val response = ResponseRequest(message, food.map { it.name to "eat ${it.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun eatFood(food: Target) {

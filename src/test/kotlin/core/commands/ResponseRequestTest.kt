@@ -47,6 +47,26 @@ class ResponseRequestTest {
     }
 
     @Test
+    fun preferExactMatchToNthNumber() {
+        val input = mapOf("1" to "do 1", "3" to "do 3", "5" to "do 5")
+        val response = ResponseRequest(input)
+
+        assertEquals("do 1", response.getCommand("1"))
+        assertEquals("do 3", response.getCommand("3"))
+    }
+
+    @Test
+    fun numberSymbolMatchesAnyNumber() {
+        val input = mapOf("1" to "do 1", "3" to "do 3", "5" to "do 5", "#" to "good #")
+        val response = ResponseRequest(input)
+
+        assertEquals("good 2", response.getCommand("2"), "# takes precedence over index")
+        assertEquals("do 3", response.getCommand("3"), "exact match takes precedence over #")
+        assertEquals("good 4", response.getCommand("4"), "# takes precedence over index")
+        assertEquals("good 20", response.getCommand("20"), "any number replaces #")
+    }
+
+    @Test
     fun getExactName() {
         val input = mapOf("hot" to "false", "cold" to "false", "warm" to "just right")
         val response = ResponseRequest(input)

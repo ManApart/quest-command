@@ -38,9 +38,9 @@ class LookCommand : Command() {
 
     private fun clarifyTarget() {
         val targets  = (listOf("all") + ScopeManager.getScope().getTargets().map { it.name })
-        display("Look at what?\n\t${targets.joinToString(", ")}")
-        val response = ResponseRequest(targets.map { it to "look $it" }.toMap())
-        CommandParser.responseRequest  = response
+        val message = "Look at what?\n\t${targets.joinToString(", ")}"
+        val response = ResponseRequest(message, targets.map { it to "look $it" }.toMap())
+        CommandParser.setResponseRequest(response)
     }
 
 }

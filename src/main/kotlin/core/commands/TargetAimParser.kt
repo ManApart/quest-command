@@ -13,7 +13,6 @@ fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameStat
     val args = Args(arguments, delimiters = listOf("and"))
     val targets = NameSearchableList(target.inventory.getAllItems())
     return args.getBaseAndGroups("and").mapNotNull { getTarget(it, targets) }
-//    return args.groups.values.mapNotNull { getTarget(it, targets) }
 }
 
 //TODO - make location paramatized

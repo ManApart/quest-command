@@ -45,8 +45,7 @@ class ApproachCommand : Command() {
     private fun clarifyAmount() {
         val targetRange = getDefaultAmount()
         val targets = listOf(Distances.MIN_RANGE, targetRange/2, targetRange)
-        display("Move how much?")
-        CommandParser.responseRequest = ResponseRequest(targets.map { "$it" to "approach $it" }.toMap())
+        CommandParser.setResponseRequest( ResponseRequest("Move how much?", targets.map { "$it" to "approach $it" }.toMap()))
     }
 
     private fun approach(amount: Int) {

@@ -28,7 +28,7 @@ class Jet : SpellCommand() {
         return listOf("Water")
     }
 
-    override fun execute(source: Target, args: Args, targets: List<TargetAim>) {
+    override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
         val hitCount = targets.sumBy { getTargetedParts(it).size }

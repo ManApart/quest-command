@@ -40,9 +40,8 @@ class RetreatCommand : Command() {
     }
 
     private fun clarifyAmount() {
-        val targets = listOf(Distances.MIN_RANGE, HUMAN_LENGTH/2, HUMAN_LENGTH)
-        display("Move how much?")
-        CommandParser.responseRequest = ResponseRequest(targets.map { "$it" to "retreat $it" }.toMap())
+        val targets = listOf(Distances.MIN_RANGE, HUMAN_LENGTH / 2, HUMAN_LENGTH)
+        CommandParser.setResponseRequest(ResponseRequest("Move how much?", targets.map { "$it" to "retreat $it" }.toMap()))
     }
 
     private fun retreat(amount: Int) {

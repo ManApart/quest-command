@@ -99,29 +99,29 @@ class AttackCommand : Command() {
 
     private fun clarifyAttackType(args: List<String>) {
         val options = listOf("Chop", "Crush", "Slash", "Stab")
-        display("Attack how?\n\t${options.joinToString(", ")}")
-        val response = ResponseRequest(options.map { it to "$it ${args.joinToString(" ")}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "Attack how?\n\t${options.joinToString(", ")}"
+        val response = ResponseRequest(message, options.map { it to "$it ${args.joinToString(" ")}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTarget(keyword: String, weaponName: String) {
         val options = ScopeManager.getScope().getTargets()
-        display("$keyword what with $weaponName?\n\t${options.joinToString(", ")}")
-        val response = ResponseRequest(options.map { it.name to "$keyword ${it.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ")}"
+        val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTargets(keyword: String, options: List<TargetAim>, weaponName: String) {
-        display("$keyword which one with $weaponName?\n\t${options.joinToString(", ")}")
-        val response = ResponseRequest(options.map { it.target.name to "$keyword ${it.target.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "$keyword which one with $weaponName?\n\t${options.joinToString(", ")}"
+        val response = ResponseRequest(message, options.map { it.target.name to "$keyword ${it.target.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTargetPart(keyword: String, target: TargetAim, weaponName: String) {
         val options = target.target.body.getParts()
-        display("$keyword what part of ${target.target.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}")
-        val response = ResponseRequest(options.map { it.name to "$keyword ${it.name} of ${target.target.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "$keyword what part of ${target.target.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
+        val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name} of ${target.target.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {

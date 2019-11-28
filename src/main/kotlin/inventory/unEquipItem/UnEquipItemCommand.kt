@@ -72,8 +72,8 @@ class UnEquipItemCommand : Command() {
 
     private fun clarifyItem() {
         val targets = GameState.player.body.getEquippedItems()
-        display("What do you want to un-equip?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { "$it" to "unequip $it" }.toMap())
+        val message = "What do you want to un-equip?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { "$it" to "unequip $it" }.toMap()))
     }
 
 }

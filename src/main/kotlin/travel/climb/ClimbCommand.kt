@@ -106,16 +106,16 @@ class ClimbCommand : Command() {
             climbOptions.size == 1 && desiredDirection != Direction.NONE -> CommandParser.parseCommand("climb $desiredDirection ${options[0]}")
             climbOptions.size == 1 -> CommandParser.parseCommand("climb ${options[0]}")
             desiredDirection != Direction.NONE -> {
-                display("Climb what?\n\t${climbOptions.joinToString { "${it.target.name} (${it.direction})" }}")
-                val response = ResponseRequest((climbOptions.map { it.target.name to "climb ${it.direction} ${it.target.name}" } +
+                val message = "Climb what?\n\t${climbOptions.joinToString { "${it.target.name} (${it.direction})" }}"
+                val response = ResponseRequest(message, (climbOptions.map { it.target.name to "climb ${it.direction} ${it.target.name}" } +
                         climbOptions.map { "${it.target.name} (${it.direction})" to "climb ${it.direction} ${it.target.name}" }
                         ).toMap())
-                CommandParser.responseRequest = response
+                 CommandParser.setResponseRequest(response)
             }
             else -> {
-                display("Climb what?\n\t${options.joinToString(", ")}")
-                val response = ResponseRequest(options.map { it.name to "climb ${it.name}" }.toMap())
-                CommandParser.responseRequest = response
+                val message = "Climb what?\n\t${options.joinToString(", ")}"
+                val response = ResponseRequest(message, options.map { it.name to "climb ${it.name}" }.toMap())
+                 CommandParser.setResponseRequest(response)
             }
         }
     }
@@ -126,9 +126,9 @@ class ClimbCommand : Command() {
         if (options.isEmpty()) {
             display("${target.name} doesn't seem to have anything to climb.")
         } else {
-            display("Climb what part of ${target.name}?\n\t${options.joinToString(", ")}")
-            val response = ResponseRequest(options.map { it.name to "climb ${it.name} of ${target.name}" }.toMap())
-            CommandParser.responseRequest = response
+            val message = "Climb what part of ${target.name}?\n\t${options.joinToString(", ")}"
+            val response = ResponseRequest(message, options.map { it.name to "climb ${it.name} of ${target.name}" }.toMap())
+             CommandParser.setResponseRequest(response)
         }
     }
 

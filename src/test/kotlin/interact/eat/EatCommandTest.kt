@@ -28,12 +28,14 @@ class EatCommandTest {
 
     companion object {
         @BeforeClass
-        @JvmStatic fun setupAll() {
+        @JvmStatic
+        fun setupAll() {
             DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
         }
 
         @AfterClass
-        @JvmStatic fun teardown() {
+        @JvmStatic
+        fun teardown() {
             DependencyInjector.clearImplementation(Reflections::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
@@ -43,7 +45,7 @@ class EatCommandTest {
     @Before
     fun setup() {
         EventManager.clear()
-        CommandParser.responseRequest = null
+        CommandParser.setResponseRequest(null)
 
         val bodyParser = BodyFakeParser()
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
@@ -75,7 +77,7 @@ class EatCommandTest {
         assertEquals(1, events.size)
         assertTrue(events[0] is UseEvent)
         assertEquals(item, (events[0] as UseEvent).used)
-        assertNull(CommandParser.responseRequest)
+        assertNull(CommandParser.getResponseRequest())
     }
 
     @Test
@@ -88,6 +90,6 @@ class EatCommandTest {
         val events = EventManager.getUnexecutedEvents()
 
         assertEquals(0, events.size)
-        assertNotNull(CommandParser.responseRequest)
+        assertNotNull(CommandParser.getResponseRequest())
     }
 }

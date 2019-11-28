@@ -40,8 +40,8 @@ class StatusCommand : Command() {
 
     private fun clarifyStatus() {
         val targets = ScopeManager.getScope().getCreatures().map { it.name }
-        display("Status of what?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "status $it" }.toMap())
+        val message = "Status of what?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "status $it" }.toMap()))
     }
 
 

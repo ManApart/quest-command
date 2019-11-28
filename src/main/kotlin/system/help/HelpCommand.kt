@@ -59,26 +59,26 @@ class HelpCommand : Command() {
         val targets = listOf("General Help", "List Commands", "List Commands (extended)", "A Command Group", "A Command")
         val commands = listOf("All", "Commands", "Commands extended", "Command Group", "Command").map { "help $it" }
 
-        display("Help about what?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest.new(targets, commands)
+        val message = "Help about what?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest.new(message, targets, commands))
     }
 
     private fun clarifyCommandGroupHelp() {
         val targets = getCommandGroups()
-        display("Help about which command group?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "help $it" }.toMap())
+        val message = "Help about which command group?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "help $it" }.toMap()))
     }
 
     private fun clarifyCommandFromGroupHelp() {
         val targets = getCommandGroups()
-        display("Help about a command from which command group?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "help command $it" }.toMap())
+        val message = "Help about a command from which command group?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "help command $it" }.toMap()))
     }
 
     private fun clarifyCommandHelp(group: String) {
         val targets = getCommands(group).map { it.name }
-        display("Help about what command?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "help $it" }.toMap())
+        val message = "Help about what command?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "help $it" }.toMap()))
     }
 
 }

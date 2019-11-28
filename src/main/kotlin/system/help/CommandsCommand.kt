@@ -35,13 +35,13 @@ class CommandsCommand : Command() {
     private fun clarifyCommandGroup() {
         val groups = getCommandGroups()
         val response = ResponseRequest(groups.map { it to "commands $it" }.toMap())
-        CommandParser.responseRequest = response
+        CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyCommand(group: String) {
         val commands = getCommands(group).map { it.name }
         val response = ResponseRequest(commands.map { it to it }.toMap())
-        CommandParser.responseRequest = response
+         CommandParser.setResponseRequest(response)
     }
 
 

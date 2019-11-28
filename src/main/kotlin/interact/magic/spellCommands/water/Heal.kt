@@ -1,7 +1,11 @@
 package interact.magic.spellCommands.water
 
 import combat.battle.position.TargetAim
+import combat.battle.position.toCommandString
 import core.commands.Args
+import core.commands.ResponseRequest
+import core.commands.ResponseRequestHelper
+import core.commands.ResponseRequestWrapper
 import core.gameState.Target
 import core.gameState.stat.WATER_MAGIC
 import interact.magic.StartCastSpellEvent
@@ -28,27 +32,41 @@ class Heal : SpellCommand() {
         return listOf("Water")
     }
 
-    override fun execute(source: Target, commandArgs: Args, targets: List<TargetAim>) {
-        val args = Args(commandArgs.getBaseGroup(), listOf("for"))
-        //TODO - response request instead of hard coded default
-        val amount = args.getNumber() ?: 1
-        val duration = args.getNumber("for") ?: 1
-        val hitCount = targets.count()
-        val totalCost = amount * hitCount
+    override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
+        val spellArgs = Args(args.getBaseGroup(), listOf("for"))
+        val initialAmount = spellArgs.getBaseNumber()
+        val initialDuration = spellArgs.getNumber("for")
+
+        val options = listOf("1", "3", "5", "10", "50")
+        val amountResponse = ResponseRequest("Heal how much?", options.map { it to "heal $it for ${initialDuration.toString() ?: ""} on ${targets.toCommandString()}" }.toMap())
+        val durationResponse = ResponseRequest("Heal for how long?", options.map { it to "heal ${initialAmount.toString() ?: ""} for $it on ${targets.toCommandString()}" }.toMap())
+        val responseHelper = ResponseRequestHelper(mapOf(
+                "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 1),
+                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
+        ))
+
+        if (!responseHelper.hasAllValues()) {
+            responseHelper.requestAResponse()
+        } else {
+            val amount = responseHelper.getIntValue("amount")
+            val duration = responseHelper.getIntValue("duration")
+            val hitCount = targets.count()
+            val totalCost = amount * hitCount
 //        val levelRequirement = amount*2 +  duration/2
-        val levelRequirement = amount / 2
+            val levelRequirement = amount / 2
 
-        executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
-            targets.forEach { target ->
-                val parts = getTargetedParts(target)
-                val effects = listOf(
-                        EffectManager.getEffect("Heal", amount, duration, parts),
-                        EffectManager.getEffect("Wet", 0, duration + 1, parts)
-                )
+            executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
+                targets.forEach { target ->
+                    val parts = getTargetedParts(target)
+                    val effects = listOf(
+                            EffectManager.getEffect("Heal", amount, duration, parts),
+                            EffectManager.getEffect("Wet", 0, duration + 1, parts)
+                    )
 
-                val condition = Condition("Healing", Element.WATER, amount, effects)
-                val spell = Spell("Heal", condition, amount, WATER_MAGIC, levelRequirement)
-                EventManager.postEvent(StartCastSpellEvent(source, target, spell))
+                    val condition = Condition("Healing", Element.WATER, amount, effects)
+                    val spell = Spell("Heal", condition, amount, WATER_MAGIC, levelRequirement)
+                    EventManager.postEvent(StartCastSpellEvent(source, target, spell))
+                }
             }
         }
     }

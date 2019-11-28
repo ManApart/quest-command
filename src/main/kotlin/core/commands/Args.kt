@@ -101,6 +101,10 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return null
     }
 
+    fun getBaseNumber(): Int? {
+        return getBaseString().toIntOrNull()
+    }
+
     fun getNumber(delimiter: String, includeBaseString: Boolean = false): Int? {
         val strings = if (includeBaseString) {
             getBaseAndStrings(delimiter)

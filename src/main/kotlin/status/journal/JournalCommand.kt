@@ -50,14 +50,14 @@ class JournalCommand : Command() {
 
     private fun clarifyQuest() {
         val targets = listOf("Active", "All", "Quest")
-        display("Info about what type?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "quest $it" }.toMap())
+        val message = "Info about what type?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "quest $it" }.toMap()))
     }
 
     private fun clarifyWhichQuest() {
         val targets = QuestManager.getAllPlayerQuests().map { it.name }
-        display("Info about which quest?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "quest $it" }.toMap())
+        val message = "Info about which quest?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "quest $it" }.toMap()))
     }
 
 }

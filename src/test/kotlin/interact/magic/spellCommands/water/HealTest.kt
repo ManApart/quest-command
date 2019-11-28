@@ -2,13 +2,11 @@ package interact.magic.spellCommands.water
 
 import combat.battle.position.TargetAim
 import core.commands.Args
-import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.stat.FOCUS
 import core.gameState.stat.WATER_MAGIC
 import core.utility.reflection.MockReflections
 import core.utility.reflection.Reflections
-import interact.magic.CastCommand
 import interact.magic.MockSpellCommand
 import interact.magic.StartCastSpellEvent
 import interact.magic.spells.Spell
@@ -98,7 +96,7 @@ class HealTest {
 
     private fun castHeal(input: String): Spell? {
         val args = Args(input.split(" "), delimiters = listOf("on"))
-        Heal().execute(targetA, args, listOf(TargetAim(targetA)))
+        Heal().execute(targetA, args, listOf(TargetAim(targetA)), true)
         return (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell
     }
 

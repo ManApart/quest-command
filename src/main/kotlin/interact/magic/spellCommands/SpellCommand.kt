@@ -2,7 +2,6 @@ package interact.magic.spellCommands
 
 import combat.battle.position.TargetAim
 import core.commands.Args
-import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.stat.FOCUS
 import core.history.display
@@ -12,7 +11,7 @@ abstract class SpellCommand : Named {
     abstract fun getDescription(): String
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>
-    abstract fun execute(source: Target, args: Args, targets: List<TargetAim>)
+    abstract fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean)
 
     fun executeWithWarns(source: Target, levelStat: String, levelRequirement: Int, totalCost: Int, targets: List<TargetAim>, minTargetCount: Int = 1, maxTargetCount: Int = 100, execute: () -> Unit) {
         val level = source.soul.getCurrent(levelStat)

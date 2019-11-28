@@ -2,7 +2,8 @@ package core.commands
 
 import core.utility.NameSearchableList
 
-class ResponseRequest(responses: Map<String, String>) {
+class ResponseRequest(val message: String, responses: Map<String, String>) {
+    constructor(responses: Map<String, String>) : this("", responses)
     private val responses: Map<String, String> = processResponses(responses)
     private val responseKeys = NameSearchableList.from(this.responses.keys.map { it.toLowerCase() })
 
@@ -25,31 +26,43 @@ class ResponseRequest(responses: Map<String, String>) {
     fun getCommand(input: String): String? {
         val cleaned = input.trim().toLowerCase()
 
-        if (cleaned.toIntOrNull() != null && cleaned.toInt() <= responses.keys.size) {
-            return responses[responseKeys[cleaned.toInt()-1].name]
-        }
-
         if (responseKeys.existsExact(cleaned)) {
             return responses[responseKeys.getOrNull(cleaned)!!.name]
+        }
+
+        val numberResponse = getNumberResponse(cleaned)
+        if (numberResponse != null) {
+            return numberResponse
+        }
+
+        if (cleaned.toIntOrNull() != null && cleaned.toInt() <= responses.keys.size) {
+            return responses[responseKeys[cleaned.toInt() - 1].name]
         }
 
         return null
     }
 
-    fun getOptions(): List<String>{
+    private fun getNumberResponse(input: String): String? {
+        if (responseKeys.exists("#") && input.toIntOrNull() != null) {
+            return responses["#"]?.replace("#", input)
+        }
+        return null
+    }
+
+    fun getOptions(): List<String> {
         return responseKeys.map { it.name }.toList()
     }
 
     companion object {
-        fun new(keys: List<String>, values: List<String>) : ResponseRequest {
+        fun new(message: String, keys: List<String>, values: List<String>): ResponseRequest {
             if (keys.size != values.size) {
                 throw IllegalArgumentException("Keys and values must have the same number of items!")
             }
             val responseMap = mutableMapOf<String, String>()
-            for (i in 0 until keys.size){
+            for (i in 0 until keys.size) {
                 responseMap[keys[i]] = values[i]
             }
-            return ResponseRequest(responseMap)
+            return ResponseRequest(message, responseMap)
         }
     }
 

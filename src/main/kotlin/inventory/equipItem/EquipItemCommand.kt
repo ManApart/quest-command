@@ -84,9 +84,9 @@ class EquipItemCommand : Command() {
 
     private fun suggestEquippableItems() {
         val equippableItems = getEquipableItems()
-        display("What do you want to equip?\n\t${equippableItems.joinToString(", ")}")
-        val response = ResponseRequest(equippableItems.map { it.name to "equip ${it.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "What do you want to equip?\n\t${equippableItems.joinToString(", ")}"
+        val response = ResponseRequest(message, equippableItems.map { it.name to "equip ${it.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun getEquipableItems(): List<Target> {
@@ -96,13 +96,13 @@ class EquipItemCommand : Command() {
     }
 
     private fun suggestAttachPoints(attachPointGuess: String?, item: Target) {
-        display("Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}")
-        val response = ResponseRequest(item.equipSlots.flatMap { it.attachPoints }.map { it to "equip $item to $it" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}"
+        val response = ResponseRequest(message, item.equipSlots.flatMap { it.attachPoints }.map { it to "equip $item to $it" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun confirmEquip(newEquip: Target, equippedItems: List<Target>, attachPoint: String?) {
-        display("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
+        val message = "Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?"
 
         val toPart = if (attachPoint.isNullOrBlank()) {
             ""
@@ -110,7 +110,7 @@ class EquipItemCommand : Command() {
             " to $attachPoint"
         }
 
-        val response = ResponseRequest(mapOf("y" to "equip $newEquip$toPart f", "n" to ""))
-        CommandParser.responseRequest = response
+        val response = ResponseRequest(message, mapOf("y" to "equip $newEquip$toPart f", "n" to ""))
+         CommandParser.setResponseRequest(response)
     }
 }

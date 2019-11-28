@@ -51,26 +51,26 @@ class UseCommand : Command() {
 
     private fun clarifyAction() {
         val targets = listOf("Use Item", "Use Item on Target")
-        display("Do what?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to it }.toMap())
+        val message = "Do what?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to it }.toMap()))
     }
 
     private fun clarifyItem() {
         val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
-        display("Use what?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "use $it" }.toMap())
+        val message = "Use what?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $it" }.toMap()))
     }
 
     private fun clarifyItemForTarget() {
         val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
-        display("Use what?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "use $it on" }.toMap())
+        val message = "Use what?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $it on" }.toMap()))
     }
 
     private fun clarifyTarget(used: String) {
         val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
-        display("Use $used on what?\n\t${targets.joinToString(", ")}")
-        CommandParser.responseRequest = ResponseRequest(targets.map { it to "use $used on $it" }.toMap())
+        val message = "Use $used on what?\n\t${targets.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $used on $it" }.toMap()))
     }
 
 }

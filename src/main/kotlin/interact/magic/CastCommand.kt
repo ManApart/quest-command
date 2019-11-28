@@ -43,7 +43,7 @@ class CastCommand : Command() {
         return listOf("Combat")
     }
 
-    fun hasWord(keyword: String) : Boolean {
+    fun hasWord(keyword: String): Boolean {
         return spellCommands.exists(keyword)
     }
 
@@ -54,7 +54,7 @@ class CastCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         when (keyword) {
             "word" -> executeWord(args)
-            else -> castWord(source, keyword != "cast", args)
+            else -> castWord(source, keyword != "cast", args, keyword == "c")
         }
     }
 
@@ -82,7 +82,7 @@ class CastCommand : Command() {
         return categories.contains(word)
     }
 
-    private fun castWord(source: Target, isAlias: Boolean, args: List<String>) {
+    private fun castWord(source: Target, isAlias: Boolean, args: List<String>, useDefaults: Boolean) {
         if (args.isEmpty()) {
             clarifyWord()
         } else {
@@ -94,7 +94,7 @@ class CastCommand : Command() {
                 if (isAlias && targets.isEmpty()) {
                     targets.add(TargetAim(source, parseBodyParts(source, args)))
                 }
-                spellCommand.execute(source, spellArgs, targets)
+                spellCommand.execute(source, spellArgs, targets, useDefaults)
             } else {
                 display("Unknown word ${args.first()}")
             }
@@ -103,9 +103,9 @@ class CastCommand : Command() {
 
     private fun clarifyWord() {
         val options = spellCommands.map { it.name }
-        display("Cast what?\n\t${options.joinToString(", ")}")
-        val response = ResponseRequest(options.map { it to "cast $it" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "Cast what?\n\t${options.joinToString(", ")}"
+        val response = ResponseRequest(message, options.map { it to "cast $it" }.toMap())
+        CommandParser.setResponseRequest(response)
     }
 
     private fun getSpellCommand(args: List<String>): SpellCommand? {
@@ -125,8 +125,8 @@ class CastCommand : Command() {
     }
 }
 
-fun getTargetedParts(targetAim: TargetAim) : List<BodyPart> {
-    return if (targetAim.bodyPartTargets.isNotEmpty()){
+fun getTargetedParts(targetAim: TargetAim): List<BodyPart> {
+    return if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
         targetAim.target.body.getParts()

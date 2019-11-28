@@ -3,6 +3,7 @@ package core.commands
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.ChatHistory
+import core.history.display
 import core.utility.NameSearchableList
 import core.utility.reflection.ReflectionTools
 import core.utility.reflection.Reflections
@@ -17,7 +18,7 @@ object CommandParser {
     var commands = loadCommands()
     private val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
-    var responseRequest: ResponseRequest? = null
+    private var responseRequest: ResponseRequest? = null
     var commandSource: Target? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
@@ -128,6 +129,17 @@ object CommandParser {
 
     fun isPlayersTurn(): Boolean {
         return commandSource == null || commandSource == GameState.player
+    }
+
+    fun setResponseRequest(responseRequest: ResponseRequest?) {
+        if (responseRequest != null && responseRequest.message != "") {
+            display(responseRequest.message)
+        }
+        this.responseRequest = responseRequest
+    }
+
+    fun getResponseRequest(): ResponseRequest? {
+        return this.responseRequest
     }
 
 }

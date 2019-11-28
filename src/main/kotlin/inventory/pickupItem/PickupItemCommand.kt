@@ -51,9 +51,9 @@ class PickupItemCommand : core.commands.Command() {
         if (items.isEmpty()) {
             display("Nothing to pickup!")
         } else {
-            display("Pickup which item?\n\t${items.joinToString(", ")}")
-            val response = ResponseRequest(items.map { it.name to "take ${it.name}" }.toMap())
-            CommandParser.responseRequest = response
+            val message = "Pickup which item?\n\t${items.joinToString(", ")}"
+            val response = ResponseRequest(message, items.map { it.name to "take ${it.name}" }.toMap())
+             CommandParser.setResponseRequest(response)
         }
     }
 
@@ -67,9 +67,9 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun takeFromWhat(creatures: List<Target>, itemName: String) {
-        display("Take $itemName from what?\n\t${creatures.joinToString(", ")}")
-        val response = ResponseRequest(creatures.map { it.name to "take $itemName from ${it.name}" }.toMap())
-        CommandParser.responseRequest = response
+        val message = "Take $itemName from what?\n\t${creatures.joinToString(", ")}"
+        val response = ResponseRequest(message, creatures.map { it.name to "take $itemName from ${it.name}" }.toMap())
+         CommandParser.setResponseRequest(response)
     }
 
     private fun takeItemFromContainer(from: Target, itemName: String) {
