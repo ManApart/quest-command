@@ -86,6 +86,13 @@
     "statTarget": "Health",
     "statEffect": "RECOVER",
     "damageType": "WATER"
+  },
+  {
+    "name": "Poison",
+    "description": "Lose health over time.",
+    "statTarget": "Health",
+    "statEffect": "DRAIN",
+    "damageType": "WATER"
   }
 
 

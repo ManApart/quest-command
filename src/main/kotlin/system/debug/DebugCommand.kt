@@ -47,6 +47,7 @@ class DebugCommand : Command() {
                 "stat" -> sendDebugStatEvent(StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(arguments)
+                else -> display("Did not understand debug command.")
             }
         }
     }

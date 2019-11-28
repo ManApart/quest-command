@@ -73,7 +73,7 @@ class HealTest {
         assertTrue(spellCommand.targets.isEmpty())
 
         assertNotNull(spell)
-        assertEquals(1, spell.condition.elementStrength)
+        assertEquals(5, spell.condition.elementStrength)
         assertEquals(1, spell.condition.getEffects()[0].duration)
     }
 

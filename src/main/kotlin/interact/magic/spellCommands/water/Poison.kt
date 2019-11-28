@@ -17,15 +17,15 @@ import status.effects.EffectManager
 import status.effects.Element
 import system.EventManager
 
-class Heal : SpellCommand() {
-    override val name = "Heal"
+class Poison : SpellCommand() {
+    override val name = "Poison"
 
     override fun getDescription(): String {
-        return "Cast Heal:\n\tHeal yourself or others."
+        return "Cast Poison:\n\tPoison a target, doing damage over time."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Heal <amount> for <duration> on *<targets> - Heals damage taken over time."
+        return "\n\tCast Poison <amount> for <duration> on *<targets> - Does damage over time."
     }
 
     override fun getCategory(): List<String> {
@@ -38,11 +38,11 @@ class Heal : SpellCommand() {
         val initialDuration = spellArgs.getNumber("for")
 
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Heal how much?", options.map { it to "cast heal $it for ${initialDuration.toString() ?: ""} on ${targets.toCommandString()}" }.toMap())
-        val durationResponse = ResponseRequest("Heal for how long?", options.map { it to "cast heal ${initialAmount.toString() ?: ""} for $it on ${targets.toCommandString()}" }.toMap())
+        val amountResponse = ResponseRequest("Poison how much?", options.map { it to "cast poison $it for ${initialDuration.toString() ?: ""} on ${targets.toCommandString()}" }.toMap())
+        val durationResponse = ResponseRequest("Poison for how long?", options.map { it to "cast poison ${initialAmount.toString() ?: ""} for $it on ${targets.toCommandString()}" }.toMap())
         val responseHelper = ResponseRequestHelper(mapOf(
-                "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 5),
-                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
+                "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 1),
+                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 10)
         ))
 
         if (!responseHelper.hasAllValues()) {
@@ -51,20 +51,19 @@ class Heal : SpellCommand() {
             val amount = responseHelper.getIntValue("amount")
             val duration = responseHelper.getIntValue("duration")
             val hitCount = targets.count()
-            val totalCost = amount * hitCount
-//        val levelRequirement = amount*2 +  duration/2
-            val levelRequirement = amount / 2
+            val totalCost = (amount * hitCount * 2) + (duration / 4)
+            val levelRequirement = amount/2
 
             executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
                 targets.forEach { target ->
                     val parts = getTargetedParts(target)
                     val effects = listOf(
-                            EffectManager.getEffect("Heal", amount, duration, parts),
+                            EffectManager.getEffect("Poison", amount, duration, parts),
                             EffectManager.getEffect("Wet", 0, duration + 1, parts)
                     )
 
-                    val condition = Condition("Healing", Element.WATER, amount, effects)
-                    val spell = Spell("Heal", condition, amount, WATER_MAGIC, levelRequirement)
+                    val condition = Condition("Poisoned", Element.WATER, amount, effects)
+                    val spell = Spell("Poison", condition, amount, WATER_MAGIC, levelRequirement)
                     EventManager.postEvent(StartCastSpellEvent(source, target, spell))
                 }
             }
