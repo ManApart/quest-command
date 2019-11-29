@@ -58,4 +58,9 @@ class Combatant(val target: Target) {
     fun status(): String {
         return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} hp, $actionPoints/100 ap, ${action?.javaClass?.simpleName ?: "None"}."
     }
+
+    fun getActionPoints() : Int {
+        return actionPoints
+    }
+
 }

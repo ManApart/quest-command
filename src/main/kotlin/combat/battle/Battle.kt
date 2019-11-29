@@ -2,10 +2,11 @@ package combat.battle
 
 import combat.Combatant
 import core.commands.CommandParser
-import core.gameState.Target
 import core.gameState.GameState
-
+import core.gameState.Target
 import core.history.display
+import core.history.displayUpdate
+import core.history.displayUpdateEnd
 import system.EventManager
 
 class Battle(combatantCreatures: List<Target>) {
@@ -66,14 +67,19 @@ class Battle(combatantCreatures: List<Target>) {
 
     private fun executeTurn() {
         var takeAnotherTurn = true
+        printUpdatingStatus()
         combatants.forEach { it.tick() }
         combatants.forEach {
             if (it.isActionReady()) {
+                printUpdatingStatusEnd()
+//                printTurnStatus()
                 takeAnotherTurn = false
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.lastAttacked = it.action?.target?.target ?: it.lastAttacked
                 it.action = null
             } else if (it.canChooseAction()) {
+                printUpdatingStatusEnd()
+//                printTurnStatus()
                 it.resetStance()
                 it.chooseAction()
                 takeAnotherTurn = false
@@ -98,10 +104,46 @@ class Battle(combatantCreatures: List<Target>) {
         combatants.forEach {
             println("\t${it.status()}")
         }
+        printTurnStatus()
     }
 
-    fun getCombatantDistance() : Int {
+    fun getCombatantDistance(): Int {
         return combatants.first().target.position.getDistance(combatants.last().target.position)
+    }
+
+    private fun printTurnStatus() {
+        val combatantString = combatants.map {
+            val target = it.target
+            when {
+                it.isActionReady() -> ""
+                it.getActionPoints() == 0 -> ""
+                it.canChooseAction() -> "$target is making a choice"
+                it.action != null -> "$target is preforming an action with ${it.action!!.timeLeft} time left"
+                else -> "$target is getting ready to make a choice: ${it.getActionPoints()}/100"
+            }
+        }.filter { it.isNotBlank() }.joinToString("\n")
+
+        if (combatantString.isNotBlank()) {
+            display(combatantString)
+        }
+    }
+
+    private fun printUpdatingStatus() {
+        val combatantString = combatants.joinToString("\t\t") {
+            val points = it.getActionPoints()
+            val timeLeft = it.action?.timeLeft ?: 0
+            "${it.target.getDisplayName()}: $points AP, $timeLeft action time left"
+        }
+        displayUpdate(combatantString)
+    }
+
+    private fun printUpdatingStatusEnd() {
+        val combatantString = combatants.joinToString("\t\t") {
+            val points = it.getActionPoints()
+            val timeLeft = it.action?.timeLeft ?: 0
+            "${it.target.getDisplayName()}: $points AP, $timeLeft action time left"
+        }
+        displayUpdateEnd(combatantString)
     }
 
 }

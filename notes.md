@@ -382,23 +382,6 @@ Require high level in both skills, though not as high as the 'upgrade' subtypes.
 Most spells apply their type’s tag/condition/element to the target. Use flame on a log to light it; use water burst to put the flame out.
 
 
-#### Spell Types
-Name | Type | Description  
---- | --- | ---
-Water | Base | Health, aoe attacks. Flexible
-Air | Base | Quick Attacks and Evasion
-Earth | Base | Defense and Slow, Strong Attacks
-Fire | Base | Aggressive attacks, self sacrificing attacks
-Lightning | Fire Upgrade |
-Ice | Water Upgrade |
-Stone | Earth Upgrade
-Smoke | Air + Fire |
-Rain | Air + Water 
-Steam | Water + Fire
-Mud | Water + Earth
-Blizzard | Ice + Air
-Storm | Lightning + Air + Water
-
 
 #### Spells
 Type | Name | Description | Effects | Params | Cost

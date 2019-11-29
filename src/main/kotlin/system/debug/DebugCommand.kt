@@ -24,6 +24,7 @@ class DebugCommand : Command() {
                 "\n\tDebug lvlreq <on/off> - Toggle the requirement for skills/spells to have a specific level." +
                 "\n\tDebug statchanges <on/off> - Toggle whether stats (stamina, focus, health, etc) can be depleted." +
                 "\n\tDebug random <on/off> - Toggle random chances always succeeding. " +
+                "\n\tDebug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). " +
                 "\n\tDebug stat <stat name> <desired level> on *<target> - Set a stat to the desired level." +
                 "\n\tDebug prop <prop name> <desired level> on *<target> - Set a property to the desired level." +
                 "\n\tDebug tag *<remove> <tag name> on *<target> - Add (or remove) a tag."
@@ -44,6 +45,7 @@ class DebugCommand : Command() {
                 "lvlreq" -> sendDebugToggleEvent(DebugType.LEVEL_REQ, arguments)
                 "statchanges" -> sendDebugToggleEvent(DebugType.STAT_CHANGES, arguments)
                 "random" -> sendDebugToggleEvent(DebugType.RANDOM, arguments)
+                "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
                 "stat" -> sendDebugStatEvent(StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(arguments)

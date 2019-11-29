@@ -60,6 +60,46 @@ They can place items in a container if it has the `Container` and `Open` tags an
 Containers may have a `CanHold` value: `"CanHold": "Dagger,Bow"`. If a container does not have a `CanHold` property then any type of item can be placed in it. If it does have the property, then only items that have at least one matching tag can be placed in the container. For example, pouches and sacks can hold any type of item, while holsters may only hold swords or maces.
 
 
+### Magic
+
+#### Elements
+Whether the cause is magic, or just that you lit a tree on fire with your tinderbox, elements will interact with each other. Often, a more powerful element will clear or weaken the duration of effects of a less powerful element of the opposite type.
+
+Name | Clears | Notes
+--- | --- | ---
+Fire | Water, Ice
+Water  | Fire
+Earth | Lightning, Fire
+Stone |
+Air | Water
+Air | Earth | Must be twice the strength
+Air | Fire |
+Air | Fire | If same or lower strength, will buff fire
+Lightning | Water | Duration is doubled and water is cleared
+Ice | Fire 
+Ice | Water | Duration is doubled and water is cleared
+
+#### Spell Types
+Different spell types are associated with an element. Some upgraded spells have a unique element that is a combination of multiple base elements (Rain = Air + Water). Spells require a minimum level in their base element to cast. This cost scales with the type of spell and how powerful it is. (Jet may cost 5 water magic to cast. Rain may cast 50 water magic and 30 air magic to cast)
+
+Name | Type | Description  
+--- | --- | ---
+Water | Base | Health, aoe attacks. Flexible
+Air | Base | Quick Attacks and Evasion
+Earth | Base | Defense and Slow, Strong Attacks
+Fire | Base | Aggressive attacks, self sacrificing attacks
+Lightning | Fire Upgrade |
+Ice | Water Upgrade |
+Stone | Earth Upgrade
+Smoke | Air + Fire |
+Rain | Air + Water 
+Steam | Water + Fire
+Mud | Water + Earth
+Blizzard | Ice + Air
+Storm | Lightning + Air + Water
+
+
+
 ## Commands
 
 Below is the generated manual for all commands in the game. 
