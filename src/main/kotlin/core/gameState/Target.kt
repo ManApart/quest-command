@@ -94,7 +94,7 @@ open class Target(
      * Return how encumbered the creature is, as a percent from 0-1
      */
     fun getEncumbrance(): Float {
-        val soulEncumbrance = (soul.getStatOrNull(ENCUMBRANCE)?.current ?: 0) / 100f
+        val soulEncumbrance = soul.parent.properties.values.getInt(ENCUMBRANCE, 0) / 100f
         val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, soulEncumbrance + physicalEncumbrance))
     }

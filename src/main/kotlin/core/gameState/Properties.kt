@@ -8,7 +8,7 @@ import combat.battle.Distances.SWORD_RANGE
 import core.utility.wrapNonEmpty
 
 //Effects
-const val ACTION_POINTS = "Action Points"
+const val ACTION_POINTS = "Action Point Boost"
 const val ENCUMBRANCE = "Encumbrance"
 
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {

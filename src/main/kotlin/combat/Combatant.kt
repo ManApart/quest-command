@@ -2,6 +2,7 @@ package combat
 
 import combat.battle.BattleAction
 import core.gameState.ACTION_POINTS
+import core.gameState.ENCUMBRANCE
 import core.gameState.Target
 import core.gameState.body.BodyPart
 
@@ -16,6 +17,10 @@ class Combatant(val target: Target) {
     var lastAttacked: Target? = null
     val blockedBodyParts: MutableList<BodyPart> = mutableListOf()
 
+    override fun toString(): String {
+        return "${target.name}: $actionPoints"
+    }
+
     fun tick() {
         if (action == null) {
             increaseActionPoints()
@@ -25,7 +30,8 @@ class Combatant(val target: Target) {
     }
 
     private fun increaseActionPoints() {
-        actionPoints += target.soul.getCurrent(WISDOM, 1)
+        val soulPoints = target.properties.values.getInt(ACTION_POINTS, 0)
+        actionPoints += target.soul.getCurrent(WISDOM, 1) + soulPoints
     }
 
     fun isActionReady(): Boolean {
@@ -33,8 +39,7 @@ class Combatant(val target: Target) {
     }
 
     fun canChooseAction(): Boolean {
-        val soulPoints = target.soul.getStatOrNull(ACTION_POINTS)?.current ?: 0
-        return actionPoints + soulPoints >= 100
+        return actionPoints >= 100
     }
 
     fun resetStance() {

@@ -52,8 +52,7 @@ class Heal : SpellCommand() {
             val duration = responseHelper.getIntValue("duration")
             val hitCount = targets.count()
             val totalCost = amount * hitCount
-//        val levelRequirement = amount*2 +  duration/2
-            val levelRequirement = amount / 2
+            val levelRequirement = amount * 2 + duration / 2
 
             executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
                 targets.forEach { target ->

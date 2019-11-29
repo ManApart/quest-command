@@ -20,7 +20,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
     fun apply(soul: Soul, firstApply: Boolean) {
         soul.parent.getTopParent().properties.tags.add(base.name)
 
-        if (base.statKind == StatKind.LEVELED){
+        if (base.statKind == StatKind.LEVELED) {
             applyLeveledStat(soul, firstApply)
         } else {
             applyStatValue(soul, firstApply)
@@ -54,7 +54,10 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
 
     private fun applyStatValue(soul: Soul, firstApply: Boolean) {
         val values = soul.parent.properties.values
-        if (base.statTarget != null && values.hasInt(base.statTarget)) {
+        if (base.statTarget != null) {
+            if (!values.hasInt(base.statTarget)) {
+                values.put(base.statTarget, 0)
+            }
             when {
                 base.statEffect == StatEffect.DRAIN -> {
                     EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statTarget, -amount))
@@ -75,7 +78,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
         }
     }
 
-    private fun getEffectedStat(soul: Soul) : LeveledStat? {
+    private fun getEffectedStat(soul: Soul): LeveledStat? {
         return soul.getStatOrNull(base.statTarget)
     }
 

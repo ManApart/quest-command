@@ -16,6 +16,10 @@ class Condition(
     var isCritical = false
     private var isFirstApply = true
 
+    override fun toString(): String {
+        return name + ": " + effects.joinToString(", ") { it.base.name }
+    }
+
     fun getReaction(other: Condition): ElementInteraction {
         return element.getReaction(elementStrength, other.element, other.elementStrength)
     }

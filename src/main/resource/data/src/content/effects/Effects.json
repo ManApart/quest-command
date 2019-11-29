@@ -5,6 +5,14 @@
     "damageType": "AIR"
   },
   {
+    "name": "Action Point Boost",
+    "description": "Gain action points at a faster rate.",
+    "statKind": "PROP_VAL",
+    "statTarget": "Action Point Boost",
+    "statEffect": "BOOST",
+    "damageType": "AIR"
+  },
+  {
     "name": "Encased Agility",
     "description": "Encased in a think layer of dirt.",
     "statTarget": "Agility",
