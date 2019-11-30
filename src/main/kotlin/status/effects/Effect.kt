@@ -92,10 +92,14 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
 
     fun remove(soul: Soul) {
         soul.parent.getTopParent().properties.tags.remove(base.name)
-        val stat = soul.getStatOrNull(base.statTarget)
-        if (stat != null) {
-            if (base.statEffect == StatEffect.BOOST) {
-                restoreValue(soul, stat, getAppliedAmount(stat))
+        if (base.statEffect == StatEffect.BOOST || base.statEffect == StatEffect.DEPLETE) {
+            if (base.statKind == StatKind.LEVELED) {
+                val stat = soul.getStatOrNull(base.statTarget)
+                if (stat != null) {
+                    restoreValue(soul, stat, getAppliedAmount(stat))
+                }
+            } else {
+                restorePropertyVal(soul)
             }
         }
     }
@@ -103,17 +107,30 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, private v
     private fun restoreValue(soul: Soul, leveledStat: LeveledStat, amount: Int) {
         if (leveledStat.current >= originalValue) {
             val adjustment = min(amount, leveledStat.current - originalValue)
-            changeStat(soul, leveledStat, -adjustment)
+            changeStat(soul, leveledStat, -adjustment, "Removing ")
         }
     }
 
-    private fun changeStat(soul: Soul, leveledStat: LeveledStat, amount: Int) {
+    private fun restorePropertyVal(soul: Soul) {
+        if (base.statTarget != null) {
+            if (!soul.parent.properties.values.hasInt(base.statTarget)) {
+                soul.parent.properties.values.put(base.statTarget, 0)
+            }
+            if (base.statEffect == StatEffect.DEPLETE) {
+                EventManager.postEvent(PropertyStatChangeEvent(soul.parent, "Removing " + base.name, base.statTarget, amount))
+            } else if (base.statEffect == StatEffect.BOOST) {
+                EventManager.postEvent(PropertyStatChangeEvent(soul.parent, "Removing " + base.name, base.statTarget, -amount))
+            }
+        }
+    }
+
+    private fun changeStat(soul: Soul, leveledStat: LeveledStat, amount: Int, sourceOfChangePrefix: String = "") {
         if (leveledStat.isHealth() && amount < 0) {
             bodyPartTargets.forEach { bodyPart ->
-                EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, -amount, base.damageType, base.name))
+                EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, -amount, base.damageType, sourceOfChangePrefix + base.name))
             }
         } else {
-            EventManager.postEvent(StatChangeEvent(soul.parent, base.name, leveledStat.name, amount))
+            EventManager.postEvent(StatChangeEvent(soul.parent, sourceOfChangePrefix + base.name, leveledStat.name, amount))
         }
     }
 

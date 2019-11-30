@@ -9,7 +9,7 @@ import core.utility.wrapNonEmpty
 
 //Effects
 const val ACTION_POINTS = "Action Point Boost"
-const val ENCUMBRANCE = "Encumbrance"
+const val ENCUMBRANCE = "Additional Encumbrance"
 
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(tags: Tags) : this(Values(), tags)

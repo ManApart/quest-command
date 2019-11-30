@@ -20,11 +20,16 @@
     "damageType": "EARTH"
   },
   {
+    "name": "Dirty",
+    "description": "Covered in earth.",
+    "damageType": "EARTH"
+  },
+  {
     "name": "Encased Encumbrance",
     "description": "Encased in a think layer of dirt.",
     "statKind": "PROP_VAL",
-    "statTarget": "Encumbrance",
-    "statEffect": "DEPLETE",
+    "statTarget": "Additional Encumbrance",
+    "statEffect": "BOOST",
     "damageType": "EARTH"
   },
   {

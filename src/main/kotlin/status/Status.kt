@@ -1,6 +1,7 @@
 package status
 
 import core.events.EventListener
+import core.gameState.ENCUMBRANCE
 import core.gameState.stat.FOCUS
 
 import core.gameState.stat.HEALTH
@@ -21,7 +22,10 @@ class Status : EventListener<StatusEvent>() {
         if (soul.hasStat(HEALTH) || soul.hasStat(STAMINA) || soul.hasStat(FOCUS)) {
             val youHave = StringFormatter.format(event.creature.isPlayer(), "You have", "${event.creature.name} has")
             val youAre = StringFormatter.format(event.creature.isPlayer(), "You are", "${event.creature.name} is")
-            display("$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${soul.getCurrent(FOCUS)}/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre ${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} encumbered.")
+            val encumbrancePercent = (event.creature.getEncumbrance() * 100).toInt()
+            val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0).toInt()
+            val encumberedStats = "${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
+            display("$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${soul.getCurrent(FOCUS)}/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre $encumbrancePercent% encumbered ($encumberedStats).")
         }
     }
 
