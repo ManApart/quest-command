@@ -15,7 +15,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     val direction: Direction by lazy { calculateDirection() }
 
     override fun toString(): String {
-        return "Pos: $x, $y, $z"
+        return "$x, $y, $z"
     }
 
     override fun equals(other: Any?): Boolean {

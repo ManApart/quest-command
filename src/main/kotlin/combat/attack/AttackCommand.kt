@@ -39,10 +39,6 @@ class AttackCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        execute(GameState.player, keyword, args)
-    }
-
     override fun execute(source: Target, keyword: String, args: List<String>) {
         if (keyword.toLowerCase() == "attack") {
             clarifyAttackType(args)

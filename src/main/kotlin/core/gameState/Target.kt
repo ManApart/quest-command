@@ -58,11 +58,19 @@ open class Target(
 
     fun getDisplayName(): String {
         val locationDescription = properties.values.getString("locationDescription")
-        return name + if (locationDescription.isBlank()) {
+        val description =  if (locationDescription.isBlank()) {
             ""
         } else {
             " $locationDescription"
         }
+
+        val location = if (position == NO_VECTOR) {
+            ""
+        } else {
+            " ($position)"
+        }
+
+        return name + description + location
     }
 
     fun isPlayer(): Boolean {

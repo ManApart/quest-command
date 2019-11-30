@@ -6,11 +6,19 @@ import core.gameState.Vector
 private val commaSeparateDigits = Regex("\\d,\\d,\\d")
 
 fun parseDirection(arguments: List<String>): Direction {
+    return parseNullableDirection(arguments) ?: Direction.NONE
+}
+
+fun parseNullableDirection(arguments: List<String>): Direction? {
     val directionArg = arguments.firstOrNull {
         Direction.getDirection(it) != Direction.NONE
     }
 
-    return Direction.getDirection(directionArg ?: Direction.NONE.name)
+    return if (directionArg == null) {
+        null
+    } else {
+        Direction.getDirection(directionArg)
+    }
 }
 
 fun parseVector(arguments: List<String>): Vector {

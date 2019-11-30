@@ -27,10 +27,6 @@ class BlockCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        execute(GameState.player, keyword, args)
-    }
-
     override fun execute(source: Target, keyword: String, args: List<String>) {
         if (GameState.battle == null) {
             display("This is only relevant in battle.")

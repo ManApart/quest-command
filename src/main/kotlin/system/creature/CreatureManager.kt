@@ -33,6 +33,7 @@ object CreatureManager {
             if (!it.location.isNullOrBlank()) {
                 creature.properties.values.put("locationDescription", it.location)
             }
+            creature.position = it.position
             creature
         }
     }

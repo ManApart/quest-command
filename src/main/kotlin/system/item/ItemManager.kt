@@ -31,6 +31,7 @@ object ItemManager {
             if (!it.location.isNullOrBlank()) {
                 item.properties.values.put("locationDescription", it.location)
             }
+            item.position = it.position
             item
         }
     }

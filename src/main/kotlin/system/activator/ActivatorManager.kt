@@ -30,6 +30,7 @@ object ActivatorManager {
             if (!it.location.isNullOrBlank()) {
                 activator.properties.values.put("locationDescription", it.location)
             }
+            activator.position = it.position
             activator
         }
     }

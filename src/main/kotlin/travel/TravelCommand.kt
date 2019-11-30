@@ -12,7 +12,7 @@ import system.location.LocationManager
 
 class TravelCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Travel", "move", "t", "go", "mv", "cd")
+        return arrayOf("Travel", "t", "go", "cd")
     }
 
     override fun getDescription(): String {

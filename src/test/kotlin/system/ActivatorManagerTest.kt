@@ -1,5 +1,6 @@
 package system
 
+import core.gameState.NO_VECTOR
 import core.gameState.PLAYER_START_LOCATION
 import core.gameState.PLAYER_START_NETWORK
 import core.gameState.Target
@@ -43,7 +44,7 @@ class ActivatorManagerTest {
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()
 
-        val target = LocationTarget("Target", null, mapOf("key" to "value"))
+        val target = LocationTarget("Target", null, NO_VECTOR, mapOf("key" to "value"))
         val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
 
         assertEquals("This is a value", result.description)
@@ -57,7 +58,7 @@ class ActivatorManagerTest {
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()
 
-        val target = LocationTarget("Target", null, mapOf("destination" to "resort"))
+        val target = LocationTarget("Target", null, NO_VECTOR, mapOf("destination" to "resort"))
         val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
 
         assertEquals("resort", result.description)

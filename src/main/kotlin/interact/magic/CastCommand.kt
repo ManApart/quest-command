@@ -47,10 +47,6 @@ class CastCommand : Command() {
         return spellCommands.exists(keyword)
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        execute(GameState.player, keyword, args)
-    }
-
     override fun execute(source: Target, keyword: String, args: List<String>) {
         when (keyword) {
             "word" -> executeWord(args)
