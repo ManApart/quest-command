@@ -28,7 +28,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         val chance = getChance(event.creature, distance)
 
         EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance, event.quiet))
-        if (RandomManager.isSuccess(chance)) {
+        if (GameState.player.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
             advance(event, distance, chance)
         } else {
             fall(event)

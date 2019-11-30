@@ -35,10 +35,10 @@ class ClimbCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)
-        if (GameState.player.isClimbing) {
-            processClimbing(keyword, arguments, GameState.player.climbTarget!!)
-        } else {
-            processNewClimb(arguments)
+        when {
+            GameState.player.getEncumbrance() >=1 -> display("You are too encumbered to climb.")
+            GameState.player.isClimbing -> processClimbing(keyword, arguments, GameState.player.climbTarget!!)
+            else -> processNewClimb(arguments)
         }
     }
 

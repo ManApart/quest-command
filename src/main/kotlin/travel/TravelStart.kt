@@ -15,6 +15,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.currentLocation.isMovingToRestricted(event.destination) -> display("You're not able to get to ${event.destination.name}")
             GameState.player.soul.getCurrent(STAMINA) == 0 -> display("You're too tired to do any traveling.")
             !GameState.player.canTravel -> display("You can't travel right now.")
+            GameState.player.getEncumbrance() >= 1 -> display("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
                     display("You leave ${event.currentLocation} travelling towards ${event.destination}.")
