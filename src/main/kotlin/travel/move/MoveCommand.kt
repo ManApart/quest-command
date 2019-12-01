@@ -1,7 +1,8 @@
 package travel.move
 
 import core.commands.*
-import core.gameState.*
+import core.gameState.Direction
+import core.gameState.NO_VECTOR
 import core.gameState.Target
 import core.history.display
 import core.utility.StringFormatter.getIsAre

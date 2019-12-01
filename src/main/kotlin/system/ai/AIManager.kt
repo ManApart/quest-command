@@ -1,10 +1,9 @@
 package system.ai
 
+import core.gameState.Target
 import core.gameState.ai.AI
 import core.gameState.ai.AIBase
-import core.gameState.Target
 import core.gameState.ai.PLAYER_CONTROLLED_ID
-import core.gameState.ai.PlayerControlledAI
 import core.utility.NameSearchableList
 import system.DependencyInjector
 

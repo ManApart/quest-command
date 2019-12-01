@@ -1,7 +1,6 @@
 package interact.actions
 
 import core.events.EventListener
-import core.gameState.Target
 import core.history.display
 import crafting.CraftRecipeEvent
 import crafting.RecipeManager

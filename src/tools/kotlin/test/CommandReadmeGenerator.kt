@@ -1,6 +1,5 @@
 package test
 
-import core.commands.Command
 import core.commands.CommandParser
 import core.utility.reflection.Reflections
 import interact.magic.spellCommands.SpellCommand

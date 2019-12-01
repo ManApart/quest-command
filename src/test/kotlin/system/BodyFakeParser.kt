@@ -1,7 +1,6 @@
 package system
 
 import core.gameState.body.BodyPart
-import core.gameState.location.Location
 import core.gameState.location.LocationNode
 import system.body.BodyParser
 

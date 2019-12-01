@@ -1,9 +1,9 @@
 package inventory.equipItem
 
 import core.commands.*
-import core.gameState.body.Body
 import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.body.Body
 import core.gameState.body.Slot
 import core.history.display
 import system.EventManager

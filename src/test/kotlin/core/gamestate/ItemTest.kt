@@ -1,8 +1,8 @@
 package core.gamestate
 
-import core.gameState.Target
 import core.gameState.Properties
 import core.gameState.Tags
+import core.gameState.Target
 import core.gameState.Values
 import org.junit.Test
 import kotlin.test.assertFalse

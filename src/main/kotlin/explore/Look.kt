@@ -1,8 +1,10 @@
 package explore
 
 import core.events.EventListener
-import core.gameState.*
+import core.gameState.GameState
+import core.gameState.NO_VECTOR
 import core.gameState.Target
+import core.gameState.targetsToString
 import core.history.display
 import interact.scope.ScopeManager
 

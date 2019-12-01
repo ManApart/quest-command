@@ -2,7 +2,6 @@ package system
 
 import core.commands.CommandParser
 import core.events.EventListener
-import core.gameState.AUTO_SAVE
 import core.gameState.GameState
 import core.gameState.Player
 import core.gameState.location.LocationPoint

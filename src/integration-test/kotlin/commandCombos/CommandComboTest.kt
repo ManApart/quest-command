@@ -2,12 +2,10 @@ package commandCombos
 
 import core.commands.CommandParser
 import core.gameState.GameState
-import core.gameState.Player
 import core.gameState.quests.QuestManager
 import core.gameState.stat.HEALTH
 import core.history.ChatHistory
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import system.EventManager
 import system.GameManager

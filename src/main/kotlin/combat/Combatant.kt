@@ -2,13 +2,10 @@ package combat
 
 import combat.battle.BattleAction
 import core.gameState.ACTION_POINTS
-import core.gameState.ENCUMBRANCE
 import core.gameState.Target
 import core.gameState.body.BodyPart
-
 import core.gameState.stat.HEALTH
 import core.gameState.stat.WISDOM
-import core.history.display
 
 class Combatant(val target: Target) {
     private var actionPoints = 0

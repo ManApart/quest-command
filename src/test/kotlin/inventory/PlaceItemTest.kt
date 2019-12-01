@@ -1,6 +1,9 @@
 package inventory
 
-import core.gameState.*
+import core.gameState.Properties
+import core.gameState.Tags
+import core.gameState.Target
+import core.gameState.Values
 import core.gameState.body.BodyPart
 import core.gameState.location.LocationNode
 import interact.scope.ScopeManager
@@ -15,7 +18,10 @@ import system.behavior.BehaviorManager
 import system.behavior.BehaviorParser
 import system.body.BodyManager
 import system.body.BodyParser
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class PlaceItemTest {
 

@@ -6,7 +6,6 @@ import core.commands.ResponseRequest
 import core.gameState.GameState
 import core.history.display
 import system.EventManager
-import system.help.getCommandGroups
 
 class RecipeCommand : Command() {
     override fun getAliases(): Array<String> {

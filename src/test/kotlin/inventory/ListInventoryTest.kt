@@ -1,6 +1,8 @@
 package inventory
 
-import core.gameState.*
+import core.gameState.Properties
+import core.gameState.Tags
+import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.history.ChatHistory
 import org.junit.Test

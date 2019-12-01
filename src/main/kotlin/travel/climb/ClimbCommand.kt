@@ -1,8 +1,10 @@
 package travel.climb
 
 import core.commands.*
-import core.gameState.*
+import core.gameState.Direction
+import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.getDirection
 import core.gameState.location.LocationNode
 import core.history.display
 import core.utility.NameSearchableList

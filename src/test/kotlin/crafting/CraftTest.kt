@@ -2,13 +2,14 @@ package crafting
 
 import core.gameState.*
 import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.location.LocationNode
 import core.gameState.location.NOWHERE_NODE
 import inventory.dropItem.TransferItem
 import org.junit.Before
 import org.junit.Test
-import system.*
+import system.BodyFakeParser
+import system.DependencyInjector
+import system.EventManager
+import system.ItemFakeParser
 import system.body.BodyManager
 import system.body.BodyParser
 import system.item.ItemManager

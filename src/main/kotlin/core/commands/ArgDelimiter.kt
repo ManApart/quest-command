@@ -1,7 +1,5 @@
 package core.commands
 
-import core.utility.safeSubList
-
 class ArgDelimiter(aliases: List<String>) {
     constructor(alias: String) : this(listOf(alias))
 

@@ -2,7 +2,6 @@ package interact.magic
 
 import combat.battle.position.TargetAim
 import core.commands.*
-import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.history.display

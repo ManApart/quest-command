@@ -1,7 +1,7 @@
 package crafting
 
-import core.gameState.Target
 import core.gameState.Tags
+import core.gameState.Target
 import core.utility.wrapNonEmpty
 import system.item.ItemManager
 

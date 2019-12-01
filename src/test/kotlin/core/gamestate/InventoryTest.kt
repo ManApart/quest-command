@@ -2,7 +2,6 @@ package core.gamestate
 
 import core.gameState.*
 import core.gameState.Target
-import core.gameState.location.LocationNode
 import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser

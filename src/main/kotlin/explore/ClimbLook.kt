@@ -3,7 +3,9 @@ package explore
 import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Target
-import core.gameState.location.*
+import core.gameState.location.LocationNode
+import core.gameState.location.Route
+import core.gameState.location.RouteNeighborFinder
 import core.history.StringTable
 import core.history.display
 import core.utility.wrapNonEmpty

@@ -1,7 +1,5 @@
 package core.utility
 
-import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
-
 class NameSearchableList<N : Named>() : ArrayList<N>() {
     private val proxies = HashMap<String, N>()
 

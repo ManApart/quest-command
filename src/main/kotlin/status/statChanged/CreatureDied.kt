@@ -1,9 +1,6 @@
 package status.statChanged
 
 import core.events.EventListener
-import core.gameState.Target
-import core.gameState.GameState
-
 import core.gameState.stat.HEALTH
 import core.history.display
 import interact.scope.remove.RemoveScopeEvent

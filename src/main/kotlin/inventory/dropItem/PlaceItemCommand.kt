@@ -4,7 +4,6 @@ import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Target
 import core.history.display

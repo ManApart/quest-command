@@ -3,7 +3,9 @@ package system.body
 import core.gameState.body.Body
 import core.gameState.body.BodyPart
 import core.gameState.body.NONE
-import core.gameState.location.*
+import core.gameState.location.Location
+import core.gameState.location.LocationNode
+import core.gameState.location.Network
 import core.utility.NameSearchableList
 import system.DependencyInjector
 import system.location.LocationHelper

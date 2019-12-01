@@ -2,17 +2,13 @@ package travel.move
 
 import combat.battle.Distances.LOCATION_SIZE
 import core.events.EventListener
-import core.gameState.GameState
 import core.gameState.NO_VECTOR
-import core.gameState.Target
 import core.gameState.Vector
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
 import core.history.display
-import core.history.displayIf
 import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
-import interact.scope.ScopeManager
 import system.EventManager
 import travel.ArriveEvent
 

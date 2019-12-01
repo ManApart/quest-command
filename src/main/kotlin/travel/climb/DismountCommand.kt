@@ -2,7 +2,6 @@ package travel.climb
 
 import core.commands.Command
 import core.gameState.GameState
-import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
 import core.history.display
 import system.EventManager

@@ -1,6 +1,8 @@
 package crafting
 
-import core.gameState.*
+import core.gameState.Player
+import core.gameState.Properties
+import core.gameState.Tags
 import core.gameState.Target
 import org.junit.Assert
 import org.junit.Test

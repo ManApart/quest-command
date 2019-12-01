@@ -4,7 +4,10 @@ import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
 import interact.UseEvent
-import status.effects.*
+import status.effects.AddConditionEvent
+import status.effects.Condition
+import status.effects.EffectManager
+import status.effects.Element
 import system.EventManager
 
 class StartFire : EventListener<UseEvent>() {

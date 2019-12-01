@@ -1,9 +1,8 @@
 package crafting
 
-import core.gameState.Target
 import core.gameState.Tags
+import core.gameState.Target
 import core.utility.wrapNonEmpty
-import java.lang.IllegalArgumentException
 
 data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
     constructor(name: String) : this(name, Tags())

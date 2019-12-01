@@ -2,12 +2,10 @@ package interact.actions
 
 import combat.DamageType
 import core.events.EventListener
-import core.gameState.Target
 import core.gameState.GameState
 import core.history.display
 import interact.UseEvent
 import status.propValChanged.PropertyStatChangeEvent
-import status.statChanged.StatChangeEvent
 import system.EventManager
 
 class ChopWood : EventListener<UseEvent>() {

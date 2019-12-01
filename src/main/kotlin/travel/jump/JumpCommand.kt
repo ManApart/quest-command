@@ -3,8 +3,6 @@ package travel.jump
 import core.commands.Command
 import core.gameState.Direction
 import core.gameState.GameState
-import core.gameState.location.LocationNode
-import core.gameState.location.RouteFinder
 import core.history.display
 import system.EventManager
 

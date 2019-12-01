@@ -2,7 +2,6 @@ package core.gameState.quests
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
-import core.gameState.dataParsing.Query
 import core.gameState.dataParsing.TriggerCondition
 import core.gameState.dataParsing.TriggeredEvent
 

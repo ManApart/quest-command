@@ -1,6 +1,7 @@
 package crafting
 
-import core.gameState.*
+import core.gameState.Properties
+import core.gameState.Soul
 import core.gameState.Target
 import core.utility.Named
 

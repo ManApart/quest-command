@@ -1,6 +1,8 @@
 package core.gameState.dataParsing
 
-import core.gameState.*
+import core.gameState.GameState
+import core.gameState.Properties
+import core.gameState.SetPropertiesEvent
 import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
@@ -18,12 +20,14 @@ import interact.scope.remove.RemoveItemEvent
 import interact.scope.remove.RemoveScopeEvent
 import interact.scope.spawn.SpawnActivatorEvent
 import interact.scope.spawn.SpawnItemEvent
-import status.effects.*
+import status.effects.AddConditionEvent
 import status.effects.Condition
+import status.effects.Element
+import status.effects.RemoveConditionEvent
 import status.statChanged.StatChangeEvent
-import system.activator.ActivatorManager
 import system.EventManager
 import system.MessageEvent
+import system.activator.ActivatorManager
 import system.location.LocationManager
 import travel.ArriveEvent
 

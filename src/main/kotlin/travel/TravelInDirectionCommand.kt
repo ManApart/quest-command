@@ -4,15 +4,11 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.Target
 import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.location.LocationNode
 import core.history.display
-import interact.scope.ScopeManager
 import system.EventManager
-import system.help.getCommandGroups
-import travel.climb.AttemptClimbEvent
 
 class TravelInDirectionCommand : Command() {
     override fun getAliases(): Array<String> {

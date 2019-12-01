@@ -2,7 +2,8 @@ package combat
 
 import combat.attack.AttackCommand
 import combat.attack.StartAttackEvent
-import core.gameState.*
+import core.gameState.GameState
+import core.gameState.Player
 import core.gameState.Target
 import interact.scope.ScopeManager
 import org.junit.Before

@@ -4,7 +4,6 @@ import core.gameState.AUTO_SAVE
 import core.gameState.GameState
 import core.history.SessionHistory
 import core.history.display
-import system.GameManager
 
 class UnknownCommand : Command() {
 

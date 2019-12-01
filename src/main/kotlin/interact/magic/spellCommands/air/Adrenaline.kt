@@ -2,7 +2,10 @@ package interact.magic.spellCommands.air
 
 import combat.battle.position.TargetAim
 import combat.battle.position.toCommandString
-import core.commands.*
+import core.commands.Args
+import core.commands.ResponseRequest
+import core.commands.ResponseRequestHelper
+import core.commands.ResponseRequestWrapper
 import core.gameState.Target
 import core.gameState.stat.AGILITY
 import core.gameState.stat.AIR_MAGIC

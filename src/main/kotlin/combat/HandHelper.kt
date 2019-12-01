@@ -1,8 +1,7 @@
 package combat
 
-import core.gameState.body.BodyPart
-import core.gameState.GameState
 import core.gameState.Target
+import core.gameState.body.BodyPart
 import core.utility.NameSearchableList
 
 class HandHelper(creature: Target, source: String, desiredSkill: String) {

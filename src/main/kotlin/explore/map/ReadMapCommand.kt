@@ -5,10 +5,6 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.gameState.GameState
-import core.gameState.location.LocationNode
-import core.gameState.location.NOWHERE_NODE
-import core.gameState.location.Network
-import core.history.display
 import system.EventManager
 import system.location.LocationManager
 

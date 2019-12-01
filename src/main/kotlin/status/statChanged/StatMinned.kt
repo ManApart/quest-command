@@ -2,8 +2,6 @@ package status.statChanged
 
 import core.events.EventListener
 
-import status.statChanged.StatMinnedEvent
-
 class StatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
         return !event.target.isPlayer()

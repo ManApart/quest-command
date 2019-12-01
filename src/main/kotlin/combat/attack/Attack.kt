@@ -12,7 +12,6 @@ import core.gameState.body.BodyPart
 import core.gameState.stat.BARE_HANDED
 import core.history.display
 import core.utility.StringFormatter
-import core.utility.max
 import interact.UseEvent
 import system.EventManager
 

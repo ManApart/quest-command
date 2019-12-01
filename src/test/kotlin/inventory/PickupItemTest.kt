@@ -1,9 +1,9 @@
 package inventory
 
-import core.gameState.*
+import core.gameState.Properties
+import core.gameState.Tags
 import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.location.LocationNode
+import core.gameState.Values
 import interact.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
@@ -13,7 +13,6 @@ import system.BodyFakeParser
 import system.DependencyInjector
 import system.body.BodyManager
 import system.body.BodyParser
-import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue

@@ -3,8 +3,10 @@ package balance
 import combat.DamageType
 import combat.attack.StartAttackEvent
 import combat.battle.position.TargetAim
-import core.gameState.*
+import core.gameState.Properties
+import core.gameState.Tags
 import core.gameState.Target
+import core.gameState.Values
 import core.gameState.body.BodyPart
 import core.gameState.stat.AGILITY
 import core.gameState.stat.STRENGTH

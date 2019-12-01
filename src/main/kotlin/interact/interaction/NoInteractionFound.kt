@@ -4,7 +4,6 @@ import core.events.Event
 import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
-import interact.UseEvent
 import system.EventManager
 
 class NoInteractionFound : EventListener<InteractEvent>() {

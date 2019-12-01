@@ -2,6 +2,7 @@ package interact.eat
 
 import core.commands.CommandParser
 import core.gameState.*
+import core.gameState.Target
 import core.gameState.location.NOWHERE_NODE
 import core.utility.PoorMansInstrumenter
 import core.utility.reflection.MockReflections
@@ -11,7 +12,10 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import system.*
+import system.BehaviorFakeParser
+import system.BodyFakeParser
+import system.DependencyInjector
+import system.EventManager
 import system.behavior.BehaviorManager
 import system.behavior.BehaviorParser
 import system.body.BodyManager

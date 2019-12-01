@@ -8,7 +8,6 @@ import core.history.display
 import core.utility.filterUniqueByName
 import interact.scope.ScopeManager
 import system.EventManager
-import system.help.getCommandGroups
 
 class StatusCommand : Command() {
     override fun getAliases(): Array<String> {
