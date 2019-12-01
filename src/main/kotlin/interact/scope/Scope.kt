@@ -4,6 +4,7 @@ import core.gameState.*
 import core.gameState.Target
 import core.gameState.location.LocationNode
 import core.utility.NameSearchableList
+import core.utility.plus
 
 class Scope(private val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
@@ -41,64 +42,64 @@ class Scope(private val locationNode: LocationNode) {
         }
     }
 
-    fun getTargets(): NameSearchableList<Target> {
-        return NameSearchableList(targets)
+    fun getTargets(source: Target = GameState.player): NameSearchableList<Target> {
+        return targets.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getTargets(name: String): List<Target> {
-        return targets.getAll(name)
+    fun getTargets(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+        return targets.getAll(name).sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getTargetsIncludingPlayerInventory(): List<Target> {
-        return GameState.player.inventory.getItems() + getTargets()
+    fun getTargetsIncludingPlayerInventory(source: Target = GameState.player): List<Target> {
+        return GameState.player.inventory.getItems() + getTargets(source)
     }
 
-    fun getTargetsIncludingPlayerInventory(name: String): List<Target> {
-        return GameState.player.inventory.getItems(name) + getTargets(name)
+    fun getTargetsIncludingPlayerInventory(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+        return GameState.player.inventory.getItems(name) + getTargets(name, source)
     }
 
-    fun getCreatures(): List<Target> {
-        return targets.asSequence().filter { it.properties.isCreature() }.toList()
+    fun getCreatures(source: Target = GameState.player): NameSearchableList<Target> {
+        return getTargets(source).filter { it.properties.isCreature() }
     }
 
-    fun getCreatures(name: String): List<Target> {
-        return targets.getAll(name).asSequence().filter { it.properties.isCreature() }.toList()
+    fun getCreatures(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+        return getTargets(name, source).filter { it.properties.isCreature() }
     }
 
-    fun getActivators(name: String): List<Target> {
-        return targets.getAll(name).asSequence().filter { it.properties.isActivator() }.toList()
+    fun getActivators(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+        return getTargets(name, source).filter { it.properties.isActivator() }
     }
 
-    fun getActivators(): List<Target> {
-        return targets.asSequence().filter { it.properties.isActivator() }.toList()
+    fun getActivators(source: Target = GameState.player): NameSearchableList<Target> {
+        return getTargets(source).filter { it.properties.isActivator() }
     }
 
-    fun getItems(): List<Target> {
-        return targets.asSequence().filter { it.properties.isItem() }.toList()
+    fun getItems(source: Target = GameState.player): NameSearchableList<Target> {
+        return getTargets(source).filter { it.properties.isItem() }
     }
 
-    fun getItems(name: String): List<Target> {
-        return targets.getAll(name).asSequence().filter { it.properties.isItem() }.toList()
+    fun getItems(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+        return getTargets(name, source).filter { it.properties.isItem() }
     }
 
-    fun getItemsIncludingPlayerInventory(): List<Target> {
-        return GameState.player.inventory.getItems() + getItems()
+    fun getItemsIncludingPlayerInventory(source: Target = GameState.player): NameSearchableList<Target> {
+        return GameState.player.inventory.getItems() + getItems(source)
     }
 
-    fun getItemsIncludingPlayerInventory(name: String): List<Target> {
-        return GameState.player.inventory.getItems(name) + getItems(name)
+    fun getItemsIncludingPlayerInventory(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+        return GameState.player.inventory.getItems(name) + getItems(name, source)
     }
 
-    fun findTargetsByTag(tag: String): List<Target> {
+    fun findTargetsByTag(tag: String): NameSearchableList<Target> {
         return targets.filter { it.properties.tags.has(tag) }
     }
 
-    fun findActivatorsByTag(tag: String): List<Target> {
-        return findTargetsByTag(tag).asSequence().filter { it.properties.isActivator() }.toList()
+    fun findActivatorsByTag(tag: String): NameSearchableList<Target> {
+        return findTargetsByTag(tag).filter { it.properties.isActivator() }
     }
 
-    fun findActivatorsByProperties(properties: Properties): List<Target> {
-        return targets.asSequence().filter { it.properties.isActivator() && it.properties.hasAll(properties) }.toList()
+    fun findActivatorsByProperties(properties: Properties): NameSearchableList<Target> {
+        return targets.filter { it.properties.isActivator() && it.properties.hasAll(properties) }
     }
 
     fun getAllSouls(): List<Soul> {
@@ -121,3 +122,4 @@ class Scope(private val locationNode: LocationNode) {
     }
 
 }
+

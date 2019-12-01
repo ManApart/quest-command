@@ -1,5 +1,7 @@
 package core.utility
 
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
+
 class NameSearchableList<N : Named>() : ArrayList<N>() {
     private val proxies = HashMap<String, N>()
 
@@ -19,12 +21,46 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
     constructor(items: NameSearchableList<N>) : this() {
         addAll(items)
-        items.proxies.forEach { (proxy, item) -> this.addProxy(item, proxy) }
+        addAllProxies(items)
     }
 
     override fun clear() {
         proxies.clear()
         super.clear()
+    }
+
+    override fun toString(): String {
+        return "$size with proxies: $proxies"
+    }
+
+    fun <R : Comparable<R>> sortedBy(selector: (N) -> R?): NameSearchableList<N> {
+        val newList: NameSearchableList<N> = NameSearchableList(sortedWith(compareBy(selector)))
+        newList.addAllProxies(this)
+        return newList
+    }
+
+    fun filter(predicate: (N) -> Boolean): NameSearchableList<N> {
+        val newList: NameSearchableList<N> = filterTo(NameSearchableList(), predicate)
+        // Only add proxies for items that still exist in the list
+        proxies.forEach { (proxy, item) ->
+            if (newList.exists(item)) {
+                this.addProxy(item, proxy)
+            }
+        }
+        return newList
+    }
+
+    operator fun plus(other: NameSearchableList<N>): NameSearchableList<N> {
+        val newList = NameSearchableList(this)
+        newList.addAll(other)
+        newList.addAllProxies(other)
+        return newList
+    }
+
+    operator fun plus(other: List<N>): NameSearchableList<N> {
+        val newList = NameSearchableList(this)
+        newList.addAll(other)
+        return newList
     }
 
     fun addProxy(item: N, names: List<String>) {
@@ -36,6 +72,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
             add(item)
         }
         proxies[name.toLowerCase()] = item
+    }
+
+    private fun addAllProxies(other: NameSearchableList<N>) {
+        other.proxies.forEach { (proxy, item) -> this.addProxy(item, proxy) }
     }
 
     fun exists(target: N): Boolean {
@@ -66,8 +106,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         if (name.isBlank()) {
             return NameSearchableList()
         }
-        val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } +
-                proxies.filter { it.key.contains(name) }.map { it.value }
+        val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } + proxies.filter { it.key.contains(name) }.map { it.value }
 
         val results = mutableSetOf<N>()
         includingDuplicates.forEach { results.add(it) }
@@ -120,4 +159,8 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
 fun <T : Named> Iterable<T>.toNameSearchableList(): NameSearchableList<T> {
     return NameSearchableList(this)
+}
+
+operator fun <T : Named> List<T>.plus(other: NameSearchableList<T>): NameSearchableList<T> {
+    return NameSearchableList(this) + other
 }

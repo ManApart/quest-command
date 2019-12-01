@@ -25,6 +25,7 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
             scope.addTargets(creatures)
 
             val items = ItemManager.getItemsFromLocationTargets(location.items)
+            items.forEach { it.location = event.destination.location }
             scope.addTargets(items)
         }
 

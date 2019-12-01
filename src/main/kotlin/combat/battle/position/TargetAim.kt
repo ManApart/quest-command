@@ -5,7 +5,11 @@ import core.gameState.body.BodyPart
 
 class TargetAim(val target: Target, val bodyPartTargets: List<BodyPart> = listOf()) {
     override fun toString(): String {
-        return bodyPartTargets.joinToString(" ") + " of " + target.toString()
+        return if (bodyPartTargets.isEmpty()) {
+            target.toString()
+        } else {
+            bodyPartTargets.joinToString(" ") + " of " + target.toString()
+        }
     }
 
     fun toCommandString(): String {

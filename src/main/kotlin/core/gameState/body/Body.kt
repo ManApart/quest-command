@@ -8,6 +8,7 @@ import core.gameState.location.Network
 import core.history.display
 import core.utility.NameSearchableList
 import core.utility.Named
+import core.utility.max
 
 val NONE = Body("None")
 
@@ -128,6 +129,15 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
 
     fun getPositionInLocation(part: BodyPart, parentOffset: Vector): Vector {
         return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode?.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
+    }
+
+    fun getSize(): Vector {
+        return layout.getSize()
+    }
+
+    fun getRange() : Int {
+        val size = getSize()
+        return max(size.x, size.y, size.z) / 2
     }
 
 }

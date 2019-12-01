@@ -23,8 +23,8 @@ class Attack : EventListener<AttackEvent>() {
             val defender = GameState.battle!!.getCombatant(event.target.target)!!
             val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
             val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
-            val weaponRange = event.sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
             val targetDistance = GameState.battle?.getCombatantDistance() ?: Distances.MIN_RANGE
+            val weaponRange = getRange(event.source, event.sourcePart)
 
             when {
                 weaponRange < targetDistance -> display("${event.target} is too far away to be hit by $damageSource.")
@@ -68,15 +68,18 @@ class Attack : EventListener<AttackEvent>() {
 
     private fun getAttackedParts(source: Target, sourcePart: BodyPart, target: TargetAim): List<BodyPart> {
         val sourcePosition = source.getPositionInLocation(sourcePart)
-        val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
-        val size = source.getSize()
-        val bodyRange = max(size.x, size.y, size.z) / 2
-        val range = weaponRange + bodyRange
+        val range = getRange(source, sourcePart)
         return target.bodyPartTargets.filter {
             val targetPartPosition = target.target.getPositionInLocation(it)
             val distance = sourcePosition.getDistance(targetPartPosition)
             range >= distance
         }
+    }
+
+    private fun getRange(source: Target, sourcePart: BodyPart) : Int {
+        val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
+        val bodyRange = source.body.getRange()
+        return weaponRange + bodyRange
     }
 
     private fun processAttackHit(event: AttackEvent, attackedPart: BodyPart, subject: String, verb: String, defenderName: String, damageSource: String, defender: Combatant, offensiveDamage: Int) {

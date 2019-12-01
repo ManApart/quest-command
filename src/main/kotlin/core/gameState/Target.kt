@@ -14,6 +14,7 @@ import core.utility.apply
 import core.utility.applyNested
 import core.utility.max
 import dialogue.DialogueOptions
+import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
 import system.ai.AIManager
 import system.behavior.BehaviorManager
 import system.body.BodyManager
@@ -162,9 +163,16 @@ open class Target(
         return body.getPositionInLocation(part, position)
     }
 
-    fun getSize(): Vector {
-        return body.layout.getSize()
+    fun isWithinRangeOf(creature: Target) : Boolean {
+        if (creature.inventory.exists(this)){
+            return true
+        }
+        val distance = creature.position.getDistance(position)
+        val range = creature.body.getRange()
+        return getTopParent().location == creature.getTopParent().location && range >= distance
     }
+
+
 }
 
 fun targetsToString(targets: List<Target>): String {

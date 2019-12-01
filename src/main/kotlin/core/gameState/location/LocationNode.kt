@@ -137,18 +137,4 @@ class LocationNode(
         return direction != Direction.NONE && (furthestNodes.isEmpty() || furthestNodes.contains(this))
     }
 
-
-    fun getTotalX(): Int {
-        return 0
-    }
-
-    fun getTotalY(): Int {
-        return 0
-    }
-
-    fun getTotalZ(): Int {
-        return 0
-    }
-
-
 }
