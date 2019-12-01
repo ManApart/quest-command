@@ -161,6 +161,10 @@ open class Target(
     fun getPositionInLocation(part: BodyPart): Vector {
         return body.getPositionInLocation(part, position)
     }
+
+    fun getSize(): Vector {
+        return body.layout.getSize()
+    }
 }
 
 fun targetsToString(targets: List<Target>): String {

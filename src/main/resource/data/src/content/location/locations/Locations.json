@@ -44,24 +44,24 @@
         "name": "Tinder Box",
         "location": "on the range",
         "position": {
-          "y": 1,
-          "z": 1
+          "y": 10,
+          "z": 5
         }
       },
       {
         "name": "Pie Tin",
         "location": "on the range",
         "position": {
-          "y": 1,
-          "z": 1
+          "y": 10,
+          "z": 5
         }
       },
       {
         "name": "Apple Pie Recipe",
         "location": "on the range",
         "position": {
-          "y": 1,
-          "z": 1
+          "y": 10,
+          "z": 5
         }
       }
     ],
@@ -70,7 +70,7 @@
         "name": "Range",
         "location": "by the door",
         "position": {
-          "y": 1
+          "y": 10
         }
       }
     ]
@@ -82,7 +82,7 @@
       {
         "name": "Wheat Field",
         "position": {
-          "x": 10
+          "x": 20
         }
       }
     ]
@@ -98,7 +98,7 @@
         "name": "Apple",
         "location": "high in the branches",
         "position": {
-          "z": 5
+          "z": 15
         }
       },
       {

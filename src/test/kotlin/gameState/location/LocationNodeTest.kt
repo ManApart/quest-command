@@ -22,4 +22,5 @@ class LocationNodeTest {
         assertEquals(1, locations.size, "$direction had ${locations.size} instead of 1.")
         assertEquals(direction.name, locations.first().name)
     }
+
 }

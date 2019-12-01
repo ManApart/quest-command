@@ -7,22 +7,22 @@
       {
         "name": "Kanbara Wall South",
         "vector": {
-          "x": -1,
-          "y": -1
+          "x": -100,
+          "y": -100
         }
       },
       {
         "name": "Kanbara Wall North",
         "vector": {
-          "x": -1,
-          "y": 1
+          "x": -100,
+          "y": 100
         }
       },
       {
         "name": "Kanbara City",
         "restricted": true,
         "vector": {
-          "x": -1
+          "x": -100
         }
       }
     ]
@@ -64,7 +64,7 @@
         },
         "restricted": true,
         "vector": {
-          "y": 1
+          "y": 100
         }
       }
     ]
@@ -85,7 +85,7 @@
         },
         "restricted": true,
         "vector": {
-          "y": -1
+          "y": -100
         }
       }
     ]
@@ -98,7 +98,7 @@
       {
         "name": "Farmer's Hut Interior",
         "vector": {
-          "y": -5
+          "y": -500
         }
       },
       {
@@ -107,13 +107,13 @@
           "location": "Kanbara Gate"
         },
         "vector": {
-          "x": -10
+          "x": -10000
         }
       },
       {
         "name": "An Open Field",
         "vector": {
-          "x": 1
+          "x": 100
         }
       }
     ]
@@ -126,26 +126,26 @@
       {
         "name": "Apple Tree",
         "vector": {
-          "y": 1
+          "y": 100
         }
       },
       {
         "name": "Barren Patch",
         "vector": {
-          "y": -1
+          "y": -100
         }
       },
       {
         "name": "Training Circle",
         "vector": {
-          "x": 1
+          "x": 100
         }
       },
       {
         "name": "Windmill",
         "vector": {
-          "x": 1,
-          "y": 1
+          "x": 150,
+          "y": 100
         }
       }
     ]
@@ -158,7 +158,7 @@
         "target": "Stairs",
         "part": "Stairs",
         "vector": {
-          "z": 1
+          "z": 20
         },
         "connection": {
           "network": "Kanbara Countryside",
@@ -176,7 +176,7 @@
         "target": "Stairs",
         "part": "Stairs",
         "vector": {
-          "z": 1
+          "z": 20
         },
         "connection": {
           "network": "Kanbara Countryside",
@@ -195,7 +195,7 @@
         "target": "Apple Tree",
         "part": "Branches",
         "vector": {
-          "z": 1
+          "z": 15
         },
         "connection": {
           "network": "Kanbara Countryside",

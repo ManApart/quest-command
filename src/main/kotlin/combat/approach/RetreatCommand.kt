@@ -2,7 +2,7 @@ package combat.approach
 
 import combat.battle.Distances
 import combat.battle.Distances.HUMAN_LENGTH
-import combat.battle.Distances.MAX_RANGE
+import combat.battle.Distances.LOCATION_SIZE
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
@@ -32,7 +32,7 @@ class RetreatCommand : Command() {
         val amount = Args(args).getNumber()
         when {
             GameState.battle == null -> display("This is only relevant in battle.")
-            GameState.battle?.getCombatantDistance() ?: 0 >= MAX_RANGE -> display("You can't get any further.")
+            GameState.battle?.getCombatantDistance() ?: 0 >= LOCATION_SIZE -> display("You can't get any further.")
             keyword.toLowerCase() == "retreat" && args.isEmpty() -> clarifyAmount()
             amount == null -> retreat(HUMAN_LENGTH)
             else -> retreat(amount)

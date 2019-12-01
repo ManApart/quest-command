@@ -64,7 +64,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return layout.getLocationNode(part)
     }
 
-    fun getRootPart() : BodyPart? {
+    fun getRootPart(): BodyPart? {
         return layout.rootNode?.getLocation()?.bodyPart
     }
 
@@ -127,7 +127,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun getPositionInLocation(part: BodyPart, parentOffset: Vector): Vector {
-        return parentOffset + (layout.rootNode?.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
+        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode?.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
     }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import core.gameState.Direction
 import core.gameState.Vector
 import core.utility.Named
+import kotlin.math.abs
 
 val NOWHERE_NODE = LocationNode("Nowhere")
 const val DEFAULT_NETWORK = "Wilderness"
@@ -105,7 +106,7 @@ class LocationNode(
         return if (lowestNodes.isEmpty()) {
             0
         } else {
-            getDistanceTo(lowestNodes.first())
+            lowestNodes.map { abs(getVectorDistanceTo(it).z) }.max() ?: 0
         }
     }
 
@@ -118,7 +119,11 @@ class LocationNode(
         }
     }
 
-    fun getDistanceTo(other: LocationNode): Int {
+    fun getDistanceTo(other: LocationNode?): Int {
+        if (other == null) {
+            return 0
+        }
+
         val route = RouteFinder(this, other)
         return if (route.hasRoute()) {
             route.getRoute().getDistance()
@@ -130,6 +135,19 @@ class LocationNode(
     fun isAnOuterNode(direction: Direction): Boolean {
         val furthestNodes = network.getFurthestLocations(direction)
         return direction != Direction.NONE && (furthestNodes.isEmpty() || furthestNodes.contains(this))
+    }
+
+
+    fun getTotalX(): Int {
+        return 0
+    }
+
+    fun getTotalY(): Int {
+        return 0
+    }
+
+    fun getTotalZ(): Int {
+        return 0
     }
 
 

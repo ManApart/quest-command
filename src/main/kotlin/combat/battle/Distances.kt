@@ -7,5 +7,5 @@ object Distances {
     const val SPEAR_RANGE = 7
     const val HUMAN_LENGTH= 10
     const val BOW_RANGE = 20
-    const val MAX_RANGE = 100
+    const val LOCATION_SIZE = 100
 }

@@ -6,13 +6,13 @@ import combat.battle.Distances
 import combat.battle.position.TargetAim
 import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
-import core.gameState.Direction
 import core.gameState.GameState
 import core.gameState.Target
 import core.gameState.body.BodyPart
 import core.gameState.stat.BARE_HANDED
 import core.history.display
 import core.utility.StringFormatter
+import core.utility.max
 import interact.UseEvent
 import system.EventManager
 
@@ -56,10 +56,7 @@ class Attack : EventListener<AttackEvent>() {
         val attackedParts = getAttackedParts(event.source, event.sourcePart, event.target)
 
         if (attackedParts.isEmpty()) {
-            val direction = event.source.position.calculateDirection(event.target.target.position)
-            val isAre = StringFormatter.getIsAre(defender.target)
-            val directionString = StringFormatter.format(direction == Direction.NONE, "", "$defenderName $isAre too far $direction. ")
-            display("$directionString$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
+            display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
         } else {
             val verb = StringFormatter.format(event.source.isPlayer(), event.type.verbPlural, event.type.verb)
 //            display("$subject $verb at $defenderName.")
@@ -71,7 +68,10 @@ class Attack : EventListener<AttackEvent>() {
 
     private fun getAttackedParts(source: Target, sourcePart: BodyPart, target: TargetAim): List<BodyPart> {
         val sourcePosition = source.getPositionInLocation(sourcePart)
-        val range = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
+        val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
+        val size = source.getSize()
+        val bodyRange = max(size.x, size.y, size.z) / 2
+        val range = weaponRange + bodyRange
         return target.bodyPartTargets.filter {
             val targetPartPosition = target.target.getPositionInLocation(it)
             val distance = sourcePosition.getDistance(targetPartPosition)

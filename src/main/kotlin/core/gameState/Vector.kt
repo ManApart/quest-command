@@ -60,6 +60,18 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return other + getVectorInDirection(other, amount)
     }
 
+    fun isFurtherAlongSameDirectionThan(other: Vector) : Boolean {
+        val xSign = (x >= 0 && other.x >= 0) || (x <= 0 && other.x <= 0)
+        val ySign = (y >= 0 && other.y >= 0) || (y <= 0 && other.y <= 0)
+        val zSign = (z >= 0 && other.z >= 0) || (z <= 0 && other.z <= 0)
+
+        val xDist = abs(x) >= abs(other.x)
+        val yDist = abs(y) >= abs(other.y)
+        val zDist = abs(z) >= abs(other.z)
+
+        return xSign && ySign && zSign && xDist && yDist && zDist
+    }
+
     private fun calculateDirection(): Direction {
         return NO_VECTOR.calculateDirection(this)
     }

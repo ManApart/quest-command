@@ -195,4 +195,26 @@ class VectorTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun furtherAlongSameDirection() {
+        val furtherNorth = Vector(0, 10)
+        val furtherWest = Vector(-10)
+        val furtherSouthEast = Vector(10, -10)
+
+        assertTrue(north.isFurtherAlongSameDirectionThan(center))
+        assertTrue(furtherNorth.isFurtherAlongSameDirectionThan(north))
+        assertTrue(furtherWest.isFurtherAlongSameDirectionThan(center))
+        assertTrue(furtherWest.isFurtherAlongSameDirectionThan(west))
+        assertTrue(furtherSouthEast.isFurtherAlongSameDirectionThan(center))
+        assertTrue(furtherSouthEast.isFurtherAlongSameDirectionThan(southEast))
+        assertTrue(furtherSouthEast.isFurtherAlongSameDirectionThan(south))
+
+        assertFalse(north.isFurtherAlongSameDirectionThan(south))
+        assertFalse(north.isFurtherAlongSameDirectionThan(furtherNorth))
+        assertFalse(east.isFurtherAlongSameDirectionThan(west))
+        assertFalse(west.isFurtherAlongSameDirectionThan(east))
+        assertFalse(furtherSouthEast.isFurtherAlongSameDirectionThan(southWest))
+
+    }
+
 }

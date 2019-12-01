@@ -14,7 +14,8 @@
       "values": {
         "weight": "1",
         "slashDamage": "1",
-        "stabDamage": "2"
+        "stabDamage": "2",
+        "range": 2
       },
       "tags": [
         "Weapon",
@@ -37,7 +38,8 @@
     "properties": {
       "values": {
         "weight": "4",
-        "chopDamage": "4"
+        "chopDamage": "4",
+        "range": 5
       },
       "tags": [
         "Weapon",

@@ -11,7 +11,7 @@
       {
         "name": "Head",
         "vector": {
-          "z": 1
+          "z": 2
         }
       },
       {
@@ -29,7 +29,7 @@
       {
         "name": "Waist",
         "vector": {
-          "z": -1
+          "z": -2
         }
       }
     ]
@@ -41,7 +41,7 @@
       {
         "name": "Right Hand",
         "vector": {
-          "z": -1
+          "z": -3
         }
       }
     ]
@@ -53,7 +53,7 @@
       {
         "name": "Left Hand",
         "vector": {
-          "z": -1
+          "z": -3
         }
       }
     ]
@@ -93,7 +93,7 @@
       {
         "name": "Right Foot",
         "vector": {
-          "z": -1
+          "z": -4
         }
       }
     ]
@@ -105,7 +105,7 @@
       {
         "name": "Left Foot",
         "vector": {
-          "z": -1
+          "z": -4
         }
       }
     ]

@@ -11,6 +11,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import system.EventManager
 import system.GameManager
+import system.debug.DebugType
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -80,9 +81,10 @@ class CommandComboTest {
     fun climbTree() {
         //TODO - somehow remove random element and test full climb
         val input = "n && climb tree && climb && d && d"
+        GameState.properties.values.put(DebugType.RANDOM.propertyName, true)
         CommandParser.parseCommand(input)
-        assertEquals("You Climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW).", ChatHistory.history[1].outPut[8])
-        assertEquals("You climb back off Apple Tree.", ChatHistory.getLastOutput())
+        assertTrue(ChatHistory.history[1].outPut.contains("You Climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
+        assertTrue(ChatHistory.getLastOutputs().contains("You climb back off Apple Tree." ))
     }
 
     @Test
@@ -94,7 +96,7 @@ class CommandComboTest {
     }
 
     @Test
-    fun dontAttackDeadThing() {
+    fun doNotAttackDeadThing() {
         val input = "s && slash body of rat && sl rat && sl && slash rat"
         CommandParser.parseCommand(input)
         val expected = "slash what with Rusty Dagger?\n\tPlayer, Poor Quality Meat"
@@ -152,11 +154,11 @@ class CommandComboTest {
         val expected = """
             An Open Field is a part of Kanbara Countryside. It is neighbored by:
               Name             Distance  Direction Path  
-              Farmer's Hut     1         W               
-              Apple Tree       1         N               
-              Barren Patch     1         S               
-              Training Circle  1         E               
-              Windmill         1         NE
+              Farmer's Hut     100       W               
+              Apple Tree       100       N               
+              Barren Patch     100       S               
+              Training Circle  100       E               
+              Windmill         180       NE
               """.trimIndent().trim()
 
         assertEquals(expected, ChatHistory.getLastOutput().trimIndent().trim())
