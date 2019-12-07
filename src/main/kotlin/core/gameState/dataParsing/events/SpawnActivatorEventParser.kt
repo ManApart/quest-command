@@ -7,6 +7,10 @@ import interact.scope.spawn.SpawnActivatorEvent
 import system.activator.ActivatorManager
 
 class SpawnActivatorEventParser : EventParser {
+    override fun className(): String {
+        return SpawnActivatorEvent::class.simpleName!!
+    }
+
     override fun parse(event: TriggeredEvent, parent: Target): Event {
         val activatorNameP = 0
         val countP = 1

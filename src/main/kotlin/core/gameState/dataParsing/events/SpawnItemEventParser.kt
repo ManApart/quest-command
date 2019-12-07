@@ -6,6 +6,10 @@ import core.gameState.dataParsing.TriggeredEvent
 import interact.scope.spawn.SpawnItemEvent
 
 class SpawnItemEventParser : EventParser {
+    override fun className(): String {
+        return SpawnItemEvent::class.simpleName!!
+    }
+
     override fun parse(event: TriggeredEvent, parent: Target): Event {
         val itemNameP = 0
         val countP = 1

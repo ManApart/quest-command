@@ -6,7 +6,6 @@ import core.gameState.dataParsing.TriggeredEvent
 
 interface EventParser {
     fun parse(event: TriggeredEvent, parent: Target): Event
-//    fun parse(event: TriggeredEvent, parent: Target): Event? {
-//        return null
-//    }
+    fun className() : String
+
 }

@@ -9,11 +9,11 @@ object ReflectionTools {
     private const val fileName = "./src/main/kotlin/core/utility/reflection/GeneratedReflections.kt"
     private val reflections = Reflections(SubTypesScanner(false))
 
-
     fun generateFile() {
         val variables = listOf(
                 getInstanceList("core.commands.Command"),
                 getInstanceList("interact.magic.spellCommands.SpellCommand"),
+                getInstanceList("core.gameState.dataParsing.events.EventParser"),
                 getInstanceList("core.events.EventListener<*>")
         )
 
@@ -22,7 +22,9 @@ object ReflectionTools {
             package core.utility.reflection
 
             import core.commands.Command
+            import core.events.Event
             import core.events.EventListener
+            import core.gameState.dataParsing.events.EventParser
             import interact.magic.spellCommands.SpellCommand
             
             class GeneratedReflections : Reflections {
@@ -32,6 +34,10 @@ object ReflectionTools {
             
                 override fun getSpellCommands(): List<SpellCommand> {
                     return spellCommands
+                }
+                
+                override fun getEventParsers(): List<EventParser> {
+                    return eventParsers
                 }
             
                 override fun getEventListeners(): List<EventListener<*>> {
