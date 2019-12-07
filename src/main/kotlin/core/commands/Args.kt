@@ -23,7 +23,6 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     private fun cleanArgs(origArgs: List<String>): List<String> {
-//        return origArgs.extractCommas().filter { it != "" }.toLowerCase()
         return origArgs.extractCommas().filter { it != "" }.addSpaces().toLowerCase()
     }
 

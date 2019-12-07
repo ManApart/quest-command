@@ -5,6 +5,7 @@ import core.gameState.Inventory
 import core.gameState.Target
 import core.gameState.location.NOWHERE_NODE
 import core.history.display
+import core.utility.StringFormatter
 import interact.scope.ScopeManager
 import inventory.equipItem.EquipItemEvent
 import inventory.pickupItem.ItemPickedUpEvent
@@ -15,8 +16,12 @@ class TransferItem : EventListener<TransferItemEvent>() {
     override fun execute(event: TransferItemEvent) {
         when {
             event.destination == null -> dropItem(event.source!!, event.item, event.silent)
+            event.source != null && !event.source.isWithinRangeOf(event.mover) -> display(StringFormatter.getSubject(event.mover) + " " + StringFormatter.getIsAre(event.mover) + " too far away to take from ${event.source}.")
             event.source != null && !isOpen(event.source) -> display("Can't take ${event.item.name} from ${event.source.name}.")
+            event.source == null && !event.item.isWithinRangeOf(event.mover) -> display(StringFormatter.getSubject(event.mover) + " " + StringFormatter.getIsAre(event.mover) + " too far away from ${event.item} to pick it up.")
+            !event.destination.isWithinRangeOf(event.mover) -> display(StringFormatter.getSubject(event.mover) + " " + StringFormatter.getIsAre(event.mover) + " too far away to place in ${event.destination}.")
             !isOpen(event.destination) -> display("Can't place ${event.item.name} in ${event.destination.name}.")
+
             event.destination.properties.isActivator() -> placeItemInActivator(event.source, event.item, event.destination, event.silent)
             event.destination.properties.isItem() -> placeItemInItem(event.source, event.item, event.destination, event.silent)
             event.destination.properties.isCreature() -> placeItemInCreature(event.source, event.item, event.destination, event.silent)
@@ -41,7 +46,8 @@ class TransferItem : EventListener<TransferItemEvent>() {
 
         } else if (!destination.inventory.hasCapacityFor(item, destination.properties.values.getInt("Capacity"))) {
             display("${item.name} is too heavy to fit in ${destination.name}.")
-
+        } else if (!destination.isWithinRangeOf(source) && source?.isWithinRangeOf(destination) == false) {
+                display(StringFormatter.getSubject(destination) + " " + StringFormatter.getIsAre(destination) + " too far away.")
         } else {
             placeItem(source, item, destination, destination.inventory, silent)
         }

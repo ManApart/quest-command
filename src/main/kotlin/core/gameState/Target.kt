@@ -58,7 +58,7 @@ open class Target(
 
     fun getDisplayName(): String {
         val locationDescription = properties.values.getString("locationDescription")
-        val description =  if (locationDescription.isBlank()) {
+        val description = if (locationDescription.isBlank()) {
             ""
         } else {
             " $locationDescription"
@@ -102,7 +102,7 @@ open class Target(
      * Return how encumbered the creature is, as a percent from 0-1
      */
     fun getEncumbrance(): Float {
-        val soulEncumbrance = soul.parent.properties.values.getInt(ENCUMBRANCE, 0) /100f
+        val soulEncumbrance = soul.parent.properties.values.getInt(ENCUMBRANCE, 0) / 100f
         val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, soulEncumbrance + physicalEncumbrance))
     }
@@ -162,12 +162,16 @@ open class Target(
         return body.getPositionInLocation(part, position)
     }
 
-    fun isWithinRangeOf(creature: Target) : Boolean {
-        if (creature.inventory.exists(this)){
+    fun isWithinRangeOf(creature: Target?): Boolean {
+        if (creature == null
+                || creature.inventory.exists(this)
+                || getTopParent().location == NOWHERE_NODE) {
             return true
         }
-        val distance = creature.position.getDistance(position)
+
         val range = creature.body.getRange()
+        val centerOfCreature = creature.position + Vector(z = creature.body.getSize().z / 2)
+        val distance = centerOfCreature.getDistance(position)
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 

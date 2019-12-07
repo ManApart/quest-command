@@ -586,3 +586,6 @@ ignore encumberance?
 
 
 cast command - pass args from all groups other than targets (take args after targets if they are there)
+
+
+pickup tin should prefer pie tin over tinder box

@@ -12,7 +12,7 @@ import system.EventManager
 class MoveCommand : Command() {
 
     override fun getAliases(): Array<String> {
-        return arrayOf("Move", "mv")
+        return arrayOf("Move", "mv", "walk", "run")
     }
 
     override fun getDescription(): String {

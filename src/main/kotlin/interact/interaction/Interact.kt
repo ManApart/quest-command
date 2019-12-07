@@ -3,6 +3,7 @@ package interact.interaction
 import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
+import core.utility.StringFormatter
 
 class Interact : EventListener<InteractEvent>() {
 
@@ -12,10 +13,11 @@ class Interact : EventListener<InteractEvent>() {
 
     override fun execute(event: InteractEvent) {
         //TODO - should check if event.source can interact
-        if (GameState.player.canInteract) {
-            event.target.consume(event)
-        } else {
-            display("You can't interact with ${event.target.name} right now.")
+
+        when {
+            !event.target.isWithinRangeOf(event.source) -> display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to interact with ${event.target}.")
+            GameState.player.canInteract -> event.target.consume(event)
+            else -> display("You can't interact with ${event.target.name} right now.")
         }
     }
 }

@@ -11,6 +11,7 @@ import core.gameState.stat.CLIMBING
 import core.gameState.stat.STAMINA
 import core.history.display
 import core.utility.RandomManager
+import core.utility.StringFormatter
 import explore.LookEvent
 import status.ExpGainedEvent
 import status.statChanged.StatChangeEvent
@@ -24,16 +25,25 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     override fun execute(event: AttemptClimbEvent) {
-        val distance = getDistance(event.creature.location, event.targetPart)
-        val chance = getChance(event.creature, distance)
-
-        EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance, event.quiet))
-        if (GameState.player.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
-            advance(event, distance, chance)
+        if (!isWithinRange(event)) {
+            display(StringFormatter.getSubject(event.creature) + " " + StringFormatter.getIsAre(event.creature) + " too far away to climb ${event.target}.")
         } else {
-            fall(event)
+            val distance = getDistance(event.creature.location, event.targetPart)
+            val chance = getChance(event.creature, distance)
+
+            EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance, event.quiet))
+            if (GameState.player.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
+                advance(event, distance, chance)
+            } else {
+                fall(event)
+            }
+            event.target.consume(event)
         }
-        event.target.consume(event)
+    }
+
+    private fun isWithinRange(event: AttemptClimbEvent): Boolean {
+        return GameState.player.climbTarget != null || event.target.isWithinRangeOf(event.creature)
+                || event.target.location != event.creature.location
     }
 
     private fun getDistance(source: LocationNode, destination: LocationNode): Int {

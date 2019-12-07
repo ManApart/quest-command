@@ -42,7 +42,7 @@ class PickupItemCommand : core.commands.Command() {
         val items = ScopeManager.getScope().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> display("Couldn't find ${args.getBaseString()}")
-            items.size == 1 -> EventManager.postEvent(TransferItemEvent(items.first(), destination = GameState.player))
+            items.size == 1 -> EventManager.postEvent(TransferItemEvent(GameState.player, items.first(), destination = GameState.player))
             else -> pickupWhat(items)
         }
     }
@@ -75,7 +75,7 @@ class PickupItemCommand : core.commands.Command() {
     private fun takeItemFromContainer(from: Target, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
-            EventManager.postEvent(TransferItemEvent(item, from, GameState.player))
+            EventManager.postEvent(TransferItemEvent(GameState.player, item, from, GameState.player))
         } else {
             display("Couldn't find $itemName")
         }

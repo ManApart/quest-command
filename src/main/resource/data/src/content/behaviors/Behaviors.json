@@ -71,7 +71,12 @@
       {
         "className": "SpawnItemEvent",
         "params": [
-          "Ash"
+          "Ash",
+          1,
+          "",
+          "",
+          "",
+          "$this"
         ]
       }
     ]
@@ -136,7 +141,11 @@
         "className": "SpawnItemEvent",
         "params": [
           "$itemName",
-          "$count"
+          "$count",
+          "",
+          "",
+          "",
+          "$this"
         ]
       }
     ]

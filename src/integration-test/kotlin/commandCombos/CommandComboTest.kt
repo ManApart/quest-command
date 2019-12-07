@@ -9,7 +9,6 @@ import org.junit.Before
 import org.junit.Test
 import system.EventManager
 import system.GameManager
-import system.debug.DebugType
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -51,7 +50,7 @@ class CommandComboTest {
 
     @Test
     fun roastApple() {
-        val input = "w && s && pickup tinder box && n && e && n && use tinder on tree && use apple on tree"
+        val input = "w && s && move to range && pickup tinder box && n && e && n && use tinder on tree && use apple on tree"
         CommandParser.parseCommand(input)
         assertTrue(GameState.player.inventory.getItem("Apple") != null)
         assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
@@ -62,7 +61,7 @@ class CommandComboTest {
         val stat = GameState.player.soul.getStats().first { it.name.toLowerCase() == "cooking" }
         stat.setLevel(2)
 
-        val input = "w && s && cook apple on range"
+        val input = "w && s && move to range && cook apple on range"
         CommandParser.parseCommand(input)
         assertTrue(GameState.player.inventory.getItem("Apple") != null)
         assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
@@ -78,8 +77,7 @@ class CommandComboTest {
     @Test
     fun climbTree() {
         //TODO - somehow remove random element and test full climb
-        val input = "n && climb tree && climb && d && d"
-        GameState.properties.values.put(DebugType.RANDOM.propertyName, true)
+        val input = "db random && n && climb tree && climb && d && d"
         CommandParser.parseCommand(input)
         assertTrue(ChatHistory.history[1].outPut.contains("You Climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
         assertTrue(ChatHistory.getLastOutputs().contains("You climb back off Apple Tree." ))
@@ -124,17 +122,17 @@ class CommandComboTest {
 
     @Test
     fun millFlour() {
-        val input = "slash wheat && pickup wheat && ne && a && a && place wheat in chute && d && d && take wheat from bin"
+        val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && place wheat in chute && d && d && take wheat from bin"
         CommandParser.parseCommand(input)
         assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun makePie() {
-        val input = "slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
+        val input = "move to wheat && slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
                 "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple" +
-                "&& t interior && t && t && take pie tin" +
+                "&& t interior && t && t && move to range && take pie tin" +
                 "&& read recipe && rs" +
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)

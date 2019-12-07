@@ -4,6 +4,7 @@ import core.gameState.GameState
 import core.gameState.Properties
 import core.gameState.SetPropertiesEvent
 import core.gameState.Target
+import core.gameState.dataParsing.events.SpawnItemEventParser
 import core.gameState.location.LocationNode
 import core.gameState.location.LocationPoint
 import core.gameState.location.NOWHERE_NODE
@@ -18,7 +19,6 @@ import explore.RestrictLocationEvent
 import interact.scope.ScopeManager
 import interact.scope.remove.RemoveItemEvent
 import interact.scope.remove.RemoveScopeEvent
-import interact.scope.spawn.SpawnActivatorEvent
 import interact.scope.spawn.SpawnItemEvent
 import status.effects.AddConditionEvent
 import status.effects.Condition
@@ -26,44 +26,50 @@ import status.effects.Element
 import status.effects.RemoveConditionEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
-import system.MessageEvent
-import system.activator.ActivatorManager
 import system.location.LocationManager
 import travel.ArriveEvent
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {
-
     constructor(base: TriggeredEvent, params: Map<String, String>) : this(base.className, base.params.apply(params))
 
+    companion object {
+        val eventMap = mapOf(
+                SpawnItemEvent::class.simpleName to SpawnItemEventParser()
+        )
+    }
+
     fun execute(parent: Target = GameState.player) {
+        val event = eventMap[className]?.parse(this, parent)
+        if (event != null) {
+            EventManager.postEvent(event)
+        }
+        //TODO - transition to using parser classes (delete below as converted to above method)
         when (className) {
             ArriveEvent::class.simpleName -> EventManager.postEvent(ArriveEvent(destination = LocationPoint(LocationManager.getNetwork(params[0]).findLocation(params[1])), method = "move"))
-            AddConditionEvent::class.simpleName -> EventManager.postEvent(AddConditionEvent(getTargetCreatureOrPlayer(0), createCondition()))
+            AddConditionEvent::class.simpleName -> EventManager.postEvent(AddConditionEvent(getTargetCreatureOrPlayer(parent, 0), createCondition()))
             CompleteQuestEvent::class.simpleName -> EventManager.postEvent(CompleteQuestEvent(QuestManager.quests.get(params[0])))
             DiscoverRecipeEvent::class.simpleName -> EventManager.postEvent(DiscoverRecipeEvent(GameState.player, getRecipe(0)))
-            MessageEvent::class.simpleName -> EventManager.postEvent(MessageEvent(params[0]))
             RestrictLocationEvent::class.simpleName -> EventManager.postEvent(RestrictLocationEvent(LocationManager.getNetwork(params[0]).getLocationNode(params[1]), LocationManager.getNetwork(params[2]).getLocationNode(params[3]), getParamBoolean(4)))
-            RemoveConditionEvent::class.simpleName -> EventManager.postEvent(RemoveConditionEvent(getTargetCreatureOrPlayer(0), getTargetCondition()))
-            RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(0), getItemOrParent(1, getTargetCreatureOrPlayer(0), parent)))
-            RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(0, parent)))
-            SetPropertiesEvent::class.simpleName -> EventManager.postEvent(SetPropertiesEvent(getTargetCreatureOrPlayer(0), getProperties(1, 2, 3)))
+            RemoveConditionEvent::class.simpleName -> EventManager.postEvent(RemoveConditionEvent(getTargetCreatureOrPlayer(parent, 0), getTargetCondition(parent)))
+            RemoveItemEvent::class.simpleName -> EventManager.postEvent(RemoveItemEvent(getTargetCreatureOrPlayer(parent, 0), getItemOrParent(parent, 1, getTargetCreatureOrPlayer(parent, 0))))
+            RemoveScopeEvent::class.simpleName -> EventManager.postEvent(RemoveScopeEvent(getTargetOrParent(parent, 0)))
+            SetPropertiesEvent::class.simpleName -> EventManager.postEvent(SetPropertiesEvent(getTargetCreatureOrPlayer(parent, 0), getProperties(1, 2, 3)))
             SetQuestStageEvent::class.simpleName -> EventManager.postEvent(SetQuestStageEvent(QuestManager.quests.get(params[0]), getParamInt(1)))
-            SpawnActivatorEvent::class.simpleName -> EventManager.postEvent(SpawnActivatorEvent(ActivatorManager.getActivator(params[0]), getParamBoolean(1)))
-            SpawnItemEvent::class.simpleName -> EventManager.postEvent(SpawnItemEvent(params[0], getParamInt(1), getTargetCreature(2, getLocation(3, 4)), getLocation(3, 4)))
-            StatChangeEvent::class.simpleName -> EventManager.postEvent(StatChangeEvent(getTargetCreatureOrPlayer(0), getParam(1, "event"), getParam(2, "none"), getParamInt(3, 0)))
+            StatChangeEvent::class.simpleName -> EventManager.postEvent(StatChangeEvent(getTargetCreatureOrPlayer(parent, 0), getParam(1, "event"), getParam(2, "none"), getParamInt(3, 0)))
         }
     }
 
-    private fun getTargetOrParent(paramNumber: Int, parent: Target): Target {
+
+    fun getTargetOrParent(parent: Target, paramNumber: Int): Target {
         val param = getParam(paramNumber, "none")
-        return if (ScopeManager.getScope().getTargets(param).isNotEmpty()) {
-            ScopeManager.getScope().getTargets(param).first()
-        } else {
-            parent
+        return when {
+            param == "\$this" -> parent
+            ScopeManager.getScope().getTargets(param).isNotEmpty() -> ScopeManager.getScope().getTargets(param).first()
+            else -> parent
         }
     }
 
-    private fun getLocation(paramNetworkNumber: Int, paramLocationNumber: Int): LocationNode? {
+    fun getLocation(parent: Target, paramNetworkNumber: Int, paramLocationNumber: Int): LocationNode? {
         val networkParam = getParam(paramNetworkNumber, "")
         val locationParam = getParam(paramLocationNumber, "")
         if (networkParam.isBlank() || locationParam.isBlank()) {
@@ -77,26 +83,30 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         }
     }
 
-    private fun getTargetCreatureOrPlayer(paramNumber: Int, location: LocationNode? = null): Target {
-        return getTargetCreature(paramNumber, location) ?: GameState.player
+    fun getTargetCreatureOrPlayer(parent: Target, paramNumber: Int, location: LocationNode? = null): Target {
+        return getTargetCreature(parent, paramNumber, location) ?: GameState.player
     }
 
-    private fun getTargetCreature(paramNumber: Int, location: LocationNode? = null): Target? {
+    fun getTargetCreature(parent: Target, paramNumber: Int, location: LocationNode? = null): Target? {
         val param = getParam(paramNumber, "none")
-        return ScopeManager.getScope(location).getTargets(param).firstOrNull()
+        return if (param == "\$this") {
+            parent
+        } else {
+            ScopeManager.getScope(location).getTargets(param).firstOrNull()
+        }
     }
 
-    private fun getItemOrParent(paramNumber: Int, source: Target, parent: Target): Target {
+    fun getItemOrParent(parent: Target, paramNumber: Int, source: Target): Target {
         val param = getParam(paramNumber, "none")
         return source.inventory.getItem(param) ?: parent
     }
 
-    private fun getRecipe(paramNumber: Int): Recipe {
+    fun getRecipe(paramNumber: Int): Recipe {
         val param = getParam(paramNumber, "none")
         return RecipeManager.getRecipe(param)
     }
 
-    private fun getProperties(typeParam: Int, keyParam: Int, valueParam: Int): Properties {
+    fun getProperties(typeParam: Int, keyParam: Int, valueParam: Int): Properties {
         val properties = Properties()
         val type = getParam(typeParam, "none")
         val key = getParam(keyParam, "none")
@@ -110,21 +120,21 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         return properties
     }
 
-    private fun getParam(i: Int, default: String): String {
+    fun getParam(i: Int, default: String = ""): String {
         if (i < params.size) {
             return params[i]
         }
         return default
     }
 
-    private fun getParamInt(i: Int, default: Int = 1): Int {
+    fun getParamInt(i: Int, default: Int = 1): Int {
         if (i < params.size) {
             return params[i].toInt()
         }
         return default
     }
 
-    private fun getParamBoolean(i: Int, default: Boolean = false): Boolean {
+    fun getParamBoolean(i: Int, default: Boolean = false): Boolean {
         if (i < params.size) {
             return params[i].toBoolean()
         }
@@ -132,12 +142,12 @@ class TriggeredEvent(private val className: String, private val params: List<Str
     }
 
     //TODO - this should be replaced with a reference to an existing/json hard coded condition
-    private fun createCondition(): Condition {
-        return Condition(getParam(1, ""), Element.valueOf(getParam(2, "NONE")), elementStrength =  getParamInt(3))
+    fun createCondition(): Condition {
+        return Condition(getParam(1, ""), Element.valueOf(getParam(2, "NONE")), elementStrength = getParamInt(3))
     }
 
-    private fun getTargetCondition(): Condition {
-        val target = getTargetCreatureOrPlayer(0)
+    fun getTargetCondition(parent: Target): Condition {
+        val target = getTargetCreatureOrPlayer(parent, 0)
         return target.soul.getCondition(params[1])
     }
 }

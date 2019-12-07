@@ -1,6 +1,7 @@
 package system.item
 
 import core.events.EventListener
+import core.gameState.NO_VECTOR
 import core.history.display
 import interact.scope.spawn.ItemSpawnedEvent
 import interact.scope.spawn.SpawnItemEvent
@@ -11,6 +12,9 @@ class ItemSpawner : EventListener<SpawnItemEvent>() {
         if (ItemManager.itemExists(event.itemName)) {
             val item = ItemManager.getItem(event.itemName)
             item.properties.values.put("count", event.count)
+            if (event.position != NO_VECTOR) {
+                item.position = event.position
+            }
             EventManager.postEvent(ItemSpawnedEvent(item, event.target))
         } else {
             display("Could not spawn ${event.itemName} because it could not be found.")

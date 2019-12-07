@@ -45,7 +45,7 @@ class PlaceItemTest {
         creature.inventory.add(item)
         val scope = ScopeManager.getScope(creature.location)
 
-        TransferItem().execute(TransferItemEvent(item, creature))
+        TransferItem().execute(TransferItemEvent(creature, item, creature))
         assertTrue(scope.getTargets(item.name).isNotEmpty())
         assertNull(creature.inventory.getItem(item.name))
     }
@@ -58,7 +58,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -75,7 +75,7 @@ class PlaceItemTest {
         val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open"))))
         chest.inventory.add(pouch)
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -99,7 +99,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", body = "body", properties = Properties(Values(mapOf("Strength" to "1")), Tags(listOf("Container", "Open", "Creature"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -113,7 +113,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -127,7 +127,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertEquals(1, chest.inventory.getItem(item.name)!!.properties.getCount())
@@ -144,7 +144,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -158,7 +158,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -172,7 +172,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "1")), Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -186,7 +186,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -200,7 +200,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5", "CanHold" to "Food,Apparel")), Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -214,7 +214,7 @@ class PlaceItemTest {
 
         val chest = Target("Chest", properties = Properties(Values(mapOf("Capacity" to "5", "CanHold" to "Weapon,Apparel")), Tags(listOf("Container", "Open", "Activator"))))
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))

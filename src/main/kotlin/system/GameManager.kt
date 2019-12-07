@@ -31,6 +31,7 @@ object GameManager {
         QuestManager.reset()
         ScopeManager.reset()
         EventManager.reset()
+        GameState.reset()
 //        LocationManager.clear()
 
 //        GameState.properties.values.put(AUTO_SAVE, true)

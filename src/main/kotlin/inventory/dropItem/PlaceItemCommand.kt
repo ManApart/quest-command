@@ -45,7 +45,7 @@ class PlaceItemCommand : core.commands.Command() {
     private fun dropItem(args: Args) {
         val item = GameState.player.inventory.getItem(args.getBaseString())
         if (item != null) {
-            EventManager.postEvent(TransferItemEvent(item, GameState.player))
+            EventManager.postEvent(TransferItemEvent(GameState.player, item, GameState.player))
         } else {
             display("Couldn't find ${args.getBaseString()}")
         }
@@ -58,7 +58,7 @@ class PlaceItemCommand : core.commands.Command() {
             val destinations = ScopeManager.getScope().getTargets(targetString).filterUniqueByName()
             when {
                 targetString.isNotBlank() && destinations.isEmpty() -> display("Couldn't find $targetString")
-                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(item, GameState.player, destinations.first(), true))
+                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(GameState.player, item, GameState.player, destinations.first(), true))
                 else -> giveToWhat(destinations, args.getBaseString())
             }
         } else {

@@ -35,7 +35,7 @@ class PickupItemTest {
         val item = Target("Apple")
         scope.addTarget(item)
 
-        TransferItem().execute(TransferItemEvent(item, destination = creature))
+        TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
         assertNotNull(creature.inventory.getItem(item.name))
         assertTrue(scope.getTargets(item.name).isEmpty())
 
@@ -51,7 +51,7 @@ class PickupItemTest {
         val item = Target("Apple")
         scope.addTarget(item)
 
-        TransferItem().execute(TransferItemEvent(item, destination = creature))
+        TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
         assertNull(creature.inventory.getItem(item.name))
         assertTrue(scope.getTargets(item.name).isNotEmpty())
 
@@ -66,7 +66,7 @@ class PickupItemTest {
         val item = Target("Apple")
         chest.inventory.add(item)
 
-        TransferItem().execute(TransferItemEvent(item, chest, creature))
+        TransferItem().execute(TransferItemEvent(creature, item, chest, creature))
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -80,7 +80,7 @@ class PickupItemTest {
         val item = Target("Apple")
         chest.inventory.add(item)
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -94,7 +94,7 @@ class PickupItemTest {
         val item = Target("Apple")
         chest.inventory.add(item)
 
-        TransferItem().execute(TransferItemEvent(item, creature, chest))
+        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))

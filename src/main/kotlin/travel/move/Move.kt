@@ -9,6 +9,7 @@ import core.gameState.location.LocationPoint
 import core.history.display
 import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
+import interact.scope.ScopeManager
 import system.EventManager
 import travel.ArriveEvent
 
@@ -33,10 +34,13 @@ class Move : EventListener<MoveEvent>() {
 
     private fun displayMovement(event: MoveEvent) {
         if (!event.silent) {
+            val destinationTarget = ScopeManager.getScope(event.creature.location).getTargets(event.creature).firstOrNull { it.position == event.destination }
+            val destinationString = destinationTarget?.getDisplayName() ?: event.destination.toString()
+
             if (event.creature.isPlayer()) {
-                display("You move from ${event.source} to ${event.destination}")
+                display("You move from ${event.source} to $destinationString")
             } else {
-                display("${event.creature} moves from ${event.source} to ${event.destination}")
+                display("${event.creature} moves from ${event.source} to $destinationString")
             }
         }
     }

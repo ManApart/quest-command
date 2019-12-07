@@ -4,6 +4,7 @@ import core.events.Event
 import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
+import core.utility.StringFormatter
 import interact.UseEvent
 import system.EventManager
 
@@ -21,7 +22,9 @@ class NoUseFound : EventListener<UseEvent>() {
     override fun execute(event: UseEvent) {
         // TODO - use event source, don't hardcode player
         if (GameState.player.canInteract) {
-            if (event.target.canConsume(event)) {
+            if (!event.target.isWithinRangeOf(event.source)) {
+                display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to interact with ${event.target}.")
+            } else if (event.target.canConsume(event)) {
                 event.target.consume(event)
             } else {
                 display("You use ${event.used.name} on ${event.target.name} but nothing happens.")
