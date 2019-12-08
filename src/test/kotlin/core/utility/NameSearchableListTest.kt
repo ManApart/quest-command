@@ -39,6 +39,61 @@ class NameSearchableListTest {
     }
 
     @Test
+    fun existsExact() {
+        val partial = NamedString("Partial Match")
+        val exact = NamedString("Exact Match")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(partial)
+        list.add(exact)
+
+        assertTrue(list.existsExact("Exact Match"))
+        assertFalse(list.existsExact("Match"))
+    }
+
+    @Test
+    fun existsByWholeWord() {
+        val exact = NamedString("Exact Match")
+        val partial = NamedString("Partial Match")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(partial)
+        list.add(exact)
+
+        assertTrue(list.existsByWholeWord("match"))
+        assertTrue(list.exists("at"))
+        assertFalse(list.existsByWholeWord("at"))
+    }
+
+    @Test
+    fun targetExistsPartialPrefersExactMatch() {
+        val applePieTin = NamedString("apple pie Tin")
+        val pieTin = NamedString("Pie Tin")
+        val tinderBox = NamedString("Tinderbox")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(tinderBox)
+        list.add(applePieTin)
+        list.add(pieTin)
+
+        assertTrue(list.exists("apple pie tin"))
+        assertEquals(applePieTin, list.getOrNull("apple pie tin"))
+    }
+
+    @Test
+    fun targetExistsPartialPrefersWholeWord() {
+        val pieTin = NamedString("Pie Tin")
+        val tinderBox = NamedString("Tinderbox")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(tinderBox)
+        list.add(pieTin)
+
+        assertTrue(list.exists("tin"))
+        assertEquals(pieTin, list.getOrNull("tin"))
+    }
+
+    @Test
     fun blankTargetDoesNotReturnResults() {
         val list = NameSearchableList<NamedString>()
         list.add(NamedString("Match"))

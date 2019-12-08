@@ -192,7 +192,33 @@ trigger off effect/condition instead of tag
 
 ### Triggered Events
 
-See the Triggered Event class to see what events can be used, and what params they can accept
+See the Triggered Event class to see what events can be used, and what params they can accept. Each parsable event has an `EventParser` class that is loaded through reflection. When designing an event, you can refer to that class to see the expected parameter names, types and order. Take `SpawnItemEventParser` as an example. 
+
+Given the data for the event (the class name and a list of params)
+```
+ {
+    "className": "SpawnItemEvent",
+    "params": [
+      "$resultItem",
+      "1",
+      "Grain Bin",
+      "$resultItemNetwork",
+      "$resultItemLocation"
+    ]
+  }
+```
+
+The parser's parse method starts by listing several number (p) params:
+```
+val itemNameP = 0
+val countP = 1
+val targetP = 2
+val targetLocationNetworkP = 3
+val targetLocationP = 4
+val positionParentP = 5
+```
+These are the name/order of the expected param the first param (order 0) is itemNameP and corresponds to our first param ($resultItem in our data). Etc. These variables tell the function which param in the list to look to find say the count, or the instance of the target with the target name "Grain Bin".
+
 
 ### Story Events
 

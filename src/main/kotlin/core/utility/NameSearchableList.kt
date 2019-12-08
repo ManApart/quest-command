@@ -95,6 +95,42 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return false
     }
 
+    fun existsByWholeWord(name: String): Boolean {
+        if (name.isNotBlank()) {
+            val cleaned = name.toLowerCase().split(" ")
+            return containsProxy(name.toLowerCase()) || any { item ->
+                val itemWords = item.name.toLowerCase().split(" ")
+                cleaned.any { itemWords.contains(it) }
+            }
+        }
+        return false
+    }
+
+    fun count(name: String): Int {
+        if (name.isBlank()) {
+            return 0
+        }
+        return getAll(name).size
+    }
+
+    fun countByWholeWord(name: String): Int {
+        if (name.isNotBlank()) {
+            val cleaned = name.toLowerCase().split(" ")
+            val proxyCount = if (containsProxy(name.toLowerCase())) {
+                1
+            } else {
+                0
+            }
+
+            return proxyCount + this.filter { item ->
+                val itemWords = item.name.toLowerCase().split(" ")
+                cleaned.any { itemWords.contains(it) }
+            }.size
+        }
+        return 0
+    }
+
+
     fun get(name: String): N {
         return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toString()}")
     }
@@ -149,8 +185,14 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
     }
 
     private fun bestMatch(matches: List<N>, name: String): N {
-        return firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
-                ?: matches[0]
+        val cleaned = name.toLowerCase()
+        return firstOrNull {
+            it.name.toLowerCase() == cleaned
+        } ?: firstOrNull { named ->
+            val cleanedParts = cleaned.split(" ")
+            val trialWords = named.name.toLowerCase().split(" ")
+            cleanedParts.any { trialWords.contains(it) }
+        } ?: matches[0]
     }
 
 }
