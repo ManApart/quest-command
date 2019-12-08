@@ -1,6 +1,7 @@
 package status.effects
 
 import core.gameState.Soul
+import core.utility.NameSearchableList
 import core.utility.Named
 import system.EventManager
 
@@ -8,10 +9,13 @@ class Condition(
         override val name: String,
         private val element: Element = Element.NONE,
         var elementStrength: Int = 1,
-        private val effects: List<Effect> = listOf(),
-        private val criticalEffects: List<Effect> = listOf(),
+        effects: List<Effect> = listOf(),
+        criticalEffects: List<Effect> = listOf(),
         private val permanent: Boolean = false
 ) : Named {
+    private val effects = NameSearchableList(effects)
+    private val criticalEffects = NameSearchableList(criticalEffects)
+
     private var age = 0
     var isCritical = false
     private var isFirstApply = true
@@ -53,8 +57,12 @@ class Condition(
         getEffects().forEach { it.remove(soul) }
     }
 
-    fun getAge() : Int {
+    fun getAge(): Int {
         return age
+    }
+
+    fun hasEffect(name: String): Boolean {
+        return effects.exists(name) || criticalEffects.exists(name)
     }
 
 }

@@ -17,6 +17,7 @@ class StartCastSpell : EventListener<StartCastSpellEvent>() {
                 GameState.battle?.addAction(event.source, event)
             }
             event.target.target.soul.hasStat(HEALTH) -> GameState.battle?.addAction(event.source, event)
+            else -> EventManager.postEvent(event.getActionEvent())
         }
     }
 

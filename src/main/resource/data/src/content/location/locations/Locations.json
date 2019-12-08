@@ -39,6 +39,11 @@
   {
     "name": "Farmer's Hut Interior",
     "description": "The thatched roof hangs close to the ground; the single room is empty but for a small cooking range.",
+    "properties": {
+      "tags": [
+        "Interior"
+      ]
+    },
     "items": [
       {
         "name": "Tinder Box",
@@ -138,6 +143,11 @@
   },
   {
     "name": "Windmill",
+    "properties": {
+      "tags": [
+        "Interior"
+      ]
+    },
     "activators": [
       "Grain Bin",
       "Stairs"
@@ -148,12 +158,22 @@
   },
   {
     "name": "Windmill - Second Floor",
+    "properties": {
+      "tags": [
+        "Interior"
+      ]
+    },
     "activators": [
       "Stairs"
     ]
   },
   {
     "name": "Windmill - Third Floor",
+    "properties": {
+      "tags": [
+        "Interior"
+      ]
+    },
     "activators": [
       "Grain Chute"
     ]

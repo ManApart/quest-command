@@ -87,7 +87,7 @@
     "name": "On Fire",
     "description": "Flames linger and lick, curling into the air.",
     "statKind": "PROP_VAL",
-    "statTarget": "BurnHealth",
+    "statTarget": "fireHealth",
     "statEffect": "DRAIN",
     "damageType": "FIRE"
   },

@@ -48,7 +48,7 @@ class Scope(private val locationNode: LocationNode) {
 
     fun getTargets(name: String, source: Target = GameState.player): NameSearchableList<Target> {
         return when {
-            targets.existsExact(name) -> NameSearchableList(targets.get(name))
+            targets.existsExact(name) && targets.countExact(name) == 1 -> NameSearchableList(targets.get(name))
             targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> NameSearchableList(targets.get(name))
             else -> targets.getAll(name).sortedBy { source.position.getDistance(it.position) }
         }

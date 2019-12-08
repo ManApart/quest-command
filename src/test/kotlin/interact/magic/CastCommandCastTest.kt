@@ -2,6 +2,7 @@ package interact.magic
 
 import combat.battle.position.TargetAim
 import core.gameState.Target
+import core.gameState.body.BodyPart
 import core.utility.reflection.MockReflections
 import core.utility.reflection.Reflections
 import interact.scope.ScopeManager
@@ -104,6 +105,17 @@ class CastCommandCastTest {
 
     private fun targetsContainByName(targetAims: List<TargetAim>, target: Target) : Boolean {
         return targetAims.map { it.target }.firstOrNull { target.name == it.name } != null
+    }
+
+    @Test
+    fun limitParts() {
+        val part = BodyPart("leg")
+        val target = TargetAim(Target("Bob"), listOf(part))
+
+        val results = getTargetedPartsOrAll(target, 3)
+
+        assertEquals(1, results.size)
+        assertEquals(part, results.first())
     }
 
 

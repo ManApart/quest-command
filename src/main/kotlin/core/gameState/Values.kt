@@ -4,6 +4,7 @@ import core.utility.apply
 import core.utility.hasAllOf
 import core.utility.matches
 
+//TODO - give property keys optional max/min values (like burnhealth should not go below 0)
 class Values(properties: Map<String, String> = mapOf()) {
     constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
 

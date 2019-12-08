@@ -588,4 +588,8 @@ ignore encumberance?
 cast command - pass args from all groups other than targets (take args after targets if they are there)
 
 
-pickup tin should prefer pie tin over tinder box
+jump to vector
+- can't jump beyond strength (encumberance, height, distance)
+
+dismount - give location of parent
+jump - give location of parent

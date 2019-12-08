@@ -1,5 +1,6 @@
 package interact.magic.spellCommands.water
 
+import combat.battle.Distances
 import combat.battle.position.TargetAim
 import core.commands.Args
 import core.gameState.Target
@@ -46,7 +47,7 @@ class Jet : SpellCommand() {
 
                 val cost = damageAmount * parts.size
                 val condition = Condition("Water Blasted", Element.WATER, cost, effects)
-                val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement)
+                val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
                 EventManager.postEvent(StartCastSpellEvent(source, target, spell))
             }
         }

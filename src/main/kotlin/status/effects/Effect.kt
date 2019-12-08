@@ -5,13 +5,15 @@ import core.gameState.Soul
 import core.gameState.body.BodyPart
 import core.gameState.stat.LeveledStat
 import core.gameState.stat.StatKind
+import core.utility.Named
 import status.propValChanged.PropertyStatChangeEvent
 import status.statChanged.StatChangeEvent
 import system.EventManager
 import kotlin.math.min
 
-class Effect(val base: EffectBase, val amount: Int, val duration: Int, private val bodyPartTargets: List<BodyPart> = listOf()) {
+class Effect(val base: EffectBase, val amount: Int, val duration: Int, private val bodyPartTargets: List<BodyPart> = listOf()) : Named {
     private var originalValue = 0
+    override val name = base.name
 
     override fun toString(): String {
         return "${base.name} ${base.statEffect} $amount (${base.amountType}) ${base.statTarget} (${base.statKind}) for $duration."

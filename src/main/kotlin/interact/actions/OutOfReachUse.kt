@@ -16,6 +16,10 @@ class OutOfReachUse : EventListener<UseEvent>() {
         return !event.used.isWithinRangeOf(event.source) || !event.target.isWithinRangeOf(event.source)
     }
 
+    override fun preventOthersFromConsuming(): Boolean {
+        return true
+    }
+
     override fun execute(event: UseEvent) {
         if (!event.used.isWithinRangeOf(event.source)) {
             display(getSubject(event.source) + " " + getIsAre(event.source) + " too far away to use ${event.used}.")

@@ -58,6 +58,10 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         return conditions.exists(name)
     }
 
+    fun hasEffect(name: String): Boolean {
+        return conditions.any { it.hasEffect(name) }
+    }
+
     fun getConditions(): List<Condition> {
         return conditions.toList()
     }

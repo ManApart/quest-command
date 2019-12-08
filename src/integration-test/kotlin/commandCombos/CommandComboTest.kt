@@ -5,6 +5,7 @@ import core.gameState.GameState
 import core.gameState.quests.QuestManager
 import core.gameState.stat.HEALTH
 import core.history.ChatHistory
+import interact.scope.ScopeManager
 import org.junit.Before
 import org.junit.Test
 import system.EventManager
@@ -68,10 +69,16 @@ class CommandComboTest {
     }
 
     @Test
-    fun chopTree() {
-        val input = "n && pickup hatchet && equip hatchet && y && ch tree"
+    fun makeFire() {
+        val input = "n && pickup hatchet && equip hatchet && y && ch tree && ch tree"
         CommandParser.parseCommand(input)
-        assertEquals("Dulled Hatchet decreases Apple Tree's chopHealth from 5 to 1.", ChatHistory.getLastOutput())
+        assertEquals(0, ScopeManager.getScope().getActivators("tree").size)
+        assertEquals(1, ScopeManager.getScope().getActivators("logs").size)
+        CommandParser.parseCommand("cast flame 1 on logs")
+        assertTrue(ScopeManager.getScope().getActivators("logs").first().soul.hasEffect("On Fire"))
+        CommandParser.parseCommand("eat apple && eat apple && cast flame 1 on logs && rest 3")
+        assertEquals(0, ScopeManager.getScope().getActivators("logs").size)
+        assertEquals(1, ScopeManager.getScope().getItems("ash").size)
     }
 
     @Test

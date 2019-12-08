@@ -1,5 +1,6 @@
 package interact.magic.spellCommands.air
 
+import combat.battle.Distances
 import combat.battle.position.TargetAim
 import combat.battle.position.toCommandString
 import core.commands.Args
@@ -66,7 +67,7 @@ class Adrenaline : SpellCommand() {
                     )
 
                     val condition = Condition("On Adrenaline", Element.AIR, amount, effects)
-                    val spell = Spell("Adrenaline", condition, amount, AIR_MAGIC, levelRequirement)
+                    val spell = Spell("Adrenaline", condition, amount, AIR_MAGIC, levelRequirement, range = Distances.DAGGER_RANGE)
                     EventManager.postEvent(StartCastSpellEvent(source, target, spell))
                 }
             }

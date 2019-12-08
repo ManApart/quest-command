@@ -1,5 +1,6 @@
 package interact.magic.spellCommands.water
 
+import combat.battle.Distances
 import combat.battle.position.TargetAim
 import combat.battle.position.toCommandString
 import core.commands.Args
@@ -63,7 +64,7 @@ class Heal : SpellCommand() {
                     )
 
                     val condition = Condition("Healing", Element.WATER, amount, effects)
-                    val spell = Spell("Heal", condition, amount, WATER_MAGIC, levelRequirement)
+                    val spell = Spell("Heal", condition, amount, WATER_MAGIC, levelRequirement, range = Distances.SWORD_RANGE)
                     EventManager.postEvent(StartCastSpellEvent(source, target, spell))
                 }
             }

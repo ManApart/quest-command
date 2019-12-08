@@ -1,5 +1,6 @@
 package core.gameState.location
 
+import core.gameState.Properties
 import core.gameState.body.BodyPart
 import core.utility.Named
 
@@ -11,7 +12,8 @@ class Location(
         val activators: List<LocationTarget> = listOf(),
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
-        val bodyPart: BodyPart? = null
+        val bodyPart: BodyPart? = null,
+        val properties: Properties = Properties()
 ) : Named {
     constructor(base: Location) : this(
             base.name,
@@ -23,8 +25,8 @@ class Location(
                 BodyPart(base.bodyPart)
             } else {
                 null
-            }
-
+            },
+            Properties(base.properties)
     )
 
     override fun toString(): String {

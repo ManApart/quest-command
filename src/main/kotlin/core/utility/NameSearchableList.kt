@@ -113,6 +113,22 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return getAll(name).size
     }
 
+    fun countExact(name: String): Int {
+        if (name.isBlank()) {
+            return 0
+        }
+        val proxyCount = if (containsProxy(name.toLowerCase())) {
+            1
+        } else {
+            0
+        }
+
+        val cleaned = name.toLowerCase().trim()
+        return proxyCount + this.filter { item ->
+            cleaned == item.name
+        }.size
+    }
+
     fun countByWholeWord(name: String): Int {
         if (name.isNotBlank()) {
             val cleaned = name.toLowerCase().split(" ")

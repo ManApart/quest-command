@@ -120,12 +120,19 @@ class CastCommand : Command() {
     }
 }
 
-fun getTargetedPartsOrAll(targetAim: TargetAim): List<BodyPart> {
-    return if (targetAim.bodyPartTargets.isNotEmpty()) {
+fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<BodyPart> {
+    val parts =  if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
         targetAim.target.body.getParts()
     }
+
+    return if (maxParts > 0){
+        parts.take(maxParts)
+    } else {
+        parts
+    }
+
 }
 
 fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<BodyPart> {

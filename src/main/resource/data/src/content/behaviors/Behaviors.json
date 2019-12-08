@@ -33,7 +33,7 @@
       {
         "className": "RemoveScopeEvent",
         "params": [
-          "$treeName"
+          "$this"
         ]
       },
       {

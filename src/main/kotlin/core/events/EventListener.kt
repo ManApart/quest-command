@@ -25,4 +25,11 @@ abstract class EventListener<T : Event> {
         return 0
     }
 
+    /**
+     * Prevent any event listeners that execute after this listener from executing.
+     */
+    open fun preventOthersFromConsuming() : Boolean {
+        return false
+    }
+
 }

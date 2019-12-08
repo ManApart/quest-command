@@ -24,7 +24,7 @@ class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
             display("${event.sourceOfChange} $change $subject ${event.statName} from $beforeVal to $current.")
         }
 
-        if (current == 0){
+        if (beforeVal > 0 && current <= 0) {
             EventManager.postEvent(PropertyStatMinnedEvent(event.target, event.statName))
         }
     }
