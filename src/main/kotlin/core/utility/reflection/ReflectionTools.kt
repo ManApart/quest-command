@@ -3,6 +3,7 @@ package core.utility.reflection
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import java.io.File
+import java.lang.reflect.Modifier
 
 
 object ReflectionTools {
@@ -56,7 +57,7 @@ object ReflectionTools {
         val cleanedPackageName = regex.replace(classPackageName, "")
 
         val kClass = Class.forName(cleanedPackageName) as Class<*>
-        val allClasses = reflections.getSubTypesOf(kClass)
+        val allClasses = reflections.getSubTypesOf(kClass).filter {!Modifier.isAbstract(it.modifiers) }
         println("Saving ${allClasses.size} classes for $classPackageName")
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
         val variableName = cleanedPackageName.substringAfterLast(".").decapitalize() + "s"

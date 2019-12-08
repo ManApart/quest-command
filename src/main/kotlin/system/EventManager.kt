@@ -90,12 +90,7 @@ object EventManager {
                     listeners.add(it)
                 }
         listeners.sortBy { it.getPriorityRank() }
-        listeners.forEach {
-            it.execute()
-            if (it.preventOthersFromConsuming()) {
-                return
-            }
-        }
+        listeners.forEach { it.execute() }
     }
 
     private fun getListenedForClass(listener: EventListener<*>): Class<*> {

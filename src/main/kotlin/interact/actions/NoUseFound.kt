@@ -1,14 +1,14 @@
 package interact.actions
 
 import core.events.Event
-import core.events.EventListener
 import core.gameState.GameState
 import core.history.display
 import core.utility.StringFormatter
 import interact.UseEvent
+import interact.UseListener
 import system.EventManager
 
-class NoUseFound : EventListener<UseEvent>() {
+class NoUseFound : UseListener<UseEvent>() {
     private var checkedEvent: Event? = null
 
     override fun shouldExecute(event: UseEvent): Boolean {
@@ -19,7 +19,7 @@ class NoUseFound : EventListener<UseEvent>() {
         return false
     }
 
-    override fun execute(event: UseEvent) {
+    override fun executeUseEvent(event: UseEvent) {
         // TODO - use event source, don't hardcode player
         if (GameState.player.canInteract) {
             if (!event.target.isWithinRangeOf(event.source)) {

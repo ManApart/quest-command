@@ -1,6 +1,7 @@
 package core.events
 
 abstract class EventListener<T : Event> {
+    //Is this event needed?
     var event: T? = null
     fun execute() {
         if (event != null) {
@@ -23,13 +24,6 @@ abstract class EventListener<T : Event> {
      */
     open fun getPriorityRank(): Int {
         return 0
-    }
-
-    /**
-     * Prevent any event listeners that execute after this listener from executing.
-     */
-    open fun preventOthersFromConsuming() : Boolean {
-        return false
     }
 
 }

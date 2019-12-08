@@ -1,13 +1,13 @@
 package interact.actions
 
-import core.events.EventListener
 import core.history.display
 import crafting.CraftRecipeEvent
 import crafting.RecipeManager
 import interact.UseEvent
+import interact.UseListener
 import system.EventManager
 
-class UseItemOnIngredientRecipe : EventListener<UseEvent>() {
+class UseItemOnIngredientRecipe : UseListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return if (event.used.properties.isItem() && event.target.properties.isItem()) {
@@ -20,7 +20,7 @@ class UseItemOnIngredientRecipe : EventListener<UseEvent>() {
         }
     }
 
-    override fun execute(event: UseEvent) {
+    override fun executeUseEvent(event: UseEvent) {
         val targetRecipes = RecipeManager.findCraftableRecipes(listOf(event.target), event.used, event.source.soul)
         val sourceRecipes = RecipeManager.findCraftableRecipes(listOf(event.used), event.target, event.source.soul)
         val itemOnlyRecipes = RecipeManager.findCraftableRecipes(listOf(event.used, event.target), null, event.source.soul)
