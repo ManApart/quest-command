@@ -1,5 +1,6 @@
 package interact.magic.spells
 
+import combat.battle.Distances
 import core.gameState.stat.FOCUS
 import interact.magic.CastSpellEvent
 import status.effects.AddConditionEvent
@@ -13,7 +14,7 @@ open class Spell(
         val cost: Int,
         val statRequired: String,
         val levelRequired: Int,
-        val range: Int = 1,
+        val range: Int = Distances.BOW_RANGE,
         val castTime: Int = cost,
         val isHostile: Boolean = true
 ) {

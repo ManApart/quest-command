@@ -7,7 +7,6 @@ import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
 import core.gameState.Target
-import core.gameState.stat.AIR_MAGIC
 import core.gameState.stat.EARTH_MAGIC
 import interact.magic.StartCastSpellEvent
 import interact.magic.getTargetedPartsOrRootPart
@@ -26,7 +25,7 @@ class Rooted : SpellCommand() {
     }
 
     override fun getManual(): String {
-        return "\n\tCast Rooted <amount> for <duration> on *<targets> - Encase the target in earth to increase their defense. Increases defense by amount * percent encumbered. Fully encumbers target."
+        return "\n\tCast Rooted <amount> for <duration> on <target> - Encase the target in earth to increase their defense. Increases defense by amount * percent encumbered. Fully encumbers target."
     }
 
     override fun getCategory(): List<String> {
@@ -51,27 +50,24 @@ class Rooted : SpellCommand() {
         } else {
             val power = responseHelper.getIntValue("power")
             val duration = responseHelper.getIntValue("duration")
-            val hitCount = targets.count()
-            val perTargetCost = power / 10
-            val totalCost = perTargetCost * hitCount
+            val totalCost = power / 10
             val levelRequirement = power / 2
 
-            executeWithWarns(source, AIR_MAGIC, levelRequirement, totalCost, targets) {
-                targets.forEach { target ->
-                    val amount = (power * target.target.getEncumbrancePhysicalOnly()).toInt()
-                    val parts = getTargetedPartsOrRootPart(target)
-                    val effects = listOf(
-                            EffectManager.getEffect("Encased Agility", amount, duration, parts),
-                            EffectManager.getEffect("Encased Encumbrance", 100, duration, parts),
-                            EffectManager.getEffect("Encased Slash Defense", amount, duration, parts),
-                            EffectManager.getEffect("Encased Chop Defense", amount, duration, parts),
-                            EffectManager.getEffect("Dirty", 0, duration + 1, parts)
-                    )
+            executeWithWarns(source, EARTH_MAGIC, levelRequirement, totalCost, targets, maxTargetCount = 1) {
+                val target = targets.first()
+                val amount = (power * target.target.getEncumbrancePhysicalOnly()).toInt()
+                val parts = getTargetedPartsOrRootPart(target)
+                val effects = listOf(
+                        EffectManager.getEffect("Encased Agility", amount, duration, parts),
+                        EffectManager.getEffect("Encased Encumbrance", 100, duration, parts),
+                        EffectManager.getEffect("Encased Slash Defense", amount, duration, parts),
+                        EffectManager.getEffect("Encased Chop Defense", amount, duration, parts),
+                        EffectManager.getEffect("Dirty", 0, duration + 1, parts)
+                )
 
-                    val condition = Condition("Rooted", Element.EARTH, amount, effects)
-                    val spell = Spell("Rooted", condition, amount, EARTH_MAGIC, levelRequirement)
-                    EventManager.postEvent(StartCastSpellEvent(source, target, spell))
-                }
+                val condition = Condition("Rooted", Element.EARTH, amount, effects)
+                val spell = Spell("Rooted", condition, amount, EARTH_MAGIC, levelRequirement)
+                EventManager.postEvent(StartCastSpellEvent(source, target, spell))
             }
         }
     }

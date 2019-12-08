@@ -193,7 +193,9 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     private fun removeExcludedWords(list: List<String>): List<String> {
-        return list.subtract(excludedWords).subtract(foundFlags).toList()
+        return list.filter {
+            !excludedWords.contains(it) && !foundFlags.contains(it)
+        }
     }
 
     private fun indexOfFirstDelimiter(args: List<String>): Int {

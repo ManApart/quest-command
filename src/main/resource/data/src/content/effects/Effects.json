@@ -1,5 +1,33 @@
 [
   {
+    "name": "Chopped",
+    "description": "Chopped by a blow.",
+    "statTarget": "Health",
+    "statEffect": "DRAIN",
+    "damageType": "CHOP"
+  },
+  {
+    "name": "Crushed",
+    "description": "Crushed by a blow.",
+    "statTarget": "Health",
+    "statEffect": "DRAIN",
+    "damageType": "CRUSH"
+  },
+  {
+    "name": "Slashed",
+    "description": "Slashed by a blow.",
+    "statTarget": "Health",
+    "statEffect": "DRAIN",
+    "damageType": "SLASH"
+  },
+  {
+    "name": "Stabbed",
+    "description": "Stabbed by a blow.",
+    "statTarget": "Health",
+    "statEffect": "DRAIN",
+    "damageType": "STAB"
+  },
+  {
     "name": "Air Blasted",
     "description": "Blown with a heavy blast of air.",
     "damageType": "AIR"

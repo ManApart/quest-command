@@ -192,5 +192,22 @@ class ArgsTest {
         assertEquals(3, baseNumbers[2])
     }
 
+    @Test
+    fun repeatedWordIsPreserved() {
+        val input = "rock 1 size 1 on rat".split(" ")
+        val args = Args(input, delimiters = listOf("on"))
+
+        assertEquals("rock 1 size 1", args.getBaseString())
+        assertEquals("rat", args.getString("on"))
+
+    }
+
+    @Test
+    fun excludedWordIsRemoved() {
+        val input = "rock 1 size of rat".split(" ")
+        val args = Args(input, excludedWords = listOf("SizE"))
+
+        assertEquals("rock 1 of rat", args.getBaseString())
+    }
 
 }
