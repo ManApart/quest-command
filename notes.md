@@ -1,6 +1,6 @@
 # Quest Command
 
-An open world rpg with intense levels of use, experienced through the command prompt
+An open world rpg with intense levels of interaction, experienced through the command prompt
 
 This doc should be in constant flux; it's a collection of ideas and notes for dreamed of or in progress features. As features are implemented, any necessary feature explanation should move to [the design doc](./design_doc.md) and any user facing explanation should move to the [main readme](readme.md).
 
@@ -32,7 +32,7 @@ Player Controlled AI
 - Reset vs Reload. Reset resets game state, reload reloads json?
 - Flow of param overrides (left overrides right)
   - Item Params > inheritable params > Behavior Params/Properties > Conditions/events
-- Break traveling.scope manager and item manager listeners into own classes
+- Break scope manager and item manager listeners into own classes
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
@@ -41,7 +41,7 @@ Player Controlled AI
 - Break triggered event class out into multiple classes
 - delete existing generated files on buildData so renamed files don't leave artifacts
 - It'd be cool to eventually make an android app fork that allows tap menus to pic commands: Starts with categories, then uses the ResponseRequest to generate suggestions etc
-- double check body parts are properly instanced through traveling.scope manager
+- double check body parts are properly instanced through scope manager
 - For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
 Json
@@ -250,7 +250,7 @@ Ideas
 
 ### Interaction
 
-- Should check if source can use, not be hardcoded to player
+- Should check if source can interact, not be hardcoded to player
   - Interact
   - eat Food
   - no use found
@@ -316,7 +316,7 @@ Bash completion
 - Attached to location
 - Atmospheres that add tags and effects to everything in that location.
 - Shallow water, deep water, under water, have effects, based on swimming, etc. Swimming is skill based on agility
-- Atmospheric effects like fog and water, cast words can use with them
+- Atmospheric effects like fog and water, cast words can interact with them
 
 Temperature
 - Range from -10 to 10 on average, though temp could exceed these extremes
@@ -354,7 +354,7 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 
 ### Magic
 
-The point of words of power / magic is to increase world immersion (elements should use and be used to solve situations), and to help the player feel specialized.
+The point of words of power / magic is to increase world immersion (elements should interact and be used to solve situations), and to help the player feel specialized.
 
 Skill is based on type (water, air, earth, fire)
 Words of power learned indiviually / unlocked from quests and artifacts. Some words of power require a minimum level to use.
@@ -525,7 +525,7 @@ Test speak command against a rock that glows when spoken to
 ### Travel
 
 - Make starting a journey event based / handle replacing an existing event
-- Maybe journey mode for traveling and climb, progress events that can succeed, fail, or spawn other events
+- Maybe journey mode for travel and climb, progress events that can succeed, fail, or spawn other events
 
 #### Climbing
 - You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall (jump down locations added in link)
@@ -552,7 +552,7 @@ Weight of armor gives more damage
 
 
 #### Command ideas
-- Search - skill based, finds traveling.scope that's hidden
+- Search - skill based, finds scope that's hidden
 - Look (examine) object for its description
 - Sheath / unsheath command?
 - Hold Command?
@@ -568,7 +568,7 @@ Attack command groups 0 vs 1 - make tests
 
 
 add stat categories?
-add option to traveling silently (just 'you traveling to tree')
+add option to travel silently (just 'you travel to tree')
 
 
 move (position) within a location command
