@@ -2,16 +2,16 @@ package traveling.move
 
 import combat.battle.Distances.LOCATION_SIZE
 import core.events.EventListener
+import core.history.display
+import core.utility.StringFormatter.getIsAre
+import core.utility.StringFormatter.getSubject
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.LocationNode
 import traveling.location.LocationPoint
-import core.history.display
-import core.utility.StringFormatter.getIsAre
-import core.utility.StringFormatter.getSubject
 import traveling.scope.ScopeManager
-import core.events.EventManager
-import traveling.arrive.ArriveEvent
+import traveling.travel.getDistanceToNeighbor
+import traveling.travel.postArriveEvent
 
 class Move : EventListener<MoveEvent>() {
 
@@ -23,7 +23,7 @@ class Move : EventListener<MoveEvent>() {
         val movedToNeighbor = getMovedToNeighbor(event.creature.location, event.destination)
         when {
             event.destination.z > 0 -> display("${getSubject(event.creature)} ${getIsAre(event.creature)} unable to move into the air.")
-            movedToNeighbor != null -> EventManager.postEvent(ArriveEvent(destination = movedToNeighbor, method = ""))
+            movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, getDistanceToNeighbor(event.creature.location, movedToNeighbor.location), event.silent)
             NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> display("You cannot move that far in that direction.")
             else -> {
                 displayMovement(event)
@@ -45,12 +45,13 @@ class Move : EventListener<MoveEvent>() {
         }
     }
 
-
     private fun getMovedToNeighbor(locationNode: LocationNode, destination: Vector): LocationPoint? {
         return locationNode.getNeighborConnections()
                 .filter { destination.isFurtherAlongSameDirectionThan(it.vector) }
                 .minBy { destination.getDistance(it.vector) }
                 ?.destination
     }
+
+
 
 }

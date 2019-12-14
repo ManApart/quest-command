@@ -4,9 +4,11 @@ import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
+import traveling.location.LocationNode
 import traveling.location.LocationPoint
 
 class TravelStart : EventListener<TravelStartEvent>() {
@@ -21,10 +23,18 @@ class TravelStart : EventListener<TravelStartEvent>() {
                 if (!event.quiet) {
                     display("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 }
-                EventManager.postEvent(StatChangeEvent(GameState.player, "The journey", STAMINA, -1, silent = event.quiet))
-                EventManager.postEvent(ArriveEvent(destination = LocationPoint(event.destination), method = "travel", quiet = event.quiet))
+                val distance = getDistanceToNeighbor(event.currentLocation, event.destination)
+                postArriveEvent(event.creature, LocationPoint(event.destination), distance, event.quiet)
             }
         }
     }
+}
 
+fun getDistanceToNeighbor(source: LocationNode, destination: LocationNode): Int {
+    return source.getConnection(destination)?.vector?.getDistance() ?: 1
+}
+
+fun postArriveEvent(source: Target, destination: LocationPoint, distance: Int, quiet: Boolean) {
+    EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -distance / 10, silent = quiet))
+    EventManager.postEvent(ArriveEvent(destination = destination, method = "travel", quiet = quiet))
 }
