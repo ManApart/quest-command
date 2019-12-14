@@ -6,14 +6,14 @@ import combat.battle.Distances
 import combat.battle.position.TargetAim
 import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.stat.BARE_HANDED
+import core.GameState
+import core.target.Target
+import core.body.BodyPart
+import status.stat.BARE_HANDED
 import core.history.display
 import core.utility.StringFormatter
-import interact.UseEvent
-import system.EventManager
+import use.UseEvent
+import core.events.EventManager
 
 class Attack : EventListener<AttackEvent>() {
 

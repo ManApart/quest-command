@@ -5,9 +5,9 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.GameState
+import core.GameState
 import core.history.display
-import system.EventManager
+import core.events.EventManager
 
 class ApproachCommand : Command() {
     override fun getAliases(): Array<String> {

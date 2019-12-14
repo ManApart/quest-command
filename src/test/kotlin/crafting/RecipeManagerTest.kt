@@ -1,12 +1,12 @@
 package crafting
 
-import core.gameState.Player
-import core.gameState.Properties
-import core.gameState.Tags
-import core.gameState.Target
+import core.target.Player
+import core.properties.Properties
+import core.properties.Tags
+import core.target.Target
 import org.junit.Assert
 import org.junit.Test
-import system.DependencyInjector
+import core.DependencyInjector
 
 class RecipeManagerTest {
 

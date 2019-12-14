@@ -1,8 +1,8 @@
 package status.effects
 
 import core.events.EventListener
-import interact.scope.ScopeManager
-import system.gameTick.GameTickEvent
+import traveling.scope.ScopeManager
+import time.gameTick.GameTickEvent
 
 class ApplyEffects : EventListener<GameTickEvent>() {
     override fun execute(event: GameTickEvent) {

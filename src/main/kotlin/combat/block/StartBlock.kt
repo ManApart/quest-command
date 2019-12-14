@@ -1,7 +1,7 @@
 package combat.block
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 
 class StartBlock : EventListener<StartBlockEvent>() {
     override fun execute(event: StartBlockEvent) {

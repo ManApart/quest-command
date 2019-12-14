@@ -3,7 +3,7 @@ package system.help
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import system.EventManager
+import core.events.EventManager
 
 class HelpCommand : Command() {
 

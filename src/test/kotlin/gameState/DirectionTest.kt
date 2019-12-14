@@ -1,7 +1,7 @@
 package gameState
 
-import core.gameState.Direction
 import org.junit.Test
+import traveling.direction.Direction
 import kotlin.test.assertEquals
 
 class DirectionTest {

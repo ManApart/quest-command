@@ -1,7 +1,7 @@
 package combat.approach
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 
 class StartMove : EventListener<StartMoveEvent>() {
     override fun execute(event: StartMoveEvent) {

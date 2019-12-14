@@ -1,9 +1,9 @@
 package explore.map
 
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.location.Route
-import core.gameState.location.RouteNeighborFinder
+import core.GameState
+import traveling.location.Route
+import traveling.location.RouteNeighborFinder
 import core.history.StringTable
 import core.history.display
 

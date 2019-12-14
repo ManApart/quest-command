@@ -1,8 +1,8 @@
 package system
 
-import core.gameState.body.BodyPart
-import core.gameState.location.LocationNode
-import system.body.BodyParser
+import core.body.BodyPart
+import traveling.location.LocationNode
+import core.body.BodyParser
 
 class BodyFakeParser(
         private val protoBodies: List<LocationNode> = listOf(LocationNode(parent = "Human", name = "Body Part"), LocationNode(parent = "None", name = "Part")),

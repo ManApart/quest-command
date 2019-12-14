@@ -1,6 +1,6 @@
 package core.utility
 
-import core.gameState.GameState
+import core.GameState
 import system.debug.DebugType
 
 object RandomManager {

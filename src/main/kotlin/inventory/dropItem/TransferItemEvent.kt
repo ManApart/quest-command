@@ -1,7 +1,7 @@
 package inventory.dropItem
 
 import core.events.Event
-import core.gameState.Target
+import core.target.Target
 
 class TransferItemEvent(val mover: Target, val item: Target, val source: Target? = null, val destination: Target? = null, val silent: Boolean = false) : Event {
     init {

@@ -2,9 +2,9 @@ package combat.block
 
 import combat.DamageType
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.body.BodyPart
+import core.GameState
+import core.target.Target
+import core.body.BodyPart
 
 class Block : EventListener<BlockEvent>() {
 

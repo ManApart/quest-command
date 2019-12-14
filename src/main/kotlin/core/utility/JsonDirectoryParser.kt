@@ -1,6 +1,6 @@
 package core.utility
 
-import system.DependencyInjector
+import core.DependencyInjector
 
 object JsonDirectoryParser {
 

@@ -1,9 +1,9 @@
 package status.statChanged
 
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.stat.HEALTH
-import core.gameState.stat.STAMINA
+import core.GameState
+import status.stat.HEALTH
+import status.stat.STAMINA
 import core.history.display
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {

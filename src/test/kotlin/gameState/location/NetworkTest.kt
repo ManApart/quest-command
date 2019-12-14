@@ -1,12 +1,12 @@
 package gameState.location
 
-import core.gameState.Direction
-import core.gameState.Vector
-import core.gameState.location.Connection
-import core.gameState.location.LocationNode
-import core.gameState.location.LocationPoint
-import core.gameState.location.Network
+import traveling.direction.Direction
+import traveling.direction.Vector
 import org.junit.Test
+import traveling.location.Connection
+import traveling.location.LocationNode
+import traveling.location.LocationPoint
+import traveling.location.Network
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -40,10 +40,10 @@ class NetworkTest {
         val diagonalUp = LocationNode("DiagUp")
         val top = LocationNode("Top")
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(up), Vector(z=1))
-        val buttomDiagUp =Connection(LocationPoint(bottom), LocationPoint(diagonalUp), Vector(x=1, z=1))
-        val upTop = Connection(LocationPoint(up), LocationPoint(top), Vector(z=1))
-        val diagUpTop = Connection(LocationPoint(diagonalUp), LocationPoint(top), Vector(z=1))
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(up), Vector(z = 1))
+        val buttomDiagUp = Connection(LocationPoint(bottom), LocationPoint(diagonalUp), Vector(x = 1, z = 1))
+        val upTop = Connection(LocationPoint(up), LocationPoint(top), Vector(z = 1))
+        val diagUpTop = Connection(LocationPoint(diagonalUp), LocationPoint(top), Vector(z = 1))
 
         bottom.addConnection(bottomUp)
         up.addConnection(bottomUp.invert())
@@ -69,7 +69,7 @@ class NetworkTest {
         val bottom = LocationNode("Bottom")
         val top = LocationNode("Top", isRoot = true)
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z=1))
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z = 1))
 
         bottom.addConnection(bottomUp)
         top.addConnection(bottomUp.invert())
@@ -83,7 +83,7 @@ class NetworkTest {
         val bottom = LocationNode("Bottom")
         val top = LocationNode("Top")
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z=1))
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z = 1))
 
         bottom.addConnection(bottomUp)
         top.addConnection(bottomUp.invert())
@@ -97,7 +97,7 @@ class NetworkTest {
         val bottom = LocationNode("Bottom", isRoot = true)
         val top = LocationNode("Top", isRoot = true)
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z=1))
+        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z = 1))
 
         bottom.addConnection(bottomUp)
         top.addConnection(bottomUp.invert())

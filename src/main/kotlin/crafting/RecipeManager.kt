@@ -1,8 +1,8 @@
 package crafting
 
-import core.gameState.Soul
-import core.gameState.Target
-import system.DependencyInjector
+import status.Soul
+import core.target.Target
+import core.DependencyInjector
 
 object RecipeManager {
     private var parser = DependencyInjector.getImplementation(RecipeParser::class.java)

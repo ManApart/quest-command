@@ -1,15 +1,15 @@
 package inventory.dropItem
 
 import core.events.EventListener
-import core.gameState.Inventory
-import core.gameState.Target
-import core.gameState.location.NOWHERE_NODE
+import inventory.Inventory
+import core.target.Target
+import traveling.location.NOWHERE_NODE
 import core.history.display
 import core.utility.StringFormatter
-import interact.scope.ScopeManager
+import traveling.scope.ScopeManager
 import inventory.equipItem.EquipItemEvent
 import inventory.pickupItem.ItemPickedUpEvent
-import system.EventManager
+import core.events.EventManager
 
 //TODO - can this be cleaned up to not care about the destination type?
 class TransferItem : EventListener<TransferItemEvent>() {

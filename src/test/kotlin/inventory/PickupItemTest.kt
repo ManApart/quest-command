@@ -1,18 +1,18 @@
 package inventory
 
-import core.gameState.Properties
-import core.gameState.Tags
-import core.gameState.Target
-import core.gameState.Values
-import interact.scope.ScopeManager
+import core.properties.Properties
+import core.properties.Tags
+import core.target.Target
+import core.properties.Values
+import traveling.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
 import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser
-import system.DependencyInjector
-import system.body.BodyManager
-import system.body.BodyParser
+import core.DependencyInjector
+import core.body.BodyManager
+import core.body.BodyParser
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue

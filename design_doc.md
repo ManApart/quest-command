@@ -264,7 +264,7 @@ See the `GameStateQuery` class to see a list of queryable values and their param
 
 #### Networks
 
-A network is an isolated collection of locations. Networks provide routes and allow you to travel from one place to another. Bodies also have a network that describes the spacial relationships of body parts.
+A network is an isolated collection of locations. Networks provide routes and allow you to traveling from one place to another. Bodies also have a network that describes the spacial relationships of body parts.
 
 Network names must be globally unique.
 

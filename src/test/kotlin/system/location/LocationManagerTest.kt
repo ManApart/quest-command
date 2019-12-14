@@ -1,12 +1,14 @@
 package system.location
 
-import core.gameState.location.LocationNode
-import core.gameState.location.ProtoConnection
+import traveling.location.LocationNode
+import traveling.location.ProtoConnection
 import core.utility.NameSearchableList
 import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Test
-import system.DependencyInjector
+import core.DependencyInjector
+import traveling.location.LocationManager
+import traveling.location.LocationParser
 
 class LocationManagerTest {
 

@@ -1,8 +1,8 @@
 package combat.approach
 
 import core.events.Event
-import core.gameState.Target
-import core.gameState.Vector
+import core.target.Target
+import traveling.direction.Vector
 
 
 class MoveEvent(val source: Target, val target: Vector = Vector(), val useStamina: Boolean = true) : Event {

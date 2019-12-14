@@ -2,9 +2,9 @@ package core.history
 
 import core.events.Event
 import core.events.EventListener
-import core.gameState.AUTO_SAVE
-import core.gameState.GameState
-import system.GameManager
+import core.AUTO_SAVE
+import core.GameState
+import core.GameManager
 
 class SessionListener : EventListener<Event>() {
     override fun execute(event: Event) {

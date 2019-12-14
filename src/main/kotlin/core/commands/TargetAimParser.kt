@@ -1,12 +1,12 @@
 package core.commands
 
 import combat.battle.position.TargetAim
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.body.BodyPart
+import core.GameState
+import core.target.Target
+import core.body.BodyPart
 import core.history.display
 import core.utility.NameSearchableList
-import interact.scope.ScopeManager
+import traveling.scope.ScopeManager
 
 //TODO - allow for response requests?
 fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameState.player): List<TargetAim> {

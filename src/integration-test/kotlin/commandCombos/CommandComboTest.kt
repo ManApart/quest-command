@@ -1,15 +1,15 @@
 package commandCombos
 
+import core.GameManager
+import core.GameState
 import core.commands.CommandParser
-import core.gameState.GameState
-import core.gameState.quests.QuestManager
-import core.gameState.stat.HEALTH
+import core.events.EventManager
 import core.history.ChatHistory
-import interact.scope.ScopeManager
 import org.junit.Before
 import org.junit.Test
-import system.EventManager
-import system.GameManager
+import quests.QuestManager
+import status.stat.HEALTH
+import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull

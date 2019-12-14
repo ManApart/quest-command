@@ -1,6 +1,6 @@
 package core.utility
 
-import core.gameState.location.LocationTarget
+import traveling.location.LocationTarget
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

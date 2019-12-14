@@ -3,7 +3,7 @@ package inventory.equipItem
 import core.events.EventListener
 import core.history.display
 import core.utility.StringFormatter
-import system.EventManager
+import core.events.EventManager
 
 class EquipItem : EventListener<EquipItemEvent>() {
     override fun execute(event: EquipItemEvent) {

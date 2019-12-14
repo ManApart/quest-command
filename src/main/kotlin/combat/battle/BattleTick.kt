@@ -1,9 +1,9 @@
 package combat.battle
 
 import core.events.EventListener
-import core.gameState.GameState
-import system.EventManager
-import system.gameTick.GameTickEvent
+import core.GameState
+import core.events.EventManager
+import time.gameTick.GameTickEvent
 
 class BattleTick : EventListener<GameTickEvent>() {
 

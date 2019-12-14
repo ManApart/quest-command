@@ -1,7 +1,7 @@
 package gameState.location
 
-import core.gameState.Direction
-import core.gameState.location.*
+import traveling.direction.Direction
+import traveling.location.*
 
 class LocationHelper {
 

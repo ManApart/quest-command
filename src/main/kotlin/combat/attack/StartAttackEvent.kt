@@ -4,9 +4,9 @@ import combat.DamageType
 import combat.battle.BattleAction
 import combat.battle.position.TargetAim
 import core.events.Event
-import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.stat.AGILITY
+import core.target.Target
+import core.body.BodyPart
+import status.stat.AGILITY
 import kotlin.math.max
 
 class StartAttackEvent(override val source: Target, private val sourcePart: BodyPart, override val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, BattleAction {

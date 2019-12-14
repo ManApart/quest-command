@@ -1,12 +1,12 @@
 package status.rest
 
 import core.events.EventListener
-import core.gameState.stat.HEALTH
-import core.gameState.stat.LeveledStat
+import status.stat.HEALTH
+import status.stat.LeveledStat
 import core.history.display
 import core.utility.StringFormatter.format
 import status.statChanged.StatChangeEvent
-import system.EventManager
+import core.events.EventManager
 
 class Rest : EventListener<RestEvent>() {
 

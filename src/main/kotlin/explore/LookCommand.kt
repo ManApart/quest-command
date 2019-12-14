@@ -4,8 +4,8 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.history.display
-import interact.scope.ScopeManager
-import system.EventManager
+import traveling.scope.ScopeManager
+import core.events.EventManager
 
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {

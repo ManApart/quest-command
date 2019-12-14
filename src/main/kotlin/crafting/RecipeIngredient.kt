@@ -1,7 +1,7 @@
 package crafting
 
-import core.gameState.Tags
-import core.gameState.Target
+import core.properties.Tags
+import core.target.Target
 import core.utility.wrapNonEmpty
 
 data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {

@@ -1,23 +1,23 @@
 package inventory
 
-import core.gameState.Properties
-import core.gameState.Tags
-import core.gameState.Target
-import core.gameState.Values
-import core.gameState.body.BodyPart
-import core.gameState.location.LocationNode
-import interact.scope.ScopeManager
+import core.properties.Properties
+import core.properties.Tags
+import core.target.Target
+import core.properties.Values
+import core.body.BodyPart
+import traveling.location.LocationNode
+import traveling.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
 import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
-import system.DependencyInjector
-import system.behavior.BehaviorManager
-import system.behavior.BehaviorParser
-import system.body.BodyManager
-import system.body.BodyParser
+import core.DependencyInjector
+import core.ai.behavior.BehaviorManager
+import core.ai.behavior.BehaviorParser
+import core.body.BodyManager
+import core.body.BodyParser
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -220,7 +220,7 @@ class PlaceItemTest {
         assertNull(chest.inventory.getItem(item.name))
     }
 
-    private fun createItem(name: String, weight: Int): core.gameState.Target {
+    private fun createItem(name: String, weight: Int): Target {
         return Target(name, properties = Properties(Values(mapOf("weight" to weight.toString()))))
     }
 

@@ -1,14 +1,16 @@
 package status.effects
 
 import combat.takeDamage.TakeDamageEvent
-import core.gameState.Soul
-import core.gameState.body.BodyPart
-import core.gameState.stat.LeveledStat
-import core.gameState.stat.StatKind
+import status.Soul
+import core.body.BodyPart
+import status.stat.LeveledStat
+import status.stat.StatKind
 import core.utility.Named
-import status.propValChanged.PropertyStatChangeEvent
+import core.properties.propValChanged.PropertyStatChangeEvent
 import status.statChanged.StatChangeEvent
-import system.EventManager
+import core.events.EventManager
+import status.stat.AmountType
+import status.stat.StatEffect
 import kotlin.math.min
 
 class Effect(val base: EffectBase, val amount: Int, val duration: Int, private val bodyPartTargets: List<BodyPart> = listOf()) : Named {

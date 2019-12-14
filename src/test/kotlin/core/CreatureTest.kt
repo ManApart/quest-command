@@ -1,9 +1,9 @@
 package core
 
-import core.gameState.Properties
-import core.gameState.Target
-import core.gameState.Values
-import core.gameState.stat.STRENGTH
+import core.properties.Properties
+import core.target.Target
+import core.properties.Values
+import status.stat.STRENGTH
 import org.junit.Test
 import kotlin.test.assertEquals
 

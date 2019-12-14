@@ -1,6 +1,6 @@
 package gameState
 
-import core.gameState.Values
+import core.properties.Values
 import org.junit.Test
 import kotlin.test.assertEquals
 

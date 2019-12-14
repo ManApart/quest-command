@@ -1,8 +1,8 @@
 package status.effects
 
-import core.gameState.body.BodyPart
+import core.body.BodyPart
 import core.utility.NameSearchableList
-import system.DependencyInjector
+import core.DependencyInjector
 
 object EffectManager {
     private var effects = loadEffects()

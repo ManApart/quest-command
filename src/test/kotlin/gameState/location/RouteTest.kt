@@ -1,11 +1,11 @@
 package gameState.location
 
-import core.gameState.Direction
-import core.gameState.location.Connection
-import core.gameState.location.LocationNode
-import core.gameState.location.LocationPoint
-import core.gameState.location.Route
+import traveling.direction.Direction
 import org.junit.Test
+import traveling.location.Connection
+import traveling.location.LocationNode
+import traveling.location.LocationPoint
+import traveling.location.Route
 import kotlin.test.assertEquals
 
 class RouteTest {
@@ -15,7 +15,7 @@ class RouteTest {
         val source = LocationNode("source")
         val destination = LocationNode("destination")
         val route = Route(source)
-        route.addLink(Connection(LocationPoint( source), LocationPoint(destination)))
+        route.addLink(Connection(LocationPoint(source), LocationPoint(destination)))
 
         assertEquals(1, route.getConnections().size)
         assertEquals(source, route.source)

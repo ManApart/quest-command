@@ -3,10 +3,10 @@ package system.debug
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseTargets
-import core.gameState.GameState
-import core.gameState.stat.StatKind
+import core.GameState
+import status.stat.StatKind
 import core.history.display
-import system.EventManager
+import core.events.EventManager
 
 class DebugCommand : Command() {
 

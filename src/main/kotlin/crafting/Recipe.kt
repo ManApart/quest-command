@@ -1,8 +1,8 @@
 package crafting
 
-import core.gameState.Properties
-import core.gameState.Soul
-import core.gameState.Target
+import core.properties.Properties
+import status.Soul
+import core.target.Target
 import core.utility.Named
 
 data class Recipe(override val name: String, val ingredients: List<RecipeIngredient>, val skills: Map<String, Int> = mapOf(), val toolProperties: Properties = Properties(), val results: List<RecipeResult> = listOf(), val craftVerb: String = "craft") : Named {

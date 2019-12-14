@@ -1,6 +1,6 @@
 package core.utility
 
-import core.gameState.Target
+import core.target.Target
 
 object StringFormatter {
 

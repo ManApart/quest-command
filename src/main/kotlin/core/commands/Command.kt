@@ -1,7 +1,7 @@
 package core.commands
 
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.utility.Named
 
 abstract class Command : Named {

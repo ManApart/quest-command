@@ -1,8 +1,10 @@
 package status.effects
 
 import combat.DamageType
-import core.gameState.stat.StatKind
+import status.stat.StatKind
 import core.utility.Named
+import status.stat.AmountType
+import status.stat.StatEffect
 
 data class EffectBase(
         override val name: String,

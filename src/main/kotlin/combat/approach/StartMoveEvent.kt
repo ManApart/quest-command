@@ -3,10 +3,10 @@ package combat.approach
 import combat.battle.BattleAction
 import combat.battle.position.TargetAim
 import core.events.Event
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.Vector
-import core.gameState.stat.AGILITY
+import core.GameState
+import core.target.Target
+import traveling.direction.Vector
+import status.stat.AGILITY
 import kotlin.math.max
 
 class StartMoveEvent(override val source: Target, private val moveTarget: Vector, timeLeft: Int = -1) : Event, BattleAction {

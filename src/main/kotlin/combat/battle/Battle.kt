@@ -2,12 +2,12 @@ package combat.battle
 
 import combat.Combatant
 import core.commands.CommandParser
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.history.display
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
-import system.EventManager
+import core.events.EventManager
 
 class Battle(combatantCreatures: List<Target>) {
     private val combatants = mutableListOf<Combatant>()

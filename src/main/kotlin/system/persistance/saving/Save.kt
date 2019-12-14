@@ -1,7 +1,7 @@
 package system.persistance.saving
 
 import core.events.EventListener
-import system.GameManager
+import core.GameManager
 
 class Save : EventListener<SaveEvent>() {
     override fun execute(event: SaveEvent) {

@@ -1,8 +1,8 @@
 package system
 
-import core.gameState.Target
+import core.target.Target
 import core.utility.NameSearchableList
-import system.item.ItemParser
+import core.target.item.ItemParser
 
 class ItemFakeParser(items: List<Target> = listOf()) : ItemParser {
     private val items = NameSearchableList(items.onEach { it.properties.tags.add("Item") })

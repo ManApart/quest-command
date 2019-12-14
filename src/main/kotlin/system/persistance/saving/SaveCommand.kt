@@ -1,7 +1,7 @@
 package system.persistance.saving
 
 import core.commands.Command
-import system.EventManager
+import core.events.EventManager
 
 class SaveCommand : Command() {
     override fun getAliases(): Array<String> {

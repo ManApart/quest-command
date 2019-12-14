@@ -1,13 +1,13 @@
 import core.events.Event
 import core.events.EventListener
 import core.utility.reflection.MockReflections
-import core.utility.reflection.Reflections
+import core.reflection.Reflections
 import org.junit.AfterClass
 import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Test
-import system.DependencyInjector
-import system.EventManager
+import core.DependencyInjector
+import core.events.EventManager
 
 class EventManagerTest {
     private val resultList = mutableListOf<String>()

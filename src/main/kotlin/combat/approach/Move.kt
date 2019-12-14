@@ -2,10 +2,10 @@ package combat.approach
 
 import combat.battle.Distances
 import core.events.EventListener
-import core.gameState.stat.STAMINA
+import status.stat.STAMINA
 import core.history.display
 import status.statChanged.StatChangeEvent
-import system.EventManager
+import core.events.EventManager
 import kotlin.math.min
 
 

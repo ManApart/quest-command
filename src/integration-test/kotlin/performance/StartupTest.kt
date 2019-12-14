@@ -4,8 +4,8 @@ import core.commands.CommandParser
 import core.utility.PoorMansInstrumenter
 import org.junit.Ignore
 import org.junit.Test
-import system.EventManager
-import system.GameManager
+import core.events.EventManager
+import core.GameManager
 
 class StartupTest {
 

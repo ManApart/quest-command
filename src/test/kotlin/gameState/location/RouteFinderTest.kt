@@ -1,7 +1,7 @@
 package gameState.location
 
-import core.gameState.location.RouteFinder
 import org.junit.Test
+import traveling.location.RouteFinder
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

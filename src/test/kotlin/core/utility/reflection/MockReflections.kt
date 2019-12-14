@@ -2,8 +2,9 @@ package core.utility.reflection
 
 import core.commands.Command
 import core.events.EventListener
-import core.gameState.dataParsing.events.EventParser
-import interact.magic.spellCommands.SpellCommand
+import core.reflection.Reflections
+import core.events.eventParsers.EventParser
+import magic.spellCommands.SpellCommand
 
 class MockReflections(private val commands: List<Command> = listOf(),
                       private val spellCommands: List<SpellCommand> = listOf(),

@@ -1,6 +1,6 @@
 package crafting
 
-import core.gameState.Tags
+import core.properties.Tags
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

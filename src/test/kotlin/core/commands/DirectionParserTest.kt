@@ -1,7 +1,7 @@
 package core.commands
 
-import core.gameState.Direction
-import core.gameState.Vector
+import traveling.direction.Direction
+import traveling.direction.Vector
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -11,7 +11,7 @@ class DirectionParserTest {
         val input = "1,2,3".split(" ")
         val result = parseVector(input)
 
-        assertEquals(Vector(1,2,3), result)
+        assertEquals(Vector(1, 2, 3), result)
     }
 
     @Test

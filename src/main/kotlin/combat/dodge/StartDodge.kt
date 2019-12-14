@@ -1,7 +1,7 @@
 package combat.dodge
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 
 class StartDodge : EventListener<StartDodgeEvent>() {
     override fun execute(event: StartDodgeEvent) {

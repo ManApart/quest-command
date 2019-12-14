@@ -27,7 +27,7 @@ Start by typing `help`, which should get you started and give you a list of comm
 
 Try using commands like `look` and `map` to explore the world.
 
-You can travel by traveling to a location `travel tree`, or you can just say a direction (`west` or `w`).
+You can traveling by traveling to a location `traveling tree`, or you can just say a direction (`west` or `w`).
 
 Try finding the apple tree and picking up some apples, climbing it, or lighting it on fire with your tinder box. You could also chop it down if you wanted to.
 
@@ -40,9 +40,9 @@ You can also pipe commands together using `&&`.
 Here are some example commands you can run:
 - `w && use tinder on tree && use apple on tree`
 - `w && use tinder on tree && bag && pickup apple && bag && use apple on tree`
-- `travel tree && climb tree`
-- `travel an open field barren patch && equip hatchet && chop rat && slash rat`
-- `travel farmer's hut interior && cook Raw Poor Quality Meat on range`
+- `traveling tree && climb tree`
+- `traveling an open field barren patch && equip hatchet && chop rat && slash rat`
+- `traveling farmer's hut interior && cook Raw Poor Quality Meat on range`
 
 
 ## Implemented Systems
@@ -63,7 +63,7 @@ Containers may have a `CanHold` value: `"CanHold": "Dagger,Bow"`. If a container
 ### Magic
 
 #### Elements
-Whether the cause is magic, or just that you lit a tree on fire with your tinderbox, elements will interact with each other. Often, a more powerful element will clear or weaken the duration of effects of a less powerful element of the opposite type.
+Whether the cause is magic, or just that you lit a tree on fire with your tinderbox, elements will use with each other. Often, a more powerful element will clear or weaken the duration of effects of a less powerful element of the opposite type.
 
 Name | Clears | Notes
 --- | --- | ---
@@ -124,7 +124,7 @@ Category | Command | Aliases | Description | Usages
  Crafting | Recipe | Recipe, Recipes | View your recipes | <br/>`Recipe all` - View the Recipes that you know.<br/>`Recipe <Recipe>` - View the details of a recipe.
  Debug | History | History | History: <br/>View the chat history. | <br/>`History` - View the recent chat history.<br/>`History <number>` - View \<number> lines of chat history X<br/>`History responses` - View both commands and responses X
  Debug | debug | debug, db | Debug: <br/>Change various settings for testing/cheating. | <br/>`Debug` - Toggle various debug settings all on or off at once.<br/>`Debug list` - View the gamestate's properties.<br/>`Debug lvlreq <on/off>` - Toggle the requirement for skills/spells to have a specific level.<br/>`Debug statchanges <on/off>` - Toggle whether stats (stamina, focus, health, etc) can be depleted.<br/>`Debug random <on/off>` - Toggle random chances always succeeding.<br/>`Debug displayupdates <on/off>` - Toggle inline updating display messages (for things like progress bars).<br/>`Debug stat <stat name> <desired level> on *<target>` - Set a stat to the desired level.<br/>`Debug prop <prop name> <desired level> on *<target>` - Set a property to the desired level.<br/>`Debug tag *<remove> <tag name> on *<target>` - Add (or remove) a tag.
- Explore | Look | Look, ls, Examine, Exa | Examine your surroundings | <br/>`Look all` - View the objects you can interact with.<br/>`Look <target>` - Look at a specific target.
+ Explore | Look | Look, ls, Examine, Exa | Examine your surroundings | <br/>`Look all` - View the objects you can use with.<br/>`Look <target>` - Look at a specific target.
  Explore | Map | Map, m | Get information on your current and other locations | <br/>`Map *<location>` - List your current location (or given location) and the surrounding areas.<br/>`Map *depth` - List neighbors to \<depth> levels away from the location.
  Interact | Eat | Eat | Eat an item | <br/>`Eat <item>` - Eat an item
  Interact | Nothing | Nothing, Wait, nn | Nothing<br/>Like resting, but less useful.<br/>Nothing \<duration> - Do nothing for a set amount of time. | <br/>`Nothing` - Do Nothing.
@@ -140,13 +140,13 @@ Category | Command | Aliases | Description | Usages
  System | Help | Help, h | Names in brackets are params. EX: 'Travel \<location>' should be typed as 'Travel Kanbara'<br/>Words that start with a * are optional<br/>Commands that end with X are not yet implemented | Help: <br/>`Help All` - Return general help<br/>`Help Commands` - Return a list of other types of commands that can be called.<br/>`Help Commands extended` - Return a list of commands and all their aliases.<br/>`Help <Command Group>` - Return the list of commands within a group of commands<br/>`Help <Command>` - Return the manual for that command<br/>Notes:<br/>	Names in brackets are params. EX: 'Travel <location>' should be typed as 'Travel Kanbara'<br/>	Words that start with a * are optional<br/>	Commands that end with X are not yet implemented
  System | Redo | Redo, Repeat, r | Redo your last command. | Redo:<br/>	Redo your last command.
  System | Save | Save, sa | Save your game. | <br/>`Save` - Save your game X<br/>`Save <name>` - Save with a specific save name. X
- Traveling | Climb | Climb, cl, scale, descend | Climb over obstacles | <br/>`Climb <part> of <target>` - Climb (onto) the target<br/>`Climb <direction>` - Continue climbing in \<direction><br/>`Climb to <part>` - Climb to \<part><br/>`Climb s` - The s flag silences travel, meaning a minimum amount of output
- Traveling | Direction | Direction, NORTH, n, SOUTH, s, WEST, w, EAST, e, NORTH_WEST, nw, NORTH_EAST, ne, SOUTH_WEST, sw, SOUTH_EAST, se, ABOVE, a, BELOW, d, NONE, none | Move to the nearest location in the specified direction. | <br/>`<direction>` - Start moving to the nearest location in that direction, if it exists.<br/>`<direction> s` - The s flag silences travel, meaning a minimum amount of output
+ Traveling | Climb | Climb, cl, scale, descend | Climb over obstacles | <br/>`Climb <part> of <target>` - Climb (onto) the target<br/>`Climb <direction>` - Continue climbing in \<direction><br/>`Climb to <part>` - Climb to \<part><br/>`Climb s` - The s flag silences traveling, meaning a minimum amount of output
+ Traveling | Direction | Direction, NORTH, n, SOUTH, s, WEST, w, EAST, e, NORTH_WEST, nw, NORTH_EAST, ne, SOUTH_WEST, sw, SOUTH_EAST, se, ABOVE, a, BELOW, d, NONE, none | Move to the nearest location in the specified direction. | <br/>`<direction>` - Start moving to the nearest location in that direction, if it exists.<br/>`<direction> s` - The s flag silences traveling, meaning a minimum amount of output
  Traveling | Dismount | Dismount, dis | Stop climbing (only at top or bottom of obstacle) | <br/>`Dismount` - Stop climbing (only at top or bottom of obstacle)
  Traveling | Jump | Jump, j | Jump over obstacles or down to a lower area. | <br/>`Jump <obstacle>` - Jump over an obstacle. X<br/>`Jump` - Jump down to the location below, possibly taking damage.
  Traveling | Move | Move, mv, walk, run | Move within locations. | <br/>`Move to <vector>` - Move to a specific place within a location.<br/>`Move to <target>` - Move to a target within a location.<br/>`Move <distance> towards <direction>` - Move a set distance in a direction
  Traveling | Route | Route, rr | View your current Route. | <br/>`Route` - View your current route.<br/>`Route *<location>` - Find a route to \<location>.<br/>	Routes are used with the Move command.
- Traveling | Travel | Travel, t, go, cd | Travel to different locations. | <br/>`Travel to <location>` - Start traveling to a location, if a route can be found.<br/>`Travel` - Continue traveling to a goal location.<br/>`Travel s` - The s flag silences travel, meaning a minimum amount of output<br/>	To view a route, see the Route command
+ Traveling | Travel | Travel, t, go, cd | Travel to different locations. | <br/>`Travel to <location>` - Start traveling to a location, if a route can be found.<br/>`Travel` - Continue traveling to a goal location.<br/>`Travel s` - The s flag silences traveling, meaning a minimum amount of output<br/>	To view a route, see the Route command
 
 Spell Commands:
 

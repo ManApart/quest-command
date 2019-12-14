@@ -4,11 +4,11 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.history.display
 import core.utility.NameSearchableList
-import system.EventManager
+import core.events.EventManager
 
 class UnEquipItemCommand : Command() {
     private val delimiters = listOf("from")

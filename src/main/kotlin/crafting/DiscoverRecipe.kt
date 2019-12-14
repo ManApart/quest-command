@@ -1,12 +1,12 @@
 package crafting
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 
-import core.gameState.stat.COOKING
+import status.stat.COOKING
 import core.history.display
 import status.ExpGainedEvent
-import system.EventManager
+import core.events.EventManager
 
 class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
 

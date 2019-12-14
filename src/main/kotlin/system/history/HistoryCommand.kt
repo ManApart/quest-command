@@ -2,7 +2,7 @@ package system.history
 
 import core.commands.Args
 import core.commands.Command
-import system.EventManager
+import core.events.EventManager
 
 class HistoryCommand : Command() {
 

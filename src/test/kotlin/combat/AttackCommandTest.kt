@@ -2,26 +2,26 @@ package combat
 
 import combat.attack.AttackCommand
 import combat.attack.StartAttackEvent
-import core.gameState.GameState
-import core.gameState.Player
-import core.gameState.Target
-import interact.scope.ScopeManager
+import core.GameState
+import core.target.Player
+import core.target.Target
+import traveling.scope.ScopeManager
 import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
-import system.DependencyInjector
-import system.EventManager
-import system.ai.AIFakeParser
-import system.ai.AIManager
-import system.ai.AIParser
-import system.behavior.BehaviorManager
-import system.behavior.BehaviorParser
-import system.body.BodyManager
-import system.body.BodyParser
+import core.DependencyInjector
+import core.events.EventManager
+import core.ai.AIFakeParser
+import core.ai.AIManager
+import core.ai.AIParser
+import core.ai.behavior.BehaviorManager
+import core.ai.behavior.BehaviorParser
+import core.body.BodyManager
+import core.body.BodyParser
 import system.location.LocationFakeParser
-import system.location.LocationManager
-import system.location.LocationParser
+import traveling.location.LocationManager
+import traveling.location.LocationParser
 import kotlin.test.assertEquals
 
 class AttackCommandTest {

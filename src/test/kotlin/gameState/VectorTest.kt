@@ -1,8 +1,8 @@
 package gameState
 
-import core.gameState.Direction
-import core.gameState.Vector
 import org.junit.Test
+import traveling.direction.Direction
+import traveling.direction.Vector
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -154,9 +154,9 @@ class VectorTest {
     @Test
     fun furtherWithSameStartDefaultsNorth() {
         val source = Vector()
-        assertEquals(Vector(y=5), source.further(source, 5))
-        assertEquals(Vector(y=10), source.further(source, 10))
-        assertEquals(Vector(y=-105), source.further(source, -105))
+        assertEquals(Vector(y = 5), source.further(source, 5))
+        assertEquals(Vector(y = 10), source.further(source, 10))
+        assertEquals(Vector(y = -105), source.further(source, -105))
     }
 
     @Test
@@ -188,7 +188,7 @@ class VectorTest {
 
     @Test
     fun furtherWest() {
-        val source = Vector( 0)
+        val source = Vector(0)
         val direction  = Vector(10)
         val expected = Vector(15)
         val actual = source.further(direction, 5)

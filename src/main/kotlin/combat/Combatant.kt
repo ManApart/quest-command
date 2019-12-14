@@ -1,11 +1,11 @@
 package combat
 
 import combat.battle.BattleAction
-import core.gameState.ACTION_POINTS
-import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.stat.HEALTH
-import core.gameState.stat.WISDOM
+import core.properties.ACTION_POINTS
+import core.target.Target
+import core.body.BodyPart
+import status.stat.HEALTH
+import status.stat.WISDOM
 
 class Combatant(val target: Target) {
     private var actionPoints = 0

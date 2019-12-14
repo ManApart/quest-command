@@ -1,6 +1,6 @@
 package core.history
 
-import core.gameState.GameState
+import core.GameState
 import system.debug.DebugType
 
 fun display(message: String) {

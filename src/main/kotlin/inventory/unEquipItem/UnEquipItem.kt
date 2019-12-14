@@ -1,7 +1,7 @@
 package inventory.unEquipItem
 
 import core.events.EventListener
-import system.EventManager
+import core.events.EventManager
 
 class UnEquipItem : EventListener<UnEquipItemEvent>() {
     override fun execute(event: UnEquipItemEvent) {

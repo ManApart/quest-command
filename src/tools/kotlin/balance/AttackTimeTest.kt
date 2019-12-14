@@ -3,13 +3,13 @@ package balance
 import combat.DamageType
 import combat.attack.StartAttackEvent
 import combat.battle.position.TargetAim
-import core.gameState.Properties
-import core.gameState.Tags
-import core.gameState.Target
-import core.gameState.Values
-import core.gameState.body.BodyPart
-import core.gameState.stat.AGILITY
-import core.gameState.stat.STRENGTH
+import core.properties.Properties
+import core.properties.Tags
+import core.target.Target
+import core.properties.Values
+import core.body.BodyPart
+import status.stat.AGILITY
+import status.stat.STRENGTH
 
 
 fun main() {

@@ -1,7 +1,7 @@
 package status
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 import core.history.display
 
 class ExpGained : EventListener<ExpGainedEvent>() {

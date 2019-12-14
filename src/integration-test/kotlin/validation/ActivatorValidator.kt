@@ -1,7 +1,7 @@
 package validation
 
-import system.activator.ActivatorManager
-import system.behavior.BehaviorManager
+import core.target.activator.ActivatorManager
+import core.ai.behavior.BehaviorManager
 
 //TODO - check that connections with connection networks exist
 

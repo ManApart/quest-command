@@ -1,6 +1,7 @@
+
+import core.GameManager
 import core.commands.CommandParser
-import system.EventManager
-import system.GameManager
+import core.events.EventManager
 
 fun main(args: Array<String>) {
     EventManager.registerListeners()

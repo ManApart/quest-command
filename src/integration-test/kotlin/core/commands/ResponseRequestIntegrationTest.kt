@@ -1,15 +1,15 @@
 package core.commands
 
-import core.gameState.Properties
-import core.gameState.Tags
-import core.gameState.Target
+import core.properties.Properties
+import core.properties.Tags
+import core.target.Target
 import core.history.ChatHistory
-import interact.scope.ScopeManager
+import traveling.scope.ScopeManager
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import system.EventManager
-import system.GameManager
+import core.events.EventManager
+import core.GameManager
 import kotlin.test.assertEquals
 
 class ResponseRequestIntegrationTest {

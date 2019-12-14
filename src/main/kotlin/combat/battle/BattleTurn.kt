@@ -1,7 +1,7 @@
 package combat.battle
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 
 class BattleTurn : EventListener<BattleTurnEvent>() {
 

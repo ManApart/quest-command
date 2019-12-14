@@ -4,10 +4,10 @@ import combat.HandHelper
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseBodyParts
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.history.display
-import system.EventManager
+import core.events.EventManager
 
 class BlockCommand : Command() {
     override fun getAliases(): Array<String> {

@@ -1,5 +1,6 @@
 package system.gameTick
 
+import time.gameTick.TimeManager
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized

@@ -1,7 +1,7 @@
 package combat.battle.position
 
-import core.gameState.Target
-import core.gameState.body.BodyPart
+import core.target.Target
+import core.body.BodyPart
 
 class TargetAim(val target: Target, val bodyPartTargets: List<BodyPart> = listOf()) {
     override fun toString(): String {

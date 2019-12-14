@@ -1,8 +1,8 @@
 package combat.dodge
 
 import core.events.Event
-import core.gameState.Target
-import core.gameState.Vector
+import core.target.Target
+import traveling.direction.Vector
 
 
 class DodgeEvent(val source: Target, val direction: Vector) : Event {

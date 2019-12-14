@@ -2,7 +2,7 @@ package combat.battle
 
 import combat.battle.position.TargetAim
 import core.events.Event
-import core.gameState.Target
+import core.target.Target
 
 interface BattleAction {
     var timeLeft: Int

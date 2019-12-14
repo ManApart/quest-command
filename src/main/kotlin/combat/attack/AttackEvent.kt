@@ -3,8 +3,8 @@ package combat.attack
 import combat.DamageType
 import combat.battle.position.TargetAim
 import core.events.Event
-import core.gameState.Target
-import core.gameState.body.BodyPart
+import core.target.Target
+import core.body.BodyPart
 
 
 class AttackEvent(val source: Target, val sourcePart: BodyPart, val target: TargetAim, val type: DamageType) : Event {

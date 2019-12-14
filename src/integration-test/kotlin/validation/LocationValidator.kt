@@ -1,6 +1,6 @@
 package validation
 
-import system.location.LocationManager
+import traveling.location.LocationManager
 
 class LocationValidator {
 

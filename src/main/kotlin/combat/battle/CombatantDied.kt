@@ -1,7 +1,7 @@
 package combat.battle
 
 import core.events.EventListener
-import core.gameState.GameState
+import core.GameState
 import status.CreatureDiedEvent
 
 class CombatantDied : EventListener<CreatureDiedEvent>() {

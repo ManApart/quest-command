@@ -3,9 +3,9 @@ package combat.block
 import combat.battle.BattleAction
 import combat.battle.position.TargetAim
 import core.events.Event
-import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.stat.AGILITY
+import core.target.Target
+import core.body.BodyPart
+import status.stat.AGILITY
 import kotlin.math.max
 
 class StartBlockEvent(override val source: Target, private val partThatWillShield: BodyPart, private val partThatWillBeShielded: BodyPart, timeLeft: Int = -1) : Event, BattleAction {

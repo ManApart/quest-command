@@ -1,6 +1,6 @@
 package core.commands
 
-import core.gameState.Direction
+import traveling.direction.Direction
 import core.utility.safeSubList
 import core.utility.toLowerCase
 

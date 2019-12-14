@@ -2,7 +2,7 @@
 package building
 
 import building.json.JsonGenerator
-import core.utility.reflection.ReflectionTools
+import core.reflection.ReflectionTools
 
 /*
 This core.utility 'builds' the app by generated files so they don't have to be generated at runtime.

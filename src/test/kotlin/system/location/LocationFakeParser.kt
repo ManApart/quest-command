@@ -1,10 +1,11 @@
 package system.location
 
-import core.gameState.PLAYER_START_LOCATION
-import core.gameState.PLAYER_START_NETWORK
-import core.gameState.location.Location
-import core.gameState.location.LocationNode
+import core.target.PLAYER_START_LOCATION
+import core.target.PLAYER_START_NETWORK
+import traveling.location.Location
+import traveling.location.LocationNode
 import core.utility.NameSearchableList
+import traveling.location.LocationParser
 
 class LocationFakeParser(
         private val locations: NameSearchableList<Location> = NameSearchableList(),

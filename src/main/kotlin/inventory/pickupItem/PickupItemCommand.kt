@@ -3,13 +3,13 @@ package inventory.pickupItem
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.history.display
 import core.utility.filterUniqueByName
-import interact.scope.ScopeManager
+import traveling.scope.ScopeManager
 import inventory.dropItem.TransferItemEvent
-import system.EventManager
+import core.events.EventManager
 
 class PickupItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {

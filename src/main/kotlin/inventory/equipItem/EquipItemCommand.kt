@@ -1,12 +1,12 @@
 package inventory.equipItem
 
 import core.commands.*
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.body.Body
-import core.gameState.body.Slot
+import core.GameState
+import core.target.Target
+import core.body.Body
+import core.body.Slot
 import core.history.display
-import system.EventManager
+import core.events.EventManager
 
 class EquipItemCommand : Command() {
     override fun getAliases(): Array<String> {

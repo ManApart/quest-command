@@ -1,15 +1,15 @@
 package core.commands
 
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.history.ChatHistory
 import core.history.display
 import core.utility.NameSearchableList
-import core.utility.reflection.Reflections
+import core.reflection.Reflections
 import core.utility.removeFirstItem
-import interact.magic.CastCommand
-import system.DependencyInjector
-import system.EventManager
+import magic.castSpell.CastCommand
+import core.DependencyInjector
+import core.events.EventManager
 
 object CommandParser {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)

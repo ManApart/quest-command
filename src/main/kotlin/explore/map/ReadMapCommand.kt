@@ -4,9 +4,9 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.GameState
-import system.EventManager
-import system.location.LocationManager
+import core.GameState
+import core.events.EventManager
+import traveling.location.LocationManager
 
 class ReadMapCommand : Command() {
     override fun getAliases(): Array<String> {

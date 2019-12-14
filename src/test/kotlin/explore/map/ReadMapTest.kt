@@ -1,9 +1,9 @@
 package explore.map
 
-import core.gameState.Vector
-import core.gameState.location.Connection
-import core.gameState.location.LocationNode
-import core.gameState.location.LocationPoint
+import traveling.direction.Vector
+import traveling.location.Connection
+import traveling.location.LocationNode
+import traveling.location.LocationPoint
 import core.history.ChatHistory
 import org.junit.Assert
 import org.junit.Before
@@ -30,7 +30,7 @@ class ReadMapTest {
     @Test
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
-        target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Vector(0,10,0)))
+        target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Vector(0, 10, 0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()
@@ -45,10 +45,10 @@ class ReadMapTest {
     fun neighborsAreProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         val targetPoint = LocationPoint(target)
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("north")), Vector(0,10,0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south")), Vector(0,-10,0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east")), Vector(10,0,0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west")), Vector(-10,0,0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("north")), Vector(0, 10, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south")), Vector(0, -10, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east")), Vector(10, 0, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west")), Vector(-10, 0, 0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()

@@ -1,12 +1,13 @@
 package explore
 
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.NO_VECTOR
-import core.gameState.Target
-import core.gameState.targetsToString
+import core.GameState
+import traveling.direction.NO_VECTOR
+import core.target.Target
+import core.target.targetsToString
 import core.history.display
-import interact.scope.ScopeManager
+import traveling.climb.ClimbLook
+import traveling.scope.ScopeManager
 
 class Look : EventListener<LookEvent>() {
 

@@ -1,23 +1,24 @@
 package system
 
-import core.gameState.NO_VECTOR
-import core.gameState.PLAYER_START_LOCATION
-import core.gameState.PLAYER_START_NETWORK
-import core.gameState.Target
-import core.gameState.location.DEFAULT_NETWORK
-import core.gameState.location.LocationNode
-import core.gameState.location.LocationTarget
+import core.DependencyInjector
+import traveling.direction.NO_VECTOR
+import core.target.PLAYER_START_LOCATION
+import core.target.PLAYER_START_NETWORK
+import core.target.Target
+import traveling.location.DEFAULT_NETWORK
+import traveling.location.LocationNode
+import traveling.location.LocationTarget
 import core.utility.NameSearchableList
 import dialogue.DialogueOptions
 import org.junit.Before
 import org.junit.Test
-import system.activator.ActivatorManager
-import system.activator.ActivatorParser
-import system.body.BodyManager
-import system.body.BodyParser
+import core.target.activator.ActivatorManager
+import core.target.activator.ActivatorParser
+import core.body.BodyManager
+import core.body.BodyParser
 import system.location.LocationFakeParser
-import system.location.LocationManager
-import system.location.LocationParser
+import traveling.location.LocationManager
+import traveling.location.LocationParser
 import kotlin.test.assertEquals
 
 class ActivatorManagerTest {

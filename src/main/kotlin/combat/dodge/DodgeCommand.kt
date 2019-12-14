@@ -2,9 +2,9 @@ package combat.dodge
 
 import core.commands.Command
 import core.commands.parseDirection
-import core.gameState.GameState
+import core.GameState
 import core.history.display
-import system.EventManager
+import core.events.EventManager
 
 class DodgeCommand : Command() {
     override fun getAliases(): Array<String> {

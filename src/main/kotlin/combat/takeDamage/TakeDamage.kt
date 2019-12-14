@@ -2,11 +2,11 @@ package combat.takeDamage
 
 import combat.DamageType
 import core.events.EventListener
-import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.stat.HEALTH
+import core.target.Target
+import core.body.BodyPart
+import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
-import system.EventManager
+import core.events.EventManager
 import kotlin.math.max
 
 class TakeDamage : EventListener<TakeDamageEvent>() {

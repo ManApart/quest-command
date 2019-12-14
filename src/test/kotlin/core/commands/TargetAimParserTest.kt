@@ -2,22 +2,22 @@ package core.commands
 
 import assertContainsByName
 import assertEqualsByName
-import core.gameState.Target
-import core.gameState.body.BodyPart
-import core.gameState.location.LocationNode
+import core.target.Target
+import core.body.BodyPart
+import traveling.location.LocationNode
 import core.utility.reflection.MockReflections
-import core.utility.reflection.Reflections
-import interact.scope.ScopeManager
+import core.reflection.Reflections
+import traveling.scope.ScopeManager
 import org.junit.AfterClass
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
-import system.DependencyInjector
-import system.behavior.BehaviorParser
-import system.body.BodyManager
-import system.body.BodyParser
+import core.DependencyInjector
+import core.ai.behavior.BehaviorParser
+import core.body.BodyManager
+import core.body.BodyParser
 import system.location.LocationFakeParser
-import system.location.LocationParser
+import traveling.location.LocationParser
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)

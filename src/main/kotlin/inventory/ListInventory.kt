@@ -1,9 +1,8 @@
 package inventory
 
 import core.events.EventListener
-import core.gameState.Inventory
-import core.gameState.Target
-import core.gameState.body.Body
+import core.target.Target
+import core.body.Body
 import core.history.display
 import core.utility.StringFormatter
 

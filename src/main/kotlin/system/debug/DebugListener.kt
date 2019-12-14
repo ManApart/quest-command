@@ -1,9 +1,9 @@
 package system.debug
 
+import core.GameState
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.stat.StatKind
 import core.history.display
+import status.stat.StatKind
 
 class DebugListListener : EventListener<DebugListEvent>() {
     override fun execute(event: DebugListEvent) {

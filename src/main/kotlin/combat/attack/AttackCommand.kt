@@ -3,13 +3,13 @@ package combat.attack
 import combat.HandHelper
 import combat.battle.position.TargetAim
 import core.commands.*
-import core.gameState.GameState
-import core.gameState.Target
-import core.gameState.stat.HEALTH
+import core.GameState
+import core.target.Target
+import status.stat.HEALTH
 import core.history.display
-import interact.UseEvent
-import interact.scope.ScopeManager
-import system.EventManager
+import use.UseEvent
+import traveling.scope.ScopeManager
+import core.events.EventManager
 
 class AttackCommand : Command() {
     override fun getAliases(): Array<String> {

@@ -2,9 +2,9 @@ package combat.attack
 
 import combat.battle.Battle
 import core.events.EventListener
-import core.gameState.GameState
-import core.gameState.stat.HEALTH
-import system.EventManager
+import core.GameState
+import status.stat.HEALTH
+import core.events.EventManager
 
 class StartAttack : EventListener<StartAttackEvent>() {
     override fun execute(event: StartAttackEvent) {

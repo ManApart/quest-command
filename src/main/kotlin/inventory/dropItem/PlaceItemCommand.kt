@@ -4,12 +4,12 @@ import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.gameState.GameState
-import core.gameState.Target
+import core.GameState
+import core.target.Target
 import core.history.display
 import core.utility.filterUniqueByName
-import interact.scope.ScopeManager
-import system.EventManager
+import traveling.scope.ScopeManager
+import core.events.EventManager
 
 class PlaceItemCommand : core.commands.Command() {
 

@@ -1,9 +1,9 @@
 package test
 
 import core.commands.CommandParser
-import core.utility.reflection.Reflections
-import interact.magic.spellCommands.SpellCommand
-import system.DependencyInjector
+import core.reflection.Reflections
+import magic.spellCommands.SpellCommand
+import core.DependencyInjector
 
 private val newLineAtLineStart = Regex("^\n")
 
