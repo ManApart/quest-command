@@ -51,7 +51,7 @@ class CommandComboTest {
 
     @Test
     fun roastApple() {
-        val input = "w && s && move to range && pickup tinder box && n && e && n && use tinder on tree && use apple on tree"
+        val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && use tinder on tree && use apple on tree"
         CommandParser.parseCommand(input)
         assertTrue(GameState.player.inventory.getItem("Apple") != null)
         assertTrue(GameState.player.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
@@ -115,14 +115,14 @@ class CommandComboTest {
 
     @Test
     fun enterKanbaraThroughGate() {
-        val input = "w && w && use gate && w"
+        val input = "w && w && rs 10 && use gate && w"
         CommandParser.parseCommand(input)
         assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Mapmaker Manor, Kanbara City South, Kanbara Wall North (SOUTH).", ChatHistory.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && w && sw && cl && cl && cl && cl && d && d && d && ls"
+        val input = "w && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
         CommandParser.parseCommand(input)
         assertEquals("You are at Kanbara City South", ChatHistory.getCurrent().outPut[3])
     }
