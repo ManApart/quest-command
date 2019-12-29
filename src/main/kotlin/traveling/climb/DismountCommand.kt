@@ -1,10 +1,11 @@
 package traveling.climb
 
-import core.commands.Command
 import core.GameState
-import traveling.location.LocationPoint
-import core.history.display
+import core.commands.Command
 import core.events.EventManager
+import core.history.display
+import core.properties.IS_CLIMBING
+import traveling.location.LocationPoint
 
 class DismountCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -24,7 +25,7 @@ class DismountCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (GameState.player.isClimbing) {
+        if (GameState.player.properties.values.getBoolean(IS_CLIMBING)) {
             //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
             val exit = getExitLocation()
             val climbTarget = GameState.player.climbTarget!!

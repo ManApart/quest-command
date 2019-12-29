@@ -11,8 +11,7 @@ import core.body.BodyManager
 import core.body.BodyPart
 import core.body.Slot
 import core.events.Event
-import core.properties.ENCUMBRANCE
-import core.properties.Properties
+import core.properties.*
 import core.utility.*
 import crafting.Recipe
 import dialogue.DialogueOptions
@@ -62,13 +61,6 @@ open class Target(
 
     var climbTarget: Target? = null
     var route: Route? = null
-
-    //TODO - make all these properties
-    var isClimbing = false
-    var canRest = true
-    var canTravel = true
-    var canInteract = true
-
 
     override fun toString(): String {
         return getDisplayName()
@@ -195,21 +187,21 @@ open class Target(
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 
-
-    fun setClimbing(target: Target) {
-        isClimbing = true
-        climbTarget = target
-        canRest = false
-        canTravel = false
-        canInteract = false
+    fun setClimbing(climbTarget: Target) {
+        properties.values.put(IS_CLIMBING, true)
+        this.climbTarget = climbTarget
+        properties.values.put(CAN_REST, false)
+        properties.values.put(CAN_TRAVEL, false)
+        properties.values.put(CAN_INTERACT, false)
     }
 
     fun finishClimbing() {
-        isClimbing = false
+        properties.values.put(IS_CLIMBING, false)
         climbTarget = null
-        canRest = true
-        canTravel = true
-        canInteract = true
+        // This should check other reasons you might not be able to rest - alternate approach is to make rest a number. At 0 you can rest, things each tick up 1 for non-rest activities?
+        properties.values.put(CAN_REST, true)
+        properties.values.put(CAN_TRAVEL, true)
+        properties.values.put(CAN_INTERACT, true)
     }
 
 }

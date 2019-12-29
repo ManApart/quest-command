@@ -1,12 +1,13 @@
 package status.rest
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.GameState
-import core.history.display
 import core.events.EventManager
+import core.history.display
+import core.properties.CAN_REST
 
 class RestCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -27,7 +28,7 @@ class RestCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (!GameState.player.canRest) {
+        if (!GameState.player.properties.values.getBoolean(CAN_REST)) {
             display("You can't rest right now!")
         } else {
             val arguments = Args(args)

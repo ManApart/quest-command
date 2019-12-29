@@ -7,10 +7,6 @@ import combat.battle.Distances.SPEAR_RANGE
 import combat.battle.Distances.SWORD_RANGE
 import core.utility.wrapNonEmpty
 
-//Effects
-const val ACTION_POINTS = "Action Point Boost"
-const val ENCUMBRANCE = "Additional Encumbrance"
-
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(tags: Tags) : this(Values(), tags)
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(

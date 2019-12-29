@@ -1,19 +1,19 @@
 package use.actions
 
+import core.events.EventManager
 import core.history.display
-import core.GameState
-import use.UseEvent
-import use.UseListener
+import core.properties.CAN_INTERACT
+import magic.Element
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
 import status.effects.EffectManager
-import magic.Element
-import core.events.EventManager
+import use.UseEvent
+import use.UseListener
 
 class StartFire : UseListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return GameState.player.canInteract
+        return event.source.properties.values.getBoolean(CAN_INTERACT)
                 && event.used.properties.tags.has("Fire Starter")
                 && event.target.properties.tags.has("Flammable")
     }

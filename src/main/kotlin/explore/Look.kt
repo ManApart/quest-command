@@ -1,12 +1,13 @@
 package explore
 
-import core.events.EventListener
 import core.GameState
-import traveling.direction.NO_VECTOR
+import core.events.EventListener
+import core.history.display
+import core.properties.IS_CLIMBING
 import core.target.Target
 import core.target.targetsToString
-import core.history.display
 import traveling.climb.ClimbLook
+import traveling.direction.NO_VECTOR
 import traveling.scope.ScopeManager
 
 class Look : EventListener<LookEvent>() {
@@ -14,7 +15,7 @@ class Look : EventListener<LookEvent>() {
 
     override fun execute(event: LookEvent) {
         when {
-            GameState.player.isClimbing -> ClimbLook.describeClimbJourney()
+            GameState.player.properties.values.getBoolean(IS_CLIMBING) -> ClimbLook.describeClimbJourney()
             event.target != null -> describeTarget(event.target)
             GameState.battle != null -> GameState.battle?.describe()
             else -> describeLocation()

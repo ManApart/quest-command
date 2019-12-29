@@ -1,14 +1,15 @@
 package traveling.travel
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.history.display
-import traveling.direction.Direction
-import core.GameState
-import traveling.location.LocationNode
 import core.events.EventManager
+import core.history.display
+import core.properties.IS_CLIMBING
+import traveling.direction.Direction
+import traveling.location.LocationNode
 
 class TravelInDirectionCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -40,7 +41,7 @@ class TravelInDirectionCommand : Command() {
             val direction = Direction.getDirection(keyword)
             when {
                 direction == Direction.NONE -> display("Could not find direction $keyword")
-                GameState.player.isClimbing -> CommandParser.parseCommand("climb $direction")
+                GameState.player.properties.values.getBoolean(IS_CLIMBING) -> CommandParser.parseCommand("climb $direction")
                 else -> {
                     val neighbors = GameState.player.location.getNeighbors(direction)
                     val openNeighbors = neighbors.filter { !GameState.player.location.isMovingToRestricted(it) }

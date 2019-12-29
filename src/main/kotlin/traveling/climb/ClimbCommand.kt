@@ -1,15 +1,16 @@
 package traveling.climb
 
-import core.commands.*
-import traveling.direction.Direction
 import core.GameState
+import core.commands.*
+import core.events.EventManager
+import core.history.display
+import core.properties.IS_CLIMBING
 import core.target.Target
+import core.utility.NameSearchableList
+import traveling.direction.Direction
 import traveling.direction.getDirection
 import traveling.location.LocationNode
-import core.history.display
-import core.utility.NameSearchableList
 import traveling.scope.ScopeManager
-import core.events.EventManager
 
 class ClimbCommand : Command() {
 
@@ -39,7 +40,7 @@ class ClimbCommand : Command() {
         val arguments = Args(args, delimiters)
         when {
             GameState.player.getEncumbrance() >=1 -> display("You are too encumbered to climb.")
-            GameState.player.isClimbing -> processClimbing(keyword, arguments, GameState.player.climbTarget!!)
+            GameState.player.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(keyword, arguments, GameState.player.climbTarget!!)
             else -> processNewClimb(arguments)
         }
     }

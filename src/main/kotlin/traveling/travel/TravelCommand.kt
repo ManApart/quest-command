@@ -1,14 +1,15 @@
 package traveling.travel
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
-import core.GameState
+import core.events.EventManager
+import core.history.display
+import core.properties.CAN_TRAVEL
+import traveling.location.LocationManager
 import traveling.location.LocationNode
 import traveling.location.NOWHERE_NODE
-import core.history.display
-import core.events.EventManager
-import traveling.location.LocationManager
 import traveling.routes.FindRouteEvent
 
 class TravelCommand : Command() {
@@ -32,7 +33,7 @@ class TravelCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (!GameState.player.canTravel) {
+        if (!GameState.player.properties.values.getBoolean(CAN_TRAVEL)) {
             display("You can't travel right now.")
         } else if (GameState.player.getEncumbrance() >=1){
             display("You are too encumbered to travel.")

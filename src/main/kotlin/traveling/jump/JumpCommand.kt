@@ -1,10 +1,11 @@
 package traveling.jump
 
-import core.commands.Command
-import traveling.direction.Direction
 import core.GameState
-import core.history.display
+import core.commands.Command
 import core.events.EventManager
+import core.history.display
+import core.properties.IS_CLIMBING
+import traveling.direction.Direction
 
 //TODO - eventually jump to specific part while climbing (in any direction)
 class JumpCommand : Command() {
@@ -27,7 +28,7 @@ class JumpCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (GameState.player.isClimbing) {
+        if (GameState.player.properties.values.getBoolean(IS_CLIMBING)) {
             val playerLocation = GameState.player.location
             val targetLocation= GameState.player.climbTarget!!.location
             EventManager.postEvent(JumpEvent(source = playerLocation, destination = targetLocation, fallDistance = playerLocation.getDistanceToLowestNodeInNetwork()))

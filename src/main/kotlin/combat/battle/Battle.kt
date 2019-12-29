@@ -1,13 +1,15 @@
 package combat.battle
 
 import combat.Combatant
-import core.commands.CommandParser
 import core.GameState
-import core.target.Target
+import core.commands.CommandParser
+import core.events.EventManager
 import core.history.display
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
-import core.events.EventManager
+import core.properties.CAN_REST
+import core.properties.CAN_TRAVEL
+import core.target.Target
 
 class Battle(combatantCreatures: List<Target>) {
     private val combatants = mutableListOf<Combatant>()
@@ -53,14 +55,14 @@ class Battle(combatantCreatures: List<Target>) {
     }
 
     fun start() {
-        GameState.player.canRest = false
-        GameState.player.canTravel = false
+        GameState.player.properties.values.put(CAN_REST, false)
+        GameState.player.properties.values.put(CAN_TRAVEL, false)
     }
 
     private fun clearBattle() {
         GameState.battle = null
-        GameState.player.canTravel = true
-        GameState.player.canRest = true
+        GameState.player.properties.values.put(CAN_REST, true)
+        GameState.player.properties.values.put(CAN_TRAVEL, true)
         display("The battle ends.")
         EventManager.postEvent(BattleEndedEvent())
     }

@@ -1,12 +1,12 @@
 package use.actions
 
 import core.events.Event
-import core.GameState
+import core.events.EventManager
 import core.history.display
+import core.properties.CAN_INTERACT
 import core.utility.StringFormatter
 import use.UseEvent
 import use.UseListener
-import core.events.EventManager
 
 class NoUseFound : UseListener<UseEvent>() {
     private var checkedEvent: Event? = null
@@ -20,8 +20,7 @@ class NoUseFound : UseListener<UseEvent>() {
     }
 
     override fun executeUseEvent(event: UseEvent) {
-        // TODO - use event source, don't hardcode player
-        if (GameState.player.canInteract) {
+        if (event.source.properties.values.getBoolean(CAN_INTERACT)) {
             if (!event.target.isWithinRangeOf(event.source)) {
                 display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to interact with ${event.target}.")
             } else if (event.target.canConsume(event)) {
