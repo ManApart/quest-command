@@ -8,6 +8,7 @@ import org.junit.Before
 import org.junit.Test
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -28,12 +29,16 @@ class PersistenceTest {
     @Test
     fun testThing() {
         GameState.player.properties.tags.add("Saved")
+        GameState.player.name = "Saved Player"
+
         EventManager.postEvent(SaveEvent())
         EventManager.executeEvents()
         GameState.player.properties.tags.remove("Saved")
         assertFalse(GameState.player.properties.tags.has("Saved"))
+
         EventManager.postEvent(LoadEvent())
         EventManager.executeEvents()
+        assertEquals("Saved Player", GameState.player.name)
         assertTrue(GameState.player.properties.tags.has("Saved"))
     }
 

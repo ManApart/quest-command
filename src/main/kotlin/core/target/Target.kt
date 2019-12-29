@@ -18,7 +18,6 @@ import dialogue.DialogueOptions
 import inventory.Inventory
 import status.ProtoSoul
 import status.Soul
-import system.persistance.Persistable
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.LocationNode
@@ -44,9 +43,9 @@ open class Target(
         val parent: Target? = null,
         @JsonProperty("soul") soulStats: ProtoSoul = ProtoSoul(),
         properties: Properties = base?.properties ?: Properties()
-) : Named, Persistable {
+) : Named {
 
-    override val name = name.apply(params)
+    override var name = name.apply(params)
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = if (body == null) Body() else BodyManager.getBody(body)
@@ -62,18 +61,6 @@ open class Target(
 
     var climbTarget: Target? = null
     var route: Route? = null
-
-    override fun getVersion(): Int {
-        return 0
-    }
-
-    override fun getPersisted(): Map<String, Any> {
-        return mapOf()
-    }
-
-    override fun applyData(data: Map<String, Any>) {
-
-    }
 
     override fun toString(): String {
         return getDisplayName()
