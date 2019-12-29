@@ -1,6 +1,7 @@
 package use.eat
 
 import core.DependencyInjector
+import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
@@ -11,7 +12,6 @@ import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
 import core.reflection.Reflections
-import core.target.Player
 import core.target.Target
 import core.utility.PoorMansInstrumenter
 import core.utility.reflection.MockReflections
@@ -66,7 +66,7 @@ class EatCommandTest {
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
 
-        GameState.player = Player(location = NOWHERE_NODE)
+        GameState.player = GameManager.newPlayer(location = NOWHERE_NODE)
     }
 
     @Test

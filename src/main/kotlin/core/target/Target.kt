@@ -13,10 +13,8 @@ import core.body.Slot
 import core.events.Event
 import core.properties.ENCUMBRANCE
 import core.properties.Properties
-import core.utility.Named
-import core.utility.apply
-import core.utility.applyNested
-import core.utility.max
+import core.utility.*
+import crafting.Recipe
 import dialogue.DialogueOptions
 import inventory.Inventory
 import status.ProtoSoul
@@ -25,6 +23,7 @@ import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.LocationNode
 import traveling.location.NOWHERE_NODE
+import traveling.location.Route
 import kotlin.math.max
 import kotlin.math.min
 
@@ -59,6 +58,17 @@ open class Target(
     var position = Vector()
     private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
     private val dynamicDescription = dynamicDescription.apply(params)
+    val knownRecipes = NameSearchableList<Recipe>()
+
+    var climbTarget: Target? = null
+    var route: Route? = null
+
+    //TODO - make all these properties
+    var isClimbing = false
+    var canRest = true
+    var canTravel = true
+    var canInteract = true
+
 
     override fun toString(): String {
         return getDisplayName()
@@ -82,7 +92,7 @@ open class Target(
     }
 
     fun isPlayer(): Boolean {
-        return this == GameState.player || this == GameState.player
+        return this == GameState.player
     }
 
     fun getTopParent(): Target {
@@ -90,12 +100,14 @@ open class Target(
     }
 
     open fun canConsume(event: Event): Boolean {
-        return behaviors.any { it.evaluate(event) }
+        return !isPlayer() && behaviors.any { it.evaluate(event) }
     }
 
     open fun consume(event: Event) {
-        behaviors.filter { it.evaluate(event) }
-                .forEach { it.execute(event, this) }
+        if (!isPlayer()) {
+            behaviors.filter { it.evaluate(event) }
+                    .forEach { it.execute(event, this) }
+        }
     }
 
     fun getTotalCapacity(): Int {
@@ -183,6 +195,22 @@ open class Target(
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 
+
+    fun setClimbing(target: Target) {
+        isClimbing = true
+        climbTarget = target
+        canRest = false
+        canTravel = false
+        canInteract = false
+    }
+
+    fun finishClimbing() {
+        isClimbing = false
+        climbTarget = null
+        canRest = true
+        canTravel = true
+        canInteract = true
+    }
 
 }
 

@@ -6,12 +6,15 @@ import core.events.EventManager
 import core.history.ChatHistory
 import core.history.SessionHistory
 import core.history.display
-import core.target.Player
+import core.target.Target
 import core.target.item.ItemManager
+import dialogue.DialogueOptions
 import quests.QuestManager
 import status.stat.*
 import system.message.MessageEvent
 import traveling.arrive.ArriveEvent
+import traveling.location.LocationManager
+import traveling.location.LocationNode
 import traveling.location.LocationPoint
 import traveling.scope.ScopeManager
 
@@ -48,8 +51,14 @@ object GameManager {
         EventManager.postEvent(GameStartEvent())
     }
 
-    fun newPlayer(): Player {
-        val player = Player()
+    fun newPlayer(
+            name: String = "Player",
+            dynamicDescription: DialogueOptions = DialogueOptions("Our Hero!"),
+            body: String = "Human",
+            location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
+    ): Target {
+        val player = Target(name = name, dynamicDescription = dynamicDescription, aiName = core.ai.PLAYER_CONTROLLED_ID, body = body, location = location)
+
         with(player.soul) {
             addStat(HEALTH, 1, 10, 1)
             addStat(PERCEPTION, 1, 1, 1)
@@ -71,7 +80,7 @@ object GameManager {
         return player
     }
 
-    private fun giveStartingItems(player: Player) {
+    private fun giveStartingItems(player: Target) {
         val inventory = player.inventory
         val body = player.body
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {
