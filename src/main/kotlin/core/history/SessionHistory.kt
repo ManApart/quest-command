@@ -5,9 +5,11 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 object SessionHistory {
     private val date = SimpleDateFormat("yyyy-MM-dd-hh-mm").format(Date())
-    private val fileName = "./session-stats-$date.txt"
+    private const val directory = "./saves/"
+    private val fileName = "./saves/session-stats-$date.txt"
 
     private val unknownCommands = mutableListOf<String>()
     private val eventCounts = mutableMapOf<String, Int>()
@@ -23,6 +25,10 @@ object SessionHistory {
     }
 
     fun saveSessionStats() {
+        val directory = File(directory)
+        if (!directory.exists()) {
+            directory.mkdir()
+        }
         File(fileName).printWriter().use { out ->
             out.println("---Event Counts--")
             eventCounts.forEach { (eventName, count) ->

@@ -4,7 +4,6 @@ import core.commands.CommandParser
 import core.events.EventListener
 import core.events.EventManager
 import core.history.ChatHistory
-import core.history.SessionHistory
 import core.history.display
 import core.properties.CAN_INTERACT
 import core.properties.CAN_REST
@@ -24,16 +23,9 @@ import traveling.scope.ScopeManager
 const val PLAYER_START_NETWORK = "Kanbara Countryside"
 const val PLAYER_START_LOCATION = "An Open Field"
 
+
 object GameManager {
     var playing = false
-
-    fun saveGame() {
-        SessionHistory.saveSessionStats()
-    }
-
-    fun loadGame() {
-        TODO("not implemented") //To change body of created functions interact File | Settings | File Templates.
-    }
 
     fun newGame() {
         CommandParser.reset()

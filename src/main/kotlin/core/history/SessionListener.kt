@@ -1,16 +1,17 @@
 package core.history
 
-import core.events.Event
-import core.events.EventListener
 import core.AUTO_SAVE
 import core.GameState
-import core.GameManager
+import core.events.Event
+import core.events.EventListener
+import core.events.EventManager
+import system.persistance.saving.SaveEvent
 
 class SessionListener : EventListener<Event>() {
     override fun execute(event: Event) {
         SessionHistory.incEventCount(event)
         if (GameState.properties.values.getBoolean(AUTO_SAVE)){
-            GameManager.saveGame()
+            EventManager.postEvent(SaveEvent())
         }
     }
 }
