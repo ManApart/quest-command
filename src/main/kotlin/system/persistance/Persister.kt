@@ -2,7 +2,6 @@ package system.persistance
 
 import core.properties.Properties
 import core.properties.PropertiesPersister
-import core.target.Player
 import core.target.Target
 import core.target.TargetPersister
 
@@ -11,10 +10,6 @@ import core.target.TargetPersister
 object Persister {
     private val propertiesPersister = PropertiesPersister()
     private val targetPersister = TargetPersister()
-
-    fun getPersisted(dataObject: Player) : Map<String, Any> {
-        return targetPersister.getPersisted(dataObject)
-    }
 
     fun getPersisted(dataObject: Target) : Map<String, Any> {
         return targetPersister.getPersisted(dataObject)
@@ -32,10 +27,6 @@ object Persister {
 
     fun getTarget(data: Map<String, Any>) : Target {
         return targetPersister.applyData(data)
-    }
-
-    fun getPlayer(data: Map<String, Any>) : Player {
-        return Player()
     }
 
 }

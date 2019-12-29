@@ -133,3 +133,6 @@ gradle-app.setting
 
 session-stats*
 saves/**
+bin/
+.classpath
+.project

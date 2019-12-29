@@ -8,8 +8,6 @@ import combat.battle.Distances.SWORD_RANGE
 import core.utility.wrapNonEmpty
 
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
-
-data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(tags: Tags) : this(Values(), tags)
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
             Values(base.values, params),

@@ -11,7 +11,7 @@ class Load : EventListener<LoadEvent>() {
     private val playerSavePath = "./saves/PlayerSave.json"
     override fun execute(event: LoadEvent) {
         val playerData = readSave()
-        GameState.player = Persister.getPlayer(playerData)
+        GameState.player = Persister.getTarget(playerData)
 
         println("Loaded!")
     }
