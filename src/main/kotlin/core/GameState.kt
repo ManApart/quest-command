@@ -2,16 +2,15 @@ package core
 
 import combat.battle.Battle
 import core.properties.Properties
-import core.target.Player
 
 object GameState {
-    var player = Player()
+    var player = GameManager.newPlayer()
     var battle: Battle? = null
     var properties = Properties()
 
 
     fun reset() {
-        player = Player()
+        player = GameManager.newPlayer()
         battle = null
         properties = Properties()
     }

@@ -1,21 +1,20 @@
 package core.gamestate.quests
 
-import core.GameState
-import core.target.Player
-import core.target.Target
-import quests.triggerCondition.TriggerCondition
-import quests.*
-import quests.QuestFakeParser
-import use.interaction.InteractEvent
-import org.junit.BeforeClass
-import org.junit.Test
-import system.BodyFakeParser
 import core.DependencyInjector
+import core.GameManager
+import core.GameState
 import core.body.BodyManager
 import core.body.BodyParser
+import core.target.Target
+import org.junit.BeforeClass
+import org.junit.Test
+import quests.*
+import quests.triggerCondition.TriggerCondition
+import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.LocationManager
 import traveling.location.LocationParser
+import use.interaction.InteractEvent
 import kotlin.test.assertEquals
 
 class QuestListenerTest {
@@ -32,7 +31,7 @@ class QuestListenerTest {
             DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
             LocationManager.reset()
 
-            GameState.player = Player()
+            GameState.player = GameManager.newPlayer()
         }
     }
 

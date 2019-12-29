@@ -1,10 +1,10 @@
 package system.location
 
-import core.target.PLAYER_START_LOCATION
-import core.target.PLAYER_START_NETWORK
+import core.PLAYER_START_LOCATION
+import core.PLAYER_START_NETWORK
+import core.utility.NameSearchableList
 import traveling.location.Location
 import traveling.location.LocationNode
-import core.utility.NameSearchableList
 import traveling.location.LocationParser
 
 class LocationFakeParser(

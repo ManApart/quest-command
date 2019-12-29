@@ -1,24 +1,23 @@
 package crafting
 
+import core.DependencyInjector
+import core.GameManager
+import core.body.BodyManager
+import core.body.BodyParser
+import core.events.EventManager
+import core.properties.Properties
+import core.properties.Tags
+import core.properties.Values
 import core.target.Target
-import traveling.location.NOWHERE_NODE
+import core.target.item.ItemManager
+import core.target.item.ItemParser
+import crafting.craft.Craft
+import crafting.craft.CraftRecipeEvent
 import inventory.dropItem.TransferItem
 import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser
-import core.DependencyInjector
-import core.events.EventManager
 import system.ItemFakeParser
-import core.body.BodyManager
-import core.body.BodyParser
-import core.target.item.ItemManager
-import core.target.item.ItemParser
-import core.properties.Properties
-import core.properties.Tags
-import core.properties.Values
-import core.target.Player
-import crafting.craft.Craft
-import crafting.craft.CraftRecipeEvent
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -80,8 +79,9 @@ class CraftTest {
     }
 
     private fun createBaker(): Target {
-        val baker = Player(location = NOWHERE_NODE)
-        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open"))))
+//        val baker = Player(location = NOWHERE_NODE)
+        val baker = GameManager.newPlayer()
+        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "30")), Tags(listOf("Container", "Open"))))
         baker.inventory.add(pouch)
         return baker
     }

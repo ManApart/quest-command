@@ -1,24 +1,20 @@
 package system
 
 import core.DependencyInjector
-import traveling.direction.NO_VECTOR
-import core.target.PLAYER_START_LOCATION
-import core.target.PLAYER_START_NETWORK
+import core.PLAYER_START_LOCATION
+import core.PLAYER_START_NETWORK
+import core.body.BodyManager
+import core.body.BodyParser
 import core.target.Target
-import traveling.location.DEFAULT_NETWORK
-import traveling.location.LocationNode
-import traveling.location.LocationTarget
+import core.target.activator.ActivatorManager
+import core.target.activator.ActivatorParser
 import core.utility.NameSearchableList
 import dialogue.DialogueOptions
 import org.junit.Before
 import org.junit.Test
-import core.target.activator.ActivatorManager
-import core.target.activator.ActivatorParser
-import core.body.BodyManager
-import core.body.BodyParser
 import system.location.LocationFakeParser
-import traveling.location.LocationManager
-import traveling.location.LocationParser
+import traveling.direction.NO_VECTOR
+import traveling.location.*
 import kotlin.test.assertEquals
 
 class ActivatorManagerTest {

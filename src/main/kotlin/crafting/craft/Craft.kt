@@ -1,15 +1,14 @@
 package crafting.craft
 
 import core.events.EventListener
-import core.GameState
-import inventory.Inventory
-import core.target.Target
-import core.history.display
-import core.utility.StringFormatter
-import inventory.dropItem.TransferItemEvent
 import core.events.EventManager
+import core.history.display
+import core.target.Target
 import core.target.item.ItemManager
+import core.utility.StringFormatter
 import crafting.DiscoverRecipeEvent
+import inventory.Inventory
+import inventory.dropItem.TransferItemEvent
 
 class Craft : EventListener<CraftRecipeEvent>() {
 
@@ -37,7 +36,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
 
     private fun addResults(results: List<Target>, event: CraftRecipeEvent) {
         results.forEach {
-            EventManager.postEvent(TransferItemEvent(GameState.player, it, destination = event.source, silent = true))
+            EventManager.postEvent(TransferItemEvent(event.source, it, destination = event.source, silent = true))
         }
     }
 
