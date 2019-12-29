@@ -10,15 +10,15 @@ import java.io.File
 class Load : EventListener<LoadEvent>() {
     private val playerSavePath = "./saves/PlayerSave.json"
     override fun execute(event: LoadEvent) {
-        val playerData = readSave(playerSavePath)
+        val playerData = readSave()
         GameState.player = Player()
         GameState.player.applyData(playerData)
 
         println("Loaded!")
     }
 
-    private fun readSave(savePath: String): Map<String, Any> {
-        val stream = File(savePath)
+    private fun readSave(): Map<String, Any> {
+        val stream = File(playerSavePath)
         return jacksonObjectMapper().readValue(stream)
     }
 }

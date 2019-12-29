@@ -6,8 +6,10 @@ import combat.battle.Distances.MIN_RANGE
 import combat.battle.Distances.SPEAR_RANGE
 import combat.battle.Distances.SWORD_RANGE
 import core.utility.wrapNonEmpty
+import system.persistance.Persistable
 
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
+
     constructor(tags: Tags) : this(Values(), tags)
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
             Values(base.values, params),
@@ -17,6 +19,26 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     override fun toString(): String {
         return tags.toString().wrapNonEmpty("(Tags: ", ") ") +
                 values.toString().wrapNonEmpty("(Values: ", ") ")
+    }
+
+    override fun getVersion(): Int {
+        return 0
+    }
+
+    override fun getPersisted(): Map<String, Any> {
+        val data = mutableMapOf<String, Any>()
+        data["values"] = values.getAll()
+        data["tags"] = tags.getAll()
+        return data
+    }
+
+    override fun applyData(data: Map<String, Any>) {
+        values.clear()
+        (data["values"] as Map<*, *>).forEach { values.put(it.key as String, it.value as String) }
+
+        tags.clear()
+        (data["tags"] as List<*>).forEach { tags.add(it as String) }
+
     }
 
     fun matches(other: Properties): Boolean {

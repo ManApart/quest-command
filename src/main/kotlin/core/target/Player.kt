@@ -47,23 +47,26 @@ class Player(
         return name
     }
 
-    override fun getVersion(): Int {
-        return 0
-    }
-
     override fun canConsume(event: Event): Boolean {
         return false
     }
 
+    override fun consume(event: Event) {}
+
+    override fun getVersion(): Int {
+        return 0
+    }
+
     override fun getPersisted(): Map<String, Any> {
-        return mapOf()
+        val data = mutableMapOf<String, Any>()
+        data["properties"] = properties.getPersisted()
+        return data
     }
 
     override fun applyData(data: Map<String, Any>) {
-
+        @Suppress("UNCHECKED_CAST")
+        properties.applyData(data["properties"] as Map<String, Any>)
     }
-
-    override fun consume(event: Event) {}
 
     fun setClimbing(target: Target) {
         isClimbing = true

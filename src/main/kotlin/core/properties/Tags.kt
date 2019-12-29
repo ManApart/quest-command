@@ -54,6 +54,10 @@ class Tags(tags: List<String> = listOf()) {
         return tags.toList()
     }
 
+    fun clear() {
+        tags.clear()
+    }
+
     private fun lowerCaseTags(): List<String> {
         return tags.asSequence().map { it.toLowerCase() }.toList()
     }

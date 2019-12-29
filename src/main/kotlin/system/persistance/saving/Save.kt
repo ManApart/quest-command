@@ -12,18 +12,18 @@ class Save : EventListener<SaveEvent>() {
     override fun execute(event: SaveEvent) {
 //        SessionHistory.saveSessionStats()
         val playerData = GameState.player.getPersisted()
-        writeSave(playerSavePath, playerData)
+        writeSave(playerData)
 
         println("Saved!")
     }
 
-    private fun writeSave(savePath: String, data: Map<String, Any>) {
+    private fun writeSave(data: Map<String, Any>) {
         val directory = File(directory)
         if (!directory.exists()) {
             directory.mkdir()
         }
         val json = ObjectMapper().writeValueAsString(data)
-        File(savePath).printWriter().use { out ->
+        File(playerSavePath).printWriter().use { out ->
             out.println(json)
         }
     }
