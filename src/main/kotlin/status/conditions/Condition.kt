@@ -1,27 +1,31 @@
 package status.conditions
 
-import status.Soul
+import core.events.EventManager
 import core.utility.NameSearchableList
 import core.utility.Named
-import core.events.EventManager
-import status.effects.Effect
 import magic.Element
 import magic.ElementInteraction
+import status.Soul
+import status.effects.Effect
 
 class Condition(
         override val name: String,
-        private val element: Element = Element.NONE,
+        val element: Element = Element.NONE,
         var elementStrength: Int = 1,
         effects: List<Effect> = listOf(),
         criticalEffects: List<Effect> = listOf(),
-        private val permanent: Boolean = false
-) : Named {
-    private val effects = NameSearchableList(effects)
-    private val criticalEffects = NameSearchableList(criticalEffects)
+        val permanent: Boolean = false,
+        age: Int? = null,
+        isCritical: Boolean? = null,
+        isFirstApply: Boolean? = null
 
-    private var age = 0
-    var isCritical = false
-    private var isFirstApply = true
+) : Named {
+    val effects = NameSearchableList(effects)
+    val criticalEffects = NameSearchableList(criticalEffects)
+
+    var age = age ?: 0; private set
+    var isCritical = isCritical ?: false
+    var isFirstApply = isFirstApply ?: true; private set
 
     override fun toString(): String {
         return name + ": " + effects.joinToString(", ") { it.base.name }
@@ -58,10 +62,6 @@ class Condition(
 
     fun removeEffects(soul: Soul) {
         getEffects().forEach { it.remove(soul) }
-    }
-
-    fun getAge(): Int {
-        return age
     }
 
     fun hasEffect(name: String): Boolean {

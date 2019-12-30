@@ -43,7 +43,7 @@ class Status : EventListener<StatusEvent>() {
         val soul = event.creature.soul
         val subject = StringFormatter.getSubjectPossessive(event.creature)
         val conditionString = soul.getConditions().joinToString("\n\t") { condition ->
-            "${condition.name} (age: ${condition.getAge()}}):\n\t\t" + condition.getEffects().joinToString("\n\t\t")
+            "${condition.name} (age: ${condition.age}}):\n\t\t" + condition.getEffects().joinToString("\n\t\t")
         }
 
         if (soul.getConditions().isNotEmpty()) {
