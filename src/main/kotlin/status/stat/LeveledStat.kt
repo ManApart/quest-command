@@ -1,10 +1,10 @@
 package status.stat
 
+import core.events.EventManager
 import core.target.Target
 import status.LevelUpEvent
 import status.statChanged.StatMaxedEvent
 import status.statChanged.StatMinnedEvent
-import core.events.EventManager
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -31,12 +31,13 @@ const val FIRE_MAGIC = "FireMagic"
 const val WATER_MAGIC = "WaterMagic"
 
 
-class LeveledStat(val name: String, private val parent: Target, private var level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2) {
+class LeveledStat(val name: String, private val parent: Target, level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2, max: Int? = null, current: Int? = null, xp: Double? = null) {
     constructor(parent: Target, base: LeveledStat) : this(base.name, parent, base.level, base.maxMultiplier, base.expExponential)
 
-    var max: Int = getBaseMaxAtCurrentLevel(); private set
-    var current: Int = max; private set
-    private var xp: Double = getXPAt(level)
+    var level: Int = level; private set
+    var max: Int = max ?: getBaseMaxAtCurrentLevel(); private set
+    var current: Int = current ?: this.max; private set
+    var xp: Double = xp ?: getXPAt(level); private set
 
     override fun toString(): String {
         return "$name: lvl $level, $current/$max"
@@ -112,10 +113,6 @@ class LeveledStat(val name: String, private val parent: Target, private var leve
 
     private fun getXPAt(level: Int): Double {
         return level.toDouble().pow(expExponential.toDouble())
-    }
-
-    fun getCurrentXP(): Double {
-        return xp
     }
 
     fun getNextLevelXP(): Double {

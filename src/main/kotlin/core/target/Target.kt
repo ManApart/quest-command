@@ -50,6 +50,7 @@ open class Target(
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = if (body == null) Body() else BodyManager.getBody(body)
     val description get() = dynamicDescription.getDialogue()
+    //Why is equip slots not part of the body?
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val inventory: Inventory = Inventory(items)
     val properties = Properties(properties, params)

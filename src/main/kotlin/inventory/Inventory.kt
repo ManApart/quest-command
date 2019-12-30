@@ -1,9 +1,9 @@
 package inventory
 
-import core.utility.NameSearchableList
-import core.target.item.ItemManager
 import core.properties.Properties
 import core.target.Target
+import core.target.item.ItemManager
+import core.utility.NameSearchableList
 
 class Inventory(itemNames: List<String> = listOf()) {
     constructor(base: Inventory) : this(base.getItems().map { it.name })
@@ -20,6 +20,10 @@ class Inventory(itemNames: List<String> = listOf()) {
 
     fun getItems(name: String): List<Target> {
         return NameSearchableList(getAllItems()).getAll(name)
+    }
+
+    fun addAll(items: List<Target>){
+        items.forEach { add(it) }
     }
 
     fun add(item: Target) {

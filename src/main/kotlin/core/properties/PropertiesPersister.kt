@@ -3,6 +3,7 @@ package core.properties
 
 fun getPersisted(dataObject: Properties): Map<String, Any> {
     val data = mutableMapOf<String, Any>()
+    data["version"] = 1
     data["values"] = dataObject.values.getAll()
     data["tags"] = dataObject.tags.getAll()
     return data

@@ -27,7 +27,7 @@ class PersistenceTest {
     }
 
     @Test
-    fun testThing() {
+    fun playerSave() {
         GameState.player.properties.tags.add("Saved")
         GameState.player.name = "Saved Player"
 

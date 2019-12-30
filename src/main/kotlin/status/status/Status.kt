@@ -1,13 +1,12 @@
 package status.status
 
 import core.events.EventListener
+import core.history.display
 import core.properties.ENCUMBRANCE
+import core.utility.StringFormatter
 import status.stat.FOCUS
-
 import status.stat.HEALTH
 import status.stat.STAMINA
-import core.history.display
-import core.utility.StringFormatter
 
 class Status : EventListener<StatusEvent>() {
 
@@ -35,7 +34,7 @@ class Status : EventListener<StatusEvent>() {
         val statString = soul.getStats().asSequence()
                 .filter { it != soul.getStatOrNull(HEALTH) && it != soul.getStatOrNull(FOCUS) && it != soul.getStatOrNull(STAMINA) }
                 .joinToString("\n\t") {
-                    "${it.name.capitalize()}: ${it.current}/${it.max} (${it.getCurrentXP().toInt()}/${it.getNextLevelXP().toInt()}xp)"
+                    "${it.name.capitalize()}: ${it.current}/${it.max} (${it.xp.toInt()}/${it.getNextLevelXP().toInt()}xp)"
                 }
         display("$subject stats:\n\t$statString")
     }

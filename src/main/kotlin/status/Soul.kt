@@ -139,4 +139,14 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         conditions.remove(condition)
     }
 
+    fun overrideStats(newStats: List<LeveledStat>) {
+        leveledStats.clear()
+        leveledStats.addAll(newStats)
+    }
+
+    fun overrideConditions(newConditions: List<Condition>) {
+        conditions.clear()
+        conditions.addAll(newConditions)
+    }
+
 }

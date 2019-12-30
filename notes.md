@@ -351,6 +351,7 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 - Use time of day to do dynamic descriptions of locations
 - Location Targets can take item names to spawn with (for containers etc)
 
+- Eventually persist networks?
 
 ### Magic
 
