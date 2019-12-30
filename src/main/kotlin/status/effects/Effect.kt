@@ -1,20 +1,20 @@
 package status.effects
 
 import combat.takeDamage.TakeDamageEvent
-import status.Soul
 import core.body.BodyPart
-import status.stat.LeveledStat
-import status.stat.StatKind
-import core.utility.Named
-import core.properties.propValChanged.PropertyStatChangeEvent
-import status.statChanged.StatChangeEvent
 import core.events.EventManager
+import core.properties.propValChanged.PropertyStatChangeEvent
+import core.utility.Named
+import status.Soul
 import status.stat.AmountType
+import status.stat.LeveledStat
 import status.stat.StatEffect
+import status.stat.StatKind
+import status.statChanged.StatChangeEvent
 import kotlin.math.min
 
-class Effect(val base: EffectBase, val amount: Int, val duration: Int, private val bodyPartTargets: List<BodyPart> = listOf()) : Named {
-    private var originalValue = 0
+class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyPartTargets: List<BodyPart> = listOf()) : Named {
+    var originalValue = 0; private set
     override val name = base.name
 
     override fun toString(): String {

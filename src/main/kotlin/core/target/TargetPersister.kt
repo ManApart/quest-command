@@ -23,7 +23,6 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     //TODO - persister for items
     data["inventory"] = inventory.getPersisted(dataObject.inventory)
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
-    //TODO - persister for souls
     data["soul"] = status.getPersisted(dataObject.soul)
 
     data["properties"] = getPersisted(dataObject.properties)
