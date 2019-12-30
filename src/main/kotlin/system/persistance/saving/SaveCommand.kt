@@ -14,7 +14,7 @@ class SaveCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tSave - Save your game X" +
+        return "\n\tSave - Save your game" +
                 "\n\tSave <name> - Save with a specific save name. X"
     }
 

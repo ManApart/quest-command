@@ -5,13 +5,18 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import core.GameState
 import core.events.EventListener
 import core.target.readFromData
+import traveling.scope.ScopeManager
 import java.io.File
 
 class Load : EventListener<LoadEvent>() {
     private val playerSavePath = "./saves/PlayerSave.json"
     override fun execute(event: LoadEvent) {
         val playerData = readSave()
+
+        ScopeManager.getScope().removeTarget(GameState.player)
         GameState.player = readFromData(playerData)
+        ScopeManager.getScope().addTarget(GameState.player)
+
 
         println("Loaded!")
     }
