@@ -1,8 +1,8 @@
 package traveling.location
 
+import core.DependencyInjector
 import core.GameState
 import core.utility.NameSearchableList
-import core.DependencyInjector
 
 object LocationManager {
     private val locationHelper = LocationHelper()
@@ -17,18 +17,20 @@ object LocationManager {
         val locations = parser.loadLocations()
         val nodes: List<LocationNode> = parser.loadLocationNodes()
 
+
         val nodeMap = locationHelper.buildInitialMap(nodes)
         locationHelper.createNeighborsAndNeighborLinks(nodeMap)
         createLocationIfNeeded(nodeMap, locations)
 
         val networks = nodeMap.map { entry ->
             val networkLocations = entry.value.map { locations.get(it.locationName) }.distinct()
+
             val network = Network(entry.key, entry.value, networkLocations)
             entry.value.forEach { it.network = network }
             network
         }
-
-        return NameSearchableList(networks)
+        DEFAULT_NETWORK.addLocationNode(NOWHERE_NODE)
+        return NameSearchableList(networks + DEFAULT_NETWORK)
     }
 
     private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>, locations: NameSearchableList<Location>) {

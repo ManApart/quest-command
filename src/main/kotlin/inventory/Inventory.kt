@@ -5,10 +5,10 @@ import core.target.Target
 import core.target.item.ItemManager
 import core.utility.NameSearchableList
 
-class Inventory(itemNames: List<String> = listOf()) {
+class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf()) {
     constructor(base: Inventory) : this(base.getItems().map { it.name })
 
-    private val items = NameSearchableList(itemNames.map { ItemManager.getItem(it) })
+    private val items = NameSearchableList(items + itemNames.map { ItemManager.getItem(it) })
 
     fun exists(item: Target): Boolean {
         return items.exists(item) || NameSearchableList(getAllItems()).exists(item)
@@ -22,7 +22,7 @@ class Inventory(itemNames: List<String> = listOf()) {
         return NameSearchableList(getAllItems()).getAll(name)
     }
 
-    fun addAll(items: List<Target>){
+    fun addAll(items: List<Target>) {
         items.forEach { add(it) }
     }
 
@@ -41,8 +41,8 @@ class Inventory(itemNames: List<String> = listOf()) {
 
     fun remove(item: Target, count: Int = 1) {
         val inventory = findSubInventoryWithItem(item)
-        if (inventory != null){
-            if (item.properties.getCount() > count){
+        if (inventory != null) {
+            if (item.properties.getCount() > count) {
                 item.properties.incCount(-count)
             } else {
                 inventory.items.remove(item)

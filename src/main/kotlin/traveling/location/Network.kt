@@ -1,10 +1,10 @@
 package traveling.location
 
+import core.utility.NameSearchableList
+import core.utility.Named
 import traveling.direction.Direction
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
-import core.utility.NameSearchableList
-import core.utility.Named
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locations: List<Location> = listOf()) : Named {
     constructor(base: Network) : this(base.name, base.locationNodes, base.locations.map { Location(it) })
@@ -98,5 +98,8 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return node.getDistanceTo(getFurthestLocation(direction))
     }
 
+    fun addLocationNode(locationNode: LocationNode) {
+        locationNodes.add(locationNode)
+    }
 
 }

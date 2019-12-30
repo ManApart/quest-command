@@ -20,7 +20,6 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     //TODO - persister for dynamic dialogue
     data["description"] = dataObject.description
 //    data["description"] = dataObject.dynamicDescription.getDialogue()
-    //TODO - persister for items
     data["inventory"] = inventory.getPersisted(dataObject.inventory)
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
@@ -39,7 +38,7 @@ fun readFromData(data: Map<String, Any>): Target {
     val dynamicDescription = DialogueOptions(data["description"] as String)
     val inventory = inventory.readFromData(data["inventory"] as Map<String, Any>)
     val locationMap = (data["location"] as Map<String, String>)
-    val location = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK).getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
+    val location = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name).getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
     val target = Target(name, null, mapOf(), null, aiName, behaviorRecipes, body, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)

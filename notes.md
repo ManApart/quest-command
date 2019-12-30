@@ -353,6 +353,10 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 
 - Eventually persist networks?
 
+Optimizations
+- Diff against base objects?
+- Don't write 0s, nulls, falses, default values?
+
 ### Magic
 
 The point of words of power / magic is to increase world immersion (elements should interact and be used to solve situations), and to help the player feel specialized.

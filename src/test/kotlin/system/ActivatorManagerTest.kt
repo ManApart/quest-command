@@ -23,7 +23,7 @@ class ActivatorManagerTest {
     fun setup() {
         val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(
                 LocationNode(PLAYER_START_LOCATION, parent = PLAYER_START_NETWORK),
-                LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK))
+                LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK.name))
         ))
 
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
