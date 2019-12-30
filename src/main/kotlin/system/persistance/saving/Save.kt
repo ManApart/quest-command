@@ -3,7 +3,7 @@ package system.persistance.saving
 import com.fasterxml.jackson.databind.ObjectMapper
 import core.GameState
 import core.events.EventListener
-import system.persistance.Persister
+import core.target.getPersisted
 import java.io.File
 
 class Save : EventListener<SaveEvent>() {
@@ -12,7 +12,7 @@ class Save : EventListener<SaveEvent>() {
 
     override fun execute(event: SaveEvent) {
 //        SessionHistory.saveSessionStats()
-        val playerData = Persister.getPersisted(GameState.player)
+        val playerData = getPersisted(GameState.player)
         writeSave(playerData)
 
         println("Saved!")

@@ -4,14 +4,14 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import core.GameState
 import core.events.EventListener
-import system.persistance.Persister
+import core.target.readFromData
 import java.io.File
 
 class Load : EventListener<LoadEvent>() {
     private val playerSavePath = "./saves/PlayerSave.json"
     override fun execute(event: LoadEvent) {
         val playerData = readSave()
-        GameState.player = Persister.getTarget(playerData)
+        GameState.player = readFromData(playerData)
 
         println("Loaded!")
     }
