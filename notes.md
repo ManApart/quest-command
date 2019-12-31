@@ -325,6 +325,15 @@ Temperature
 - Locations have a temperature depending on location properties + current effects, burnining fires, snowstorms etc
 - Player has own temperature rating that is the location temp + effects, equipped items, etc
 
+#### Gravity
+
+Targets in a scene can have supportParent
+GravityListener: Any target that doesn’t have a supportParent and has a position of Z > 0 should fall, unless it has the NoFall tag
+On Scope Remove, check any target that previously had that support Parent. Remove the parent and let the item fall
+A falling item should fall the the scene’s lower z boundary. This is 0 by default unless there is a below connection
+Double check that on move to a boundary changes scene - make this work for all targets
+When things fall to the lower boundary, the move listener should naturally move them to the scene below
+
 
 #### Other
 
@@ -366,6 +375,8 @@ Words of power learned indiviually / unlocked from quests and artifacts. Some wo
 Same spells scale up in potency as their skill increases
 
 Equippable gauntlets that help words from a certain element
+
+Casting a spell can require skill checks in multiple skills (for spells like smoke, thunderstorm)
 
 Atmospheric effects should effect spell cost / power
 - Super hot, buff fire
@@ -419,6 +430,14 @@ Quake with 4 levels, 1 being passive
 - Staves give you more range to your attacks
 - Leveling up gives more range?
 
+On Burn listener
+- Triggers on take burn damage
+- % chance (based on burn strength?
+- Add another burn condition for duration 3, 1 less strength than current effect
+- Reciever is either current or neighbor body part
+- Receiever must be flamable tage + has firehealth left
+- Fire burns on single body parts, can spread etc? Tinder box does just 1 body part, 1 point of damage, but can spread
+- Tinder box should not be stronger/burn longer than basic cast fire spell? 
 
 
 ### Quests
@@ -440,7 +459,10 @@ Other
 Resting restores 10% of stamina and focus per hour
 Traveling uses 1 stamina per AREA traveled (distance being from the scale class, an AREA being 10 HUMANs)
 
+Property stats max min?
+- how do we prevent firehealth from draining past 0 when target doesn’t have fire health
 
+Endurance vs stamina?
 
 Attribute | Derived Stat | Example Stats/Activities
 --- | --- | ---
@@ -458,6 +480,16 @@ Fitness
  - affected by eating unhealthy food etc
 
  
+#### Experience adder
+- Event(skill, amount)
+- Only on event success
+- Each formula should always give generous enough xp that a player should quickly level up to the point where they don’t get xp for doing the same task
+- A task should give xp for less than the first 10 times it is done
+
+Climb effort = min(base difficulty of object climbed, actual difficulty per player skill + encumbrance) * distance
+
+Spell effort = spell difficulty = 1f - (spell requirement level / player magic level)
+Spell difficulty * total cost?   Maybe only give xp if over 50%?
 
 
 
@@ -475,6 +507,17 @@ Morality/infamy system
 - Morality is carried by the player
 - Fame is based on value for current location + an average of all other locations
 
+
+#### Flaw system:
+
+On a new game you have to pick a flaw (long term effect on one of your attributes/skills, etc). Eventually get it healed through an oracle?
+
+When creating a character you can accept flaws/perks. Each flaw gives 1 perk point,  each perk  uses 1 point. There are mutually exclusive flaws/perks. You can’t take ugly (-10 charisma) and  handsome (+ 11 charisma). Flaws usually are a -10 in a skill, while perks are +11?
+
+Stat | Perk | Flaw
+--- | --- | ---
+Charisma | Handsome | Ugly
+Stamina | Young | Old
 
 ### Story
 
@@ -545,6 +588,17 @@ Landing on feet takes less damage
 Cushoned armor takes less damage than hard (steel) armor?
 Weight of armor gives more damage
 
+armor can have a grip stat that helps with climbing
+
+Bodyparts (surfaces) have a roughness and an angle. Used for determining climb difficulty
+
+
+
+Jump
+Calc distance to target. X dist + positive y dist. If y is negative, that subtracts from jump distance
+Calc possible fall damage only based on negative y
+
+
 
 ### Validation tools
 
@@ -598,3 +652,58 @@ jump to vector
 
 dismount - give location of parent
 jump - give location of parent
+
+
+clearly Telegraph multi tiered goals
+
+Multi-event listeners?
+
+
+Stealth actions / some actions have stealth rating / may be executed (even if hostile) and go unnoticed if stealth is high enough
+
+
+Create a data test for spell costs to narrow in on a good formula
+
+‘Human’ npcs should have varying levels. From level 3 peasonts to level 30 mercenaries
+
+On game start, the oracle / antagonist tells the player to come talk to them, starts them on the main quest when you finally do talk with them.
+
+Quests can be adaptable by giving quest triggers an alias to speak through. Since there is no animation / voiced dialogue, lines can be shuffled to backup characters etc.
+
+
+trigger conditions have a priority. Of all conditions that meet their condition, the one with the highest priority is executed
+
+Ai has two properties, Ai state and ai state time
+
+debug mode can reset managers
+
+
+Bad guy works to destroy world. Null pointers crash game and are called seams. At one point bad guy does something and throws a fake error. Crash to desktop and when the player restarts the game, the bad guy makes mention of the crash. Null pointers mean that we have reached a seam. We have touched the void
+
+Bad guy recognizes the player and says you're really just an avatar for some diety creeping into our world
+
+Debug setting ‘random: off’ to make random chance always succeed (for battle tests etc)
+
+
+allow increments stat to take a minimum and maximum
+
+Do a kill rats quest, where the rats have already been killed buy another adventurer
+
+Ice skates: overtime you get new tools that allow you to explore new areas
+
+Make AI run not only during battle, but give it an on-tick listener where it can integrate game state and decide to do something. (And start with it allowing player controlled ai to make a choice)
+Only evaluate AI for current location
+Maybe all command parsing come from AI and if not in battle / command is not an on-tick command, just cycle next ai etc.
+
+
+Quest for casting gauntlet. 
+Gauntlet give 10 + magic. 
+Combined gem with glove. 
+A bunch of chests, 1 / glove. 
+Choosing one chest deletes all chests
+
+
+
+Validation tools that:
+- Check for duplicate names (across items and activators)
+- Check all targets reference valid events etc (triggers and trigger events)

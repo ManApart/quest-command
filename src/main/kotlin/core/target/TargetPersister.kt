@@ -17,7 +17,6 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     //TODO - body persister for body details
     data["body"] = dataObject.body.name
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
-    //TODO - persister for dynamic dialogue
     data["description"] = dataObject.description
 //    data["description"] = dataObject.dynamicDescription.getDialogue()
     data["inventory"] = inventory.getPersisted(dataObject.inventory)
