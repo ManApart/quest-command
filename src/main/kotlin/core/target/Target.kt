@@ -205,6 +205,10 @@ open class Target(
         properties.values.put(CAN_INTERACT, true)
     }
 
+    fun getDynamicDescription2(): DialogueOptions {
+        return dynamicDescription
+    }
+
 }
 
 fun targetsToString(targets: List<Target>): String {

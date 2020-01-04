@@ -2,7 +2,6 @@ package core.target
 
 import core.ai.behavior.BehaviorRecipe
 import core.properties.getPersisted
-import dialogue.DialogueOptions
 import status.ProtoSoul
 import traveling.location.DEFAULT_NETWORK
 import traveling.location.LocationManager
@@ -17,8 +16,7 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     //TODO - body persister for body details
     data["body"] = dataObject.body.name
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
-    data["description"] = dataObject.description
-//    data["description"] = dataObject.dynamicDescription.getDialogue()
+    data["description"] = dialogue.getPersisted(dataObject.getDynamicDescription2())
     data["inventory"] = inventory.getPersisted(dataObject.inventory)
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
@@ -34,7 +32,8 @@ fun readFromData(data: Map<String, Any>): Target {
     val behaviorRecipes = (data["behaviorRecipes"] as List<String>).map { BehaviorRecipe(it) }.toMutableList()
     val body = data["body"] as String
     val equipSlots = (data["equipSlots"] as List<List<String>>)
-    val dynamicDescription = DialogueOptions(data["description"] as String)
+    val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
+//    val dynamicDescription = DialogueOptions(data["description"] as String)
     val inventory = inventory.readFromData(data["inventory"] as Map<String, Any>)
     val locationMap = (data["location"] as Map<String, String>)
     val location = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name).getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
