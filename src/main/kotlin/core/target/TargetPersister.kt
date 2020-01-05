@@ -15,7 +15,6 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     data["behaviorRecipes"] = dataObject.behaviorRecipes.map { it.name }
     //TODO - body persister for body details
     data["body"] = core.body.getPersisted(dataObject.body)
-//    data["body"] = dataObject.body.name
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
     data["description"] = dialogue.getPersisted(dataObject.getDynamicDescription2())
     data["inventory"] = inventory.getPersisted(dataObject.inventory)
@@ -31,11 +30,10 @@ fun readFromData(data: Map<String, Any>): Target {
     val name = data["name"] as String
     val aiName = data["aiName"] as String
     val behaviorRecipes = (data["behaviorRecipes"] as List<String>).map { BehaviorRecipe(it) }.toMutableList()
-    val body = core.body.readFromData(data["body"] as Map<String, Any>)
-//    val body = data["body"] as String
     val equipSlots = (data["equipSlots"] as List<List<String>>)
     val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
     val inventory = inventory.readFromData(data["inventory"] as Map<String, Any>)
+    val body = core.body.readFromData(data["body"] as Map<String, Any>, inventory)
     val locationMap = (data["location"] as Map<String, String>)
     val location = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name).getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)

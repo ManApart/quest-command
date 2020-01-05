@@ -14,6 +14,13 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
             Tags(base.tags, params)
     )
 
+    fun replaceWith(other: Properties) {
+        tags.clear()
+        values.clear()
+        tags.addAll(other.tags)
+        other.values.getAll().forEach { (key, value) -> values.put(key, value) }
+    }
+
     override fun toString(): String {
         return tags.toString().wrapNonEmpty("(Tags: ", ") ") +
                 values.toString().wrapNonEmpty("(Values: ", ") ")

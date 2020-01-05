@@ -1,5 +1,7 @@
 package traveling.location
 
+import core.body.BodyManager
+import inventory.Inventory
 import traveling.location.location.LocationManager
 
 fun getPersisted(dataObject: Network): Map<String, Any> {
@@ -10,10 +12,14 @@ fun getPersisted(dataObject: Network): Map<String, Any> {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>): Network {
-    val network = LocationManager.getNetwork(data["name"] as String)
-    val locations = (data["locations"] as List<Map<String, Any>>).map { traveling.location.location.readFromData(it) }
-    network.replaceLocations(locations)
+fun readFromData(data: Map<String, Any>, inventory: Inventory?): Network {
+    val name = data["name"] as String
+    val network = if (LocationManager.networkExists(name)) {
+        LocationManager.getNetwork(name)
+    } else {
+        BodyManager.getBody(name).layout
+    }
+    (data["locations"] as List<Map<String, Any>>).map { traveling.location.location.applyFromData(it, network, inventory) }
 
     return network
 }

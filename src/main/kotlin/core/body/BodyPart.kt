@@ -7,7 +7,7 @@ import core.utility.Named
 //TODO - can body part be replaced with location, slots be sublocations, and equipped items be items in those locations?
 class BodyPart(override val name: String, slots: List<String> = listOf()) : Named {
 
-    constructor(base: BodyPart) : this(base.name, base.equippedItems.keys.toList())
+    constructor(base: BodyPart) : this(base.name, base.getAttachPoints())
 
     private var equippedItems: MutableMap<String, Target?> = slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
 

@@ -62,11 +62,6 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locations.exists(name)
     }
 
-    fun replaceLocations(newLocations: List<Location>) {
-        locations.clear()
-        locations.addAll(newLocations)
-    }
-
     private fun getFurthestLocation(direction: Direction = Direction.BELOW): LocationNode? {
         return if (rootNode == null) {
             null

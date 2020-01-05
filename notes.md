@@ -479,6 +479,12 @@ Exploration
 Fitness
  - affected by eating unhealthy food etc
 
+
+dance command
+dance <type of dance>
+- with better charisma / looks can affect people's moods, or make them angry
+- learn different dances with possible effects
+
  
 #### Experience adder
 - Event(skill, amount)

@@ -12,7 +12,7 @@ class Location(
         val activators: List<LocationTarget> = listOf(),
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
-        val bodyPart: BodyPart? = null,
+        var bodyPart: BodyPart? = null,
         val properties: Properties = Properties()
 ) : Named {
     constructor(base: Location) : this(
@@ -22,7 +22,7 @@ class Location(
             base.creatures.toList(),
             base.items.toList(),
             if (base.bodyPart != null) {
-                BodyPart(base.bodyPart)
+                BodyPart(base.bodyPart!!)
             } else {
                 null
             },
