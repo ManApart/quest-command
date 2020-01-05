@@ -1,4 +1,4 @@
-package traveling.location
+package traveling.location.location
 
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector

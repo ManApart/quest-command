@@ -3,7 +3,7 @@ package inventory.dropItem
 import core.events.EventListener
 import inventory.Inventory
 import core.target.Target
-import traveling.location.NOWHERE_NODE
+import traveling.location.location.NOWHERE_NODE
 import core.history.display
 import core.utility.StringFormatter
 import traveling.scope.ScopeManager

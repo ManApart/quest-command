@@ -1,7 +1,7 @@
 package traveling.scope
 
 import core.GameState
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 
 object ScopeManager {
     private val scopes = mutableMapOf<LocationNode, Scope>()

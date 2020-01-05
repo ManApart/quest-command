@@ -5,7 +5,7 @@ import core.commands.Command
 import core.events.EventManager
 import core.history.display
 import core.properties.IS_CLIMBING
-import traveling.location.LocationPoint
+import traveling.location.location.LocationPoint
 
 class DismountCommand : Command() {
     override fun getAliases(): Array<String> {

@@ -3,8 +3,8 @@ package quests.triggerCondition
 import core.GameState
 import core.properties.Properties
 import core.target.Target
-import traveling.location.LocationNode
-import traveling.location.NOWHERE_NODE
+import traveling.location.location.LocationNode
+import traveling.location.location.NOWHERE_NODE
 import core.utility.apply
 import core.reflection.Reflections
 import crafting.Recipe
@@ -14,7 +14,7 @@ import status.conditions.Condition
 import magic.Element
 import core.DependencyInjector
 import core.events.EventManager
-import traveling.location.LocationManager
+import traveling.location.location.LocationManager
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {
     constructor(base: TriggeredEvent, params: Map<String, String>) : this(base.className, base.params.apply(params))

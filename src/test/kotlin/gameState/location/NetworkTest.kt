@@ -4,8 +4,8 @@ import traveling.direction.Direction
 import traveling.direction.Vector
 import org.junit.Test
 import traveling.location.Connection
-import traveling.location.LocationNode
-import traveling.location.LocationPoint
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationPoint
 import traveling.location.Network
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

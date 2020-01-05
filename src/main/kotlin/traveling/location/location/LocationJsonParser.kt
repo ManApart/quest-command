@@ -1,4 +1,4 @@
-package traveling.location
+package traveling.location.location
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue

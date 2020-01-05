@@ -22,9 +22,9 @@ import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.location.LocationManager
-import traveling.location.LocationParser
-import traveling.location.NOWHERE_NODE
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationParser
+import traveling.location.location.NOWHERE_NODE
 import use.UseEvent
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

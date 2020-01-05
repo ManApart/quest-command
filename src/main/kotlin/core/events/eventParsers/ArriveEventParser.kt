@@ -3,7 +3,7 @@ package core.events.eventParsers
 import core.events.Event
 import core.target.Target
 import quests.triggerCondition.TriggeredEvent
-import traveling.location.LocationPoint
+import traveling.location.location.LocationPoint
 import traveling.arrive.ArriveEvent
 
 class ArriveEventParser : EventParser {

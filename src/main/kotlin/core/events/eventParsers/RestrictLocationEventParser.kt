@@ -4,7 +4,7 @@ import core.events.Event
 import core.target.Target
 import quests.triggerCondition.TriggeredEvent
 import traveling.RestrictLocationEvent
-import traveling.location.LocationManager
+import traveling.location.location.LocationManager
 
 class RestrictLocationEventParser : EventParser {
     override fun className(): String {

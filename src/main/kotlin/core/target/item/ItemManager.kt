@@ -1,7 +1,7 @@
 package core.target.item
 
 import core.target.Target
-import traveling.location.LocationTarget
+import traveling.location.location.LocationTarget
 import core.DependencyInjector
 
 object ItemManager {

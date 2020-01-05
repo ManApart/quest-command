@@ -4,7 +4,7 @@ import core.events.Event
 import traveling.direction.NO_VECTOR
 import core.target.Target
 import traveling.direction.Vector
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 
 class SpawnItemEvent(
         val itemName: String,

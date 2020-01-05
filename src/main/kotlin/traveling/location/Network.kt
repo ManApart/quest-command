@@ -5,6 +5,10 @@ import core.utility.Named
 import traveling.direction.Direction
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
+import traveling.location.location.Location
+import traveling.location.location.LocationNode
+import traveling.location.location.NOWHERE
+import traveling.location.location.NOWHERE_NODE
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locations: List<Location> = listOf()) : Named {
     constructor(base: Network) : this(base.name, base.locationNodes, base.locations.map { Location(it) })
@@ -56,6 +60,11 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
 
     fun locationExists(name: String): Boolean {
         return locations.exists(name)
+    }
+
+    fun replaceLocations(newLocations: List<Location>) {
+        locations.clear()
+        locations.addAll(newLocations)
     }
 
     private fun getFurthestLocation(direction: Direction = Direction.BELOW): LocationNode? {

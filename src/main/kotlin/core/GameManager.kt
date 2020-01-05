@@ -15,9 +15,9 @@ import quests.QuestManager
 import status.stat.*
 import system.message.MessageEvent
 import traveling.arrive.ArriveEvent
-import traveling.location.LocationManager
-import traveling.location.LocationNode
-import traveling.location.LocationPoint
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationPoint
 import traveling.scope.ScopeManager
 
 const val PLAYER_START_NETWORK = "Kanbara Countryside"
@@ -52,7 +52,7 @@ object GameManager {
             body: String = "Human",
             location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
     ): Target {
-        val player = Target(name = name, dynamicDescription = dynamicDescription, aiName = core.ai.PLAYER_CONTROLLED_ID, body = body, location = location)
+        val player = Target(name = name, dynamicDescription = dynamicDescription, aiName = core.ai.PLAYER_CONTROLLED_ID, bodyName = body, location = location)
 
         with(player.soul) {
             addStat(HEALTH, 1, 10, 1)

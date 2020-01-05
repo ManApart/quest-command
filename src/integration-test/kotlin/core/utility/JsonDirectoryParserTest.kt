@@ -2,7 +2,7 @@ package core.utility
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import traveling.location.Location
+import traveling.location.location.Location
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

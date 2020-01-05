@@ -25,7 +25,7 @@ import status.stat.WATER_MAGIC
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.location.LocationParser
+import traveling.location.location.LocationParser
 import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

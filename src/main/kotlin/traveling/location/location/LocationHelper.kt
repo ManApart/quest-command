@@ -1,4 +1,6 @@
-package traveling.location
+package traveling.location.location
+
+import traveling.location.Connection
 
 class LocationHelper {
 

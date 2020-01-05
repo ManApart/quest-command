@@ -19,8 +19,8 @@ import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.location.LocationManager
-import traveling.location.LocationParser
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationParser
 import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 
@@ -53,7 +53,7 @@ class AttackCommandTest {
 
     @Test
     fun attackCreatureWithoutDirection() {
-        val rat = Target("Rat", body = "human")
+        val rat = Target("Rat", bodyName = "human")
         ScopeManager.getScope().addTarget(rat)
 
         command.execute("sl", "rat".split(" "))

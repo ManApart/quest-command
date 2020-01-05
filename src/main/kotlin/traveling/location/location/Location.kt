@@ -1,7 +1,7 @@
-package traveling.location
+package traveling.location.location
 
-import core.properties.Properties
 import core.body.BodyPart
+import core.properties.Properties
 import core.utility.Named
 
 val NOWHERE = Location("Nowhere")

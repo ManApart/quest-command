@@ -1,6 +1,6 @@
 package core.body
 
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 
 interface BodyParser {
     fun loadBodyParts(): List<BodyPart>

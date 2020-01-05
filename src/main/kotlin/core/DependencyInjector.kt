@@ -22,8 +22,8 @@ import quests.QuestJsonParser
 import quests.QuestParser
 import status.effects.EffectJsonParser
 import status.effects.EffectParser
-import traveling.location.LocationJsonParser
-import traveling.location.LocationParser
+import traveling.location.location.LocationJsonParser
+import traveling.location.location.LocationParser
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()

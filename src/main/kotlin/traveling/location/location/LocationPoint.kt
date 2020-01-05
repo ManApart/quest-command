@@ -1,4 +1,4 @@
-package traveling.location
+package traveling.location.location
 
 import core.target.Target
 import core.body.BodyPart

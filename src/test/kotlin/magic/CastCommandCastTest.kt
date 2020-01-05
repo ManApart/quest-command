@@ -18,7 +18,7 @@ import core.body.BodyParser
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
 import system.location.LocationFakeParser
-import traveling.location.LocationParser
+import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

@@ -1,9 +1,9 @@
 package core.target.activator
 
-import core.target.Target
-import traveling.location.LocationTarget
-import core.utility.NameSearchableList
 import core.DependencyInjector
+import core.target.Target
+import core.utility.NameSearchableList
+import traveling.location.location.LocationTarget
 
 object ActivatorManager {
     private var parser = DependencyInjector.getImplementation(ActivatorParser::class.java)

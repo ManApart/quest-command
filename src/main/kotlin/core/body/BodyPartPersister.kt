@@ -1,6 +1,6 @@
 package core.body
 
-fun getPersisted(dataObject: Body): Map<String, Any> {
+fun getPersisted(dataObject: BodyPart): Map<String, Any> {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.name
     data["layout"] = traveling.location.getPersisted(dataObject.layout)
@@ -10,7 +10,7 @@ fun getPersisted(dataObject: Body): Map<String, Any> {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>): Body {
+fun readBodyPartFromData(data: Map<String, Any>): BodyPart {
     val name = data["name"] as String
     val network = traveling.location.readFromData(data["layout"] as Map<String, Any>)
     val body = Body(name, network)

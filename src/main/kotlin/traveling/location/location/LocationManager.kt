@@ -1,8 +1,9 @@
-package traveling.location
+package traveling.location.location
 
 import core.DependencyInjector
 import core.GameState
 import core.utility.NameSearchableList
+import traveling.location.Network
 
 object LocationManager {
     private val locationHelper = LocationHelper()

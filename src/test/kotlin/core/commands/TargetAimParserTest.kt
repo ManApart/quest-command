@@ -2,22 +2,22 @@ package core.commands
 
 import assertContainsByName
 import assertEqualsByName
-import core.target.Target
-import core.body.BodyPart
-import traveling.location.LocationNode
-import core.utility.reflection.MockReflections
-import core.reflection.Reflections
-import traveling.scope.ScopeManager
-import org.junit.AfterClass
-import org.junit.Test
-import system.BehaviorFakeParser
-import system.BodyFakeParser
 import core.DependencyInjector
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.body.BodyParser
+import core.body.BodyPart
+import core.reflection.Reflections
+import core.target.Target
+import core.utility.reflection.MockReflections
+import org.junit.AfterClass
+import org.junit.Test
+import system.BehaviorFakeParser
+import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.location.LocationParser
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationParser
+import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)
@@ -54,8 +54,8 @@ class TargetAimParserTest {
             BodyManager.reset()
         }
 
-        private val targetA = Target("targetA", body = "testBody")
-        private val targetB = Target("targetB", body = "testBody")
+        private val targetA = Target("targetA", bodyName = "testBody")
+        private val targetB = Target("targetB", bodyName = "testBody")
         private val scope = ScopeManager.getScope()
 
         init {

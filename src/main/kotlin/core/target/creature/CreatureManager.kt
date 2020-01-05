@@ -3,7 +3,7 @@ package core.target.creature
 import core.DependencyInjector
 import core.target.Target
 import core.utility.NameSearchableList
-import traveling.location.LocationTarget
+import traveling.location.location.LocationTarget
 
 object CreatureManager {
     private var creatures = loadCreatures()

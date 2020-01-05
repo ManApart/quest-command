@@ -3,7 +3,7 @@ package traveling.climb
 import traveling.direction.Direction
 import core.GameState
 import core.target.Target
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 import core.history.StringTable

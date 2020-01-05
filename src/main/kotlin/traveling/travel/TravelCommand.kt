@@ -7,9 +7,9 @@ import core.commands.CommandParser
 import core.events.EventManager
 import core.history.display
 import core.properties.CAN_TRAVEL
-import traveling.location.LocationManager
-import traveling.location.LocationNode
-import traveling.location.NOWHERE_NODE
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationNode
+import traveling.location.location.NOWHERE_NODE
 import traveling.routes.FindRouteEvent
 
 class TravelCommand : Command() {

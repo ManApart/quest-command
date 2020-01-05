@@ -1,15 +1,15 @@
 package inventory
 
-import core.properties.Properties
-import core.properties.Tags
-import core.target.Target
-import core.body.BodyPart
-import core.history.ChatHistory
-import org.junit.Test
-import system.BodyFakeParser
 import core.DependencyInjector
 import core.body.BodyManager
 import core.body.BodyParser
+import core.body.BodyPart
+import core.history.ChatHistory
+import core.properties.Properties
+import core.properties.Tags
+import core.target.Target
+import org.junit.Test
+import system.BodyFakeParser
 import kotlin.test.assertEquals
 
 class ListInventoryTest {
@@ -31,7 +31,7 @@ class ListInventoryTest {
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 
-        val creature = Target("Soldier", body = "body", properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
         val item = Target("Chestplate", equipSlots = listOf(listOf("Chest")))
         creature.inventory.add(item)
         creature.body.equip(item)
@@ -52,7 +52,7 @@ class ListInventoryTest {
         DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
         BodyManager.reset()
 
-        val creature = Target("Soldier", body = "body", properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 

@@ -4,8 +4,8 @@ import core.events.EventListener
 import traveling.direction.Direction
 import core.GameState
 import core.target.Target
-import traveling.location.LocationNode
-import traveling.location.LocationPoint
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationPoint
 import traveling.location.RouteFinder
 import status.stat.CLIMBING
 import status.stat.STAMINA

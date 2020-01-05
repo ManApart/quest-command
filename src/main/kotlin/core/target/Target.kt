@@ -20,8 +20,8 @@ import status.ProtoSoul
 import status.Soul
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
-import traveling.location.LocationNode
-import traveling.location.NOWHERE_NODE
+import traveling.location.location.LocationNode
+import traveling.location.location.NOWHERE_NODE
 import traveling.location.Route
 import kotlin.math.max
 import kotlin.math.min
@@ -34,7 +34,8 @@ open class Target(
         aiName: String? = base?.ai?.name,
         @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = base?.behaviorRecipes
                 ?: mutableListOf(),
-        body: String? = base?.body?.name,
+        body: Body? = null,
+        bodyName: String? = base?.body?.name,
         equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
         @JsonProperty("description") dynamicDescription: DialogueOptions = base?.dynamicDescription
                 ?: DialogueOptions(name),
@@ -48,9 +49,9 @@ open class Target(
     override var name = name.apply(params)
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
-    val body: Body = if (body == null) Body() else BodyManager.getBody(body)
+    val body: Body = getBody(body, bodyName)
     val description get() = dynamicDescription.getDialogue()
-    //Why is equip slots not part of the body?
+    //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val inventory: Inventory = Inventory(items)
     val properties = Properties(properties, params)
@@ -62,6 +63,14 @@ open class Target(
 
     var climbTarget: Target? = null
     var route: Route? = null
+
+    private fun getBody(body: Body?, bodyName: String?): Body {
+        return when {
+            body != null -> body
+            bodyName != null -> BodyManager.getBody(bodyName)
+            else -> Body()
+        }
+    }
 
     override fun toString(): String {
         return getDisplayName()

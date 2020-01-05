@@ -2,7 +2,7 @@ package traveling.jump
 
 import core.events.EventListener
 import core.GameState
-import traveling.location.LocationPoint
+import traveling.location.location.LocationPoint
 import status.stat.AGILITY
 import status.stat.HEALTH
 import core.history.display

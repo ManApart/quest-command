@@ -1,7 +1,7 @@
 package core.body
 
-import core.target.Target
 import core.history.display
+import core.target.Target
 import core.utility.Named
 
 //TODO - can body part be replaced with location, slots be sublocations, and equipped items be items in those locations?
@@ -29,6 +29,10 @@ class BodyPart(override val name: String, slots: List<String> = listOf()) : Name
 
     fun getEquippedItems(): List<Target> {
         return equippedItems.values.filterNotNull()
+    }
+
+    fun getEquippedItemMap(): Map<String, Target?> {
+        return equippedItems
     }
 
     fun getEquippedWeapon(): Target? {

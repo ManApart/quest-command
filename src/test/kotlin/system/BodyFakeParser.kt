@@ -1,7 +1,7 @@
 package system
 
 import core.body.BodyPart
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 import core.body.BodyParser
 
 class BodyFakeParser(

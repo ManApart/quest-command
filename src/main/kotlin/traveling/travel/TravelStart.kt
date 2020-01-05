@@ -9,8 +9,8 @@ import core.target.Target
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
-import traveling.location.LocationNode
-import traveling.location.LocationPoint
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationPoint
 
 class TravelStart : EventListener<TravelStartEvent>() {
     override fun execute(event: TravelStartEvent) {

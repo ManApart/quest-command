@@ -1,23 +1,23 @@
 package inventory
 
+import core.DependencyInjector
+import core.ai.behavior.BehaviorManager
+import core.ai.behavior.BehaviorParser
+import core.body.BodyManager
+import core.body.BodyParser
+import core.body.BodyPart
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
 import core.properties.Values
-import core.body.BodyPart
-import traveling.location.LocationNode
-import traveling.scope.ScopeManager
+import core.target.Target
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
 import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
-import core.DependencyInjector
-import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorParser
-import core.body.BodyManager
-import core.body.BodyParser
+import traveling.location.location.LocationNode
+import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -97,7 +97,7 @@ class PlaceItemTest {
         creature.inventory.add(item)
 
 
-        val chest = Target("Chest", body = "body", properties = Properties(Values(mapOf("Strength" to "1")), Tags(listOf("Container", "Open", "Creature"))))
+        val chest = Target("Chest", bodyName = "body", properties = Properties(Values(mapOf("Strength" to "1")), Tags(listOf("Container", "Open", "Creature"))))
 
         TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
 

@@ -2,8 +2,8 @@ package core.gamestate.body
 
 import core.body.Body
 import core.body.BodyPart
-import traveling.location.Location
-import traveling.location.LocationNode
+import traveling.location.location.Location
+import traveling.location.location.LocationNode
 import traveling.location.Network
 
 fun createBody(part: BodyPart) : Body {

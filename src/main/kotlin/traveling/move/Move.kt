@@ -7,8 +7,8 @@ import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
-import traveling.location.LocationNode
-import traveling.location.LocationPoint
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationPoint
 import traveling.scope.ScopeManager
 import traveling.travel.getDistanceToNeighbor
 import traveling.travel.postArriveEvent

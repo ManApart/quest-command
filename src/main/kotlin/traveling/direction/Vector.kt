@@ -18,6 +18,10 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return "$x, $y, $z"
     }
 
+    fun toMap(): Map<String, Int> {
+        return mapOf("x" to x, "y" to y, "z" to z)
+    }
+
     override fun equals(other: Any?): Boolean {
         return if (other is Vector) {
             x == other.x && y == other.y && z == other.z
@@ -54,13 +58,13 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     }
 
     fun further(other: Vector, amount: Int): Vector {
-        if (this == NO_VECTOR && other == NO_VECTOR){
+        if (this == NO_VECTOR && other == NO_VECTOR) {
             return getVectorInDirection(Vector(y = 1), amount)
         }
         return other + getVectorInDirection(other, amount)
     }
 
-    fun isFurtherAlongSameDirectionThan(other: Vector) : Boolean {
+    fun isFurtherAlongSameDirectionThan(other: Vector): Boolean {
         val xSign = (x >= 0 && other.x >= 0) || (x <= 0 && other.x <= 0)
         val ySign = (y >= 0 && other.y >= 0) || (y <= 0 && other.y <= 0)
         val zSign = (z >= 0 && other.z >= 0) || (z <= 0 && other.z <= 0)

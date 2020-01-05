@@ -12,8 +12,8 @@ import quests.*
 import quests.triggerCondition.TriggerCondition
 import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.location.LocationManager
-import traveling.location.LocationParser
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationParser
 import use.interaction.InteractEvent
 import kotlin.test.assertEquals
 

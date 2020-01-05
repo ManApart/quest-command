@@ -3,9 +3,9 @@ package traveling.routes
 import core.commands.Args
 import core.commands.Command
 import core.GameState
-import traveling.location.NOWHERE_NODE
+import traveling.location.location.NOWHERE_NODE
 import core.events.EventManager
-import traveling.location.LocationManager
+import traveling.location.location.LocationManager
 
 class RouteCommand : Command() {
     override fun getAliases(): Array<String> {

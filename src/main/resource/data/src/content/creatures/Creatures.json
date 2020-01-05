@@ -2,7 +2,7 @@
   {
     "name": "Rat",
     "description": "Mangy and red eyed.",
-    "body": "Rat",
+    "bodyName": "Rat",
     "aiName": "Cowardly Predator",
     "soul": {
       "stats": {
@@ -24,7 +24,7 @@
   {
     "name": "Magical Dummy",
     "description": "It's jerky movement is deeply unsettling.",
-    "body": "Human",
+    "bodyName": "Human",
     "aiName": "Player Controlled",
     "soul": {
       "stats": {

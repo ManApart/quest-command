@@ -2,7 +2,7 @@ package core.body
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 import core.utility.JsonDirectoryParser
 
 class BodyJsonParser : BodyParser {

@@ -25,7 +25,7 @@
   {
     "name": "Apple Tree",
     "description": "The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.",
-    "body": "tree",
+    "bodyName": "tree",
     "properties": {
       "values": {
         "chopHealth": 5,
@@ -224,7 +224,7 @@
   {
     "name": "Stairs",
     "description": "The stairs lead to another floor.",
-    "body": "Stairs",
+    "bodyName": "Stairs",
     "properties": {
       "tags": [
         "Climbable"
@@ -234,7 +234,7 @@
   {
     "name": "City Wall",
     "description": "The squared stones rise high above you.",
-    "body": "City Wall",
+    "bodyName": "City Wall",
     "properties": {
       "tags": [
         "Climbable"

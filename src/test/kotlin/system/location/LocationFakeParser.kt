@@ -3,9 +3,9 @@ package system.location
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
 import core.utility.NameSearchableList
-import traveling.location.Location
-import traveling.location.LocationNode
-import traveling.location.LocationParser
+import traveling.location.location.Location
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationParser
 
 class LocationFakeParser(
         private val locations: NameSearchableList<Location> = NameSearchableList(),

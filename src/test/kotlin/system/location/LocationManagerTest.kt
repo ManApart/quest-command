@@ -1,14 +1,14 @@
 package system.location
 
-import traveling.location.LocationNode
+import traveling.location.location.LocationNode
 import traveling.location.ProtoConnection
 import core.utility.NameSearchableList
 import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Test
 import core.DependencyInjector
-import traveling.location.LocationManager
-import traveling.location.LocationParser
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationParser
 
 class LocationManagerTest {
 

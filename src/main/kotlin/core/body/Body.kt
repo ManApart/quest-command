@@ -1,14 +1,14 @@
 package core.body
 
-import traveling.direction.Direction
-import core.target.Target
-import traveling.direction.Vector
-import traveling.location.LocationNode
-import traveling.location.Network
 import core.history.display
+import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
+import traveling.direction.Direction
+import traveling.direction.Vector
+import traveling.location.Network
+import traveling.location.location.LocationNode
 
 val NONE = Body("None")
 

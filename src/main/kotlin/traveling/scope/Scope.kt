@@ -2,12 +2,12 @@ package traveling.scope
 
 import core.GameState
 import core.properties.Properties
-import status.Soul
 import core.target.Target
-import traveling.location.LocationNode
 import core.utility.NameSearchableList
 import core.utility.plus
 import inventory.Inventory
+import status.Soul
+import traveling.location.location.LocationNode
 
 class Scope(private val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
