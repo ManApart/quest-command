@@ -8,17 +8,21 @@ import java.io.File
 
 class Save : EventListener<SaveEvent>() {
     private val directory = "./saves/"
-    private val playerSavePath = "./saves/PlayerSave.json"
 
     override fun execute(event: SaveEvent) {
 //        SessionHistory.saveSessionStats()
         val playerData = getPersisted(GameState.player)
-        writeSave(playerData)
+        val saveName = generateSaveName(GameState.player.name)
+        writeSave(saveName, playerData)
 
-        println("Saved!")
+        println("Saved to $saveName.")
     }
 
-    private fun writeSave(data: Map<String, Any>) {
+    private fun generateSaveName(name: String): String {
+        return directory + name.replace(" ", "_").replace(Regex("[^a-zA-Z]"), "") + ".json"
+    }
+
+    private fun writeSave(playerSavePath: String, data: Map<String, Any>) {
         val directory = File(directory)
         if (!directory.exists()) {
             directory.mkdir()

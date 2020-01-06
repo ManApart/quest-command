@@ -3,10 +3,10 @@ package inventory
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.target.Target
-import core.history.display
-import traveling.scope.ScopeManager
 import core.events.EventManager
+import core.history.display
+import core.target.Target
+import traveling.scope.ScopeManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -43,7 +43,7 @@ class InventoryCommand : Command() {
     private fun clarifyTarget(targets: List<Target>) {
         val names = targets.map { it.name }
         val message = "View whose inventory?\n\t${names.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, names.map { it to "bag $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, names.map { it to "bag $it" }.toMap()))
     }
 
 

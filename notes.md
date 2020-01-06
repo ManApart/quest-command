@@ -713,3 +713,7 @@ Choosing one chest deletes all chests
 Validation tools that:
 - Check for duplicate names (across items and activators)
 - Check all targets reference valid events etc (triggers and trigger events)
+
+
+
+Rename command should preserve capital letters, but can't since we always downcase

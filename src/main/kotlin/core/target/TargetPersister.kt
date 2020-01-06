@@ -13,14 +13,12 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     data["name"] = dataObject.name
     data["aiName"] = dataObject.ai.name
     data["behaviorRecipes"] = dataObject.behaviorRecipes.map { it.name }
-    //TODO - body persister for body details
     data["body"] = core.body.getPersisted(dataObject.body)
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
     data["description"] = dialogue.getPersisted(dataObject.getDynamicDescription2())
     data["inventory"] = inventory.getPersisted(dataObject.inventory)
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
-
     data["properties"] = getPersisted(dataObject.properties)
     return data
 }
