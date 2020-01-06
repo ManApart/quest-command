@@ -27,11 +27,7 @@ class Load : EventListener<LoadEvent>() {
     }
 
     private fun getSaveNames(): List<String> {
-        val list = File("./saves/").walk().map {
-            it.name.substring(0, it.name.length - ".json".length)
-        }.toList()
-
-        return list.subList(1, list.size)
+        return File("./saves/").listFiles().map { it.name.substring(0, it.name.length - ".json".length) }
     }
 
     private fun attemptLoad(playerGivenSaveName: String) {
