@@ -8,30 +8,24 @@ import core.commands.ResponseRequest
 import core.events.EventListener
 import core.history.display
 import core.target.readFromData
+import system.persistance.clean
+import system.persistance.directory
+import system.persistance.getSaveNames
 import traveling.scope.ScopeManager
 import java.io.File
 
 class Load : EventListener<LoadEvent>() {
     override fun execute(event: LoadEvent) {
-        when {
-            event.list -> listSaves()
-            !event.saveName.isNullOrBlank() -> attemptLoad(event.saveName)
-            else -> println("Could not find a save to load.")
+        if (event.loadGame) {
+            display("Not implemented yet")
+        } else {
+            loadCharacterSave(event.saveName)
         }
     }
 
-    private fun listSaves() {
-        val saveNames = getSaveNames()
-        display("Saves:\n\t" + saveNames.joinToString("\n\t"))
-
-    }
-
-    private fun getSaveNames(): List<String> {
-        return File("./saves/").listFiles().map { it.name.substring(0, it.name.length - ".json".length) }
-    }
-
-    private fun attemptLoad(playerGivenSaveName: String) {
-        val allSaves = getSaveNames()
+    private fun loadCharacterSave(saveName: String) {
+        val playerGivenSaveName = clean(saveName)
+        val allSaves = getSaveNames(GameState.gameName)
         val saves = allSaves.filter { it.contains(playerGivenSaveName) }
         val noMatchResponse = ResponseRequest("Could not find a match for $playerGivenSaveName. What save would you like to load?\n\t${allSaves.joinToString(", ")}", allSaves.map { it to "Load $it" }.toMap())
         val tooManyMatchesResponse = ResponseRequest("What save would you like to load?\n\t${saves.joinToString(", ")}", saves.map { it to "Load $it" }.toMap())
@@ -43,12 +37,11 @@ class Load : EventListener<LoadEvent>() {
     }
 
     private fun loadSave(saveName: String) {
-        val playerData = readSave("./saves/$saveName.json")
+        val playerData = readSave("$directory/${GameState.gameName}/$saveName.json")
 
         ScopeManager.getScope().removeTarget(GameState.player)
         GameState.player = readFromData(playerData)
         ScopeManager.getScope().addTarget(GameState.player)
-
 
         println("Loaded $saveName.")
     }

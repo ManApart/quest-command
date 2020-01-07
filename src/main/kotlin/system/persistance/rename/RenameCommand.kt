@@ -30,6 +30,8 @@ class RenameCommand : Command() {
         val tooManyTargetsResponse = ResponseRequest("Rename what?\n\t${targets.joinToString(", ") { it.getDisplayName() }}", targets.map { it.name to "Rename ${it.name} to $name" }.toMap())
         when {
             targets.size > 1 -> CommandParser.setResponseRequest(tooManyTargetsResponse)
+            name.isBlank() && targets.isEmpty() && arguments.getBaseString().isNotBlank() -> EventManager.postEvent(RenameEvent(GameState.player, arguments.getBaseString()))
+            name.isBlank() && targets.isEmpty() -> display("Rename who to what?")
             name.isBlank() -> display("Rename ${targets.first()} to what?")
             targets.isEmpty() -> EventManager.postEvent(RenameEvent(GameState.player, name))
             else -> EventManager.postEvent(RenameEvent(targets.first(), name))

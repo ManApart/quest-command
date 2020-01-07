@@ -4,31 +4,31 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import core.GameState
 import core.events.EventListener
 import core.target.getPersisted
+import system.persistance.clean
+import system.persistance.directory
 import java.io.File
 
 class Save : EventListener<SaveEvent>() {
-    private val directory = "./saves/"
-
     override fun execute(event: SaveEvent) {
 //        SessionHistory.saveSessionStats()
         val playerData = getPersisted(GameState.player)
-        val saveName = generateSaveName(GameState.player.givenName)
-        writeSave(saveName, playerData)
+        val saveName = generateSaveName(GameState.gameName, GameState.player.givenName)
+        writeSave(clean(GameState.gameName), saveName, playerData)
 
         println("Saved to $saveName.")
     }
 
-    private fun generateSaveName(name: String): String {
-        return directory + name.replace(" ", "_").replace(Regex("[^a-zA-Z]"), "") + ".json"
+    private fun generateSaveName(gameName: String, playerName: String): String {
+        return directory + clean(gameName) + "/" + clean(playerName) + ".json"
     }
 
-    private fun writeSave(playerSavePath: String, data: Map<String, Any>) {
-        val directory = File(directory)
+    private fun writeSave(gameName: String, saveName: String, data: Map<String, Any>) {
+        val directory = File("$directory$gameName/")
         if (!directory.exists()) {
-            directory.mkdir()
+            directory.mkdirs()
         }
         val json = ObjectMapper().writeValueAsString(data)
-        File(playerSavePath).printWriter().use { out ->
+        File(saveName).printWriter().use { out ->
             out.println(json)
         }
     }

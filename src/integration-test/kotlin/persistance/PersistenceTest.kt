@@ -36,7 +36,7 @@ class PersistenceTest {
         GameState.player.properties.tags.remove("Saved")
         assertFalse(GameState.player.properties.tags.has("Saved"))
 
-        EventManager.postEvent(LoadEvent("SavedPlayer"))
+        EventManager.postEvent(LoadEvent(false, "SavedPlayer"))
         EventManager.executeEvents()
         assertEquals("Saved Player", GameState.player.givenName)
         assertTrue(GameState.player.properties.tags.has("Saved"))
