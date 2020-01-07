@@ -4,6 +4,7 @@ import combat.battle.Battle
 import core.properties.Properties
 
 object GameState {
+    var gameName = "Kanbara"
     var player = GameManager.newPlayer()
     var battle: Battle? = null
     var properties = Properties()

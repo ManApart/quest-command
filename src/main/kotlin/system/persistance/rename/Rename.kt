@@ -6,7 +6,7 @@ import core.history.display
 class Rename : EventListener<RenameEvent>() {
     override fun execute(event: RenameEvent) {
         val oldName = event.target.getDisplayName()
-        event.target.name = event.newName
+        event.target.givenName = event.newName
         display(oldName + " renamed to " + event.target.getDisplayName())
     }
 }

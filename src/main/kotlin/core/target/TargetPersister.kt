@@ -11,6 +11,7 @@ import traveling.location.location.NOWHERE_NODE
 fun getPersisted(dataObject: Target): Map<String, Any> {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.name
+    data["givenName"] = dataObject.givenName
     data["aiName"] = dataObject.ai.name
     data["behaviorRecipes"] = dataObject.behaviorRecipes.map { it.name }
     data["body"] = core.body.getPersisted(dataObject.body)
@@ -26,6 +27,7 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
 @Suppress("UNCHECKED_CAST")
 fun readFromData(data: Map<String, Any>): Target {
     val name = data["name"] as String
+    val givenName = data["givenName"] as String
     val aiName = data["aiName"] as String
     val behaviorRecipes = (data["behaviorRecipes"] as List<String>).map { BehaviorRecipe(it) }.toMutableList()
     val equipSlots = (data["equipSlots"] as List<List<String>>)
@@ -37,7 +39,7 @@ fun readFromData(data: Map<String, Any>): Target {
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
     val target = Target(name, null, mapOf(), null, aiName, behaviorRecipes, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
-
+    target.givenName = givenName
     target.inventory.addAll(inventory.getAllItems())
     status.readFromData(data["soul"] as Map<String, Any>, target.soul)
 

@@ -20,9 +20,9 @@ import status.ProtoSoul
 import status.Soul
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
+import traveling.location.Route
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE_NODE
-import traveling.location.Route
 import kotlin.math.max
 import kotlin.math.min
 
@@ -46,7 +46,8 @@ open class Target(
         properties: Properties = base?.properties ?: Properties()
 ) : Named {
 
-    override var name = name.apply(params)
+    override val name = name.apply(params)
+    var givenName = name
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, bodyName)
@@ -90,7 +91,7 @@ open class Target(
             " ($position)"
         }
 
-        return name + description + location
+        return givenName + description + location
     }
 
     fun isPlayer(): Boolean {
