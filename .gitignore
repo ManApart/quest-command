@@ -137,6 +137,7 @@ bin/
 .classpath
 .project
 
+.idea/modules.xml
 .idea/compiler.xml
 .idea/misc.xml
 .idea/modules/**
