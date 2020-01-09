@@ -47,7 +47,6 @@ open class Target(
 ) : Named {
 
     override val name = name.apply(params)
-    var givenName = name
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, bodyName)
@@ -91,7 +90,7 @@ open class Target(
             " ($position)"
         }
 
-        return givenName + description + location
+        return name + description + location
     }
 
     fun isPlayer(): Boolean {

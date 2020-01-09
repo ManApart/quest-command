@@ -28,8 +28,8 @@ class PersistenceTest {
 
     @Test
     fun playerSave() {
+        GameManager.newGame(playerName = "Saved Player")
         GameState.player.properties.tags.add("Saved")
-        GameState.player.givenName = "Saved Player"
 
         EventManager.postEvent(SaveEvent())
         EventManager.executeEvents()
@@ -38,7 +38,7 @@ class PersistenceTest {
 
         EventManager.postEvent(LoadEvent(false, "SavedPlayer"))
         EventManager.executeEvents()
-        assertEquals("Saved Player", GameState.player.givenName)
+        assertEquals("Saved Player", GameState.player.name)
         assertTrue(GameState.player.properties.tags.has("Saved"))
     }
 

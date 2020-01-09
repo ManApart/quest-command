@@ -12,7 +12,7 @@ class Save : EventListener<SaveEvent>() {
     override fun execute(event: SaveEvent) {
 //        SessionHistory.saveSessionStats()
         val playerData = getPersisted(GameState.player)
-        val saveName = generateSaveName(GameState.gameName, GameState.player.givenName)
+        val saveName = generateSaveName(GameState.gameName, GameState.player.name)
         writeSave(clean(GameState.gameName), saveName, playerData)
 
         println("Saved to $saveName.")

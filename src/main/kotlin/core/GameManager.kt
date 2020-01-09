@@ -27,7 +27,7 @@ const val PLAYER_START_LOCATION = "An Open Field"
 object GameManager {
     var playing = false
 
-    fun newGame() {
+    fun newGame(gameName: String = "Kanbara", playerName: String = "Player") {
         CommandParser.reset()
         ChatHistory.reset()
         GameState.reset()
@@ -39,7 +39,7 @@ object GameManager {
 
 //        GameState.properties.values.put(AUTO_SAVE, true)
 
-        GameState.player = newPlayer()
+        GameState.player = newPlayer(playerName)
         giveStartingItems(GameState.player)
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))
         playing = true
