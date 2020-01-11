@@ -15,10 +15,8 @@ class LoadCommand : Command() {
 
     override fun getManual(): String {
         return "\n\tLoad - Load your game." +
-                "\n\tLoad game ls - List games (which contain a world and character saves)" +
-                "\n\tLoad ls - List character saves in the current game" +
-                "\n\tLoad game <name> - Load a game (which contains a world and character saves)." +
-                "\n\tLoad <name> - Load a specific character save."
+                "\n\tLoad ls - List games (which contain a world and character saves)" +
+                "\n\tLoad <name> - Load a game (which contains a world and character saves)."
     }
 
     override fun getCategory(): List<String> {
@@ -28,13 +26,9 @@ class LoadCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            argString == "game ls" -> EventManager.postEvent(ListSavesEvent(true))
-            argString == "ls" -> EventManager.postEvent(ListSavesEvent(false))
+            argString == "ls" -> EventManager.postEvent(ListSavesEvent())
             args.isEmpty() -> display("Please specify a save to load or use ls to list current saves.")
-            args[0] == "game" -> EventManager.postEvent(LoadEvent(true, argString.substringAfter("game ")))
-            else -> {
-                EventManager.postEvent(LoadEvent(false, args.joinToString(" ")))
-            }
+            else -> EventManager.postEvent(LoadEvent(args.joinToString(" ")))
         }
     }
 }

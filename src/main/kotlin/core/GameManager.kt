@@ -36,14 +36,19 @@ object GameManager {
         EventManager.reset()
         GameState.reset()
 //        LocationManager.clear()
+        setDefaultProperties()
 
-//        GameState.properties.values.put(AUTO_SAVE, true)
 
         GameState.player = newPlayer(playerName)
         giveStartingItems(GameState.player)
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
+    }
+
+    private fun setDefaultProperties() {
+        //        GameState.properties.values.put(AUTO_SAVE, true)
+        GameState.properties.values.put(SKIP_SAVE_STATS, true)
     }
 
     fun newPlayer(

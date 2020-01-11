@@ -19,7 +19,7 @@ class Status : EventListener<StatusEvent>() {
     private fun printImportantStats(event: StatusEvent) {
         val soul = event.creature.soul
         if (soul.hasStat(HEALTH) || soul.hasStat(STAMINA) || soul.hasStat(FOCUS)) {
-            val youHave = StringFormatter.format(event.creature.isPlayer(), "You have", "${event.creature.name} has")
+            val youHave = StringFormatter.format(event.creature.isPlayer(), "You (${event.creature.name}) have", "${event.creature.name} has")
             val youAre = StringFormatter.format(event.creature.isPlayer(), "You are", "${event.creature.name} is")
             val encumbrancePercent = (event.creature.getEncumbrance() * 100).toInt()
             val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0).toInt()

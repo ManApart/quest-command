@@ -20,4 +20,5 @@ object GameState {
 
 
 const val AUTO_SAVE = "autosave"
+const val SKIP_SAVE_STATS = "skip save stats"
 
