@@ -9,7 +9,9 @@ import core.history.SessionHistory
 import core.target.Target
 import core.target.getPersisted
 import core.target.readFromData
+import traveling.scope.Scope
 import traveling.scope.ScopeManager
+import traveling.scope.getPersisted
 import java.io.File
 
 private const val directory = "./saves/"
@@ -19,10 +21,12 @@ fun clean(pathString: String): String {
 }
 
 fun getGameNames(): List<String> {
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     return File(directory).listFiles().map { it.name }
 }
 
 fun getCharacterSaves(gameName: String): List<String> {
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     return File(directory + "/" + clean(gameName) + "/").listFiles().map { it.name.substring(0, it.name.length - ".json".length) }
 }
 
@@ -32,12 +36,21 @@ fun save(gameName: String, player: Target) {
         SessionHistory.saveSessionStats()
     }
     val playerData = getPersisted(player)
-    val saveName = generateSaveName(gameName, player.name)
-    writeSave(clean(gameName), saveName, playerData)
+    val saveName = generateCharacterSaveName(gameName, player.name)
+    val directory = "$directory${clean(gameName)}/"
+    writeSave(directory, saveName, playerData)
+
+    ScopeManager.flush()
+}
+
+fun save(gameName: String, networkName: String, locationName: String, scope: Scope){
+    val directory = "$directory${clean(gameName)}/${clean(networkName)}/"
+    val data = getPersisted(scope)
+    writeSave(directory, locationName, data)
 }
 
 fun loadGame(gameName: String) {
-
+//TODO - load world
     loadCharacter(gameName, getCharacterSaves(gameName).first())
 }
 
@@ -49,12 +62,12 @@ fun loadCharacter(gameName: String, saveName: String) {
     ScopeManager.getScope().addTarget(GameState.player)
 }
 
-private fun generateSaveName(gameName: String, playerName: String): String {
+private fun generateCharacterSaveName(gameName: String, playerName: String): String {
     return directory + clean(gameName) + "/" + clean(playerName) + ".json"
 }
 
-private fun writeSave(gameName: String, saveName: String, data: Map<String, Any>) {
-    val directory = File("$directory$gameName/")
+private fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
+    val directory = File(directoryName)
     if (!directory.exists()) {
         directory.mkdirs()
     }
