@@ -211,6 +211,11 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         } ?: matches[0]
     }
 
+    override fun remove(element: N) : Boolean {
+        proxies.filterValues { it == element }.keys.forEach { proxies.remove(it) }
+        return super.remove(element)
+    }
+
 }
 
 fun <T : Named> Iterable<T>.toNameSearchableList(): NameSearchableList<T> {

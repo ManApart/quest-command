@@ -1,4 +1,4 @@
-package core
+package system.startup
 
 import core.events.Event
 

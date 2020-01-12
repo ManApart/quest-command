@@ -14,6 +14,10 @@ import dialogue.DialogueOptions
 import quests.QuestManager
 import status.stat.*
 import system.message.MessageEvent
+import system.persistance.getGameNames
+import system.persistance.getGamesMetaData
+import system.persistance.loading.LoadEvent
+import system.startup.GameStartEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationNode
@@ -27,6 +31,16 @@ const val PLAYER_START_LOCATION = "An Open Field"
 object GameManager {
     var playing = false
 
+    fun newOrLoadGame() {
+        val gameMetaData = getGamesMetaData()
+        if (gameMetaData.values.getBoolean(AUTO_LOAD) && getGameNames().isNotEmpty()) {
+            val saveName = gameMetaData.values.getString(LAST_SAVE_GAME_NAME, getGameNames().first())
+            EventManager.postEvent(LoadEvent(saveName))
+        } else {
+            newGame()
+        }
+    }
+
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player") {
         CommandParser.reset()
         ChatHistory.reset()
@@ -38,7 +52,7 @@ object GameManager {
 //        LocationManager.clear()
         setDefaultProperties()
 
-
+        GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
         giveStartingItems(GameState.player)
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))
@@ -48,6 +62,7 @@ object GameManager {
 
     private fun setDefaultProperties() {
         //        GameState.properties.values.put(AUTO_SAVE, true)
+        GameState.properties.values.put(AUTO_LOAD, true)
         GameState.properties.values.put(SKIP_SAVE_STATS, true)
     }
 

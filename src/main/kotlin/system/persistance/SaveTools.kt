@@ -3,11 +3,9 @@ package system.persistance
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import core.GameState
-import core.LAST_SAVE_CHARACTER_NAME
-import core.SKIP_SAVE_STATS
+import core.*
 import core.history.SessionHistory
-import core.readGameStateFromData
+import core.properties.Properties
 import core.target.Target
 import core.target.getPersisted
 import core.target.readFromData
@@ -18,46 +16,75 @@ import traveling.scope.getPersisted
 import java.io.File
 
 private const val directory = "./saves/"
+private val ignoredNames = listOf("games", "gameState")
 
 fun clean(pathString: String): String {
     return pathString.replace(" ", "_").replace(Regex("[^a-zA-Z]"), "")
 }
 
-//TODO - handle no files
 fun getGameNames(): List<String> {
-    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    return File(directory).listFiles().map { it.name }
+    return getFiles(directory).map { it.name }.filter { !it.endsWith(".json") }
 }
 
-//TODO - handle no files
 fun getCharacterSaves(gameName: String): List<String> {
-    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    return File(directory + "/" + clean(gameName) + "/").listFiles().map { it.name.substring(0, it.name.length - ".json".length) }
+    return getFiles(directory + "/" + clean(gameName) + "/")
+            .map{it.name}
+            .filter { it.endsWith(".json") }
+            .map { it.substring(0, it.length - ".json".length) }
+            .filter { !ignoredNames.contains(it) }
 }
 
-// Saving always saves both the game and the character
-fun save(gameName: String, player: Target) {
+private fun getFiles(path: String): List<File> {
+    val folder = File(path)
+    return if (folder.exists() && folder.isDirectory) {
+        @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+        folder.listFiles().toList()
+    } else {
+        listOf()
+    }
+}
+
+fun save(rawGameName: String, player: Target) {
+    val gameName = clean(rawGameName)
+    val gamePath = "$directory${gameName}/"
+    saveSessionStats()
+    savePlayer(player, gamePath)
+    ScopeManager.flush()
+    saveGameState(player, gamePath)
+    saveTopLevelMetadata(gameName)
+}
+
+private fun saveSessionStats() {
     if (!GameState.properties.values.getBoolean(SKIP_SAVE_STATS)) {
         SessionHistory.saveSessionStats()
     }
+}
+
+private fun savePlayer(player: Target, path: String) {
     val playerData = getPersisted(player)
-    val path = "$directory${clean(gameName)}/"
     val saveName = path + clean(player.name) + ".json"
     writeSave(path, saveName, playerData)
+}
 
-    ScopeManager.flush()
-
+private fun saveGameState(player: Target, path: String) {
     GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, clean(player.name))
-
-    val gameData = core.getPersistedGameState()
+    val gameData = getPersistedGameState()
     val gameStateSaveName = path + "gameState.json"
     writeSave(path, gameStateSaveName, gameData)
+}
+
+private fun saveTopLevelMetadata(gameName: String) {
+    val gameMetaData = Properties()
+    gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
+    gameMetaData.values.put(AUTO_LOAD, true)
+    val gameMetaDataData = core.properties.getPersisted(gameMetaData)
+    writeSave(directory, directory + "games.json", gameMetaDataData)
 }
 
 fun save(gameName: String, scope: Scope) {
     val path = "$directory${clean(gameName)}/${clean(scope.locationNode.network.name)}/"
     val data = getPersisted(scope)
-    val saveName = "$path/${clean(scope.locationNode.name)}.json"
+    val saveName = "$path${clean(scope.locationNode.name)}.json"
     writeSave(path, saveName, data)
 }
 
@@ -65,6 +92,7 @@ fun loadGame(gameName: String) {
     loadGameState(gameName)
     val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
     loadCharacter(gameName, characterName)
+    GameManager.playing = true
 }
 
 fun loadGameState(gameName: String) {
@@ -80,9 +108,14 @@ fun loadCharacter(gameName: String, saveName: String) {
 }
 
 fun loadScope(gameName: String, locationNode: LocationNode): Scope {
-    val path = "$directory${clean(gameName)}/${clean(locationNode.network.name)}/${clean(locationNode.name)}"
+    val path = "$directory${clean(gameName)}/${clean(locationNode.network.name)}/${clean(locationNode.name)}.json"
     val data = readSave(path)
     return traveling.scope.readFromData(data, locationNode)
+}
+
+fun getGamesMetaData(): Properties {
+    val data = readSave(directory + "games.json")
+    return core.properties.readFromData(data)
 }
 
 private fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {

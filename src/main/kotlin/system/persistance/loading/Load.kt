@@ -12,7 +12,7 @@ class Load : EventListener<LoadEvent>() {
     override fun execute(event: LoadEvent) {
         val gameName = clean(event.saveName)
         val allSaves = getGameNames()
-        val saves = allSaves.filter { it.contains(gameName) }
+        val saves = allSaves.filter { it.toLowerCase().contains(gameName.toLowerCase()) }
         val noMatchResponse = ResponseRequest("Could not find a match for $gameName. What game would you like to load?\n\t${allSaves.joinToString(", ")}", allSaves.map { it to "Load $it" }.toMap())
         val tooManyMatchesResponse = ResponseRequest("What game would you like to load?\n\t${saves.joinToString(", ")}", saves.map { it to "Load $it" }.toMap())
         when {

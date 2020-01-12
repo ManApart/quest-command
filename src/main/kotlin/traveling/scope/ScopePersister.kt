@@ -1,7 +1,7 @@
 package traveling.scope
 
-import core.target.getListKey
 import core.target.getPersisted
+import system.persistance.getListMapKey
 import traveling.location.location.LocationNode
 
 
@@ -14,7 +14,7 @@ fun getPersisted(dataObject: Scope): Map<String, Any> {
 @Suppress("UNCHECKED_CAST")
 fun readFromData(data: Map<String, Any>, locationNode: LocationNode): Scope {
 
-    val targets = getListKey(data, "targets").map {
+    val targets = getListMapKey(data, "targets").map {
         core.target.readFromData(it)
     }
 

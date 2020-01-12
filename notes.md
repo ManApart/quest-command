@@ -714,6 +714,6 @@ Validation tools that:
 - Check for duplicate names (across items and activators)
 - Check all targets reference valid events etc (triggers and trigger events)
 
-
-
-Rename command should preserve capital letters, but can't since we always downcase
+properties have max/min value? Burnhealth going below 0
+fold body parts into locations soon!?
+how do we configure auto load?

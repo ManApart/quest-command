@@ -29,7 +29,7 @@ object ScopeManager {
     }
 
     fun flush() {
-        scopes.entries.forEach {
+        scopes.entries.toList().forEach {
             save(GameState.gameName, it.value)
             if (GameState.player.location != it.key) {
                 scopes.remove(it.key)

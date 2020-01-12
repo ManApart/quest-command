@@ -19,7 +19,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
     private fun loadCharacter(gameName: String, characterName: String) {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
-        val saves = allSaves.filter { it.contains(playerSaveName) }
+        val saves = allSaves.filter { it.toLowerCase().contains(playerSaveName.toLowerCase()) }
         val noMatchResponse = ResponseRequest("Could not find a match for $playerSaveName. What character would you like to play?\n\t${allSaves.joinToString(", ")}", allSaves.map { it to "Be $it" }.toMap())
         val tooManyMatchesResponse = ResponseRequest("What character would you like to play?\n\t${saves.joinToString(", ")}", saves.map { it to "Be $it" }.toMap())
         when {

@@ -276,6 +276,19 @@ class NameSearchableListTest {
         assertFalse(list.existsExact("tar"))
     }
 
+    @Test
+    fun removeTargetAlsoRemovesProxy() {
+        val target = NamedString("Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.addProxy(target, listOf("proxy"))
+
+        val actual = list.get("proxy")
+        assertEquals(target, actual)
+        list.remove(target)
+        assertNull(list.getOrNull(target.name))
+        assertNull(list.getOrNull("proxy"))
+    }
 
 }
 

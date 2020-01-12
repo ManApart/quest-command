@@ -1,5 +1,8 @@
 package core.properties
 
+import system.persistance.getListKey
+import system.persistance.getMapKey
+
 
 fun getPersisted(dataObject: Properties): Map<String, Any> {
     val data = mutableMapOf<String, Any>()
@@ -11,10 +14,10 @@ fun getPersisted(dataObject: Properties): Map<String, Any> {
 
 fun readFromData(data: Map<String, Any>): Properties {
     val values = Values()
-    (data["values"] as Map<*, *>).forEach { values.put(it.key as String, it.value as String) }
+    getMapKey(data, "values").forEach { values.put(it.key as String, it.value as String) }
 
     val tags = Tags()
-    (data["tags"] as List<*>).forEach { tags.add(it as String) }
+    getListKey(data, "tags").forEach { tags.add(it as String) }
 
     return Properties(values, tags)
 }
