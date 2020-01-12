@@ -41,7 +41,7 @@ object GameManager {
         }
     }
 
-    fun newGame(gameName: String = "Kanbara", playerName: String = "Player") {
+    fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
         CommandParser.reset()
         ChatHistory.reset()
         GameState.reset()
@@ -50,7 +50,7 @@ object GameManager {
         EventManager.reset()
         GameState.reset()
 //        LocationManager.clear()
-        setDefaultProperties()
+        setDefaultProperties(testing)
 
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
@@ -60,10 +60,10 @@ object GameManager {
         EventManager.postEvent(GameStartEvent())
     }
 
-    private fun setDefaultProperties() {
+    private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
-        GameState.properties.values.put(AUTO_LOAD, true)
-        GameState.properties.values.put(SKIP_SAVE_STATS, true)
+        GameState.properties.values.put(AUTO_LOAD, !testing)
+        GameState.properties.values.put(SKIP_SAVE_STATS, !testing)
     }
 
     fun newPlayer(

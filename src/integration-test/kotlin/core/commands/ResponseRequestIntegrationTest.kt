@@ -1,15 +1,15 @@
 package core.commands
 
+import core.GameManager
+import core.events.EventManager
+import core.history.ChatHistory
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
-import core.history.ChatHistory
-import traveling.scope.ScopeManager
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import core.events.EventManager
-import core.GameManager
+import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 
 class ResponseRequestIntegrationTest {
@@ -24,7 +24,7 @@ class ResponseRequestIntegrationTest {
 
     @Before
     fun reset() {
-        GameManager.newGame()
+        GameManager.newGame(testing = true)
         EventManager.executeEvents()
     }
 

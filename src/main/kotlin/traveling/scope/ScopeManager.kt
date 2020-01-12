@@ -1,5 +1,6 @@
 package traveling.scope
 
+import core.AUTO_LOAD
 import core.GameState
 import system.persistance.loadScope
 import system.persistance.save
@@ -25,7 +26,11 @@ object ScopeManager {
     }
 
     private fun getNewScope(locationNode: LocationNode): Scope {
-        return loadScope(GameState.gameName, locationNode)
+        return if (GameState.properties.values.getBoolean(AUTO_LOAD)) {
+            loadScope(GameState.gameName, locationNode)
+        } else {
+            Scope(locationNode)
+        }
     }
 
     fun flush() {

@@ -68,6 +68,7 @@ private fun savePlayer(player: Target, path: String) {
 
 private fun saveGameState(player: Target, path: String) {
     GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, clean(player.name))
+    GameState.properties.values.put(AUTO_LOAD, true)
     val gameData = getPersistedGameState()
     val gameStateSaveName = path + "gameState.json"
     writeSave(path, gameStateSaveName, gameData)

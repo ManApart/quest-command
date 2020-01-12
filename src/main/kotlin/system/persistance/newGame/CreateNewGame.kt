@@ -12,7 +12,7 @@ class CreateNewGame : EventListener<CreateNewGameEvent>() {
     override fun execute(event: CreateNewGameEvent) {
         val gameNames = getGameNames()
         val gameName = clean(event.saveName)
-        if (gameNames.contains(gameName)) {
+        if (gameNames.map { it.toLowerCase() }.contains(gameName.toLowerCase())) {
             display("$gameName already exists!")
         } else {
             GameManager.newGame(event.saveName)
