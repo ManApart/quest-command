@@ -1,5 +1,6 @@
 package traveling.scope
 
+import core.target.getListKey
 import core.target.getPersisted
 import traveling.location.location.LocationNode
 
@@ -12,7 +13,8 @@ fun getPersisted(dataObject: Scope): Map<String, Any> {
 
 @Suppress("UNCHECKED_CAST")
 fun readFromData(data: Map<String, Any>, locationNode: LocationNode): Scope {
-    val targets = (data["targets"] as List<Map<String, Any>>).map {
+
+    val targets = getListKey(data, "targets").map {
         core.target.readFromData(it)
     }
 
@@ -20,3 +22,4 @@ fun readFromData(data: Map<String, Any>, locationNode: LocationNode): Scope {
     scope.addTargets(targets)
     return scope
 }
+

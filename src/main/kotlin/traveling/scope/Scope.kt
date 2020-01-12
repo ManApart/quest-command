@@ -9,7 +9,7 @@ import inventory.Inventory
 import status.Soul
 import traveling.location.location.LocationNode
 
-class Scope(private val locationNode: LocationNode) {
+class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
 
     fun isEmpty(): Boolean {

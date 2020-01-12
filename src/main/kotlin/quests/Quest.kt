@@ -82,5 +82,11 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         active = false
     }
 
+    fun hasStarted() :Boolean{
+        return stage != 0 || active || complete
+    }
 
+    fun addAllEntries(journalEntries: List<String>) {
+        this.journalEntries.addAll(journalEntries)
+    }
 }
