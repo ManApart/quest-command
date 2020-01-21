@@ -8,8 +8,8 @@ class TimeManager(private var ticks: Long = 0) : EventListener<GameTickEvent>() 
 
     companion object {
         const val ticksInDay = 100
-        const val daysInMonth = 10
-        const val monthsInYear = 10
+        const val daysInMonth = 25
+        const val monthsInYear = 4
     }
 
 
