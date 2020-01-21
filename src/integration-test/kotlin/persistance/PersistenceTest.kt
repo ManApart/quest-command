@@ -2,6 +2,7 @@ package persistance
 
 import core.GameManager
 import core.GameState
+import core.commands.CommandParser
 import core.events.EventManager
 import org.junit.After
 import org.junit.Before
@@ -30,6 +31,8 @@ class PersistenceTest {
     @Test
     fun playerSave() {
         GameManager.newGame(playerName = "Saved Player")
+        CommandParser.parseCommand("move to wheat && slash wheat && pickup wheat && ne")
+        EventManager.executeEvents()
         GameState.player.properties.tags.add("Saved")
 
         EventManager.postEvent(SaveEvent())
