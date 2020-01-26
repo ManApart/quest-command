@@ -24,7 +24,7 @@ class Look : EventListener<LookEvent>() {
 
     private fun describeTarget(target: Target) {
         var message = target.getDisplayName()
-        message += "\n\t${target.description}"
+        message += "\n\t${target.getDescription()}"
         message += describeStatusEffects(target)
         message += describeWeight(target)
         message += describeProperties(target)

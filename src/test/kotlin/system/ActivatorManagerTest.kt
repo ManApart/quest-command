@@ -44,7 +44,7 @@ class ActivatorManagerTest {
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("key" to "value"))
         val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
 
-        assertEquals("This is a value", result.description)
+        assertEquals("This is a value", result.getDescription())
     }
 
     @Test
@@ -58,7 +58,7 @@ class ActivatorManagerTest {
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("destination" to "resort"))
         val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
 
-        assertEquals("resort", result.description)
+        assertEquals("resort", result.getDescription())
     }
 
 }

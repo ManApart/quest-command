@@ -50,15 +50,14 @@ open class Target(
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, bodyName)
-    val description get() = dynamicDescription.getDialogue()
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val inventory: Inventory = Inventory(items)
     val properties = Properties(properties, params)
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
-    private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
     private val dynamicDescription = dynamicDescription.apply(params)
+    private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
     val knownRecipes = NameSearchableList<Recipe>()
 
     var climbTarget: Target? = null
@@ -214,9 +213,12 @@ open class Target(
         properties.values.put(CAN_INTERACT, true)
     }
 
-    //TODO - remove number
-    fun getDynamicDescription2(): DialogueOptions {
+    fun getDescriptionWithConditions(): DialogueOptions {
         return dynamicDescription
+    }
+
+    fun getDescription(): String {
+        return dynamicDescription.getDialogue()
     }
 
 }
