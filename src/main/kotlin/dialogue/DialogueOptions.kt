@@ -12,7 +12,6 @@ class DialogueOptions(val options: List<DialogueOption> = listOf(), val params: 
         return DialogueOptions(options, params)
     }
 
-    //TODO - should take params in as well so that description can be reactive to current state
     @JsonIgnore
     fun getDialogue(): String {
         return options.firstOrNull { it.condition.matches(params) }?.response?.apply(params) ?: ""

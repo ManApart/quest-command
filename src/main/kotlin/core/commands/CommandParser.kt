@@ -1,15 +1,15 @@
 package core.commands
 
+import core.DependencyInjector
 import core.GameState
-import core.target.Target
+import core.events.EventManager
 import core.history.ChatHistory
 import core.history.display
-import core.utility.NameSearchableList
 import core.reflection.Reflections
+import core.target.Target
+import core.utility.NameSearchableList
 import core.utility.removeFirstItem
 import magic.castSpell.CastCommand
-import core.DependencyInjector
-import core.events.EventManager
 
 object CommandParser {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
@@ -46,6 +46,7 @@ object CommandParser {
     }
 
     fun parseCommand(line: String) {
+        val startTime = System.currentTimeMillis()
         ChatHistory.addInput(line)
         val commands = line.split("&&")
         for (command in commands) {
@@ -58,6 +59,8 @@ object CommandParser {
             }
             EventManager.executeEvents()
         }
+        val time = System.currentTimeMillis() - startTime
+        ChatHistory.getCurrent().timeTaken = time
     }
 
     private fun parseSingleCommand(line: String) {

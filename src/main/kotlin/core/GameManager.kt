@@ -1,10 +1,8 @@
 package core
 
 import core.commands.CommandParser
-import core.events.EventListener
 import core.events.EventManager
 import core.history.ChatHistory
-import core.history.display
 import core.properties.CAN_INTERACT
 import core.properties.CAN_REST
 import core.properties.CAN_TRAVEL
@@ -13,7 +11,6 @@ import core.target.item.ItemManager
 import dialogue.DialogueOptions
 import quests.QuestManager
 import status.stat.*
-import system.message.MessageEvent
 import system.persistance.getGameNames
 import system.persistance.getGamesMetaData
 import system.persistance.loading.LoadEvent
@@ -63,7 +60,7 @@ object GameManager {
     private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
         GameState.properties.values.put(AUTO_LOAD, !testing)
-        GameState.properties.values.put(SKIP_SAVE_STATS, !testing)
+        GameState.properties.values.put(SKIP_SAVE_STATS, testing)
     }
 
     fun newPlayer(
@@ -113,13 +110,6 @@ object GameManager {
             val item = ItemManager.getItem(it)
             inventory.add(item)
         }
-    }
-
-    class MessageHandler : EventListener<MessageEvent>() {
-        override fun execute(event: MessageEvent) {
-            display(event.message)
-        }
-
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.*
 object SessionHistory {
     private val date = SimpleDateFormat("yyyy-MM-dd-hh-mm").format(Date())
     private const val directory = "./saves/"
-    private val fileName = "./saves/session-stats-$date.txt"
+    private val fileName = "./saves/session-stats-$date.md"
 
     private val unknownCommands = mutableListOf<String>()
     private val eventCounts = mutableMapOf<String, Int>()
@@ -30,19 +30,23 @@ object SessionHistory {
             directory.mkdir()
         }
         File(fileName).printWriter().use { out ->
-            out.println("---Event Counts--")
+            out.println("## Event Counts" +
+                    "\n\nEvent | Count" +
+                    "\n---|---")
             eventCounts.forEach { (eventName, count) ->
-                out.println("$eventName: $count")
+                out.println("$eventName | $count")
             }
 
-            out.println("\n---Unknown Commands--")
+            out.println("\n## Unknown Commands")
             unknownCommands.forEach { line ->
                 out.println(line)
             }
 
-            out.println("\n---Input History--")
+            out.println("\n## Input History" +
+                    "\n\nTime in seconds | Command" +
+                    "\n---|---")
             ChatHistory.history.forEach { inOut ->
-                out.println(inOut.input)
+                out.println("${inOut.timeTaken / 1000f} | ${inOut.input}")
             }
         }
     }

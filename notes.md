@@ -354,13 +354,17 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 #### Persistence
 - Tree continues burning even after leaving it and coming back (Persistence within session)
   - When the location is saved it should store the 'last tic timer' and then compare to the current timer to know number of tics passed
-- Persistence should happen across sessions.
 - Scope Manager needs to do 'garbage collection' and have a 'max loaded locations' in memory etc
 
 - Use time of day to do dynamic descriptions of locations
 - Location Targets can take item names to spawn with (for containers etc)
 
 - Eventually persist networks?
+
+Still need to persist
+- battle
+
+session stats save time
 
 Optimizations
 - Diff against base objects?
