@@ -214,6 +214,7 @@ open class Target(
         properties.values.put(CAN_INTERACT, true)
     }
 
+    //TODO - remove number
     fun getDynamicDescription2(): DialogueOptions {
         return dynamicDescription
     }

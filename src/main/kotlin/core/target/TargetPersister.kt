@@ -1,6 +1,6 @@
 package core.target
 
-import core.ai.behavior.BehaviorRecipe
+import core.ai.behavior.getPersisted
 import core.properties.getPersisted
 import status.ProtoSoul
 import traveling.location.location.DEFAULT_NETWORK
@@ -12,7 +12,7 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.name
     data["aiName"] = dataObject.ai.name
-    data["behaviorRecipes"] = dataObject.behaviorRecipes.map { it.name }
+    data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
     data["body"] = core.body.getPersisted(dataObject.body)
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
     data["description"] = dialogue.getPersisted(dataObject.getDynamicDescription2())
@@ -27,7 +27,7 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
 fun readFromData(data: Map<String, Any>): Target {
     val name = data["name"] as String
     val aiName = data["aiName"] as String
-    val behaviorRecipes = (data["behaviorRecipes"] as List<String>).map { BehaviorRecipe(it) }.toMutableList()
+    val behaviorRecipes = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
     val equipSlots = (data["equipSlots"] as List<List<String>>)
     val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
     val inventory = inventory.readFromData(data["inventory"] as Map<String, Any>)

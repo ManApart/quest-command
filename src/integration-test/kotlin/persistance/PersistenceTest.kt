@@ -25,7 +25,7 @@ class PersistenceTest {
 
     @After
     fun deleteSaves() {
-        File("./saves/").listFiles()?.forEach { it.delete() }
+        File("./saves/").listFiles()?.forEach { it.deleteRecursively() }
     }
 
     @Test
