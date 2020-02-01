@@ -1,9 +1,9 @@
-package system.gameTick
+package time
 
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import time.gameTick.TimeManager
+import time.TimeManager
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)

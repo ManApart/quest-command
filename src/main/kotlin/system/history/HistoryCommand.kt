@@ -29,7 +29,7 @@ class HistoryCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Debug")
+        return listOf("Debugging")
     }
 
 

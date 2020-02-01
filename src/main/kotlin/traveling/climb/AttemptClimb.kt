@@ -12,7 +12,7 @@ import status.stat.STAMINA
 import core.history.display
 import core.utility.RandomManager
 import core.utility.StringFormatter
-import explore.LookEvent
+import time.ViewTimeEvent
 import status.ExpGainedEvent
 import status.statChanged.StatChangeEvent
 import core.events.EventManager
@@ -130,7 +130,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun continueClimbing(event: AttemptClimbEvent) {
         EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", silent = true))
-        EventManager.postEvent(LookEvent())
+        EventManager.postEvent(ViewTimeEvent())
     }
 
     private fun fall(event: AttemptClimbEvent) {

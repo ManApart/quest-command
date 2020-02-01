@@ -1,12 +1,12 @@
 package system.debug
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseTargets
-import core.GameState
-import status.stat.StatKind
-import core.history.display
 import core.events.EventManager
+import core.history.display
+import status.stat.StatKind
 
 class DebugCommand : Command() {
 
@@ -31,7 +31,7 @@ class DebugCommand : Command() {
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Debug")
+        return listOf("Debugging")
     }
 
     override fun execute(keyword: String, args: List<String>) {

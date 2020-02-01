@@ -1,7 +1,7 @@
-package system.gameTick
+package time
 
 import org.junit.Test
-import time.gameTick.TimeManager
+import time.TimeManager
 import kotlin.test.assertEquals
 
 class TimeManagerTimeTest {

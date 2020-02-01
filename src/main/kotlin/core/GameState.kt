@@ -2,7 +2,7 @@ package core
 
 import combat.battle.Battle
 import core.properties.Properties
-import time.gameTick.TimeManager
+import time.TimeManager
 
 object GameState {
     var gameName = "Kanbara"

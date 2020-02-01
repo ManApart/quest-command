@@ -1,9 +1,7 @@
-package time.gameTick
-
-import core.events.EventListener
+package time
 
 
-class TimeManager(private var ticks: Long = 0) : EventListener<GameTickEvent>() {
+class TimeManager(private var ticks: Long = 0) {
     constructor(ticks: Int) : this(ticks.toLong())
 
     companion object {
@@ -18,8 +16,8 @@ class TimeManager(private var ticks: Long = 0) : EventListener<GameTickEvent>() 
     }
 
 
-    override fun execute(event: GameTickEvent) {
-        ticks += event.time
+    fun passTime(time: Int) {
+        this.ticks += time
     }
 
     fun getYear(): Int {

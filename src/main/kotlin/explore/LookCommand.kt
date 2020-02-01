@@ -3,9 +3,9 @@ package explore
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
+import core.events.EventManager
 import core.history.display
 import traveling.scope.ScopeManager
-import core.events.EventManager
 
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {
