@@ -1,4 +1,4 @@
-package explore
+package explore.look
 
 import core.events.Event
 import core.target.Target

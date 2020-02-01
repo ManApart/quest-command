@@ -1,10 +1,10 @@
 package explore.map
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.GameState
 import core.events.EventManager
 import traveling.location.location.LocationManager
 
@@ -14,7 +14,7 @@ class ReadMapCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Map:\n\tGet information on your current and other locations"
+        return "Map:\n\tGet information on your current and other locations."
     }
 
     override fun getManual(): String {

@@ -1,4 +1,4 @@
-package explore
+package explore.look
 
 import core.GameState
 import core.events.EventListener
@@ -57,9 +57,9 @@ class Look : EventListener<LookEvent>() {
     private fun describeLocation() {
         val pos = GameState.player.position
         if (pos == NO_VECTOR) {
-            display("You are at ${GameState.player.location.getDescription()}")
+            display("You are at ${GameState.player.location.name}")
         } else {
-            display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.getDescription()}")
+            display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
         }
         if (ScopeManager.getScope().getTargets().size > 1) {
             val targetList = targetsToString(ScopeManager.getScope().getTargets().filterNot { it == GameState.player })

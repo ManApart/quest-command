@@ -28,10 +28,6 @@ class LocationNode(
         return name
     }
 
-    fun getDescription(): String {
-        return name
-    }
-
     fun addConnection(connection: Connection) {
         if (!hasConnection(connection)) {
             connections.add(connection)

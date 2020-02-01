@@ -1,4 +1,4 @@
-package explore
+package explore.look
 
 import core.commands.Command
 import core.commands.CommandParser
@@ -9,11 +9,11 @@ import traveling.scope.ScopeManager
 
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Look", "ls", "Examine", "Exa")
+        return arrayOf("Look", "ls")
     }
 
     override fun getDescription(): String {
-        return "Look:\n\tExamine your surroundings"
+        return "Look:\n\tObserve your surroundings."
     }
 
     override fun getManual(): String {
