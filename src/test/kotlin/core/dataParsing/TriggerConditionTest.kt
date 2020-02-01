@@ -1,7 +1,8 @@
-package core.gamestate.dataParsing
+package core.dataParsing
 
-import quests.triggerCondition.TriggerCondition
+import core.gamestate.dataParsing.TriggerConditionFakeEvent
 import org.junit.Test
+import quests.triggerCondition.TriggerCondition
 import kotlin.test.assertTrue
 
 class TriggerConditionTest {
@@ -17,6 +18,7 @@ class TriggerConditionTest {
         ))
         assertTrue(condition.matches(event))
     }
+
 
 
 }

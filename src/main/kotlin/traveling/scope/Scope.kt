@@ -8,9 +8,14 @@ import core.utility.plus
 import inventory.Inventory
 import status.Soul
 import traveling.location.location.LocationNode
+import traveling.location.weather.DEFAULT_WEATHER
+import traveling.location.weather.Weather
+import traveling.location.weather.WeatherManager
 
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
+    private val location = locationNode.getLocation()
+    var weather: Weather = DEFAULT_WEATHER
 
     fun isEmpty(): Boolean {
         return targets.isEmpty()
@@ -126,6 +131,10 @@ class Scope(val locationNode: LocationNode) {
 
     fun getAllInventories(): List<Inventory> {
         return targets.asSequence().map { it.inventory }.toList()
+    }
+
+    fun updateWeather() {
+        this.weather = WeatherManager.getWeather(location.getWeatherName())
     }
 
 }

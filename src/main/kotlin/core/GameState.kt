@@ -2,12 +2,14 @@ package core
 
 import combat.battle.Battle
 import core.properties.Properties
+import time.gameTick.TimeManager
 
 object GameState {
     var gameName = "Kanbara"
     var player = GameManager.newPlayer()
     var battle: Battle? = null
     var properties = Properties()
+    val timeManager = TimeManager()
 
 
     fun reset() {

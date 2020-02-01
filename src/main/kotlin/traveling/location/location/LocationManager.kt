@@ -56,7 +56,6 @@ object LocationManager {
         return networks.toList()
     }
 
-
     fun findLocationInAnyNetwork(name: String): LocationNode? {
         val network = getNetwork()
         var target = findTarget(name, network)

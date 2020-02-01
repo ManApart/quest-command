@@ -337,10 +337,7 @@ When things fall to the lower boundary, the move listener should naturally move 
 
 #### Day Night Cycle
 
-Time Manager
-- Track current time of day
-- Track date (year, season, day)
-- Weather Manager
+Weather Manager
 - JSon defined weathers
     - Name
     - Description
@@ -365,6 +362,14 @@ LocationDescriptions
 Look for a location gets objects in location, location description, weather description, and dynamic location description
 Maybe that information all shows up on examine, and look just does what it does now
 - Time of day affect description, night time make perception go down.
+
+persist time manager
+
+Named Conditions?
+- True
+- False
+- IsNight
+- IsDay
 
 #### Other
 

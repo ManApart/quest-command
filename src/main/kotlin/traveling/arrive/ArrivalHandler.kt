@@ -27,6 +27,8 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
             val items = ItemManager.getItemsFromLocationTargets(location.items)
             items.forEach { it.location = event.destination.location }
             scope.addTargets(items)
+
+            scope.updateWeather()
         }
 
         scope.addTarget(GameState.player, listOf("me", "self"))

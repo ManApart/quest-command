@@ -24,6 +24,8 @@ import status.effects.EffectJsonParser
 import status.effects.EffectParser
 import traveling.location.location.LocationJsonParser
 import traveling.location.location.LocationParser
+import traveling.location.weather.WeatherJsonParser
+import traveling.location.weather.WeatherParser
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -65,7 +67,8 @@ object DependencyInjector {
                 QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser(),
                 Reflections::class.java to GeneratedReflections(),
-                ResourceHelper::class.java to KotlinResourceHelper()
+                ResourceHelper::class.java to KotlinResourceHelper(),
+                WeatherParser::class.java to WeatherJsonParser()
         )
     }
 
