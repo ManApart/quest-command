@@ -335,13 +335,43 @@ Double check that on move to a boundary changes scene - make this work for all t
 When things fall to the lower boundary, the move listener should naturally move them to the scene below
 
 
+#### Day Night Cycle
+
+Time Manager
+- Track current time of day
+- Track date (year, season, day)
+- Weather Manager
+- JSon defined weathers
+    - Name
+    - Description
+    - Effects applied to the location
+    - Given a location it will return a weather
+- Weathers could be for interiors as well (still, draft, damp, etc)
+
+Locations
+- Have map of possible weathers
+- Alternate constructor just takes a single weather
+- Defaults to ‘Still’ or something
+- Maybe all internal locations inherit from ‘Internal’ and all external inherit from ‘external’ and those base locations have some weathers 
+- If locations extend, there could be base locations for climates
+- Each weather has a percent chance of occuring
+- WeatherName: 25%
+
+LocationDescriptions
+- Part of LocationManager
+- Reads a json defined giant dynamic description
+- Dynamic descriptions can grab any info needed, but usually grab things like internal/external, time of day, maybe weather + whether there is foliage etc
+
+Look for a location gets objects in location, location description, weather description, and dynamic location description
+Maybe that information all shows up on examine, and look just does what it does now
+- Time of day affect description, night time make perception go down.
+
 #### Other
 
 Query Based effects
-- Time of day affect description, night time make perception go down.
+
 - Storming: if outside + random chance
 - Locations should have tags
-- Day night cycle
 - Dynamic description for location based on effects
 
 Can body parts have actual locations (tree branches with apples etc)? Those locations could have targets with bodies / this could make it recursive
@@ -358,8 +388,6 @@ Can body parts have actual locations (tree branches with apples etc)? Those loca
 
 - Use time of day to do dynamic descriptions of locations
 - Location Targets can take item names to spawn with (for containers etc)
-
-- Eventually persist networks?
 
 Still need to persist
 - battle

@@ -1,7 +1,7 @@
 package system.gameTick
 
-import time.gameTick.TimeManager
 import org.junit.Test
+import time.gameTick.TimeManager
 import kotlin.test.assertEquals
 
 class TimeManagerTimeTest {
@@ -39,6 +39,21 @@ class TimeManagerTimeTest {
     fun getPercentDayCompleteDay2() {
         val time = TimeManager(TimeManager.ticksInDay + 1)
         assertEquals(1, time.getPercentDayComplete())
+    }
+
+    @Test
+    fun getDateAndTime() {
+        val year = 2 * TimeManager.ticksInYear
+        val month = 3 * TimeManager.ticksInMonth
+        val day = 5 * TimeManager.ticksInDay
+        val hour = 2 * TimeManager.ticksInHour
+
+        val time = TimeManager(year + month + day + hour)
+
+        assertEquals(2, time.getYear())
+        assertEquals(3, time.getMonth())
+        assertEquals(5, time.getDay())
+        assertEquals(2, time.getHour())
     }
 
 }

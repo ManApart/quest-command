@@ -1,9 +1,9 @@
 package system.gameTick
 
-import time.gameTick.TimeManager
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import time.gameTick.TimeManager
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
@@ -17,10 +17,10 @@ class TimeManagerDateTest(private val ticks: Int, private val expectedDays: Int,
                     arrayOf(1, 0, 0, 0),
                     arrayOf(TimeManager.ticksInDay, 1, 0, 0),
                     arrayOf(TimeManager.ticksInDay + 1, 1, 0, 0),
-                    arrayOf(TimeManager.ticksInDay * TimeManager.daysInMonth + 1, 0, 1, 0),
-                    arrayOf(TimeManager.ticksInDay * TimeManager.daysInMonth * TimeManager.monthsInYear + 1, 0, 0, 1),
-                    arrayOf(TimeManager.ticksInDay * TimeManager.daysInMonth + TimeManager.ticksInDay + 1, 1, 1, 0),
-                    arrayOf(TimeManager.ticksInDay * TimeManager.daysInMonth * TimeManager.monthsInYear + TimeManager.ticksInDay + 1, 1, 0, 1)
+                    arrayOf(TimeManager.ticksInMonth + 1, 0, 1, 0),
+                    arrayOf(TimeManager.ticksInYear + 1, 0, 0, 1),
+                    arrayOf(TimeManager.ticksInMonth + TimeManager.ticksInDay + 1, 1, 1, 0),
+                    arrayOf(TimeManager.ticksInYear + TimeManager.ticksInDay + 1, 1, 0, 1)
             )
         }
     }
