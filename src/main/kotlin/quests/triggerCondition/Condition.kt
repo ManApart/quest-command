@@ -3,7 +3,6 @@ package quests.triggerCondition
 import core.utility.apply
 
 class Condition(private val params: Map<String, String> = mapOf(), private val queries: List<Query> = listOf()) {
-
     constructor(base: Condition, params: Map<String, String>) : this(base.params.apply(params), base.queries)
 
     fun matches(params: Map<String, String>): Boolean {

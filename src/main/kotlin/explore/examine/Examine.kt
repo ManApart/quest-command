@@ -57,14 +57,16 @@ class Examine : EventListener<ExamineEvent>() {
     private fun describeLocation() {
         val pos = GameState.player.position
         val location = GameState.player.location.getLocation()
+        val scope = ScopeManager.getScope()
         if (pos == NO_VECTOR) {
             display("You are at ${GameState.player.location.name}")
         } else {
             display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
         }
         display(location.description)
+        display(scope.weather.description)
         if (ScopeManager.getScope().getTargets().size > 1) {
-            val targetList = targetsToString(ScopeManager.getScope().getTargets().filterNot { it == GameState.player })
+            val targetList = targetsToString(scope.getTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")
         } else {
             display("You don't see anything of use.")

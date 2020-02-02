@@ -90,7 +90,14 @@
           "x": 20
         }
       }
-    ]
+    ],
+    "weather": {
+      "options": [
+        {
+          "choice": "Soft Wind"
+        }
+      ]
+    }
   },
   {
     "name": "Apple Tree",

@@ -14,6 +14,6 @@ class DialogueOptions(val options: List<DialogueOption> = listOf(), val params: 
 
     @JsonIgnore
     fun getDialogue(): String {
-        return options.firstOrNull { it.condition.matches(params) }?.response?.apply(params) ?: ""
+        return options.firstOrNull { it.condition.matches(params) }?.choice?.apply(params) ?: ""
     }
 }

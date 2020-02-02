@@ -365,8 +365,6 @@ Maybe that information all shows up on examine, and look just does what it does 
 
 persist time manager
 
-Targets in scope can be 'hidden'. If so they don't show up when look is used. If examine is used they show up based on perception
-
 Named Conditions?
 - True
 - False

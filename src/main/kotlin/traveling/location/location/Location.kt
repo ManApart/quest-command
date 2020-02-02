@@ -14,7 +14,7 @@ class Location(
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
         var bodyPart: BodyPart? = null,
-        private val weatherSelector: DialogueOptions = DialogueOptions("Still"),
+        private val weather: DialogueOptions = DialogueOptions("Still"),
         val properties: Properties = Properties()
 ) : Named {
     constructor(base: Location) : this(
@@ -28,7 +28,7 @@ class Location(
             } else {
                 null
             },
-            base.weatherSelector,
+            base.weather,
             Properties(base.properties)
     )
 
@@ -37,7 +37,7 @@ class Location(
     }
 
     fun getWeatherName() : String {
-        return weatherSelector.getDialogue()
+        return weather.getDialogue()
     }
 
 }
