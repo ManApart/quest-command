@@ -1,6 +1,7 @@
 package quests.triggerCondition
 
 import core.history.display
+import core.utility.RandomManager
 import quests.QuestManager
 import traveling.scope.ScopeManager
 
@@ -12,7 +13,18 @@ object GameStateQuery {
             "Location" -> getLocation(params)
             "Target" -> getTargetValues(params, false)
             "AllTargets" -> getTargetValues(params, true)
+            "Chance" -> getChance(params)
             else -> ""
+        }
+    }
+
+    private fun getChance(params: List<String>): String {
+        val chance = params[0].toIntOrNull() ?: 50
+        val success = RandomManager.isSuccess(chance / 100.00)
+        return if (success) {
+            "success"
+        } else {
+            "fail"
         }
     }
 
@@ -30,7 +42,7 @@ object GameStateQuery {
             return ""
         }
 
-        val targets =  if (all) {
+        val targets = if (all) {
             ScopeManager.getScope().getTargetsIncludingPlayerInventory(params[0])
         } else {
             listOf(ScopeManager.getScope().getTargetsIncludingPlayerInventory(params[0]).first())

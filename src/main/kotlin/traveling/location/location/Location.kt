@@ -14,6 +14,7 @@ class Location(
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
         var bodyPart: BodyPart? = null,
+        val weatherChangeFrequency: Int = 5,
         private val weather: DialogueOptions = DialogueOptions("Still"),
         val properties: Properties = Properties()
 ) : Named {
@@ -28,6 +29,7 @@ class Location(
             } else {
                 null
             },
+            base.weatherChangeFrequency,
             base.weather,
             Properties(base.properties)
     )

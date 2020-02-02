@@ -94,6 +94,21 @@
     "weather": {
       "options": [
         {
+          "choice": "Gentle Rain",
+          "condition": {
+            "queries": [
+              {
+                "property": "Chance",
+                "params": [
+                  50
+                ],
+                "operator": "=",
+                "value": "success"
+              }
+            ]
+          }
+        },
+        {
           "choice": "Soft Wind"
         }
       ]

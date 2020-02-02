@@ -1,7 +1,6 @@
 package time
 
 import org.junit.Test
-import time.TimeManager
 import kotlin.test.assertEquals
 
 class TimeManagerTimeTest {
@@ -55,5 +54,24 @@ class TimeManagerTimeTest {
         assertEquals(5, time.getDay())
         assertEquals(2, time.getHour())
     }
+
+    @Test
+    fun getHourPassedInSameDay() {
+        val time = TimeManager()
+        val initial = time.getTicks()
+        time.passTime(2 *TimeManager.ticksInHour)
+
+        assertEquals(2, time.getHoursPassed(initial))
+    }
+
+    @Test
+    fun getHoursPassedOverADay() {
+        val time = TimeManager()
+        val initial = time.getTicks()
+        time.passTime(TimeManager.ticksInDay)
+
+        assertEquals(TimeManager.hoursInDay, time.getHoursPassed(initial))
+    }
+
 
 }

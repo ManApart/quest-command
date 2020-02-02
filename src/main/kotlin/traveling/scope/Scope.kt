@@ -14,7 +14,7 @@ import traveling.location.weather.WeatherManager
 
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
-    private val location = locationNode.getLocation()
+    val location = locationNode.getLocation()
     var weather: Weather = DEFAULT_WEATHER
 
     fun isEmpty(): Boolean {

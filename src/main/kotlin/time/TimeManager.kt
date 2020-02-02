@@ -20,6 +20,10 @@ class TimeManager(private var ticks: Long = 0) {
         this.ticks += time
     }
 
+    fun getTicks() : Long {
+        return this.ticks
+    }
+
     fun getYear(): Int {
         return (ticks / ticksInYear).toInt()
     }
@@ -50,6 +54,11 @@ class TimeManager(private var ticks: Long = 0) {
         val remainderFromMonth = remainderFromYear % ticksInMonth
         val remainderFromDay = remainderFromMonth % ticksInDay
         return ((remainderFromDay / ticksInDay.toDouble()) * 100).toInt()
+    }
+
+    fun getHoursPassed(since: Long = 0): Int {
+        val ticksPassed = this.ticks - since
+        return (ticksPassed / ticksInHour).toInt()
     }
 
 
