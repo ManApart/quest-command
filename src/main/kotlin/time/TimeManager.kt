@@ -15,12 +15,15 @@ class TimeManager(private var ticks: Long = 0) {
         const val ticksInYear = ticksInMonth * monthsInYear
     }
 
-
     fun passTime(time: Int) {
         this.ticks += time
     }
 
-    fun getTicks() : Long {
+    fun setTime(ticks: Long) {
+        this.ticks = ticks
+    }
+
+    fun getTicks(): Long {
         return this.ticks
     }
 
@@ -61,5 +64,9 @@ class TimeManager(private var ticks: Long = 0) {
         return (ticksPassed / ticksInHour).toInt()
     }
 
+    fun isNight(): Boolean {
+        val percent = getPercentDayComplete()
+        return percent < 25 || percent > 75
+    }
 
 }

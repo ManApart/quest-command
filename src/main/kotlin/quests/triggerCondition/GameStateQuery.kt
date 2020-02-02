@@ -1,5 +1,6 @@
 package quests.triggerCondition
 
+import core.GameState
 import core.history.display
 import core.utility.RandomManager
 import quests.QuestManager
@@ -14,17 +15,9 @@ object GameStateQuery {
             "Target" -> getTargetValues(params, false)
             "AllTargets" -> getTargetValues(params, true)
             "Chance" -> getChance(params)
+            "IsNight" -> getIsNight()
+            "Time" -> getTime()
             else -> ""
-        }
-    }
-
-    private fun getChance(params: List<String>): String {
-        val chance = params[0].toIntOrNull() ?: 50
-        val success = RandomManager.isSuccess(chance / 100.00)
-        return if (success) {
-            "success"
-        } else {
-            "fail"
         }
     }
 
@@ -66,6 +59,24 @@ object GameStateQuery {
         }
 
         return values.asSequence().filterNotNull().joinToString(",")
+    }
+
+    private fun getChance(params: List<String>): String {
+        val chance = params[0].toIntOrNull() ?: 50
+        val success = RandomManager.isSuccess(chance / 100.00)
+        return if (success) {
+            "success"
+        } else {
+            "fail"
+        }
+    }
+
+    private fun getIsNight(): String {
+        return GameState.timeManager.isNight().toString()
+    }
+
+    private fun getTime(): String {
+        return GameState.timeManager.getPercentDayComplete().toString()
     }
 
 }

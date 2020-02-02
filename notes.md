@@ -337,39 +337,13 @@ When things fall to the lower boundary, the move listener should naturally move 
 
 #### Day Night Cycle
 
-Weather Manager
-- JSon defined weathers
-    - Name
-    - Description
-    - Effects applied to the location
-    - Given a location it will return a weather
-- Weathers could be for interiors as well (still, draft, damp, etc)
-
 Locations
-- Have map of possible weathers
-- Alternate constructor just takes a single weather
-- Defaults to ‘Still’ or something
 - Maybe all internal locations inherit from ‘Internal’ and all external inherit from ‘external’ and those base locations have some weathers 
 - If locations extend, there could be base locations for climates
-- Each weather has a percent chance of occuring
-- WeatherName: 25%
+make more weathers
+extend a climate
 
-LocationDescriptions
-- Part of LocationManager
-- Reads a json defined giant dynamic description
-- Dynamic descriptions can grab any info needed, but usually grab things like internal/external, time of day, maybe weather + whether there is foliage etc
-
-Look for a location gets objects in location, location description, weather description, and dynamic location description
-Maybe that information all shows up on examine, and look just does what it does now
-- Time of day affect description, night time make perception go down.
-
-persist time manager
-
-Named Conditions?
-- True
-- False
-- IsNight
-- IsDay
+Gamestate query for what weather it is?
 
 #### Other
 

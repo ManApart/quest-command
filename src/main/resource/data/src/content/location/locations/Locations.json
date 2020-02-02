@@ -17,7 +17,8 @@
     "name": "City Wall",
     "activators": [
       "City Wall"
-    ]
+    ],
+    "weather": "Soft Wind"
   },
   {
     "name": "Kanbara Gate",
@@ -82,7 +83,59 @@
   },
   {
     "name": "Field",
-    "description": "The waist high grasses stretch into the distance. They don't obscure your view, but as they drift in the wind they give you the sensation of floating on a calm sea.",
+    "description": {
+      "options": [
+        {
+          "choice": "The red sun fills the waving grasses, making them glow. They sway like licks of flame.",
+          "condition": {
+            "queries": [
+              {
+                "property": "Time",
+                "operator": ">=",
+                "value": "20"
+              },
+              {
+                "property": "Time",
+                "operator": "<=",
+                "value": "30"
+              }
+            ]
+          }
+        },
+        {
+          "choice": "The red sun fills the waving grasses, making them glow. They sway like licks of flame.",
+          "condition": {
+            "queries": [
+              {
+                "property": "Time",
+                "operator": ">=",
+                "value": "70"
+              },
+              {
+                "property": "Time",
+                "operator": "<=",
+                "value": "80"
+              }
+            ]
+          }
+        },
+        {
+          "choice": "You feel the waist high grasses brush against you. You can hear their rustle expand into the distance.",
+          "condition": {
+            "queries": [
+              {
+                "property": "IsNight",
+                "operator": "=",
+                "value": "true"
+              }
+            ]
+          }
+        },
+        {
+          "choice": "The waist high grasses stretch into the distance. They don't obscure your view, but as they drift in the wind they give you the sensation of floating on a calm sea."
+        }
+      ]
+    },
     "activators": [
       {
         "name": "Wheat Field",

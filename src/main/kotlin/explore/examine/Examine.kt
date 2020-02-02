@@ -63,7 +63,7 @@ class Examine : EventListener<ExamineEvent>() {
         } else {
             display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
         }
-        display(location.description)
+        display(location.getDescription())
         display(scope.weather.description)
         if (ScopeManager.getScope().getTargets().size > 1) {
             val targetList = targetsToString(scope.getTargets().filterNot { it == GameState.player })

@@ -2,6 +2,8 @@ package time
 
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class TimeManagerTimeTest {
 
@@ -16,6 +18,7 @@ class TimeManagerTimeTest {
         val time = TimeManager(TimeManager.ticksInDay / 4)
         assertEquals(25, time.getPercentDayComplete())
     }
+
     @Test
     fun getPercentDayComplete50() {
         val time = TimeManager(TimeManager.ticksInDay / 2)
@@ -41,6 +44,26 @@ class TimeManagerTimeTest {
     }
 
     @Test
+    fun isNight() {
+        val time = TimeManager()
+        assertTrue(time.isNight())
+
+        val ticksAtEndOfMorning = (TimeManager.ticksInHour * TimeManager.hoursInDay / 4).toLong()
+        time.setTime(ticksAtEndOfMorning - 1)
+        assertTrue(time.isNight())
+
+        time.setTime(ticksAtEndOfMorning + 1)
+        assertFalse(time.isNight())
+
+        val ticksAtStartOfNight = (TimeManager.ticksInHour * TimeManager.hoursInDay * 3 / 4).toLong()
+        time.setTime(ticksAtStartOfNight - 1)
+        assertFalse(time.isNight())
+
+        time.setTime(ticksAtStartOfNight + 1)
+        assertTrue(time.isNight())
+    }
+
+    @Test
     fun getDateAndTime() {
         val year = 2 * TimeManager.ticksInYear
         val month = 3 * TimeManager.ticksInMonth
@@ -59,7 +82,7 @@ class TimeManagerTimeTest {
     fun getHourPassedInSameDay() {
         val time = TimeManager()
         val initial = time.getTicks()
-        time.passTime(2 *TimeManager.ticksInHour)
+        time.passTime(2 * TimeManager.ticksInHour)
 
         assertEquals(2, time.getHoursPassed(initial))
     }

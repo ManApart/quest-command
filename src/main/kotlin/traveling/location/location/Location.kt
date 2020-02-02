@@ -9,7 +9,7 @@ val NOWHERE = Location("Nowhere")
 
 class Location(
         override val name: String,
-        val description: String = "",
+        private val description: DialogueOptions = DialogueOptions(""),
         val activators: List<LocationTarget> = listOf(),
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
@@ -40,6 +40,10 @@ class Location(
 
     fun getWeatherName() : String {
         return weather.getDialogue()
+    }
+
+    fun getDescription(): String {
+        return description.getDialogue()
     }
 
 }

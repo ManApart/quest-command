@@ -2,8 +2,8 @@ package core.utility
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import traveling.location.location.Location
 import org.junit.Test
+import traveling.location.location.Location
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -24,8 +24,8 @@ class JsonDirectoryParserTest {
         assertNotNull(gate)
 
 
-        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", city.description)
-        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", kanbara.description)
+        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", city.getDescription())
+        assertEquals("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia", kanbara.getDescription())
         assertEquals(1, gate.activators.size)
 
     }
