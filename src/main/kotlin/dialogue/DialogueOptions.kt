@@ -1,19 +1,11 @@
 package dialogue
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import core.utility.apply
+import quests.triggerCondition.Conditional
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-class DialogueOptions(val options: List<DialogueOption> = listOf(), val params: Map<String, String> = mapOf()) {
+class DialogueOptions(options: List<DialogueOption> = listOf(), params: Map<String, String> = mapOf()) : Conditional<DialogueOption, String>(options, params) {
     constructor(defaultOption: String) : this(listOf(DialogueOption(defaultOption)))
 
-    fun apply(params: Map<String, String>) : DialogueOptions {
+    override fun apply(params: Map<String, String>) : DialogueOptions {
         return DialogueOptions(options, params)
-    }
-
-    @JsonIgnore
-    fun getDialogue(): String {
-        return options.firstOrNull { it.condition.matches(params) }?.choice?.apply(params) ?: ""
     }
 }

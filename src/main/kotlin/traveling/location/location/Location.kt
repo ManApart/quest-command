@@ -39,11 +39,11 @@ class Location(
     }
 
     fun getWeatherName() : String {
-        return weather.getDialogue()
+        return weather.getOption() ?: ""
     }
 
     fun getDescription(): String {
-        return description.getDialogue()
+        return description.getOption() ?: ""
     }
 
 }

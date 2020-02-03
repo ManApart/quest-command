@@ -218,7 +218,7 @@ open class Target(
     }
 
     fun getDescription(): String {
-        return dynamicDescription.getDialogue()
+        return dynamicDescription.getOption() ?: ""
     }
 
 }
