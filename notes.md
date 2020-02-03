@@ -345,6 +345,10 @@ extend a climate
 
 Gamestate query for what weather it is?
 
+
+Don't have weathers do straight effects, have them do conditions
+
+
 #### Other
 
 Query Based effects

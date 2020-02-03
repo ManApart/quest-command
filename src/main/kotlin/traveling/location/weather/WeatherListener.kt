@@ -6,12 +6,14 @@ import time.gameTick.GameTickEvent
 import traveling.scope.ScopeManager
 
 class WeatherListener : EventListener<GameTickEvent>() {
-    private var lastChange = GameState.timeManager.getTicks()
+    private var lastAppliedEffects = GameState.timeManager.getTicks()
+    private val effectAppliedCadence = 5
+
     override fun execute(event: GameTickEvent) {
-        val timeNeededToElapse = ScopeManager.getScope().location.weatherChangeFrequency
-        if (GameState.timeManager.getHoursPassed(lastChange) >= timeNeededToElapse) {
-            lastChange = GameState.timeManager.getTicks()
-            ScopeManager.getScope().updateWeather()
+        ScopeManager.getScope().changeWeatherIfEnoughTimeHasPassed()
+        if (GameState.timeManager.getTicks() > lastAppliedEffects + effectAppliedCadence) {
+            lastAppliedEffects = GameState.timeManager.getTicks()
+            ScopeManager.getScope().applyWeatherEffects()
         }
     }
 

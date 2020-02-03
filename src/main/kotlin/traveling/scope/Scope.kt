@@ -16,6 +16,7 @@ class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
     val location = locationNode.getLocation()
     var weather: Weather = DEFAULT_WEATHER
+    var lastWeatherChange: Long = GameState.timeManager.getTicks()
 
     fun isEmpty(): Boolean {
         return targets.isEmpty()
@@ -133,8 +134,17 @@ class Scope(val locationNode: LocationNode) {
         return targets.asSequence().map { it.inventory }.toList()
     }
 
-    fun updateWeather() {
-        this.weather = WeatherManager.getWeather(location.getWeatherName())
+    fun changeWeatherIfEnoughTimeHasPassed() {
+        if (GameState.timeManager.getHoursPassed(lastWeatherChange) >= location.weatherChangeFrequency) {
+            lastWeatherChange = GameState.timeManager.getTicks()
+            this.weather = WeatherManager.getWeather(location.getWeatherName())
+        }
+    }
+
+    fun applyWeatherEffects() {
+        val effects = weather.effects.mapNotNull { it.getOption() }
+        //TODO - need conditions instead of just effects
+
     }
 
 }

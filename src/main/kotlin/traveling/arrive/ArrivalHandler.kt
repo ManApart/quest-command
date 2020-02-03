@@ -28,7 +28,7 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
             items.forEach { it.location = event.destination.location }
             scope.addTargets(items)
 
-            scope.updateWeather()
+            scope.changeWeatherIfEnoughTimeHasPassed()
         }
 
         scope.addTarget(GameState.player, listOf("me", "self"))

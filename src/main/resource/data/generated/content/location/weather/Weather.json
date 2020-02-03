@@ -1,1 +1,1 @@
-[{"name":"Soft Wind","description":"A soft wind blows gently against you."},{"name":"Gentle Rain","description":"Fat drops of water lazily splash against everything around you."}]
+[{"name":"Soft Wind","description":"A soft wind blows gently against you."},{"name":"Gentle Rain","description":"Fat drops of water lazily splash against everything around you.","effects":[{"option":{"name":"Wet","amount":1,"duration":5}}]}]
