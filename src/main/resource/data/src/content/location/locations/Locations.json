@@ -153,7 +153,7 @@
               {
                 "property": "Chance",
                 "params": [
-                  100
+                  50
                 ],
                 "operator": "=",
                 "value": "success"

@@ -1,12 +1,15 @@
 package traveling.scope
 
 import core.GameState
+import core.events.EventManager
 import core.properties.Properties
 import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.plus
 import inventory.Inventory
 import status.Soul
+import status.conditions.AddConditionEvent
+import status.conditions.ConditionManager
 import traveling.location.location.LocationNode
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
@@ -135,16 +138,21 @@ class Scope(val locationNode: LocationNode) {
     }
 
     fun changeWeatherIfEnoughTimeHasPassed() {
-        if (GameState.timeManager.getHoursPassed(lastWeatherChange) >= location.weatherChangeFrequency) {
+        if (lastWeatherChange == 0L || GameState.timeManager.getHoursPassed(lastWeatherChange) >= location.weatherChangeFrequency) {
             lastWeatherChange = GameState.timeManager.getTicks()
             this.weather = WeatherManager.getWeather(location.getWeatherName())
         }
     }
 
     fun applyWeatherEffects() {
-        val effects = weather.effects.mapNotNull { it.getOption() }
-        //TODO - need conditions instead of just effects
-
+        val conditionRecipes = weather.conditionNames.mapNotNull { it.getOption() }
+        targets.forEach { target ->
+            val parts = target.body.getParts()
+            conditionRecipes.forEach { recipeName ->
+                val condition = ConditionManager.getCondition(recipeName, parts)
+                EventManager.postEvent(AddConditionEvent(target, condition))
+            }
+        }
     }
 
 }

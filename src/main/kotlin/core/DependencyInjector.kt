@@ -20,6 +20,8 @@ import crafting.RecipeJsonParser
 import crafting.RecipeParser
 import quests.QuestJsonParser
 import quests.QuestParser
+import status.conditions.ConditionJsonParser
+import status.conditions.ConditionParser
 import status.effects.EffectJsonParser
 import status.effects.EffectParser
 import traveling.location.location.LocationJsonParser
@@ -61,6 +63,7 @@ object DependencyInjector {
                 BehaviorParser::class.java to BehaviorJsonParser(),
                 BodyParser::class.java to BodyJsonParser(),
                 CreatureParser::class.java to CreatureJsonParser(),
+                ConditionParser::class.java to ConditionJsonParser(),
                 EffectParser::class.java to EffectJsonParser(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),

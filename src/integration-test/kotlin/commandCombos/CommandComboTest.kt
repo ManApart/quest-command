@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import quests.QuestManager
 import status.stat.HEALTH
+import system.debug.DebugType
 import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -178,6 +179,16 @@ class CommandComboTest {
         assertEquals(0, GameState.player.soul.getConditions().size)
         assertEquals(5, GameState.player.soul.getCurrent(HEALTH))
         assertEquals("Player is no longer Poisoned.", ChatHistory.getLastOutput())
+    }
+
+    @Test
+    fun feelTheRain() {
+        GameState.properties.values.put(DebugType.RANDOM.propertyName, true)
+        CommandParser.parseCommand("rest 5 && exa && stat")
+        assertEquals(1, GameState.player.soul.getConditions().size)
+        assertEquals("Rain Wet", GameState.player.soul.getConditions().first().name)
+
+        GameState.properties.values.put(DebugType.RANDOM.propertyName, false)
     }
 
 }

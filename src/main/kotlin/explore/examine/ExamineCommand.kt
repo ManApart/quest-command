@@ -1,5 +1,6 @@
 package explore.examine
 
+import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
@@ -31,7 +32,7 @@ class ExamineCommand : Command() {
             keyword == "examine" && args.isEmpty() -> clarifyTarget()
             args.isEmpty() -> EventManager.postEvent(ExamineEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent())
-            ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).first()))
+            ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(GameState.player, ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

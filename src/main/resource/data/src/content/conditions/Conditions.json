@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Rain Wet",
+    "element": "WATER",
+    "elementStrength": 1,
+    "effects": [
+      {
+        "name": "Wet",
+        "amount": 1,
+        "duration": 5
+      }
+    ]
+  }
+]
