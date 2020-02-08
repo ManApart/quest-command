@@ -27,7 +27,8 @@ class DebugCommand : Command() {
                 "\n\tDebug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). " +
                 "\n\tDebug stat <stat name> <desired level> on *<target> - Set a stat to the desired level." +
                 "\n\tDebug prop <prop name> <desired level> on *<target> - Set a property to the desired level." +
-                "\n\tDebug tag *<remove> <tag name> on *<target> - Add (or remove) a tag."
+                "\n\tDebug tag *<remove> <tag name> on *<target> - Add (or remove) a tag." +
+                "\n\tDebug weather <weather name> - Set weather in current location to the given weather, if it exists."
     }
 
     override fun getCategory(): List<String> {
@@ -49,6 +50,7 @@ class DebugCommand : Command() {
                 "stat" -> sendDebugStatEvent(StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(arguments)
+                "weather" -> sendDebugWeatherEvent(arguments)
                 else -> display("Did not understand debug command.")
             }
         }
@@ -86,5 +88,9 @@ class DebugCommand : Command() {
         EventManager.postEvent(DebugTagEvent(target, tagName, isAdding))
     }
 
+    private fun sendDebugWeatherEvent(arguments: Args) {
+        val weather = arguments.argsWithout(listOf("weather")).joinToString(" ")
+        EventManager.postEvent(DebugWeatherEvent(weather))
+    }
 
 }

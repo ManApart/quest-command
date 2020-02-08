@@ -4,10 +4,12 @@ import core.GameState
 import core.events.EventListener
 import core.history.display
 import status.stat.StatKind
+import traveling.location.weather.WeatherManager
+import traveling.scope.ScopeManager
 
 class DebugListListener : EventListener<DebugListEvent>() {
     override fun execute(event: DebugListEvent) {
-        display( "Gamestate properties are: " + GameState.properties.toString())
+        display("Gamestate properties are: " + GameState.properties.toString())
     }
 }
 
@@ -17,7 +19,7 @@ class DebugToggleListener : EventListener<DebugToggleEvent>() {
             GameState.properties.values.put(DebugType.LEVEL_REQ.propertyName, event.toggledOn)
             GameState.properties.values.put(DebugType.STAT_CHANGES.propertyName, event.toggledOn)
             GameState.properties.values.put(DebugType.RANDOM.propertyName, event.toggledOn)
-            display( "Gamestate properties are: " + GameState.properties.toString())
+            display("Gamestate properties are: " + GameState.properties.toString())
         } else {
             GameState.properties.values.put(event.debugType.propertyName, event.toggledOn)
             display("Set ${event.debugType.propertyName} to ${GameState.properties.values.getBoolean(event.debugType.propertyName)}")
@@ -46,5 +48,18 @@ class DebugTagListener : EventListener<DebugTagEvent>() {
             event.target.properties.tags.remove(event.tag)
         }
         display("${event.target}'s tags are now ${event.target.properties.tags}")
+    }
+}
+
+class DebugWeatherListener : EventListener<DebugWeatherEvent>() {
+    override fun execute(event: DebugWeatherEvent) {
+        if (WeatherManager.weatherExists(event.weather)) {
+            val weather = WeatherManager.getWeather(event.weather)
+            ScopeManager.getScope().updateWeather(weather)
+            display("Updated weather to ${weather.name}.")
+        } else {
+            display("Could not find weather ${event.weather}.")
+        }
+
     }
 }

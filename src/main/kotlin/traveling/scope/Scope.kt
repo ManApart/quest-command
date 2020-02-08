@@ -139,9 +139,13 @@ class Scope(val locationNode: LocationNode) {
 
     fun changeWeatherIfEnoughTimeHasPassed() {
         if (lastWeatherChange == 0L || GameState.timeManager.getHoursPassed(lastWeatherChange) >= location.weatherChangeFrequency) {
-            lastWeatherChange = GameState.timeManager.getTicks()
-            this.weather = WeatherManager.getWeather(location.getWeatherName())
+            updateWeather(WeatherManager.getWeather(location.getWeatherName()))
         }
+    }
+
+    fun updateWeather(newWeather: Weather) {
+        lastWeatherChange = GameState.timeManager.getTicks()
+        this.weather = newWeather
     }
 
     fun applyWeatherEffects() {

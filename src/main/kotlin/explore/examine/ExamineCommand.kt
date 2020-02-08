@@ -10,7 +10,7 @@ import traveling.scope.ScopeManager
 
 class ExamineCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Examine", "Exa")
+        return arrayOf("Examine", "Exa", "cat")
     }
 
     override fun getDescription(): String {
