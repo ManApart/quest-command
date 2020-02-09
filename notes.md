@@ -325,17 +325,6 @@ Temperature
 - Locations have a temperature depending on location properties + current effects, burnining fires, snowstorms etc
 - Player has own temperature rating that is the location temp + effects, equipped items, etc
 
-#### Gravity
-
-Targets in a scene can have supportParent
-GravityListener: Any target that doesn’t have a supportParent and has a position of Z > 0 should fall, unless it has the NoFall tag
-On Scope Remove, check any target that previously had that support Parent. Remove the parent and let the item fall
-A falling item should fall the the scene’s lower z boundary. This is 0 by default unless there is a below connection
-Double check that on move to a boundary changes scene - make this work for all targets
-When things fall to the lower boundary, the move listener should naturally move them to the scene below
-
-
-#### Day Night Cycle
 
 Locations
 - Maybe all internal locations inherit from ‘Internal’ and all external inherit from ‘external’ and those base locations have some weathers 
@@ -344,9 +333,25 @@ make more weathers
 extend a climate
 
 Gamestate query for what weather it is?
+- Use query to make thunderstorms more likely/only happen after heavy rain
+
+Create more weathers
+Extend internal / external locations
+Base location has pattern of weathers
+Figure out how to specify if json is replacing (default) or appending
+Weathers have a temperature effect?
 
 
-Don't have weathers do straight effects, have them do conditions
+Extract location bases
+
+#### Gravity
+
+Targets in a scene can have supportParent
+GravityListener: Any target that doesn’t have a supportParent and has a position of Z > 0 should fall, unless it has the NoFall tag
+On Scope Remove, check any target that previously had that support Parent. Remove the parent and let the item fall
+A falling item should fall the the scene’s lower z boundary. This is 0 by default unless there is a below connection
+Double check that on move to a boundary changes scene - make this work for all targets
+When things fall to the lower boundary, the move listener should naturally move them to the scene below
 
 
 #### Other

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Stifled Air",
+    "description": "The air is stale and stifled."
+  },
+  {
+    "name": "Calm",
+    "description": "The air is warm and still."
+  },
+  {
+    "name": "Distant Rain",
+    "description": "You can hear the rain falling outside."
+  },
+  {
+    "name": "Distant Storm",
+    "description": "You can hear the cracks of thunder outside."
+  },
+  {
+    "name": "Claustrophobic",
+    "description": "The air is tightly packed and feels dense."
+  },
+  {
+    "name": "Dusty",
+    "description": "You can see motes of dust crowding the air."
+  },
+  {
+    "name": "Earthy",
+    "description": "You smell earthy tones and taste grit against your lips."
+  },
+  {
+    "name": "Rocky",
+    "description": "You smell earthy tones and taste grit against your lips."
+  },
+  {
+    "name": "Overgrown",
+    "description": "Spores, pollen and plant life surge into your nostrils."
+  }
+]
