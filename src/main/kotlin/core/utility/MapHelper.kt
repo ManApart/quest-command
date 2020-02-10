@@ -84,3 +84,10 @@ private fun <A, B> Map<A, B>.addAllStrings(strings: MutableList<String>) {
         }
     }
 }
+
+fun <A, B> MutableMap<A, MutableList<B>>.putList(key: A, value: B) {
+    if (!containsKey(key)){
+        this[key] = mutableListOf()
+    }
+    this[key]!!.add(value)
+}
