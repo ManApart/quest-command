@@ -16,7 +16,7 @@ object JsonGenerator {
 
         val folderMap = buildFolderMap(allConversions)
         folderMap.entries.forEach { (folder, conversions) ->
-            val converter = JsonConverter2(conversions)
+            val converter = JsonConverter(conversions)
             conversions.forEach {
                 val transformed = converter.transform(it)
                 val output = File(it.outputPath)
@@ -39,6 +39,7 @@ object JsonGenerator {
             val pathChunks = it.inputPath.split("/")
             var folder = pathChunks[pathChunks.size-2]
             //This is ugly, but forces the the scope of quest to the file level. This way different quests can have steps with the same name without issue
+            // Maybe create an override map?
             if (folder == "story-events"){
                folder = pathChunks[pathChunks.size-1]
             }

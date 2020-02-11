@@ -1,54 +1,61 @@
 package building.json
 
-class JsonConverter(data: List<MutableMap<String, Any>>) {
-    private val data = buildNamedList(data)
+class JsonConverter(data: List<JsonFileConversion>) {
+    private val conversionMap = mutableMapOf<String, JsonFileConversion>()
+    private val allData = buildNamedList(data)
 
     init {
         validate()
     }
 
-    private fun buildNamedList(data: List<MutableMap<String, Any>>): Map<String, MutableMap<String, Any>> {
+    private fun buildNamedList(data: List<JsonFileConversion>): Map<String, MutableMap<String, Any>> {
         val map = mutableMapOf<String, MutableMap<String, Any>>()
-        data.forEach { item ->
-            if (!item.containsKey("name") || item["name"] !is String) {
-                throw IllegalArgumentException("Object didn't have a string value for 'name': $item")
+        data.forEach { conversion ->
+            conversion.data.forEach { item ->
+                if (!item.containsKey("name") || item["name"] !is String) {
+                    throw IllegalArgumentException(conversion.inputPath + " didn't have a string value for 'name': $item")
+                }
+                if (map.containsKey(item["name"])) {
+                    val previousEntry = conversionMap[item["name"]]!!
+                    throw IllegalArgumentException("Name must be unique but is duplicated in ${previousEntry.inputPath} and ${conversion.inputPath}: $item")
+                }
+                map[item["name"] as String] = item
+                conversionMap[item["name"] as String] = conversion
             }
-            if (map.containsKey(item["name"])) {
-                throw IllegalArgumentException("Name must be unique but is duplicated: $item")
-            }
-            map[item["name"] as String] = item
         }
         return map
     }
 
     private fun validate() {
-        data.values.forEach { item ->
+        allData.values.forEach { item ->
             if (item.containsKey("extends") && item["extends"] !is String) {
-                throw IllegalArgumentException("Object didn't have a string value for 'extends': $item")
+                val entry = conversionMap[item["name"]]!!
+                throw IllegalArgumentException("${entry.inputPath} didn't have a string value for 'extends': $item")
             }
         }
 
-        data.values.filter { it.containsKey(("extends")) }.forEach { item ->
-            if (data.keys.none { it == item["extends"] }) {
-                throw IllegalArgumentException("Object extends a non-real item: $item")
+        allData.values.filter { it.containsKey(("extends")) }.forEach { item ->
+            if (allData.keys.none { it == item["extends"] }) {
+                val entry = conversionMap[item["name"]]!!
+                throw IllegalArgumentException("${entry.inputPath} extends a non-real item: $item")
             }
         }
     }
 
-    fun transform(): List<Map<String, Any>> {
+    fun transform(data: JsonFileConversion): List<Map<String, Any>> {
         val results = mutableListOf<MutableMap<String, Any>>()
 
-        data.values.forEach {
+        data.data.forEach {
             extend(it)
         }
 
-        data.values.forEach { results.add(it) }
+        data.data.forEach { results.add(it) }
         return results
     }
 
     private fun extend(item: MutableMap<String, Any>) {
         if (item.containsKey("extends")) {
-            val base = data[item["extends"] as String]!!
+            val base = allData[item["extends"] as String] ?: error("Key did not exist")
             extend(base)
             transfer(base, item)
             item.remove("extends")
