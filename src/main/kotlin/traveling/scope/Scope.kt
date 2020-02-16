@@ -19,7 +19,7 @@ class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
     val location = locationNode.getLocation()
     var weather: Weather = DEFAULT_WEATHER
-    var lastWeatherChange: Long = GameState.timeManager.getTicks()
+    private var lastWeatherChange: Long = GameState.timeManager.getTicks()
 
     fun isEmpty(): Boolean {
         return targets.isEmpty()

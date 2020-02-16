@@ -184,7 +184,7 @@ class CommandComboTest {
     @Test
     fun feelTheRain() {
         GameState.properties.values.put(DebugType.RANDOM.propertyName, true)
-        CommandParser.parseCommand("rest 5 && exa && stat")
+        CommandParser.parseCommand("rest 5 && exa && rest 1 && stat")
         assertEquals(1, GameState.player.soul.getConditions().size)
         assertEquals("Rain Wet", GameState.player.soul.getConditions().first().name)
 
