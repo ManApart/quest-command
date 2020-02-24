@@ -182,7 +182,7 @@ class CommandComboTest {
 
     @Test
     fun feelTheRain() {
-        CommandParser.parseCommand("debug weather gentle rain && rest 1 && exa && stat")
+        CommandParser.parseCommand("debug weather gentle rain && rest 1 && exa && rest 1 && stat")
         assertEquals(1, GameState.player.soul.getConditions().size)
         assertEquals("Rain Wet", GameState.player.soul.getConditions().first().name)
 

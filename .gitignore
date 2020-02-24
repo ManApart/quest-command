@@ -141,3 +141,4 @@ bin/
 .idea/compiler.xml
 .idea/misc.xml
 .idea/modules/**
+.idea/jarRepositories.xml
