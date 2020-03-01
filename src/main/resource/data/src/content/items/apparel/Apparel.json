@@ -1,28 +1,5 @@
 [
   {
-    "name": "Burnable",
-    "params": {
-      "fireHealth": 1,
-      "itemName": "Item"
-    },
-    "properties": {
-      "values": {
-        "fireHealth": "$fireHealth"
-      },
-      "tags": [
-        "Flammable"
-      ]
-    },
-    "behaviors": [
-      {
-        "name": "Burn to Ash",
-        "params": {
-          "name": "$itemName"
-        }
-      }
-    ]
-  },
-  {
     "name": "Brown Pants",
     "description": "These pants used to be white.",
     "extends": "Burnable",

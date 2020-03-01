@@ -343,6 +343,8 @@ Weathers have a temperature effect?
 
 
 Extract location bases
+overrides keyword: any map can have overrides: []. Any key in the list overrides instead of appends
+Converter tests?
 
 #### Gravity
 
