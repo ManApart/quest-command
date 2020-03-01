@@ -311,6 +311,10 @@ When specifying a list of targets (items, activators, creatures), you can give j
 }
 ```
 
+#### Day Night Cycle
+
+A location can range from 0 to 10 light. Locations that are outside
+
 #### Location Paths
 Location Paths describe the relationship between locations. They contain
 

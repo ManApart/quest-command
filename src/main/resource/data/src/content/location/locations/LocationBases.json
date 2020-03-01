@@ -47,6 +47,9 @@
   {
     "name": "Outside",
     "properties": {
+      "values": {
+        "Light": 5
+      },
       "tags": [
         "Outside"
       ]

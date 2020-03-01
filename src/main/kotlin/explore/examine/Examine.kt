@@ -8,6 +8,8 @@ import core.target.Target
 import core.target.targetsToString
 import traveling.climb.ClimbLook
 import traveling.direction.NO_VECTOR
+import traveling.location.location.HEAT
+import traveling.location.location.LIGHT
 import traveling.scope.ScopeManager
 
 class Examine : EventListener<ExamineEvent>() {
@@ -65,6 +67,9 @@ class Examine : EventListener<ExamineEvent>() {
         }
         display(location.getDescription())
         display(scope.weather.description)
+        val light = scope.properties.values.getInt(LIGHT)
+        val heat = scope.properties.values.getInt(HEAT)
+        display("It is $light light and $heat hot.")
         if (ScopeManager.getScope().getTargets().size > 1) {
             val targetList = targetsToString(scope.getTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")

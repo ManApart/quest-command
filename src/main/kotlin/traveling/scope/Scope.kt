@@ -10,6 +10,8 @@ import inventory.Inventory
 import status.Soul
 import status.conditions.AddConditionEvent
 import status.conditions.ConditionManager
+import traveling.location.location.HEAT
+import traveling.location.location.LIGHT
 import traveling.location.location.LocationNode
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
@@ -18,6 +20,7 @@ import traveling.location.weather.WeatherManager
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
     val location = locationNode.getLocation()
+    val properties = Properties(location.properties)
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
 
@@ -145,14 +148,21 @@ class Scope(val locationNode: LocationNode) {
 
     fun updateWeather(newWeather: Weather) {
         lastWeatherChange = GameState.timeManager.getTicks()
+
+        properties.values.inc(HEAT, -this.weather.properties.values.getInt(HEAT))
+        properties.values.inc(LIGHT, -this.weather.properties.values.getInt(LIGHT))
+
         this.weather = newWeather
+
+        properties.values.inc(HEAT, this.weather.properties.values.getInt(HEAT))
+        properties.values.inc(LIGHT, this.weather.properties.values.getInt(LIGHT))
     }
 
     fun applyWeatherEffects() {
         val conditionRecipes = weather.conditionNames.mapNotNull { it.getOption() }
-        targets.forEach { target ->
-            val parts = target.body.getParts()
-            conditionRecipes.forEach { recipeName ->
+        conditionRecipes.forEach { recipeName ->
+            targets.forEach { target ->
+                val parts = target.body.getParts()
                 val condition = ConditionManager.getCondition(recipeName, parts)
                 EventManager.postEvent(AddConditionEvent(target, condition))
             }

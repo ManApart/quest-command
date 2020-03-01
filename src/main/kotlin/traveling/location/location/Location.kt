@@ -7,6 +7,9 @@ import dialogue.DialogueOptions
 
 val NOWHERE = Location("Nowhere")
 
+const val HEAT = "Heat"
+const val LIGHT = "Light"
+
 class Location(
         override val name: String,
         private val description: DialogueOptions = DialogueOptions(""),
