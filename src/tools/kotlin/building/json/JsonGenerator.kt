@@ -14,8 +14,8 @@ object JsonGenerator {
             createConversion(it, writeRoot, inputPath, outputPath)
         }
 
-        val folderMap = buildFolderMap(allConversions)
-        folderMap.entries.forEach { (folder, conversions) ->
+        val scopeMap = buildFolderMap(allConversions)
+        scopeMap.entries.forEach { (_, conversions) ->
             val converter = JsonConverter(conversions)
             conversions.forEach {
                 val transformed = converter.transform(it)
@@ -24,7 +24,7 @@ object JsonGenerator {
                 mapper.writeValue(output, transformed)
             }
         }
-        println("Generated ${allConversions.size} json files from ${folderMap.keys.size} folders.")
+        println("Generated ${allConversions.size} json files from ${scopeMap.keys.size} folders.")
     }
 
     private fun createConversion(path: String, writeRoot: String, inputPath: String, outputPath: String): JsonFileConversion {
@@ -36,16 +36,20 @@ object JsonGenerator {
     private fun buildFolderMap(conversions: List<JsonFileConversion>): Map<String, List<JsonFileConversion>> {
         val map = mutableMapOf<String, MutableList<JsonFileConversion>>()
         conversions.forEach {
-            val pathChunks = it.inputPath.split("/")
-            var folder = pathChunks[pathChunks.size-2]
-            //This is ugly, but forces the the scope of quest to the file level. This way different quests can have steps with the same name without issue
-            // Maybe create an override map?
-            if (folder == "story-events"){
-               folder = pathChunks[pathChunks.size-1]
-            }
-            map.putList(folder, it)
+            val scope = getScope(it.inputPath)
+            map.putList(scope, it)
         }
         return map
     }
+
+    private fun getScope(inputPath: String) : String {
+        val pathChunks = inputPath.split("/")
+        return when {
+            pathChunks[pathChunks.size-2] == "story-events" -> pathChunks[pathChunks.size-1]
+            pathChunks[7] == "items"-> pathChunks[7]
+            else -> pathChunks[pathChunks.size-2]
+        }
+    }
+
 
 }
