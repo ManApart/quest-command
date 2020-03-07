@@ -13,8 +13,8 @@ before_install:
 script:
 - ./gradlew build integrationTest jar
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- docker build . -t quest-command:dev .
-- docker tag quest-command:dev quest-command:latest
+- docker build . -t manapart/quest-command:dev
+- docker tag manapart/quest-command:dev manapart/quest-command:stable
 
 deploy:
 - provider: script
@@ -24,7 +24,7 @@ deploy:
     branch: master
 - provider: script
   skip_cleanup: true
-  script: docker push manapart/quest-command:latest
+  script: docker push manapart/quest-command:stable
   on:
     branch: release
 - provider: releases
