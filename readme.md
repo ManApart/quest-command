@@ -17,7 +17,14 @@ Run `gradlew build jar` to build a jar. This should be found in `QuestCommand/bu
 
 
 ### Running
-From the main folder run `java -jar ./build/libs/quest-command-1.0-SNAPSHOT.jar`
+Try any one of the below: 
+
+A) Grab a release from [github](https://github.com/ManApart/QuestCommand/releases) and run `java -jar ./quest-command-dev.jar`
+
+B) Grab the image from [docker hub]() and run `docker run -it manapart/questcommand:latest`
+
+c) Clone the project and build
+From the main folder run `java -jar ./build/libs/quest-command-dev.jar`
 
 ## What can I do?
 

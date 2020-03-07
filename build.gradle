@@ -13,7 +13,7 @@ apply plugin: 'maven'
 apply plugin: 'kotlin'
 
 group = 'org.rak.manapart'
-version = '1.0-SNAPSHOT'
+version = 'dev'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

@@ -330,15 +330,3 @@ Location Paths describe the relationship between locations. They contain
 
 If tests are running slow, make sure that json parsing and reflection are not happing as part of unit tests. An easy check is to place a debug point in `getImplementation` to catch any time a default implementation is being used in a unit test.
 
-
-### Running in Docker
-
-Download the jar and put it in a folder.  In that folder put the following Dockerfile:
-```
-FROM openjdk:8
-
-COPY quest-command.jar /tmp
-WORKDIR /tmp
-CMD ["java", "-jar", "quest-command.jar"]
-```
-then docker build . -t questcommand:latest . docker run -it questcommand:latest
