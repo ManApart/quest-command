@@ -23,8 +23,11 @@ A) Grab a release from [github](https://github.com/ManApart/QuestCommand/release
 
 B) Grab the image from [docker hub](https://hub.docker.com/repository/docker/manapart/quest-command) and run `docker run -it manapart/questcommand:stable`
 
-c) Clone the project and build
-From the main folder run `java -jar ./build/libs/quest-command-dev.jar`
+C) Clone the project and build it.
+```
+./gradlew build jar
+java -jar ./build/libs/quest-command-dev.jar
+```
 
 ## What can I do?
 
