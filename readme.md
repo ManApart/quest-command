@@ -21,7 +21,7 @@ Try any one of the below:
 
 A) Grab a release from [github](https://github.com/ManApart/QuestCommand/releases) and run `java -jar ./quest-command-dev.jar`
 
-B) Grab the image from [docker hub](https://hub.docker.com/repository/docker/manapart/quest-command) and run `docker run -it manapart/questcommand:stable`
+B) Grab the image from [docker hub](https://hub.docker.com/repository/docker/manapart/quest-command) and run `docker run -it manapart/quest-command:stable`
 
 C) Clone the project and build it.
 ```
