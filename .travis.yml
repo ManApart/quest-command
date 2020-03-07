@@ -13,14 +13,20 @@ before_install:
 script:
 - ./gradlew build integrationTest jar
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-- docker build . -t questcommand:dev .
+- docker build . -t quest-command:dev .
+- docker tag quest-command:dev quest-command:latest
 
 deploy:
 - provider: script
   skip_cleanup: true
-  script: docker push questcommand:dev
+  script: docker push manapart/quest-command:dev
   on:
     branch: master
+- provider: script
+  skip_cleanup: true
+  script: docker push manapart/quest-command:latest
+  on:
+    branch: release
 - provider: releases
   api_key: "$GH_TOKEN"
   file_glob: true
