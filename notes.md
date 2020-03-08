@@ -26,21 +26,16 @@ Player Controlled AI
 
 ### Architecture
 
-- Better package organization for actions
-- Packages are still a mess
 - Set target copy's location to spawned location
 - Reset vs Reload. Reset resets game state, reload reloads json?
 - Flow of param overrides (left overrides right)
   - Item Params > inheritable params > Behavior Params/Properties > Conditions/events
-- Break scope manager and item manager listeners into own classes
 - make evaluate and execute return true/ a number so caller can be aware if behavior etc found
 - Managers etc should return copies of items so that the parsed ones are immutable
 - Create a git wiki and move readme information to more sorted format?
 - Validate valid recipe ingredients and results
-- make target class instead of interface?
 - Break triggered event class out into multiple classes
 - delete existing generated files on buildData so renamed files don't leave artifacts
-- It'd be cool to eventually make an android app fork that allows tap menus to pic commands: Starts with categories, then uses the ResponseRequest to generate suggestions etc
 - double check body parts are properly instanced through scope manager
 - For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
@@ -62,42 +57,15 @@ Player.isKnown(command)
 - Checks against list of known commands
 - First populated by reading through all commands and finding ones that have initiallyKnown set to true (default is false)
 
-
-Turn bodypart into just location
-- Equipped items are just the items in that location
-- Slots could be location poperties
-
 Codebase stats
 - Lines of code
 - Number of commands, events, listeners
 
 Rename dynamicDialogue to dynamic string
 
-#### Creature / Activator Re-work
-
-Turn creatures, items, and activators into targets
-- Items’ bodies have body parts with the different materials of an item (a hatchet has a wooden handle and metal head)
-- Target’s have a property (alive) if they are creatures etc
-- If a target doesn't have the alive property (is an activator) and health reaches 0, instead of dying, the activator/item is destroyed
-
-Spacial Nodes
-- Combat uses Body Nodes for aiming, instead of body part having an arbitrary direction
-
-Climbing
-- Body part has a material
-- Materials are defined in their own file and have properties
-- A bodypart node can have an exit location node. <- these are passed in by the parent location node. The lowest exit node is used for falling.
-- Rework climbing so that you look at a target’s body nodes and then climbing direction is based on the node connections and difficulty is based on the material properties (slippery, rough, smooth, etc). Distance from lowest node = height for fall damage etc.
-
-Materials have a name and properties
-Effects stored in soul but can have reference to affected target parts?
-
-Are body parts full on targets?
-That would make crafting easier as it would literally be the combination of body parts
-They at least need properties for health?
-Material has proeprties (hardness, cushion, tags etc)
-
-
+Turn bodypart into just location
+- Equipped items are just the items in that location
+- Slots could be location poperties
 
 #### Debug Mode
 When on
@@ -113,16 +81,6 @@ Hidden commands can still be called, but don’t show up in help
 Locked commands give error if called (you don’t know how to do that)
 
 GameState has Values file for game level properties, like if debug is on or off
-
-
-#### Startup
-
-Speed up startup by doing reflection and then writing out a hardcoded class with all the class references. Best case use library etc. Worst case write script to custom write class out (should be mostly hard coded stuff). This class should work through dependency injection and should be replacable for tests etc.
-
-Spells should do the same type of reflection as commands. They should have an interface like commands and be dynamically read. The Spell Command (Syntax: Cast wind blast on self) recognizes the cast keyword, then passess it to the ‘spell parser’ which is just like the command parser (maybe re-use class) but parses out the spell, a list of args, and a target. The target and args are passed to that specific ‘spell-command’ which then builds all the events that should fire for that spell.
-
-
-
 
 ### Combat
 
@@ -197,13 +155,6 @@ Each Turn
 - Without enough stamina the combatant can’t do anything
 - A Combatant can rest to recover stamina points
 
-#### Body Location Rework
-
-- Allow advance/ dodge commands to specify a distance?
-- Give all weapons a range
-- Create dagger base etc that can be inherited by all daggers
-
-
 #### Other
 - Boss that you fight by climbing, hitting, getting thrown off, taking fall damage, repeating
 - Attack direction should use previous target
@@ -217,7 +168,7 @@ Maybe attack listeners delegate to battle to be told if to execute or not. Battl
 
 Flee stops combat, combatants stay in location (for now)
 Every target within a location can have an x,y,z position
-
+- If a target doesn't have the alive property (is an activator) and health reaches 0, instead of dying, the activator/item is destroyed
 
 ### Crafting
 
@@ -233,21 +184,17 @@ Items can be combined / crafted together
 - Items can have bodyparts/locations with 'equipped' items 
 - An item’s combined properties include the adjustments from the sub-equiped items
 - Maybe crafted item has taglist of adjusted stats, and only those stats are changed by equipped items?
+- Items’ bodies have body parts with the different materials of an item (a hatchet has a wooden handle and metal head)
 
 Ex: Hilt + blade = sword. Iron blade gives 2 attack to sword, but steel blade gives 3 etc
 
 Ex2: Leather gauntlet can be crafted into casting gauntlet. Casting gauntlet has location/slots for liner, gem, and decoration. Liner could have a steel mesh that ups defence or a fur liner that increases heat. In battle / targeting these sub locations are ignored and only used to build the item’s total properties
-
-
 
 Ideas
 - Fletching
 - Tanning
 - In depth combination of parts
 - Properties transfer from crafted ingredients to final weapon?
-
-
-
 
 ### Interaction
 
@@ -283,8 +230,6 @@ View anatomy | 5
 View equipped items | 3
 View effects | 7
 View hidden properties | 10
-
-
 
 
 ### Inventory
@@ -350,6 +295,18 @@ Converter tests?
 Make the light level of outside daytime default to 10?
 
 Make wheat field description based on light level, not time of day
+
+#### Heat
+
+Heat / light effects have an ‘emit’ effect that have a distance and strength: the emit effect casts heat/light etc to things within range
+If a target is flamable and it takes more fire damage than it has fireDefense, it starts burning
+Fire emits light in a radius from itself
+Fire emits heat in a radius from iteself
+If a target is not on fire, it takes 1 fire damage for every 10 heat it has
+
+How to handle effects that do aoe more effects? (Fire emits heat, light)
+- Specific manager?
+- Specific kind of effect that emits conditions?
 
 #### Gravity
 
@@ -419,19 +376,6 @@ Atmospheric effects should effect spell cost / power
 - In a dense forest / cave, nerf air
 - Spell that makes things more windy etc
 
-#### Heat
-
-Heat / light effects have an ‘emit’ effect that have a distance and strength: the emit effect casts heat/light etc to things within range
-If a target is flamable and it takes more fire damage than it has fireDefense, it starts burning
-Fire emits light in a radius from itself
-Fire emits heat in a radius from iteself
-If a target is not on fire, it takes 1 fire damage for every 10 heat it has
-
-How to handle effects that do aoe more effects? (Fire emits heat, light)
-- Specific manager?
-- Specific kind of effect that emits conditions?
-
-
 **Upgrades**
 
 Some spell types have an upgrade subtype that is a more powerful or unique subtype of that type. Artifiacts (wind amulet, vine gloves etc) allow for sub-type words to be used (Ice Heart Amulet allows for frost words to be used with the water skill. Lightning is the upgrade of fire. These spells should require a very high level in the base type.
@@ -441,8 +385,6 @@ Some spell types have an upgrade subtype that is a more powerful or unique subty
 Require high level in both skills, though not as high as the 'upgrade' subtypes. (Could be a consequence of two effects mixing)
 
 Most spells apply their type’s tag/condition/element to the target. Use flame on a log to light it; use water burst to put the flame out.
-
-
 
 #### Spells
 Type | Name | Description | Effects | Params | Cost
@@ -632,7 +574,7 @@ Test speak command against a rock that glows when spoken to
 - You can jump down if a location is below you, you'll take damage based on your agility + the distance to fall (jump down locations added in link)
 - Burning the apple tree branches should make the user fall
 
-Every body part has a material
+Every body part has either a material or a roughness and an angle. Used for determining climb difficulty
 Every body part has own health?
 A material has a hardness
 Fall damage based on defense + hardness of body part landed on
@@ -643,8 +585,12 @@ Weight of armor gives more damage
 
 armor can have a grip stat that helps with climbing
 
-Bodyparts (surfaces) have a roughness and an angle. Used for determining climb difficulty
+- Materials are defined in their own file and have properties
+- A bodypart node can have an exit location node. <- these are passed in by the parent location node. The lowest exit node is used for falling.
+- Rework climbing so that you look at a target’s body nodes and then climbing direction is based on the node connections and difficulty is based on the material properties (slippery, rough, smooth, etc). Distance from lowest node = height for fall damage etc.
 
+Materials have a name and properties
+Material has properties (hardness, cushion, tags etc)
 
 
 Jump
