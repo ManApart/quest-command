@@ -14,7 +14,6 @@ const val LIGHT = "Light"
 //TODO - combine items and equipped items
 //Maybe invert the map, so LocationTarget, Slot
 //only do equip check if slots exist
-//Locations were immutable, but not store equipped items etc
 class Location(
         override val name: String,
         private val description: DialogueOptions = DialogueOptions(""),
