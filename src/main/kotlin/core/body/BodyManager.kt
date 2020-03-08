@@ -9,6 +9,8 @@ import traveling.location.location.LocationHelper
 import traveling.location.location.LocationParser
 
 object BodyManager {
+    private const val bodiesPath = "/data/generated/content/bodies/bodies"
+    private const val bodyPartPath = "/data/generated/content/bodies/parts"
     private val locationHelper = LocationHelper()
     private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
     private var bodies = createBodies()
@@ -19,8 +21,8 @@ object BodyManager {
     }
 
     private fun createBodies(): NameSearchableList<Body> {
-        val nodes: List<LocationNode> = parser.loadLocationNodes()
-        val bodyParts = parser.loadLocations()
+        val nodes: List<LocationNode> = parser.loadLocationNodes(bodiesPath)
+        val bodyParts = parser.loadLocations(bodyPartPath)
 
         val nodeMap = locationHelper.buildInitialMap(nodes)
         locationHelper.createNeighborsAndNeighborLinks(nodeMap)

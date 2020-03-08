@@ -9,11 +9,11 @@ class BodyFakeParser(
         private val protoBodies: List<LocationNode> = listOf(LocationNode(parent = "Human", name = "Body Part"), LocationNode(parent = "None", name = "Part")),
         private val bodyParts: List<Location> = listOf(Location("Body Part"))
 ) : LocationParser {
-    override fun loadLocations(): NameSearchableList<Location> {
+    override fun loadLocations(path: String): NameSearchableList<Location> {
         return NameSearchableList(bodyParts)
     }
 
-    override fun loadLocationNodes(): List<LocationNode> {
+    override fun loadLocationNodes(path: String): List<LocationNode> {
         return protoBodies
     }
 

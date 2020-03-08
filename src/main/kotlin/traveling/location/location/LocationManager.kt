@@ -6,6 +6,9 @@ import core.utility.NameSearchableList
 import traveling.location.Network
 
 object LocationManager {
+    private const val locationNodePath = "/data/generated/content/location/location-nodes"
+    private const val locationPath = "/data/generated/content/location/locations"
+
     private val locationHelper = LocationHelper()
     private var networks = loadNetworks()
 
@@ -15,8 +18,8 @@ object LocationManager {
 
     private fun loadNetworks(): NameSearchableList<Network> {
         val parser = DependencyInjector.getImplementation(LocationParser::class.java)
-        val locations = parser.loadLocations()
-        val nodes: List<LocationNode> = parser.loadLocationNodes()
+        val locations = parser.loadLocations(locationPath)
+        val nodes: List<LocationNode> = parser.loadLocationNodes(locationNodePath)
 
 
         val nodeMap = locationHelper.buildInitialMap(nodes)

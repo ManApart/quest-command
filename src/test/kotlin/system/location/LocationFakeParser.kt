@@ -12,11 +12,11 @@ class LocationFakeParser(
         private val locationNodes: NameSearchableList<LocationNode> = NameSearchableList(listOf(LocationNode(PLAYER_START_LOCATION, parent = PLAYER_START_NETWORK)))
 ) : LocationParser {
 
-    override fun loadLocations(): NameSearchableList<Location> {
+    override fun loadLocations(path: String): NameSearchableList<Location> {
         return locations
     }
 
-    override fun loadLocationNodes(): List<LocationNode> {
+    override fun loadLocationNodes(path: String): List<LocationNode> {
         return locationNodes
     }
 }
