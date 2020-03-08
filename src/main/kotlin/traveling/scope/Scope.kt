@@ -20,7 +20,6 @@ import traveling.location.weather.WeatherManager
 class Scope(val locationNode: LocationNode) {
     private val targets = NameSearchableList<Target>()
     val location = locationNode.getLocation()
-    val properties = Properties(location.properties)
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
 
@@ -148,14 +147,7 @@ class Scope(val locationNode: LocationNode) {
 
     fun updateWeather(newWeather: Weather) {
         lastWeatherChange = GameState.timeManager.getTicks()
-
-        properties.values.inc(HEAT, -this.weather.properties.values.getInt(HEAT))
-        properties.values.inc(LIGHT, -this.weather.properties.values.getInt(LIGHT))
-
         this.weather = newWeather
-
-        properties.values.inc(HEAT, this.weather.properties.values.getInt(HEAT))
-        properties.values.inc(LIGHT, this.weather.properties.values.getInt(LIGHT))
     }
 
     fun applyWeatherEffects() {

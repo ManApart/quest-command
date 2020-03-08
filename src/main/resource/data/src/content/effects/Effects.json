@@ -134,6 +134,38 @@
     "statTarget": "Health",
     "statEffect": "DRAIN",
     "damageType": "WATER"
+  },
+  {
+    "name": "Warm",
+    "description": "Increase the level of heat.",
+    "statKind": "PROP_VAL",
+    "statTarget": "Heat",
+    "statEffect": "BOOST",
+    "damageType": "FIRE"
+  },
+  {
+    "name": "Cool",
+    "description": "Decrease the level of heat.",
+    "statKind": "PROP_VAL",
+    "statTarget": "Heat",
+    "statEffect": "DEPLETE",
+    "damageType": "ICE"
+  },
+  {
+    "name": "Brighten",
+    "description": "Light is cast on this.",
+    "statKind": "PROP_VAL",
+    "statTarget": "Light",
+    "statEffect": "BOOST",
+    "damageType": "NONE"
+  },
+  {
+    "name": "Darken",
+    "description": "Shadow is cast on this.",
+    "statKind": "PROP_VAL",
+    "statTarget": "Light",
+    "statEffect": "DEPLETE",
+    "damageType": "NONE"
   }
 
 

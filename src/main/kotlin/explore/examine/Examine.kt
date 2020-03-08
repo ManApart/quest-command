@@ -11,6 +11,8 @@ import traveling.direction.NO_VECTOR
 import traveling.location.location.HEAT
 import traveling.location.location.LIGHT
 import traveling.scope.ScopeManager
+import traveling.scope.getHeatLevel
+import traveling.scope.getLightLevel
 
 class Examine : EventListener<ExamineEvent>() {
 
@@ -67,8 +69,8 @@ class Examine : EventListener<ExamineEvent>() {
         }
         display(location.getDescription())
         display(scope.weather.description)
-        val light = scope.properties.values.getInt(LIGHT)
-        val heat = scope.properties.values.getInt(HEAT)
+        val light = getLightLevel(scope)
+        val heat = getHeatLevel(scope)
         display("It is $light light and $heat hot.")
         if (ScopeManager.getScope().getTargets().size > 1) {
             val targetList = targetsToString(scope.getTargets().filterNot { it == GameState.player })

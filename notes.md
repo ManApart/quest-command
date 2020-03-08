@@ -45,7 +45,6 @@ Player Controlled AI
 - For now hardcoding commands and triggers to use the player's location parent for network. Eventually that should only be a default
 
 Json
-- Json inherits from other files in same folder?
 - Inherit object that's common to item and activator (burnable)?
 
 Paramitization
@@ -71,6 +70,8 @@ Turn bodypart into just location
 Codebase stats
 - Lines of code
 - Number of commands, events, listeners
+
+Rename dynamicDialogue to dynamic string
 
 #### Creature / Activator Re-work
 
@@ -317,6 +318,7 @@ Bash completion
 - Atmospheres that add tags and effects to everything in that location.
 - Shallow water, deep water, under water, have effects, based on swimming, etc. Swimming is skill based on agility
 - Atmospheric effects like fog and water, cast words can interact with them
+- Create climates for locations to extend?
 
 Temperature
 - Range from -10 to 10 on average, though temp could exceed these extremes
@@ -325,26 +327,29 @@ Temperature
 - Locations have a temperature depending on location properties + current effects, burnining fires, snowstorms etc
 - Player has own temperature rating that is the location temp + effects, equipped items, etc
 
-
-Locations
-- Maybe all internal locations inherit from ‘Internal’ and all external inherit from ‘external’ and those base locations have some weathers 
-- If locations extend, there could be base locations for climates
-make more weathers
-extend a climate
-
 Gamestate query for what weather it is?
 - Use query to make thunderstorms more likely/only happen after heavy rain
 
-Create more weathers
-Extend internal / external locations
-Base location has pattern of weathers
 Figure out how to specify if json is replacing (default) or appending
-Weathers have a temperature effect?
+
+Hard code weather effect length to same cadence as weather tick (in same place), no need to specifiy effect length in json
+
+
+Weather effects
+Activate every 10 game ticks 
+Have trigger conditions that dictate if they should fire
+Target Conditions to determine who they hit? (Ex lightning should only strike one target)
+Target condition: takes a list of targets and selects one or more (body part as well?)
+Re-use for AI
 
 
 Extract location bases
 overrides keyword: any map can have overrides: []. Any key in the list overrides instead of appends
 Converter tests?
+
+Make the light level of outside daytime default to 10?
+
+Make wheat field description based on light level, not time of day
 
 #### Gravity
 
@@ -388,6 +393,12 @@ Optimizations
 - Diff against base objects?
 - Don't write 0s, nulls, falses, default values?
 
+scopes have an age and an age reset
+debug command to check /toggle if a cell should reset
+
+In order  to get more ‘save slots’ / characters, either unlock characters or have a kid
+
+
 ### Magic
 
 The point of words of power / magic is to increase world immersion (elements should interact and be used to solve situations), and to help the player feel specialized.
@@ -407,6 +418,18 @@ Atmospheric effects should effect spell cost / power
 - In a cave, buff earth
 - In a dense forest / cave, nerf air
 - Spell that makes things more windy etc
+
+#### Heat
+
+Heat / light effects have an ‘emit’ effect that have a distance and strength: the emit effect casts heat/light etc to things within range
+If a target is flamable and it takes more fire damage than it has fireDefense, it starts burning
+Fire emits light in a radius from itself
+Fire emits heat in a radius from iteself
+If a target is not on fire, it takes 1 fire damage for every 10 heat it has
+
+How to handle effects that do aoe more effects? (Fire emits heat, light)
+- Specific manager?
+- Specific kind of effect that emits conditions?
 
 
 **Upgrades**
@@ -561,6 +584,8 @@ Antagonist
 - Over time she turns evil / believes she needs to destroy the world because it is fake
 - Make conflict between understanding her motive and needing to defeat her to save the world
 
+The language of min
+Killer’s Haven - town where those who have accidently killed someone flee to for protection
 
 
 #### Races
@@ -643,6 +668,14 @@ Calc possible fall damage only based on negative y
 - Look (examine) object for its description
 - Sheath / unsheath command?
 - Hold Command?
+- Emotive actions (dance, smile, frown) that contextually affect npc relationships
+
+F flag forces without confirmation
+S flag does silent
+
+some commands can be discovered just by saying the name
+unlocked commands are saved at the game level so multiple characters can use them
+
 
 ### Misc / Unsorted
 - Readable behavior / item
@@ -739,3 +772,13 @@ Validation tools that:
 properties have max/min value? Burnhealth going below 0
 fold body parts into locations soon!?
 how do we configure auto load?
+
+Property aggregator that gets stat + all child stats?
+sum properties takes a list of properties and sums them
+Has hook for child prop update
+Used for composed items?
+
+
+Make named condition sets > point at one name / reuse a list of conditions that must be true
+
+Args test for returning the two empty lists - make sure it ends up just being one empty list
