@@ -1,8 +1,8 @@
 package status.effects
 
 import core.DependencyInjector
-import core.body.BodyPart
 import core.utility.NameSearchableList
+import traveling.location.location.Location
 
 object EffectManager {
     private var effects = loadEffects()
@@ -17,7 +17,7 @@ object EffectManager {
     }
 
     // should effects be parsable from json as well as effect bases?
-    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartTargets: List<BodyPart> = listOf()) : Effect {
+    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartTargets: List<Location> = listOf()) : Effect {
         return Effect(effects.get(baseName), amount, duration, bodyPartTargets)
     }
 

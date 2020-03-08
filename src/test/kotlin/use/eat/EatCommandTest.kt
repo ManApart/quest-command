@@ -6,7 +6,6 @@ import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.body.BodyParser
 import core.commands.CommandParser
 import core.events.EventManager
 import core.properties.Properties
@@ -55,7 +54,7 @@ class EatCommandTest {
         CommandParser.setResponseRequest(null)
 
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val behaviorParser = BehaviorFakeParser()

@@ -4,7 +4,6 @@ import combat.DamageType
 import combat.battle.position.TargetAim
 import core.DependencyInjector
 import core.ai.behavior.BehaviorParser
-import core.body.BodyParser
 import core.commands.Args
 import core.events.EventManager
 import core.reflection.Reflections
@@ -37,7 +36,6 @@ class HealTest {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
             DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
-            DependencyInjector.setImplementation(BodyParser::class.java, BodyFakeParser())
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
                     EffectBase("Wet", "", statTarget = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
@@ -58,7 +56,6 @@ class HealTest {
             DependencyInjector.clearImplementation(Reflections::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
-            DependencyInjector.clearImplementation(BodyParser::class.java)
             EventManager.clear()
         }
     }

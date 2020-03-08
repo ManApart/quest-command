@@ -12,7 +12,7 @@ import org.junit.Test
 import system.BodyFakeParser
 import core.DependencyInjector
 import core.body.BodyManager
-import core.body.BodyParser
+import traveling.location.location.LocationParser
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -22,7 +22,7 @@ class PickupItemTest {
     @Before
     fun setup() {
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
     }
 

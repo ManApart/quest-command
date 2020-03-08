@@ -1,4 +1,4 @@
-package core.gamestate
+package gameState
 
 import core.DependencyInjector
 import core.GameManager
@@ -6,7 +6,6 @@ import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.body.BodyParser
 import core.properties.Properties
 import core.properties.Tags
 import core.properties.Values
@@ -28,7 +27,7 @@ class InventoryTest {
     @Before
     fun setup() {
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val behaviorParser = BehaviorFakeParser()

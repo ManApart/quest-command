@@ -7,9 +7,9 @@ import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
 import core.properties.Values
-import core.body.BodyPart
 import status.stat.AGILITY
 import status.stat.STRENGTH
+import traveling.location.location.Location
 
 
 fun main() {
@@ -49,7 +49,7 @@ private fun testAttackTime(agility: Int, strength: Int, weaponSize: String, weap
     creature.soul.addStat(AGILITY, agility)
     creature.soul.addStat(STRENGTH, strength)
 
-    val part = BodyPart("hand", slots = listOf("hand"))
+    val part = Location("hand", slots = listOf("hand"))
     val weapon = Target("Weapon", properties = Properties(Values(mapOf("weight" to weaponWeight.toString())), Tags(listOf("Weapon", weaponSize))))
     creature.inventory.add(weapon)
     creature.inventory.add(Target("Dead weight", properties = Properties(Values(mapOf("weight" to otherWeight.toString())))))

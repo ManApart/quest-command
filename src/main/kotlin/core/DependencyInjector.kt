@@ -4,8 +4,6 @@ import core.ai.AIJsonParser
 import core.ai.AIParser
 import core.ai.behavior.BehaviorJsonParser
 import core.ai.behavior.BehaviorParser
-import core.body.BodyJsonParser
-import core.body.BodyParser
 import core.reflection.GeneratedReflections
 import core.reflection.Reflections
 import core.target.activator.ActivatorJsonParser
@@ -61,7 +59,6 @@ object DependencyInjector {
                 ActivatorParser::class.java to ActivatorJsonParser(),
                 AIParser::class.java to AIJsonParser(),
                 BehaviorParser::class.java to BehaviorJsonParser(),
-                BodyParser::class.java to BodyJsonParser(),
                 CreatureParser::class.java to CreatureJsonParser(),
                 ConditionParser::class.java to ConditionJsonParser(),
                 EffectParser::class.java to EffectJsonParser(),

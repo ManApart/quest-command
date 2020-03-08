@@ -4,7 +4,6 @@ import core.DependencyInjector
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
 import core.body.BodyManager
-import core.body.BodyParser
 import core.target.Target
 import core.target.activator.ActivatorManager
 import core.target.activator.ActivatorParser
@@ -30,7 +29,7 @@ class ActivatorManagerTest {
         LocationManager.reset()
 
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
     }
 

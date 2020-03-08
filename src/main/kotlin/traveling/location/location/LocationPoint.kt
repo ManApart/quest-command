@@ -1,7 +1,6 @@
 package traveling.location.location
 
 import core.target.Target
-import core.body.BodyPart
 
 class LocationPoint(val location: LocationNode, val targetName: String? = null, val partName: String? = null) {
 
@@ -17,7 +16,7 @@ class LocationPoint(val location: LocationNode, val targetName: String? = null, 
         }
     }
 
-    fun equals(location: LocationNode, target: Target?, part: BodyPart?): Boolean {
+    fun equals(location: LocationNode, target: Target?, part: Location?): Boolean {
         return location == this.location
                 && (target == null || target.name == targetName)
                 && (part == null || part.name == partName)

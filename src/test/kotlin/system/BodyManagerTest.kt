@@ -5,7 +5,7 @@ import core.body.NONE
 import org.junit.Assert
 import org.junit.Test
 import core.body.BodyManager
-import core.body.BodyParser
+import traveling.location.location.LocationParser
 import kotlin.test.assertNotNull
 
 class BodyManagerTest {
@@ -18,7 +18,7 @@ class BodyManagerTest {
     @Test
     fun bodyManagerLoadsBodies(){
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         Assert.assertTrue(BodyManager.bodyExists("Human"))

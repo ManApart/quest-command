@@ -1,18 +1,19 @@
 package system
 
-import core.body.BodyPart
+import core.utility.NameSearchableList
+import traveling.location.location.Location
 import traveling.location.location.LocationNode
-import core.body.BodyParser
+import traveling.location.location.LocationParser
 
 class BodyFakeParser(
         private val protoBodies: List<LocationNode> = listOf(LocationNode(parent = "Human", name = "Body Part"), LocationNode(parent = "None", name = "Part")),
-        private val bodyParts: List<BodyPart> = listOf(BodyPart("Body Part"))
-) : BodyParser {
-    override fun loadBodyParts(): List<BodyPart> {
-        return bodyParts
+        private val bodyParts: List<Location> = listOf(Location("Body Part"))
+) : LocationParser {
+    override fun loadLocations(): NameSearchableList<Location> {
+        return NameSearchableList(bodyParts)
     }
 
-    override fun loadBodies(): List<LocationNode> {
+    override fun loadLocationNodes(): List<LocationNode> {
         return protoBodies
     }
 
@@ -22,14 +23,14 @@ class BodyFakeParser(
                     LocationNode(parent = "Human", name = "right hand", locationName = "right hand"),
                     LocationNode(parent = "Human", name = "left hand", locationName = "left hand")
             ),
-                    listOf(BodyPart("right hand"), BodyPart("left hand")))
+                    listOf(Location("right hand"), Location("left hand")))
         }
 
-        fun parserFromPart(part: BodyPart, name: String = "body"): BodyFakeParser {
+        fun parserFromPart(part: Location, name: String = "body"): BodyFakeParser {
             return parserFromParts(listOf(part), name)
         }
 
-        fun parserFromParts(parts: List<BodyPart>, name: String = "body"): BodyFakeParser {
+        fun parserFromParts(parts: List<Location>, name: String = "body"): BodyFakeParser {
             val nodes = parts.map { LocationNode(it.name, parent = name) }
             return BodyFakeParser(nodes, parts)
         }

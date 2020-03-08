@@ -8,7 +8,6 @@ import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.BodyManager
-import core.body.BodyPart
 import core.body.Slot
 import core.events.Event
 import core.properties.*
@@ -21,6 +20,7 @@ import status.Soul
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.Route
+import traveling.location.location.Location
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE_NODE
 import kotlin.math.max
@@ -179,7 +179,7 @@ open class Target(
         return Target(name, base = this, properties = props)
     }
 
-    fun getPositionInLocation(part: BodyPart): Vector {
+    fun getPositionInLocation(part: Location): Vector {
         return body.getPositionInLocation(part, position)
     }
 

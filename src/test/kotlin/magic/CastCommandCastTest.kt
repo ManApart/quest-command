@@ -2,7 +2,6 @@ package magic
 
 import combat.battle.position.TargetAim
 import core.target.Target
-import core.body.BodyPart
 import core.utility.reflection.MockReflections
 import core.reflection.Reflections
 import traveling.scope.ScopeManager
@@ -14,10 +13,9 @@ import system.BodyFakeParser
 import core.DependencyInjector
 import core.events.EventManager
 import core.ai.behavior.BehaviorParser
-import core.body.BodyParser
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
-import system.location.LocationFakeParser
+import traveling.location.location.Location
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -28,8 +26,7 @@ class CastCommandCastTest {
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
             DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
-            DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
-            DependencyInjector.setImplementation(BodyParser::class.java, BodyFakeParser())
+            DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
         }
 
         private val targetA = Target("targetA")
@@ -47,7 +44,6 @@ class CastCommandCastTest {
             DependencyInjector.clearImplementation(Reflections::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
-            DependencyInjector.clearImplementation(BodyParser::class.java)
         }
     }
 
@@ -111,7 +107,7 @@ class CastCommandCastTest {
 
     @Test
     fun limitParts() {
-        val part = BodyPart("leg")
+        val part = Location("leg")
         val target = TargetAim(Target("Bob"), listOf(part))
 
         val results = getTargetedPartsOrAll(target, 3)

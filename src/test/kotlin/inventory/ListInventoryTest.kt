@@ -2,14 +2,14 @@ package inventory
 
 import core.DependencyInjector
 import core.body.BodyManager
-import core.body.BodyParser
-import core.body.BodyPart
 import core.history.ChatHistory
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
 import org.junit.Test
 import system.BodyFakeParser
+import traveling.location.location.Location
+import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 
 class ListInventoryTest {
@@ -25,10 +25,10 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquipped() {
-        val chest = BodyPart("Chest", slots = listOf("Chest"))
+        val chest = Location("Chest", slots = listOf("Chest"))
 
         val bodyParser = BodyFakeParser.parserFromPart(chest)
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
@@ -46,10 +46,10 @@ class ListInventoryTest {
         val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")))
         pouch.inventory.add(item)
 
-        val chest = BodyPart("Chest", slots = listOf("Chest"))
+        val chest = Location("Chest", slots = listOf("Chest"))
 
         val bodyParser = BodyFakeParser.parserFromPart(chest)
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))

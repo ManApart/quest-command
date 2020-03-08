@@ -1,11 +1,11 @@
 package combat
 
 import core.target.Target
-import core.body.BodyPart
 import core.utility.NameSearchableList
+import traveling.location.location.Location
 
 class HandHelper(creature: Target, source: String, desiredSkill: String) {
-    lateinit var hand: BodyPart; private set
+    lateinit var hand: Location; private set
     var weapon: Target? = null
 
     init {
@@ -54,11 +54,11 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
         return weapons.get(source)
     }
 
-    private fun getWeapon(source: BodyPart): Target? {
+    private fun getWeapon(source: Location): Target? {
         return source.getEquippedItem("right hand grip") ?: source.getEquippedItem("left hand grip")
     }
 
-    private fun getHand(source: String, rightHand: BodyPart, leftHand: BodyPart): BodyPart {
+    private fun getHand(source: String, rightHand: Location, leftHand: Location): Location {
         return if (listOf("left", "l").contains(source)) {
             leftHand
         } else {
@@ -66,7 +66,7 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
         }
     }
 
-    private fun getHand(weapon: Target, rightHand: BodyPart, leftHand: BodyPart): BodyPart {
+    private fun getHand(weapon: Target, rightHand: Location, leftHand: Location): Location {
         return if (weapon == getWeapon(rightHand)) {
             rightHand
         } else {

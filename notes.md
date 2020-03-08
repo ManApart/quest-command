@@ -66,6 +66,7 @@ Rename dynamicDialogue to dynamic string
 Turn bodypart into just location
 - Equipped items are just the items in that location
 - Slots could be location poperties
+- properties can give aggregates / take a list of properties and recursively sum those below it
 
 #### Debug Mode
 When on

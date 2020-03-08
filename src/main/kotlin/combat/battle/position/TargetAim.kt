@@ -1,9 +1,9 @@
 package combat.battle.position
 
 import core.target.Target
-import core.body.BodyPart
+import traveling.location.location.Location
 
-class TargetAim(val target: Target, val bodyPartTargets: List<BodyPart> = listOf()) {
+class TargetAim(val target: Target, val bodyPartTargets: List<Location> = listOf()) {
     override fun toString(): String {
         return if (bodyPartTargets.isEmpty()) {
             target.toString()

@@ -3,7 +3,6 @@ package crafting
 import core.DependencyInjector
 import core.GameManager
 import core.body.BodyManager
-import core.body.BodyParser
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
@@ -18,6 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser
 import system.ItemFakeParser
+import traveling.location.location.LocationParser
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -27,7 +27,7 @@ class CraftTest {
     @Before
     fun setup() {
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
     }
 

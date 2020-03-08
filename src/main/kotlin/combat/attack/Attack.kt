@@ -8,12 +8,12 @@ import combat.takeDamage.TakeDamageEvent
 import core.events.EventListener
 import core.GameState
 import core.target.Target
-import core.body.BodyPart
 import status.stat.BARE_HANDED
 import core.history.display
 import core.utility.StringFormatter
 import use.UseEvent
 import core.events.EventManager
+import traveling.location.location.Location
 
 class Attack : EventListener<AttackEvent>() {
 
@@ -65,7 +65,7 @@ class Attack : EventListener<AttackEvent>() {
         }
     }
 
-    private fun getAttackedParts(source: Target, sourcePart: BodyPart, target: TargetAim): List<BodyPart> {
+    private fun getAttackedParts(source: Target, sourcePart: Location, target: TargetAim): List<Location> {
         val sourcePosition = source.getPositionInLocation(sourcePart)
         val range = getRange(source, sourcePart)
         return target.bodyPartTargets.filter {
@@ -75,19 +75,19 @@ class Attack : EventListener<AttackEvent>() {
         }
     }
 
-    private fun getRange(source: Target, sourcePart: BodyPart) : Int {
+    private fun getRange(source: Target, sourcePart: Location) : Int {
         val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
         val bodyRange = source.body.getRange()
         return weaponRange + bodyRange
     }
 
-    private fun processAttackHit(event: AttackEvent, attackedPart: BodyPart, subject: String, verb: String, defenderName: String, damageSource: String, defender: Combatant, offensiveDamage: Int) {
+    private fun processAttackHit(event: AttackEvent, attackedPart: Location, subject: String, verb: String, defenderName: String, damageSource: String, defender: Combatant, offensiveDamage: Int) {
         val possessive = StringFormatter.getSubjectPossessive(event.source)
         display("$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource.")
         EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, event.type, damageSource))
     }
 
-    private fun getOffensiveDamage(sourceCreature: Target, sourcePart: BodyPart, type: DamageType): Int {
+    private fun getOffensiveDamage(sourceCreature: Target, sourcePart: Location, type: DamageType): Int {
         return when {
             sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
             else -> sourceCreature.soul.getCurrent(BARE_HANDED)

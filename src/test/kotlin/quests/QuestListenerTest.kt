@@ -1,14 +1,12 @@
-package core.gamestate.quests
+package quests
 
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.body.BodyManager
-import core.body.BodyParser
 import core.target.Target
 import org.junit.BeforeClass
 import org.junit.Test
-import quests.*
 import quests.triggerCondition.TriggerCondition
 import system.BodyFakeParser
 import system.location.LocationFakeParser
@@ -24,7 +22,7 @@ class QuestListenerTest {
         @BeforeClass
         fun setup() {
             val bodyParser = BodyFakeParser()
-            DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+            DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
             BodyManager.reset()
 
             val locationParser = LocationFakeParser()

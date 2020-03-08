@@ -2,10 +2,10 @@ package combat.block
 
 import core.events.Event
 import core.target.Target
-import core.body.BodyPart
+import traveling.location.location.Location
 
 
-class BlockEvent(val source: Target, val partThatWillShield: BodyPart, val partThatWillBeShielded: BodyPart) : Event {
+class BlockEvent(val source: Target, val partThatWillShield: Location, val partThatWillBeShielded: Location) : Event {
     override fun gameTicks(): Int {
         return if (source.isPlayer()) {
             1

@@ -3,16 +3,16 @@ package combat
 import combat.battle.BattleAction
 import core.properties.ACTION_POINTS
 import core.target.Target
-import core.body.BodyPart
 import status.stat.HEALTH
 import status.stat.WISDOM
+import traveling.location.location.Location
 
 class Combatant(val target: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
-    var blockBodyPart: BodyPart? = null
+    var blockBodyPart: Location? = null
     var lastAttacked: Target? = null
-    val blockedBodyParts: MutableList<BodyPart> = mutableListOf()
+    val blockedBodyParts: MutableList<Location> = mutableListOf()
 
     override fun toString(): String {
         return "${target.name}: $actionPoints"

@@ -11,7 +11,6 @@ import core.ai.AIParser
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.body.BodyParser
 import core.events.EventManager
 import core.target.Target
 import org.junit.Before
@@ -30,7 +29,7 @@ class AttackCommandTest {
     @Before
     fun setup() {
         val bodyParser = BodyFakeParser.parserWithFakePlayer()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val aiParser = AIFakeParser()

@@ -4,8 +4,6 @@ import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.body.BodyParser
-import core.body.BodyPart
 import core.properties.Properties
 import core.properties.Tags
 import core.properties.Values
@@ -16,7 +14,9 @@ import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
+import traveling.location.location.Location
 import traveling.location.location.LocationNode
+import traveling.location.location.LocationParser
 import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -29,7 +29,7 @@ class PlaceItemTest {
     @Before
     fun setup() {
         val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val behaviorParser = BehaviorFakeParser()
@@ -83,13 +83,13 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val hand = BodyPart("Hand", listOf("Grip", "Glove"))
-        val part = BodyPart("part")
+        val hand = Location("Hand", slots = listOf("Grip", "Glove"))
+        val part = Location("part")
 
         val bodyParser = BodyFakeParser(
                 listOf(LocationNode(parent = "body", name = "Hand"), LocationNode(parent = "none", name = "part")),
                 listOf(hand, part))
-        DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
         val creature = createCreature()

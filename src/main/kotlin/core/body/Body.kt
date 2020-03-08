@@ -8,6 +8,7 @@ import core.utility.max
 import traveling.direction.Direction
 import traveling.direction.Vector
 import traveling.location.Network
+import traveling.location.location.Location
 import traveling.location.location.LocationNode
 
 val NONE = Body("None")
@@ -17,8 +18,8 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
 
     private val parts = createParts()
 
-    private fun createParts(): NameSearchableList<BodyPart> {
-        return NameSearchableList(layout.getLocations().asSequence().map { it.bodyPart }.filterNotNull().toList())
+    private fun createParts(): NameSearchableList<Location> {
+        return NameSearchableList(layout.getLocations())
     }
 
     override fun toString(): String {
@@ -49,15 +50,15 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return parts.exists(part)
     }
 
-    fun getPart(part: String): BodyPart {
+    fun getPart(part: String): Location {
         return parts.get(part)
     }
 
-    fun getParts(): List<BodyPart> {
+    fun getParts(): List<Location> {
         return parts.toList()
     }
 
-    fun getAnyParts(names: List<String>): List<BodyPart> {
+    fun getAnyParts(names: List<String>): List<Location> {
         return parts.getAny(names)
     }
 
@@ -65,15 +66,15 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return layout.getLocationNode(part)
     }
 
-    fun getRootPart(): BodyPart? {
-        return layout.rootNode?.getLocation()?.bodyPart
+    fun getRootPart(): Location? {
+        return layout.rootNode?.getLocation()
     }
 
-    private fun getPartsWithAttachPoint(attachPoint: String): List<BodyPart> {
+    private fun getPartsWithAttachPoint(attachPoint: String): List<Location> {
         return parts.filter { it.hasAttachPoint(attachPoint) }
     }
 
-    private fun getPartsEquippedWith(item: Target): List<BodyPart> {
+    private fun getPartsEquippedWith(item: Target): List<Location> {
         return parts.filter { it.getEquippedItems().contains(item) }
     }
 
@@ -127,7 +128,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return layout.getFurthestLocations(Direction.BELOW)
     }
 
-    fun getPositionInLocation(part: BodyPart, parentOffset: Vector): Vector {
+    fun getPositionInLocation(part: Location, parentOffset: Vector): Vector {
         return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode?.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
     }
 

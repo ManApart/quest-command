@@ -5,8 +5,6 @@ import assertEqualsByName
 import core.DependencyInjector
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.body.BodyParser
-import core.body.BodyPart
 import core.reflection.Reflections
 import core.target.Target
 import core.utility.reflection.MockReflections
@@ -15,6 +13,7 @@ import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
+import traveling.location.location.Location
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser
 import traveling.scope.ScopeManager
@@ -27,9 +26,9 @@ class TargetAimParserTest {
     //val targets = parseTargets("cast ${spellCommand.name} ${spellArgs.fullString}", arguments)
 
     companion object {
-        private val bodyPartA = BodyPart("bodyPartA")
-        private val bodyPartB = BodyPart("bodyPartB")
-        private val bodyPartC = BodyPart("bodyPartC")
+        private val bodyPartA = Location("bodyPartA")
+        private val bodyPartB = Location("bodyPartB")
+        private val bodyPartC = Location("bodyPartC")
 
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
@@ -50,7 +49,7 @@ class TargetAimParserTest {
                     )
             )
 
-            DependencyInjector.setImplementation(BodyParser::class.java, bodyParser)
+            DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
             BodyManager.reset()
         }
 
@@ -69,7 +68,6 @@ class TargetAimParserTest {
             DependencyInjector.clearImplementation(Reflections::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
-            DependencyInjector.clearImplementation(BodyParser::class.java)
         }
     }
 

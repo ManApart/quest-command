@@ -6,20 +6,21 @@ import traveling.location.Network
 import core.utility.NameSearchableList
 import core.DependencyInjector
 import traveling.location.location.LocationHelper
+import traveling.location.location.LocationParser
 
 object BodyManager {
     private val locationHelper = LocationHelper()
-    private var parser = DependencyInjector.getImplementation(BodyParser::class.java)
+    private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
     private var bodies = createBodies()
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(BodyParser::class.java)
+        parser = DependencyInjector.getImplementation(LocationParser::class.java)
         bodies = createBodies()
     }
 
     private fun createBodies(): NameSearchableList<Body> {
-        val nodes: List<LocationNode> = parser.loadBodies()
-        val bodyParts = parser.loadBodyParts()
+        val nodes: List<LocationNode> = parser.loadLocationNodes()
+        val bodyParts = parser.loadLocations()
 
         val nodeMap = locationHelper.buildInitialMap(nodes)
         locationHelper.createNeighborsAndNeighborLinks(nodeMap)
@@ -37,12 +38,12 @@ object BodyManager {
         return NameSearchableList(bodies)
     }
 
-    private fun createLocations(bodyParts: List<BodyPart>, locationNodes: List<LocationNode>) : NameSearchableList<Location> {
-        val locations = NameSearchableList(bodyParts.map { Location(it.name, bodyPart = it) })
+    private fun createLocations(bodyParts: List<Location>, locationNodes: List<LocationNode>) : NameSearchableList<Location> {
+        val locations = NameSearchableList(bodyParts)
 
         locationNodes.forEach { node ->
             if (locations.getOrNull(node.locationName) == null){
-                locations.add(Location(node.locationName, bodyPart = BodyPart(node.locationName)))
+                locations.add(Location(node.locationName))
             }
         }
 

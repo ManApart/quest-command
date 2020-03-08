@@ -3,7 +3,6 @@ package magic.castSpell
 import combat.battle.position.TargetAim
 import core.commands.*
 import core.target.Target
-import core.body.BodyPart
 import core.history.display
 import core.utility.NameSearchableList
 import core.reflection.Reflections
@@ -11,6 +10,7 @@ import magic.spellCommands.SpellCommand
 import core.DependencyInjector
 import core.events.EventManager
 import magic.ViewWordHelpEvent
+import traveling.location.location.Location
 
 class CastCommand : Command() {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
@@ -121,7 +121,7 @@ class CastCommand : Command() {
     }
 }
 
-fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<BodyPart> {
+fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Location> {
     val parts =  if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
@@ -136,7 +136,7 @@ fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<BodyPa
 
 }
 
-fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<BodyPart> {
+fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<Location> {
     return if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
