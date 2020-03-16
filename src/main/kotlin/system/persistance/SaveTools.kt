@@ -9,10 +9,8 @@ import core.properties.Properties
 import core.target.Target
 import core.target.getPersisted
 import core.target.readFromData
+import traveling.location.location.Location
 import traveling.location.location.LocationNode
-import traveling.scope.Scope
-import traveling.scope.ScopeManager
-import traveling.scope.getPersisted
 import java.io.File
 
 private const val directory = "./saves/"
@@ -49,7 +47,7 @@ fun save(rawGameName: String, player: Target) {
     val gamePath = "$directory${gameName}/"
     saveSessionStats()
     savePlayer(player, gamePath)
-    ScopeManager.flush()
+//    ScopeManager.flush()
     saveGameState(player, gamePath)
     saveTopLevelMetadata(gameName)
 }
@@ -82,13 +80,18 @@ private fun saveTopLevelMetadata(gameName: String) {
     writeSave(directory, directory + "games.json", gameMetaDataData)
 }
 
-fun save(gameName: String, scope: Scope) {
-    val path = "$directory${clean(gameName)}/${clean(scope.locationNode.network.name)}/"
-    val data = getPersisted(scope)
-    val saveName = "$path${clean(scope.locationNode.name)}.json"
-    writeSave(path, saveName, data)
+//fun save(gameName: String, scope: Scope) {
+//    val path = "$directory${clean(gameName)}/${clean(scope.locationNode.network.name)}/"
+//    val data = getPersisted(scope)
+//    val saveName = "$path${clean(scope.locationNode.name)}.json"
+//    writeSave(path, saveName, data)
+//}
+
+fun save(gameName: String, location: Location) {
+
 }
 
+//Instead of saving character at top level, save the path to the character's location and load that
 fun loadGame(gameName: String) {
     loadGameState(gameName)
     val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
@@ -103,16 +106,24 @@ fun loadGameState(gameName: String) {
 
 fun loadCharacter(gameName: String, saveName: String) {
     val playerData = readSave("$directory/${gameName}/$saveName.json")
-    ScopeManager.getScope().removeTarget(GameState.player)
+//    ScopeManager.getScope().removeTarget(GameState.player)
     GameState.player = readFromData(playerData)
-    ScopeManager.getScope(GameState.player.location).addTarget(GameState.player)
+//    ScopeManager.getScope(GameState.player.location).addTarget(GameState.player)
 }
 
-fun loadScope(gameName: String, locationNode: LocationNode): Scope {
-    val path = "$directory${clean(gameName)}/${clean(locationNode.network.name)}/${clean(locationNode.name)}.json"
-    val data = readSave(path)
-    return traveling.scope.readFromData(data, locationNode)
+fun locationExists() : Boolean {
+    return false
 }
+
+fun loadLocation(gameName: String, locationNode: LocationNode): Location {
+    return null!!
+}
+
+//fun loadScope(gameName: String, locationNode: LocationNode): Scope {
+//    val path = "$directory${clean(gameName)}/${clean(locationNode.network.name)}/${clean(locationNode.name)}.json"
+//    val data = readSave(path)
+//    return traveling.scope.readFromData(data, locationNode)
+//}
 
 fun getGamesMetaData(): Properties {
     val data = readSave(directory + "games.json")

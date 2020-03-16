@@ -6,10 +6,10 @@ import combat.battle.position.TargetAim
 import core.events.Event
 import core.target.Target
 import status.stat.AGILITY
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import kotlin.math.max
 
-class StartAttackEvent(override val source: Target, private val sourcePart: Location, override val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, BattleAction {
+class StartAttackEvent(override val source: Target, private val sourcePart: LocationRecipe, override val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, BattleAction {
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {

@@ -3,18 +3,19 @@ package traveling.scope
 import core.GameState
 import core.target.Target
 import traveling.location.location.HEAT
+import traveling.location.location.Location
 
 
-fun getHeatLevel(scope: Scope): Int {
-    return scope.location.properties.values.getInt(HEAT) +
-            scope.weather.properties.values.getInt(HEAT) +
-            getDayBonus(scope)
+fun getHeatLevel(location: Location): Int {
+    return location.properties.values.getInt(HEAT) +
+            location.weather.properties.values.getInt(HEAT) +
+            getDayBonus(location)
 }
 
-private fun getDayBonus(scope: Scope): Int {
+private fun getDayBonus(location: Location): Int {
     val percentDayComplete = GameState.timeManager.getPercentDayComplete()
     return when {
-        !scope.location.properties.tags.has("Outside") -> 0
+        !location.properties.tags.has("Outside") -> 0
         percentDayComplete <= 20 || percentDayComplete >= 80 -> -2
         percentDayComplete in 20..23 || percentDayComplete in 76..79 -> -1
         percentDayComplete in 23..26 || percentDayComplete in 73..76 -> 0
@@ -24,6 +25,6 @@ private fun getDayBonus(scope: Scope): Int {
 }
 
 
-fun getHeatLevel(scope: Scope, target: Target): Int {
+fun getHeatLevel(scope: Location, target: Target): Int {
     return getHeatLevel(scope) + target.properties.values.getInt(HEAT)
 }

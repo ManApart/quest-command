@@ -37,11 +37,11 @@ object LocationManager {
         return NameSearchableList(networks + DEFAULT_NETWORK)
     }
 
-    private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>, locations: NameSearchableList<Location>) {
+    private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>, locationRecipes: NameSearchableList<LocationRecipe>) {
         nodeMap.values.forEach { network ->
             network.forEach { node ->
-                if (!locations.exists(node.locationName)) {
-                    locations.add(Location(node.locationName))
+                if (!locationRecipes.exists(node.locationName)) {
+                    locationRecipes.add(LocationRecipe(node.locationName))
                 }
             }
         }

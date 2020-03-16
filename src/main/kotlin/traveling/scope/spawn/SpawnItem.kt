@@ -4,7 +4,6 @@ import core.events.EventListener
 import core.GameState
 import core.history.display
 import core.utility.StringFormatter
-import traveling.scope.ScopeManager
 import inventory.pickupItem.ItemPickedUpEvent
 import core.events.EventManager
 
@@ -14,7 +13,7 @@ class SpawnItem : EventListener<ItemSpawnedEvent>() {
             val name = StringFormatter.format(event.item.properties.getCount() > 1, "${event.item.properties.getCount()}x ${event.item.name}s", event.item.name)
             display("$name appeared.")
             event.item.location = event.targetLocation ?: GameState.player.location
-            ScopeManager.getScope(event.targetLocation).addTarget(event.item)
+            event.targetLocation?.getLocation()?.addTarget(event.item)
         } else {
             event.target.inventory.add(event.item)
             EventManager.postEvent(ItemPickedUpEvent(event.target, event.item, true))

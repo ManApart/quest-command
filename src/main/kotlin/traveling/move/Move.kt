@@ -9,7 +9,6 @@ import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationPoint
-import traveling.scope.ScopeManager
 import traveling.travel.getDistanceToNeighbor
 import traveling.travel.postArriveEvent
 
@@ -34,7 +33,7 @@ class Move : EventListener<MoveEvent>() {
 
     private fun displayMovement(event: MoveEvent) {
         if (!event.silent) {
-            val destinationTarget = ScopeManager.getScope(event.creature.location).getTargets(event.creature).firstOrNull { it.position == event.destination }
+            val destinationTarget = event.creature.location.getLocation().getTargets(event.creature).firstOrNull { it.position == event.destination }
             val destinationString = destinationTarget?.getDisplayName() ?: event.destination.toString()
 
             if (event.creature.isPlayer()) {

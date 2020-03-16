@@ -5,6 +5,8 @@ import core.target.Target
 import core.utility.NameSearchableList
 import traveling.location.location.LocationTarget
 
+const val ACTIVATOR_TAG = "Activator"
+
 object ActivatorManager {
     private var parser = DependencyInjector.getImplementation(ActivatorParser::class.java)
 
@@ -13,7 +15,7 @@ object ActivatorManager {
     fun reset() {
         parser = DependencyInjector.getImplementation(ActivatorParser::class.java)
         activators = parser.loadActivators()
-        activators.map { it.properties.tags.add("Activator") }
+        activators.map { it.properties.tags.add(ACTIVATOR_TAG) }
     }
 
     fun getActivator(name: String): Target {

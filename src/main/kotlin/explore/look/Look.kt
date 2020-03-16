@@ -8,7 +8,6 @@ import core.target.Target
 import core.target.targetsToString
 import traveling.climb.ClimbLook
 import traveling.direction.NO_VECTOR
-import traveling.scope.ScopeManager
 
 class Look : EventListener<LookEvent>() {
 
@@ -61,8 +60,8 @@ class Look : EventListener<LookEvent>() {
         } else {
             display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
         }
-        if (ScopeManager.getScope().getTargets().size > 1) {
-            val targetList = targetsToString(ScopeManager.getScope().getTargets().filterNot { it == GameState.player })
+        if (GameState.currentLocation().getTargets().size > 1) {
+            val targetList = targetsToString(GameState.currentLocation().getTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")
         } else {
             display("You don't see anything of use.")

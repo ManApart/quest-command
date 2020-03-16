@@ -5,7 +5,6 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.GameState
 import core.history.display
-import traveling.scope.ScopeManager
 import core.events.EventManager
 import crafting.Recipe
 
@@ -48,7 +47,7 @@ class CraftRecipeCommand : Command() {
     }
 
     private fun processRecipe(recipe: Recipe) {
-        val tool = ScopeManager.getScope().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
+        val tool = GameState.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
                 ?: GameState.player.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {
             display("Couldn't find the necessary tools to create ${recipe.name}")

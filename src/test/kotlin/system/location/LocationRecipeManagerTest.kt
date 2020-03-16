@@ -10,7 +10,7 @@ import core.DependencyInjector
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 
-class LocationManagerTest {
+class LocationRecipeManagerTest {
 
     companion object {
         @JvmStatic
@@ -87,7 +87,7 @@ class LocationManagerTest {
         DependencyInjector.setImplementation(LocationParser::class.java, fakeParser)
         LocationManager.reset()
 
-        Assert.assertEquals(source.name, source.getLocation().name)
+        Assert.assertEquals(source.name, source.getLocationRecipe().name)
     }
 
 

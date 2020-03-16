@@ -5,9 +5,8 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.GameState
 import core.history.display
-import core.utility.filterUniqueByName
-import traveling.scope.ScopeManager
 import core.events.EventManager
+import core.utility.filterUniqueByName
 
 class StatusCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -32,13 +31,13 @@ class StatusCommand : Command() {
         when {
             args.isEmpty() && keyword == "status" -> clarifyStatus()
             args.isEmpty() -> EventManager.postEvent(StatusEvent(GameState.player))
-            ScopeManager.getScope().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(ScopeManager.getScope().getCreatures(argsString).filterUniqueByName().first()))
+            GameState.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(GameState.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 
     private fun clarifyStatus() {
-        val targets = ScopeManager.getScope().getCreatures().map { it.name }
+        val targets = GameState.currentLocation().getCreatures().map { it.name }
         val message = "Status of what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "status $it" }.toMap()))
     }

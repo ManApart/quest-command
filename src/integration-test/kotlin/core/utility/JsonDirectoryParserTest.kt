@@ -3,7 +3,7 @@ package core.utility
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.Test
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -30,5 +30,5 @@ class JsonDirectoryParserTest {
 
     }
 
-    private fun parseFile(path: String): List<Location> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
+    private fun parseFile(path: String): List<LocationRecipe> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 }

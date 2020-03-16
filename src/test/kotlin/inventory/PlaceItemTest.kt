@@ -14,10 +14,10 @@ import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser
-import traveling.scope.ScopeManager
+import traveling.location.location.NOWHERE_NODE
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -36,6 +36,7 @@ class PlaceItemTest {
         DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
         BehaviorManager.reset()
 
+        NOWHERE_NODE.getLocation().clear()
     }
 
     @Test
@@ -43,7 +44,7 @@ class PlaceItemTest {
         val creature = Target("Creature")
         val item = Target("Apple")
         creature.inventory.add(item)
-        val scope = ScopeManager.getScope(creature.location)
+        val scope = creature.location.getLocation()
 
         TransferItem().execute(TransferItemEvent(creature, item, creature))
         assertTrue(scope.getTargets(item.name).isNotEmpty())
@@ -83,8 +84,8 @@ class PlaceItemTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val hand = Location("Hand", slots = listOf("Grip", "Glove"))
-        val part = Location("part")
+        val hand = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
+        val part = LocationRecipe("part")
 
         val bodyParser = BodyFakeParser(
                 listOf(LocationNode(parent = "body", name = "Hand"), LocationNode(parent = "none", name = "part")),

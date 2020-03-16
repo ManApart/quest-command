@@ -4,18 +4,18 @@ import combat.battle.position.TargetAim
 import core.target.Target
 import core.utility.reflection.MockReflections
 import core.reflection.Reflections
-import traveling.scope.ScopeManager
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import core.DependencyInjector
+import core.GameState
 import core.events.EventManager
 import core.ai.behavior.BehaviorParser
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -31,7 +31,7 @@ class CastCommandCastTest {
 
         private val targetA = Target("targetA")
         private val targetB = Target("targetB")
-        private val scope = ScopeManager.getScope()
+        private val scope = GameState.currentLocation()
 
         init {
             scope.addTarget(targetA)
@@ -107,7 +107,7 @@ class CastCommandCastTest {
 
     @Test
     fun limitParts() {
-        val part = Location("leg")
+        val part = LocationRecipe("leg")
         val target = TargetAim(Target("Bob"), listOf(part))
 
         val results = getTargetedPartsOrAll(target, 3)

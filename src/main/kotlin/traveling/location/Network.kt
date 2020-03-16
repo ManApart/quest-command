@@ -5,16 +5,16 @@ import core.utility.Named
 import traveling.direction.Direction
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE
 import traveling.location.location.NOWHERE_NODE
 
-class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locations: List<Location> = listOf()) : Named {
-    constructor(base: Network) : this(base.name, base.locationNodes, base.locations.map { Location(it) })
+class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
+    constructor(base: Network) : this(base.name, base.locationNodes, base.locations.map { LocationRecipe(it) })
 
     private val locationNodes = NameSearchableList(locationNodes)
-    private val locations = NameSearchableList(locations)
+    private val locations = NameSearchableList(locationRecipes)
     val rootNode by lazy { findRootNode() }
     val rootNodeHeight by lazy { findRootNodeHeight() }
 
@@ -50,11 +50,11 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locationNodes.size
     }
 
-    fun getLocation(name: String): Location {
+    fun getLocation(name: String): LocationRecipe {
         return locations.getOrNull(name) ?: NOWHERE
     }
 
-    fun getLocations(): List<Location> {
+    fun getLocations(): List<LocationRecipe> {
         return locations.toList()
     }
 

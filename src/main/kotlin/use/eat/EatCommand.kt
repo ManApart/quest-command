@@ -7,7 +7,6 @@ import core.GameState
 import core.target.Target
 import core.history.display
 import use.UseEvent
-import traveling.scope.ScopeManager
 import core.events.EventManager
 
 class EatCommand : Command() {
@@ -29,8 +28,8 @@ class EatCommand : Command() {
 
     override fun execute(keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
-        val allFood = ScopeManager.getScope().getItemsIncludingPlayerInventory().filter { it.properties.tags.has("food") }
-        val pickedFood = ScopeManager.getScope().getItemsIncludingPlayerInventory(argsString, GameState.player)
+        val allFood = GameState.currentLocation().getItemsIncludingPlayerInventory().filter { it.properties.tags.has("food") }
+        val pickedFood = GameState.currentLocation().getItemsIncludingPlayerInventory(argsString, GameState.player)
         val topChoice = pickedFood.firstOrNull { it.name.toLowerCase() == argsString }
 
         when {

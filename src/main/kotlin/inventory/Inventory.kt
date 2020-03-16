@@ -26,6 +26,7 @@ class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf
         items.forEach { add(it) }
     }
 
+    //TODO - also store item in physical location?
     fun add(item: Target) {
         if (items.exists(item.name)) {
             val match = items.get(item.name)

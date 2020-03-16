@@ -5,7 +5,6 @@ import core.events.EventListener
 import core.history.display
 import status.stat.StatKind
 import traveling.location.weather.WeatherManager
-import traveling.scope.ScopeManager
 
 class DebugListListener : EventListener<DebugListEvent>() {
     override fun execute(event: DebugListEvent) {
@@ -55,7 +54,7 @@ class DebugWeatherListener : EventListener<DebugWeatherEvent>() {
     override fun execute(event: DebugWeatherEvent) {
         if (WeatherManager.weatherExists(event.weather)) {
             val weather = WeatherManager.getWeather(event.weather)
-            ScopeManager.getScope().updateWeather(weather)
+            GameState.currentLocation().updateWeather(weather)
             display("Updated weather to ${weather.name}.")
         } else {
             display("Could not find weather ${event.weather}.")

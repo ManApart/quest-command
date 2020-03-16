@@ -3,6 +3,7 @@ package magic.spellCommands.water
 import combat.DamageType
 import combat.battle.position.TargetAim
 import core.DependencyInjector
+import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.commands.Args
 import core.events.EventManager
@@ -22,10 +23,8 @@ import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
 import system.BehaviorFakeParser
-import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationParser
-import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -44,7 +43,7 @@ class HealTest {
         }
 
         private val targetA = Target("targetA")
-        private val scope = ScopeManager.getScope()
+        private val scope = GameState.currentLocation()
 
         init {
             scope.addTarget(targetA)

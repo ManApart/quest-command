@@ -1,12 +1,12 @@
 package inventory
 
+import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import traveling.scope.ScopeManager
 
 class InventoryCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -27,9 +27,10 @@ class InventoryCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val allInventories = ScopeManager.getScope().findTargetsByTag("Container")
+        val location = GameState.currentLocation()
+        val allInventories = location.findTargetsByTag("Container")
         val argString = args.joinToString(" ")
-        val target = ScopeManager.getScope().getTargets(argString).firstOrNull()
+        val target = location.getTargets(argString).firstOrNull()
 
         when {
             args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(allInventories.first()))

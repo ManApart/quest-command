@@ -4,7 +4,6 @@ import core.GameState
 import core.events.EventListener
 import core.history.display
 import traveling.direction.Vector
-import traveling.scope.ScopeManager
 
 class Arrive : EventListener<ArriveEvent>() {
 
@@ -16,7 +15,7 @@ class Arrive : EventListener<ArriveEvent>() {
         if (event.origin != event.destination) {
             GameState.player.position = Vector()
             if (!event.destination.targetName.isNullOrBlank() && !event.destination.partName.isNullOrBlank()) {
-                val climbTarget = ScopeManager.getScope(event.destination.location).getTargets(event.destination.targetName).first()
+                val climbTarget = event.destination.location.getLocation().getTargets(event.destination.targetName).first()
                 val part = climbTarget.body.getPartLocation(event.destination.partName)
                 GameState.player.location = part
                 GameState.player.setClimbing(climbTarget)

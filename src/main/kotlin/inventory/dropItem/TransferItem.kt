@@ -6,7 +6,6 @@ import core.target.Target
 import traveling.location.location.NOWHERE_NODE
 import core.history.display
 import core.utility.StringFormatter
-import traveling.scope.ScopeManager
 import inventory.equipItem.EquipItemEvent
 import inventory.pickupItem.ItemPickedUpEvent
 import core.events.EventManager
@@ -31,7 +30,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
     private fun dropItem(source: Target, item: Target, silent: Boolean) {
         source.inventory.remove(item)
         item.location = source.location
-        ScopeManager.getScope(source.location).addTarget(item)
+        source.location.getLocation().addTarget(item)
         EventManager.postEvent(ItemDroppedEvent(source, item, silent))
     }
 
@@ -92,7 +91,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         if (source != null) {
             source.inventory.remove(item)
         } else {
-            ScopeManager.getScope(destination.location).removeTarget(item)
+            destination.location.getLocation().removeTarget(item)
             item.properties.values.put("locationDescription", "")
             item.location = NOWHERE_NODE
         }

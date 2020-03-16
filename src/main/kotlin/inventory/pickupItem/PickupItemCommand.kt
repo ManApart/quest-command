@@ -6,10 +6,9 @@ import core.commands.ResponseRequest
 import core.GameState
 import core.target.Target
 import core.history.display
-import core.utility.filterUniqueByName
-import traveling.scope.ScopeManager
 import inventory.dropItem.TransferItemEvent
 import core.events.EventManager
+import core.utility.filterUniqueByName
 
 class PickupItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {
@@ -32,14 +31,14 @@ class PickupItemCommand : core.commands.Command() {
     override fun execute(keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from"))
         when {
-            args.isEmpty() -> pickupWhat(ScopeManager.getScope().getItems().filterUniqueByName())
+            args.isEmpty() -> pickupWhat(GameState.currentLocation().getItems().filterUniqueByName())
             arguments.hasGroup("from") -> pickupItemFromContainer(arguments)
             else -> pickupItemFromScope(arguments)
         }
     }
 
     private fun pickupItemFromScope(args: Args) {
-        val items = ScopeManager.getScope().getItems(args.getBaseString()).filterUniqueByName()
+        val items = GameState.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> display("Couldn't find ${args.getBaseString()}")
             items.size == 1 -> EventManager.postEvent(TransferItemEvent(GameState.player, items.first(), destination = GameState.player))
@@ -58,7 +57,7 @@ class PickupItemCommand : core.commands.Command() {
     }
 
     private fun pickupItemFromContainer(args: Args) {
-        val from = ScopeManager.getScope().getTargets(args.getString("from")).filterUniqueByName()
+        val from = GameState.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
         when {
             from.isEmpty() -> display("Couldn't find ${args.getString("from")}")
             from.size == 1 -> takeItemFromContainer(from.first(), args.getBaseString())

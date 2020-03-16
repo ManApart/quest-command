@@ -2,7 +2,7 @@ package gameState.location
 
 import traveling.direction.Direction
 import traveling.location.*
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationPoint
 
@@ -11,7 +11,7 @@ class LocationHelper {
     fun createNetwork(depth: Int): Network {
         val source = LocationNode("Source")
         val locationNodes = addNeighbors(source, depth)
-        val locations = locationNodes.map { Location(it.locationName) }
+        val locations = locationNodes.map { LocationRecipe(it.locationName) }
 
         return Network("Network", locationNodes, locations)
     }

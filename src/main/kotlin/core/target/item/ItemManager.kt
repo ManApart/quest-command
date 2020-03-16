@@ -1,8 +1,10 @@
 package core.target.item
 
+import core.DependencyInjector
 import core.target.Target
 import traveling.location.location.LocationTarget
-import core.DependencyInjector
+
+const val ITEM_TAG = "Item"
 
 object ItemManager {
     private var parser = DependencyInjector.getImplementation(ItemParser::class.java)
@@ -11,6 +13,7 @@ object ItemManager {
     fun reset() {
         parser = DependencyInjector.getImplementation(ItemParser::class.java)
         items = parser.loadItems()
+        items.map { it.properties.tags.add(ITEM_TAG) }
     }
 
     fun itemExists(name: String): Boolean {

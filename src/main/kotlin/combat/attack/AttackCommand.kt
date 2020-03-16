@@ -8,7 +8,6 @@ import core.target.Target
 import status.stat.HEALTH
 import core.history.display
 import use.UseEvent
-import traveling.scope.ScopeManager
 import core.events.EventManager
 
 class AttackCommand : Command() {
@@ -101,7 +100,7 @@ class AttackCommand : Command() {
     }
 
     private fun clarifyTarget(keyword: String, weaponName: String) {
-        val options = ScopeManager.getScope().getTargets()
+        val options = GameState.currentLocation().getTargets()
         val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name}" }.toMap())
          CommandParser.setResponseRequest(response)

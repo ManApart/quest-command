@@ -3,6 +3,7 @@ package core.commands
 import assertContainsByName
 import assertEqualsByName
 import core.DependencyInjector
+import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.reflection.Reflections
@@ -13,10 +14,9 @@ import org.junit.Test
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser
-import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)
@@ -26,9 +26,9 @@ class TargetAimParserTest {
     //val targets = parseTargets("cast ${spellCommand.name} ${spellArgs.fullString}", arguments)
 
     companion object {
-        private val bodyPartA = Location("bodyPartA")
-        private val bodyPartB = Location("bodyPartB")
-        private val bodyPartC = Location("bodyPartC")
+        private val bodyPartA = LocationRecipe("bodyPartA")
+        private val bodyPartB = LocationRecipe("bodyPartB")
+        private val bodyPartC = LocationRecipe("bodyPartC")
 
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
@@ -55,7 +55,7 @@ class TargetAimParserTest {
 
         private val targetA = Target("targetA", bodyName = "testBody")
         private val targetB = Target("targetB", bodyName = "testBody")
-        private val scope = ScopeManager.getScope()
+        private val scope = GameState.currentLocation()
 
         init {
             scope.addTarget(targetA)

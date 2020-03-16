@@ -6,7 +6,6 @@ import core.commands.Command
 import core.GameState
 import core.target.Target
 import core.history.display
-import traveling.scope.ScopeManager
 import core.events.EventManager
 import core.target.item.ItemManager
 import crafting.RecipeManager
@@ -65,8 +64,8 @@ class CookCommand : Command() {
 
     private fun getTool(args: Args): Target? {
         val group = args.getGroup("on")
-        val scope = ScopeManager.getScope()
-        return (scope.getActivators(group.joinToString(" ")) + scope.findActivatorsByTag("Range")).firstOrNull()
+        val location = GameState.currentLocation()
+        return (location.getActivators(group.joinToString(" ")) + location.findActivatorsByTag("Range")).firstOrNull()
     }
 
 }

@@ -1,6 +1,7 @@
 package core.commands
 
 import core.GameManager
+import core.GameState
 import core.events.EventManager
 import core.history.ChatHistory
 import core.properties.Properties
@@ -9,7 +10,6 @@ import core.target.Target
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 
 class ResponseRequestIntegrationTest {
@@ -31,8 +31,8 @@ class ResponseRequestIntegrationTest {
     @Test
     fun takeSecondObject() {
         val props = Properties(tags = Tags(listOf("Item")))
-        ScopeManager.getScope().addTarget(Target("Wheat Bundle", properties = props))
-        ScopeManager.getScope().addTarget(Target("Wheat Flour", properties = props))
+        GameState.currentLocation().addTarget(Target("Wheat Bundle", properties = props))
+        GameState.currentLocation().addTarget(Target("Wheat Flour", properties = props))
 
         val input = "pickup wheat && 2"
         CommandParser.parseCommand(input)

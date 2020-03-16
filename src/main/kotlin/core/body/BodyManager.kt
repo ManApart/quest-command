@@ -1,6 +1,6 @@
 package core.body
 
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.Network
 import core.utility.NameSearchableList
@@ -40,12 +40,12 @@ object BodyManager {
         return NameSearchableList(bodies)
     }
 
-    private fun createLocations(bodyParts: List<Location>, locationNodes: List<LocationNode>) : NameSearchableList<Location> {
+    private fun createLocations(bodyParts: List<LocationRecipe>, locationNodes: List<LocationNode>) : NameSearchableList<LocationRecipe> {
         val locations = NameSearchableList(bodyParts)
 
         locationNodes.forEach { node ->
             if (locations.getOrNull(node.locationName) == null){
-                locations.add(Location(node.locationName))
+                locations.add(LocationRecipe(node.locationName))
             }
         }
 

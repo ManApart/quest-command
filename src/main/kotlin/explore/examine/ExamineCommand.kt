@@ -6,7 +6,6 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
-import traveling.scope.ScopeManager
 
 class ExamineCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -32,13 +31,13 @@ class ExamineCommand : Command() {
             keyword == "examine" && args.isEmpty() -> clarifyTarget()
             args.isEmpty() -> EventManager.postEvent(ExamineEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent())
-            ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(GameState.player, ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).first()))
+            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(GameState.player, GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 
     private fun clarifyTarget() {
-        val targets  = (listOf("all") + ScopeManager.getScope().getTargets().map { it.name })
+        val targets  = (listOf("all") + GameState.currentLocation().getTargets().map { it.name })
         val message = "Examine what?\n\t${targets.joinToString(", ")}"
         val response = ResponseRequest(message, targets.map { it to "examine $it" }.toMap())
         CommandParser.setResponseRequest(response)

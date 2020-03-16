@@ -4,7 +4,6 @@ import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
 import core.properties.Values
-import traveling.scope.ScopeManager
 import inventory.dropItem.TransferItem
 import inventory.dropItem.TransferItemEvent
 import org.junit.Before
@@ -12,7 +11,9 @@ import org.junit.Test
 import system.BodyFakeParser
 import core.DependencyInjector
 import core.body.BodyManager
+import org.junit.After
 import traveling.location.location.LocationParser
+import traveling.location.location.NOWHERE_NODE
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -24,38 +25,36 @@ class PickupItemTest {
         val bodyParser = BodyFakeParser()
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
+        NOWHERE_NODE.getLocation().clear()
+    }
+    
+    @After
+    fun tearDown() {
+        NOWHERE_NODE.getLocation().clear()
     }
 
     @Test
-    fun pickupItemFromScope() {
-        ScopeManager.reset()
-
+    fun pickupItemFromLocation() {
         val creature = getCreatureWithCapacity()
-        val scope = ScopeManager.getScope(creature.location)
+        val location = creature.location.getLocation()
         val item = Target("Apple")
-        scope.addTarget(item)
+        location.addTarget(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
         assertNotNull(creature.inventory.getItem(item.name))
-        assertTrue(scope.getTargets(item.name).isEmpty())
-
-        ScopeManager.reset()
+        assertTrue(location.getTargets(item.name).isEmpty())
     }
 
     @Test
-    fun noPickupItemFromScopeIfNoCapacity() {
-        ScopeManager.reset()
-
+    fun noPickupItemFromLocationIfNoCapacity() {
         val creature = Target("Target")
-        val scope = ScopeManager.getScope(creature.location)
+        val location = creature.location.getLocation()
         val item = Target("Apple")
-        scope.addTarget(item)
+        location.addTarget(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
         assertNull(creature.inventory.getItem(item.name))
-        assertTrue(scope.getTargets(item.name).isNotEmpty())
-
-        ScopeManager.reset()
+        assertTrue(location.getTargets(item.name).isNotEmpty())
     }
 
     @Test

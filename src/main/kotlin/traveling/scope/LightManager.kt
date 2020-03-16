@@ -3,18 +3,19 @@ package traveling.scope
 import core.GameState
 import core.target.Target
 import traveling.location.location.LIGHT
+import traveling.location.location.Location
 
 
-fun getLightLevel(scope: Scope): Int {
-    return scope.location.properties.values.getInt(LIGHT) +
-            scope.weather.properties.values.getInt(LIGHT) +
-            getDayBonus(scope)
+fun getLightLevel(location: Location): Int {
+    return location.properties.values.getInt(LIGHT) +
+            location.weather.properties.values.getInt(LIGHT) +
+            getDayBonus(location)
 }
 
-private fun getDayBonus(scope: Scope): Int {
+private fun getDayBonus(location: Location): Int {
     val percentDayComplete = GameState.timeManager.getPercentDayComplete()
     return when {
-        !scope.location.properties.tags.has("Outside") -> 0
+        !location.properties.tags.has("Outside") -> 0
         percentDayComplete < 20 || percentDayComplete > 80 -> -5
         percentDayComplete == 20 || percentDayComplete == 80 -> -3
         percentDayComplete == 30 || percentDayComplete == 70 -> -2
@@ -22,6 +23,6 @@ private fun getDayBonus(scope: Scope): Int {
     }
 }
 
-fun getLightLevel(scope: Scope, target: Target): Int {
-    return getLightLevel(scope) + target.properties.values.getInt(LIGHT)
+fun getLightLevel(location: Location, target: Target): Int {
+    return getLightLevel(location) + target.properties.values.getInt(LIGHT)
 }

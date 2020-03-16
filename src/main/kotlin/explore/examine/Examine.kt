@@ -8,9 +8,6 @@ import core.target.Target
 import core.target.targetsToString
 import traveling.climb.ClimbLook
 import traveling.direction.NO_VECTOR
-import traveling.location.location.HEAT
-import traveling.location.location.LIGHT
-import traveling.scope.ScopeManager
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
 
@@ -60,20 +57,20 @@ class Examine : EventListener<ExamineEvent>() {
 
     private fun describeLocation() {
         val pos = GameState.player.position
-        val location = GameState.player.location.getLocation()
-        val scope = ScopeManager.getScope()
+        val locationRecipe = GameState.player.location.getLocationRecipe()
+        val location = GameState.currentLocation()
         if (pos == NO_VECTOR) {
             display("You are at ${GameState.player.location.name}")
         } else {
             display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
         }
-        display(location.getDescription())
-        display(scope.weather.description)
-        val light = getLightLevel(scope)
-        val heat = getHeatLevel(scope)
+        display(locationRecipe.getDescription())
+        display(location.weather.description)
+        val light = getLightLevel(location)
+        val heat = getHeatLevel(location)
         display("It is $light light and $heat hot.")
-        if (ScopeManager.getScope().getTargets().size > 1) {
-            val targetList = targetsToString(scope.getTargets().filterNot { it == GameState.player })
+        if (location.getTargets().size > 1) {
+            val targetList = targetsToString(location.getTargets().filterNot { it == GameState.player })
             display("You find yourself surrounded by $targetList.")
         } else {
             display("You don't see anything of use.")

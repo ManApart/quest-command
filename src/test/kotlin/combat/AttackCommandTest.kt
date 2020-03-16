@@ -20,7 +20,6 @@ import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
-import traveling.scope.ScopeManager
 import kotlin.test.assertEquals
 
 class AttackCommandTest {
@@ -45,7 +44,6 @@ class AttackCommandTest {
         LocationManager.reset()
 
         EventManager.clear()
-        ScopeManager.reset()
 
         GameState.player = GameManager.newPlayer()
     }
@@ -53,7 +51,7 @@ class AttackCommandTest {
     @Test
     fun attackCreatureWithoutDirection() {
         val rat = Target("Rat", bodyName = "human")
-        ScopeManager.getScope().addTarget(rat)
+        GameState.currentLocation().addTarget(rat)
 
         command.execute("sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent

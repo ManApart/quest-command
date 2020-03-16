@@ -5,8 +5,7 @@ import core.GameState
 import core.target.Target
 import core.history.display
 import core.utility.NameSearchableList
-import traveling.location.location.Location
-import traveling.scope.ScopeManager
+import traveling.location.location.LocationRecipe
 
 //TODO - allow for response requests?
 fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameState.player): List<TargetAim> {
@@ -18,7 +17,7 @@ fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameStat
 //TODO - make location paramatized
 fun parseTargets(arguments: List<String>): List<TargetAim> {
     val args = Args(arguments, delimiters = listOf("and"))
-    val targets = NameSearchableList(ScopeManager.getScope().getTargets())
+    val targets = GameState.currentLocation().getTargets()
     return args.getBaseAndGroups("and").mapNotNull { getTarget(it, targets) }
 }
 
@@ -57,7 +56,7 @@ private fun parseTarget(name: String, targets: NameSearchableList<Target>): Targ
     return targets.getOrNull(name)
 }
 
-fun parseBodyParts(target: Target, names: List<String>): List<Location> {
+fun parseBodyParts(target: Target, names: List<String>): List<LocationRecipe> {
     if (names.size == 1 && names.first().toLowerCase() == "all") {
         return target.body.getParts()
     }

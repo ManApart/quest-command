@@ -1,11 +1,11 @@
 package explore.look
 
+import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
-import traveling.scope.ScopeManager
 
 class LookCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -31,13 +31,13 @@ class LookCommand : Command() {
             keyword == "look" && args.isEmpty() -> clarifyTarget()
             args.isEmpty() -> EventManager.postEvent(LookEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent())
-            ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(LookEvent(ScopeManager.getScope().getTargetsIncludingPlayerInventory(argString).first()))
+            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(LookEvent(GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 
     private fun clarifyTarget() {
-        val targets  = (listOf("all") + ScopeManager.getScope().getTargets().map { it.name })
+        val targets  = (listOf("all") + GameState.currentLocation().getTargets().map { it.name })
         val message = "Look at what?\n\t${targets.joinToString(", ")}"
         val response = ResponseRequest(message, targets.map { it to "look $it" }.toMap())
         CommandParser.setResponseRequest(response)

@@ -3,6 +3,7 @@ package core
 import combat.battle.Battle
 import core.properties.Properties
 import time.TimeManager
+import traveling.location.location.Location
 
 object GameState {
     var gameName = "Kanbara"
@@ -16,6 +17,10 @@ object GameState {
         player = GameManager.newPlayer()
         battle = null
         properties = Properties()
+    }
+
+    fun currentLocation() : Location {
+        return player.location.getLocation()
     }
 
 }

@@ -8,7 +8,7 @@ import core.properties.Tags
 import core.target.Target
 import org.junit.Test
 import system.BodyFakeParser
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 
@@ -25,7 +25,7 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquipped() {
-        val chest = Location("Chest", slots = listOf("Chest"))
+        val chest = LocationRecipe("Chest", slots = listOf("Chest"))
 
         val bodyParser = BodyFakeParser.parserFromPart(chest)
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
@@ -46,7 +46,7 @@ class ListInventoryTest {
         val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")))
         pouch.inventory.add(item)
 
-        val chest = Location("Chest", slots = listOf("Chest"))
+        val chest = LocationRecipe("Chest", slots = listOf("Chest"))
 
         val bodyParser = BodyFakeParser.parserFromPart(chest)
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)

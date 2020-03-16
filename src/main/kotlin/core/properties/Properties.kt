@@ -5,6 +5,9 @@ import combat.battle.Distances.DAGGER_RANGE
 import combat.battle.Distances.MIN_RANGE
 import combat.battle.Distances.SPEAR_RANGE
 import combat.battle.Distances.SWORD_RANGE
+import core.target.activator.ACTIVATOR_TAG
+import core.target.creature.CREATURE_TAG
+import core.target.item.ITEM_TAG
 import core.utility.wrapNonEmpty
 
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
@@ -52,15 +55,15 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     }
 
     fun isItem(): Boolean {
-        return tags.has("Item")
+        return tags.has(ITEM_TAG)
     }
 
     fun isActivator(): Boolean {
-        return tags.has("Activator")
+        return tags.has(ACTIVATOR_TAG)
     }
 
     fun isCreature(): Boolean {
-        return tags.has("Creature")
+        return tags.has(CREATURE_TAG)
     }
 
     fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {

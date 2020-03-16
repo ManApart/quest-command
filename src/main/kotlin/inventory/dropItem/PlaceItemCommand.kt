@@ -1,15 +1,14 @@
 package inventory.dropItem
 
+import core.GameState
 import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.GameState
-import core.target.Target
-import core.history.display
-import core.utility.filterUniqueByName
-import traveling.scope.ScopeManager
 import core.events.EventManager
+import core.history.display
+import core.target.Target
+import core.utility.filterUniqueByName
 
 class PlaceItemCommand : core.commands.Command() {
 
@@ -55,7 +54,7 @@ class PlaceItemCommand : core.commands.Command() {
         val item = GameState.player.inventory.getItem(args.getBaseString())
         if (item != null) {
             val targetString = args.getString("in")
-            val destinations = ScopeManager.getScope().getTargets(targetString).filterUniqueByName()
+            val destinations = GameState.currentLocation().getTargets(targetString).filterUniqueByName()
             when {
                 targetString.isNotBlank() && destinations.isEmpty() -> display("Couldn't find $targetString")
                 destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(GameState.player, item, GameState.player, destinations.first(), true))

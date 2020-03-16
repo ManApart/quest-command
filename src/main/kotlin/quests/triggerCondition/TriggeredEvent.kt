@@ -9,7 +9,6 @@ import core.utility.apply
 import core.reflection.Reflections
 import crafting.Recipe
 import crafting.RecipeManager
-import traveling.scope.ScopeManager
 import status.conditions.Condition
 import magic.Element
 import core.DependencyInjector
@@ -34,7 +33,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         val param = getParam(paramNumber, "none")
         return when {
             param == "\$this" -> parent
-            ScopeManager.getScope().getTargets(param).isNotEmpty() -> ScopeManager.getScope().getTargets(param).first()
+            GameState.currentLocation().getTargets(param).isNotEmpty() -> GameState.currentLocation().getTargets(param).first()
             else -> parent
         }
     }
@@ -62,7 +61,7 @@ class TriggeredEvent(private val className: String, private val params: List<Str
         return if (param == "\$this") {
             parent
         } else {
-            ScopeManager.getScope(location).getTargets(param).firstOrNull()
+            location?.getLocation()?.getTargets(param)?.firstOrNull()
         }
     }
 

@@ -20,6 +20,7 @@ fun getPersisted(dataObject: Target): Map<String, Any> {
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
     data["properties"] = getPersisted(dataObject.properties)
+    //Persist Position
     return data
 }
 
@@ -30,6 +31,8 @@ fun readFromData(data: Map<String, Any>): Target {
     val behaviorRecipes = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
     val equipSlots = (data["equipSlots"] as List<List<String>>)
     val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
+    //Instead of persisting inventory, read it from child locations? what about equipped items?
+    //Persist list of equipped item names, re-equip items on load
     val inventory = inventory.readFromData(data["inventory"] as Map<String, Any>)
     val body = core.body.readFromData(data["body"] as Map<String, Any>, inventory)
     val locationMap = (data["location"] as Map<String, String>)

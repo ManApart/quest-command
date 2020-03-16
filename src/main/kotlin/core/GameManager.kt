@@ -19,7 +19,6 @@ import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationPoint
-import traveling.scope.ScopeManager
 
 const val PLAYER_START_NETWORK = "Kanbara Countryside"
 const val PLAYER_START_LOCATION = "An Open Field"
@@ -43,7 +42,7 @@ object GameManager {
         ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()
-        ScopeManager.reset()
+        LocationManager.reset()
         EventManager.reset()
         GameState.reset()
 //        LocationManager.clear()

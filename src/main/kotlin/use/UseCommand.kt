@@ -4,7 +4,6 @@ import core.commands.*
 import core.events.EventManager
 import core.history.display
 import core.GameState
-import traveling.scope.ScopeManager
 import use.interaction.InteractEvent
 
 class UseCommand : Command() {
@@ -28,9 +27,9 @@ class UseCommand : Command() {
     override fun execute(keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "with", "on")))
         val arguments = Args(args, delimiters)
-        val used = ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.getBaseString()).firstOrNull()
+        val used = GameState.currentLocation().getTargetsIncludingPlayerInventory(arguments.getBaseString()).firstOrNull()
         val target = if (arguments.hasGroup("on")) {
-            ScopeManager.getScope().getTargetsIncludingPlayerInventory(arguments.getString("on")).firstOrNull()
+            GameState.currentLocation().getTargetsIncludingPlayerInventory(arguments.getString("on")).firstOrNull()
         } else {
             null
         }
@@ -58,19 +57,19 @@ class UseCommand : Command() {
     }
 
     private fun clarifyItem() {
-        val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
+        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $it" }.toMap()))
     }
 
     private fun clarifyItemForTarget() {
-        val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
+        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $it on" }.toMap()))
     }
 
     private fun clarifyTarget(used: String) {
-        val targets = ScopeManager.getScope().getTargetsIncludingPlayerInventory().map { it.name }
+        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
         val message = "Use $used on what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $used on $it" }.toMap()))
     }

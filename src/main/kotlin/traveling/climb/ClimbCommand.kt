@@ -10,7 +10,6 @@ import core.utility.NameSearchableList
 import traveling.direction.Direction
 import traveling.direction.getDirection
 import traveling.location.location.LocationNode
-import traveling.scope.ScopeManager
 
 class ClimbCommand : Command() {
 
@@ -84,8 +83,8 @@ class ClimbCommand : Command() {
 
     private fun findAllTargets(): NameSearchableList<Target> {
         val connections = GameState.player.location.getNeighborConnections().filter { it.destination.hasTargetAndPart() }
-        val connectedTargets = connections.map { ScopeManager.getScope(it.destination.location).getTargets(it.destination.targetName!!) }.flatten()
-        val localClimbableTargets = ScopeManager.getScope().findTargetsByTag("Climbable")
+        val connectedTargets = connections.map {it.destination.location.getLocation().getTargets(it.destination.targetName!!) }.flatten()
+        val localClimbableTargets = GameState.currentLocation().findTargetsByTag("Climbable")
         return NameSearchableList(localClimbableTargets + connectedTargets)
     }
 

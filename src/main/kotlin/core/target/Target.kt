@@ -20,7 +20,7 @@ import status.Soul
 import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.Route
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE_NODE
 import kotlin.math.max
@@ -179,7 +179,7 @@ open class Target(
         return Target(name, base = this, properties = props)
     }
 
-    fun getPositionInLocation(part: Location): Vector {
+    fun getPositionInLocation(part: LocationRecipe): Vector {
         return body.getPositionInLocation(part, position)
     }
 

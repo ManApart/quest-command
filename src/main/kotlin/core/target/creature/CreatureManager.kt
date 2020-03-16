@@ -5,6 +5,8 @@ import core.target.Target
 import core.utility.NameSearchableList
 import traveling.location.location.LocationTarget
 
+const val CREATURE_TAG = "Creature"
+
 object CreatureManager {
     private var creatures = loadCreatures()
 
@@ -15,7 +17,7 @@ object CreatureManager {
     private fun loadCreatures(): NameSearchableList<Target> {
         val parser = DependencyInjector.getImplementation(CreatureParser::class.java)
         val creatures = parser.loadCreatures()
-        creatures.forEach { it.properties.tags.add("Creature") }
+        creatures.forEach { it.properties.tags.add(CREATURE_TAG) }
         return NameSearchableList(creatures)
     }
 

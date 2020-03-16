@@ -10,7 +10,7 @@ import magic.spellCommands.SpellCommand
 import core.DependencyInjector
 import core.events.EventManager
 import magic.ViewWordHelpEvent
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 
 class CastCommand : Command() {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
@@ -121,7 +121,7 @@ class CastCommand : Command() {
     }
 }
 
-fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Location> {
+fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<LocationRecipe> {
     val parts =  if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
@@ -136,7 +136,7 @@ fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Locati
 
 }
 
-fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<Location> {
+fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<LocationRecipe> {
     return if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {

@@ -5,14 +5,14 @@ import core.properties.ACTION_POINTS
 import core.target.Target
 import status.stat.HEALTH
 import status.stat.WISDOM
-import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
 
 class Combatant(val target: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
-    var blockBodyPart: Location? = null
+    var blockBodyPart: LocationRecipe? = null
     var lastAttacked: Target? = null
-    val blockedBodyParts: MutableList<Location> = mutableListOf()
+    val blockedBodyParts: MutableList<LocationRecipe> = mutableListOf()
 
     override fun toString(): String {
         return "${target.name}: $actionPoints"
