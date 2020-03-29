@@ -3,25 +3,31 @@ package core.target
 import core.ai.behavior.getPersisted
 import core.properties.getPersisted
 import status.ProtoSoul
+import system.persistance.clean
+import system.persistance.writeSave
 import traveling.location.location.DEFAULT_NETWORK
 import traveling.location.location.LocationManager
 import traveling.location.location.NOWHERE_NODE
 
 
-fun getPersisted(dataObject: Target): Map<String, Any> {
+fun persist(dataObject: Target, path: String) {
+    val prefix = path + clean(dataObject.name)
+    val saveName = "$prefix.json"
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.name
     data["aiName"] = dataObject.ai.name
     data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
-    data["body"] = core.body.getPersisted(dataObject.body)
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
     data["description"] = dialogue.getPersisted(dataObject.getDescriptionWithConditions())
-    data["inventory"] = inventory.getPersisted(dataObject.inventory)
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
     data["properties"] = getPersisted(dataObject.properties)
     //Persist Position
-    return data
+    writeSave(path, saveName, data)
+
+    //Only if inventory not empty?
+    inventory.persist(dataObject.inventory, "$prefix/inventory/")
+    core.body.persist(dataObject.body, "$prefix/body/")
 }
 
 @Suppress("UNCHECKED_CAST")

@@ -2,13 +2,16 @@ package traveling.location
 
 import core.body.BodyManager
 import inventory.Inventory
+import system.persistance.clean
 import traveling.location.location.LocationManager
 
-fun getPersisted(dataObject: Network): Map<String, Any> {
-    val data = mutableMapOf<String, Any>("version" to 1)
-    data["name"] = dataObject.name
-//    data["locations"] = dataObject.getLocations().map { traveling.location.location.getPersisted(it) }
-    return data
+fun persist(dataObject: Network, path: String) {
+    val path = path + clean(dataObject.name) + "/" + dataObject.name
+
+    dataObject.getLocationNodes()
+            .filter { it.hasLoadedLocation() }
+            .map { it.getLocation() }
+            .map { traveling.location.location.persist(it, path) }
 }
 
 @Suppress("UNCHECKED_CAST")

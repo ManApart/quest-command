@@ -71,7 +71,11 @@ class LocationNode(
         return network.getLocation(locationName)
     }
 
-    fun getLocation() : Location {
+    fun hasLoadedLocation(): Boolean {
+        return location != null
+    }
+
+    fun getLocation(): Location {
         return when {
             location != null -> location!!
             locationExists() -> {
@@ -86,10 +90,7 @@ class LocationNode(
     }
 
     fun flushLocation() {
-        if (location != null) {
-            save(GameState.gameName, location!!)
-            location = null
-        }
+        location = null
     }
 
     fun nameMatches(args: List<String>): Boolean {

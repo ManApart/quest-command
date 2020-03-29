@@ -9,6 +9,7 @@ import core.target.activator.ActivatorManager
 import core.target.creature.CreatureManager
 import core.target.item.ItemManager
 import core.utility.NameSearchableList
+import core.utility.Named
 import core.utility.plus
 import inventory.Inventory
 import status.Soul
@@ -26,11 +27,12 @@ class Location(
         private val other: NameSearchableList<Target> = NameSearchableList(),
         val properties: Properties = Properties(),
         initialize: Boolean = false
-) {
+) : Named {
     constructor(locationNode: LocationNode) : this(locationNode, NameSearchableList<Target>(), NameSearchableList<Target>(), NameSearchableList<Target>(), NameSearchableList<Target>(), Properties(), true)
 
     private val locationRecipe = locationNode.getLocationRecipe()
     var weather: Weather = DEFAULT_WEATHER
+//    var needsSaved = false
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
     private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
 
@@ -39,6 +41,9 @@ class Location(
             populateFromProtoLocation()
         }
     }
+
+    override val name: String
+        get() = locationNode.name
 
     private fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.getLocationRecipe().properties)

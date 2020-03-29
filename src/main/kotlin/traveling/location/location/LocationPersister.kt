@@ -2,20 +2,25 @@ package traveling.location.location
 
 import core.properties.getPersisted
 import core.utility.toNameSearchableList
-import inventory.Inventory
+import system.persistance.clean
+import system.persistance.writeSave
 import traveling.location.Network
 
-fun getPersisted(dataObject: Location): Map<String, Any> {
+fun persist(dataObject: Location, path: String){
+    val prefix = path + clean(dataObject.name)
+    val saveName = "$prefix.json"
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.locationNode.name
-    data["activators"] = dataObject.getActivators().map { core.target.getPersisted(it) }
-    data["creatures"] = dataObject.getCreatures().map { core.target.getPersisted(it) }
-    data["items"] = dataObject.getItems().map { core.target.getPersisted(it) }
-    data["other"] = dataObject.getOther().map { core.target.getPersisted(it) }
     data["properties"] = getPersisted(dataObject.properties)
+    writeSave(path, saveName, data)
+
+    data["activators"] = dataObject.getActivators().map { core.target.persist(it, "$prefix/activators/") }
+    data["creatures"] = dataObject.getCreatures().map { core.target.persist(it, "$prefix/creatures/") }
+    data["items"] = dataObject.getItems().map { core.target.persist(it, "$prefix/items/") }
+    data["other"] = dataObject.getOther().map { core.target.persist(it, "$prefix/other/") }
     //Persist weather
     //Persist last weather change
-    return data
+
 }
 
 @Suppress("UNCHECKED_CAST")

@@ -1,12 +1,9 @@
 package inventory
 
-import core.target.getPersisted
 import core.utility.NameSearchableList
 
-fun getPersisted(dataObject: Inventory): Map<String, Any> {
-    val data = mutableMapOf<String, Any>("version" to 1)
-    data["items"] = dataObject.getItems().map { getPersisted(it) }
-    return data
+fun persist(dataObject: Inventory, path: String) {
+    dataObject.getItems().map { core.target.persist(it, path) }
 }
 
 @Suppress("UNCHECKED_CAST")

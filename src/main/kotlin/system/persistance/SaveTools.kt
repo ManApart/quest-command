@@ -7,9 +7,11 @@ import core.*
 import core.history.SessionHistory
 import core.properties.Properties
 import core.target.Target
-import core.target.getPersisted
+import core.target.persist
 import core.target.readFromData
+import traveling.location.Network
 import traveling.location.location.Location
+import traveling.location.location.LocationManager
 import traveling.location.location.LocationNode
 import java.io.File
 
@@ -26,7 +28,7 @@ fun getGameNames(): List<String> {
 
 fun getCharacterSaves(gameName: String): List<String> {
     return getFiles(directory + "/" + clean(gameName) + "/")
-            .map{it.name}
+            .map { it.name }
             .filter { it.endsWith(".json") }
             .map { it.substring(0, it.length - ".json".length) }
             .filter { !ignoredNames.contains(it) }
@@ -47,7 +49,8 @@ fun save(rawGameName: String, player: Target) {
     val gamePath = "$directory${gameName}/"
     saveSessionStats()
     savePlayer(player, gamePath)
-//    ScopeManager.flush()
+//    LocationManager.getNetworks().flatMap { it.getLocationNodes() }.forEach { it.flushLocation() }
+    LocationManager.getNetworks().forEach { save(gamePath, it) }
     saveGameState(player, gamePath)
     saveTopLevelMetadata(gameName)
 }
@@ -59,9 +62,8 @@ private fun saveSessionStats() {
 }
 
 private fun savePlayer(player: Target, path: String) {
-    val playerData = getPersisted(player)
-    val saveName = path + clean(player.name) + ".json"
-    writeSave(path, saveName, playerData)
+    val playerData = persist(player, path)
+
 }
 
 private fun saveGameState(player: Target, path: String) {
@@ -87,8 +89,13 @@ private fun saveTopLevelMetadata(gameName: String) {
 //    writeSave(path, saveName, data)
 //}
 
-fun save(gameName: String, location: Location) {
-
+fun save(gameName: String, network: Network) {
+    network.getLocationNodes()
+            .filter { it.hasLoadedLocation() }
+            .map {
+                traveling.location.location.persist(it.getLocation(), "$gameName/${clean(network.name)}/")
+                it.flushLocation()
+            }
 }
 
 //Instead of saving character at top level, save the path to the character's location and load that
@@ -111,7 +118,7 @@ fun loadCharacter(gameName: String, saveName: String) {
 //    ScopeManager.getScope(GameState.player.location).addTarget(GameState.player)
 }
 
-fun locationExists() : Boolean {
+fun locationExists(): Boolean {
     return false
 }
 
@@ -130,7 +137,7 @@ fun getGamesMetaData(): Properties {
     return core.properties.readFromData(data)
 }
 
-private fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
+fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
     val directory = File(directoryName)
     if (!directory.exists()) {
         directory.mkdirs()
