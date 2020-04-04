@@ -4,6 +4,7 @@ import core.ai.behavior.getPersisted
 import core.properties.getPersisted
 import status.ProtoSoul
 import system.persistance.clean
+import system.persistance.loadMap
 import system.persistance.writeSave
 import traveling.location.location.DEFAULT_NETWORK
 import traveling.location.location.LocationManager
@@ -22,16 +23,17 @@ fun persist(dataObject: Target, path: String) {
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
     data["properties"] = getPersisted(dataObject.properties)
+    data["body"] = dataObject.body.name
     //Persist Position
     writeSave(path, saveName, data)
 
-    //Only if inventory not empty?
     inventory.persist(dataObject.inventory, "$prefix/inventory/")
     core.body.persist(dataObject.body, "$prefix/body/")
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>): Target {
+fun load(path: String): Target {
+    val data = loadMap(path)
     val name = data["name"] as String
     val aiName = data["aiName"] as String
     val behaviorRecipes = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
@@ -39,11 +41,13 @@ fun readFromData(data: Map<String, Any>): Target {
     val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
     //Instead of persisting inventory, read it from child locations? what about equipped items?
     //Persist list of equipped item names, re-equip items on load
-    val inventory = inventory.readFromData(data["inventory"] as Map<String, Any>)
-    val body = core.body.readFromData(data["body"] as Map<String, Any>, inventory)
     val locationMap = (data["location"] as Map<String, String>)
     val location = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name).getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
+
+
+    val inventory = inventory.load("$path/inventory/")
+    val body = core.body.load("$path/body/", data["body"] as String)
 
     val target = Target(name, null, mapOf(), null, aiName, behaviorRecipes, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
     target.inventory.addAll(inventory.getAllItems())

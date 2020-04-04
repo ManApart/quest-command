@@ -8,7 +8,7 @@ import core.history.SessionHistory
 import core.properties.Properties
 import core.target.Target
 import core.target.persist
-import core.target.readFromData
+import core.target.load
 import traveling.location.Network
 import traveling.location.location.Location
 import traveling.location.location.LocationManager
@@ -17,6 +17,8 @@ import java.io.File
 
 private const val directory = "./saves/"
 private val ignoredNames = listOf("games", "gameState")
+
+private val mapper = jacksonObjectMapper()
 
 fun clean(pathString: String): String {
     return pathString.replace(" ", "_").replace(Regex("[^a-zA-Z]"), "")
@@ -34,7 +36,20 @@ fun getCharacterSaves(gameName: String): List<String> {
             .filter { !ignoredNames.contains(it) }
 }
 
-private fun getFiles(path: String): List<File> {
+fun loadMaps(path: String): List<Map<String, Any>> {
+   return getFiles(path).map { loadMap(it.path) }
+}
+
+fun loadMap(path: String): Map<String, Any> {
+    val stream = File(path)
+    return if (stream.exists()) {
+        mapper.readValue(stream)
+    } else {
+        mapOf()
+    }
+}
+
+fun getFiles(path: String): List<File> {
     val folder = File(path)
     return if (folder.exists() && folder.isDirectory) {
         @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -82,23 +97,18 @@ private fun saveTopLevelMetadata(gameName: String) {
     writeSave(directory, directory + "games.json", gameMetaDataData)
 }
 
-//fun save(gameName: String, scope: Scope) {
-//    val path = "$directory${clean(gameName)}/${clean(scope.locationNode.network.name)}/"
-//    val data = getPersisted(scope)
-//    val saveName = "$path${clean(scope.locationNode.name)}.json"
-//    writeSave(path, saveName, data)
-//}
-
 fun save(gameName: String, network: Network) {
     network.getLocationNodes()
             .filter { it.hasLoadedLocation() }
             .map {
-                traveling.location.location.persist(it.getLocation(), "$gameName/${clean(network.name)}/")
+                val path = "$gameName/${clean(network.name)}/"
+                traveling.location.location.persist(it.getLocation(), path)
+                it.loadPath = "$path/${it.name}.json"
                 it.flushLocation()
             }
 }
 
-//Instead of saving character at top level, save the path to the character's location and load that
+//Instead of saving character at top level, save the path to the character's location and load that?
 fun loadGame(gameName: String) {
     loadGameState(gameName)
     val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
@@ -107,33 +117,18 @@ fun loadGame(gameName: String) {
 }
 
 fun loadGameState(gameName: String) {
-    val gameStateData = readSave("$directory/${gameName}/gameState.json")
+    val gameStateData = loadMap("$directory/${gameName}/gameState.json")
     readGameStateFromData(gameStateData)
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
-    val playerData = readSave("$directory/${gameName}/$saveName.json")
 //    ScopeManager.getScope().removeTarget(GameState.player)
-    GameState.player = readFromData(playerData)
+    GameState.player = load("$directory/${gameName}/$saveName.json")
 //    ScopeManager.getScope(GameState.player.location).addTarget(GameState.player)
 }
 
-fun locationExists(): Boolean {
-    return false
-}
-
-fun loadLocation(gameName: String, locationNode: LocationNode): Location {
-    return null!!
-}
-
-//fun loadScope(gameName: String, locationNode: LocationNode): Scope {
-//    val path = "$directory${clean(gameName)}/${clean(locationNode.network.name)}/${clean(locationNode.name)}.json"
-//    val data = readSave(path)
-//    return traveling.scope.readFromData(data, locationNode)
-//}
-
 fun getGamesMetaData(): Properties {
-    val data = readSave(directory + "games.json")
+    val data = loadMap(directory + "games.json")
     return core.properties.readFromData(data)
 }
 
@@ -148,11 +143,3 @@ fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
     }
 }
 
-private fun readSave(savePath: String): Map<String, Any> {
-    val stream = File(savePath)
-    return if (stream.exists()) {
-        jacksonObjectMapper().readValue(stream)
-    } else {
-        mapOf()
-    }
-}

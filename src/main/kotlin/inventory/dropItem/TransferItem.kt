@@ -46,7 +46,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         } else if (!destination.inventory.hasCapacityFor(item, destination.properties.values.getInt("Capacity"))) {
             display("${item.name} is too heavy to fit in ${destination.name}.")
         } else if (!destination.isWithinRangeOf(source) && source?.isWithinRangeOf(destination) == false) {
-                display(StringFormatter.getSubject(destination) + " " + StringFormatter.getIsAre(destination) + " too far away.")
+            display(StringFormatter.getSubject(destination) + " " + StringFormatter.getIsAre(destination) + " too far away.")
         } else {
             placeItem(source, item, destination, destination.inventory, silent)
         }
@@ -56,7 +56,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         if (item.canEquipTo(destination.body) && destination.body.getEmptyEquipSlot(item) != null) {
             val slot = destination.body.getEmptyEquipSlot(item)
             removeFromSource(source, item, destination)
-            destination.inventory.add(item.copy( 1))
+            destination.inventory.add(item.copy(1))
             EventManager.postEvent(EquipItemEvent(destination, item, slot))
         } else {
             val candidates = destination.inventory.findSubInventoryFor(item)
@@ -88,13 +88,18 @@ class TransferItem : EventListener<TransferItemEvent>() {
     }
 
     private fun removeFromSource(source: Target?, item: Target, destination: Target) {
-        if (source != null) {
-            source.inventory.remove(item)
-        } else {
-            destination.location.getLocation().removeTarget(item)
-            item.properties.values.put("locationDescription", "")
-            item.location = NOWHERE_NODE
+        when {
+            item.properties.getCount() > 1 -> {
+                item.properties.incCount(-1)
+            }
+            source != null -> {
+                source.inventory.remove(item)
+            }
+            else -> {
+                destination.location.getLocation().removeTarget(item)
+            }
         }
+
     }
 
 }

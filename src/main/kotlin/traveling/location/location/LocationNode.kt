@@ -1,11 +1,7 @@
 package traveling.location.location
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import core.GameState
 import core.utility.Named
-import system.persistance.loadLocation
-import system.persistance.locationExists
-import system.persistance.save
 import traveling.direction.Direction
 import traveling.direction.Vector
 import traveling.location.Connection
@@ -28,6 +24,7 @@ class LocationNode(
 
     var network: Network = DEFAULT_NETWORK
     private var location: Location? = null
+    var loadPath: String? = null
 
     override fun toString(): String {
         return name
@@ -78,8 +75,11 @@ class LocationNode(
     fun getLocation(): Location {
         return when {
             location != null -> location!!
-            locationExists() -> {
-                location = loadLocation(GameState.gameName, this)
+            loadPath != null -> {
+                location = load(loadPath!!, this)
+                if (location == null){
+                    location = Location(this)
+                }
                 location!!
             }
             else -> {

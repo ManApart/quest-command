@@ -3,6 +3,8 @@ package traveling.location.location
 import core.properties.getPersisted
 import core.utility.toNameSearchableList
 import system.persistance.clean
+import system.persistance.getFiles
+import system.persistance.loadMap
 import system.persistance.writeSave
 import traveling.location.Network
 
@@ -15,7 +17,7 @@ fun persist(dataObject: Location, path: String){
     writeSave(path, saveName, data)
 
     data["activators"] = dataObject.getActivators().map { core.target.persist(it, "$prefix/activators/") }
-    data["creatures"] = dataObject.getCreatures().map { core.target.persist(it, "$prefix/creatures/") }
+    data["creatures"] = dataObject.getCreatures().filter { !it.isPlayer() }.map { core.target.persist(it, "$prefix/creatures/") }
     data["items"] = dataObject.getItems().map { core.target.persist(it, "$prefix/items/") }
     data["other"] = dataObject.getOther().map { core.target.persist(it, "$prefix/other/") }
     //Persist weather
@@ -24,14 +26,16 @@ fun persist(dataObject: Location, path: String){
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>, network: Network): Location {
+fun load(path: String, locationNode: LocationNode): Location {
+    val data = loadMap(path)
     val name = data["name"] as String
-    val locationNode = network.getLocationNode(name)
+    val prefix = path + clean(name)
     val properties = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
-    val activators = (data["activators"] as List<Map<String, Any>>).map { core.target.readFromData(it) }.toNameSearchableList()
-    val creatures = (data["creatures"] as List<Map<String, Any>>).map { core.target.readFromData(it) }.toNameSearchableList()
-    val items = (data["items"] as List<Map<String, Any>>).map { core.target.readFromData(it) }.toNameSearchableList()
-    val other = (data["other"] as List<Map<String, Any>>).map { core.target.readFromData(it) }.toNameSearchableList()
+    val activators = getFiles("$prefix/activators/").map { core.target.load(it.path) }.toNameSearchableList()
+    val creatures = getFiles("$prefix/creatures/").map { core.target.load(it.path) }.toNameSearchableList()
+    val items = getFiles("$prefix/items/").map { core.target.load(it.path) }.toNameSearchableList()
+    val other = getFiles("$prefix/other/").map { core.target.load(it.path) }.toNameSearchableList()
+
     return Location(locationNode, activators, creatures, items, other, properties)
 }

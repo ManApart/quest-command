@@ -4,6 +4,7 @@ import core.properties.Properties
 import core.target.Target
 import core.target.item.ItemManager
 import core.utility.NameSearchableList
+import traveling.location.location.NOWHERE_NODE
 
 class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf()) {
     constructor(base: Inventory) : this(base.getItems().map { it.name })
@@ -37,6 +38,10 @@ class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf
             }
         } else {
             items.add(item)
+
+            //TODO - update item location
+            item.properties.values.put("locationDescription", "")
+            item.location = NOWHERE_NODE
         }
     }
 

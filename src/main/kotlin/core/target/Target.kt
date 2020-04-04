@@ -89,7 +89,13 @@ open class Target(
             " ($position)"
         }
 
-        return name + description + location
+        val count = if (properties.getCount() != 1) {
+            "" + properties.getCount() + "x "
+        } else {
+            ""
+        }
+
+        return count + name + description + location
     }
 
     fun isPlayer(): Boolean {

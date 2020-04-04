@@ -3,6 +3,8 @@ package traveling.location
 import core.body.BodyManager
 import inventory.Inventory
 import system.persistance.clean
+import system.persistance.getFiles
+import system.persistance.loadMaps
 import traveling.location.location.LocationManager
 
 fun persist(dataObject: Network, path: String) {
@@ -15,14 +17,15 @@ fun persist(dataObject: Network, path: String) {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>, inventory: Inventory?): Network {
-    val name = data["name"] as String
+fun load(path: String, name: String): Network {
     val network = if (LocationManager.networkExists(name)) {
         LocationManager.getNetwork(name)
     } else {
         BodyManager.getBody(name).layout
     }
-//    (data["locations"] as List<Map<String, Any>>).map { traveling.location.location.applyFromData(it, network, inventory) }
+    getFiles(path).forEach {
+        network.getLocationNode(it.nameWithoutExtension).loadPath = it.path
+    }
 
     return network
 }
