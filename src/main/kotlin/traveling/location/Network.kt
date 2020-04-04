@@ -18,13 +18,14 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     val rootNode by lazy { findRootNode() }
     val rootNodeHeight by lazy { findRootNodeHeight() }
 
-    private fun findRootNode(): LocationNode? {
+    private fun findRootNode(): LocationNode {
         return locationNodes.firstOrNull { it.isRoot }
                 ?: locationNodes.firstOrNull()
+                ?: LocationNode("Root")
     }
 
     private fun findRootNodeHeight(): Int {
-        return rootNode?.getDistanceToLowestNodeInNetwork() ?: 0
+        return rootNode.getDistanceToLowestNodeInNetwork()
     }
 
     fun getLocationNode(name: String): LocationNode {
@@ -61,17 +62,14 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     fun locationExists(name: String): Boolean {
         return locations.exists(name)
     }
+
     fun locationNodeExists(name: String): Boolean {
         return locations.exists(name)
     }
 
     private fun getFurthestLocation(direction: Direction = Direction.BELOW): LocationNode? {
-        return if (rootNode == null) {
-            null
-        } else {
-            getFurthestLocations(direction)
-                    .maxBy { (rootNode as LocationNode).getDistanceTo(it) }
-        }
+        return getFurthestLocations(direction)
+                .maxBy { rootNode.getDistanceTo(it) }
     }
 
     fun getFurthestLocations(direction: Direction = Direction.BELOW): List<LocationNode> {
@@ -88,17 +86,13 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     }
 
     fun getSize(): Vector {
-        return if (rootNode == null) {
-            NO_VECTOR
-        } else {
-            val root = rootNode as LocationNode
+        val root = rootNode as LocationNode
 
-            val x = getFarthestDistanceInDirection(root, Direction.EAST) + getFarthestDistanceInDirection(root, Direction.WEST)
-            val y = getFarthestDistanceInDirection(root, Direction.NORTH) + getFarthestDistanceInDirection(root, Direction.SOUTH)
-            val z = getFarthestDistanceInDirection(root, Direction.ABOVE) + getFarthestDistanceInDirection(root, Direction.BELOW)
+        val x = getFarthestDistanceInDirection(root, Direction.EAST) + getFarthestDistanceInDirection(root, Direction.WEST)
+        val y = getFarthestDistanceInDirection(root, Direction.NORTH) + getFarthestDistanceInDirection(root, Direction.SOUTH)
+        val z = getFarthestDistanceInDirection(root, Direction.ABOVE) + getFarthestDistanceInDirection(root, Direction.BELOW)
 
-            Vector(x, y, z)
-        }
+        return Vector(x, y, z)
     }
 
     private fun getFarthestDistanceInDirection(node: LocationNode, direction: Direction = Direction.BELOW): Int {

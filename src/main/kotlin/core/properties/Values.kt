@@ -64,6 +64,10 @@ class Values(properties: Map<String, String> = mapOf()) {
         properties[key.toLowerCase()] = value.toString()
     }
 
+    fun clear(key: String) {
+        properties.remove(key)
+    }
+
     fun matches(other: Values): Boolean {
         return properties.matches(other.properties)
     }

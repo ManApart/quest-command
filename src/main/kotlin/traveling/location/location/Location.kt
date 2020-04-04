@@ -1,5 +1,6 @@
 package traveling.location.location
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import core.GameState
 import core.events.EventManager
 import core.history.display
@@ -34,7 +35,8 @@ class Location(
 
     private val locationRecipe = recipe ?: locationNode.getLocationRecipe()
     var weather: Weather = DEFAULT_WEATHER
-//    var needsSaved = false
+
+    //    var needsSaved = false
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
     private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
 
@@ -140,6 +142,7 @@ class Location(
         creatures.remove(target)
         items.remove(target)
         other.remove(target)
+        target.properties.values.clear("locationDescription")
     }
 
     fun removeTargetIncludingPlayerInventory(target: Target) {
@@ -265,6 +268,26 @@ class Location(
                 EventManager.postEvent(AddConditionEvent(target, condition))
             }
         }
+    }
+
+    fun canHold(item: Target): Boolean {
+        return properties.tags.has("Container")
+                && properties.tags.has("Open")
+                && hasCapacityFor(item)
+                && item.properties.canBeHeldByContainerWithProperties(properties)
+    }
+
+    /**
+     * How much do all of the items in this location weigh?
+     */
+    private fun getWeight(): Int {
+        return getItems().sumBy { it.getWeight() }
+    }
+
+    fun hasCapacityFor(target: Target): Boolean {
+        val capacity = properties.values.getInt("Capacity")
+
+        return capacity - getWeight() >= target.getWeight()
     }
 
 }

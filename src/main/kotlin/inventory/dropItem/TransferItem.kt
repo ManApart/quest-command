@@ -10,7 +10,6 @@ import inventory.equipItem.EquipItemEvent
 import inventory.pickupItem.ItemPickedUpEvent
 import core.events.EventManager
 
-//TODO - can this be cleaned up to not care about the destination type?
 class TransferItem : EventListener<TransferItemEvent>() {
     override fun execute(event: TransferItemEvent) {
         when {
@@ -21,9 +20,10 @@ class TransferItem : EventListener<TransferItemEvent>() {
             !event.destination.isWithinRangeOf(event.mover) -> display(StringFormatter.getSubject(event.mover) + " " + StringFormatter.getIsAre(event.mover) + " too far away to place in ${event.destination}.")
             !isOpen(event.destination) -> display("Can't place ${event.item.name} in ${event.destination.name}.")
 
-            event.destination.properties.isActivator() -> placeItemInActivator(event.source, event.item, event.destination, event.silent)
-            event.destination.properties.isItem() -> placeItemInItem(event.source, event.item, event.destination, event.silent)
-            event.destination.properties.isCreature() -> placeItemInCreature(event.source, event.item, event.destination, event.silent)
+//            event.destination.properties.isActivator() -> placeItemInActivator(event.source, event.item, event.destination, event.silent)
+//            event.destination.properties.isItem() -> placeItemInItem(event.source, event.item, event.destination, event.silent)
+//            event.destination.properties.isCreature() -> placeItemInCreature(event.source, event.item, event.destination, event.silent)
+            else -> placeItem(event.source, event.item, event.destination, event.silent)
         }
     }
 
@@ -38,53 +38,51 @@ class TransferItem : EventListener<TransferItemEvent>() {
         return container.properties.tags.has("Container") && container.properties.tags.has("Open")
     }
 
-    private fun placeItemInActivator(source: Target?, item: Target, destination: Target, silent: Boolean) {
-        if (!item.properties.canBeHeldByContainerWithProperties(destination.properties)) {
-            val acceptedTypes = destination.properties.values.getList("CanHold")
-            display("${item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
+//    private fun placeItemInActivator(source: Target?, item: Target, destination: Target, silent: Boolean) {
+//        if (!item.properties.canBeHeldByContainerWithProperties(destination.properties)) {
+//            val acceptedTypes = destination.properties.values.getList("CanHold")
+//            display("${item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
+//
+//        } else if (!destination.inventory.hasCapacityFor(item, destination.properties.values.getInt("Capacity"))) {
+//            display("${item.name} is too heavy to fit in ${destination.name}.")
+//        } else if (!destination.isWithinRangeOf(source) && source?.isWithinRangeOf(destination) == false) {
+//            display(StringFormatter.getSubject(destination) + " " + StringFormatter.getIsAre(destination) + " too far away.")
+//        } else {
+//            placeItem(source, item, destination, silent)
+//        }
+//    }
+//
+//    private fun placeItemInCreature(source: Target?, item: Target, destination: Target, silent: Boolean) {
+//        if (item.canEquipTo(destination.body) && destination.body.getEmptyEquipSlot(item) != null) {
+//            val slot = destination.body.getEmptyEquipSlot(item)
+//            removeFromSource(source, item, destination)
+//            destination.inventory.add(item.copy(1))
+//            EventManager.postEvent(EquipItemEvent(destination, item, slot))
+//        } else {
+//            placeItem(source, item, destination, silent)
+//        }
+//    }
+//
+//    private fun placeItemInItem(source: Target?, item: Target, destination: Target, silent: Boolean) {
+//        if (!item.properties.canBeHeldByContainerWithProperties(destination.properties)) {
+//            val acceptedTypes = destination.properties.values.getList("CanHold")
+//            display("${item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
+//
+//        } else if (!destination.inventory.hasCapacityFor(item, destination.properties.values.getInt("Capacity"))) {
+//            display("${item.name} is too heavy to fit in ${destination.name}.")
+//
+//        } else {
+//            placeItem(source, item, destination,silent)
+//        }
+//    }
 
-        } else if (!destination.inventory.hasCapacityFor(item, destination.properties.values.getInt("Capacity"))) {
-            display("${item.name} is too heavy to fit in ${destination.name}.")
-        } else if (!destination.isWithinRangeOf(source) && source?.isWithinRangeOf(destination) == false) {
-            display(StringFormatter.getSubject(destination) + " " + StringFormatter.getIsAre(destination) + " too far away.")
-        } else {
-            placeItem(source, item, destination, destination.inventory, silent)
-        }
-    }
-
-    private fun placeItemInCreature(source: Target?, item: Target, destination: Target, silent: Boolean) {
-        if (item.canEquipTo(destination.body) && destination.body.getEmptyEquipSlot(item) != null) {
-            val slot = destination.body.getEmptyEquipSlot(item)
+    private fun placeItem(source: Target?, item: Target, destination: Target, silent: Boolean) {
+        if (destination.inventory.attemptToAdd(item)) {
             removeFromSource(source, item, destination)
-            destination.inventory.add(item.copy(1))
-            EventManager.postEvent(EquipItemEvent(destination, item, slot))
+            EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
         } else {
-            val candidates = destination.inventory.findSubInventoryFor(item)
-            if (candidates.isEmpty()) {
-                display("Could not find a place for $item!")
-            } else {
-                placeItem(source, item, destination, candidates.first().inventory, silent)
-            }
+            display("Could not find a place for $item")
         }
-    }
-
-    private fun placeItemInItem(source: Target?, item: Target, destination: Target, silent: Boolean) {
-        if (!item.properties.canBeHeldByContainerWithProperties(destination.properties)) {
-            val acceptedTypes = destination.properties.values.getList("CanHold")
-            display("${item.name} cannot be placed in ${destination.name} because it only takes things that are ${acceptedTypes.joinToString(" or ")}.")
-
-        } else if (!destination.inventory.hasCapacityFor(item, destination.properties.values.getInt("Capacity"))) {
-            display("${item.name} is too heavy to fit in ${destination.name}.")
-
-        } else {
-            placeItem(source, item, destination, destination.inventory, silent)
-        }
-    }
-
-    private fun placeItem(source: Target?, item: Target, destination: Target, inventory: Inventory, silent: Boolean) {
-        removeFromSource(source, item, destination)
-        inventory.add(item.copy(1))
-        EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
     }
 
     private fun removeFromSource(source: Target?, item: Target, destination: Target) {

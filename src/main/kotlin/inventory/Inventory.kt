@@ -1,24 +1,22 @@
 package inventory
 
+import core.body.Body
 import core.properties.Properties
 import core.target.Target
-import core.target.item.ItemManager
 import core.utility.NameSearchableList
-import traveling.location.location.NOWHERE_NODE
+import core.utility.toNameSearchableList
+import traveling.location.location.Location
 
 
-//Replace inventory with location?
-class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf()) {
-    constructor(base: Inventory) : this(base.getItems().map { it.name })
-
-    private val items = NameSearchableList(items + itemNames.map { ItemManager.getItem(it) })
+class Inventory(private val body: Body = Body()) {
+    constructor(items: List<Target>) : this(Body().also { it.layout.rootNode.getLocation().addTargets(items) })
 
     fun exists(item: Target): Boolean {
-        return items.exists(item) || NameSearchableList(getAllItems()).exists(item)
+        return getItemsNameSearchable().exists(item) || NameSearchableList(getAllItems()).exists(item)
     }
 
     fun getItem(name: String): Target? {
-        return items.getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
+        return getItemsNameSearchable().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
     }
 
     fun getItems(name: String): List<Target> {
@@ -29,31 +27,44 @@ class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf
         items.forEach { add(it) }
     }
 
-    //TODO - also store item in physical location?
-    fun add(item: Target) {
-        if (items.exists(item.name)) {
-            val match = items.get(item.name)
-            if (item.isStackable(match)) {
-                match.properties.incCount(item.properties.getCount())
-            } else {
-                items.add(item)
-            }
-        } else {
-            items.add(item)
 
-            //TODO - update item location
-            item.properties.values.put("locationDescription", "")
-            item.location = NOWHERE_NODE
+    private fun findLocationWith(item: Target): Location? {
+        return body.getParts().firstOrNull { it.getItems().contains(item) }
+                ?: body.getParts().flatMap { it.getItems() }.mapNotNull { it.inventory.findLocationWith(item) }.firstOrNull()
+    }
+
+    private fun findLocationThatCanTake(item: Target): Location? {
+        return body.getParts().firstOrNull { it.canHold(item) }
+                ?: body.getParts().flatMap { it.getItems() }.mapNotNull { it.inventory.findLocationThatCanTake(item) }.firstOrNull()
+    }
+
+    //Eventually add count
+    fun attemptToAdd(item: Target): Boolean {
+        val location = findLocationThatCanTake(item) ?: return false
+        val match = location.getItems(item.name).firstOrNull()
+
+        if (match != null && item.isStackable(match)) {
+            match.properties.incCount(item.properties.getCount())
+        } else {
+            location.addTarget(item.copy(1))
+        }
+
+        return true
+    }
+
+    fun add(item: Target) {
+        if (!attemptToAdd(item)) {
+            body.getRootPart().addTarget(item)
         }
     }
 
     fun remove(item: Target, count: Int = 1) {
-        val inventory = findSubInventoryWithItem(item)
-        if (inventory != null) {
+        val location = findLocationWith(item)
+        if (location != null) {
             if (item.properties.getCount() > count) {
                 item.properties.incCount(-count)
             } else {
-                inventory.items.remove(item)
+                location.removeTarget(item)
             }
         }
     }
@@ -62,17 +73,16 @@ class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf
      * Return all items of this inventory and any sub-inventory
      */
     fun getAllItems(): List<Target> {
-        val items = this.items.toMutableList()
-        this.items.forEach {
-            if (it.inventory.getItems().isNotEmpty()) {
-                items.addAll(it.inventory.getAllItems())
-            }
-        }
-        return items
+        val items = getItems()
+        return (items + items.flatMap { it.inventory.getAllItems() })
     }
 
     fun getItems(): List<Target> {
-        return items.toList()
+        return body.getParts().flatMap { it.getItems() }
+    }
+
+    private fun getItemsNameSearchable(): NameSearchableList<Target> {
+        return getItems().toNameSearchableList()
     }
 
     fun findItemsByProperties(properties: Properties): List<Target> {
@@ -80,36 +90,7 @@ class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf
     }
 
     fun getWeight(): Int {
-        return items.sumBy { it.getWeight() }
-    }
-
-    fun hasCapacityFor(item: Target, capacity: Int): Boolean {
-        return capacity - getWeight() >= item.getWeight()
-    }
-
-    fun findSubInventoryFor(item: Target): List<Target> {
-        val inventories = mutableListOf<Target>()
-        items.forEach {
-            if (it.properties.tags.has("Container")
-                    && it.properties.tags.has("Open")
-                    && it.properties.canBeHeldByContainerWithProperties(item.properties)) {
-                inventories.add(it)
-            }
-        }
-        return inventories
-    }
-
-    private fun findSubInventoryWithItem(item: Target): Inventory? {
-        if (items.exists(item)) {
-            return this
-        }
-        var inventory: Inventory? = null
-        var i = 0
-        while (inventory == null && i < items.size) {
-            inventory = items[i].inventory.findSubInventoryWithItem(item)
-            i++
-        }
-        return inventory
+        return getItems().sumBy { it.getWeight() }
     }
 
 }

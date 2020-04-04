@@ -17,7 +17,7 @@ val NONE = Body("None")
 class Body(override val name: String = "None", val layout: Network = Network(name)) : Named {
     constructor(base: Body) : this(base.name, Network(base.layout))
 
-    private val parts = createParts()
+    private val parts: NameSearchableList<Location> by lazy { createParts() }
 
     private fun createParts(): NameSearchableList<Location> {
         return NameSearchableList(layout.getLocationNodes().map { it.getLocation() })
@@ -67,8 +67,8 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return layout.getLocationNode(part)
     }
 
-    fun getRootPart(): Location? {
-        return layout.rootNode?.getLocation()
+    fun getRootPart(): Location {
+        return layout.rootNode.getLocation()
     }
 
     private fun getPartsWithAttachPoint(attachPoint: String): List<Location> {

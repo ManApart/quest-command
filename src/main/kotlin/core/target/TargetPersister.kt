@@ -29,7 +29,7 @@ fun persist(dataObject: Target, path: String) {
     //Persist Position
     writeSave(path, saveName, data)
 
-    inventory.persist(dataObject.inventory, clean(prefix, "inventory"))
+//    inventory.persist(dataObject.inventory, clean(prefix, "inventory"))
     core.body.persist(dataObject.body, clean(prefix, "body"))
 
 }
@@ -51,11 +51,11 @@ fun load(path: String): Target {
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
 
-    val inventory = inventory.load(clean(folderPath, "inventory"))
+//    val inventory = inventory.load(clean(folderPath, "inventory"))
     val body = core.body.load(clean(folderPath, "body"), data["body"] as String)
 
     val target = Target(name, null, mapOf(), null, aiName, behaviorRecipes, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
-    target.inventory.addAll(inventory.getAllItems())
+//    target.inventory.addAll(inventory.getAllItems())
     status.readFromData(data["soul"] as Map<String, Any>, target.soul)
 
     return target

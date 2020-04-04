@@ -11,6 +11,7 @@ import core.body.BodyManager
 import core.body.Slot
 import core.events.Event
 import core.properties.*
+import core.target.item.ItemManager
 import core.utility.*
 import crafting.Recipe
 import dialogue.DialogueOptions
@@ -53,7 +54,7 @@ open class Target(
     val body: Body = getBody(body, bodyName)
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
-    val inventory: Inventory = Inventory(items)
+    val inventory: Inventory = Inventory(this.body)
     val properties = Properties(properties, params)
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
@@ -63,6 +64,10 @@ open class Target(
 
     var climbTarget: Target? = null
     var route: Route? = null
+
+    init {
+        inventory.addAll(ItemManager.getItems(items))
+    }
 
     private fun getBody(body: Body?, bodyName: String?): Body {
         return when {

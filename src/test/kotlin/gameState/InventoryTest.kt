@@ -108,20 +108,6 @@ class InventoryTest {
     }
 
     @Test
-    fun hasRoomForItem(){
-        val item = createItem("Apple", weight = 2)
-        val inventory = Inventory()
-        assertTrue(inventory.hasCapacityFor(item, 3))
-    }
-
-    @Test
-    fun doesNotHaveRoomForItem(){
-        val item = createItem("Apple", weight = 5)
-        val inventory = Inventory()
-        assertFalse(inventory.hasCapacityFor(item, 3))
-    }
-
-    @Test
     fun findItemsWithCapacityAndTypeForItem(){
         val searchItem = Target("Apple", properties = Properties(tags = Tags(listOf("Raw"))))
         val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open"))))
@@ -129,7 +115,7 @@ class InventoryTest {
         inventory.add(pouch)
         inventory.add(createItem("Noise", 0))
 
-        val results = inventory.findSubInventoryFor(searchItem)
+        val results = listOf<Target>()
         assertEquals(1, results.size)
         assertEquals(pouch, results[0])
     }
