@@ -1,14 +1,12 @@
 package traveling.location
 
 import core.body.BodyManager
-import inventory.Inventory
 import system.persistance.clean
 import system.persistance.getFiles
-import system.persistance.loadMaps
 import traveling.location.location.LocationManager
 
 fun persist(dataObject: Network, path: String) {
-    val path = path + clean(dataObject.name) + "/" + dataObject.name
+    val path = clean(path, dataObject.name, dataObject.name)
 
     dataObject.getLocationNodes()
             .filter { it.hasLoadedLocation() }

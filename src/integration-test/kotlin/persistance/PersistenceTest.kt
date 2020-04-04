@@ -46,7 +46,10 @@ class PersistenceTest {
         EventManager.executeEvents()
         assertEquals("Saved Player", GameState.player.name)
         assertTrue(GameState.player.properties.tags.has("Saved"))
-        assertEquals(equippedItemCount, GameState.player.body.getEquippedItems().size)
+//        assertEquals(equippedItemCount, GameState.player.body.getEquippedItems().size)
+
+        CommandParser.parseCommand("travel to open field && r")
+        assertEquals(2, GameState.player.location.getLocation().getItems(name = "bundle").first().properties.getCount())
     }
 
 }

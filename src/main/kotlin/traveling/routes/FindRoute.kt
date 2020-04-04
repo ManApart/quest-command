@@ -10,6 +10,11 @@ import traveling.travel.TravelStartEvent
 
 class FindRoute : EventListener<FindRouteEvent>() {
     override fun execute(event: FindRouteEvent) {
+        if (event.source == event.destination){
+            display("You are already there.")
+            return
+        }
+
         val finder = RouteFinder(event.source, event.destination, event.depth)
 
         if (finder.hasRoute()){

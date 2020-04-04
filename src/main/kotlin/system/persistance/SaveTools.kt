@@ -10,9 +10,7 @@ import core.target.Target
 import core.target.persist
 import core.target.load
 import traveling.location.Network
-import traveling.location.location.Location
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationNode
 import java.io.File
 
 private const val directory = "./saves/"
@@ -20,16 +18,12 @@ private val ignoredNames = listOf("games", "gameState")
 
 private val mapper = jacksonObjectMapper()
 
-fun clean(pathString: String): String {
-    return pathString.replace(" ", "_").replace(Regex("[^a-zA-Z]"), "")
-}
-
 fun getGameNames(): List<String> {
-    return getFiles(directory).map { it.name }.filter { !it.endsWith(".json") }
+    return getFolders(directory).map { it.name }
 }
 
 fun getCharacterSaves(gameName: String): List<String> {
-    return getFiles(directory + "/" + clean(gameName) + "/")
+    return getFiles(clean(directory, gameName))
             .map { it.name }
             .filter { it.endsWith(".json") }
             .map { it.substring(0, it.length - ".json".length) }
@@ -37,7 +31,7 @@ fun getCharacterSaves(gameName: String): List<String> {
 }
 
 fun loadMaps(path: String): List<Map<String, Any>> {
-   return getFiles(path).map { loadMap(it.path) }
+    return getFiles(path).map { loadMap(it.path) }
 }
 
 fun loadMap(path: String): Map<String, Any> {
@@ -50,6 +44,14 @@ fun loadMap(path: String): Map<String, Any> {
 }
 
 fun getFiles(path: String): List<File> {
+    return getFilesAndFolders(path).filter { !it.isDirectory }
+}
+
+fun getFolders(path: String): List<File> {
+    return getFilesAndFolders(path).filter { it.isDirectory }
+}
+
+private fun getFilesAndFolders(path: String): List<File> {
     val folder = File(path)
     return if (folder.exists() && folder.isDirectory) {
         @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -59,9 +61,10 @@ fun getFiles(path: String): List<File> {
     }
 }
 
+
 fun save(rawGameName: String, player: Target) {
-    val gameName = clean(rawGameName)
-    val gamePath = "$directory${gameName}/"
+    val gameName = cleanPathPart(rawGameName)
+    val gamePath = clean(directory, gameName)
     saveSessionStats()
     savePlayer(player, gamePath)
 //    LocationManager.getNetworks().flatMap { it.getLocationNodes() }.forEach { it.flushLocation() }
@@ -82,10 +85,10 @@ private fun savePlayer(player: Target, path: String) {
 }
 
 private fun saveGameState(player: Target, path: String) {
-    GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, clean(player.name))
+    GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, cleanPathPart(player.name))
     GameState.properties.values.put(AUTO_LOAD, true)
     val gameData = getPersistedGameState()
-    val gameStateSaveName = path + "gameState.json"
+    val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
     writeSave(path, gameStateSaveName, gameData)
 }
 
@@ -94,16 +97,16 @@ private fun saveTopLevelMetadata(gameName: String) {
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
     gameMetaData.values.put(AUTO_LOAD, true)
     val gameMetaDataData = core.properties.getPersisted(gameMetaData)
-    writeSave(directory, directory + "games.json", gameMetaDataData)
+    writeSave(directory, cleanPathToFile(".json", directory, "games"), gameMetaDataData)
 }
 
 fun save(gameName: String, network: Network) {
     network.getLocationNodes()
             .filter { it.hasLoadedLocation() }
             .map {
-                val path = "$gameName/${clean(network.name)}/"
+                val path = clean(gameName, network.name)
                 traveling.location.location.persist(it.getLocation(), path)
-                it.loadPath = "$path/${it.name}.json"
+                it.loadPath = cleanPathToFile(".json", path, it.name)
                 it.flushLocation()
             }
 }
@@ -117,18 +120,18 @@ fun loadGame(gameName: String) {
 }
 
 fun loadGameState(gameName: String) {
-    val gameStateData = loadMap("$directory/${gameName}/gameState.json")
+    val gameStateData = loadMap(cleanPathToFile(".json", directory, gameName, "gameState"))
     readGameStateFromData(gameStateData)
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
 //    ScopeManager.getScope().removeTarget(GameState.player)
-    GameState.player = load("$directory/${gameName}/$saveName.json")
+    GameState.player = load(cleanPathToFile(".json", directory, gameName, saveName))
 //    ScopeManager.getScope(GameState.player.location).addTarget(GameState.player)
 }
 
 fun getGamesMetaData(): Properties {
-    val data = loadMap(directory + "games.json")
+    val data = loadMap(cleanPathToFile(".json", directory, "games"))
     return core.properties.readFromData(data)
 }
 
@@ -142,4 +145,6 @@ fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
         out.println(json)
     }
 }
+
+
 
