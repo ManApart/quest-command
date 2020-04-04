@@ -7,10 +7,10 @@ import traveling.location.location.Location
 
 object GameState {
     var gameName = "Kanbara"
-    var player = GameManager.newPlayer()
     var battle: Battle? = null
     var properties = Properties()
     val timeManager = TimeManager()
+    var player = GameManager.newPlayer()
 
 
     fun reset() {

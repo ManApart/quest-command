@@ -5,7 +5,7 @@ import core.utility.NameSearchableList
 import status.effects.Effect
 import status.effects.EffectManager
 import status.effects.EffectRecipe
-import traveling.location.location.LocationRecipe
+import traveling.location.location.Location
 
 object ConditionManager {
     private var conditionRecipes = loadConditions()
@@ -19,18 +19,18 @@ object ConditionManager {
         return parser.loadConditions()
     }
 
-    fun getCondition(name: String, bodyParts: List<LocationRecipe>): Condition {
+    fun getCondition(name: String, bodyParts: List<Location>): Condition {
         val recipe = conditionRecipes.get(name)
         return getCondition(recipe, bodyParts)
     }
 
-    fun getCondition(recipe: ConditionRecipe, bodyParts: List<LocationRecipe>): Condition {
+    fun getCondition(recipe: ConditionRecipe, bodyParts: List<Location>): Condition {
         val effects = recipe.effects.map { buildEffect(it, bodyParts) }
         val criticalEffects = recipe.criticalEffects.map { buildEffect(it, bodyParts) }
         return Condition(recipe.name, recipe.element, recipe.elementStrength, effects, criticalEffects, recipe.permanent)
     }
 
-    private fun buildEffect(recipe: EffectRecipe, bodyParts: List<LocationRecipe>): Effect {
+    private fun buildEffect(recipe: EffectRecipe, bodyParts: List<Location>): Effect {
         return EffectManager.getEffect(recipe.name, recipe.amount, recipe.duration, bodyParts)
     }
 

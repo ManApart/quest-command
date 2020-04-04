@@ -5,10 +5,11 @@ import combat.battle.position.TargetAim
 import core.events.Event
 import core.target.Target
 import status.stat.AGILITY
+import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
 import kotlin.math.max
 
-class StartBlockEvent(override val source: Target, private val partThatWillShield: LocationRecipe, private val partThatWillBeShielded: LocationRecipe, timeLeft: Int = -1) : Event, BattleAction {
+class StartBlockEvent(override val source: Target, private val partThatWillShield: Location, private val partThatWillBeShielded: Location, timeLeft: Int = -1) : Event, BattleAction {
     override val target: TargetAim? = null
     override var timeLeft = calcTimeLeft(timeLeft)
 

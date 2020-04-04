@@ -2,6 +2,7 @@ package inventory
 
 import core.utility.NameSearchableList
 import system.persistance.getFiles
+import traveling.location.Network
 
 fun persist(dataObject: Inventory, path: String) {
     dataObject.getItems().map { core.target.persist(it, path) }

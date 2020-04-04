@@ -9,6 +9,9 @@ import core.target.Target
 import core.properties.Values
 import status.stat.AGILITY
 import status.stat.STRENGTH
+import traveling.location.Network
+import traveling.location.location.Location
+import traveling.location.location.LocationNode
 import traveling.location.location.LocationRecipe
 
 
@@ -49,7 +52,9 @@ private fun testAttackTime(agility: Int, strength: Int, weaponSize: String, weap
     creature.soul.addStat(AGILITY, agility)
     creature.soul.addStat(STRENGTH, strength)
 
-    val part = LocationRecipe("hand", slots = listOf("hand"))
+    val recipe = LocationRecipe("hand", slots = listOf("hand"))
+    val node = LocationNode("hand")
+    val part = Location(node, recipe = recipe)
     val weapon = Target("Weapon", properties = Properties(Values(mapOf("weight" to weaponWeight.toString())), Tags(listOf("Weapon", weaponSize))))
     creature.inventory.add(weapon)
     creature.inventory.add(Target("Dead weight", properties = Properties(Values(mapOf("weight" to otherWeight.toString())))))

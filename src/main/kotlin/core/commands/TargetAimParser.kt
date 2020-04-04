@@ -5,6 +5,7 @@ import core.GameState
 import core.target.Target
 import core.history.display
 import core.utility.NameSearchableList
+import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
 
 //TODO - allow for response requests?
@@ -56,7 +57,7 @@ private fun parseTarget(name: String, targets: NameSearchableList<Target>): Targ
     return targets.getOrNull(name)
 }
 
-fun parseBodyParts(target: Target, names: List<String>): List<LocationRecipe> {
+fun parseBodyParts(target: Target, names: List<String>): List<Location> {
     if (names.size == 1 && names.first().toLowerCase() == "all") {
         return target.body.getParts()
     }

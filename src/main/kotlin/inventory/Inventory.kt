@@ -6,6 +6,8 @@ import core.target.item.ItemManager
 import core.utility.NameSearchableList
 import traveling.location.location.NOWHERE_NODE
 
+
+//Replace inventory with location?
 class Inventory(itemNames: List<String> = listOf(), items: List<Target> = listOf()) {
     constructor(base: Inventory) : this(base.getItems().map { it.name })
 

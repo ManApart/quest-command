@@ -26,11 +26,13 @@ class Location(
         private val items: NameSearchableList<Target> = NameSearchableList(),
         private val other: NameSearchableList<Target> = NameSearchableList(),
         val properties: Properties = Properties(),
-        initialize: Boolean = false
+        initialize: Boolean = false,
+        recipe: LocationRecipe? = null
+
 ) : Named {
     constructor(locationNode: LocationNode) : this(locationNode, NameSearchableList<Target>(), NameSearchableList<Target>(), NameSearchableList<Target>(), NameSearchableList<Target>(), Properties(), true)
 
-    private val locationRecipe = locationNode.getLocationRecipe()
+    private val locationRecipe = recipe ?: locationNode.getLocationRecipe()
     var weather: Weather = DEFAULT_WEATHER
 //    var needsSaved = false
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()

@@ -8,6 +8,9 @@ fun persist(dataObject: Body, path: String) {
     }
     val prefix = clean(path, dataObject.name)
     traveling.location.persist(dataObject.layout, prefix)
+
+    dataObject.getEquippedItems()
+
 }
 
 @Suppress("UNCHECKED_CAST")

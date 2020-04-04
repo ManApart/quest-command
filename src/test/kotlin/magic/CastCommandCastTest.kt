@@ -15,6 +15,8 @@ import core.events.EventManager
 import core.ai.behavior.BehaviorParser
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
+import traveling.location.location.Location
+import traveling.location.location.LocationNode
 import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
@@ -107,7 +109,7 @@ class CastCommandCastTest {
 
     @Test
     fun limitParts() {
-        val part = LocationRecipe("leg")
+        val part = Location(LocationNode("leg"))
         val target = TargetAim(Target("Bob"), listOf(part))
 
         val results = getTargetedPartsOrAll(target, 3)

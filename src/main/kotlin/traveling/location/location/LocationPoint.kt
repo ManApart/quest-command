@@ -16,7 +16,7 @@ class LocationPoint(val location: LocationNode, val targetName: String? = null, 
         }
     }
 
-    fun equals(location: LocationNode, target: Target?, part: LocationRecipe?): Boolean {
+    fun equals(location: LocationNode, target: Target?, part: Location?): Boolean {
         return location == this.location
                 && (target == null || target.name == targetName)
                 && (part == null || part.name == partName)

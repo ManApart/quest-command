@@ -7,6 +7,7 @@ import system.persistance.clean
 import system.persistance.cleanPathToFile
 import system.persistance.loadMap
 import system.persistance.writeSave
+import traveling.location.Network
 import traveling.location.location.DEFAULT_NETWORK
 import traveling.location.location.LocationManager
 import traveling.location.location.NOWHERE_NODE
@@ -45,7 +46,8 @@ fun load(path: String): Target {
     //Instead of persisting inventory, read it from child locations? what about equipped items?
     //Persist list of equipped item names, re-equip items on load
     val locationMap = (data["location"] as Map<String, String>)
-    val location = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name).getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
+    val network = LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name)
+    val location = network.getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
 

@@ -2,10 +2,10 @@ package combat
 
 import core.target.Target
 import core.utility.NameSearchableList
-import traveling.location.location.LocationRecipe
+import traveling.location.location.Location
 
 class HandHelper(creature: Target, source: String, desiredSkill: String) {
-    lateinit var hand: LocationRecipe; private set
+    lateinit var hand: Location; private set
     var weapon: Target? = null
 
     init {
@@ -54,11 +54,11 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
         return weapons.get(source)
     }
 
-    private fun getWeapon(source: LocationRecipe): Target? {
+    private fun getWeapon(source: Location): Target? {
         return source.getEquippedItem("right hand grip") ?: source.getEquippedItem("left hand grip")
     }
 
-    private fun getHand(source: String, rightHand: LocationRecipe, leftHand: LocationRecipe): LocationRecipe {
+    private fun getHand(source: String, rightHand: Location, leftHand: Location): Location {
         return if (listOf("left", "l").contains(source)) {
             leftHand
         } else {
@@ -66,7 +66,7 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
         }
     }
 
-    private fun getHand(weapon: Target, rightHand: LocationRecipe, leftHand: LocationRecipe): LocationRecipe {
+    private fun getHand(weapon: Target, rightHand: Location, leftHand: Location): Location {
         return if (weapon == getWeapon(rightHand)) {
             rightHand
         } else {
