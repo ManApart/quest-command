@@ -12,6 +12,7 @@ import core.properties.Properties
 import core.properties.Tags
 import core.reflection.Reflections
 import core.target.Target
+import core.target.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
 import core.utility.reflection.MockReflections
 import org.junit.AfterClass
@@ -71,7 +72,7 @@ class EatCommandTest {
     @Test
     fun eatFood() {
         val timer = PoorMansInstrumenter(10000)
-        val item = Target("Pear", properties = Properties(tags = Tags(listOf("Food"))))
+        val item = Target("Pear", properties = Properties(tags = Tags(listOf("Food", ITEM_TAG))))
         timer.printElapsed("new item")
         GameState.player.inventory.add(item)
         timer.printElapsed("add item")
@@ -88,8 +89,8 @@ class EatCommandTest {
 
     @Test
     fun eatMultipleFoodGivesChoice() {
-        val fruit = Target("Pear", properties = Properties(tags = Tags(listOf("Food"))))
-        val pie = Target("Pear Pie", properties = Properties(tags = Tags(listOf("Food"))))
+        val fruit = Target("Pear", properties = Properties(tags = Tags(listOf("Food", ITEM_TAG))))
+        val pie = Target("Pear Pie", properties = Properties(tags = Tags(listOf("Food", ITEM_TAG))))
         GameState.player.inventory.add(fruit)
         GameState.player.inventory.add(pie)
         EatCommand().execute("eat", listOf("Pear"))

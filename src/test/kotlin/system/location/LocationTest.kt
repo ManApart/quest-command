@@ -13,15 +13,15 @@ class LocationTest {
     @Test
     fun hasRoomForItem(){
         val item = createItem("Apple", weight = 2)
-        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Capacity" to "3"))))
-        assertTrue(location.hasCapacityFor(item))
+        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Size" to "3"))))
+        assertTrue(location.hasRoomFor(item))
     }
 
     @Test
     fun doesNotHaveRoomForItem(){
         val item = createItem("Apple", weight = 5)
-        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Capacity" to "3"))))
-        assertFalse(location.hasCapacityFor(item))
+        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Size" to "3"))))
+        assertFalse(location.hasRoomFor(item))
     }
 
     private fun createItem(name: String, weight: Int) : Target {

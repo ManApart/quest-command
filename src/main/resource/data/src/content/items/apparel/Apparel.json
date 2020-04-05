@@ -30,7 +30,7 @@
         "Container"
       ],
       "values": {
-        "Capacity": "5"
+        "Size": "5"
       },
       "values": {
         "weight": "1",

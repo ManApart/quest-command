@@ -326,6 +326,24 @@ Location Paths describe the relationship between locations. They contain
 - A parent name - used only in descriptions (ex: Blue Cave is part of Kanbara Wilds)
 - Restricted - locations are visible but can't be traveled to (for things like climbing trees or opening doors)
 
+### Inventory
+
+The inventory system is used when a creature picks up or places an item.
+In order for an item to be put somewhere, a number of criteria must be true.
+
+*Capacity*
+The size of the location must be large enough for all the current items + the new item to fit in it.
+Currently this compares a locations `Size` and all of the items combined `weight`. Eventually items should have `size` as well as weight.
+
+*Open Container*
+If the destination is a target, it must have the `Open` and `Container` tags in order to add and remove items from.
+If it is a Container, items can be listed / the inventory can be viewed, even if it's not open.
+
+*Can Hold Types*
+
+If the location has the `CanHold` property value, only items with at least one tag matching the can hold list can be stored in that location.
+_How can we view what types are allowed_ ? Maybe examine?
+
 ## Testing
 
 If tests are running slow, make sure that json parsing and reflection are not happing as part of unit tests. An easy check is to place a debug point in `getImplementation` to catch any time a default implementation is being used in a unit test.

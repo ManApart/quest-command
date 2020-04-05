@@ -103,7 +103,7 @@ fun createInventoryBody(capacity: Int? = null): Body {
 
         }
         if (capacity != null){
-            it.getRootPart().properties.values.put("Capacity", capacity)
+            it.getRootPart().properties.values.put("Size", capacity)
         }
     }
 }

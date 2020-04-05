@@ -167,7 +167,7 @@ class Location(
     private fun getTargetsByName(targets: NameSearchableList<Target>, name: String, source: Target = GameState.player): NameSearchableList<Target> {
         return when {
             targets.existsExact(name) && targets.countExact(name) == 1 -> NameSearchableList(targets.get(name))
-            targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> NameSearchableList(targets.get(name))
+            targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> targets.getAll(name)
             else -> targets.getAll(name).sortedBy { source.position.getDistance(it.position) }
         }
     }
@@ -270,9 +270,7 @@ class Location(
     }
 
     fun canHold(item: Target): Boolean {
-        return properties.tags.has("Container")
-                && properties.tags.has("Open")
-                && hasCapacityFor(item)
+        return hasRoomFor(item)
                 && item.properties.canBeHeldByContainerWithProperties(properties)
     }
 
@@ -283,10 +281,10 @@ class Location(
         return getItems().sumBy { it.getWeight() }
     }
 
-    fun hasCapacityFor(target: Target): Boolean {
-        if (properties.values.has("Capacity")) {
-            val capacity = properties.values.getInt("Capacity")
-            return capacity - getWeight() >= target.getWeight()
+    fun hasRoomFor(target: Target): Boolean {
+        if (properties.values.has("Size")) {
+            val room = properties.values.getInt("Size")
+            return room - getWeight() >= target.getWeight()
         }
         return true
     }

@@ -12,11 +12,14 @@ import core.target.item.ItemManager
 import core.target.item.ItemParser
 import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
+import createItem
 import inventory.dropItem.TransferItem
 import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser
 import system.ItemFakeParser
+import system.location.LocationFakeParser
+import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -26,6 +29,11 @@ class CraftTest {
 
     @Before
     fun setup() {
+
+        val locationParser = LocationFakeParser()
+        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        LocationManager.reset()
+
         val bodyParser = BodyFakeParser()
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
@@ -34,14 +42,14 @@ class CraftTest {
     @Test
     fun recipeReturnsNewItems() {
         val baker = createBaker()
-        val ingredient = Target("Apple")
+        val ingredient = createItem("Apple")
         baker.inventory.add(ingredient)
 
         val recipe = Recipe("Apples of Silver and Gold", listOf(RecipeIngredient("Apple")), results = listOf(RecipeResult("Gold"), RecipeResult("Silver")))
 
         val resultItemName1 = "Silver"
         val resultItemName2 = "Gold"
-        val fakeParser = ItemFakeParser(listOf(Target(resultItemName1), Target(resultItemName2)))
+        val fakeParser = ItemFakeParser(listOf(createItem(resultItemName1), createItem(resultItemName2)))
         DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
         ItemManager.reset()
 
@@ -59,7 +67,7 @@ class CraftTest {
     @Test
     fun recipeReturnsFirstItemWithDifferentTags() {
         val baker = createBaker()
-        val ingredient = Target("Apple")
+        val ingredient = createItem("Apple")
         baker.inventory.add(ingredient)
 
         val fakeParser = ItemFakeParser(listOf(ingredient))
@@ -81,7 +89,7 @@ class CraftTest {
     private fun createBaker(): Target {
 //        val baker = Player(location = NOWHERE_NODE)
         val baker = GameManager.newPlayer()
-        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "30")), Tags(listOf("Container", "Open"))))
+        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Size" to "30")), Tags(listOf("Container", "Open"))))
         baker.inventory.add(pouch)
         return baker
     }

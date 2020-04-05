@@ -6,6 +6,9 @@ import core.history.ChatHistory
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
+import core.target.item.ITEM_TAG
+import createClosedChest
+import createItem
 import org.junit.Test
 import system.BodyFakeParser
 import traveling.location.location.LocationRecipe
@@ -16,11 +19,19 @@ class ListInventoryTest {
 
     @Test
     fun listInventory() {
-        val creature = Target("Chest", properties = Properties(tags = Tags(listOf("Container"))))
-        creature.inventory.add(Target("Apple"))
+        val creature = createClosedChest()
+        creature.inventory.add(createItem())
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Chest has:\n\tApple", ChatHistory.getLastOutput())
+        assertEquals("Closed Chest has:\n\tApple", ChatHistory.getLastOutput())
+    }
+
+    @Test
+    fun listNoItemsInventory() {
+        val creature = createClosedChest()
+        val event = ListInventoryEvent(creature)
+        ListInventory().execute(event)
+        assertEquals("Closed Chest has no items.", ChatHistory.getLastOutput())
     }
 
     @Test
@@ -32,7 +43,7 @@ class ListInventoryTest {
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
-        val item = Target("Chestplate", equipSlots = listOf(listOf("Chest")))
+        val item = Target("Chestplate", equipSlots = listOf(listOf("Chest")), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
         creature.body.equip(item)
         val event = ListInventoryEvent(creature)
@@ -42,8 +53,8 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquippedNested() {
-        val item = Target("Apple")
-        val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")))
+        val item = createItem("Apple")
+        val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")), properties = Properties(tags = Tags(ITEM_TAG)))
         pouch.inventory.add(item)
 
         val chest = LocationRecipe("Chest", slots = listOf("Chest"))

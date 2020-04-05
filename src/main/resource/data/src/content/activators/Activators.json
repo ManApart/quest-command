@@ -192,7 +192,7 @@
         "Container"
       ],
       "values": {
-        "Capacity": "3"
+        "Size": "3"
       }
     },
     "behaviors": [
@@ -216,7 +216,7 @@
         "Container"
       ],
       "values": {
-        "Capacity": "3",
+        "Size": "3",
         "CanHold": "Grounded"
       }
     }

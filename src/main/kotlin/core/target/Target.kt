@@ -130,7 +130,7 @@ open class Target(
         return if (soul.hasStat("Strength")) {
             soul.getCurrent("Strength") * 10
         } else {
-            properties.values.getInt("Capacity", 0)
+            properties.values.getInt("Size", 0)
         }
     }
 

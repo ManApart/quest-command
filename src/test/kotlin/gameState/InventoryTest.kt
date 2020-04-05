@@ -6,11 +6,8 @@ import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.properties.Properties
-import core.properties.Tags
-import core.properties.Values
-import core.target.Target
-import core.target.item.ITEM_TAG
+import createItem
+import createPouch
 import inventory.Inventory
 import org.junit.Before
 import org.junit.Test
@@ -21,6 +18,7 @@ import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+
 
 class InventoryTest {
 
@@ -43,8 +41,8 @@ class InventoryTest {
 
     @Test
     fun getItemIsNested() {
-        val item = createItem("Apple", weight = 2)
-        val pouch = createItem("Pouch", weight = 1)
+        val item = createItem(weight = 2)
+        val pouch = createPouch(weight = 2)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -55,8 +53,8 @@ class InventoryTest {
 
     @Test
     fun existsIsNested() {
-        val item = createItem("Apple", 2)
-        val pouch = createItem("Pouch", weight = 1)
+        val item = createItem(weight = 2)
+        val pouch = createPouch(weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -67,7 +65,7 @@ class InventoryTest {
 
     @Test
     fun removeItem() {
-        val item = createItem("Apple", weight = 2)
+        val item = createItem(weight = 2)
         val inventory = Inventory()
         inventory.add(item)
         inventory.remove(item)
@@ -77,8 +75,8 @@ class InventoryTest {
 
     @Test
     fun removeNestedItem() {
-        val item = createItem("Apple", weight = 2)
-        val pouch = createItem("Pouch", weight = 1)
+        val item = createItem(weight = 2)
+        val pouch = createPouch(weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
@@ -90,7 +88,7 @@ class InventoryTest {
 
     @Test
     fun getWeightOfSingleItem() {
-        val item = createItem("Apple", weight = 1)
+        val item = createItem(weight = 1)
         val inventory = Inventory()
         inventory.add(item)
         assertEquals(1, inventory.getWeight())
@@ -98,39 +96,13 @@ class InventoryTest {
 
     @Test
     fun getWeightIncludingNestedInventory() {
-        val item = createItem("Apple", weight = 2)
-        val pouch = createItem("Pouch", weight = 1)
+        val item = createItem(weight = 2)
+        val pouch = createPouch(weight = 1)
         pouch.inventory.add(item)
 
         val inventory = Inventory()
         inventory.add(pouch)
         assertEquals(3, inventory.getWeight())
-    }
-
-    @Test
-    fun findItemsWithCapacityAndTypeForItem() {
-        val searchItem = Target("Apple", properties = Properties(tags = Tags(listOf("Raw", ITEM_TAG))))
-        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "5")), Tags(listOf("Container", "Open", ITEM_TAG))))
-        pouch.inventory.add(searchItem)
-        val inventory = Inventory()
-        inventory.add(pouch)
-        inventory.add(createItem("Noise", 0))
-
-        assertEquals(searchItem, pouch.inventory.getItem(searchItem.name))
-        assertTrue(inventory.attemptToAdd(searchItem))
-        assertEquals(searchItem, inventory.getItem(searchItem.name))
-    }
-
-    private fun createItem(name: String, weight: Int): Target {
-        val item = Target(name, properties = Properties(
-                Values(mapOf("weight" to weight.toString())),
-                Tags(ITEM_TAG)
-        ))
-        with(item.body.getRootPart().properties.tags) {
-            add("Container")
-            add("Open")
-        }
-        return item
     }
 
 }
