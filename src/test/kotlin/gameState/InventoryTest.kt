@@ -127,5 +127,12 @@ class InventoryTest {
         assertEquals(3, inventory.getWeight())
     }
 
+    @Test
+    fun thing() {
+        val inventory = Inventory()
+        val item = createItem()
+        inventory.add(item)
+        inventory.getAllItems()
+    }
 
 }

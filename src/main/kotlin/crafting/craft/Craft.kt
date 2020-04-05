@@ -37,6 +37,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
     private fun addResults(results: List<Target>, event: CraftRecipeEvent) {
         results.forEach {
             it.location = event.source.location
+            it.position = event.source.position
             EventManager.postEvent(TransferItemEvent(event.source, it, destination = event.source, silent = true))
         }
     }

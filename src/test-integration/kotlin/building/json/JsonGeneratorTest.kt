@@ -10,11 +10,11 @@ class JsonGeneratorTest {
 
     @Test
     fun sampleConversion() {
-        JsonGenerator.generate("./src/integration-test/resource", "/test/src/content", "/test/generated/content")
+        JsonGenerator.generate("./src/test-integration/resource", "/test/src/content", "/test/generated/content")
         val mapper = jacksonObjectMapper()
 
-        val expected: List<MutableMap<String, Any>> = mapper.readValue(File("./src/integration-test/resource/test/results/InheritanceTestResult.json").readText())
-        val actual: List<MutableMap<String, Any>> = mapper.readValue(File("./src/integration-test/resource/test/generated/content/InheritanceTest.json").readText())
+        val expected: List<MutableMap<String, Any>> = mapper.readValue(File("./src/test-integration/resource/test/results/InheritanceTestResult.json").readText())
+        val actual: List<MutableMap<String, Any>> = mapper.readValue(File("./src/test-integration/resource/test/generated/content/InheritanceTest.json").readText())
 
         assertEquals(expected, actual)
     }

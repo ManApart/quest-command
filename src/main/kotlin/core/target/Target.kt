@@ -22,7 +22,6 @@ import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.Route
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE_NODE
 import kotlin.math.max

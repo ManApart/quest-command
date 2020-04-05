@@ -189,7 +189,7 @@ class Location(
     }
 
     fun getActivators(name: String, source: Target = GameState.player): NameSearchableList<Target> {
-        return getTargetsByName(creatures, name, source)
+        return getTargetsByName(activators, name, source)
     }
 
     fun getActivators(source: Target = GameState.player): NameSearchableList<Target> {
@@ -229,7 +229,7 @@ class Location(
     }
 
     fun getAllSouls(): List<Soul> {
-        val souls = mutableListOf<Soul?>()
+        val souls = mutableSetOf<Soul>()
         souls.addAll(GameState.player.inventory.getAllItems().map { it.soul })
 
         getAllTargets().forEach {
@@ -240,7 +240,7 @@ class Location(
         if (!souls.contains(GameState.player.soul)) {
             souls.add(GameState.player.soul)
         }
-        return souls.filterNotNull()
+        return souls.toList()
     }
 
     fun getAllInventories(): List<Inventory> {

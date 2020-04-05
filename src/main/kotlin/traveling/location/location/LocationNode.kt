@@ -22,6 +22,7 @@ class LocationNode(
         @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
         private val connections: MutableList<Connection> = mutableListOf()
 ) : Named {
+    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.protoConnections)
 
     private var location: Location? = null
     var loadPath: String? = null

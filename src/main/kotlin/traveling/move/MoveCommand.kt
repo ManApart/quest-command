@@ -44,6 +44,7 @@ class MoveCommand : Command() {
                 vector != NO_VECTOR -> EventManager.postEvent(MoveEvent(source, source.position, vector))
                 target != null -> EventManager.postEvent(MoveEvent(source, source.position, target.target.position))
                 direction != null || distance != null -> parseDirectionAndDistance(source, direction, distance, useDefault)
+                //TODO - response request
                 else -> display("Could not understand: ${args.joinToString(" ")}")
             }
         }

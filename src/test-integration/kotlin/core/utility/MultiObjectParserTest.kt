@@ -12,7 +12,7 @@ class MultiObjectParserTest {
     fun parseMultiObject() {
         val mapper = jacksonObjectMapper()
 
-        val parsed: ParentObject = mapper.readValue(File("./src/integration-test/resource/test/core/utility/MultiObjectTest.json"))
+        val parsed: ParentObject = mapper.readValue(File("./src/test-integration/resource/test/core/utility/MultiObjectTest.json"))
         assertEquals("Parent", parsed.name)
         assertEquals(3, parsed.children.size)
         assertEquals("Child1", parsed.children[0].id)

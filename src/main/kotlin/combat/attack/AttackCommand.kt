@@ -50,12 +50,12 @@ class AttackCommand : Command() {
 
             if (target != null) {
                 //Go ahead and process a target that has aimed for body parts or no body parts at all
-                if (target.bodyPartTargets.isNotEmpty() || target.target.body.getRootPart() == null) {
+                if (target.bodyPartTargets.isNotEmpty()) {
                     processAttack(source, arguments, attackType, handHelper, target)
                 } else {
                     //If we got an alias, process with a default value of the body root part
-                    if (isAlias(keyword)) {
-                        processAttack(source, arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart()!!)))
+                    if (isAlias(keyword) || target.target.body.getParts().size == 1) {
+                        processAttack(source, arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart())))
                         //Otherwise clarify body parts.
                     } else {
                         clarifyTargetPart(keyword, target, weaponName)

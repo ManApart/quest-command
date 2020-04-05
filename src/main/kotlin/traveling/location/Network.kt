@@ -4,18 +4,21 @@ import core.utility.NameSearchableList
 import core.utility.Named
 import traveling.direction.Direction
 import traveling.direction.Vector
-import traveling.location.location.LocationRecipe
-import traveling.location.location.LocationNode
-import traveling.location.location.NOWHERE
-import traveling.location.location.NOWHERE_NODE
+import traveling.location.location.*
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
-    constructor(base: Network) : this(base.name, base.locationNodes, base.locations.map { LocationRecipe(it) })
+    constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes), base.locations.map { LocationRecipe(it) })
 
     private val locationNodes = NameSearchableList(locationNodes, LocationNode("Root", isRoot = true, network = this, parent = this.name))
     private val locations = NameSearchableList(locationRecipes)
     val rootNode by lazy { findRootNode() }
     val rootNodeHeight by lazy { findRootNodeHeight() }
+
+    init {
+        locationNodes.forEach {
+            it.network = this
+        }
+    }
 
     private fun findRootNode(): LocationNode {
         return locationNodes.firstOrNull { it.isRoot }
@@ -101,4 +104,21 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         locationNodes.add(locationNode)
     }
 
+}
+
+
+private fun duplicateNodesAndConnections(oldNodes: List<LocationNode>): List<LocationNode> {
+    val newToOldNodes = oldNodes.associateBy { LocationNode(it) }
+    val oldToNewNodes = newToOldNodes.keys.associateBy { newToOldNodes[it] }
+
+    newToOldNodes.keys.forEach {newNode ->
+        val oldNode = newToOldNodes[newNode]!!
+        oldNode.getNeighborConnections().forEach { oldConnection ->
+            val newSource = LocationPoint(oldToNewNodes[oldConnection.source.location]!!, oldConnection.source.targetName, oldConnection.source.partName)
+            val newDest = LocationPoint(oldToNewNodes[oldConnection.destination.location]!!, oldConnection.destination.targetName, oldConnection.destination.partName)
+            newNode.addConnection(Connection(newSource, newDest, oldConnection.vector, oldConnection.restricted))
+        }
+    }
+
+    return newToOldNodes.keys.toList()
 }
