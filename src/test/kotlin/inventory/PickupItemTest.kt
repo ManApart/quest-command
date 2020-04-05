@@ -11,7 +11,10 @@ import org.junit.Test
 import system.BodyFakeParser
 import core.DependencyInjector
 import core.body.BodyManager
+import core.target.item.ITEM_TAG
 import org.junit.After
+import system.location.LocationFakeParser
+import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import traveling.location.location.NOWHERE_NODE
 import kotlin.test.assertNotNull
@@ -25,6 +28,11 @@ class PickupItemTest {
         val bodyParser = BodyFakeParser()
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
+
+        val locationParser = LocationFakeParser()
+        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        LocationManager.reset()
+
         NOWHERE_NODE.getLocation().clear()
     }
     
@@ -37,7 +45,7 @@ class PickupItemTest {
     fun pickupItemFromLocation() {
         val creature = getCreatureWithCapacity()
         val location = creature.location.getLocation()
-        val item = Target("Apple")
+        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         location.addTarget(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
@@ -62,7 +70,7 @@ class PickupItemTest {
         val creature = getCreatureWithCapacity()
 
         val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Container", "Open"))))
-        val item = Target("Apple")
+        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, chest, creature))
@@ -76,7 +84,7 @@ class PickupItemTest {
         val creature = getCreatureWithCapacity()
 
         val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Open"))))
-        val item = Target("Apple")
+        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
@@ -90,7 +98,7 @@ class PickupItemTest {
         val creature = getCreatureWithCapacity()
 
         val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Container"))))
-        val item = Target("Apple")
+        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
@@ -101,7 +109,8 @@ class PickupItemTest {
 
     private fun getCreatureWithCapacity(): Target {
         val creature = Target("Target", properties = Properties(tags = Tags(listOf("Container", "Open", "Creature"))))
-        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open"))))
+        val pouch = Target("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
+//        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Capacity" to "15")), Tags(listOf("Container", "Open", ITEM_TAG))))
         creature.inventory.add(pouch)
         return creature
     }

@@ -1,10 +1,11 @@
 package traveling.location.location
 
 import core.properties.getPersisted
+import core.target.Target
 import core.utility.toNameSearchableList
 import system.persistance.*
 
-fun persist(dataObject: Location, path: String) {
+fun persist(dataObject: Location, path: String, ignoredTargets: List<Target> = listOf()) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile(".json", prefix)
     val data = mutableMapOf<String, Any>("version" to 1)
@@ -14,7 +15,7 @@ fun persist(dataObject: Location, path: String) {
 
     data["activators"] = dataObject.getActivators().map { core.target.persist(it, clean(prefix, "activators")) }
     data["creatures"] = dataObject.getCreatures().filter { !it.isPlayer() }.map { core.target.persist(it, clean(prefix, "creatures")) }
-    data["items"] = dataObject.getItems().map { core.target.persist(it, clean(prefix, "items")) }
+    data["items"] = dataObject.getItems().filter { !ignoredTargets.contains(it) }.map { core.target.persist(it, clean(prefix, "items")) }
     data["other"] = dataObject.getOther().map { core.target.persist(it, clean(prefix, "other")) }
     //Persist weather
     //Persist last weather change

@@ -88,7 +88,7 @@ class PlaceItemTest {
         val part = LocationRecipe("part")
 
         val bodyParser = BodyFakeParser(
-                listOf(LocationNode(parent = "body", name = "Hand"), LocationNode(parent = "none", name = "part")),
+                listOf(LocationNode(name = "Hand", parent = "body"), LocationNode(name = "part", parent = "none")),
                 listOf(hand, part))
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()

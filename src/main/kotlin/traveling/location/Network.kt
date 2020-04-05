@@ -3,7 +3,6 @@ package traveling.location
 import core.utility.NameSearchableList
 import core.utility.Named
 import traveling.direction.Direction
-import traveling.direction.NO_VECTOR
 import traveling.direction.Vector
 import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
@@ -13,15 +12,14 @@ import traveling.location.location.NOWHERE_NODE
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
     constructor(base: Network) : this(base.name, base.locationNodes, base.locations.map { LocationRecipe(it) })
 
-    private val locationNodes = NameSearchableList(locationNodes)
+    private val locationNodes = NameSearchableList(locationNodes, LocationNode("Root", isRoot = true, network = this, parent = this.name))
     private val locations = NameSearchableList(locationRecipes)
     val rootNode by lazy { findRootNode() }
     val rootNodeHeight by lazy { findRootNodeHeight() }
 
     private fun findRootNode(): LocationNode {
         return locationNodes.firstOrNull { it.isRoot }
-                ?: locationNodes.firstOrNull()
-                ?: LocationNode("Root")
+                ?: locationNodes.first()
     }
 
     private fun findRootNodeHeight(): Int {

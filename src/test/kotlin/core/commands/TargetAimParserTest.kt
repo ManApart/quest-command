@@ -37,10 +37,10 @@ class TargetAimParserTest {
 
             val bodyParser = BodyFakeParser(
                     listOf(
-                            LocationNode(parent = "Human", name = "bodyPartA"),
-                            LocationNode(parent = "testBody", name = "bodyPartA"),
-                            LocationNode(parent = "testBody", name = "bodyPartB"),
-                            LocationNode(parent = "testBody", name = "bodyPartC")
+                            LocationNode(name = "bodyPartA", parent = "Human"),
+                            LocationNode(name = "bodyPartA", parent = "testBody"),
+                            LocationNode(name = "bodyPartB", parent = "testBody"),
+                            LocationNode(name = "bodyPartC", parent = "testBody")
                     ),
                     listOf(
                             bodyPartA,

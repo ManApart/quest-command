@@ -17,6 +17,12 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         addAll(items)
     }
 
+    constructor(items: Iterable<N>, defaultIfEmpty: N) : this(items) {
+        if (isEmpty()) {
+            add(defaultIfEmpty)
+        }
+    }
+
     constructor(items: NameSearchableList<N>) : this() {
         addAll(items)
         addAllProxies(items)
@@ -211,7 +217,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         } ?: matches[0]
     }
 
-    override fun remove(element: N) : Boolean {
+    override fun remove(element: N): Boolean {
         proxies.filterValues { it == element }.keys.forEach { proxies.remove(it) }
         return super.remove(element)
     }

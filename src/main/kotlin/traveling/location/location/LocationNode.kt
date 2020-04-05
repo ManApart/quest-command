@@ -17,12 +17,12 @@ class LocationNode(
         override val name: String,
         val locationName: String = name,
         val parent: String = DEFAULT_NETWORK.name,
+        var network: Network = DEFAULT_NETWORK,
         val isRoot: Boolean = false,
         @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
         private val connections: MutableList<Connection> = mutableListOf()
 ) : Named {
 
-    var network: Network = DEFAULT_NETWORK
     private var location: Location? = null
     var loadPath: String? = null
 

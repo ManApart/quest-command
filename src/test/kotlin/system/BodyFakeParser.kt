@@ -6,7 +6,7 @@ import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser
 
 class BodyFakeParser(
-        private val protoBodies: List<LocationNode> = listOf(LocationNode(parent = "Human", name = "Body Part"), LocationNode(parent = "None", name = "Part")),
+        private val protoBodies: List<LocationNode> = listOf(LocationNode(name = "Body Part", parent = "Human"), LocationNode(name = "Part", parent = "None")),
         private val bodyParts: List<LocationRecipe> = listOf(LocationRecipe("Body Part"))
 ) : LocationParser {
     override fun loadLocations(path: String): NameSearchableList<LocationRecipe> {
@@ -20,8 +20,8 @@ class BodyFakeParser(
     companion object {
         fun parserWithFakePlayer(): BodyFakeParser {
             return BodyFakeParser(listOf(
-                    LocationNode(parent = "Human", name = "right hand", locationName = "right hand"),
-                    LocationNode(parent = "Human", name = "left hand", locationName = "left hand")
+                    LocationNode(name = "right hand", locationName = "right hand", parent = "Human"),
+                    LocationNode(name = "left hand", locationName = "left hand", parent = "Human")
             ),
                     listOf(LocationRecipe("right hand"), LocationRecipe("left hand")))
         }

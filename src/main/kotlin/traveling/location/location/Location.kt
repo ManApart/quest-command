@@ -1,6 +1,5 @@
 package traveling.location.location
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import core.GameState
 import core.events.EventManager
 import core.history.display
@@ -285,9 +284,11 @@ class Location(
     }
 
     fun hasCapacityFor(target: Target): Boolean {
-        val capacity = properties.values.getInt("Capacity")
-
-        return capacity - getWeight() >= target.getWeight()
+        if (properties.values.has("Capacity")) {
+            val capacity = properties.values.getInt("Capacity")
+            return capacity - getWeight() >= target.getWeight()
+        }
+        return true
     }
 
 }

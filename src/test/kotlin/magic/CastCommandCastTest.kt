@@ -17,7 +17,6 @@ import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
 import traveling.location.location.Location
 import traveling.location.location.LocationNode
-import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

@@ -2,6 +2,7 @@ package core
 
 import combat.battle.Battle
 import core.properties.Properties
+import core.target.Target
 import time.TimeManager
 import traveling.location.location.Location
 

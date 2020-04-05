@@ -52,6 +52,7 @@ open class Target(
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, bodyName)
+
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
     val inventory: Inventory = Inventory(this.body)
@@ -66,7 +67,9 @@ open class Target(
     var route: Route? = null
 
     init {
-        inventory.addAll(ItemManager.getItems(items))
+        if (items.isNotEmpty()) {
+            inventory.addAll(ItemManager.getItems(items))
+        }
     }
 
     private fun getBody(body: Body?, bodyName: String?): Body {

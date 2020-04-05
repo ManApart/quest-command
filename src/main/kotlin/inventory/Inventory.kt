@@ -8,7 +8,7 @@ import core.utility.toNameSearchableList
 import traveling.location.location.Location
 
 
-class Inventory(private val body: Body = Body()) {
+class Inventory(private val body: Body = createInventoryBody()) {
     constructor(items: List<Target>) : this(Body().also { it.layout.rootNode.getLocation().addTargets(items) })
 
     fun exists(item: Target): Boolean {
@@ -16,11 +16,11 @@ class Inventory(private val body: Body = Body()) {
     }
 
     fun getItem(name: String): Target? {
-        return getItemsNameSearchable().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
+        return getAllItems().toNameSearchableList().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
     }
 
     fun getItems(name: String): List<Target> {
-        return NameSearchableList(getAllItems()).getAll(name)
+        return getAllItems().toNameSearchableList().getAll(name)
     }
 
     fun addAll(items: List<Target>) {
@@ -46,7 +46,7 @@ class Inventory(private val body: Body = Body()) {
         if (match != null && item.isStackable(match)) {
             match.properties.incCount(item.properties.getCount())
         } else {
-            location.addTarget(item.copy(1))
+            location.addTarget(item)
         }
 
         return true
@@ -93,4 +93,17 @@ class Inventory(private val body: Body = Body()) {
         return getItems().sumBy { it.getWeight() }
     }
 
+}
+
+fun createInventoryBody(capacity: Int? = null): Body {
+    return Body("Inventory").also {
+        with(it.getRootPart().properties.tags) {
+            add("Container")
+            add("Open")
+
+        }
+        if (capacity != null){
+            it.getRootPart().properties.values.put("Capacity", capacity)
+        }
+    }
 }

@@ -11,10 +11,11 @@ import traveling.location.Network
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
+import javax.print.DocFlavor
 
 val NONE = Body("None")
 
-class Body(override val name: String = "None", val layout: Network = Network(name)) : Named {
+class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
     constructor(base: Body) : this(base.name, Network(base.layout))
 
     private val parts: NameSearchableList<Location> by lazy { createParts() }
@@ -80,15 +81,15 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun canEquip(slot: Slot): Boolean {
-        return slot.attachPoints.all { hasAttachPoint(it) }
+        return slot.attachPoints.all {
+            hasAttachPoint(it)
+        }
     }
 
     private fun hasAttachPoint(attachPoint: String): Boolean {
-        return parts.any { it.hasAttachPoint(attachPoint) }
-    }
-
-    fun equip(item: Target) {
-        equip(item, getDefaultSlot(item))
+        return parts.any {
+            it.hasAttachPoint(attachPoint)
+        }
     }
 
     fun getDefaultSlot(item: Target): Slot {
@@ -97,13 +98,14 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
                 ?: throw IllegalArgumentException("Found no Slot for $item for body $name. This should not happen!")
     }
 
-    fun getEmptyEquipSlot(item: Target): Slot? {
+    private fun getEmptyEquipSlot(item: Target): Slot? {
         return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
     }
 
-    fun equip(item: Target, slot: Slot) {
+    fun equip(item: Target, slot: Slot = getDefaultSlot(item)) {
         if (canEquip(slot)) {
             unEquip(item)
+            slotMap[item.name] = slot.description
             slot.attachPoints.forEach { attachPoint ->
                 getEquippedItemsAt(attachPoint).forEach {
                     unEquip(it)
@@ -120,6 +122,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun unEquip(item: Target) {
+        slotMap.remove(item.name)
         getPartsEquippedWith(item).forEach {
             it.unEquip(item)
         }
@@ -130,16 +133,20 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun getPositionInLocation(part: Location, parentOffset: Vector): Vector {
-        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode?.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
+        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode.getVectorDistanceTo(getPartLocation(part.name)) ?: Vector())
     }
 
     fun getSize(): Vector {
         return layout.getSize()
     }
 
-    fun getRange() : Int {
+    fun getRange(): Int {
         val size = getSize()
         return max(size.x, size.y, size.z) / 2
+    }
+
+    fun getSlotMap(): Map<String, String> {
+        return slotMap.toMap()
     }
 
 }

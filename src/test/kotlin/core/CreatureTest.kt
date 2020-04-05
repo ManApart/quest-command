@@ -1,8 +1,11 @@
 package core
 
 import core.properties.Properties
+import core.properties.Tags
 import core.target.Target
 import core.properties.Values
+import core.target.item.ITEM_TAG
+import inventory.createInventoryBody
 import status.stat.STRENGTH
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -22,7 +25,7 @@ class CreatureTest {
 
     @Test
     fun encumbrance50() {
-        val creature = Target("creature")
+        val creature = createCreature()
         creature.soul.addStat(STRENGTH, 10)
         creature.inventory.add(createItem(50))
 
@@ -64,8 +67,15 @@ class CreatureTest {
         assertEquals(.5f, creature.getEncumbrance())
     }
 
+    private fun createCreature(): Target {
+        return Target("creature", body = createInventoryBody())
+    }
 
-    private fun createItem(weight: Int) : Target {
-        return Target("Target", properties = Properties(Values(mapOf("weight" to weight.toString()))))
+    private fun createItem(weight: Int): Target {
+        val properties = Properties(
+                Values(mapOf("weight" to weight.toString())),
+                Tags(listOf(ITEM_TAG))
+        )
+        return Target("Target", properties = properties)
     }
 }
