@@ -23,10 +23,25 @@ class Inventory(private val body: Body = createInventoryBody()) {
         return getAllItems().toNameSearchableList().getAll(name)
     }
 
+    /**
+     * Return all items of this inventory and any sub-inventory
+     */
+    fun getAllItems(): List<Target> {
+        val items = getItems()
+        return (items + items.flatMap { it.inventory.getAllItems() }).toSet().toList()
+    }
+
+    fun getItems(): List<Target> {
+        return body.getParts().flatMap { it.getItems() }.toSet().toList()
+    }
+
+    private fun getItemsNameSearchable(): NameSearchableList<Target> {
+        return getItems().toNameSearchableList()
+    }
+
     fun addAll(items: List<Target>) {
         items.forEach { add(it) }
     }
-
 
     private fun findLocationWith(item: Target): Location? {
         return body.getParts().firstOrNull { it.getItems().contains(item) }
@@ -67,22 +82,6 @@ class Inventory(private val body: Body = createInventoryBody()) {
                 location.removeTarget(item)
             }
         }
-    }
-
-    /**
-     * Return all items of this inventory and any sub-inventory
-     */
-    fun getAllItems(): List<Target> {
-        val items = getItems()
-        return (items + items.flatMap { it.inventory.getAllItems() })
-    }
-
-    fun getItems(): List<Target> {
-        return body.getParts().flatMap { it.getItems() }
-    }
-
-    private fun getItemsNameSearchable(): NameSearchableList<Target> {
-        return getItems().toNameSearchableList()
     }
 
     fun findItemsByProperties(properties: Properties): List<Target> {

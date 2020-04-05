@@ -33,7 +33,9 @@ object LocationManager {
             entry.value.forEach { it.network = network }
             network
         }
-        DEFAULT_NETWORK.addLocationNode(NOWHERE_NODE)
+        if (!DEFAULT_NETWORK.locationNodeExists(NOWHERE_NODE.name)) {
+            DEFAULT_NETWORK.addLocationNode(NOWHERE_NODE)
+        }
         return NameSearchableList(networks + DEFAULT_NETWORK)
     }
 

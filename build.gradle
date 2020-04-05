@@ -31,10 +31,10 @@ sourceSets {
 
     integrationTest {
         java {
-            srcDirs 'src/integration-test/kotlin'
+            srcDirs 'src/test-integration/kotlin'
         }
         resources {
-            srcDir 'src/integration-test/resource'
+            srcDir 'src/test-integration/resource'
             srcDir 'src/main/resource'
         }
 

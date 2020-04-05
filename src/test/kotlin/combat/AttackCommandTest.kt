@@ -20,6 +20,9 @@ import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
+import traveling.location.weather.WeatherFakeParser
+import traveling.location.weather.WeatherManager
+import traveling.location.weather.WeatherParser
 import kotlin.test.assertEquals
 
 class AttackCommandTest {
@@ -42,6 +45,10 @@ class AttackCommandTest {
         val locationParser = LocationFakeParser()
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
+
+        val weatherParser = WeatherFakeParser()
+        DependencyInjector.setImplementation(WeatherParser::class.java, weatherParser)
+        WeatherManager.reset()
 
         EventManager.clear()
 

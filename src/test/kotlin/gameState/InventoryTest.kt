@@ -6,6 +6,7 @@ import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
+import core.body.createBody
 import createItem
 import createPouch
 import inventory.Inventory
@@ -16,6 +17,7 @@ import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
+import traveling.location.location.LocationRecipe
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -104,5 +106,26 @@ class InventoryTest {
         inventory.add(pouch)
         assertEquals(3, inventory.getWeight())
     }
+
+    @Test
+    fun getItemsDoesNotIncludeDuplicates() {
+        val apple = createItem("Apple", weight = 1)
+        val pear = createItem("pear", weight = 2)
+
+        val rightHand = LocationRecipe("Right Hand")
+        val leftHand = LocationRecipe("Left Hand")
+        val body = createBody(listOf(rightHand, leftHand))
+        val inventory = Inventory(body)
+
+        body.getParts().first().addTarget(apple)
+        body.getParts().last().addTarget(apple)
+        body.getParts().first().addTarget(pear)
+
+        assertEquals(2, inventory.getItems().size)
+        assertTrue(inventory.getItems().contains(apple))
+        assertTrue(inventory.getItems().contains(pear))
+        assertEquals(3, inventory.getWeight())
+    }
+
 
 }

@@ -62,7 +62,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     }
 
     fun locationNodeExists(name: String): Boolean {
-        return locations.exists(name)
+        return locationNodes.exists(name)
     }
 
     private fun getFurthestLocation(direction: Direction = Direction.BELOW): LocationNode? {
