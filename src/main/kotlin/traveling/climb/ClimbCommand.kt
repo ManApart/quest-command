@@ -38,7 +38,7 @@ class ClimbCommand : Command() {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)
         when {
-            GameState.player.getEncumbrance() >=1 -> display("You are too encumbered to climb.")
+            GameState.player.getEncumbrance() >= 1 -> display("You are too encumbered to climb.")
             GameState.player.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(keyword, arguments, GameState.player.climbTarget!!)
             else -> processNewClimb(arguments)
         }
@@ -82,9 +82,12 @@ class ClimbCommand : Command() {
     }
 
     private fun findAllTargets(): NameSearchableList<Target> {
-        val connections = GameState.player.location.getNeighborConnections().filter { it.destination.hasTargetAndPart() }
-        val connectedTargets = connections.map {it.destination.location.getLocation().getTargets(it.destination.targetName!!) }.flatten()
         val localClimbableTargets = GameState.currentLocation().findTargetsByTag("Climbable")
+        val connections = GameState.player.location.getNeighborConnections().filter { connection ->
+            localClimbableTargets.none { it.name == connection.source.targetName }
+                    && connection.destination.hasTargetAndPart()
+        }
+        val connectedTargets = connections.map { it.destination.location.getLocation().getTargets(it.destination.targetName!!) }.flatten()
         return NameSearchableList(localClimbableTargets + connectedTargets)
     }
 
@@ -112,12 +115,12 @@ class ClimbCommand : Command() {
                 val response = ResponseRequest(message, (climbOptions.map { it.target.name to "climb ${it.direction} ${it.target.name}" } +
                         climbOptions.map { "${it.target.name} (${it.direction})" to "climb ${it.direction} ${it.target.name}" }
                         ).toMap())
-                 CommandParser.setResponseRequest(response)
+                CommandParser.setResponseRequest(response)
             }
             else -> {
                 val message = "Climb what?\n\t${options.joinToString(", ")}"
                 val response = ResponseRequest(message, options.map { it.name to "climb ${it.name}" }.toMap())
-                 CommandParser.setResponseRequest(response)
+                CommandParser.setResponseRequest(response)
             }
         }
     }
@@ -130,7 +133,7 @@ class ClimbCommand : Command() {
         } else {
             val message = "Climb what part of ${target.name}?\n\t${options.joinToString(", ")}"
             val response = ResponseRequest(message, options.map { it.name to "climb ${it.name} of ${target.name}" }.toMap())
-             CommandParser.setResponseRequest(response)
+            CommandParser.setResponseRequest(response)
         }
     }
 

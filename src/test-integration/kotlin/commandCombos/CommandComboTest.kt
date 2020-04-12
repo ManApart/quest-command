@@ -167,7 +167,7 @@ class CommandComboTest {
 
     @Test
     fun poisonSelf() {
-        CommandParser.parseCommand("poison 1 for 5 on self")
+        CommandParser.parseCommand("poison 1 for 5 on head of self")
         assertEquals(1, GameState.player.soul.getConditions().size)
         assertEquals("Poison decreases Your Health by 1 (9/10).", ChatHistory.getLastOutput())
 
