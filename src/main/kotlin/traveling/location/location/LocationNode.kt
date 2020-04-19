@@ -66,7 +66,10 @@ class LocationNode(
     }
 
     fun getLocationRecipe(): LocationRecipe {
-        return network.getLocation(locationName)
+        if (!network.locationRecipeExists(locationName)) {
+            network.addLocationRecipe(LocationRecipe(locationName))
+        }
+        return network.getLocationRecipe(locationName)
     }
 
     fun hasLoadedLocation(): Boolean {
@@ -78,7 +81,7 @@ class LocationNode(
             location != null -> location!!
             loadPath != null -> {
                 location = load(loadPath!!, this)
-                if (location == null){
+                if (location == null) {
                     location = Location(this)
                 }
                 location!!

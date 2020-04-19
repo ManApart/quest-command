@@ -3,7 +3,7 @@ package core.properties
 import core.utility.apply
 
 class Tags(tags: List<String> = listOf()) {
-    constructor(tag: String): this(listOf(tag))
+    constructor(tag: String) : this(listOf(tag))
     constructor(base: Tags, params: Map<String, String> = mapOf()) : this(base.tags.apply(params))
 
     private val tags = tags.toMutableList()
@@ -14,6 +14,10 @@ class Tags(tags: List<String> = listOf()) {
 
     fun has(tag: String): Boolean {
         return lowerCaseTags().contains(tag.toLowerCase())
+    }
+
+    fun add(vararg tags: String) {
+        tags.forEach { add(it) }
     }
 
     fun add(tag: String) {

@@ -34,6 +34,14 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
                 weapon = leftWeapon
                 hand = leftHand
             }
+            rightWeapon != null -> {
+                hand = rightHand
+                weapon = rightWeapon
+            }
+            leftWeapon != null -> {
+                weapon = leftWeapon
+                hand = leftHand
+            }
             else -> {
                 hand = rightHand
                 weapon = rightWeapon

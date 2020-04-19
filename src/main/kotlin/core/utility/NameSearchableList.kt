@@ -175,10 +175,15 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         }
         val matches = getAll(name)
         return when {
-            matches.isEmpty() -> null
+            matches.isEmpty() -> getMatchWithoutSpaces(name)
             matches.size == 1 -> matches[0]
             else -> bestMatch(matches, name)
         }
+    }
+
+    private fun getMatchWithoutSpaces(name: String): N? {
+        val cleaned = name.replace(" ", "")
+        return firstOrNull { cleaned == it.name.replace(" ", "") }
     }
 
     /**

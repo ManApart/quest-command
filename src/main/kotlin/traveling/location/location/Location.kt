@@ -3,7 +3,9 @@ package traveling.location.location
 import core.GameState
 import core.events.EventManager
 import core.history.display
+import core.properties.CONTAINER
 import core.properties.Properties
+import core.properties.SIZE
 import core.target.Target
 import core.target.activator.ActivatorManager
 import core.target.creature.CreatureManager
@@ -47,6 +49,10 @@ class Location(
 
     override val name: String
         get() = locationNode.name
+
+    override fun toString(): String {
+        return locationRecipe.name
+    }
 
     private fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.getLocationRecipe().properties)
@@ -270,7 +276,7 @@ class Location(
     }
 
     fun canHold(item: Target): Boolean {
-        return hasRoomFor(item)
+        return properties.tags.has(CONTAINER) && hasRoomFor(item)
                 && item.properties.canBeHeldByContainerWithProperties(properties)
     }
 
@@ -282,8 +288,8 @@ class Location(
     }
 
     fun hasRoomFor(target: Target): Boolean {
-        if (properties.values.has("Size")) {
-            val room = properties.values.getInt("Size")
+        if (properties.values.has(SIZE)) {
+            val room = properties.values.getInt(SIZE)
             return room - getWeight() >= target.getWeight()
         }
         return true

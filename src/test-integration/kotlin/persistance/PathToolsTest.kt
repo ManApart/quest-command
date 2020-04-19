@@ -15,6 +15,13 @@ class PathToolsTest {
     }
 
     @Test
+    fun convertsSlashesForConsistency(){
+        val cleanPath = "./this/path/is/dirty/"
+
+        assertEquals(cleanPath, clean("./this\\path/is\\dirty"))
+    }
+
+    @Test
     fun cleanRemovesMultiplePeriods(){
         val dirtyPath = "./this//path/is//dirty..json"
         val cleanPath = "./this/path/is/dirty.json/"

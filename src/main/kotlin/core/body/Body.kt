@@ -25,7 +25,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     override fun toString(): String {
-        return name + ": [" + layout.getLocations().joinToString { it.name } + "]"
+        return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
     fun getEquippedItems(): NameSearchableList<Target> {
@@ -80,6 +80,10 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
         return parts.filter { it.getEquippedItems().contains(item) }
     }
 
+    fun canEquip(item: Target, slot: Slot = getDefaultSlot(item)): Boolean {
+        return canEquip(slot)
+    }
+
     fun canEquip(slot: Slot): Boolean {
         return slot.attachPoints.all {
             hasAttachPoint(it)
@@ -98,7 +102,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
                 ?: throw IllegalArgumentException("Found no Slot for $item for body $name. This should not happen!")
     }
 
-    private fun getEmptyEquipSlot(item: Target): Slot? {
+    fun getEmptyEquipSlot(item: Target): Slot? {
         return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
     }
 

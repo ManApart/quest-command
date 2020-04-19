@@ -6,12 +6,13 @@ import core.history.display
 import traveling.scope.spawn.ItemSpawnedEvent
 import traveling.scope.spawn.SpawnItemEvent
 import core.events.EventManager
+import core.properties.COUNT
 
 class ItemSpawner : EventListener<SpawnItemEvent>() {
     override fun execute(event: SpawnItemEvent) {
         if (ItemManager.itemExists(event.itemName)) {
             val item = ItemManager.getItem(event.itemName)
-            item.properties.values.put("count", event.count)
+            item.properties.values.put(COUNT, event.count)
             if (event.position != NO_VECTOR) {
                 item.position = event.position
             }

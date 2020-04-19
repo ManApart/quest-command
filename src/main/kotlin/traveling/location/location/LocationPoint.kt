@@ -2,7 +2,6 @@ package traveling.location.location
 
 import core.target.Target
 
-//TODO - remove partname?
 class LocationPoint(val location: LocationNode, val targetName: String? = null, val partName: String? = null) {
 
     override fun toString(): String {

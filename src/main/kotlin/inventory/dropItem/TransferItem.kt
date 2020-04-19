@@ -33,18 +33,20 @@ class TransferItem : EventListener<TransferItemEvent>() {
     }
 
     private fun takeItemFromLocation(item: Target, destination: Target, silent: Boolean) {
-        if (destination.inventory.attemptToAdd(item)) {
+        val newStack = item.copy(1)
+        if (destination.inventory.attemptToAdd(newStack)) {
             removeFromDestLocation(item, destination)
-            EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
+            EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
         } else {
             display("Could not find a place for $item.")
         }
     }
 
     private fun moveItemFromSourceToDest(source: Target, item: Target, destination: Target, silent: Boolean) {
-        if (destination.inventory.attemptToAdd(item)) {
+        val newStack = item.copy(1)
+        if (destination.inventory.attemptToAdd(newStack)) {
             removeFromSource(source, item)
-            EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
+            EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
         } else {
             display("Could not find a place for $item.")
         }

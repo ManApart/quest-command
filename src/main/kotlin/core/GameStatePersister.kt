@@ -8,6 +8,7 @@ import quests.readFromData
 fun getPersistedGameState(): Map<String, Any> {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["gameName"] = GameState.gameName
+    //TODO - move quests to their own file(s)
     data["quests"] = QuestManager.quests.filter { it.hasStarted() }.map { getPersisted(it) }
     data["time"] = GameState.timeManager.getTicks().toString()
     data["properties"] = core.properties.getPersisted(GameState.properties)

@@ -29,7 +29,7 @@ class LocationValidator {
         var warnings = 0
         LocationManager.getNetworks().forEach { network ->
             val names = mutableListOf<String>()
-            network.getLocations().forEach { location ->
+            network.getLocationRecipes().forEach { location ->
                 if (names.contains(location.name)) {
                     println("WARN: Location '${location.name}' has a duplicate name in network '${network.name}'.")
                     warnings++

@@ -1,15 +1,22 @@
 package inventory
 
 import core.body.Body
+import core.properties.CONTAINER
+import core.properties.OPEN
 import core.properties.Properties
+import core.properties.SIZE
 import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.location.Location
 
 
-class Inventory(private val body: Body = createInventoryBody()) {
-    constructor(items: List<Target>) : this(Body().also { it.layout.rootNode.getLocation().addTargets(items) })
+class Inventory(private val name: String = "Inventory", private val body: Body = createInventoryBody(name)) {
+    constructor(name: String, items: List<Target>) : this(name, Body().also { it.layout.rootNode.getLocation().addTargets(items) })
+
+    override fun toString(): String {
+        return name
+    }
 
     fun exists(item: Target): Boolean {
         return getItemsNameSearchable().exists(item) || NameSearchableList(getAllItems()).exists(item)
@@ -55,6 +62,12 @@ class Inventory(private val body: Body = createInventoryBody()) {
 
     //Eventually add count
     fun attemptToAdd(item: Target): Boolean {
+        val equipSlot = body.getEmptyEquipSlot(item)
+        if (equipSlot != null) {
+            body.equip(item, equipSlot)
+            return true
+        }
+
         val location = findLocationThatCanTake(item) ?: return false
         val match = location.getItems(item.name).firstOrNull()
 
@@ -94,15 +107,14 @@ class Inventory(private val body: Body = createInventoryBody()) {
 
 }
 
-fun createInventoryBody(capacity: Int? = null): Body {
-    return Body("Inventory").also {
+fun createInventoryBody(name: String = "Inventory", capacity: Int? = null): Body {
+    return Body(name).also {
         with(it.getRootPart().properties.tags) {
-            add("Container")
-            add("Open")
-
+            add(CONTAINER)
+            add(OPEN)
         }
-        if (capacity != null){
-            it.getRootPart().properties.values.put("Size", capacity)
+        if (capacity != null) {
+            it.getRootPart().properties.values.put(SIZE, capacity)
         }
     }
 }

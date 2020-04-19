@@ -14,5 +14,5 @@ private fun cleanPath(pieces: List<String>) : String {
 }
 
 fun cleanPathPart(pathString: String): String {
-    return pathString.replace(" ", "_").replace(Regex("[^a-zA-Z/.]"), "")
+    return pathString.replace(" ", "_").replace("\\", "/").replace(Regex("[^a-zA-Z/.]"), "")
 }

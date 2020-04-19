@@ -115,7 +115,7 @@ class InventoryTest {
         val rightHand = LocationRecipe("Right Hand")
         val leftHand = LocationRecipe("Left Hand")
         val body = createBody(listOf(rightHand, leftHand))
-        val inventory = Inventory(body)
+        val inventory = Inventory("Inventory", body)
 
         body.getParts().first().addTarget(apple)
         body.getParts().last().addTarget(apple)

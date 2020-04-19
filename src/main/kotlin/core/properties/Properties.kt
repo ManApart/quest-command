@@ -47,11 +47,11 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     }
 
     fun getCount(): Int {
-        return values.getInt("count", 1)
+        return values.getInt(COUNT, 1)
     }
 
     fun incCount(amount: Int) {
-        values.inc("count", amount)
+        values.inc(COUNT, amount)
     }
 
     fun isItem(): Boolean {
@@ -67,7 +67,7 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     }
 
     fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {
-        val acceptedTypes = containerProperties.values.getList("CanHold")
+        val acceptedTypes = containerProperties.values.getList(CAN_HOLD)
         return if (acceptedTypes.isEmpty()) {
             true
         } else {
@@ -77,10 +77,10 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
 
     fun getRange(): Int {
         return when {
-            tags.hasAny(Tags(listOf("Small", "Short"))) -> DAGGER_RANGE
-            tags.has("Medium") -> SWORD_RANGE
-            tags.hasAny(Tags(listOf("Large", "Long"))) -> SPEAR_RANGE
-            tags.has("Ranged") -> BOW_RANGE
+            tags.hasAny(Tags(listOf(SMALL, SHORT))) -> DAGGER_RANGE
+            tags.has(MEDIUM) -> SWORD_RANGE
+            tags.hasAny(Tags(listOf(LARGE, LONG))) -> SPEAR_RANGE
+            tags.has(RANGED) -> BOW_RANGE
             else -> MIN_RANGE
         }
     }
@@ -89,7 +89,7 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
         return if (values.has(type)) {
             values.getInt(type)
         } else {
-            values.getInt("defense", 0)
+            values.getInt(DEFENSE, 0)
         }
     }
 

@@ -43,19 +43,23 @@ fun loadMap(path: String): Map<String, Any> {
     }
 }
 
-fun getFiles(path: String): List<File> {
-    return getFilesAndFolders(path).filter { !it.isDirectory }
+fun getFiles(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
+    return getFilesAndFolders(path, ignoredFileNames).filter { !it.isDirectory }
 }
 
-fun getFolders(path: String): List<File> {
-    return getFilesAndFolders(path).filter { it.isDirectory }
+fun getFolders(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
+    return getFilesAndFolders(path, ignoredFileNames).filter { it.isDirectory }
 }
 
-private fun getFilesAndFolders(path: String): List<File> {
+private fun getFilesAndFolders(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
     val folder = File(path)
     return if (folder.exists() && folder.isDirectory) {
         @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-        folder.listFiles().toList()
+        folder.listFiles().filter { file ->
+            ignoredFileNames.none {
+                file.endsWith(it)
+            }
+        }.toList()
     } else {
         listOf()
     }
@@ -66,8 +70,7 @@ fun save(rawGameName: String, player: Target) {
     val gameName = cleanPathPart(rawGameName)
     val gamePath = clean(directory, gameName)
     saveSessionStats()
-    savePlayer(player, gamePath)
-//    LocationManager.getNetworks().flatMap { it.getLocationNodes() }.forEach { it.flushLocation() }
+    persist(player, gamePath)
     LocationManager.getNetworks().forEach { save(gamePath, it) }
     saveGameState(player, gamePath)
     saveTopLevelMetadata(gameName)
@@ -77,11 +80,6 @@ private fun saveSessionStats() {
     if (!GameState.properties.values.getBoolean(SKIP_SAVE_STATS)) {
         SessionHistory.saveSessionStats()
     }
-}
-
-private fun savePlayer(player: Target, path: String) {
-    val playerData = persist(player, path)
-
 }
 
 private fun saveGameState(player: Target, path: String) {

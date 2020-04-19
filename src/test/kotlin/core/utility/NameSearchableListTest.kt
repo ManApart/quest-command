@@ -290,6 +290,17 @@ class NameSearchableListTest {
         assertNull(list.getOrNull("proxy"))
     }
 
+    @Test
+    fun getTriesWithSpaces() {
+        val target = NamedString("A Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(target)
+
+        val actual = list.get("ATarget")
+        assertEquals(target, actual)
+    }
+
 }
 
 

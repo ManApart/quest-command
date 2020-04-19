@@ -185,6 +185,7 @@
   },
   {
     "name": "Grain Chute",
+    "bodyName": "Grain Chute",
     "description": "Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below.",
     "properties": {
       "tags": [
@@ -216,8 +217,7 @@
         "Container"
       ],
       "values": {
-        "Size": "3",
-        "CanHold": "Grounded"
+        "Size": "3"
       }
     }
   },

@@ -3,6 +3,7 @@ package combat.block
 import combat.DamageType
 import core.events.EventListener
 import core.GameState
+import core.properties.DEFENSE
 import core.target.Target
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
@@ -36,7 +37,7 @@ class Block : EventListener<BlockEvent>() {
 
     private fun getTotalDefense(apparel: Target): Int {
         val values = apparel.properties.values
-        return values.getInt("defense") + DamageType.values().sumBy { values.getInt(it.defense) }
+        return values.getInt(DEFENSE) + DamageType.values().sumBy { values.getInt(it.defense) }
     }
 
 }

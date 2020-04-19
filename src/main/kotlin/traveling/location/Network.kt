@@ -7,10 +7,10 @@ import traveling.direction.Vector
 import traveling.location.location.*
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
-    constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes), base.locations.map { LocationRecipe(it) })
+    constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes), base.locationRecipes.map { LocationRecipe(it) })
 
-    private val locationNodes = NameSearchableList(locationNodes, LocationNode("Root", isRoot = true, network = this, parent = this.name))
-    private val locations = NameSearchableList(locationRecipes)
+    private val locationNodes = NameSearchableList(locationNodes, LocationNode(name, isRoot = true, network = this, parent = this.name))
+    private val locationRecipes = NameSearchableList(locationRecipes)
     val rootNode by lazy { findRootNode() }
     val rootNodeHeight by lazy { findRootNodeHeight() }
 
@@ -52,16 +52,16 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locationNodes.size
     }
 
-    fun getLocation(name: String): LocationRecipe {
-        return locations.getOrNull(name) ?: NOWHERE
+    fun getLocationRecipe(name: String): LocationRecipe {
+        return locationRecipes.getOrNull(name) ?: NOWHERE
     }
 
-    fun getLocations(): List<LocationRecipe> {
-        return locations.toList()
+    fun getLocationRecipes(): List<LocationRecipe> {
+        return locationRecipes.toList()
     }
 
-    fun locationExists(name: String): Boolean {
-        return locations.exists(name)
+    fun locationRecipeExists(name: String): Boolean {
+        return locationRecipes.exists(name)
     }
 
     fun locationNodeExists(name: String): Boolean {
@@ -104,6 +104,10 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         locationNodes.add(locationNode)
     }
 
+    fun addLocationRecipe(recipe: LocationRecipe) {
+        this.locationRecipes.add(recipe)
+    }
+
 }
 
 
@@ -111,7 +115,7 @@ private fun duplicateNodesAndConnections(oldNodes: List<LocationNode>): List<Loc
     val newToOldNodes = oldNodes.associateBy { LocationNode(it) }
     val oldToNewNodes = newToOldNodes.keys.associateBy { newToOldNodes[it] }
 
-    newToOldNodes.keys.forEach {newNode ->
+    newToOldNodes.keys.forEach { newNode ->
         val oldNode = newToOldNodes[newNode]!!
         oldNode.getNeighborConnections().forEach { oldConnection ->
             val newSource = LocationPoint(oldToNewNodes[oldConnection.source.location]!!, oldConnection.source.targetName, oldConnection.source.partName)

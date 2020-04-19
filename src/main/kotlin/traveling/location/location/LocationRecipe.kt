@@ -1,8 +1,6 @@
 package traveling.location.location
 
-import core.history.display
 import core.properties.Properties
-import core.target.Target
 import core.utility.Named
 import dialogue.DialogueOptions
 

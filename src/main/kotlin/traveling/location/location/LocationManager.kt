@@ -73,7 +73,7 @@ object LocationManager {
     }
 
     private fun findTarget(name: String, network: Network): LocationNode? {
-        return if (network.locationExists(name)) {
+        return if (network.locationRecipeExists(name)) {
             network.findLocation(name)
         } else {
             null

@@ -13,6 +13,7 @@ import core.target.item.ItemParser
 import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
+import createPouch
 import inventory.dropItem.TransferItem
 import org.junit.Before
 import org.junit.Test
@@ -87,9 +88,8 @@ class CraftTest {
     }
 
     private fun createBaker(): Target {
-//        val baker = Player(location = NOWHERE_NODE)
         val baker = GameManager.newPlayer()
-        val pouch = Target("Pouch", properties = Properties(Values(mapOf("Size" to "30")), Tags(listOf("Container", "Open"))))
+        val pouch = createPouch(size = 30)
         baker.inventory.add(pouch)
         return baker
     }

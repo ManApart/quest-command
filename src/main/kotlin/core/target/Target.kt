@@ -54,7 +54,7 @@ open class Target(
 
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
-    val inventory: Inventory = Inventory(this.body)
+    val inventory: Inventory = Inventory(name, this.body)
     val properties = Properties(properties, params)
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
@@ -156,12 +156,9 @@ open class Target(
     }
 
     fun canEquipTo(body: Body): Boolean {
-        equipSlots.forEach { slot ->
-            if (body.canEquip(slot)) {
-                return true
-            }
+        return equipSlots.any { slot ->
+            body.canEquip(slot)
         }
-        return false
     }
 
     fun getEquippedSlot(body: Body): Slot {
@@ -189,7 +186,7 @@ open class Target(
 
     fun copy(count: Int): Target {
         val props = Properties(properties)
-        props.values.put("count", count)
+        props.values.put(COUNT, count)
         return Target(name, base = this, properties = props)
     }
 
