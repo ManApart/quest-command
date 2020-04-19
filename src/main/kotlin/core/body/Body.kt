@@ -103,7 +103,15 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     }
 
     fun getEmptyEquipSlot(item: Target): Slot? {
-        return item.equipSlots.firstOrNull { canEquip(it) && it.isEmpty(this) }
+        return item.equipSlots.sortedBy {
+                    it.attachPoints.any { point ->
+                        point.contains("Right")
+                    }
+                }
+                .reversed()
+                .firstOrNull {
+                    canEquip(it) && it.isEmpty(this)
+                }
     }
 
     fun equip(item: Target, slot: Slot = getDefaultSlot(item)) {

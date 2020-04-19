@@ -51,6 +51,18 @@ class BodyEquipTest {
     }
 
     @Test
+    fun equipPrefersRightSide() {
+        val dagger = Target("Dagger", equipSlots = listOf(listOf("Left Grip"), listOf("Right Grip")))
+        val rightHand = LocationRecipe("Right Hand", slots = listOf("Right Grip", "Right Glove"))
+        val leftHand = LocationRecipe("Left Hand", slots = listOf("Left Grip", "Left Glove"))
+        val body = createBody(listOf(leftHand, rightHand))
+
+        body.equip(dagger)
+
+        assertEquals(1, body.getEquippedItemsAt("Right Grip").size)
+    }
+
+    @Test
     fun replaceEquippedItem() {
         val dagger = Target("Dagger", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
         val hatchet = Target("Hatchet", equipSlots = listOf(listOf("Right Grip"), listOf("Left Grip")))
