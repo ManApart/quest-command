@@ -8,6 +8,7 @@ import traveling.location.location.*
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
     constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes), base.locationRecipes.map { LocationRecipe(it) })
+    constructor(name: String, locationRecipe: LocationRecipe) : this(name, listOf(LocationNode(name, locationName = locationRecipe.name)), listOf(locationRecipe))
 
     private val locationNodes = NameSearchableList(locationNodes, LocationNode(name, isRoot = true, network = this, parent = this.name))
     private val locationRecipes = NameSearchableList(locationRecipes)

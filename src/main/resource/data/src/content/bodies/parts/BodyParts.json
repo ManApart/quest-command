@@ -104,29 +104,6 @@
     ]
   },
   {
-    "name": "Sack",
-    "properties": {
-      "tags": [
-        "Container"
-      ],
-      "values": {
-        "weight": "1",
-        "defense": "1"
-      }
-    }
-  },
-  {
-    "name": "Grain Chute",
-    "properties": {
-      "tags": [
-        "Container"
-      ],
-      "values": {
-        "size": "3"
-      }
-    }
-  },
-  {
     "name": "Grain Bin",
     "properties": {
       "tags": [

@@ -50,7 +50,7 @@ open class Target(
     override val name = name.apply(params)
     val ai = ai ?: AIManager.getAI(aiName, this)
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
-    val body: Body = getBody(body, bodyName)
+    val body: Body = getBody(body, base?.body, bodyName)
 
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
     val equipSlots = equipSlots.applyNested(params).map { Slot(it) }
@@ -71,9 +71,10 @@ open class Target(
         }
     }
 
-    private fun getBody(body: Body?, bodyName: String?): Body {
+    private fun getBody(body: Body?, baseBody: Body?, bodyName: String?): Body {
         return when {
             body != null -> body
+            baseBody != null -> Body(baseBody)
             bodyName != null -> BodyManager.getBody(bodyName)
             else -> Body()
         }

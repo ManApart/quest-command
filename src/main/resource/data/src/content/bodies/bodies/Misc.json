@@ -4,14 +4,6 @@
     "name": "Stairs"
   },
   {
-    "parent": "Sack",
-    "name": "Sack"
-  },
-  {
-    "parent": "Grain Chute",
-    "name": "Grain Chute"
-  },
-  {
     "parent": "Grain Bin",
     "name": "Grain Bin"
   }

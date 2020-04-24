@@ -24,7 +24,21 @@
   {
     "name": "Small Pouch",
     "description": "A pouch for storing small items.",
-    "bodyName": "Sack",
+    "body": {
+      "name": "Sack",
+      "bodyPart": {
+        "name": "Sack",
+        "properties": {
+          "tags": [
+            "Container"
+          ],
+          "values": {
+            "weight": "1",
+            "defense": "1"
+          }
+        }
+      }
+    },
     "properties": {
       "tags": [
         "Open",

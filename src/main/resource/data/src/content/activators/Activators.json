@@ -114,7 +114,6 @@
       ]
     }
   },
-
   {
     "name": "Kanbara Gate (Open)",
     "description": "The gate is large but not immovable.",
@@ -185,7 +184,20 @@
   },
   {
     "name": "Grain Chute",
-    "bodyName": "Grain Chute",
+    "body": {
+      "name": "Grain Chute",
+      "bodyPart": {
+        "name": "Grain Chute",
+        "properties": {
+          "tags": [
+            "Container"
+          ],
+          "values": {
+            "size": "3"
+          }
+        }
+      }
+    },
     "description": "Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below.",
     "properties": {
       "tags": [

@@ -1,5 +1,6 @@
 package core.body
 
+import com.fasterxml.jackson.annotation.JsonCreator
 import core.history.display
 import core.target.Target
 import core.utility.NameSearchableList
@@ -16,7 +17,11 @@ import javax.print.DocFlavor
 val NONE = Body("None")
 
 class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
+
     constructor(base: Body) : this(base.name, Network(base.layout))
+
+    @JsonCreator
+    constructor(name: String, bodyPart: LocationRecipe) : this(name, Network(name, bodyPart))
 
     private val parts: NameSearchableList<Location> by lazy { createParts() }
 
