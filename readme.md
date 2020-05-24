@@ -29,6 +29,10 @@ C) Clone the project and build it.
 java -jar ./build/libs/quest-command-dev.jar
 ```
 
+### Visual Git Log
+
+`gource -a 1 -s 1 --file-idle-time 0 --key -f`
+
 ## What can I do?
 
 At this point there is very little solid functionality, but there are a few basic things you can do.

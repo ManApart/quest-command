@@ -15,15 +15,18 @@ object JsonGenerator {
         }
 
         val scopeMap = buildFolderMap(allConversions)
+        val bodyMaker = BodyMaker(mapper)
         scopeMap.entries.forEach { (_, conversions) ->
             val converter = JsonConverter(conversions)
             conversions.forEach {
                 val transformed = converter.transform(it)
+                bodyMaker.add(transformed)
                 val output = File(it.outputPath)
                 output.parentFile.mkdirs()
                 mapper.writeValue(output, transformed)
             }
         }
+        bodyMaker.writeBodies()
         println("Generated ${allConversions.size} json files from ${scopeMap.keys.size} folders.")
     }
 
