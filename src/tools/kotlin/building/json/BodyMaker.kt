@@ -3,7 +3,7 @@ package building.json
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
 
-class BodyMaker(private val mapper: ObjectMapper) {
+class BodyMaker(private val mapper: ObjectMapper, private val writeRoot: String) {
     private val bodies = mutableListOf<Map<String, Any>>()
     private val bodyParts = mutableListOf<Map<String, Any>>()
     fun add(transformed: List<Map<String, Any>>) {
@@ -32,11 +32,11 @@ class BodyMaker(private val mapper: ObjectMapper) {
     }
 
     fun writeBodies() {
-        val bodiesOutput = File("./src/main/resource/data/generated/content/bodies/bodies/Generated.json")
+        val bodiesOutput = File("$writeRoot/data/generated/content/bodies/bodies/Generated.json")
         bodiesOutput.parentFile.mkdirs()
         mapper.writeValue(bodiesOutput, bodies)
 
-        val bodyOutput = File("./src/main/resource/data/generated/content/bodies/parts/Generated.json")
+        val bodyOutput = File("$writeRoot/data/generated/content/bodies/parts/Generated.json")
         bodyOutput.parentFile.mkdirs()
         mapper.writeValue(bodyOutput, bodyParts)
     }

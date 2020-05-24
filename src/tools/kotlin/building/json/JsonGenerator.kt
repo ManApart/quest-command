@@ -15,7 +15,7 @@ object JsonGenerator {
         }
 
         val scopeMap = buildFolderMap(allConversions)
-        val bodyMaker = BodyMaker(mapper)
+        val bodyMaker = BodyMaker(mapper, writeRoot)
         scopeMap.entries.forEach { (_, conversions) ->
             val converter = JsonConverter(conversions)
             conversions.forEach {
