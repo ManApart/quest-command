@@ -682,8 +682,6 @@ unlocked commands are saved at the game level so multiple characters can use the
 
 ## Bugs
 
-use stairs should climb them
-
 push / pull is not honoring a specific distance
 
 Args test for returning the two empty lists - make sure it ends up just being one empty list

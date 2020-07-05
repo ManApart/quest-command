@@ -59,7 +59,7 @@ open class Target(
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
     private val dynamicDescription = dynamicDescription.apply(params)
-    private val behaviors = BehaviorManager.getBehaviors(behaviorRecipes)
+    private val behaviors = BehaviorManager.getBehaviors(this.behaviorRecipes)
     val knownRecipes = NameSearchableList<Recipe>()
 
     var climbTarget: Target? = null

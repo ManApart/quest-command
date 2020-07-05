@@ -51,6 +51,21 @@
     ]
   },
   {
+    "name": "Climbable",
+    "condition": {
+      "callingEvent": "InteractEvent"
+    },
+    "events": [
+      {
+        "className": "CommandEvent",
+        "params": [
+          "climb $climbable"
+        ]
+      }
+
+    ]
+  },
+  {
     "name": "Burn to Ash",
     "condition": {
       "callingEvent": "PropertyStatMinnedEvent",

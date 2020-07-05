@@ -55,6 +55,12 @@
         "params": {
           "name": "Apple Tree"
         }
+      },
+      {
+        "name": "Climbable",
+        "params": {
+          "climbable": "Apple Tree"
+        }
       }
     ]
   },
@@ -241,7 +247,15 @@
       "tags": [
         "Climbable"
       ]
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Climbable",
+        "params": {
+          "climbable": "Stairs"
+        }
+      }
+    ]
   },
   {
     "name": "City Wall",
@@ -251,6 +265,14 @@
       "tags": [
         "Climbable"
       ]
-    }
+    },
+    "behaviors": [
+      {
+        "name": "Climbable",
+        "params": {
+          "climbable": "City Wall"
+        }
+      }
+    ]
   }
 ]
