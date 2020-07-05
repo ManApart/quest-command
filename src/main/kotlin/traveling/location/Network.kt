@@ -88,7 +88,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     }
 
     fun getSize(): Vector {
-        val root = rootNode as LocationNode
+        val root = rootNode
 
         val x = getFarthestDistanceInDirection(root, Direction.EAST) + getFarthestDistanceInDirection(root, Direction.WEST)
         val y = getFarthestDistanceInDirection(root, Direction.NORTH) + getFarthestDistanceInDirection(root, Direction.SOUTH)

@@ -39,8 +39,8 @@ class Poison : SpellCommand() {
         val initialDuration = spellArgs.getNumber("for")
 
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Poison how much?", options.map { it to "cast poison $it for ${initialDuration.toString() ?: ""} on ${targets.toCommandString()}" }.toMap())
-        val durationResponse = ResponseRequest("Poison for how long?", options.map { it to "cast poison ${initialAmount.toString() ?: ""} for $it on ${targets.toCommandString()}" }.toMap())
+        val amountResponse = ResponseRequest("Poison how much?", options.map { it to "cast poison $it for ${initialDuration.toString()} on ${targets.toCommandString()}" }.toMap())
+        val durationResponse = ResponseRequest("Poison for how long?", options.map { it to "cast poison ${initialAmount.toString()} for $it on ${targets.toCommandString()}" }.toMap())
         val responseHelper = ResponseRequestHelper(mapOf(
                 "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 1),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 10)

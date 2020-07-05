@@ -6,7 +6,7 @@ import use.UseEvent
 import use.UseListener
 import use.eat.EatFoodEvent
 
-class UseFoodItem : UseListener<UseEvent>() {
+class UseFoodItem : UseListener() {
     override fun shouldExecute(event: UseEvent): Boolean {
         //TODO - check event source, don't hardcode to player
         return event.source.properties.values.getBoolean(CAN_INTERACT)

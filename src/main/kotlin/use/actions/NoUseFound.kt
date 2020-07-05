@@ -8,7 +8,7 @@ import core.utility.StringFormatter
 import use.UseEvent
 import use.UseListener
 
-class NoUseFound : UseListener<UseEvent>() {
+class NoUseFound : UseListener() {
     private var checkedEvent: Event? = null
 
     override fun shouldExecute(event: UseEvent): Boolean {

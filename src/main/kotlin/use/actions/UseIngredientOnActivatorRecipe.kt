@@ -7,7 +7,7 @@ import use.UseEvent
 import use.UseListener
 import core.events.EventManager
 
-class UseIngredientOnActivatorRecipe : UseListener<UseEvent>() {
+class UseIngredientOnActivatorRecipe : UseListener() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return if (event.used.properties.isItem() && event.target.properties.isActivator()){

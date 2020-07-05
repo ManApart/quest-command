@@ -14,10 +14,10 @@ fun getPersisted(dataObject: Properties): Map<String, Any> {
 
 fun readFromData(data: Map<String, Any>): Properties {
     val values = Values()
-    getMapKey(data, "values").forEach { values.put(it.key as String, it.value as String) }
+    getMapKey(data, "values").forEach { values.put(it.key, it.value as String) }
 
     val tags = Tags()
-    getListKey(data, "tags").forEach { tags.add(it as String) }
+    getListKey(data, "tags").forEach { tags.add(it) }
 
     return Properties(values, tags)
 }

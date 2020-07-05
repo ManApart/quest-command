@@ -37,6 +37,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return "$size with proxies: $proxies"
     }
 
+    private fun toStringExtended(): String {
+        return "[${joinToString { it.name }}] with proxies: $proxies"
+    }
+
     fun <R : Comparable<R>> sortedBy(selector: (N) -> R?): NameSearchableList<N> {
         val newList: NameSearchableList<N> = NameSearchableList(sortedWith(compareBy(selector)))
         newList.addAllProxies(this)
@@ -154,7 +158,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
 
     fun get(name: String): N {
-        return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toString()}")
+        return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toStringExtended()}")
     }
 
     //TODO - eventually sort by best match

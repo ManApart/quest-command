@@ -32,7 +32,7 @@ class ConditionalAI(name: String, creature: Target, val actions: List<TriggeredE
             val defaultPart = if (creature.body.hasPart("Small Claws")) {
                 creature.body.getPart("Small Claws")
             } else {
-                creature.body.getRootPart() ?: creature.body.getParts().firstOrNull()
+                creature.body.getRootPart()
             }
             if (defaultPart != null) {
                 EventManager.postEvent(StartAttackEvent(creature, defaultPart, TargetAim(GameState.player, targetPart), DamageType.SLASH))

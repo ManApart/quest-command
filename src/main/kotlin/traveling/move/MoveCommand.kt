@@ -52,7 +52,7 @@ class MoveCommand : Command() {
 
     private fun parseDirectionAndDistance(source: Target, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
-        val distanceResponse = ResponseRequest("Move how far?", distanceOptions.map { it to "move $it towards ${initialDirection.toString() ?: ""}" }.toMap())
+        val distanceResponse = ResponseRequest("Move how far?", distanceOptions.map { it to "move $it towards ${initialDirection.toString()}" }.toMap())
 
         val directionOptions = Direction.values().map { it.name }
         val directionResponse = ResponseRequest("Move in what initialDirection?", directionOptions.map { it to "move ${initialDistance ?: ""} towards $it" }.toMap())

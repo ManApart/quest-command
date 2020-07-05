@@ -2,11 +2,17 @@ package building.json
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import org.junit.After
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 
 class JsonGeneratorTest {
+
+    @After
+    fun cleanup(){
+        File("./src/test-integration/resource/data/").deleteRecursively()
+    }
 
     @Test
     fun sampleConversion() {

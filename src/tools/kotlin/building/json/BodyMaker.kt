@@ -6,6 +6,7 @@ import java.io.File
 class BodyMaker(private val mapper: ObjectMapper, private val writeRoot: String) {
     private val bodies = mutableListOf<Map<String, Any>>()
     private val bodyParts = mutableListOf<Map<String, Any>>()
+    @Suppress("UNCHECKED_CAST")
     fun add(transformed: List<Map<String, Any>>) {
         transformed
                 .mapNotNull { it["body"] as Map<String, Any>? }

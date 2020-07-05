@@ -5,7 +5,7 @@ import core.history.display
 import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
 
-abstract class UseListener<T: UseEvent> : EventListener<UseEvent>() {
+abstract class UseListener : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         if (!event.used.isWithinRangeOf(event.source)) {

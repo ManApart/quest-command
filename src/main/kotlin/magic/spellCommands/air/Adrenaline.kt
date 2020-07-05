@@ -40,8 +40,8 @@ class Adrenaline : SpellCommand() {
         val initialDuration = spellArgs.getNumber("for")
 
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Increase how much?", options.map { it to "cast adrenaline $it for ${initialDuration.toString() ?: ""} on ${targets.toCommandString()}" }.toMap())
-        val durationResponse = ResponseRequest("Increase for how long?", options.map { it to "cast adrenaline ${initialPower.toString() ?: ""} for $it on ${targets.toCommandString()}" }.toMap())
+        val amountResponse = ResponseRequest("Increase how much?", options.map { it to "cast adrenaline $it for ${initialDuration.toString()} on ${targets.toCommandString()}" }.toMap())
+        val durationResponse = ResponseRequest("Increase for how long?", options.map { it to "cast adrenaline ${initialPower.toString()} for $it on ${targets.toCommandString()}" }.toMap())
         val responseHelper = ResponseRequestHelper(mapOf(
                 "amount" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)

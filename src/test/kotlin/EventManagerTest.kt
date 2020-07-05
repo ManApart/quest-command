@@ -13,9 +13,10 @@ class EventManagerTest {
     private val resultList = mutableListOf<String>()
     private val first = TestListener(this, 0, "first")
     private val second = TestListener(this, 1, "second")
+    private val child = TestChildListener(this, 2, "child")
 
     class TestEvent : Event
-    class TestListener(private val parent: EventManagerTest, private val priorityLevel: Int, private val id: String) : EventListener<TestEvent>() {
+    open class TestListener(private val parent: EventManagerTest, private val priorityLevel: Int, private val id: String) : EventListener<TestEvent>() {
         override fun getPriorityRank(): Int {
             return priorityLevel
         }
@@ -25,6 +26,8 @@ class EventManagerTest {
         }
 
     }
+
+    class TestChildListener(parent: EventManagerTest, priorityLevel: Int, id: String) : TestListener(parent, priorityLevel, id)
 
     companion object {
         @BeforeClass
@@ -68,6 +71,19 @@ class EventManagerTest {
 
         Assert.assertEquals("first", resultList[0])
         Assert.assertEquals("second", resultList[1])
+        resultList.clear()
+    }
+
+    @Test
+    fun childClassStillFound(){
+        EventManager.registerListener(child)
+
+        EventManager.postEvent(TestEvent())
+        EventManager.executeEvents()
+
+        EventManager.unRegisterListener(child)
+
+        Assert.assertEquals("child", resultList[0])
         resultList.clear()
     }
 

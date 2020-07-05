@@ -141,6 +141,6 @@ fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<Location> {
     return if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
-        listOfNotNull(targetAim.target.body.getRootPart() ?: targetAim.target.body.getParts().firstOrNull())
+        listOfNotNull(targetAim.target.body.getRootPart())
     }
 }

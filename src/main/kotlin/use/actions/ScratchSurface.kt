@@ -4,7 +4,7 @@ import core.history.display
 import use.UseEvent
 import use.UseListener
 
-class ScratchSurface : UseListener<UseEvent>() {
+class ScratchSurface : UseListener() {
     override fun shouldExecute(event: UseEvent): Boolean {
         return event.target.properties.tags.has("Wood")
                 && event.used.properties.tags.has("Sharp")

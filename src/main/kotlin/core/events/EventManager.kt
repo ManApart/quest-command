@@ -93,7 +93,16 @@ object EventManager {
     }
 
     private fun getListenedForClass(listener: EventListener<*>): Class<*> {
-        return (listener.javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<*>
+        val parametrizedType = findParametrizedType(listener.javaClass)
+        return parametrizedType.actualTypeArguments[0] as Class<*>
+    }
+
+    private fun findParametrizedType(clazz: Class<*>): ParameterizedType {
+        return if (clazz.genericSuperclass is ParameterizedType) {
+            (clazz.genericSuperclass as ParameterizedType)
+        } else {
+            findParametrizedType(clazz.superclass)
+        }
     }
 
 }

@@ -56,6 +56,7 @@ fun load(path: String, parentLocation: Network? = null): Target {
     return target
 }
 
+@Suppress("UNCHECKED_CAST")
 private fun getLocation(parentLocation: Network?, data: Map<String, Any>): LocationNode {
     val locationMap = (data["location"] as Map<String, String>)
     val network = parentLocation ?: LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name)

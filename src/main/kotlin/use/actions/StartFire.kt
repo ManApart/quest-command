@@ -10,7 +10,7 @@ import status.effects.EffectManager
 import use.UseEvent
 import use.UseListener
 
-class StartFire : UseListener<UseEvent>() {
+class StartFire : UseListener() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return event.source.properties.values.getBoolean(CAN_INTERACT)

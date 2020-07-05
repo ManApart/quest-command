@@ -9,7 +9,7 @@ import status.effects.EffectManager
 import magic.Element
 import core.events.EventManager
 
-class UseOnFire : UseListener<UseEvent>() {
+class UseOnFire : UseListener() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return event.target.soul.hasCondition("Burning")
