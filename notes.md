@@ -22,7 +22,12 @@ Player Controlled AI
 - All commands have an execute(source, keyword, args). Default delegates to execute(keyword, args). Supported commands create their event using source instead of player.
 - Command parser is passed the Target that is issuing the command. 99% of the time it’s the player, but could be a player controlled AI.
 
+Ai has two properties, Ai state and ai state time
 
+Make AI run not only during battle, but give it an on-tick listener where it can integrate game state and decide to do something. (And start with it allowing player controlled ai to make a choice)
+Only evaluate AI for current location
+
+Maybe all command parsing come from AI and if not in battle / command is not an on-tick command, just cycle next ai etc.
 
 ### Architecture
 
@@ -68,6 +73,21 @@ Turn bodypart into just location
 - Slots could be location poperties
 - properties can give aggregates / take a list of properties and recursively sum those below it
 
+Multi-event listeners?
+trigger conditions have a priority. Of all conditions that meet their condition, the one with the highest priority is executed
+
+fold body parts into locations soon!?
+how do we configure auto load?
+
+Property aggregator that gets stat + all child stats?
+- sum properties takes a list of properties and sums them
+- Has hook for child prop update
+- Used for composed items?
+
+Make named condition sets > point at one name / reuse a list of conditions that must be true
+
+- Readable behavior / item
+
 #### Debug Mode
 When on
 - All locations revealed on map
@@ -83,9 +103,15 @@ Locked commands give error if called (you don’t know how to do that)
 
 GameState has Values file for game level properties, like if debug is on or off
 
+Debug ignore encumbrance
+debug mode can reset managers
+
 ### Combat
 
 Should be reworked to use new body system
+
+Attack command groups 0 vs 1 - make tests
+ - Mock Player?
 
 #### Thoughts and Description
 
@@ -223,6 +249,7 @@ Skill check based on
 Examine is successful if Clarity >= task difficulty * stealth level
 - When using perception on self, stealth level is always 1
 
+Stealth actions / some actions have stealth rating / may be executed (even if hostile) and go unnoticed if stealth is high enough
 
 Task | Base difficulty
 --- | ---
@@ -238,10 +265,13 @@ View hidden properties | 10
 - Item could fit in bag weight but then bag be too heavy for character to move
 - Looking at a creature will say what the creature has equipped (is wearing)
 - Pickup/Place commands have optional count for item stacks
+- Carrying space?
+- Remove hatchet and apple from starting inventory and place them in world etc
 
 Item Ideas
 
 - Powerful sword that boosts all stats but drains morality. Boost equivalent to how good you are. Turns into drains if morality becomes negative.
+- Ice skates: overtime you get new tools that allow you to explore new areas
 
 ### General UI
 
@@ -417,6 +447,8 @@ Quake with 4 levels, 1 being passive
 - Casting gauntlets that let you insert a gem/artifact for better casting.
 - Staves give you more range to your attacks
 - Leveling up gives more range?
+- cast command - pass args from all groups other than targets (take args after targets if they are there)
+- Create a data test for spell costs to narrow in on a good formula
 
 On Burn listener
 - Triggers on take burn damage
@@ -437,6 +469,14 @@ A Simple Pie
 Other
 - First time hints / build out tutorial
 - Quest event has array of help sentences?
+- Quests can be adaptable by giving quest triggers an alias to speak through. Since there is no animation / voiced dialogue, lines can be shuffled to backup characters etc.
+
+Do a kill rats quest, where the rats have already been killed buy another adventurer
+Quest for casting gauntlet. 
+- Gauntlet give 10 + magic. 
+- Combined gem with glove. 
+- A bunch of chests, 1 / glove. 
+- Choosing one chest deletes all chests
 
 ### Stats
 
@@ -451,6 +491,8 @@ Property stats max min?
 - how do we prevent firehealth from draining past 0 when target doesn’t have fire health
 
 Endurance vs stamina?
+allow increments stat to take a minimum and maximum
+properties have max/min value? Burnhealth going below 0
 
 Attribute | Derived Stat | Example Stats/Activities
 --- | --- | ---
@@ -485,13 +527,13 @@ Climb effort = min(base difficulty of object climbed, actual difficulty per play
 Spell effort = spell difficulty = 1f - (spell requirement level / player magic level)
 Spell difficulty * total cost?   Maybe only give xp if over 50%?
 
-
-
 #### Progression
 
 - Skills/commands unlock based on attribute level
 - Show only unlocked commands in help, etc
 - Create cheat/debug commands to level up etc
+- clearly Telegraph multi tiered goals
+- ‘Human’ npcs should have varying levels. From level 3 peasants to level 30 mercenaries
 
 #### Morality
 
@@ -530,6 +572,15 @@ Antagonist
 The language of min
 Killer’s Haven - town where those who have accidently killed someone flee to for protection
 
+On game start, the oracle / antagonist tells the player to come talk to them, starts them on the main quest when you finally do talk with them.
+
+Bad guy works to destroy world. Null pointers crash game and are called seams. At one point bad guy does something and throws a fake error. Crash to desktop and when the player restarts the game, the bad guy makes mention of the crash. Null pointers mean that we have reached a seam. We have touched the void
+
+Bad guy recognizes the player and says you're really just an avatar for some diety creeping into our world
+
+### Other
+
+add stat categories?
 
 #### Races
 
@@ -598,6 +649,11 @@ Jump
 Calc distance to target. X dist + positive y dist. If y is negative, that subtracts from jump distance
 Calc possible fall damage only based on negative y
 
+jump to vector
+- can't jump beyond strength (encumberance, height, distance)
+
+dismount - give location of parent
+jump - give location of parent
 
 
 ### Validation tools
@@ -608,7 +664,8 @@ Calc possible fall damage only based on negative y
 - Check all activator targets reference actual items / locations etc
 - Check all behavior receipies have params that match their assigned behaviors
 - Requiring default params breaks everything since params don't override other params, have to remove param satisfied test > is there another way to check variables at compile time?
-
+- Check for duplicate names (across items and activators)
+- Check all targets reference valid events etc (triggers and trigger events)
 
 #### Command ideas
 - Search - skill based, finds scope that's hidden
@@ -623,109 +680,15 @@ S flag does silent
 some commands can be discovered just by saying the name
 unlocked commands are saved at the game level so multiple characters can use them
 
+## Bugs
 
-### Misc / Unsorted
-- Readable behavior / item
-- Be consistent. End all statements with periods.
-- Remove hatchet and apple from starting inventory and place them in world etc
-- Inventory carrying space
-
-Attack command groups 0 vs 1 - make tests
- - Mock Player?
-
-
-add stat categories?
-add option to travel silently (just 'you travel to tree')
-
-
-move (position) within a location command
-
-chop apple throws exception
-
-not properly to-stringing something?
 use stairs should climb them
 
-push / pull is not honoring a specific distance 
-
-
-Debug
-ignore encumberance?
-
-
-cast command - pass args from all groups other than targets (take args after targets if they are there)
-
-
-jump to vector
-- can't jump beyond strength (encumberance, height, distance)
-
-dismount - give location of parent
-jump - give location of parent
-
-
-clearly Telegraph multi tiered goals
-
-Multi-event listeners?
-
-
-Stealth actions / some actions have stealth rating / may be executed (even if hostile) and go unnoticed if stealth is high enough
-
-
-Create a data test for spell costs to narrow in on a good formula
-
-‘Human’ npcs should have varying levels. From level 3 peasonts to level 30 mercenaries
-
-On game start, the oracle / antagonist tells the player to come talk to them, starts them on the main quest when you finally do talk with them.
-
-Quests can be adaptable by giving quest triggers an alias to speak through. Since there is no animation / voiced dialogue, lines can be shuffled to backup characters etc.
-
-
-trigger conditions have a priority. Of all conditions that meet their condition, the one with the highest priority is executed
-
-Ai has two properties, Ai state and ai state time
-
-debug mode can reset managers
-
-
-Bad guy works to destroy world. Null pointers crash game and are called seams. At one point bad guy does something and throws a fake error. Crash to desktop and when the player restarts the game, the bad guy makes mention of the crash. Null pointers mean that we have reached a seam. We have touched the void
-
-Bad guy recognizes the player and says you're really just an avatar for some diety creeping into our world
-
-Debug setting ‘random: off’ to make random chance always succeed (for battle tests etc)
-
-
-allow increments stat to take a minimum and maximum
-
-Do a kill rats quest, where the rats have already been killed buy another adventurer
-
-Ice skates: overtime you get new tools that allow you to explore new areas
-
-Make AI run not only during battle, but give it an on-tick listener where it can integrate game state and decide to do something. (And start with it allowing player controlled ai to make a choice)
-Only evaluate AI for current location
-Maybe all command parsing come from AI and if not in battle / command is not an on-tick command, just cycle next ai etc.
-
-
-Quest for casting gauntlet. 
-Gauntlet give 10 + magic. 
-Combined gem with glove. 
-A bunch of chests, 1 / glove. 
-Choosing one chest deletes all chests
-
-
-
-Validation tools that:
-- Check for duplicate names (across items and activators)
-- Check all targets reference valid events etc (triggers and trigger events)
-
-properties have max/min value? Burnhealth going below 0
-fold body parts into locations soon!?
-how do we configure auto load?
-
-Property aggregator that gets stat + all child stats?
-sum properties takes a list of properties and sums them
-Has hook for child prop update
-Used for composed items?
-
-
-Make named condition sets > point at one name / reuse a list of conditions that must be true
+push / pull is not honoring a specific distance
 
 Args test for returning the two empty lists - make sure it ends up just being one empty list
+
+
+## Misc / Unsorted
+
+

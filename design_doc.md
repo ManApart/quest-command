@@ -40,13 +40,8 @@ Design note
 - If a keyword is parsed without args, always show response request
 - If an alias is parsed without args, use a reasonable default if it exists, otherwise response request
 - A user that knows what he is doing will want the default to be used and will use an alias. A user that doen’t know what he wants will probably use the full default keyword, and will want to know his options
+- All print statements should end in a period
 
-
-
-### Research
-- manic mansion SCUM
-- ducktype
-- context free gramer, tokenizers, lexers, (yacc, lex)
 
 ## Game Systems Explanation
 
@@ -346,5 +341,5 @@ _How can we view what types are allowed_ ? Maybe examine?
 
 ## Testing
 
-If tests are running slow, make sure that json parsing and reflection are not happing as part of unit tests. An easy check is to place a debug point in `getImplementation` to catch any time a default implementation is being used in a unit test.
+If tests are running slow, make sure that json parsing and reflection are not happening as part of unit tests. An easy check is to place a debug point in `getImplementation` to catch any time a default implementation is being used in a unit test.
 
