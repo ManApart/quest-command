@@ -127,7 +127,6 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return args.filterNot { lowerCaseWords.contains(it) }
     }
 
-    //TODO - move to direction parser
     fun getDirection(): Direction {
         val directions = hasAny(Direction.values().map { it.name })
         return if (directions.isNotEmpty()) {

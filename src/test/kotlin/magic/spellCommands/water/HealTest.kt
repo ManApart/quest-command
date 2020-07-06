@@ -5,6 +5,7 @@ import combat.battle.position.TargetAim
 import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser
+import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
 import core.reflection.Reflections
@@ -18,12 +19,15 @@ import org.junit.Before
 import org.junit.Test
 import status.effects.EffectBase
 import status.effects.EffectFakeParser
+import status.effects.EffectManager
 import status.effects.EffectParser
 import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
 import system.BehaviorFakeParser
+import system.BodyFakeParser
 import system.location.LocationFakeParser
+import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -34,12 +38,19 @@ class HealTest {
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
             DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
+            LocationManager.reset()
+
+            DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
+            BodyManager.reset()
+
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
                     EffectBase("Wet", "", statTarget = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
             )))
             EventManager.reset()
+            EffectManager.reset()
         }
 
         private val targetA = Target("targetA")
@@ -52,9 +63,7 @@ class HealTest {
         @AfterClass
         @JvmStatic
         fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
-            DependencyInjector.clearImplementation(BehaviorParser::class.java)
-            DependencyInjector.clearImplementation(LocationParser::class.java)
+            DependencyInjector.clearAllImplementations()
             EventManager.clear()
         }
     }

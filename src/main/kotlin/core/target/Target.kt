@@ -182,7 +182,7 @@ open class Target(
     }
 
     fun getWeight(): Int {
-        return properties.values.getInt("weight", 1) + inventory.getWeight()
+        return properties.values.getInt(WEIGHT, 1) + inventory.getWeight()
     }
 
     fun copy(count: Int): Target {

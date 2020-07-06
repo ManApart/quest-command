@@ -169,12 +169,11 @@ class VectorTest {
     }
 
     @Test
-    fun closerPlusGreatDistanceContinuesInDirection() {
+    fun closerPlusGreatDistanceStopsAtSamePlace() {
         val source = Vector(y = 0)
         val direction  = Vector(y = 10)
-        val expected = Vector(y = 50)
         val actual = source.closer(direction, 50)
-        assertEquals(expected, actual)
+        assertEquals(direction, actual)
     }
 
     @Test

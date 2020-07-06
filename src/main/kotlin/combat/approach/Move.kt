@@ -16,7 +16,7 @@ class Move : EventListener<MoveEvent>() {
         val amount = getAmount(event, desiredDistance)
         if (amount == desiredDistance) {
             event.source.position = event.target
-            display("${event.source} moved to ${event.target}.")
+            display("${event.source.name} moved to ${event.target}.")
         } else {
             val newPos = event.source.position.getVectorInDirection(event.target, amount)
             event.source.position = newPos

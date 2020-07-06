@@ -1,9 +1,6 @@
 package traveling.direction
 
-import kotlin.math.abs
-import kotlin.math.atan2
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 val NO_VECTOR: Vector = Vector()
 
@@ -53,15 +50,26 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return Vector(x * other.x, y * other.y, z * other.z)
     }
 
-    fun closer(other: Vector, amount: Int): Vector {
-        return getVectorInDirection(other, amount)
+    /**
+     * Find a vector that is amount closer towards goal.
+     * If the distance is 0, or the amount is greater than the distance, it returns the goal
+     */
+    fun closer(goal: Vector, amount: Int): Vector {
+        val distance = getDistance(goal)
+        if (distance == 0 || amount > distance){
+            return goal
+        }
+        return getVectorInDirection(goal, amount)
     }
 
-    fun further(other: Vector, amount: Int): Vector {
-        if (this == NO_VECTOR && other == NO_VECTOR) {
+    /**
+     * Finds a vector amount past the pointAlongPath
+     */
+    fun further(pointAlongPath: Vector, amount: Int): Vector {
+        if (this == NO_VECTOR && pointAlongPath == NO_VECTOR) {
             return getVectorInDirection(Vector(y = 1), amount)
         }
-        return other + getVectorInDirection(other, amount)
+        return pointAlongPath + getVectorInDirection(pointAlongPath, amount)
     }
 
     fun isFurtherAlongSameDirectionThan(other: Vector): Boolean {
@@ -189,7 +197,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         val newY = y * inversePercent + target.y * percent
         val newZ = z * inversePercent + target.z * percent
 
-        return Vector(newX.toInt(), newY.toInt(), newZ.toInt())
+        return Vector(newX.roundToInt(), newY.roundToInt(), newZ.roundToInt())
     }
 
 }

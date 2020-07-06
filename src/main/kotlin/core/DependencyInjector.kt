@@ -40,6 +40,10 @@ object DependencyInjector {
         interfaces.remove(targetInterface)
     }
 
+    fun clearAllImplementations() {
+        interfaces.clear()
+    }
+
     fun <T : E, E : Any> getImplementation(targetInterface: Class<E>): T {
         return when {
             interfaces.containsKey(targetInterface) -> {

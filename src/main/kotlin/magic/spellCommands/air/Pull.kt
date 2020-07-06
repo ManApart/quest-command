@@ -34,7 +34,9 @@ class Pull : SpellCommand() {
     }
 
     override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
-        val direction = parseDirection(args.getGroup("towards"))
+        val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
+        val direction = parseDirection(argsWithTowards.getGroup("towards"))
+
         val power = args.getNumber()
         if (power == null) {
             val message =  "Pull ${targets.toCommandString()} how hard?"
@@ -53,10 +55,10 @@ class Pull : SpellCommand() {
                     val effects = listOf(EffectManager.getEffect("Air Blasted", 0, 0, parts))
                     val condition = Condition("Air Blasted", Element.AIR, power, effects)
                     val distance = calcDistance(target.target, power)
-                    val vector = if (direction != Direction.NONE) {
-                        target.target.position.closer(direction.vector + source.position, distance)
-                    } else {
+                    val vector = if (direction == Direction.NONE) {
                         target.target.position.closer(source.position, distance)
+                    } else {
+                        target.target.position.getVectorInDirection((direction.vector * distance) + target.target.position, distance)
                     }
                     val spell = MoveTargetSpell("Push", vector, condition, perTargetCost, AIR_MAGIC, levelRequirement)
                     EventManager.postEvent(StartCastSpellEvent(source, target, spell))
