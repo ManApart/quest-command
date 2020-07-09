@@ -33,9 +33,7 @@ class TravelCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (!GameState.player.properties.values.getBoolean(CAN_TRAVEL)) {
-            display("You can't travel right now.")
-        } else if (GameState.player.getEncumbrance() >=1){
+        if (GameState.player.getEncumbrance() >=1){
             display("You are too encumbered to travel.")
         } else if (args.isEmpty()) {
             val route = GameState.player.route

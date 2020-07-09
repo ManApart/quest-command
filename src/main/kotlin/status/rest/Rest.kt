@@ -1,8 +1,10 @@
 package status.rest
 
+import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.properties.CAN_REST
 import core.utility.StringFormatter.format
 import status.stat.HEALTH
 import status.stat.LeveledStat
@@ -12,6 +14,15 @@ import status.statChanged.StatChangeEvent
 class Rest : EventListener<RestEvent>() {
 
     override fun execute(event: RestEvent) {
+        if (!GameState.player.properties.values.getBoolean(CAN_REST)) {
+            display("You can't rest right now!")
+        } else {
+            rest(event)
+        }
+        rest(event)
+    }
+
+    private fun rest(event: RestEvent) {
         val recoverableStats = event.creature.soul.getStats().filter { isRecoverable(it) }
 
         if (recoverableStats.isEmpty()) {

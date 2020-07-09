@@ -386,6 +386,29 @@ debug command to check /toggle if a cell should reset
 
 In order  to get more ‘save slots’ / characters, either unlock characters or have a kid
 
+Am I properly saving / reloading location recipes? (Don’t save since immutable, but am I using them to new up?)
+
+Persist test, after load move back to wheat bundles and make sure 2 are still on the ground
+
+Write more item transfer tests; test that count and remove from location both work
+
+Activator Manager needs to tag as activator on init as well as reset. Check other managers do the same
+
+Save structure -> every network is a folder. Any sublocations on target 
+
+Equipped items only save first time. (Look at item, if this is the first attach slot, save)
+
+Replace location with proto-location, replace scope with location
+Location node has nullable location. Get creates location from proto-location on get if null. Still can clean up / save scopes by nulling the locations
+What's the difference between hand (location), hand (target body part in location) and hatchet (equipped to hand)?
+
+Don’t persist null/empty keys?
+@JsonInclude(Include.NON_NULL)
+
+Need to persist inventory as well as locations?
+Possibly better folder structure?
+
+
 
 ### Magic
 
@@ -471,12 +494,14 @@ Other
 - Quest event has array of help sentences?
 - Quests can be adaptable by giving quest triggers an alias to speak through. Since there is no animation / voiced dialogue, lines can be shuffled to backup characters etc.
 
-Do a kill rats quest, where the rats have already been killed buy another adventurer
+Do a kill rats quest, where the rats have already been killed by another adventurer
 Quest for casting gauntlet. 
 - Gauntlet give 10 + magic. 
 - Combined gem with glove. 
 - A bunch of chests, 1 / glove. 
 - Choosing one chest deletes all chests
+
+Quests can be character specific
 
 ### Stats
 
@@ -514,6 +539,11 @@ dance command
 dance <type of dance>
 - with better charisma / looks can affect people's moods, or make them angry
 - learn different dances with possible effects
+
+Warp Command
+Requires being within reach of a fast travel point
+Allows fast travel to other active fast travel points.
+Have to find them / activate them in order to use them.
 
  
 #### Experience adder

@@ -20,6 +20,7 @@ Create a world more interactive than Skyrim by trading presentation layer for hi
   - Commands simply parse / understand user input and then create events
   - Commands do not handle or change state
   - Commands should be unknown to game state, events, and logic
+  - Commands can do state checks for convenience / clarification, but actual validation (can a player rest) should be done by listeners. If needbe, make the command's event an 'attempt event'
   - All intents and actions are created through events
   - Listeners subscribe to individual events, update gamestate and print to console.
 

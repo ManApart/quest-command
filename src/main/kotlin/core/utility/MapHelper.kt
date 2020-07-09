@@ -37,6 +37,7 @@ fun Map<String, String>.toEmptyString(): String {
     }
 }
 
+// Does this work on nested maps / recursively?
 fun <A, B> Map<A, B>.matches(other: Map<A, B>): Boolean {
     keys.forEach {
         if (!other.containsKey(it)) {
