@@ -34,8 +34,6 @@ object CreatureManager {
             val creature = Target(it.name, creatures.get(it.name), it.params)
 
             with(creature.properties.values) {
-                put(core.properties.CAN_REST, true)
-                put(core.properties.CAN_TRAVEL, true)
                 put(core.properties.CAN_INTERACT, true)
             }
 

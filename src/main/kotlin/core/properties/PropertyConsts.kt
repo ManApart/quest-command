@@ -8,9 +8,8 @@ const val ENCUMBRANCE = "Additional Encumbrance"
 const val DEFENSE = "defense"
 
 //State
+//Climbing and interact should become queries instead of variables
 const val IS_CLIMBING = "Is Climbing"
-const val CAN_REST = "Can Rest"
-const val CAN_TRAVEL = "Can Travel"
 const val CAN_INTERACT = "Can Interact"
 
 

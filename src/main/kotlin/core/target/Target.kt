@@ -211,17 +211,12 @@ open class Target(
     fun setClimbing(climbTarget: Target) {
         properties.values.put(IS_CLIMBING, true)
         this.climbTarget = climbTarget
-        properties.values.put(CAN_REST, false)
-        properties.values.put(CAN_TRAVEL, false)
         properties.values.put(CAN_INTERACT, false)
     }
 
     fun finishClimbing() {
         properties.values.put(IS_CLIMBING, false)
         climbTarget = null
-        // This should check other reasons you might not be able to rest - alternate approach is to make rest a number. At 0 you can rest, things each tick up 1 for non-rest activities?
-        properties.values.put(CAN_REST, true)
-        properties.values.put(CAN_TRAVEL, true)
         properties.values.put(CAN_INTERACT, true)
     }
 
@@ -231,6 +226,10 @@ open class Target(
 
     fun getDescription(): String {
         return dynamicDescription.getOption() ?: ""
+    }
+
+    fun isSafe() : Boolean {
+        return location.getLocation().isSafeFor(this) && !properties.values.getBoolean(IS_CLIMBING)
     }
 
 }

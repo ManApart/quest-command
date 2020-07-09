@@ -4,7 +4,6 @@ import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.properties.CAN_TRAVEL
 import core.target.Target
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
@@ -18,7 +17,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.destination == event.currentLocation -> display("You realize that you're already at ${event.currentLocation}")
             event.currentLocation.isMovingToRestricted(event.destination) -> display("You're not able to get to ${event.destination.name}")
             GameState.player.soul.getCurrent(STAMINA) == 0 -> display("You're too tired to do any traveling.")
-            !GameState.player.properties.values.getBoolean(CAN_TRAVEL) -> display("You can't travel right now.")
+            !GameState.player.isSafe() -> display("You can't travel right now.")
             GameState.player.getEncumbrance() >= 1 -> display("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {

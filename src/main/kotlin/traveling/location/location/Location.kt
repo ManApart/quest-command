@@ -295,4 +295,9 @@ class Location(
         return true
     }
 
+    fun isSafeFor(creature: Target): Boolean {
+        //No one is hostile towards the creature
+        return creatures.none { it.ai.aggroTarget == creature }
+    }
+
 }

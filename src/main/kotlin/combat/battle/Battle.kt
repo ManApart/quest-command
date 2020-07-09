@@ -7,8 +7,6 @@ import core.events.EventManager
 import core.history.display
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
-import core.properties.CAN_REST
-import core.properties.CAN_TRAVEL
 import core.target.Target
 
 class Battle(combatantCreatures: List<Target>) {
@@ -55,14 +53,17 @@ class Battle(combatantCreatures: List<Target>) {
     }
 
     fun start() {
-        GameState.player.properties.values.put(CAN_REST, false)
-        GameState.player.properties.values.put(CAN_TRAVEL, false)
+        GameState.player.ai.aggroTarget = getOpponent(GameState.player)?.target
+        getOpponent(GameState.player)?.target?.ai?.aggroTarget = GameState.player
+
+//        GameState.player.properties.values.put(CAN_REST, false)
+//        GameState.player.properties.values.put(CAN_TRAVEL, false)
     }
 
     private fun clearBattle() {
         GameState.battle = null
-        GameState.player.properties.values.put(CAN_REST, true)
-        GameState.player.properties.values.put(CAN_TRAVEL, true)
+        GameState.player.ai.aggroTarget = null
+        getOpponent(GameState.player)?.target?.ai?.aggroTarget = null
         display("The battle ends.")
         EventManager.postEvent(BattleEndedEvent())
     }

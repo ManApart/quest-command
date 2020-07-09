@@ -4,8 +4,6 @@ import core.commands.CommandParser
 import core.events.EventManager
 import core.history.ChatHistory
 import core.properties.CAN_INTERACT
-import core.properties.CAN_REST
-import core.properties.CAN_TRAVEL
 import core.target.Target
 import core.target.item.ItemManager
 import dialogue.DialogueOptions
@@ -83,8 +81,6 @@ object GameManager {
         }
 
         with(player.properties.values) {
-            put(CAN_REST, true)
-            put(CAN_TRAVEL, true)
             put(CAN_INTERACT, true)
         }
 

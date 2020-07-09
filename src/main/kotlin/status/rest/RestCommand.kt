@@ -7,7 +7,6 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
-import core.properties.CAN_REST
 
 class RestCommand : Command() {
     override fun getAliases(): Array<String> {
