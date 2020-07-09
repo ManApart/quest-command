@@ -1,7 +1,6 @@
 package use.actions
 
 import core.events.EventManager
-import core.properties.CAN_INTERACT
 import use.UseEvent
 import use.UseListener
 import use.eat.EatFoodEvent
@@ -9,7 +8,7 @@ import use.eat.EatFoodEvent
 class UseFoodItem : UseListener() {
     override fun shouldExecute(event: UseEvent): Boolean {
         //TODO - check event source, don't hardcode to player
-        return event.source.properties.values.getBoolean(CAN_INTERACT)
+        return event.source.canInteract()
                 && event.used.properties.tags.has("Food")
                 && event.target.properties.tags.has("Creature")
     }

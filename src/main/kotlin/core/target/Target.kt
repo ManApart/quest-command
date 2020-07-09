@@ -211,13 +211,11 @@ open class Target(
     fun setClimbing(climbTarget: Target) {
         properties.values.put(IS_CLIMBING, true)
         this.climbTarget = climbTarget
-        properties.values.put(CAN_INTERACT, false)
     }
 
     fun finishClimbing() {
         properties.values.put(IS_CLIMBING, false)
         climbTarget = null
-        properties.values.put(CAN_INTERACT, true)
     }
 
     fun getDescriptionWithConditions(): DialogueOptions {
@@ -230,6 +228,10 @@ open class Target(
 
     fun isSafe() : Boolean {
         return location.getLocation().isSafeFor(this) && !properties.values.getBoolean(IS_CLIMBING)
+    }
+
+    fun canInteract() : Boolean {
+        return !properties.values.getBoolean(IS_CLIMBING)
     }
 
 }

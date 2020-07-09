@@ -2,7 +2,6 @@ package use.interaction
 
 import core.events.EventListener
 import core.history.display
-import core.properties.CAN_INTERACT
 import core.utility.StringFormatter
 
 class Interact : EventListener<InteractEvent>() {
@@ -16,7 +15,7 @@ class Interact : EventListener<InteractEvent>() {
 
         when {
             !event.target.isWithinRangeOf(event.source) -> display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to interact with ${event.target}.")
-            event.source.properties.values.getBoolean(CAN_INTERACT) -> event.target.consume(event)
+            event.source.canInteract() -> event.target.consume(event)
             else -> display("You can't interact with ${event.target.name} right now.")
         }
     }

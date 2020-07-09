@@ -1,18 +1,16 @@
 package use.actions
 
 import combat.DamageType
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.properties.CAN_INTERACT
 import core.properties.propValChanged.PropertyStatChangeEvent
 import use.UseEvent
 
 class ChopWood : EventListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return GameState.player.properties.values.getBoolean(CAN_INTERACT)
+        return event.source.canInteract()
                 && event.target.properties.tags.has("Wood")
                 && event.target.properties.values.has(DamageType.CHOP.health)
                 && event.used.properties.values.getInt(DamageType.CHOP.damage, 0) != 0

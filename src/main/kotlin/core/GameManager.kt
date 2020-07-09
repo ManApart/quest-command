@@ -3,7 +3,6 @@ package core
 import core.commands.CommandParser
 import core.events.EventManager
 import core.history.ChatHistory
-import core.properties.CAN_INTERACT
 import core.target.Target
 import core.target.item.ItemManager
 import dialogue.DialogueOptions
@@ -78,10 +77,6 @@ object GameManager {
             addStat(CLIMBING, 1)
             addStat(AGILITY, 1)
             addStat(COOKING, 1)
-        }
-
-        with(player.properties.values) {
-            put(CAN_INTERACT, true)
         }
 
         with(player.properties.tags) {

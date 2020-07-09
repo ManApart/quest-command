@@ -55,9 +55,6 @@ class Battle(combatantCreatures: List<Target>) {
     fun start() {
         GameState.player.ai.aggroTarget = getOpponent(GameState.player)?.target
         getOpponent(GameState.player)?.target?.ai?.aggroTarget = GameState.player
-
-//        GameState.player.properties.values.put(CAN_REST, false)
-//        GameState.player.properties.values.put(CAN_TRAVEL, false)
     }
 
     private fun clearBattle() {

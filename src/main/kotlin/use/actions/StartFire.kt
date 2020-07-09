@@ -2,7 +2,6 @@ package use.actions
 
 import core.events.EventManager
 import core.history.display
-import core.properties.CAN_INTERACT
 import magic.Element
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
@@ -13,7 +12,7 @@ import use.UseListener
 class StartFire : UseListener() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return event.source.properties.values.getBoolean(CAN_INTERACT)
+        return event.source.canInteract()
                 && event.used.properties.tags.has("Fire Starter")
                 && event.target.properties.tags.has("Flammable")
     }

@@ -4,7 +4,6 @@ import core.events.Event
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.properties.CAN_INTERACT
 
 class NoInteractionFound : EventListener<InteractEvent>() {
     private var checkedEvent: Event? = null
@@ -18,7 +17,7 @@ class NoInteractionFound : EventListener<InteractEvent>() {
     }
 
     override fun execute(event: InteractEvent) {
-        if (event.source.properties.values.getBoolean(CAN_INTERACT)) {
+        if (event.source.canInteract()) {
             display("You don't seem to be able to do anything interesting with ${event.target.name}.")
         } else {
             display("You can't interact with ${event.target.name} right now.")

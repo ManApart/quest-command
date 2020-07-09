@@ -33,10 +33,6 @@ object CreatureManager {
         return targets.map {
             val creature = Target(it.name, creatures.get(it.name), it.params)
 
-            with(creature.properties.values) {
-                put(core.properties.CAN_INTERACT, true)
-            }
-
             if (!it.location.isNullOrBlank()) {
                 creature.properties.values.put("locationDescription", it.location)
             }
