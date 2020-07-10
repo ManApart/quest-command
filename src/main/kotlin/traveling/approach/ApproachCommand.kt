@@ -1,4 +1,4 @@
-package combat.approach
+package traveling.approach
 
 import combat.battle.Distances
 import core.commands.Args
@@ -50,7 +50,7 @@ class ApproachCommand : Command() {
 
     private fun approach(amount: Int) {
         val target = GameState.player.position.getVectorInDirection(GameState.battle!!.getOpponent(GameState.player)!!.target.position, amount)
-        EventManager.postEvent(StartMoveEvent(GameState.player, target))
+        EventManager.postEvent(StartApproachEvent(GameState.player, target))
     }
 
 }

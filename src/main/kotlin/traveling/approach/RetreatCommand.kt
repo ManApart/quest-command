@@ -1,4 +1,4 @@
-package combat.approach
+package traveling.approach
 
 import combat.battle.Distances
 import combat.battle.Distances.HUMAN_LENGTH
@@ -48,7 +48,7 @@ class RetreatCommand : Command() {
         val opponent = GameState.battle!!.getOpponent(GameState.player)!!.target
         val oppositeOfOpponent = GameState.player.position.getInverse(opponent.position)
         val target = GameState.player.position.getVectorInDirection(oppositeOfOpponent, amount)
-        EventManager.postEvent(StartMoveEvent(GameState.player, target))
+        EventManager.postEvent(StartApproachEvent(GameState.player, target))
     }
 
 

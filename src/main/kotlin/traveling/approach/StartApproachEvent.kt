@@ -1,16 +1,15 @@
-package combat.approach
+package traveling.approach
 
-import combat.battle.BattleAction
-import combat.battle.position.TargetAim
-import core.events.Event
 import core.GameState
+import core.events.DelayedEvent
+import core.events.Event
 import core.target.Target
-import traveling.direction.Vector
 import status.stat.AGILITY
+import traveling.approach.ApproachEvent
+import traveling.direction.Vector
 import kotlin.math.max
 
-class StartMoveEvent(override val source: Target, private val moveTarget: Vector, timeLeft: Int = -1) : Event, BattleAction {
-    override val target: TargetAim? = null
+class StartApproachEvent(override val source: Target, private val moveTarget: Vector, timeLeft: Int = -1) : Event, DelayedEvent {
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {
@@ -31,7 +30,7 @@ class StartMoveEvent(override val source: Target, private val moveTarget: Vector
         return (agility * encumbrance).toInt()
     }
 
-    override fun getActionEvent(): MoveEvent {
-        return MoveEvent(source, moveTarget)
+    override fun getActionEvent(): ApproachEvent {
+        return ApproachEvent(source, moveTarget)
     }
 }

@@ -1,4 +1,4 @@
-package combat.approach
+package traveling.approach
 
 import combat.battle.Distances
 import core.events.EventListener
@@ -9,9 +9,9 @@ import core.events.EventManager
 import kotlin.math.min
 
 
-class Move : EventListener<MoveEvent>() {
+class Approach : EventListener<ApproachEvent>() {
 
-    override fun execute(event: MoveEvent) {
+    override fun execute(event: ApproachEvent) {
         val desiredDistance = event.source.position.getDistance(event.target)
         val amount = getAmount(event, desiredDistance)
         if (amount == desiredDistance) {
@@ -27,7 +27,7 @@ class Move : EventListener<MoveEvent>() {
         }
     }
 
-    private fun getAmount(event: MoveEvent, desiredDistance: Int): Int {
+    private fun getAmount(event: ApproachEvent, desiredDistance: Int): Int {
         val abilityToMove = event.source.soul.getCurrent(STAMINA) * Distances.HUMAN_LENGTH
         return if (event.useStamina) {
             min(abilityToMove, desiredDistance)

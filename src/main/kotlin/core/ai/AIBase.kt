@@ -14,5 +14,4 @@ class AIBase(override val name: String, val actions: List<TriggeredEvent> = list
         return PlayerControlledAI(creature)
     }
 
-
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import core.GameState
 import core.ai.AI
 import core.ai.AIManager
+import core.ai.DumbAI
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
@@ -48,7 +49,8 @@ open class Target(
 ) : Named {
 
     override val name = name.apply(params)
-    val ai = ai ?: AIManager.getAI(aiName, this)
+    val ai = discernAI(ai, aiName)
+
     val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, base?.body, bodyName)
 
@@ -68,6 +70,14 @@ open class Target(
     init {
         if (items.isNotEmpty()) {
             inventory.addAll(ItemManager.getItems(items))
+        }
+    }
+
+    private fun discernAI(ai: AI?, aiName: String?): AI {
+        return when {
+            ai != null -> ai
+            aiName != null -> AIManager.getAI(aiName, this)
+            else -> DumbAI(this)
         }
     }
 
@@ -226,11 +236,11 @@ open class Target(
         return dynamicDescription.getOption() ?: ""
     }
 
-    fun isSafe() : Boolean {
+    fun isSafe(): Boolean {
         return location.getLocation().isSafeFor(this) && !properties.values.getBoolean(IS_CLIMBING)
     }
 
-    fun canInteract() : Boolean {
+    fun canInteract(): Boolean {
         return !properties.values.getBoolean(IS_CLIMBING)
     }
 
