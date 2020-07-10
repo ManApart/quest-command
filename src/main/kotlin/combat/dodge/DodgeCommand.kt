@@ -5,6 +5,7 @@ import core.commands.parseDirection
 import core.GameState
 import core.history.display
 import core.events.EventManager
+import traveling.move.StartMoveEvent
 
 class DodgeCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -16,7 +17,7 @@ class DodgeCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tDodge <direction> *<distance> - Attempt to dodge a blow (only works in battle)."
+        return "\n\tDodge <direction> *<distance> - Attempt to dodge a blow. Uses more stamina, but is faster than just moving."
     }
 
     override fun getCategory(): List<String> {
@@ -24,12 +25,8 @@ class DodgeCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (GameState.battle == null) {
-            display("This is only relevant in battle.")
-        } else {
-            val direction = parseDirection(args).vector * 10
-            EventManager.postEvent(StartDodgeEvent(GameState.player, direction))
-        }
+        val direction = parseDirection(args).vector * 10
+        EventManager.postEvent(StartMoveEvent(GameState.player, direction, 2f, 1.5f))
     }
 
 

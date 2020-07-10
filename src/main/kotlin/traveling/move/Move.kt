@@ -17,6 +17,7 @@ import traveling.location.location.LocationPoint
 import traveling.travel.getDistanceToNeighbor
 import traveling.travel.postArriveEvent
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 class Move : EventListener<MoveEvent>() {
 
@@ -40,7 +41,7 @@ class Move : EventListener<MoveEvent>() {
 
     private fun getActualDistanceMoved(event: MoveEvent, desiredDistance: Int): Int {
         val abilityToMove = event.creature.soul.getCurrent(STAMINA) * Distances.HUMAN_LENGTH
-        return if (event.useStamina) {
+        return if (event.staminaScalar != 0f) {
             min(abilityToMove, desiredDistance)
         } else {
             desiredDistance
@@ -57,8 +58,8 @@ class Move : EventListener<MoveEvent>() {
     private fun move(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
         event.creature.position = actualDestination
         displayMovement(event, desiredDistance, actualDistance, actualDestination)
-        if (event.useStamina) {
-            EventManager.postEvent(StatChangeEvent(event.creature, "moving", STAMINA, -actualDistance / Distances.HUMAN_LENGTH, true))
+        if (event.staminaScalar != 0f) {
+            EventManager.postEvent(StatChangeEvent(event.creature, "moving", STAMINA, (-actualDistance * event.staminaScalar).roundToInt() / Distances.HUMAN_LENGTH, true))
         }
     }
 

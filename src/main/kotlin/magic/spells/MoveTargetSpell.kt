@@ -24,6 +24,6 @@ class MoveTargetSpell(
     override fun cast(event: CastSpellEvent) {
         EventManager.postEvent(StatChangeEvent(event.source, "Casting", FOCUS, -event.spell.cost))
         EventManager.postEvent(AddConditionEvent(event.target.target, event.spell.condition))
-        EventManager.postEvent(MoveEvent(event.target.target, event.target.target.position, vector, false))
+        EventManager.postEvent(MoveEvent(event.target.target, event.target.target.position, vector, 0f))
     }
 }
