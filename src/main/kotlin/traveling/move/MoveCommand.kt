@@ -22,7 +22,7 @@ class MoveCommand : Command() {
     override fun getManual(): String {
         return "\n\tMove to <vector> - Move to a specific place within a location." +
                 "\n\tMove to <target> - Move to a target within a location." +
-                "\n\tMove <distance> towards <direction> - Move a set distance in a direction"
+                "\n\tMove <distance> towards <direction> - Move a set distance in a direction."
     }
 
     override fun getCategory(): List<String> {
@@ -30,6 +30,7 @@ class MoveCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
+        //Move this check to the listener
         if (source.getEncumbrance() >= 1) {
             display("${getSubject(source)} ${getIsAre(source)} too encumbered to move.")
         } else {
@@ -41,8 +42,8 @@ class MoveCommand : Command() {
             val useDefault = keyword != "move"
 
             when {
-                vector != NO_VECTOR -> EventManager.postEvent(MoveEvent(source, source.position, vector))
-                target != null -> EventManager.postEvent(MoveEvent(source, source.position, target.target.position))
+                vector != NO_VECTOR -> EventManager.postEvent(StartMoveEvent(source, vector))
+                target != null -> EventManager.postEvent(StartMoveEvent(source, target.target.position))
                 direction != null || distance != null -> parseDirectionAndDistance(source, direction, distance, useDefault)
                 //TODO - response request
                 else -> display("Could not understand: ${args.joinToString(" ")}")
@@ -68,7 +69,7 @@ class MoveCommand : Command() {
             val distance = responseHelper.getIntValue("distance")
             val direction = Direction.getDirection(responseHelper.getStringValue("direction"))
             val vector = (direction.vector * distance) + source.position
-            EventManager.postEvent(MoveEvent(source, source.position, vector))
+            EventManager.postEvent(StartMoveEvent(source, vector))
         }
     }
 

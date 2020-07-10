@@ -59,7 +59,7 @@ class PickupItemCommand : core.commands.Command() {
     private fun pickupItemFromContainer(args: Args) {
         val from = GameState.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
         when {
-            from.isEmpty() -> display("Couldn't find ${args.getString("from")}")
+            from.isEmpty() -> display("Couldn't find ${args.getString("from")}.")
             from.size == 1 -> takeItemFromContainer(from.first(), args.getBaseString())
             else -> takeFromWhat(from, args.getBaseString())
         }
@@ -67,7 +67,7 @@ class PickupItemCommand : core.commands.Command() {
 
     private fun takeFromWhat(creatures: List<Target>, itemName: String) {
         val message = "Take $itemName from what?\n\t${creatures.joinToString(", ")}"
-        val response = ResponseRequest(message, creatures.map { it.name to "take $itemName from ${it.name}" }.toMap())
+        val response = ResponseRequest(message, creatures.map { it.name to "take $itemName from ${it.name}." }.toMap())
          CommandParser.setResponseRequest(response)
     }
 
@@ -76,7 +76,7 @@ class PickupItemCommand : core.commands.Command() {
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(GameState.player, item, from, GameState.player))
         } else {
-            display("Couldn't find $itemName")
+            display("Couldn't find $itemName.")
         }
     }
 

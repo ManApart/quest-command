@@ -186,6 +186,10 @@ class Location(
         return GameState.player.inventory.getItems(name) + getTargets(name, source)
     }
 
+    fun getCreaturesExcludingPlayer(source: Target = GameState.player): NameSearchableList<Target> {
+        return getCreatures(source).also { it.remove(GameState.player) }
+    }
+
     fun getCreatures(source: Target = GameState.player): NameSearchableList<Target> {
         return creatures.sortedBy { source.position.getDistance(it.position) }
     }

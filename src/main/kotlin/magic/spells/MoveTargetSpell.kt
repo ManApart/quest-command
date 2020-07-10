@@ -1,13 +1,13 @@
 package magic.spells
 
-import traveling.approach.ApproachEvent
-import traveling.direction.Vector
-import status.stat.FOCUS
+import core.events.EventManager
 import magic.castSpell.CastSpellEvent
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
+import status.stat.FOCUS
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
+import traveling.direction.Vector
+import traveling.move.MoveEvent
 
 class MoveTargetSpell(
         name: String,
@@ -24,6 +24,6 @@ class MoveTargetSpell(
     override fun cast(event: CastSpellEvent) {
         EventManager.postEvent(StatChangeEvent(event.source, "Casting", FOCUS, -event.spell.cost))
         EventManager.postEvent(AddConditionEvent(event.target.target, event.spell.condition))
-        EventManager.postEvent(ApproachEvent(event.target.target, vector, false))
+        EventManager.postEvent(MoveEvent(event.target.target, event.target.target.position, vector, false))
     }
 }

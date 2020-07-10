@@ -2,53 +2,72 @@ package traveling.approach
 
 import combat.battle.Distances
 import combat.battle.Distances.HUMAN_LENGTH
-import combat.battle.Distances.LOCATION_SIZE
-import core.commands.Args
-import core.commands.Command
-import core.commands.CommandParser
-import core.commands.ResponseRequest
 import core.GameState
+import core.commands.*
 import core.history.display
 import core.events.EventManager
+import core.target.Target
+import traveling.move.StartMoveEvent
 
 class RetreatCommand : Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Retreat", "Backward", "Back")
+        return arrayOf("Retreat", "backward", "back")
     }
 
     override fun getDescription(): String {
-        return "Retreat:\n\tMove further from the enemy."
+        return "Retreat:\n\tMove further from the target."
     }
 
     override fun getManual(): String {
-        return "\n\tRetreat - Move further from the enemy (only works in battle)."
+        return "\n\tRetreat from <target> - Move away from the target." +
+                "\n\tRetreat from <target> by <amount> - Move away from the target by the amount."
     }
 
     override fun getCategory(): List<String> {
-        return listOf("Combat")
+        return listOf("Traveling")
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        val amount = Args(args).getNumber()
+        val arguments = Args(args, delimiters = listOf("from", "by"))
+        val creatures = GameState.player.location.getLocation().getCreaturesExcludingPlayer()
+        val target = determineTarget(arguments, creatures)
+        val distance = arguments.getNumber()
         when {
-            GameState.battle == null -> display("This is only relevant in battle.")
-            GameState.battle?.getCombatantDistance() ?: 0 >= LOCATION_SIZE -> display("You can't get any further.")
-            keyword.toLowerCase() == "retreat" && args.isEmpty() -> clarifyAmount()
-            amount == null -> retreat(HUMAN_LENGTH)
-            else -> retreat(amount)
+            target != null && distance != null -> retreatByAmount(target, distance)
+            target != null && keyword.toLowerCase() == "retreat" -> clarifyAmount(target)
+            target != null -> retreatByAmount(target, HUMAN_LENGTH)
+            else -> clarifyTarget(creatures)
         }
     }
 
-    private fun clarifyAmount() {
-        val targets = listOf(Distances.MIN_RANGE, HUMAN_LENGTH / 2, HUMAN_LENGTH)
-        CommandParser.setResponseRequest(ResponseRequest("Move how much?", targets.map { "$it" to "retreat $it" }.toMap()))
+    private fun determineTarget(args: Args, creatures: List<Target>) : Target? {
+        val parsedTarget = parseTargets(args.getBaseGroup()).firstOrNull()?.target ?: parseTargets(args.getGroup("from")).firstOrNull()?.target ?: GameState.player.ai.aggroTarget
+        return when {
+            parsedTarget != null -> parsedTarget
+            creatures.size == 1 -> creatures.first()
+            else -> null
+        }
     }
 
-    private fun retreat(amount: Int) {
-        val opponent = GameState.battle!!.getOpponent(GameState.player)!!.target
-        val oppositeOfOpponent = GameState.player.position.getInverse(opponent.position)
-        val target = GameState.player.position.getVectorInDirection(oppositeOfOpponent, amount)
-        EventManager.postEvent(StartApproachEvent(GameState.player, target))
+    private fun retreatByAmount(target: Target, distance: Int) {
+        val goal = GameState.player.position.further(target.position, distance)
+        EventManager.postEvent(StartMoveEvent(GameState.player, goal))
+    }
+
+    private fun clarifyAmount(target: Target) {
+        val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
+        val distanceResponse = ResponseRequest("Retreat how much?", distanceOptions.map { it to "retreat from $target by $it" }.toMap())
+        CommandParser.setResponseRequest(distanceResponse)
+    }
+
+    private fun clarifyTarget(creatures: List<Target>) {
+        if (creatures.isEmpty()) {
+            display("Couldn't find anything to retreat from. You must be really frightened.")
+        } else {
+            val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
+            val response = ResponseRequest(message, creatures.map { it.name to "retreat from ${it.name}" }.toMap())
+            CommandParser.setResponseRequest(response)
+        }
     }
 
 
