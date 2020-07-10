@@ -56,7 +56,7 @@ class ApproachCommand : Command() {
     private fun clarifyAmount(target: Target) {
         val targetRange = GameState.player.position.getDistance(target.position)
         val targets = mapOf("minimum" to Distances.MIN_RANGE, "halfway" to targetRange / 2, "all the way" to targetRange)
-        CommandParser.setResponseRequest(ResponseRequest("Move how much?", targets.entries.map { it.key to "approach ${target.name} by ${it.value}" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest("Move how much?\n\t${targets.keys.joinToString(", ")}", targets.entries.map { it.key to "approach ${target.name} by ${it.value}" }.toMap()))
     }
 
     private fun clarifyTarget(creatures: List<Target>) {

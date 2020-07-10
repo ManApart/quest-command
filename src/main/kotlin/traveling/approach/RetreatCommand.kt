@@ -56,7 +56,7 @@ class RetreatCommand : Command() {
 
     private fun clarifyAmount(target: Target) {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
-        val distanceResponse = ResponseRequest("Retreat how much?", distanceOptions.map { it to "retreat from $target by $it" }.toMap())
+        val distanceResponse = ResponseRequest("Retreat how much?\n\t${distanceOptions.joinToString(", ")}", distanceOptions.map { it to "retreat from $target by $it" }.toMap())
         CommandParser.setResponseRequest(distanceResponse)
     }
 
