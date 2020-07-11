@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.GameState
 import status.stat.FOCUS
 import core.history.display
+import status.stat.HEALTH
 import system.debug.DebugType
 
 class CastSpell : EventListener<CastSpellEvent>() {
@@ -11,6 +12,10 @@ class CastSpell : EventListener<CastSpellEvent>() {
     override fun execute(event: CastSpellEvent) {
         if (canCast(event)) {
             event.spell.cast(event)
+            if (event.spell.isHostile && event.target.target.soul.hasStat(HEALTH)){
+                event.source.ai.aggroTarget = event.target.target
+                event.target.target.ai.aggroTarget = event.source
+            }
         }
     }
 

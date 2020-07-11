@@ -46,7 +46,7 @@ class UseCommand : Command() {
             target == null -> display("Couldn't find ${arguments.getString("on")}")
             !target.isWithinRangeOf(GameState.player) ->  display("You are too far away to use $used on $target.")
 
-            else -> EventManager.postEvent(UseEvent(GameState.player, used, target))
+            else -> EventManager.postEvent(StartUseEvent(GameState.player, used, target))
         }
     }
 

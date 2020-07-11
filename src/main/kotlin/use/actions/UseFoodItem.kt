@@ -7,7 +7,6 @@ import use.eat.EatFoodEvent
 
 class UseFoodItem : UseListener() {
     override fun shouldExecute(event: UseEvent): Boolean {
-        //TODO - check event source, don't hardcode to player
         return event.source.canInteract()
                 && event.used.properties.tags.has("Food")
                 && event.target.properties.tags.has("Creature")

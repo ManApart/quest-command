@@ -1,13 +1,13 @@
 package use.eat
 
+import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.GameState
-import core.target.Target
-import core.history.display
-import use.UseEvent
 import core.events.EventManager
+import core.history.display
+import core.target.Target
+import use.StartUseEvent
 
 class EatCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -49,7 +49,7 @@ class EatCommand : Command() {
 
     private fun eatFood(food: Target) {
         if (food.properties.tags.has("food")) {
-            EventManager.postEvent(UseEvent(GameState.player, food, GameState.player))
+            EventManager.postEvent(StartUseEvent(GameState.player, food, GameState.player))
         } else {
             display("${food.name} is inedible.")
         }

@@ -13,7 +13,6 @@ import core.target.Target
 import core.utility.StringFormatter
 import status.stat.BARE_HANDED
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 import use.UseEvent
 
 class Attack : EventListener<AttackEvent>() {

@@ -2,13 +2,13 @@ package combat.attack
 
 import combat.HandHelper
 import combat.battle.position.TargetAim
-import core.commands.*
 import core.GameState
+import core.commands.*
+import core.events.EventManager
+import core.history.display
 import core.target.Target
 import status.stat.HEALTH
-import core.history.display
-import use.UseEvent
-import core.events.EventManager
+import use.StartUseEvent
 
 class AttackCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -121,9 +121,9 @@ class AttackCommand : Command() {
 
     private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {
         when {
-            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target!!.target))
-            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, source))
-            target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(UseEvent(source, handHelper.weapon!!, target.target))
+            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, target!!.target))
+            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
+            target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, target.target))
             target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
             GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
             else -> display("Couldn't find ${arguments.getBaseString()}.")

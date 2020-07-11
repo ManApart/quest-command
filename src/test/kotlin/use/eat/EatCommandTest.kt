@@ -25,6 +25,7 @@ import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import traveling.location.location.NOWHERE_NODE
+import use.StartUseEvent
 import use.UseEvent
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -82,8 +83,8 @@ class EatCommandTest {
         timer.printElapsed("get events")
 
         assertEquals(1, events.size)
-        assertTrue(events[0] is UseEvent)
-        assertEquals(item, (events[0] as UseEvent).used)
+        assertTrue(events[0] is StartUseEvent)
+        assertEquals(item, (events[0] as StartUseEvent).used)
         assertNull(CommandParser.getResponseRequest())
     }
 
