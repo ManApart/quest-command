@@ -1,16 +1,13 @@
 package combat.block
 
-import combat.battle.BattleAction
-import combat.battle.position.TargetAim
+import core.events.DelayedEvent
 import core.events.Event
 import core.target.Target
 import status.stat.AGILITY
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 import kotlin.math.max
 
-class StartBlockEvent(override val source: Target, private val partThatWillShield: Location, private val partThatWillBeShielded: Location, timeLeft: Int = -1) : Event, BattleAction {
-    override val target: TargetAim? = null
+class StartBlockEvent(override val source: Target, private val partThatWillShield: Location, private val partThatWillBeShielded: Location, timeLeft: Int = -1) : Event, DelayedEvent {
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {

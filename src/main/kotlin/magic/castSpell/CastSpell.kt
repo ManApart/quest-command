@@ -14,6 +14,7 @@ class CastSpell : EventListener<CastSpellEvent>() {
         }
     }
 
+    //TODO - what if spell is hostile and target has health?
     private fun canCast(event: CastSpellEvent): Boolean {
         val level = event.source.soul.getCurrent(event.spell.statRequired)
         val focus = event.source.soul.getCurrent(FOCUS)

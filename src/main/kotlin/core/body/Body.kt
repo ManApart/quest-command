@@ -1,6 +1,7 @@
 package core.body
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import combat.block.BlockHelper
 import core.history.display
 import core.target.Target
 import core.utility.NameSearchableList
@@ -12,7 +13,6 @@ import traveling.location.Network
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
-import javax.print.DocFlavor
 
 val NONE = Body("None")
 
@@ -24,6 +24,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     constructor(name: String, bodyPart: LocationRecipe) : this(name, Network(name, bodyPart))
 
     private val parts: NameSearchableList<Location> by lazy { createParts() }
+    val blockHelper = BlockHelper()
 
     private fun createParts(): NameSearchableList<Location> {
         return NameSearchableList(layout.getLocationNodes().map { it.getLocation() })
@@ -109,10 +110,10 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
 
     fun getEmptyEquipSlot(item: Target): Slot? {
         return item.equipSlots.sortedBy {
-                    it.attachPoints.any { point ->
-                        point.contains("Right")
-                    }
-                }
+            it.attachPoints.any { point ->
+                point.contains("Right")
+            }
+        }
                 .reversed()
                 .firstOrNull {
                     canEquip(it) && it.isEmpty(this)

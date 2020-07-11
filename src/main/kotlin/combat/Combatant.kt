@@ -11,9 +11,7 @@ import traveling.location.location.LocationRecipe
 class Combatant(val target: Target) {
     private var actionPoints = 0
     var action: BattleAction? = null
-    var blockBodyPart: Location? = null
     var lastAttacked: Target? = null
-    val blockedBodyParts: MutableList<Location> = mutableListOf()
 
     override fun toString(): String {
         return "${target.name}: $actionPoints"
@@ -38,19 +36,6 @@ class Combatant(val target: Target) {
 
     fun canChooseAction(): Boolean {
         return actionPoints >= 100
-    }
-
-    fun resetStance() {
-        blockedBodyParts.clear()
-        blockBodyPart = null
-    }
-
-    fun chooseAction() {
-        if (!target.isPlayer()) {
-//            display("${target.name} considers its choices.")
-            target.ai.takeAction()
-        }
-        actionPoints = 0
     }
 
     fun status(): String {

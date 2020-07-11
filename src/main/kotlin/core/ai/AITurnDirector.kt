@@ -25,7 +25,8 @@ class AITurnDirector : EventListener<GameTickEvent>() {
                 it.action = null
                 return false
             } else if (it.canChooseAction()) {
-                it.takeAction()
+                it.creature.body.blockHelper.resetStance()
+                it.chooseAction()
                 return false
             }
         }

@@ -11,13 +11,9 @@ import traveling.location.location.LocationRecipe
 class Block : EventListener<BlockEvent>() {
 
     override fun execute(event: BlockEvent) {
-        if (GameState.battle != null) {
-            val combatant = GameState.battle!!.getCombatant(event.source)
-            if (combatant != null) {
-                combatant.blockBodyPart = event.partThatWillShield
-                combatant.blockedBodyParts.addAll(getBlockedParts(event))
-            }
-        }
+        val blockHelper = event.source.body.blockHelper
+        blockHelper.blockBodyPart = event.partThatWillShield
+        blockHelper.blockedBodyParts.addAll(getBlockedParts(event))
     }
 
     private fun getBlockedParts(event: BlockEvent): List<Location> {

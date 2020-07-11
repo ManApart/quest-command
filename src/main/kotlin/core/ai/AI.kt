@@ -34,4 +34,15 @@ abstract class AI(val name: String, val creature: Target) {
         return actionPoints >= 100
     }
 
+    fun chooseAction() {
+        if (!creature.isPlayer()) {
+            takeAction()
+        }
+        actionPoints = 0
+    }
+
+    fun getActionPoints() : Int {
+        return actionPoints
+    }
+
 }

@@ -66,34 +66,9 @@ class Battle(combatantCreatures: List<Target>) {
     }
 
     private fun executeTurn() {
-        var takeAnotherTurn = true
-        printUpdatingStatus()
-        combatants.forEach { it.tick() }
-        combatants.forEach {
-            if (it.isActionReady()) {
-                printUpdatingStatusEnd()
-//                printTurnStatus()
-                takeAnotherTurn = false
-                EventManager.postEvent(it.action!!.getActionEvent())
-                it.lastAttacked = it.action?.target?.target ?: it.lastAttacked
-                it.action = null
-            } else if (it.canChooseAction()) {
-                printUpdatingStatusEnd()
-//                printTurnStatus()
-                it.resetStance()
-                it.chooseAction()
-                takeAnotherTurn = false
-            }
-        }
-        if (takeAnotherTurn) {
-            EventManager.postEvent(BattleTurnEvent())
-        }
     }
 
     fun addAction(source: Target, action: BattleAction) {
-        val combatant = getOrAddCombatant(source)
-        combatant.action = action
-        EventManager.postEvent(BattleTurnEvent())
     }
 
     fun describe() {
