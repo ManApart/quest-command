@@ -12,6 +12,11 @@ class AITurnDirector : EventListener<GameTickEvent>() {
     override fun execute(event: GameTickEvent) {
         val creatures = GameState.player.location.getLocation().getCreatures()
 
+        //If only one creature, instantly fill their action points to avoid all the looping
+        if (creatures.size == 1){
+            creatures.first().ai.maxActionPoints()
+        }
+
         val takeAnotherTurn = takeATurn(creatures)
         if (takeAnotherTurn) {
             EventManager.postEvent(GameTickEvent())

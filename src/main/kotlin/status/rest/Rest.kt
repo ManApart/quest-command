@@ -18,7 +18,6 @@ class Rest : EventListener<RestEvent>() {
         } else {
             rest(event)
         }
-        rest(event)
     }
 
     private fun rest(event: RestEvent) {

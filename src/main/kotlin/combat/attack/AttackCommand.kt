@@ -48,7 +48,9 @@ class AttackCommand : Command() {
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
             val target = getTarget(keyword, arguments, weaponName, source)
 
-            if (target != null) {
+            if (target == null) {
+                clarifyTarget(keyword, weaponName)
+            } else {
                 //Go ahead and process a target that has aimed for body parts or no body parts at all
                 if (target.bodyPartTargets.isNotEmpty()) {
                     processAttack(source, arguments, attackType, handHelper, target)
@@ -66,7 +68,7 @@ class AttackCommand : Command() {
     }
 
     private fun getTarget(keyword: String, arguments: Args, weaponName: String, source: Target): TargetAim? {
-        val targets = parseTargets(arguments.getBaseGroup()) +  parseTargetsFromInventory(arguments.getBaseGroup())
+        val targets = parseTargets(arguments.getBaseGroup()) + parseTargetsFromInventory(arguments.getBaseGroup())
         return if (targets.isEmpty() && !isAlias(keyword)) {
             clarifyTarget(keyword, weaponName)
             null
@@ -96,27 +98,27 @@ class AttackCommand : Command() {
         val options = listOf("Chop", "Crush", "Slash", "Stab")
         val message = "Attack how?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.map { it to "$it ${args.joinToString(" ")}" }.toMap())
-         CommandParser.setResponseRequest(response)
+        CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTarget(keyword: String, weaponName: String) {
         val options = GameState.currentLocation().getTargets()
         val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name}" }.toMap())
-         CommandParser.setResponseRequest(response)
+        CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTargets(keyword: String, options: List<TargetAim>, weaponName: String) {
         val message = "$keyword which one with $weaponName?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.map { it.target.name to "$keyword ${it.target.name}" }.toMap())
-         CommandParser.setResponseRequest(response)
+        CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTargetPart(keyword: String, target: TargetAim, weaponName: String) {
         val options = target.target.body.getParts()
         val message = "$keyword what part of ${target.target.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name} of ${target.target.name}" }.toMap())
-         CommandParser.setResponseRequest(response)
+        CommandParser.setResponseRequest(response)
     }
 
     private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {

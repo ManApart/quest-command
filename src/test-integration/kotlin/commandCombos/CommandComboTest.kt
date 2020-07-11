@@ -85,7 +85,7 @@ class CommandComboTest {
         val input = "db random && n && climb tree && climb && d && d"
         CommandParser.parseCommand(input)
         assertTrue(ChatHistory.history[1].outPut.contains("You Climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
-        assertTrue(ChatHistory.getLastOutputs().contains("You climb back off Apple Tree." ))
+        assertTrue(ChatHistory.getLastOutputs().contains("You climb back off Apple Tree."))
     }
 
     @Test

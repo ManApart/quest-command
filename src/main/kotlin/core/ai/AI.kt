@@ -31,7 +31,7 @@ abstract class AI(val name: String, val creature: Target) {
     }
 
     fun canChooseAction(): Boolean {
-        return actionPoints >= 100
+        return action == null && actionPoints >= 100
     }
 
     fun chooseAction() {
@@ -39,6 +39,10 @@ abstract class AI(val name: String, val creature: Target) {
             takeAction()
         }
         actionPoints = 0
+    }
+
+    fun maxActionPoints() {
+        actionPoints = 100
     }
 
     fun getActionPoints() : Int {
