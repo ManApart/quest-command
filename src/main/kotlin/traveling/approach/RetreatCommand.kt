@@ -1,7 +1,6 @@
 package traveling.approach
 
-import combat.battle.Distances
-import combat.battle.Distances.HUMAN_LENGTH
+import traveling.position.Distances.HUMAN_LENGTH
 import core.GameState
 import core.commands.*
 import core.history.display

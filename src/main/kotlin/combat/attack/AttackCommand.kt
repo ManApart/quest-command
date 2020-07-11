@@ -1,7 +1,7 @@
 package combat.attack
 
 import combat.HandHelper
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.GameState
 import core.commands.*
 import core.events.EventManager

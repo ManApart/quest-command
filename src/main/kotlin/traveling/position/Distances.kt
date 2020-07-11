@@ -1,4 +1,4 @@
-package combat.battle
+package traveling.position
 
 object Distances {
     const val MIN_RANGE = 1

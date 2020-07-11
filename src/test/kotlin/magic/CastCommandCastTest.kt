@@ -1,6 +1,6 @@
 package magic
 
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.target.Target
 import core.utility.reflection.MockReflections
 import core.reflection.Reflections

@@ -1,6 +1,6 @@
 package magic.castSpell
 
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.commands.*
 import core.target.Target
 import core.history.display
@@ -11,7 +11,6 @@ import core.DependencyInjector
 import core.events.EventManager
 import magic.ViewWordHelpEvent
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 
 class CastCommand : Command() {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)

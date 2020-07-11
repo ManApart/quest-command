@@ -1,8 +1,8 @@
 package combat.attack
 
 import combat.DamageType
-import combat.battle.Distances
-import combat.battle.position.TargetAim
+import traveling.position.Distances
+import traveling.position.TargetAim
 import combat.takeDamage.TakeDamageEvent
 import core.GameState
 import core.events.EventListener

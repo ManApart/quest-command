@@ -2,7 +2,7 @@ package traveling.move
 
 import core.commands.*
 import traveling.direction.Direction
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 import core.target.Target
 import core.history.display
 import core.utility.StringFormatter.getIsAre

@@ -1,10 +1,10 @@
 package core.properties
 
-import combat.battle.Distances.BOW_RANGE
-import combat.battle.Distances.DAGGER_RANGE
-import combat.battle.Distances.MIN_RANGE
-import combat.battle.Distances.SPEAR_RANGE
-import combat.battle.Distances.SWORD_RANGE
+import traveling.position.Distances.BOW_RANGE
+import traveling.position.Distances.DAGGER_RANGE
+import traveling.position.Distances.MIN_RANGE
+import traveling.position.Distances.SPEAR_RANGE
+import traveling.position.Distances.SWORD_RANGE
 import core.target.activator.ACTIVATOR_TAG
 import core.target.creature.CREATURE_TAG
 import core.target.item.ITEM_TAG

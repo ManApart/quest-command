@@ -1,6 +1,6 @@
 package magic.spellCommands
 
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.commands.Args
 import core.GameState
 import core.target.Target

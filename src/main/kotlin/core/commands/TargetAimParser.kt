@@ -1,12 +1,11 @@
 package core.commands
 
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.GameState
 import core.target.Target
 import core.history.display
 import core.utility.NameSearchableList
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 
 //TODO - allow for response requests?
 fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameState.player): List<TargetAim> {

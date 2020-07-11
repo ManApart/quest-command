@@ -1,7 +1,7 @@
 package traveling.location
 
-import traveling.direction.NO_VECTOR
-import traveling.direction.Vector
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 
 class ProtoConnection(
         val target: String? = null,

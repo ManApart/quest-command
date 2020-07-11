@@ -8,7 +8,7 @@ import core.target.Target
 import core.target.targetsToString
 import explore.examine.describeBattle
 import traveling.climb.ClimbLook
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 
 class Look : EventListener<LookEvent>() {
 

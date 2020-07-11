@@ -1,6 +1,6 @@
 package magic.castSpell
 
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.events.DelayedEvent
 import core.events.Event
 import core.target.Target

@@ -1,7 +1,7 @@
 package magic.spellCommands.air
 
 import combat.DamageType
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser
@@ -27,8 +27,8 @@ import status.stat.StatEffect
 import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
-import traveling.direction.NO_VECTOR
-import traveling.direction.Vector
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
@@ -98,7 +98,7 @@ class PullTest {
 
     @Test
     fun pullFromDifferentPosition() {
-        victim.position = Vector(y=15)
+        victim.position = Vector(y = 15)
         val spell = castSpell("cast pull 5 on victim")
 
         assertEquals(Vector(0, 10, 0), spell.vector)
@@ -120,7 +120,7 @@ class PullTest {
 
     @Test
     fun pullInDirectionFromDifferentPosition() {
-        victim.position = Vector(y=15)
+        victim.position = Vector(y = 15)
         val spell = castSpell("cast pull 10 towards east on victim")
 
         assertEquals(Vector(10, 15, 0), spell.vector)

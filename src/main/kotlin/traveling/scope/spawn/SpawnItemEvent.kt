@@ -1,9 +1,9 @@
 package traveling.scope.spawn
 
 import core.events.Event
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 import core.target.Target
-import traveling.direction.Vector
+import traveling.position.Vector
 import traveling.location.location.LocationNode
 
 class SpawnItemEvent(

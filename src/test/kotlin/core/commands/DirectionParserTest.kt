@@ -1,7 +1,7 @@
 package core.commands
 
 import traveling.direction.Direction
-import traveling.direction.Vector
+import traveling.position.Vector
 import org.junit.Test
 import kotlin.test.assertEquals
 

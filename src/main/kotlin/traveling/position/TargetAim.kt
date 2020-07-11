@@ -1,4 +1,4 @@
-package combat.battle.position
+package traveling.position
 
 import core.target.Target
 import traveling.location.location.Location

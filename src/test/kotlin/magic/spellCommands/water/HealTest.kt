@@ -1,7 +1,7 @@
 package magic.spellCommands.water
 
 import combat.DamageType
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser

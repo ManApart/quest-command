@@ -1,6 +1,6 @@
 package magic.spells
 
-import combat.battle.Distances
+import traveling.position.Distances
 import status.stat.FOCUS
 import magic.castSpell.CastSpellEvent
 import status.conditions.AddConditionEvent

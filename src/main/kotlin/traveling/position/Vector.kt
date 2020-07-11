@@ -1,5 +1,6 @@
-package traveling.direction
+package traveling.position
 
+import traveling.direction.Direction
 import kotlin.math.*
 
 val NO_VECTOR: Vector = Vector()

@@ -8,7 +8,7 @@ import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
 import traveling.direction.Direction
-import traveling.direction.Vector
+import traveling.position.Vector
 import traveling.location.Network
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe

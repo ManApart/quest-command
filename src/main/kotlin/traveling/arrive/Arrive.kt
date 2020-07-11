@@ -3,7 +3,7 @@ package traveling.arrive
 import core.GameState
 import core.events.EventListener
 import core.history.display
-import traveling.direction.Vector
+import traveling.position.Vector
 
 class Arrive : EventListener<ArriveEvent>() {
 

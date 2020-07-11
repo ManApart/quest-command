@@ -3,7 +3,7 @@ package traveling.location.location
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.utility.Named
 import traveling.direction.Direction
-import traveling.direction.Vector
+import traveling.position.Vector
 import traveling.location.Connection
 import traveling.location.Network
 import traveling.location.ProtoConnection

@@ -7,7 +7,7 @@ import core.properties.IS_CLIMBING
 import core.target.Target
 import core.target.targetsToString
 import traveling.climb.ClimbLook
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
 

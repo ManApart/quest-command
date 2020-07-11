@@ -1,6 +1,6 @@
 package traveling.approach
 
-import combat.battle.Distances
+import traveling.position.Distances
 import core.GameState
 import core.commands.*
 import core.events.EventManager

@@ -1,7 +1,7 @@
 package core.commands
 
 import traveling.direction.Direction
-import traveling.direction.Vector
+import traveling.position.Vector
 
 private val commaSeparateDigits = Regex("\\d,\\d,\\d")
 

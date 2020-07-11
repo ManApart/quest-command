@@ -12,7 +12,7 @@ import dialogue.DialogueOptions
 import org.junit.Before
 import org.junit.Test
 import system.location.LocationFakeParser
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 import traveling.location.location.*
 import kotlin.test.assertEquals
 

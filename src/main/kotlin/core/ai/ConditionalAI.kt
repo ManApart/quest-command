@@ -2,7 +2,7 @@ package core.ai
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.GameState
 import core.target.Target
 import quests.triggerCondition.TriggeredEvent

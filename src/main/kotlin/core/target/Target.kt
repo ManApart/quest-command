@@ -19,8 +19,8 @@ import dialogue.DialogueOptions
 import inventory.Inventory
 import status.ProtoSoul
 import status.Soul
-import traveling.direction.NO_VECTOR
-import traveling.direction.Vector
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 import traveling.location.Route
 import traveling.location.location.Location
 import traveling.location.location.LocationNode

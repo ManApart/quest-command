@@ -1,5 +1,7 @@
 package traveling.direction
 
+import traveling.position.Vector
+
 enum class Direction(val shortcut: String, val vector: Vector) {
 
     NORTH("n", Vector(y = 1)),

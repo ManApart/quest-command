@@ -4,7 +4,7 @@ import core.events.DelayedEvent
 import core.events.Event
 import core.target.Target
 import status.stat.AGILITY
-import traveling.direction.Vector
+import traveling.position.Vector
 import kotlin.math.max
 
 class StartMoveEvent(override val source: Target, private val moveTarget: Vector, private val staminaScalar: Float = 1f, private val speedScalar: Float = 1f, private val silent: Boolean = false, timeLeft: Int = -1) : Event, DelayedEvent {

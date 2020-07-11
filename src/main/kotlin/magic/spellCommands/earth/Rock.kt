@@ -1,7 +1,7 @@
 package magic.spellCommands.earth
 
-import combat.battle.position.TargetAim
-import combat.battle.position.toCommandString
+import traveling.position.TargetAim
+import traveling.position.toCommandString
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper

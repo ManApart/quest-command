@@ -2,7 +2,7 @@ package traveling.scope.spawn
 
 import core.GameState
 import core.events.EventListener
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 import core.history.display
 
 class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {

@@ -1,7 +1,7 @@
 package core.target.item
 
 import core.events.EventListener
-import traveling.direction.NO_VECTOR
+import traveling.position.NO_VECTOR
 import core.history.display
 import traveling.scope.spawn.ItemSpawnedEvent
 import traveling.scope.spawn.SpawnItemEvent

@@ -1,7 +1,7 @@
 package magic.spellCommands.water
 
-import combat.battle.Distances
-import combat.battle.position.TargetAim
+import traveling.position.Distances
+import traveling.position.TargetAim
 import core.commands.Args
 import core.target.Target
 import status.stat.WATER_MAGIC

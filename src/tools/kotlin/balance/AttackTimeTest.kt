@@ -2,7 +2,7 @@ package balance
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
-import combat.battle.position.TargetAim
+import traveling.position.TargetAim
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target

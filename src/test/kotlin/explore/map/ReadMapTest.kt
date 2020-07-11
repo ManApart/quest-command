@@ -1,6 +1,6 @@
 package explore.map
 
-import traveling.direction.Vector
+import traveling.position.Vector
 import traveling.location.Connection
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationPoint

@@ -1,7 +1,7 @@
 package gameState.location
 
 import traveling.direction.Direction
-import traveling.direction.Vector
+import traveling.position.Vector
 import org.junit.Test
 import traveling.location.Connection
 import traveling.location.location.LocationNode

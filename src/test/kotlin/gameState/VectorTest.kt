@@ -2,7 +2,7 @@ package gameState
 
 import org.junit.Test
 import traveling.direction.Direction
-import traveling.direction.Vector
+import traveling.position.Vector
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

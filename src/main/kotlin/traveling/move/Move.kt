@@ -1,7 +1,7 @@
 package traveling.move
 
-import combat.battle.Distances
-import combat.battle.Distances.LOCATION_SIZE
+import traveling.position.Distances
+import traveling.position.Distances.LOCATION_SIZE
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -10,8 +10,8 @@ import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
-import traveling.direction.NO_VECTOR
-import traveling.direction.Vector
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationPoint
 import traveling.travel.getDistanceToNeighbor
