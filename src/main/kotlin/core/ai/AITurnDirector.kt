@@ -3,28 +3,38 @@ package core.ai
 import core.GameState
 import core.events.EventListener
 import core.events.EventManager
+import core.target.Target
+import explore.examine.printUpdatingStatusEnd
 import time.gameTick.GameTickEvent
 
 class AITurnDirector : EventListener<GameTickEvent>() {
 
     override fun execute(event: GameTickEvent) {
-        val creatureAIs = GameState.player.location.getLocation().getCreatures().map { it.ai }
+        val creatures = GameState.player.location.getLocation().getCreatures()
 
-        val takeAnotherTurn = takeATurn(creatureAIs)
+        val takeAnotherTurn = takeATurn(creatures)
         if (takeAnotherTurn) {
             EventManager.postEvent(GameTickEvent())
         }
 
     }
 
-    private fun takeATurn(creatureAIs: List<AI>): Boolean {
+    private fun takeATurn(creatures: List<Target>): Boolean {
+        val creatureAIs = creatures.map { it.ai }
         creatureAIs.forEach { it.tick() }
         creatureAIs.forEach {
+            //Make this only if some verbosity level is set?
             if (it.isActionReady()) {
+                if (it.aggroTarget != null){
+                    printUpdatingStatusEnd(creatures)
+                }
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
                 return false
             } else if (it.canChooseAction()) {
+                if (it.aggroTarget != null){
+                    printUpdatingStatusEnd(creatures)
+                }
                 it.creature.body.blockHelper.resetStance()
                 it.chooseAction()
                 return false

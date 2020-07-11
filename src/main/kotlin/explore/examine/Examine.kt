@@ -18,7 +18,7 @@ class Examine : EventListener<ExamineEvent>() {
         when {
             GameState.player.properties.values.getBoolean(IS_CLIMBING) -> ClimbLook.describeClimbJourney()
             event.target != null -> describeTarget(event.target)
-            GameState.battle != null -> GameState.battle?.describe()
+            event.source.ai.aggroTarget != null -> describeBattle()
             else -> describeLocation()
         }
     }

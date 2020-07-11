@@ -6,6 +6,7 @@ import core.history.display
 import core.properties.IS_CLIMBING
 import core.target.Target
 import core.target.targetsToString
+import explore.examine.describeBattle
 import traveling.climb.ClimbLook
 import traveling.direction.NO_VECTOR
 
@@ -16,7 +17,7 @@ class Look : EventListener<LookEvent>() {
         when {
             GameState.player.properties.values.getBoolean(IS_CLIMBING) -> ClimbLook.describeClimbJourney()
             event.target != null -> describeTarget(event.target)
-            GameState.battle != null -> GameState.battle?.describe()
+            event.source.ai.aggroTarget != null -> describeBattle()
             else -> describeLocation()
         }
     }

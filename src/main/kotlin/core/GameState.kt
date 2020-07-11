@@ -1,14 +1,11 @@
 package core
 
-import combat.battle.Battle
 import core.properties.Properties
-import core.target.Target
 import time.TimeManager
 import traveling.location.location.Location
 
 object GameState {
     var gameName = "Kanbara"
-    var battle: Battle? = null
     var properties = Properties()
     val timeManager = TimeManager()
     var player = GameManager.newPlayer()
@@ -16,7 +13,6 @@ object GameState {
 
     fun reset() {
         player = GameManager.newPlayer()
-        battle = null
         properties = Properties()
     }
 

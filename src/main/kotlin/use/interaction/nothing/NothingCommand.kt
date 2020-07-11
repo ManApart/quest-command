@@ -40,15 +40,11 @@ class NothingCommand : Command() {
     private fun clarifyHours() {
         val targets = listOf("1", "3", "5", "10")
         val message = "Wait for how many hours?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "wait $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "wait $it" }.toMap()))
     }
 
     private fun wait(source: Target, hours: Int) {
-        if (GameState.battle == null) {
-            EventManager.postEvent(NothingEvent(source, hours))
-        } else {
-            EventManager.postEvent(StartNothingEvent(source, hours))
-        }
+        EventManager.postEvent(StartNothingEvent(source, hours))
     }
 
 }

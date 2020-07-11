@@ -46,7 +46,7 @@ class AttackCommand : Command() {
             val attackType = fromString(keyword)
             val handHelper = HandHelper(source, arguments.getString("with"), attackType.damageType.damage.toLowerCase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
-            val target = getTarget(keyword, arguments, weaponName)
+            val target = getTarget(keyword, arguments, weaponName, source)
 
             if (target != null) {
                 //Go ahead and process a target that has aimed for body parts or no body parts at all
@@ -65,13 +65,13 @@ class AttackCommand : Command() {
         }
     }
 
-    private fun getTarget(keyword: String, arguments: Args, weaponName: String): TargetAim? {
+    private fun getTarget(keyword: String, arguments: Args, weaponName: String, source: Target): TargetAim? {
         val targets = parseTargets(arguments.getBaseGroup()) +  parseTargetsFromInventory(arguments.getBaseGroup())
         return if (targets.isEmpty() && !isAlias(keyword)) {
             clarifyTarget(keyword, weaponName)
             null
-        } else if (targets.isEmpty() && GameState.battle != null) {
-            val target = GameState.battle!!.getPlayerCombatant().lastAttacked
+        } else if (targets.isEmpty()) {
+            val target = source.ai.aggroTarget
             return if (target != null) {
                 TargetAim(target)
             } else {
@@ -125,7 +125,7 @@ class AttackCommand : Command() {
             target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
             target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, target.target))
             target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
-            GameState.battle?.getCombatant(source)?.lastAttacked != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(GameState.battle!!.getCombatant(source)!!.lastAttacked!!), attackType.damageType))
+            source.ai.aggroTarget != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(source.ai.aggroTarget!!), attackType.damageType))
             else -> display("Couldn't find ${arguments.getBaseString()}.")
         }
     }

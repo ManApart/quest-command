@@ -1,6 +1,5 @@
 package combat.attack
 
-import combat.Combatant
 import combat.DamageType
 import combat.battle.Distances
 import combat.battle.position.TargetAim
@@ -12,22 +11,22 @@ import core.history.display
 import core.target.Target
 import core.utility.StringFormatter
 import status.stat.BARE_HANDED
+import status.stat.HEALTH
 import traveling.location.location.Location
 import use.UseEvent
 
 class Attack : EventListener<AttackEvent>() {
 
     override fun execute(event: AttackEvent) {
-        if (isValidAttack(event)) {
-            val defender = GameState.battle!!.getCombatant(event.target.target)!!
+        if (event.target.target.soul.getCurrent(HEALTH) > 0) {
             val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
             val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
-            val targetDistance = GameState.battle?.getCombatantDistance() ?: Distances.MIN_RANGE
+            val targetDistance = event.source.position.getDistance(event.target.target.position) ?: Distances.MIN_RANGE
             val weaponRange = getRange(event.source, event.sourcePart)
 
             when {
                 weaponRange < targetDistance -> display("${event.target} is too far away to be hit by $damageSource.")
-                offensiveDamage > 0 -> processAttack(defender, event, damageSource, offensiveDamage)
+                offensiveDamage > 0 -> processAttack(event, damageSource, offensiveDamage)
                 event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(GameState.player, event.sourcePart.getEquippedWeapon()!!, event.target.target))
                 else -> display("Nothing happens.")
             }
@@ -35,21 +34,7 @@ class Attack : EventListener<AttackEvent>() {
         event.target.target.consume(event)
     }
 
-    private fun isValidAttack(event: AttackEvent): Boolean {
-        return when {
-            GameState.battle == null -> {
-                println("Attack has no battle context.")
-                false
-            }
-            GameState.battle?.getCombatant(event.target.target) == null -> {
-                println("Attack battle has no combatant for target.")
-                false
-            }
-            else -> true
-        }
-    }
-
-    private fun processAttack(defender: Combatant, event: AttackEvent, damageSource: String, offensiveDamage: Int) {
+    private fun processAttack(event: AttackEvent, damageSource: String, offensiveDamage: Int) {
         val subject = StringFormatter.getSubject(event.source)
         val defenderName = StringFormatter.getSubject(event.target.target)
         val attackedParts = getAttackedParts(event.source, event.sourcePart, event.target)
@@ -60,7 +45,7 @@ class Attack : EventListener<AttackEvent>() {
             val verb = StringFormatter.format(event.source.isPlayer(), event.type.verbPlural, event.type.verb)
 //            display("$subject $verb at $defenderName.")
             attackedParts.forEach { attackedPart ->
-                processAttackHit(event, attackedPart, subject, verb, defenderName, damageSource, defender, offensiveDamage)
+                processAttackHit(event, attackedPart, subject, verb, defenderName, damageSource, event.target, offensiveDamage)
             }
         }
     }
@@ -81,7 +66,7 @@ class Attack : EventListener<AttackEvent>() {
         return weaponRange + bodyRange
     }
 
-    private fun processAttackHit(event: AttackEvent, attackedPart: Location, subject: String, verb: String, defenderName: String, damageSource: String, defender: Combatant, offensiveDamage: Int) {
+    private fun processAttackHit(event: AttackEvent, attackedPart: Location, subject: String, verb: String, defenderName: String, damageSource: String, defender: TargetAim, offensiveDamage: Int) {
         val possessive = StringFormatter.getSubjectPossessive(event.source)
         display("$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource.")
         EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, event.type, damageSource))

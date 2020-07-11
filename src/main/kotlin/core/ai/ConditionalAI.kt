@@ -20,7 +20,7 @@ class ConditionalAI(name: String, creature: Target, val actions: List<TriggeredE
     }
 
     private fun defaultHardCodedAction() {
-        if (GameState.battle != null) {
+        if (aggroTarget != null) {
             val playerBody = GameState.player.body
             val possibleParts = listOf(
                     playerBody.getPart("Right Leg"),
@@ -34,9 +34,7 @@ class ConditionalAI(name: String, creature: Target, val actions: List<TriggeredE
             } else {
                 creature.body.getRootPart()
             }
-            if (defaultPart != null) {
-                EventManager.postEvent(StartAttackEvent(creature, defaultPart, TargetAim(GameState.player, targetPart), DamageType.SLASH))
-            }
+            EventManager.postEvent(StartAttackEvent(creature, defaultPart, TargetAim(GameState.player, targetPart), DamageType.SLASH))
         }
     }
 

@@ -28,14 +28,10 @@ class BlockCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
-        if (GameState.battle == null) {
-            display("This is only relevant in battle.")
-        } else {
-            val arguments = Args(args, listOf("with"))
-            val handHelper = HandHelper(source, arguments.getString("with"), "block")
-            val shieldedPart = parseBodyParts(GameState.player, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
-            EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, shieldedPart))
-        }
+        val arguments = Args(args, listOf("with"))
+        val handHelper = HandHelper(source, arguments.getString("with"), "block")
+        val shieldedPart = parseBodyParts(GameState.player, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
+        EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, shieldedPart))
     }
 
 }

@@ -1,14 +1,12 @@
 package combat.attack
 
 import combat.DamageType
-import combat.battle.BattleAction
 import combat.battle.position.TargetAim
 import core.events.DelayedEvent
 import core.events.Event
 import core.target.Target
 import status.stat.AGILITY
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 import kotlin.math.max
 
 class StartAttackEvent(override val source: Target, private val sourcePart: Location, val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, DelayedEvent {
