@@ -718,7 +718,6 @@ Args test for returning the two empty lists - make sure it ends up just being on
 ## Misc / Unsorted
 
 Event name log
-property limits
 
 Don't do weather updates for body parts (location.changeWeatherIfEnoughTimeHasPassed)
 - maybe default to no weather, otherwise use weather tags etc?

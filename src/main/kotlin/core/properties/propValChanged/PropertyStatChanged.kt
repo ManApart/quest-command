@@ -20,7 +20,7 @@ class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
 
         val subject = StringFormatter.getSubjectPossessive(event.target)
         val current = values.getInt(event.statName)
-        if (!event.silent) {
+        if (!event.silent && beforeVal != current) {
             display("${event.sourceOfChange} $change $subject ${event.statName} from $beforeVal to $current.")
         }
 

@@ -10,7 +10,6 @@ import explore.look.describeTarget
 
 class Examine : EventListener<ExamineEvent>() {
 
-
     override fun execute(event: ExamineEvent) {
         when {
             GameState.player.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney()

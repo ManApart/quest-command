@@ -1,12 +1,12 @@
 package core.properties
 
+import combat.DamageType
+
 object GuardManager {
     private val guards by lazy { buildGuardMap() }
 
     private fun buildGuardMap(): Map<String, (String, String) -> String> {
-        return mapOf(
-                FIRE_HEALTH to ::isGreaterThanEqualToZero
-        )
+        return DamageType.values().associate { it.health.toLowerCase() to ::isGreaterThanEqualToZero }
     }
 
     fun getGuardedValue(key: String, current: String, newValue: String): String {

@@ -10,7 +10,6 @@ import traveling.position.NO_VECTOR
 
 class Look : EventListener<LookEvent>() {
 
-
     override fun execute(event: LookEvent) {
         when {
             GameState.player.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney()

@@ -107,7 +107,7 @@ class Values(properties: Map<String, String> = mapOf()) {
     }
 
     fun inc(key: String, amount: Int) {
-        properties[key.toLowerCase()] = (getInt(key, 0) + amount).toString()
+        put(key.toLowerCase(), (getInt(key, 0) + amount).toString())
     }
 
 }
