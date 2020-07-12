@@ -93,7 +93,7 @@ class CommandComboTest {
         CommandParser.parseCommand("s")
         val input = "slash body of rat && r && r"
         CommandParser.parseCommand(input)
-        assertEquals("The battle ends.", ChatHistory.getLastOutput())
+        assertEquals("Rat has died.", ChatHistory.getLastOutput())
     }
 
     @Test
