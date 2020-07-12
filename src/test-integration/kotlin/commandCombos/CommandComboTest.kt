@@ -137,7 +137,7 @@ class CommandComboTest {
         val input = "move to wheat && slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
                 "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple" +
-                "&& t interior && t && t && move to range && take pie tin" +
+                "&& t interior && t && t && rest 10 && move to range && take pie tin" +
                 "&& read recipe && rs" +
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
