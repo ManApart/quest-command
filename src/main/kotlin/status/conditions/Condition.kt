@@ -44,16 +44,10 @@ class Condition(
     }
 
     fun apply(soul: Soul) {
-        var effectApplied = false
         getEffects().forEach { effect ->
             if (permanent || age < effect.duration) {
                 effect.apply(soul, isFirstApply)
-                effectApplied = true
             }
-        }
-
-        if (!effectApplied) {
-            EventManager.postEvent(RemoveConditionEvent(soul.parent, this))
         }
 
         isFirstApply = false
@@ -66,6 +60,10 @@ class Condition(
 
     fun hasEffect(name: String): Boolean {
         return effects.exists(name) || criticalEffects.exists(name)
+    }
+
+    fun isStillViable(): Boolean {
+        return getEffects().any { permanent || age < it.duration }
     }
 
 }

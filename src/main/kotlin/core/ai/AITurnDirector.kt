@@ -5,11 +5,10 @@ import core.events.EventListener
 import core.events.EventManager
 import core.target.Target
 import explore.examine.printUpdatingStatusEnd
-import time.gameTick.GameTickEvent
 
-class AITurnDirector : EventListener<GameTickEvent>() {
+class AITurnDirector : EventListener<AIUpdateTick>() {
 
-    override fun execute(event: GameTickEvent) {
+    override fun execute(event: AIUpdateTick) {
         val creatures = GameState.player.location.getLocation().getCreatures()
 
         //If only one creature, instantly fill their action points to avoid all the looping
@@ -19,7 +18,7 @@ class AITurnDirector : EventListener<GameTickEvent>() {
 
         val takeAnotherTurn = takeATurn(creatures)
         if (takeAnotherTurn) {
-            EventManager.postEvent(GameTickEvent())
+            EventManager.postEvent(AIUpdateTick())
         }
 
     }

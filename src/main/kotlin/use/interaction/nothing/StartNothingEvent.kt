@@ -11,7 +11,4 @@ class StartNothingEvent(override val source: Target, private val hoursWaited: In
         return NothingEvent(source, hoursWaited)
     }
 
-    override fun gameTicks(): Int {
-        return 1
-    }
 }
