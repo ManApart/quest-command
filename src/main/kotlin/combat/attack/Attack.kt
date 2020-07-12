@@ -38,6 +38,9 @@ class Attack : EventListener<AttackEvent>() {
         val subject = StringFormatter.getSubject(event.source)
         val defenderName = StringFormatter.getSubject(event.target.target)
         val attackedParts = getAttackedParts(event.source, event.sourcePart, event.target)
+        if (event.source != event.target.target) {
+            event.source.ai.aggroTarget = event.target.target
+        }
 
         if (attackedParts.isEmpty()) {
             display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
@@ -60,7 +63,7 @@ class Attack : EventListener<AttackEvent>() {
         }
     }
 
-    private fun getRange(source: Target, sourcePart: Location) : Int {
+    private fun getRange(source: Target, sourcePart: Location): Int {
         val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
         val bodyRange = source.body.getRange()
         return weaponRange + bodyRange

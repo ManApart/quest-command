@@ -12,7 +12,7 @@ class CastSpell : EventListener<CastSpellEvent>() {
     override fun execute(event: CastSpellEvent) {
         if (canCast(event)) {
             event.spell.cast(event)
-            if (event.spell.isHostile && event.target.target.soul.hasStat(HEALTH)){
+            if (event.spell.isHostile && event.target.target.soul.hasStat(HEALTH) && event.target.target != event.source){
                 event.source.ai.aggroTarget = event.target.target
                 event.target.target.ai.aggroTarget = event.source
             }

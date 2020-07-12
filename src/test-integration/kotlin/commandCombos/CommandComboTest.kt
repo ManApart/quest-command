@@ -69,7 +69,7 @@ class CommandComboTest {
 
     @Test
     fun makeFire() {
-        val input = "n && pickup hatchet && equip hatchet && y && ch tree && ch tree"
+        val input = "n && pickup hatchet && ch tree && ch tree"
         CommandParser.parseCommand(input)
         assertEquals(0, GameState.currentLocation().getActivators("tree").size)
         assertEquals(1, GameState.currentLocation().getActivators("logs").size)

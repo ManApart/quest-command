@@ -17,6 +17,7 @@ import status.conditions.Condition
 import status.effects.EffectManager
 import magic.Element
 import core.events.EventManager
+import core.events.multiEvent.StartMultiEvent
 import kotlin.math.max
 
 class Flame : SpellCommand() {
@@ -53,15 +54,19 @@ class Flame : SpellCommand() {
             val levelRequirement = damageAmount / 2
 
             executeWithWarns(source, FIRE_MAGIC, levelRequirement, totalCost, targets) {
+                val spells = mutableListOf(
+                        postSpell(source, TargetAim(source, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement)
+                )
                 targets.forEach { target ->
-                    postSpell(source, target, damageAmount, cost, levelRequirement)
+                    spells.add(postSpell(source, target, damageAmount, cost, levelRequirement))
                 }
-                postSpell(source, TargetAim(source, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement)
+
+                EventManager.postEvent(StartMultiEvent(source, spells.first().timeLeft, spells))
             }
         }
     }
 
-    private fun postSpell(source: Target, target: TargetAim, damageAmount: Int, cost: Int, levelRequirement: Int) {
+    private fun postSpell(source: Target, target: TargetAim, damageAmount: Int, cost: Int, levelRequirement: Int): StartCastSpellEvent {
         val parts = getTargetedPartsOrAll(target, 3)
         val effects = listOf(
                 EffectManager.getEffect("Burning", damageAmount, 3, parts),
@@ -70,7 +75,7 @@ class Flame : SpellCommand() {
 
         val condition = Condition("Fire Blasted", Element.FIRE, cost, effects)
         val spell = Spell("Flame", condition, cost, FIRE_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
-        EventManager.postEvent(StartCastSpellEvent(source, target, spell))
+        return StartCastSpellEvent(source, target, spell)
     }
 
 }

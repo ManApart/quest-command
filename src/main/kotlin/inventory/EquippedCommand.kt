@@ -25,7 +25,7 @@ class EquippedCommand : Command() {
         if (args.isEmpty()) {
             listEquipped()
         } else {
-            display("Unknown command: ${args.joinToString(" ")}")
+            display("Unknown command: equip ${args.joinToString(" ")}")
         }
     }
 
@@ -35,7 +35,6 @@ class EquippedCommand : Command() {
         if (items.isEmpty()) {
             display("You don't have anything equipped!")
         } else {
-
             val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
             display("You have following items equipped:\n\t$itemList")
         }
