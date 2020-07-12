@@ -12,13 +12,15 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
         val creatures = GameState.player.location.getLocation().getCreatures()
 
         //If only one creature, instantly fill their action points to avoid all the looping
-        if (creatures.size == 1){
+        if (creatures.size == 1) {
             creatures.first().ai.maxActionPoints()
         }
 
-        val takeAnotherTurn = takeATurn(creatures)
-        if (takeAnotherTurn) {
-            EventManager.postEvent(AIUpdateTick())
+        if (creatures.isNotEmpty()) {
+            val takeAnotherTurn = takeATurn(creatures)
+            if (takeAnotherTurn) {
+                EventManager.postEvent(AIUpdateTick())
+            }
         }
 
     }
@@ -29,14 +31,14 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
         creatureAIs.forEach {
             //Make this only if some verbosity level is set?
             if (it.isActionReady()) {
-                if (it.aggroTarget != null){
+                if (it.aggroTarget != null) {
                     printUpdatingStatusEnd(creatures)
                 }
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
                 return false
             } else if (it.canChooseAction()) {
-                if (it.aggroTarget != null){
+                if (it.aggroTarget != null) {
                     printUpdatingStatusEnd(creatures)
                 }
                 it.creature.body.blockHelper.resetStance()
