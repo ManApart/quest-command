@@ -725,3 +725,10 @@ rearrange battle package stuff
 Extract out examine/look to own files
 - target
 - location
+
+
+Event name log
+property limits
+
+Don't do weather updates for body parts (location.changeWeatherIfEnoughTimeHasPassed)
+- maybe default to no weather, otherwise use weather tags etc?
