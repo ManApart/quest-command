@@ -15,6 +15,7 @@ const val IS_CLIMBING = "Is Climbing"
 const val COUNT = "count"
 const val CAN_HOLD = "CanHold"
 const val WEIGHT = "weight"
+const val FIRE_HEALTH = "fireHealth"
 
 //Tags
 const val SIZE = "Size"
