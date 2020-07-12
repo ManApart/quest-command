@@ -717,16 +717,6 @@ Args test for returning the two empty lists - make sure it ends up just being on
 
 ## Misc / Unsorted
 
-
-rearrange battle package stuff
-- distances
-- targetAim
-
-Extract out examine/look to own files
-- target
-- location
-
-
 Event name log
 property limits
 

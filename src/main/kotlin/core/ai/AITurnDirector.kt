@@ -4,7 +4,7 @@ import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.target.Target
-import explore.examine.printUpdatingStatusEnd
+import explore.look.printUpdatingStatusEnd
 
 class AITurnDirector : EventListener<AIUpdateTick>() {
 

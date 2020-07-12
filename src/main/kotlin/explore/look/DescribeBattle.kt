@@ -1,4 +1,4 @@
-package explore.examine
+package explore.look
 
 import core.commands.CommandParser
 import core.history.display
