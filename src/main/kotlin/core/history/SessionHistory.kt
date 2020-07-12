@@ -12,12 +12,16 @@ object SessionHistory {
     private val fileName = "./saves/session-stats-$date.md"
 
     private val unknownCommands = mutableListOf<String>()
-    private val eventCounts = mutableMapOf<String, Int>()
+    private val eventCounts = mutableListOf<EventCount>()
 
     fun incEventCount(event: Event) {
         val name = event.javaClass.simpleName
-        eventCounts.putIfAbsent(name, 0)
-        eventCounts[name] = eventCounts[name]!! + 1
+        val last = eventCounts.lastOrNull()
+        if (last != null && last.name == name){
+            last.count++
+        } else {
+            eventCounts.add(EventCount(name))
+        }
     }
 
     fun addUnknownCommand(command: String) {
@@ -30,12 +34,6 @@ object SessionHistory {
             directory.mkdir()
         }
         File(fileName).printWriter().use { out ->
-            out.println("## Event Counts" +
-                    "\n\nEvent | Count" +
-                    "\n---|---")
-            eventCounts.forEach { (eventName, count) ->
-                out.println("$eventName | $count")
-            }
 
             out.println("\n## Unknown Commands")
             unknownCommands.forEach { line ->
@@ -47,6 +45,13 @@ object SessionHistory {
                     "\n---|---")
             ChatHistory.history.forEach { inOut ->
                 out.println("${inOut.timeTaken / 1000f} | ${inOut.input}")
+            }
+
+            out.println("## Event Counts" +
+                    "\n\nEvent | Count" +
+                    "\n---|---")
+            eventCounts.forEach { event ->
+                out.println("${event.name} | ${event.count}")
             }
         }
     }
