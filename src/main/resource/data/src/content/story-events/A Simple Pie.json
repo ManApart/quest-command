@@ -26,7 +26,7 @@
     "stage": 20,
     "journal": "I should slice the apple by using my dagger or something sharp on it.",
     "condition": {
-      "callingEvent": "TransferItemEvent",
+      "callingEvent": "TakeItemEvent",
       "params": {
         "destination": "player",
         "item": "Apple"
@@ -79,7 +79,7 @@
     "stage": 40,
     "journal": "I should place this wheat in the chute at the top of the windmill.",
     "condition": {
-      "callingEvent": "TransferItemEvent",
+      "callingEvent": "TakeItemEvent",
       "params": {
         "destination": "player",
         "item": "Wheat Bundle"
@@ -122,9 +122,9 @@
     "stage": 60,
     "journal": "I should travel to farmer's hut and use a bucket on the well to get water.",
     "condition": {
-      "callingEvent": "TransferItemEvent",
+      "callingEvent": "TakeItemEvent",
       "params": {
-        "destination": "player",
+        "taker": "player",
         "item": "Wheat Flour"
       }
     },
@@ -143,9 +143,9 @@
     "stage": 70,
     "journal": "I should use water on flour to make dough.",
     "condition": {
-      "callingEvent": "TransferItemEvent",
+      "callingEvent": "TakeItemEvent",
       "params": {
-        "destination": "player",
+        "taker": "player",
         "item": "bucket of water"
       }
     },
@@ -164,9 +164,9 @@
     "stage": 80,
     "journal": "I should combine the sliced apple, dough, and a pie tin on the range in the Farmer's Hut Interior.",
     "condition": {
-      "callingEvent": "TransferItemEvent",
+      "callingEvent": "TakeItemEvent",
       "params": {
-        "destination": "player",
+        "taker": "player",
         "item": "dough"
       }
     },
@@ -206,9 +206,9 @@
     "availableAfter": 10,
     "journal": "I've baked an an Apple Pie! That was easier than expected!",
     "condition": {
-      "callingEvent": "TransferItemEvent",
+      "callingEvent": "TakeItemEvent",
       "params": {
-        "destination": "player",
+        "taker": "player",
         "item": "Apple Pie"
       }
     },

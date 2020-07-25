@@ -252,6 +252,19 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return getStrings(BASE) + getStrings(delimiter)
     }
 
+    /**
+     * Get's the first non empty value found based on the order (precedence) that you pass in the delimiters, not the order the phrases are passed in the command
+     */
+    fun getFirstString(vararg delimiters: String): String {
+        delimiters.forEach {
+            val result = getStrings(it).firstOrNull()
+            if (result != null) {
+                return result
+            }
+        }
+        return ""
+    }
+
     private fun getKey(delimiter: String): String {
         return if (delimiter == BASE) {
             BASE

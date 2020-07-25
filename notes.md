@@ -719,3 +719,15 @@ Args test for returning the two empty lists - make sure it ends up just being on
 
 Don't do weather updates for body parts (location.changeWeatherIfEnoughTimeHasPassed)
 - maybe default to no weather, otherwise use weather tags etc?
+
+move place from give command to drop command, allow place on / drop at to set something at a specific location
+
+sell command 
+- sell x for y
+- buy x for y
+
+npc evaluates whether they will make the deal
+
+targets have gravityParent. If that target is removed from scope, the evaluate a fall
+- fall - lower z until collide with other
+- collide - use size and location, iterate through other targets

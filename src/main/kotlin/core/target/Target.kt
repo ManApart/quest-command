@@ -218,6 +218,13 @@ open class Target(
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 
+    fun canReach(position: Vector): Boolean {
+        val range = body.getRange()
+        val centerOfCreature = position + Vector(z = body.getSize().z / 2)
+        val distance = centerOfCreature.getDistance(position)
+        return range >= distance
+    }
+
     fun setClimbing(climbTarget: Target) {
         properties.values.put(IS_CLIMBING, true)
         this.climbTarget = climbTarget

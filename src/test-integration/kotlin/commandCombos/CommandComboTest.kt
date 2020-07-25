@@ -127,7 +127,7 @@ class CommandComboTest {
 
     @Test
     fun millFlour() {
-        val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && place wheat in chute && d && d && take wheat from bin"
+        val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
         CommandParser.parseCommand(input)
         assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
     }
@@ -135,7 +135,7 @@ class CommandComboTest {
     @Test
     fun makePie() {
         val input = "move to wheat && slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
-                "&& a && a && place wheat in chute && d && d && take wheat from bin && use flour on bucket" +
+                "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple" +
                 "&& t interior && t && t && rest 10 && move to range && take pie tin" +
                 "&& read recipe && rs" +

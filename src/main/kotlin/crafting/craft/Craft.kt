@@ -8,7 +8,7 @@ import core.target.item.ItemManager
 import core.utility.StringFormatter
 import crafting.DiscoverRecipeEvent
 import inventory.Inventory
-import inventory.dropItem.TransferItemEvent
+import inventory.pickupItem.TakeItemEvent
 
 class Craft : EventListener<CraftRecipeEvent>() {
 
@@ -38,7 +38,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
         results.forEach {
             it.location = event.source.location
             it.position = event.source.position
-            EventManager.postEvent(TransferItemEvent(event.source, it, destination = event.source, silent = true))
+            EventManager.postEvent(TakeItemEvent(event.source, it, silent = true))
         }
     }
 

@@ -1,20 +1,22 @@
 package inventory
 
-import core.properties.Properties
-import core.properties.Tags
-import core.target.Target
-import core.properties.Values
-import inventory.dropItem.TransferItem
-import inventory.dropItem.TransferItemEvent
-import org.junit.Before
-import org.junit.Test
-import system.BodyFakeParser
 import core.DependencyInjector
 import core.body.BodyManager
 import core.properties.COUNT
+import core.properties.Properties
+import core.properties.Tags
+import core.properties.Values
+import core.target.Target
 import core.target.item.ITEM_TAG
 import createPouch
+import inventory.pickupItem.TakeItem
+import inventory.pickupItem.TakeItemEvent
+import inventory.putItem.TransferItem
+import inventory.putItem.TransferItemEvent
 import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
@@ -24,7 +26,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class PickupItemTest {
+class TakeItemTest {
 
     @Before
     fun setup() {
@@ -51,7 +53,7 @@ class PickupItemTest {
         val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         location.addTarget(item)
 
-        TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
+        TakeItem().execute(TakeItemEvent(creature, item))
         assertNotNull(creature.inventory.getItem(item.name))
         assertTrue(location.getTargets(item.name).isEmpty())
     }
@@ -63,51 +65,9 @@ class PickupItemTest {
         val item = Target("Apple")
         location.addTarget(item)
 
-        TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
+        TakeItem().execute(TakeItemEvent(creature, item))
         assertNull(creature.inventory.getItem(item.name))
         assertTrue(location.getTargets(item.name).isNotEmpty())
-    }
-
-    @Test
-    fun pickupItemFromContainer() {
-        val creature = getCreatureWithCapacity()
-
-        val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Container", "Open"))))
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
-        chest.inventory.add(item)
-
-        TransferItem().execute(TransferItemEvent(creature, item, chest, creature))
-
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
-    }
-
-    @Test
-    fun doNotPickupFromNonContainer() {
-        val creature = getCreatureWithCapacity()
-
-        val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Open"))))
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
-        chest.inventory.add(item)
-
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
-
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
-    }
-
-    @Test
-    fun doNotPickupFromClosedContainer() {
-        val creature = getCreatureWithCapacity()
-
-        val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Container"))))
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
-        chest.inventory.add(item)
-
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
-
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
     }
 
     @Test
@@ -117,7 +77,7 @@ class PickupItemTest {
         val item = Target("Apple",  properties = Properties(Values(mapOf(COUNT to "3")), Tags(ITEM_TAG)))
         location.addTarget(item)
 
-        TransferItem().execute(TransferItemEvent(creature, item, destination = creature))
+        TakeItem().execute(TakeItemEvent(creature, item))
         val inInventory = creature.inventory.getItem(item.name)
         val inLocation = location.getItems(item.name).firstOrNull()
 

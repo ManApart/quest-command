@@ -1,27 +1,27 @@
 package inventory.pickupItem
 
+import core.GameState
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.GameState
-import core.target.Target
-import core.history.display
-import inventory.dropItem.TransferItemEvent
 import core.events.EventManager
+import core.history.display
+import core.target.Target
 import core.utility.filterUniqueByName
+import inventory.putItem.TransferItemEvent
 
-class PickupItemCommand : core.commands.Command() {
+class TakeItemCommand : core.commands.Command() {
     override fun getAliases(): Array<String> {
-        return arrayOf("Pickup", "p", "get", "add", "take", "grab")
+        return arrayOf("Take", "pickup", "p", "get", "add", "grab")
     }
 
     override fun getDescription(): String {
-        return "Pickup:\n\tAdd an item to your inventory."
+        return "Take:\n\tAdd an item to your inventory."
     }
 
     override fun getManual(): String {
-        return "\n\tPickup <item> - pickup an item." +
-                "\n\tPickup <item> from <target> - take item from target's inventory, if possible."
+        return "\n\tTake <item> - take an item." +
+                "\n\tTake <item> from <target> - take item from target's inventory, if possible."
     }
 
     override fun getCategory(): List<String> {
@@ -41,7 +41,7 @@ class PickupItemCommand : core.commands.Command() {
         val items = GameState.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> display("Couldn't find ${args.getBaseString()}")
-            items.size == 1 -> EventManager.postEvent(TransferItemEvent(GameState.player, items.first(), destination = GameState.player))
+            items.size == 1 -> EventManager.postEvent(TakeItemEvent(GameState.player, items.first()))
             else -> pickupWhat(items)
         }
     }
@@ -50,7 +50,7 @@ class PickupItemCommand : core.commands.Command() {
         if (items.isEmpty()) {
             display("Nothing to pickup!")
         } else {
-            val message = "Pickup which item?\n\t${items.joinToString(", ")}"
+            val message = "Take which item?\n\t${items.joinToString(", ")}"
             val response = ResponseRequest(message, items.map { it.name to "take ${it.name}" }.toMap())
              CommandParser.setResponseRequest(response)
         }

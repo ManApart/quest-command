@@ -4,9 +4,9 @@ import core.events.EventListener
 import status.stat.HEALTH
 import core.history.display
 import traveling.scope.remove.RemoveScopeEvent
-import inventory.dropItem.TransferItemEvent
 import status.CreatureDiedEvent
 import core.events.EventManager
+import inventory.dropItem.PlaceItemEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
@@ -18,7 +18,8 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         val creature = event.target
 
         creature.inventory.getItems().forEach {
-            EventManager.postEvent(TransferItemEvent(creature, it, creature, silent = true))
+//            EventManager.postEvent(TransferItemEvent(creature, it, creature, silent = true))
+            EventManager.postEvent(PlaceItemEvent(creature, it, silent = true))
         }
         EventManager.postEvent(RemoveScopeEvent(event.target))
         EventManager.postEvent(CreatureDiedEvent(event.target))

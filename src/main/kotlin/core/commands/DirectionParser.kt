@@ -21,12 +21,12 @@ fun parseNullableDirection(arguments: List<String>): Direction? {
     }
 }
 
-fun parseVector(arguments: List<String>): Vector {
+fun parseVector(arguments: List<String>, default: Vector = Vector()): Vector {
     val args = Args(arguments, listOf(ArgDelimiter(listOf(",", " "))))
     val numbers = args.getNumbers(",", true)
     return when {
         numbers.size == 3 && numbers.all { it != null } -> Vector(numbers[0]!!, numbers[1]!!, numbers[2]!!)
-        else -> Vector()
+        else -> default
     }
 }
 

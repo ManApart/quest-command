@@ -210,4 +210,22 @@ class ArgsTest {
         assertEquals("rock 1 of rat", args.getBaseString())
     }
 
+    @Test
+    fun getFirstString() {
+        val input = "place in target".split(" ")
+        val args = Args(input, delimiters = listOf("at", "in"))
+
+        assertEquals("target", args.getFirstString("at", "in"))
+        assertEquals("target", args.getFirstString("in", "at"))
+    }
+
+    @Test
+    fun getFirstStringWhenBothPresent() {
+        val input = "drop at container in space".split(" ")
+        val args = Args(input, delimiters = listOf("at", "in"))
+
+        assertEquals("container", args.getFirstString("at", "in"))
+        assertEquals("space", args.getFirstString("in", "at"))
+    }
+
 }

@@ -4,9 +4,7 @@ import core.DependencyInjector
 import core.GameManager
 import core.body.BodyManager
 import core.events.EventManager
-import core.properties.Properties
 import core.properties.Tags
-import core.properties.Values
 import core.target.Target
 import core.target.item.ItemManager
 import core.target.item.ItemParser
@@ -14,7 +12,8 @@ import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
 import createPouch
-import inventory.dropItem.TransferItem
+import inventory.pickupItem.TakeItem
+import inventory.putItem.TransferItem
 import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser
@@ -54,7 +53,7 @@ class CraftTest {
         DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
         ItemManager.reset()
 
-        EventManager.registerListener(TransferItem())
+        EventManager.registerListener(TakeItem())
 
         Craft().execute(CraftRecipeEvent(baker, recipe))
 
@@ -75,7 +74,7 @@ class CraftTest {
         DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
         ItemManager.reset()
 
-        EventManager.registerListener(TransferItem())
+        EventManager.registerListener(TakeItem())
 
         val recipe = Recipe("Apples of Silver and Gold", listOf(RecipeIngredient("Apple")), results = listOf(RecipeResult(id = 0, tagsAdded = Tags(listOf("Cooked")))))
         Craft().execute(CraftRecipeEvent(baker, recipe))
