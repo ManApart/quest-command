@@ -14,7 +14,7 @@ import magic.castSpell.CastCommand
 object CommandParser {
     private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
     var commands = loadCommands()
-    private val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
+    val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private var responseRequest: ResponseRequest? = null
     var commandSource: Target? = null
@@ -68,15 +68,20 @@ object CommandParser {
         if (args.isEmpty()) {
             unknownCommand.execute(listOf(line))
         } else {
-            val command = findCommand(args[0])
-            if (command == unknownCommand) {
-                if (castCommand.hasWord(args[0])) {
-                    executeCommand(castCommand, listOf("c") + args)
-                } else {
-                    unknownCommand.execute(listOf(line))
-                }
+            val aliasCommand = findAliasCommand(args[0])
+            if (aliasCommand != null) {
+                parseSingleCommand(aliasCommand)
             } else {
-                executeCommand(command, args)
+                val command = findCommand(args[0])
+                if (command == unknownCommand) {
+                    if (castCommand.hasWord(args[0])) {
+                        executeCommand(castCommand, listOf("c") + args)
+                    } else {
+                        unknownCommand.execute(listOf(line))
+                    }
+                } else {
+                    executeCommand(command, args)
+                }
             }
         }
     }
@@ -92,6 +97,10 @@ object CommandParser {
 
     private fun cleanLine(line: String): List<String> {
         return line.toLowerCase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+    }
+
+    private fun findAliasCommand(alias: String) : String? {
+        return GameState.aliases[alias]
     }
 
     fun findCommand(alias: String): Command {

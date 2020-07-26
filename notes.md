@@ -703,6 +703,7 @@ jump - give location of parent
 - Sheath / unsheath command?
 - Hold Command?
 - Emotive actions (dance, smile, frown) that contextually affect npc relationships
+- deposit spell command
 
 F flag forces without confirmation
 S flag does silent

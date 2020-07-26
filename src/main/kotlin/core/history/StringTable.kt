@@ -8,7 +8,7 @@ class StringTable(private val grid: List<List<String>>, private val indentSpaces
 
         grid.forEach { row ->
             var line = "".padStart(indentSpaces)
-            for (column in 0 until row.size) {
+            for (column in row.indices) {
                 line += row[column].padEnd(widestInEachColumn[column]) + delimiter
             }
             lines += line + "\n"
@@ -20,8 +20,8 @@ class StringTable(private val grid: List<List<String>>, private val indentSpaces
     private fun getWidestColumn(additionalPadding: Int): List<Int> {
         val gridSize = grid.maxBy { it.size }?.size ?: 0
         val largest = IntArray(gridSize) { _ -> 0 }
-        for (row in 0 until grid.size) {
-            for (column in 0 until grid[row].size) {
+        for (row in grid.indices) {
+            for (column in grid[row].indices) {
                 val size = grid[row][column].length
                 if (size > largest[column]) {
                     largest[column] = size

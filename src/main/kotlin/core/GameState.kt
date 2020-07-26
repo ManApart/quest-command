@@ -9,6 +9,7 @@ object GameState {
     var properties = Properties()
     val timeManager = TimeManager()
     var player = GameManager.newPlayer()
+    val aliases = mutableMapOf<String, String>()
 
 
     fun reset() {

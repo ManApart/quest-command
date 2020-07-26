@@ -12,6 +12,7 @@ fun getPersistedGameState(): Map<String, Any> {
     data["quests"] = QuestManager.quests.filter { it.hasStarted() }.map { getPersisted(it) }
     data["time"] = GameState.timeManager.getTicks().toString()
     data["properties"] = core.properties.getPersisted(GameState.properties)
+    data["aliases"] = GameState.aliases
 
 //    if (GameState.battle != null) {
 //        data["battle"] = GameState.battle
@@ -25,4 +26,6 @@ fun readGameStateFromData(data: Map<String, Any>) {
     GameState.properties.replaceWith(core.properties.readFromData(data["properties"] as Map<String, Any>))
     (data["quests"] as List<Map<String, Any>>).forEach { readFromData(it) }
     GameState.timeManager.setTime((data["time"] as String).toLong())
+    GameState.aliases.clear()
+    GameState.aliases.putAll(data["aliases"] as Map<String, String>)
 }
