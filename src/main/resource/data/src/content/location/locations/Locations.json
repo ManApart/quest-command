@@ -34,6 +34,9 @@
     "name": "Farmer's Hut",
     "extends": "Outside",
     "description": "The hut is small, but it's hewn logs are worn by the passage of time and polished by the passing of many caring hands.",
+    "creatures": [
+      "Farmer"
+    ],
     "activators": [
       "Well"
     ],

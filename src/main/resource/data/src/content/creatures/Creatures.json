@@ -22,6 +22,26 @@
     ]
   },
   {
+    "name": "Farmer",
+    "description": "Salt of the earth; he's good people.",
+    "bodyName": "Human",
+    "aiName": "Commoner",
+    "soul": {
+      "stats": {
+        "Health": 10,
+        "Strength": 3,
+        "Bare Handed": 2
+      }
+    },
+    "properties": {
+      "tags": [
+        "Human",
+        "Commoner"
+      ]
+    },
+    "items": []
+  },
+  {
     "name": "Magical Dummy",
     "description": "It's jerky movement is deeply unsettling.",
     "bodyName": "Human",

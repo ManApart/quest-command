@@ -732,3 +732,5 @@ npc evaluates whether they will make the deal
 targets have gravityParent. If that target is removed from scope, the evaluate a fall
 - fall - lower z until collide with other
 - collide - use size and location, iterate through other targets
+
+AI doesn't seem to be working for enemy in battle: not making a choice / attacking player
