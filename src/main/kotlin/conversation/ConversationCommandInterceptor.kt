@@ -25,7 +25,7 @@ class ConversationCommandInterceptor(private val speaker: Target, private val li
     private fun parseQuestion(words: List<String>, commandLine: String) {
         val questionType = parseQuestionType(words)
         val verb = parseVerb(words)
-        val subject = parseSubject(words)
+        val subject = parseSubject(words, verb, questionType)
 
         when {
             questionType == null -> display("Could not parse type of question from '$commandLine'.")
@@ -37,7 +37,7 @@ class ConversationCommandInterceptor(private val speaker: Target, private val li
 
     private fun parseStatement(words: List<String>, commandLine: String) {
         val verb = parseVerb(words)
-        val subject = parseSubject(words)
+        val subject = parseSubject(words, verb)
 
         when {
             verb == null -> display("Could not parse verb from $commandLine")
@@ -48,31 +48,40 @@ class ConversationCommandInterceptor(private val speaker: Target, private val li
 
     private fun parseQuestionType(words: List<String>): QuestionType? {
         if (words.isNotEmpty()) {
-            val questionWord = words.first()
-            return questionTypeFromWord(questionWord)
+            return words.mapNotNull { questionTypeFromWord(it) }.firstOrNull()
         }
         return null
     }
 
     private fun parseVerb(words: List<String>): Verb? {
         if (words.isNotEmpty()) {
-            val questionWord = words.last()
-            return verbFromWord(questionWord)
+            return words.mapNotNull { verbFromWord(it) }.firstOrNull()
         }
         return null
     }
 
-    private fun parseSubject(words: List<String>): Target? {
-        if (words.size > 2) {
-            val subjectName = words.subList(1, words.size - 1).joinToString(" ")
+    private fun parseSubject(words: List<String>, verb: Verb? = null, questionType: QuestionType? = null): Target? {
+        val filteredWords = words.toMutableList()
+        if (verb != null) {
+            filteredWords.remove(verb.name.toLowerCase())
+        }
+        if (questionType != null) {
+            filteredWords.remove(questionType.name.toLowerCase())
+        }
+
+        if (filteredWords.isNotEmpty()) {
+            val subjectName = filteredWords.joinToString(" ")
             if (subjectName == "you") {
                 return listener
             }
+            if (subjectName == "i") {
+                return speaker
+            }
             //TODO - eventually will need to find subject in all scopes
             val subjects = speaker.location.getLocation().getTargets(subjectName, speaker)
-            return subjects.firstOrNull()
+            return subjects.firstOrNull() ?: listener
         }
-        return null
+        return listener
     }
 
 }

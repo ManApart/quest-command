@@ -195,7 +195,8 @@ class CommandComboTest {
     @Test
     fun talkWithFarmer() {
         CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where you are?")
+        CommandParser.parseCommand("where are you?")
+        assertEquals("Player: Where Farmer be?", ChatHistory.getLastOutput())
     }
 
 }
