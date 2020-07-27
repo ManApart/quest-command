@@ -190,7 +190,12 @@ class CommandComboTest {
         CommandParser.parseCommand("rest 1 && debug weather gentle rain && rest 1")
         assertEquals(1, GameState.player.soul.getConditions().size)
         assertEquals("Rain Wet", GameState.player.soul.getConditions().first().name)
+    }
 
+    @Test
+    fun talkWithFarmer() {
+        CommandParser.parseCommand("w && speak with farmer")
+        CommandParser.parseCommand("where you are?")
     }
 
 }
