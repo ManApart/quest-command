@@ -105,7 +105,7 @@ object CommandParser {
         }
     }
 
-    private fun cleanLine(line: String): List<String> {
+    fun cleanLine(line: String): List<String> {
         return line.toLowerCase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
     }
 

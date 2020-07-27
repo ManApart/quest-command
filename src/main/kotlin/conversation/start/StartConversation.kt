@@ -9,7 +9,7 @@ class StartConversation : EventListener<StartConversationEvent>() {
 
     override fun execute(event: StartConversationEvent) {
         CommandParser.commandInterceptor = ConversationCommandInterceptor(event.speaker, event.listener)
-        display("${event.speaker} starts talking with ${event.speaker}. You can end conversation by saying 'goodbye'.")
+        display("${event.speaker} starts talking with ${event.listener}. You can end conversation by saying 'goodbye'.")
 
     }
 }
