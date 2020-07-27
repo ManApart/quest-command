@@ -17,6 +17,7 @@ object CommandParser {
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private var responseRequest: ResponseRequest? = null
     var commandSource: Target? = null
+    var commandInterceptor: CommandInterceptor? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
         val commands = NameSearchableList(commandsCollection.values.toList())
@@ -31,6 +32,7 @@ object CommandParser {
     fun reset() {
         responseRequest = null
         commandSource = null
+        commandInterceptor = null
         commands = loadCommands()
     }
 
@@ -46,6 +48,18 @@ object CommandParser {
     fun parseCommand(line: String) {
         val startTime = System.currentTimeMillis()
         ChatHistory.addInput(line)
+
+        if (commandInterceptor == null) {
+            splitAndParseCommand(line)
+        } else {
+            commandInterceptor!!.parseCommand(line)
+        }
+
+        val time = System.currentTimeMillis() - startTime
+        ChatHistory.getCurrent().timeTaken = time
+    }
+
+    private fun splitAndParseCommand(line: String) {
         val commands = line.split("&&")
         for (command in commands) {
             val responseCommand = responseRequest?.getCommand(command)
@@ -57,8 +71,6 @@ object CommandParser {
             }
             EventManager.executeEvents()
         }
-        val time = System.currentTimeMillis() - startTime
-        ChatHistory.getCurrent().timeTaken = time
     }
 
     private fun parseSingleCommand(line: String) {
