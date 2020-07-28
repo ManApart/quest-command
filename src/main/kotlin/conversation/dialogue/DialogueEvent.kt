@@ -11,4 +11,19 @@ class DialogueEvent(val speaker: Target, val listener: Target, val subject: Targ
         val verbOptionSuffix = StringFormatter.format(verbOption !=null, " $verbOption", "")
         return "${speaker.name}: ${questionType.name.toLowerCase().capitalize()} ${subject.name} ${verb.name.toLowerCase()}${verbOptionSuffix}?"
     }
+
+    fun getFieldsAsParams() : Map<String, String> {
+        val params = mutableMapOf(
+                "speaker" to speaker.name.toLowerCase(),
+                "listener" to listener.name.toLowerCase(),
+                "subject" to subject.name.toLowerCase(),
+                "verb" to verb.name.toLowerCase(),
+                "questionType" to questionType.name.toLowerCase()
+        )
+        if (verbOption != null){
+            params["verbOption"] = verbOption.toLowerCase()
+        }
+        return params
+    }
+
 }

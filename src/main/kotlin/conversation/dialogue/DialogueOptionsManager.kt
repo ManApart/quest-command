@@ -3,16 +3,16 @@ package conversation.dialogue
 import core.DependencyInjector
 
 object DialogueOptionsManager {
-    private var parser = DependencyInjector.getImplementation(DialogueOptionsJsonParser::class.java)
+    private var parser = DependencyInjector.getImplementation(DialogueOptionsParser::class.java)
 
-    private var conversationDialogue = DialogueOptions(parser.loadConversationDialogue())
+    private var conversationDialogue = parser.loadConversationDialogue()
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(DialogueOptionsJsonParser::class.java)
-        conversationDialogue = DialogueOptions(parser.loadConversationDialogue())
+        parser = DependencyInjector.getImplementation(DialogueOptionsParser::class.java)
+        conversationDialogue = parser.loadConversationDialogue()
     }
 
-    fun getConversationResponses() : DialogueOptions {
+    fun getConversationResponses() : List<ConditionalDialogue> {
         return conversationDialogue
     }
 }
