@@ -1,5 +1,7 @@
 package core
 
+import conversation.dialogue.DialogueOptionsJsonParser
+import conversation.dialogue.DialogueOptionsParser
 import core.ai.AIJsonParser
 import core.ai.AIParser
 import core.ai.behavior.BehaviorsCollection

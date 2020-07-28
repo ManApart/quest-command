@@ -1,0 +1,29 @@
+[
+  {
+    "option": "I be here.",
+    "condition": {
+      "params": {
+        "questionType": "where",
+        "verb": "be",
+        "speaker": "$subject"
+      }
+    }
+  },
+  {
+    "option": "The red sun fills the waving grasses, making them glow. They sway like licks of flame.",
+    "condition": {
+      "queries": [
+        {
+          "property": "Time",
+          "operator": ">=",
+          "value": "70"
+        },
+        {
+          "property": "Time",
+          "operator": "<=",
+          "value": "80"
+        }
+      ]
+    }
+  }
+]
