@@ -1,7 +1,7 @@
 package conversation
 
 import conversation.end.EndConversationEvent
-import conversation.question.DialogueEvent
+import conversation.dialogue.DialogueEvent
 import core.commands.CommandInterceptor
 import core.commands.CommandParser
 import core.events.EventManager

@@ -1,4 +1,4 @@
-package conversation.question
+package conversation.dialogue
 
 import conversation.QuestionType
 import conversation.Verb

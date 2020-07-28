@@ -1,10 +1,10 @@
-package conversation.question
+package conversation.dialogue
 
 import core.events.EventListener
 import core.history.display
 
 
-class QuestionListener : EventListener<DialogueEvent>() {
+class DialogueListener : EventListener<DialogueEvent>() {
     override fun execute(event: DialogueEvent) {
         display(event.print())
     }
