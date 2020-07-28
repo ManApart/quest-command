@@ -4,8 +4,8 @@ import core.events.EventListener
 import core.history.display
 
 
-class QuestionListener : EventListener<QuestionEvent>() {
-    override fun execute(event: QuestionEvent) {
+class QuestionListener : EventListener<DialogueEvent>() {
+    override fun execute(event: DialogueEvent) {
         display(event.print())
     }
 }

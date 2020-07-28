@@ -1,8 +1,7 @@
 package conversation
 
 import conversation.end.EndConversationEvent
-import conversation.question.QuestionEvent
-import conversation.statement.StatementEvent
+import conversation.question.DialogueEvent
 import core.commands.CommandInterceptor
 import core.commands.CommandParser
 import core.events.EventManager
@@ -33,7 +32,7 @@ class ConversationCommandInterceptor(private val speaker: Target, private val li
             questionType == null -> display("Could not parse type of question from '$commandLine'.")
             verb == null -> display("Could not parse verb from '$commandLine'.")
             subject == null -> display("Could not parse subject from '$commandLine'.")
-            else -> EventManager.postEvent(QuestionEvent(speaker, listener, questionType, subject, verb, verbOptions))
+            else -> EventManager.postEvent(DialogueEvent(speaker, listener, subject, verb, verbOptions, questionType))
         }
     }
 
@@ -46,7 +45,7 @@ class ConversationCommandInterceptor(private val speaker: Target, private val li
         when {
             verb == null -> display("Could not parse verb from $commandLine")
             subject == null -> display("Could not parse subject from $commandLine")
-            else -> EventManager.postEvent(StatementEvent(speaker, listener, subject, verb, verbOptions))
+            else -> EventManager.postEvent(DialogueEvent(speaker, listener, subject, verb, verbOptions))
         }
     }
 

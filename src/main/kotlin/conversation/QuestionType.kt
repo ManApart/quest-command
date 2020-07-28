@@ -1,7 +1,7 @@
 package conversation
 
 enum class QuestionType {
-    HOW, WHAT, WHEN, WHERE, WHY, WILL
+    STATEMENT, HOW, WHAT, WHEN, WHERE, WHY, WILL
 }
 
 fun questionTypeFromWord(word: String): QuestionType? {
