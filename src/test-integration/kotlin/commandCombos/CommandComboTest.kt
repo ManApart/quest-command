@@ -199,4 +199,11 @@ class CommandComboTest {
         assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
     }
 
+    @Test
+    fun whereKanbara() {
+        CommandParser.parseCommand("w && speak with farmer")
+        CommandParser.parseCommand("where is kanbara?")
+        assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
+    }
+
 }

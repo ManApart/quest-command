@@ -38,6 +38,10 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locationNodes.toList()
     }
 
+    fun hasLocation(name: String) : Boolean {
+        return locationNodes.exists(name)
+    }
+
     fun findLocation(name: String): LocationNode {
         return when {
             locationNodes.exists(name) -> locationNodes.get(name)

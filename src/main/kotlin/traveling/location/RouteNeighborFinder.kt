@@ -15,6 +15,10 @@ class RouteNeighborFinder(private val source: LocationNode, private val depth: I
         return neighbors.toList()
     }
 
+    fun getDestinations() : List<LocationNode> {
+        return neighbors.map { it.destination }
+    }
+
     private fun findNeighbors() {
         source.getNeighborConnections().forEach {
             val route = Route(source)

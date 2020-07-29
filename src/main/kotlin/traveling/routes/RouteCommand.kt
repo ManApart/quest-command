@@ -5,7 +5,11 @@ import core.commands.Command
 import core.GameState
 import traveling.location.location.NOWHERE_NODE
 import core.events.EventManager
+import core.target.Target
+import core.utility.NameSearchableList
+import traveling.location.RouteNeighborFinder
 import traveling.location.location.LocationManager
+import traveling.location.location.LocationNode
 
 class RouteCommand : Command() {
     override fun getAliases(): Array<String> {
@@ -26,24 +30,35 @@ class RouteCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val depth = arguments.getNumber() ?: 5
         val otherArgs = args.minus(depth.toString())
 
-        when{
+        when {
             otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent())
-            else -> targetLocation(otherArgs, depth)
+            else -> targetLocation(source, otherArgs, depth)
         }
     }
 
-    private fun targetLocation(args: List<String>, depth: Int){
-        val target = LocationManager.getNetwork().findLocation(args.joinToString(" "))
-        if (target != NOWHERE_NODE){
-            EventManager.postEvent(FindRouteEvent(GameState.player.location, target, depth))
+    private fun targetLocation(source: Target, args: List<String>, depth: Int) {
+        val locationName = args.joinToString(" ")
+        val target = findTarget(source.location, locationName, depth)
+        if (target != null) {
+            EventManager.postEvent(FindRouteEvent(source.location, target, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }
+    }
+
+    private fun findTarget(source: LocationNode, locationName: String, depth: Int): LocationNode? {
+        if (LocationManager.getNetwork().hasLocation(locationName)) {
+            val target = LocationManager.getNetwork().findLocation(locationName)
+            if (target != NOWHERE_NODE) {
+                return target
+            }
+        }
+        return NameSearchableList(RouteNeighborFinder(source, depth).getDestinations()).getOrNull(locationName)
     }
 
 }

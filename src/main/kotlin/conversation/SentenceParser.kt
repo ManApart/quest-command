@@ -1,7 +1,6 @@
 package conversation
 
 import conversation.dialogue.DialogueEvent
-import core.events.EventManager
 import core.history.display
 import core.target.Target
 import core.utility.Named

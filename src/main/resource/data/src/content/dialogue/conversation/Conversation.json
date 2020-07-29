@@ -1,6 +1,6 @@
 [
   {
-    "name": "where be",
+    "name": "where is listener",
     "condition": {
       "callingEvent": "DialogueEvent",
       "params": {
