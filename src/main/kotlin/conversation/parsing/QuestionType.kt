@@ -1,4 +1,4 @@
-package conversation
+package conversation.parsing
 
 enum class QuestionType {
     STATEMENT, HOW, WHAT, WHEN, WHERE, WHY, WILL

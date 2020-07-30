@@ -1,5 +1,7 @@
 package conversation
 
+import conversation.parsing.QuestionType
+import conversation.parsing.Verb
 import conversation.start.StartConversationEvent
 import core.commands.Args
 import core.commands.Command

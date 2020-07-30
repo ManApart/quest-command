@@ -1,14 +1,15 @@
 package conversation.dialogue
 
-import conversation.QuestionType
-import conversation.Verb
+import conversation.parsing.QuestionType
+import conversation.parsing.Verb
 import core.events.Event
 import core.target.Target
 import core.utility.Named
 import core.utility.StringFormatter
 import traveling.location.location.LocationNode
 
-class DialogueEvent(val speaker: Target, val listener: Target, val subject: Named, val verb: Verb, val verbOption: String?, val questionType: QuestionType = QuestionType.STATEMENT) : Event {
+data class DialogueEvent(val speaker: Target, val listener: Target, val subject: Named, val verb: Verb, val verbOption: String?, val questionType: QuestionType = QuestionType.STATEMENT) : Event {
+
     fun print(): String {
         val verbOptionSuffix = StringFormatter.format(verbOption != null, " $verbOption", "")
         return "${speaker.name}: ${questionType.name.toLowerCase().capitalize()} ${subject.name} ${verb.name.toLowerCase()}${verbOptionSuffix}?"

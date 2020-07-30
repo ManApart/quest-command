@@ -1,4 +1,4 @@
-package conversation
+package conversation.parsing
 
 enum class Verb(private vararg val synonyms: String = arrayOf()) {
     BE("are", "is");

@@ -191,19 +191,4 @@ class CommandComboTest {
         assertEquals(1, GameState.player.soul.getConditions().size)
         assertEquals("Rain Wet", GameState.player.soul.getConditions().first().name)
     }
-
-    @Test
-    fun talkWithFarmer() {
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where are you?")
-        assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
-    }
-
-    @Test
-    fun whereKanbara() {
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where is kanbara?")
-        assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
-    }
-
 }
