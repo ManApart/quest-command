@@ -2,6 +2,7 @@ package conversation.parsing
 
 import conversation.dialogue.DialogueEvent
 import core.target.Target
+import injectAllDefaultMocks
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -9,12 +10,14 @@ import kotlin.test.assertEquals
 class SentenceParserTest {
 
     companion object {
-        private val speaker = Target("speaker")
-        private val listener = Target("listener")
+        private val speaker by lazy { Target("speaker") }
+        private val listener by lazy {  Target("listener") }
 
         @JvmStatic
         @BeforeClass
         fun setup() {
+            injectAllDefaultMocks()
+
             speaker.location.getLocation().addTarget(listener)
         }
     }

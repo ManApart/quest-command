@@ -2,7 +2,6 @@
   {
     "name": "where is listener",
     "condition": {
-      "callingEvent": "DialogueEvent",
       "params": {
         "questionType": "where",
         "verb": "be",
@@ -11,9 +10,14 @@
     },
     "events": [
       {
-        "className": "MessageEvent",
+        "className": "DialogueEvent",
         "params": [
-          "$listener: I be here."
+          "$this",
+          "$speaker",
+          "I",
+          "BE",
+          "statement",
+          "here"
         ]
       }
     ]

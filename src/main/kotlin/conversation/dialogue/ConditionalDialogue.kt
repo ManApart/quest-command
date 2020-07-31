@@ -1,15 +1,14 @@
 package conversation.dialogue
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import core.events.Event
 import core.target.Target
-import quests.triggerCondition.TriggerCondition
+import quests.triggerCondition.Condition
 import quests.triggerCondition.TriggeredEvent
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class ConditionalDialogue(val condition: TriggerCondition, val events: List<TriggeredEvent> = listOf()) {
-    fun matches(event: Event): Boolean {
-        return condition.matches(event)
+class ConditionalDialogue(val condition: Condition, val events: List<TriggeredEvent> = listOf()) {
+    fun matches(params: Map<String, String>): Boolean {
+        return condition.matches(params)
     }
 
     fun execute(parent: Target, params: Map<String, String>) {

@@ -2,11 +2,14 @@ package core.ai
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
+import conversation.dialogue.DialogueEvent
+import conversation.dialogue.DialogueOptionsManager
 import traveling.position.TargetAim
 import core.GameState
 import core.target.Target
 import core.events.EventManager
 import quests.ConditionalEvents
+import core.history.display
 
 class ConditionalAI(name: String, creature: Target, val actions: List<ConditionalEvents<*>>) : AI(name, creature) {
 
@@ -36,6 +39,14 @@ class ConditionalAI(name: String, creature: Target, val actions: List<Conditiona
             }
             EventManager.postEvent(StartAttackEvent(creature, defaultPart, TargetAim(GameState.player, targetPart), DamageType.SLASH))
         }
+    }
+
+    override fun hear(event: DialogueEvent) {
+        display(event.print())
+
+        DialogueOptionsManager.getConversationResponses()
+                .firstOrNull { it.matches(event.getFieldsAsParams()) }
+                ?.execute(event.listener, event.getFieldsAsParams())
     }
 
 }

@@ -1,5 +1,6 @@
 package core.ai
 
+import conversation.dialogue.DialogueEvent
 import core.commands.CommandParser
 import core.GameState
 import core.target.Target

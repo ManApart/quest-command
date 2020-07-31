@@ -1,10 +1,62 @@
+import conversation.dialogue.DialogueOptionsJsonParser
+import conversation.dialogue.DialogueOptionsParser
+import core.DependencyInjector
+import core.ai.AIFakeParser
+import core.ai.AIJsonParser
+import core.ai.AIManager
+import core.ai.AIParser
+import core.ai.behavior.BehaviorJsonParser
+import core.ai.behavior.BehaviorManager
+import core.ai.behavior.BehaviorParser
+import core.body.BodyManager
 import core.properties.*
+import core.reflection.GeneratedReflections
+import core.reflection.Reflections
 import core.target.Target
 import core.target.activator.ACTIVATOR_TAG
+import core.target.activator.ActivatorJsonParser
+import core.target.activator.ActivatorManager
+import core.target.activator.ActivatorParser
 import core.target.creature.CREATURE_TAG
+import core.target.creature.CreatureJsonParser
+import core.target.creature.CreatureParser
 import core.target.item.ITEM_TAG
+import core.target.item.ItemJsonParser
+import core.target.item.ItemManager
+import core.target.item.ItemParser
+import core.utility.KotlinResourceHelper
+import core.utility.ResourceHelper
+import core.utility.reflection.MockReflections
+import crafting.RecipeFakeParser
+import crafting.RecipeJsonParser
+import crafting.RecipeManager
+import crafting.RecipeParser
 import inventory.createInventoryBody
+import quests.QuestFakeParser
+import quests.QuestJsonParser
+import quests.QuestManager
+import quests.QuestParser
+import status.conditions.ConditionFakeParser
+import status.conditions.ConditionJsonParser
+import status.conditions.ConditionManager
+import status.conditions.ConditionParser
+import status.effects.EffectFakeParser
+import status.effects.EffectJsonParser
+import status.effects.EffectManager
+import status.effects.EffectParser
 import status.stat.STRENGTH
+import system.ActivatorFakeParser
+import system.BehaviorFakeParser
+import system.BodyFakeParser
+import system.ItemFakeParser
+import system.location.LocationFakeParser
+import traveling.location.location.LocationJsonParser
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationParser
+import traveling.location.weather.WeatherFakeParser
+import traveling.location.weather.WeatherJsonParser
+import traveling.location.weather.WeatherManager
+import traveling.location.weather.WeatherParser
 
 fun createItem(name: String = "Apple", weight: Int = 1): Target {
     return Target(name, properties = Properties(
@@ -51,3 +103,48 @@ fun createPackMule(strength: Int = 1): Target {
                     Tags(listOf(CONTAINER, OPEN, CREATURE_TAG))
             ))
 }
+
+fun injectAllDefaultMocks() {
+    DependencyInjector.setImplementation(ActivatorParser::class.java, ActivatorFakeParser())
+    ActivatorManager.reset()
+
+    DependencyInjector.setImplementation(AIParser::class.java, AIFakeParser())
+    AIManager.reset()
+
+    DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
+    BehaviorManager.reset()
+
+    DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
+    BodyManager.reset()
+
+//    DependencyInjector.setImplementation(CreatureParser::class.java, Cre())
+
+    DependencyInjector.setImplementation(ConditionParser::class.java, ConditionFakeParser())
+    ConditionManager.reset()
+
+//    DependencyInjector.setImplementation(DialogueOptionsParser::class.java, DialogOpt())
+    DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser())
+    EffectManager.reset()
+
+    DependencyInjector.setImplementation(ItemParser::class.java, ItemFakeParser())
+    ItemManager.reset()
+
+    DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
+    LocationManager.reset()
+
+
+    DependencyInjector.setImplementation(QuestParser::class.java, QuestFakeParser())
+    QuestManager.reset()
+
+    DependencyInjector.setImplementation(RecipeParser::class.java, RecipeFakeParser())
+    RecipeManager.reset()
+
+    DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+
+//    DependencyInjector.setImplementation(ResourceHelper::class.java, FakeR())
+
+    DependencyInjector.setImplementation(WeatherParser::class.java, WeatherFakeParser())
+    WeatherManager.reset()
+
+}
+
