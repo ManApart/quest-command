@@ -2,11 +2,9 @@ package combat.block
 
 import combat.DamageType
 import core.events.EventListener
-import core.GameState
 import core.properties.DEFENSE
 import core.target.Target
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 
 class Block : EventListener<BlockEvent>() {
 
@@ -28,7 +26,7 @@ class Block : EventListener<BlockEvent>() {
     private fun getShield(partThatWillShield: Location): Target? {
         val equippedItems = partThatWillShield.getEquippedItems()
         return equippedItems.firstOrNull { it.properties.tags.has("shield") }
-                ?: equippedItems.maxBy { getTotalDefense(it) }
+                ?: equippedItems.maxByOrNull { getTotalDefense(it) }
     }
 
     private fun getTotalDefense(apparel: Target): Int {

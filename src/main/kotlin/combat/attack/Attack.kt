@@ -21,7 +21,7 @@ class Attack : EventListener<AttackEvent>() {
         if (event.target.target.soul.getCurrent(HEALTH) > 0) {
             val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
             val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
-            val targetDistance = event.source.position.getDistance(event.target.target.position) ?: Distances.MIN_RANGE
+            val targetDistance = event.source.position.getDistance(event.target.target.position)
             val weaponRange = getRange(event.source, event.sourcePart)
 
             when {

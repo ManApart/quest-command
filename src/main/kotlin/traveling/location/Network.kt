@@ -71,7 +71,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
 
     private fun getFurthestLocation(direction: Direction = Direction.BELOW): LocationNode? {
         return getFurthestLocations(direction)
-                .maxBy { rootNode.getDistanceTo(it) }
+                .maxByOrNull { rootNode.getDistanceTo(it) }
     }
 
     fun getFurthestLocations(direction: Direction = Direction.BELOW): List<LocationNode> {

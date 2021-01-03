@@ -18,8 +18,8 @@ class StringTable(private val grid: List<List<String>>, private val indentSpaces
     }
 
     private fun getWidestColumn(additionalPadding: Int): List<Int> {
-        val gridSize = grid.maxBy { it.size }?.size ?: 0
-        val largest = IntArray(gridSize) { _ -> 0 }
+        val gridSize = grid.maxByOrNull { it.size }?.size ?: 0
+        val largest = IntArray(gridSize) { 0 }
         for (row in grid.indices) {
             for (column in grid[row].indices) {
                 val size = grid[row][column].length

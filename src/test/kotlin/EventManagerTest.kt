@@ -2,12 +2,12 @@ import core.events.Event
 import core.events.EventListener
 import core.utility.reflection.MockReflections
 import core.reflection.Reflections
-import org.junit.AfterClass
-import org.junit.Assert
-import org.junit.BeforeClass
-import org.junit.Test
 import core.DependencyInjector
 import core.events.EventManager
+import org.junit.AfterClass
+import org.junit.Assert.assertEquals
+import org.junit.BeforeClass
+import org.junit.Test
 
 class EventManagerTest {
     private val resultList = mutableListOf<String>()
@@ -53,8 +53,8 @@ class EventManagerTest {
         EventManager.unRegisterListener(first)
         EventManager.unRegisterListener(second)
 
-        Assert.assertEquals("first", resultList[0])
-        Assert.assertEquals("second", resultList[1])
+        assertEquals("first", resultList[0])
+        assertEquals("second", resultList[1])
         resultList.clear()
     }
 
@@ -69,8 +69,8 @@ class EventManagerTest {
         EventManager.unRegisterListener(first)
         EventManager.unRegisterListener(second)
 
-        Assert.assertEquals("first", resultList[0])
-        Assert.assertEquals("second", resultList[1])
+        assertEquals("first", resultList[0])
+        assertEquals("second", resultList[1])
         resultList.clear()
     }
 
@@ -83,7 +83,7 @@ class EventManagerTest {
 
         EventManager.unRegisterListener(child)
 
-        Assert.assertEquals("child", resultList[0])
+        assertEquals("child", resultList[0])
         resultList.clear()
     }
 

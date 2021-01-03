@@ -137,7 +137,7 @@ class LocationNode(
         return if (lowestNodes.isEmpty()) {
             0
         } else {
-            lowestNodes.map { abs(getVectorDistanceTo(it).z) }.max() ?: 0
+            lowestNodes.map { abs(getVectorDistanceTo(it).z) }.maxOrNull() ?: 0
         }
     }
 
