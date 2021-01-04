@@ -15,6 +15,8 @@ Run `gradlew buildData`. This generates json files etc so that they don't need t
 
 Run `gradlew build jar` to build a jar. This should be found in `QuestCommand/build/libs` (`quest-command-1.0-SNAPSHOT`)
 
+#### Gradle failing to build
+`./gradlew: 68: Syntax error: word unexpected (expecting "in")` is due to [differences between windows and linux](https://stackoverflow.com/questions/55342922/gradle-gradlew-expecting-in) and can be solved by `sed -i.bak 's/\r$//' gradlew`
 
 ### Running
 Try any one of the below: 
