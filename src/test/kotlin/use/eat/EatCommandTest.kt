@@ -4,7 +4,8 @@ import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.commands.CommandParser
 import core.commands.CommandsCollection
@@ -19,7 +20,6 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
@@ -44,7 +44,7 @@ class EatCommandTest {
         @JvmStatic
         fun teardown() {
             DependencyInjector.clearImplementation(CommandsCollection::class.java)
-            DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
     }
@@ -58,8 +58,8 @@ class EatCommandTest {
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
-        val behaviorParser = BehaviorFakeParser()
-        DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
+        val behaviorParser = BehaviorsMock()
+        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
         val locationParser = LocationFakeParser()

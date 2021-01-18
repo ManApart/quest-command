@@ -2,14 +2,14 @@ package inventory
 
 import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.target.Target
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
 import org.junit.Before
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.*
@@ -24,8 +24,8 @@ class PlaceItemTest {
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
-        val behaviorParser = BehaviorFakeParser()
-        DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
+        val behaviorParser = BehaviorsMock()
+        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
         val locationParser = LocationFakeParser()

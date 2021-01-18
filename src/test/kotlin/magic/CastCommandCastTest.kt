@@ -5,11 +5,11 @@ import core.target.Target
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import core.DependencyInjector
 import core.GameState
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.events.EventManager
 import magic.spellCommands.SpellCommandsMock
 import magic.castSpell.CastCommand
@@ -25,7 +25,7 @@ class CastCommandCastTest {
 
     companion object {
         init {
-            DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
+            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
             DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
             DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
         }
@@ -43,7 +43,7 @@ class CastCommandCastTest {
         @JvmStatic
         fun teardown() {
             DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
-            DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
     }

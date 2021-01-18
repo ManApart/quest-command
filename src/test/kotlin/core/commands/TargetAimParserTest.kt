@@ -4,14 +4,14 @@ import assertContainsByName
 import assertEqualsByName
 import core.DependencyInjector
 import core.GameState
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.target.Target
 import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
 import org.junit.AfterClass
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationRecipe
@@ -31,7 +31,7 @@ class TargetAimParserTest {
         private val bodyPartC = LocationRecipe("bodyPartC")
 
         init {
-            DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
+            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
             DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
 
@@ -66,7 +66,7 @@ class TargetAimParserTest {
         @JvmStatic
         fun teardown() {
             DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
-            DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
     }

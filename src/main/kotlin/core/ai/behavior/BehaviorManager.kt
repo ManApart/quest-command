@@ -4,12 +4,12 @@ import core.DependencyInjector
 
 
 object BehaviorManager {
-    private var parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
-    private var behaviors = parser.loadBehaviors()
+    private var parser = DependencyInjector.getImplementation(BehaviorsCollection::class.java)
+    private var behaviors = parser.values
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
-        behaviors = parser.loadBehaviors()
+        parser = DependencyInjector.getImplementation(BehaviorsCollection::class.java)
+        behaviors = parser.values
     }
 
     fun behaviorExists(recipe: BehaviorRecipe): Boolean {
