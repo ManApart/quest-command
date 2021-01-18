@@ -5,6 +5,7 @@ import core.history.display
 import core.utility.RandomManager
 import quests.QuestManager
 
+//TODO - delete?
 object GameStateQuery {
 
     fun getValue(property: String, params: List<String>): String {

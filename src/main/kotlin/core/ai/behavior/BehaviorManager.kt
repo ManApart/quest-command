@@ -1,10 +1,12 @@
 package core.ai.behavior
 
 import core.DependencyInjector
+import resources.behaviors.behaviorsList
 
 object BehaviorManager {
     private var parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
     private var behaviors = parser.loadBehaviors()
+    private val behaviors2 = behaviorsList
 
     fun reset() {
         parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
