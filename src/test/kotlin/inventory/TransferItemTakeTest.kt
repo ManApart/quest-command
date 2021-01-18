@@ -1,32 +1,24 @@
 package inventory
 
 import core.DependencyInjector
-import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.properties.COUNT
 import core.properties.Properties
 import core.properties.Tags
-import core.properties.Values
 import core.target.Target
 import core.target.item.ITEM_TAG
 import createPouch
-import inventory.pickupItem.TakeItemEvent
 import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import traveling.location.location.NOWHERE_NODE
-import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 class TransferItemTakeTest {
 

@@ -1,12 +1,11 @@
 package core.ai.behavior
 
 import core.DependencyInjector
-import resources.behaviors.behaviorsList
+
 
 object BehaviorManager {
     private var parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
     private var behaviors = parser.loadBehaviors()
-    private val behaviors2 = behaviorsList
 
     fun reset() {
         parser = DependencyInjector.getImplementation(BehaviorParser::class.java)
@@ -14,21 +13,16 @@ object BehaviorManager {
     }
 
     fun behaviorExists(recipe: BehaviorRecipe): Boolean {
-        return behaviors.firstOrNull { it.name.toLowerCase() == recipe.name.toLowerCase() } != null
+        return behaviors.firstOrNull { it.name.equals(recipe.name, ignoreCase = true) } != null
     }
 
-    fun getBehaviors(recipes: List<BehaviorRecipe>): List<Behavior> {
-        return recipes.asSequence().map { getBehavior(it) }.filterNotNull().toList()
+    fun getBehaviors(recipes: List<BehaviorRecipe>): List<Behavior<*>> {
+        val recipeNames = recipes.map { it.name }
+        return behaviors.filter { recipeNames.contains(it.name) }
     }
 
-    private fun getBehavior(recipe: BehaviorRecipe): Behavior? {
-        val base = behaviors.firstOrNull { it.name.toLowerCase() == recipe.name.toLowerCase() }
-        return if (base != null) {
-            Behavior(base, recipe.params)
-        } else {
-            null
-        }
+    fun getBehavior(recipe: BehaviorRecipe) : Behavior<*>{
+        return behaviors.first { it.name == recipe.name }.copy(params = recipe.params)
     }
-
 
 }

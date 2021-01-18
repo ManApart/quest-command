@@ -1,24 +1,21 @@
 package core.ai.behavior
 
-import quests.triggerCondition.TriggerCondition
-import quests.triggerCondition.TriggeredEvent
 import core.events.Event
-import core.events.getValues
-import core.target.Target
+import core.events.EventManager
 
-class Behavior(base: BehaviorBase, paramValues: Map<String, String>) {
-    val name = base.name
-    private val condition = TriggerCondition(base.condition, paramValues)
-    private val triggeredEvents = base.events.asSequence().map { TriggeredEvent(it, paramValues) }.toList()
-
-    fun evaluate(event: Event): Boolean {
-        return condition.matches(event)
+data class Behavior<E : Event>(
+        val name: String,
+        private val triggerEventClass: Class<E>,
+        private val condition: (E, Map<String, String>) -> Boolean = { _, _ -> true },
+        private val createEvents: (E, Map<String, String>) -> List<Event> = { _, _ -> listOf() },
+        val params: Map<String, String> = mapOf()
+) {
+    fun matches(event: Event): Boolean {
+        @Suppress("UNCHECKED_CAST")
+        return event.javaClass == triggerEventClass && condition(event as E, params)
     }
 
-    fun execute(event: Event, target: Target) {
-        val params = event.getValues()
-        this.triggeredEvents.forEach {
-            TriggeredEvent(it, params).execute(target)
-        }
+    fun execute(event: Event) {
+        createEvents(event as E, params).forEach { EventManager.postEvent(it) }
     }
 }

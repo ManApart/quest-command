@@ -26,7 +26,6 @@ import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import traveling.location.location.NOWHERE_NODE
 import use.StartUseEvent
-import use.UseEvent
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull

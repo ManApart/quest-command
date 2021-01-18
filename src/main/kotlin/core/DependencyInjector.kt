@@ -2,7 +2,7 @@ package core
 
 import core.ai.AIJsonParser
 import core.ai.AIParser
-import core.ai.behavior.BehaviorJsonParser
+import core.ai.behavior.BehaviorMainParser
 import core.ai.behavior.BehaviorParser
 import core.reflection.GeneratedReflections
 import core.reflection.Reflections
@@ -62,7 +62,7 @@ object DependencyInjector {
         return mapOf(
                 ActivatorParser::class.java to ActivatorJsonParser(),
                 AIParser::class.java to AIJsonParser(),
-                BehaviorParser::class.java to BehaviorJsonParser(),
+                BehaviorParser::class.java to BehaviorMainParser(),
                 CreatureParser::class.java to CreatureJsonParser(),
                 ConditionParser::class.java to ConditionJsonParser(),
                 EffectParser::class.java to EffectJsonParser(),

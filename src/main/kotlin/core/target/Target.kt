@@ -1,10 +1,12 @@
 package core.target
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.GameState
 import core.ai.AI
 import core.ai.AIManager
 import core.ai.DumbAI
+import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
@@ -34,8 +36,7 @@ open class Target(
         params: Map<String, String> = mapOf(),
         ai: AI? = null,
         aiName: String? = base?.ai?.name,
-        @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = base?.behaviorRecipes
-                ?: mutableListOf(),
+        @JsonProperty("behaviors") val behaviorRecipes: List<BehaviorRecipe> = base?.behaviorRecipes ?: listOf(),
         body: Body? = null,
         bodyName: String? = base?.body?.name,
         equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
@@ -51,7 +52,6 @@ open class Target(
     override val name = name.apply(params)
     val ai = discernAI(ai, aiName)
 
-    val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, base?.body, bodyName)
 
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
@@ -61,7 +61,7 @@ open class Target(
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
     private val dynamicDescription = dynamicDescription.apply(params)
-    private val behaviors = BehaviorManager.getBehaviors(this.behaviorRecipes)
+    @JsonIgnore val behaviors: List<Behavior<*>> = base?.behaviors ?: behaviorRecipes.asSequence().map { BehaviorManager.getBehavior(it) }.toMutableList()
     val knownRecipes = NameSearchableList<Recipe>()
 
     var climbTarget: Target? = null
@@ -125,14 +125,14 @@ open class Target(
         return parent?.getTopParent() ?: this
     }
 
-    open fun canConsume(event: Event): Boolean {
-        return !isPlayer() && behaviors.any { it.evaluate(event) }
+    fun canConsume(event: Event): Boolean {
+        return !isPlayer() && behaviors.any { it.matches(event) }
     }
 
-    open fun consume(event: Event) {
+    fun consume(event: Event) {
         if (!isPlayer()) {
-            behaviors.filter { it.evaluate(event) }
-                    .forEach { it.execute(event, this) }
+            behaviors.filter { it.matches(event) }
+                    .forEach { it.execute(event) }
         }
     }
 

@@ -1,7 +1,7 @@
 package resources.behaviors
 
 import core.GameState
-import core.ai.behavior.Behavior2
+import core.ai.behavior.Behavior
 import core.commands.commandEvent.CommandEvent
 import core.properties.propValChanged.PropertyStatMinnedEvent
 import core.target.Target
@@ -23,11 +23,11 @@ import use.UseEvent
 import use.eat.EatFoodEvent
 import use.interaction.InteractEvent
 
-val behaviorsList = listOf<Behavior2<*>>(
-        Behavior2("Add on Eat", EatFoodEvent::class.java, createEvents = { event, params ->
+val behaviorsList = listOf<Behavior<*>>(
+        Behavior("Add on Eat", EatFoodEvent::class.java, createEvents = { event, params ->
             listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, GameState.player))
         }),
-        Behavior2("Chop Tree", PropertyStatMinnedEvent::class.java, { event, params ->
+        Behavior("Chop Tree", PropertyStatMinnedEvent::class.java, { event, params ->
             event.stat == "chopHealth"
         }, { event, params ->
             val treeName = params["treeName"] ?: "tree"
@@ -38,10 +38,10 @@ val behaviorsList = listOf<Behavior2<*>>(
                     SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1)
             )
         }),
-        Behavior2("Climbable", InteractEvent::class.java, createEvents = { event, params ->
+        Behavior("Climbable", InteractEvent::class.java, createEvents = { event, params ->
             listOf(CommandEvent("climb ${event.target.name}"))
         }),
-        Behavior2("Burn to Ash", PropertyStatMinnedEvent::class.java, { event, params ->
+        Behavior("Burn to Ash", PropertyStatMinnedEvent::class.java, { event, params ->
             event.stat == "fireHealth"
         }, { event, params ->
             val name = params["name"] ?: "object"
@@ -51,7 +51,7 @@ val behaviorsList = listOf<Behavior2<*>>(
                     SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, positionParent = event.target)
             )
         }),
-        Behavior2("Burn Out", PropertyStatMinnedEvent::class.java, { event, params ->
+        Behavior("Burn Out", PropertyStatMinnedEvent::class.java, { event, params ->
             event.stat == "fireHealth" && event.target.soul.hasEffect("On Fire")
         }, { event, params ->
             listOf(
@@ -60,16 +60,15 @@ val behaviorsList = listOf<Behavior2<*>>(
                     StatChangeEvent(event.target, "lighting", "fireHealth", params["fireHealth"]?.toInt() ?: 1)
             )
         }),
-        Behavior2("Slash Harvest", UseEvent::class.java, { event, params ->
+        Behavior("Slash Harvest", UseEvent::class.java, { event, params ->
             event.used.properties.tags.has("Sharp")
         }, { event, params ->
             listOf(
                     MessageEvent(params["message"] ?: "You harvest ${event.target} with ${event.used}."),
-                    RemoveConditionEvent(event.target, event.target.soul.getConditionWithEffect("On Fire")),
                     SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, positionParent = event.target)
             )
         }),
-        Behavior2("Restrict Destination", InteractEvent::class.java, createEvents = { event, params ->
+        Behavior("Restrict Destination", InteractEvent::class.java, createEvents = { event, params ->
             val sourceLocation = parseLocation(params, event.source, "sourceNetwork", "sourceLocation")
             val destinationLocation = parseLocation(params, event.source, "destinationNetwork", "destinationLocation")
             val makeRestricted = false
@@ -81,7 +80,7 @@ val behaviorsList = listOf<Behavior2<*>>(
                     SpawnActivatorEvent(replacement, true)
             )
         }),
-        Behavior2("Mill", ItemPickedUpEvent::class.java, { event, params ->
+        Behavior("Mill", ItemPickedUpEvent::class.java, { event, params ->
             event.item.name == params["sourceItem"]
         }, { event, params ->
             val resultItem = params["resultItem"] ?: "Wheat Flour"
@@ -99,15 +98,13 @@ val behaviorsList = listOf<Behavior2<*>>(
                 )
             }
         }),
-        Behavior2("Learn Recipe", InteractEvent::class.java, createEvents = { event, params ->
-            val sourceItemName = params["sourceItem"] ?: "Wheat Bundle"
-            val sourceItem = event.source.inventory.getItem(sourceItemName)
+        Behavior("Learn Recipe", InteractEvent::class.java, createEvents = { event, params ->
+            val sourceItem = event.source.inventory.getItem(params["sourceItem"])
             val recipe = RecipeManager.getRecipeOrNull(params["recipe"] ?: "")
-
-            if (sourceItem == null || recipe == null) {
-                listOf()
-            } else {
-                listOf(
+            when {
+                recipe == null -> listOf()
+                sourceItem == null -> listOf(DiscoverRecipeEvent(event.source, recipe))
+                else -> listOf(
                         RemoveItemEvent(event.source, sourceItem),
                         RemoveScopeEvent(sourceItem),
                         DiscoverRecipeEvent(event.source, recipe)

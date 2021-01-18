@@ -11,8 +11,8 @@ import system.BehaviorFakeParser
 import system.BodyFakeParser
 import core.DependencyInjector
 import core.GameState
-import core.events.EventManager
 import core.ai.behavior.BehaviorParser
+import core.events.EventManager
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
 import traveling.location.location.Location
