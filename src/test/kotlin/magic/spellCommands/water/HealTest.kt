@@ -8,9 +8,9 @@ import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
-import core.reflection.Reflections
+import core.reflection.SpellCommandsCollection
 import core.target.Target
-import core.utility.reflection.MockReflections
+import core.utility.reflection.MockSpellCommands
 import magic.MockSpellCommand
 import magic.castSpell.StartCastSpellEvent
 import magic.spells.Spell
@@ -37,7 +37,7 @@ class HealTest {
     companion object {
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, MockSpellCommands())
 
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
             LocationManager.reset()
@@ -78,8 +78,8 @@ class HealTest {
     @Test
     fun defaultArgs() {
         val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val reflections = MockSpellCommands(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         val spell = castHeal("")
 
@@ -94,8 +94,8 @@ class HealTest {
     @Test
     fun amountAndDuration() {
         val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val reflections = MockSpellCommands(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         val spell = castHeal("5 for 10")
 

@@ -1,9 +1,10 @@
 package test
 
 import core.commands.CommandParser
-import core.reflection.Reflections
 import magic.spellCommands.SpellCommand
 import core.DependencyInjector
+import core.reflection.CommandsCollection
+import core.reflection.SpellCommandsCollection
 
 private val newLineAtLineStart = Regex("^\n")
 
@@ -68,7 +69,7 @@ private fun prepareLines(lines: String): String {
 
 private fun getGroupedSpellCommands(): Map<String, List<SpellCommand>> {
     val groups = HashMap<String, MutableList<SpellCommand>>()
-    DependencyInjector.getImplementation(Reflections::class.java).getSpellCommands().forEach { command ->
+    DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values.forEach { command ->
         run {
             if (!groups.containsKey(command.getCategory()[0])) {
                 groups[command.getCategory()[0]] = ArrayList()

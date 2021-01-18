@@ -5,14 +5,14 @@ import core.GameState
 import core.events.EventManager
 import core.history.ChatHistory
 import core.history.display
-import core.reflection.Reflections
+import core.reflection.CommandsCollection
 import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.removeFirstItem
 import magic.castSpell.CastCommand
 
 object CommandParser {
-    private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
+    private var commandsCollection = DependencyInjector.getImplementation(CommandsCollection::class.java)
     var commands = loadCommands()
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
@@ -20,8 +20,7 @@ object CommandParser {
     var commandSource: Target? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
-        val commands = NameSearchableList(reflections.getCommands().asSequence()
-                .toList())
+        val commands = NameSearchableList(commandsCollection.values.toList())
 
         commands.forEach {
             commands.addProxy(it, it.getAliases().toList())
@@ -99,7 +98,7 @@ object CommandParser {
         return line.toLowerCase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
     }
 
-    private fun findAliasCommand(alias: String) : String? {
+    private fun findAliasCommand(alias: String): String? {
         return GameState.aliases[alias]
     }
 

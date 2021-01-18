@@ -1,9 +1,9 @@
 package core.ai.behavior
 
-import resources.behaviors.behaviorsList
+import resources.behaviors.BaseBehaviors
 
 class BehaviorMainParser : BehaviorParser {
     override fun loadBehaviors(): List<Behavior<*>> {
-        return behaviorsList
+        return BaseBehaviors().behaviors
     }
 }

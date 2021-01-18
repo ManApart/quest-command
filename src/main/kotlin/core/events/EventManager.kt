@@ -1,7 +1,7 @@
 package core.events
 
 import core.DependencyInjector
-import core.reflection.Reflections
+import core.reflection.EventListenersCollection
 import java.lang.reflect.ParameterizedType
 import java.util.*
 
@@ -9,10 +9,10 @@ import java.util.*
 object EventManager {
     private val listenerMap = HashMap<Class<*>, ArrayList<EventListener<*>>>()
     private val eventQueue = mutableListOf<Event>()
-    private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
+    private var eventListenersCollection = DependencyInjector.getImplementation(EventListenersCollection::class.java)
 
     fun registerListeners() {
-        reflections.getEventListeners().forEach { registerListener(it) }
+        eventListenersCollection.values.forEach { registerListener(it) }
     }
 
     fun reset() {

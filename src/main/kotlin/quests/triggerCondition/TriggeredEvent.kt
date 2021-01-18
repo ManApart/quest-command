@@ -6,20 +6,20 @@ import core.target.Target
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE_NODE
 import core.utility.apply
-import core.reflection.Reflections
 import crafting.Recipe
 import crafting.RecipeManager
 import status.conditions.Condition
 import magic.Element
 import core.DependencyInjector
 import core.events.EventManager
+import core.reflection.EventParsersCollection
 import traveling.location.location.LocationManager
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {
     constructor(base: TriggeredEvent, params: Map<String, String>) : this(base.className, base.params.apply(params))
 
     companion object {
-        val eventMap = DependencyInjector.getImplementation(Reflections::class.java).getEventParsers().map { it.className() to it }.toMap()
+        val eventMap = DependencyInjector.getImplementation(EventParsersCollection::class.java).values.map { it.className() to it }.toMap()
     }
 
     fun execute(parent: Target = GameState.player) {

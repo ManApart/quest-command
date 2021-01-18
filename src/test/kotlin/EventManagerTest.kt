@@ -1,9 +1,11 @@
 import core.events.Event
 import core.events.EventListener
-import core.utility.reflection.MockReflections
-import core.reflection.Reflections
 import core.DependencyInjector
 import core.events.EventManager
+import core.reflection.CommandsCollection
+import core.reflection.EventListenersCollection
+import core.reflection.SpellCommandsCollection
+import core.utility.reflection.MockEventListeners
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
@@ -32,12 +34,12 @@ class EventManagerTest {
     companion object {
         @BeforeClass
         @JvmStatic fun setupAll() {
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(EventListenersCollection::class.java, MockEventListeners())
         }
 
         @AfterClass
         @JvmStatic fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
+            DependencyInjector.clearImplementation(EventListenersCollection::class.java)
         }
     }
 

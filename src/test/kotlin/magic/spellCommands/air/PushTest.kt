@@ -9,9 +9,9 @@ import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
 import core.properties.WEIGHT
-import core.reflection.Reflections
+import core.reflection.SpellCommandsCollection
 import core.target.Target
-import core.utility.reflection.MockReflections
+import core.utility.reflection.MockSpellCommands
 import magic.castSpell.StartCastSpellEvent
 import magic.spells.MoveTargetSpell
 import org.junit.AfterClass
@@ -39,7 +39,7 @@ class PushTest {
     companion object {
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, MockSpellCommands())
 
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
             LocationManager.reset()

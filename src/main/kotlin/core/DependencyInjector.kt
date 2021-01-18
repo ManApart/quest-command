@@ -4,8 +4,8 @@ import core.ai.AIJsonParser
 import core.ai.AIParser
 import core.ai.behavior.BehaviorMainParser
 import core.ai.behavior.BehaviorParser
-import core.reflection.GeneratedReflections
-import core.reflection.Reflections
+import core.commands.Command
+import core.reflection.*
 import core.target.activator.ActivatorJsonParser
 import core.target.activator.ActivatorParser
 import core.target.creature.CreatureJsonParser
@@ -70,9 +70,12 @@ object DependencyInjector {
                 LocationParser::class.java to LocationJsonParser(),
                 QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser(),
-                Reflections::class.java to GeneratedReflections(),
+                SpellCommandsCollection::class.java to GeneratedSpellCommands(),
+                CommandsCollection::class.java to GeneratedCommands(),
+                EventParsersCollection::class.java to GeneratedEventParsers(),
+                EventListenersCollection::class.java to GeneratedEventListeners(),
                 ResourceHelper::class.java to KotlinResourceHelper(),
-                WeatherParser::class.java to WeatherJsonParser()
+                WeatherParser::class.java to WeatherJsonParser(),
         )
     }
 

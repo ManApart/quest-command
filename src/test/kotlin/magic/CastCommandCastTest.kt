@@ -2,8 +2,6 @@ package magic
 
 import traveling.position.TargetAim
 import core.target.Target
-import core.utility.reflection.MockReflections
-import core.reflection.Reflections
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
@@ -13,6 +11,8 @@ import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.events.EventManager
+import core.reflection.SpellCommandsCollection
+import core.utility.reflection.MockSpellCommands
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
 import traveling.location.location.Location
@@ -26,7 +26,7 @@ class CastCommandCastTest {
     companion object {
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, MockSpellCommands())
             DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
         }
 
@@ -42,7 +42,7 @@ class CastCommandCastTest {
         @AfterClass
         @JvmStatic
         fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
+            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
@@ -56,8 +56,8 @@ class CastCommandCastTest {
     @Test
     fun castWord() {
         val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val reflections = MockSpellCommands(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA".split(" "))
 
@@ -68,8 +68,8 @@ class CastCommandCastTest {
     @Test
     fun castWordWithParams() {
         val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val reflections = MockSpellCommands(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA 1 2".split(" "))
 
@@ -80,8 +80,8 @@ class CastCommandCastTest {
     @Test
     fun castWordWithTarget() {
         val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val reflections = MockSpellCommands(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA on targetA".split(" "))
 
@@ -92,8 +92,8 @@ class CastCommandCastTest {
     @Test
     fun castWordWithTargetsAndParams() {
         val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val reflections = MockSpellCommands(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA 1 2 on targetA and targetB".split(" "))
 
@@ -102,7 +102,7 @@ class CastCommandCastTest {
         assertTrue(targetsContainByName(spellCommand.targets, targetB))
     }
 
-    private fun targetsContainByName(targetAims: List<TargetAim>, target: Target) : Boolean {
+    private fun targetsContainByName(targetAims: List<TargetAim>, target: Target): Boolean {
         return targetAims.map { it.target }.firstOrNull { target.name == it.name } != null
     }
 

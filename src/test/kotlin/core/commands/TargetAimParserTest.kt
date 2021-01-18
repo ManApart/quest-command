@@ -6,9 +6,9 @@ import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.reflection.Reflections
+import core.reflection.SpellCommandsCollection
 import core.target.Target
-import core.utility.reflection.MockReflections
+import core.utility.reflection.MockSpellCommands
 import org.junit.AfterClass
 import org.junit.Test
 import system.BehaviorFakeParser
@@ -32,7 +32,7 @@ class TargetAimParserTest {
 
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, MockSpellCommands())
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
 
             val bodyParser = BodyFakeParser(
@@ -65,7 +65,7 @@ class TargetAimParserTest {
         @AfterClass
         @JvmStatic
         fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
+            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
             DependencyInjector.clearImplementation(BehaviorParser::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
