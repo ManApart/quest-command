@@ -1,6 +1,4 @@
-package core.reflection
-
-import core.commands.Command
+package core.commands
 
 interface CommandsCollection {
     val values: List<Command>

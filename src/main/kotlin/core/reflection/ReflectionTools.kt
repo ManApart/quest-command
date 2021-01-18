@@ -1,5 +1,6 @@
 package core.reflection
 
+import core.ai.behavior.BehaviorResource
 import core.commands.Command
 import core.events.EventListener
 import core.events.eventParsers.EventParser
@@ -11,7 +12,6 @@ import java.lang.reflect.Modifier
 
 
 object ReflectionTools {
-    private const val fileName = "./src/main/kotlin/core/reflection/GeneratedReflections.kt"
     private val topLevelPackages = getPrefixes()
     private val reflections = Reflections(topLevelPackages, SubTypesScanner(false))
 
@@ -19,15 +19,18 @@ object ReflectionTools {
         return File("./src/main/kotlin").listFiles()!!.filter { it.isDirectory }.map { it.name }.sorted()
     }
 
+    //TODO - move generated files near source file
     fun generateFiles() {
-//        generateBigFile()
-        generateFile(Command::class.java)
-        generateFile(SpellCommand::class.java)
-        generateFile(EventParser::class.java)
-        generateFile(EventListener::class.java)
+        generateCollectionsFile(Command::class.java)
+        generateCollectionsFile(SpellCommand::class.java)
+        generateCollectionsFile(EventParser::class.java)
+        generateCollectionsFile(EventListener::class.java)
+//        generateCollectionsFile(BehaviorResource::class.java)
+
+//        generateResourcesFile(BehaviorResource::class.java)
     }
 
-    private fun generateFile(clazz: Class<*>) {
+    private fun generateCollectionsFile(clazz: Class<*>) {
         val allClasses = reflections.getSubTypesOf(clazz).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
         println("Saving ${allClasses.size} classes for ${clazz.name}")
         val isTyped = clazz.typeParameters.isNotEmpty()
@@ -45,13 +48,12 @@ object ReflectionTools {
     }
 
     private fun writeInterfaceFile(clazz: Class<*>, typeSuffix: String) {
-        File("./src/main/kotlin/core/reflection/${clazz.simpleName}sCollection.kt").printWriter().use {
+        val packageName = clazz.packageName.replace(".", "/")
+        File("./src/main/kotlin/$packageName/${clazz.simpleName}sCollection.kt").printWriter().use {
             it.print(
                 """
-                package core.reflection
+                package ${clazz.packageName}
     
-                import ${clazz.name}
-                
                 interface ${clazz.simpleName}sCollection {
                     val values: List<${clazz.simpleName}$typeSuffix>
                 }
@@ -61,10 +63,11 @@ object ReflectionTools {
     }
 
     private fun writeGeneratedFile(clazz: Class<*>, typeSuffix: String, classes: String) {
-        File("./src/main/kotlin/core/reflection/Generated${clazz.simpleName}s.kt").printWriter().use {
+        val packageName = clazz.packageName.replace(".", "/")
+        File("./src/main/kotlin/$packageName/Generated${clazz.simpleName}s.kt").printWriter().use {
             it.print(
                     """
-                package core.reflection
+                package ${clazz.packageName}
     
                 class Generated${clazz.simpleName}s : ${clazz.simpleName}sCollection {
                     override val values: List<${clazz.name}$typeSuffix> = listOf($classes)
@@ -75,13 +78,11 @@ object ReflectionTools {
     }
 
     private fun writeMockedFile(clazz: Class<*>, typeSuffix: String) {
-        File("./src/test/kotlin/core/utility/reflection/Mock${clazz.simpleName}s.kt").printWriter().use {
+        val packageName = clazz.packageName.replace(".", "/")
+        File("./src/test/kotlin/$packageName/Mock${clazz.simpleName}s.kt").printWriter().use {
             it.print(
                     """
-                package core.utility.reflection
-
-                import ${clazz.name}
-                import core.reflection.${clazz.simpleName}sCollection
+                package ${clazz.packageName}
                 
                 class Mock${clazz.simpleName}s(override val values: List<${clazz.simpleName}$typeSuffix> = listOf()) : ${clazz.simpleName}sCollection
             """.trimIndent()
@@ -89,56 +90,21 @@ object ReflectionTools {
         }
     }
 
-    private fun generateBigFile() {
-        val variables = listOf(
-                getInstanceList("core.commands.Command"),
-                getInstanceList("magic.spellCommands.SpellCommand"),
-                getInstanceList("core.events.eventParsers.EventParser"),
-                getInstanceList("core.events.EventListener<*>")
-        )
 
-        File(fileName).printWriter().use { out ->
-            out.println("""
-                package core.reflection
-    
-                import core.commands.Command
-                import core.events.EventListener
-                import core.events.eventParsers.EventParser
-                import magic.spellCommands.SpellCommand
-                
-                class GeneratedReflections : Reflections {
-                    override fun getCommands(): List<Command> {
-                        return commands
-                    }
-                
-                    override fun getSpellCommands(): List<SpellCommand> {
-                        return spellCommands
-                    }
-                    
-                    override fun getEventParsers(): List<EventParser> {
-                        return eventParsers
-                    }
-                
-                    override fun getEventListeners(): List<EventListener<*>> {
-                        return eventListeners
-                    }
-                }
-                
-                    """.trimIndent())
-            variables.forEach { out.println(it) }
+    private fun generateResourcesFile(clazz: Class<*>) {
+        val allClasses = reflections.getSubTypesOf(clazz).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
+        println("Saving ${allClasses.size} classes for ${clazz.name}")
+        val isTyped = clazz.typeParameters.isNotEmpty()
+        val typeSuffix = if(isTyped){
+            "<*>"
+        } else {
+            ""
         }
-    }
 
-    private fun getInstanceList(classPackageName: String): String {
-        val regex = Regex("[^A-Za-z.]")
-        val cleanedPackageName = regex.replace(classPackageName, "")
-
-        val kClass = Class.forName(cleanedPackageName) as Class<*>
-        val allClasses = reflections.getSubTypesOf(kClass).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
-        println("Saving ${allClasses.size} classes for $classPackageName")
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
-        val variableName = cleanedPackageName.substringAfterLast(".").decapitalize() + "s"
-        return "private val $variableName: List<$classPackageName> = listOf($classes)\n"
-    }
 
+        writeInterfaceFile(clazz, typeSuffix)
+        writeGeneratedFile(clazz, typeSuffix, classes)
+        writeMockedFile(clazz, typeSuffix)
+    }
 }

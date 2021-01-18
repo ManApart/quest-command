@@ -12,7 +12,7 @@ import status.conditions.Condition
 import magic.Element
 import core.DependencyInjector
 import core.events.EventManager
-import core.reflection.EventParsersCollection
+import core.events.eventParsers.EventParsersCollection
 import traveling.location.location.LocationManager
 
 class TriggeredEvent(private val className: String, private val params: List<String> = listOf()) {

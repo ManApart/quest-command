@@ -3,8 +3,7 @@ package test
 import core.commands.CommandParser
 import magic.spellCommands.SpellCommand
 import core.DependencyInjector
-import core.reflection.CommandsCollection
-import core.reflection.SpellCommandsCollection
+import magic.spellCommands.SpellCommandsCollection
 
 private val newLineAtLineStart = Regex("^\n")
 

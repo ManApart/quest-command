@@ -11,10 +11,10 @@ import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.events.EventManager
-import core.reflection.SpellCommandsCollection
-import core.utility.reflection.MockSpellCommands
+import magic.spellCommands.MockSpellCommands
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
+import magic.spellCommands.SpellCommandsCollection
 import traveling.location.location.Location
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser

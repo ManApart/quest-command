@@ -4,7 +4,12 @@ import core.ai.AIJsonParser
 import core.ai.AIParser
 import core.ai.behavior.BehaviorMainParser
 import core.ai.behavior.BehaviorParser
-import core.commands.Command
+import core.commands.CommandsCollection
+import core.commands.GeneratedCommands
+import core.events.EventListenersCollection
+import core.events.GeneratedEventListeners
+import core.events.eventParsers.EventParsersCollection
+import core.events.eventParsers.GeneratedEventParsers
 import core.reflection.*
 import core.target.activator.ActivatorJsonParser
 import core.target.activator.ActivatorParser
@@ -16,6 +21,8 @@ import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
+import magic.spellCommands.GeneratedSpellCommands
+import magic.spellCommands.SpellCommandsCollection
 import quests.QuestJsonParser
 import quests.QuestParser
 import status.conditions.ConditionJsonParser

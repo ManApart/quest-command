@@ -1,7 +1,6 @@
 package core.events
 
 import core.DependencyInjector
-import core.reflection.EventListenersCollection
 import java.lang.reflect.ParameterizedType
 import java.util.*
 

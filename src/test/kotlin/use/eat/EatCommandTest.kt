@@ -7,14 +7,14 @@ import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.commands.CommandParser
+import core.commands.CommandsCollection
+import core.commands.MockCommands
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
-import core.reflection.CommandsCollection
 import core.target.Target
 import core.target.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
-import core.utility.reflection.MockCommands
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass

@@ -6,9 +6,9 @@ import org.junit.BeforeClass
 import org.junit.Test
 import core.DependencyInjector
 import core.events.EventManager
-import core.reflection.SpellCommandsCollection
-import core.utility.reflection.MockSpellCommands
 import magic.castSpell.CastCommand
+import magic.spellCommands.MockSpellCommands
+import magic.spellCommands.SpellCommandsCollection
 import kotlin.test.*
 
 class CastCommandWordTest {

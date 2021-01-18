@@ -6,9 +6,9 @@ import core.DependencyInjector
 import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
-import core.reflection.SpellCommandsCollection
 import core.target.Target
-import core.utility.reflection.MockSpellCommands
+import magic.spellCommands.MockSpellCommands
+import magic.spellCommands.SpellCommandsCollection
 import org.junit.AfterClass
 import org.junit.Test
 import system.BehaviorFakeParser

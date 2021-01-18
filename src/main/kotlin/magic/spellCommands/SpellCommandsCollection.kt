@@ -1,6 +1,4 @@
-package core.reflection
-
-import magic.spellCommands.SpellCommand
+package magic.spellCommands
 
 interface SpellCommandsCollection {
     val values: List<SpellCommand>

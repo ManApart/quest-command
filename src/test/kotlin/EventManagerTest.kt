@@ -1,11 +1,9 @@
 import core.events.Event
 import core.events.EventListener
 import core.DependencyInjector
+import core.events.EventListenersCollection
 import core.events.EventManager
-import core.reflection.CommandsCollection
-import core.reflection.EventListenersCollection
-import core.reflection.SpellCommandsCollection
-import core.utility.reflection.MockEventListeners
+import core.events.MockEventListeners
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass

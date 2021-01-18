@@ -5,7 +5,7 @@ import core.history.display
 import core.utility.NameSearchableList
 import magic.spellCommands.SpellCommand
 import core.DependencyInjector
-import core.reflection.SpellCommandsCollection
+import magic.spellCommands.SpellCommandsCollection
 
 class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
     private val wordsOfPower by lazy { loadSpellCommands() }

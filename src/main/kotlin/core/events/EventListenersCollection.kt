@@ -1,6 +1,4 @@
-package core.reflection
-
-import core.events.EventListener
+package core.events
 
 interface EventListenersCollection {
     val values: List<EventListener<*>>

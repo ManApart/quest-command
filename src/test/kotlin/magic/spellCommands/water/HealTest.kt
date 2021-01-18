@@ -8,11 +8,11 @@ import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
-import core.reflection.SpellCommandsCollection
 import core.target.Target
-import core.utility.reflection.MockSpellCommands
 import magic.MockSpellCommand
 import magic.castSpell.StartCastSpellEvent
+import magic.spellCommands.MockSpellCommands
+import magic.spellCommands.SpellCommandsCollection
 import magic.spells.Spell
 import org.junit.AfterClass
 import org.junit.Before

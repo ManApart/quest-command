@@ -8,8 +8,8 @@ import core.utility.NameSearchableList
 import magic.spellCommands.SpellCommand
 import core.DependencyInjector
 import core.events.EventManager
-import core.reflection.SpellCommandsCollection
 import magic.ViewWordHelpEvent
+import magic.spellCommands.SpellCommandsCollection
 import traveling.location.location.Location
 
 class CastCommand : Command() {

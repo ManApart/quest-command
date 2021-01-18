@@ -5,7 +5,6 @@ import core.GameState
 import core.events.EventManager
 import core.history.ChatHistory
 import core.history.display
-import core.reflection.CommandsCollection
 import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.removeFirstItem

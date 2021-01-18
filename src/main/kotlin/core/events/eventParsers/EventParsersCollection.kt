@@ -1,6 +1,4 @@
-package core.reflection
-
-import core.events.eventParsers.EventParser
+package core.events.eventParsers
 
 interface EventParsersCollection {
     val values: List<EventParser>
