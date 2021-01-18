@@ -11,7 +11,7 @@ import core.events.EventManager
 import core.properties.WEIGHT
 import core.target.Target
 import magic.castSpell.StartCastSpellEvent
-import magic.spellCommands.MockSpellCommands
+import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
 import magic.spells.MoveTargetSpell
 import org.junit.AfterClass
@@ -39,7 +39,7 @@ class PullTest {
     companion object {
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, MockSpellCommands())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
 
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
             LocationManager.reset()

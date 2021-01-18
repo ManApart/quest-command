@@ -78,12 +78,12 @@ object ReflectionTools {
 
     private fun writeGeneratedFile(clazz: Class<*>, typeSuffix: String, classes: String) {
         val packageName = clazz.packageName.replace(".", "/")
-        File("./src/main/kotlin/$packageName/Generated${clazz.simpleName}s.kt").printWriter().use {
+        File("./src/main/kotlin/$packageName/${clazz.simpleName}sGenerated.kt").printWriter().use {
             it.print(
                     """
                 package ${clazz.packageName}
     
-                class Generated${clazz.simpleName}s : ${clazz.simpleName}sCollection {
+                class ${clazz.simpleName}sGenerated : ${clazz.simpleName}sCollection {
                     override val values: List<${clazz.name}$typeSuffix> = listOf($classes)
                 }
             """.trimIndent()
@@ -94,12 +94,12 @@ object ReflectionTools {
     private fun writeGeneratedResourceFile(clazz: Class<*>, typeSuffix: String, classes: String) {
         val packageName = clazz.packageName.replace(".", "/")
 
-        File("./src/main/kotlin/$packageName/Generated${clazz.simpleName}s.kt").printWriter().use {
+        File("./src/main/kotlin/$packageName/${clazz.simpleName}sGenerated.kt").printWriter().use {
             it.print(
                     """
                 package ${clazz.packageName}
     
-                class Generated${clazz.simpleName}s : ${clazz.simpleName}sCollection {
+                class ${clazz.simpleName}sGenerated : ${clazz.simpleName}sCollection {
                     override val values: List<${clazz.simpleName}$typeSuffix> = listOf($classes).flatMap { it.values }
                 }
             """.trimIndent()
@@ -109,12 +109,12 @@ object ReflectionTools {
 
     private fun writeMockedFile(clazz: Class<*>, typeSuffix: String) {
         val packageName = clazz.packageName.replace(".", "/")
-        File("./src/test/kotlin/$packageName/Mock${clazz.simpleName}s.kt").printWriter().use {
+        File("./src/test/kotlin/$packageName/${clazz.simpleName}sMock.kt").printWriter().use {
             it.print(
                     """
                 package ${clazz.packageName}
                 
-                class Mock${clazz.simpleName}s(override val values: List<${clazz.simpleName}$typeSuffix> = listOf()) : ${clazz.simpleName}sCollection
+                class ${clazz.simpleName}sMock(override val values: List<${clazz.simpleName}$typeSuffix> = listOf()) : ${clazz.simpleName}sCollection
             """.trimIndent()
             )
         }

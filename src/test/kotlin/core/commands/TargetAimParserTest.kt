@@ -7,7 +7,7 @@ import core.GameState
 import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.target.Target
-import magic.spellCommands.MockSpellCommands
+import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
 import org.junit.AfterClass
 import org.junit.Test
@@ -32,7 +32,7 @@ class TargetAimParserTest {
 
         init {
             DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, MockSpellCommands())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
 
             val bodyParser = BodyFakeParser(

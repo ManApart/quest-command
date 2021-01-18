@@ -7,21 +7,21 @@ import org.junit.Test
 import core.DependencyInjector
 import core.events.EventManager
 import magic.castSpell.CastCommand
-import magic.spellCommands.MockSpellCommands
+import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
 import kotlin.test.*
 
 class CastCommandWordTest {
 
     companion object {
-        private val spellA = MockSpellCommand("testSpellA", listOf("catA"))
-        private val spellB = MockSpellCommand("testSpellB", listOf("catA"))
-        private val spellC = MockSpellCommand("testSpellC")
+        private val spellA = SpellCommandMock("testSpellA", listOf("catA"))
+        private val spellB = SpellCommandMock("testSpellB", listOf("catA"))
+        private val spellC = SpellCommandMock("testSpellC")
 
         @BeforeClass
         @JvmStatic
         fun setupAll() {
-            val reflections = MockSpellCommands(listOf(
+            val reflections = SpellCommandsMock(listOf(
                     spellA, spellB, spellC
             ))
             DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)

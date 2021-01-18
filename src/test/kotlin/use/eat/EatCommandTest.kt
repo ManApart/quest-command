@@ -8,7 +8,7 @@ import core.ai.behavior.BehaviorParser
 import core.body.BodyManager
 import core.commands.CommandParser
 import core.commands.CommandsCollection
-import core.commands.MockCommands
+import core.commands.CommandsMock
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
@@ -37,7 +37,7 @@ class EatCommandTest {
         @BeforeClass
         @JvmStatic
         fun setupAll() {
-            DependencyInjector.setImplementation(CommandsCollection::class.java, MockCommands())
+            DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
         }
 
         @AfterClass

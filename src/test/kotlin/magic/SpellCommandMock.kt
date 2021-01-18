@@ -5,7 +5,7 @@ import core.commands.Args
 import core.target.Target
 import magic.spellCommands.SpellCommand
 
-class MockSpellCommand(override val name: String = "testspell", private val category: List<String> = listOf()) : SpellCommand() {
+class SpellCommandMock(override val name: String = "testspell", private val category: List<String> = listOf()) : SpellCommand() {
     var args = Args(listOf())
     var targets = listOf<TargetAim>()
 

@@ -2,15 +2,14 @@ package core
 
 import core.ai.AIJsonParser
 import core.ai.AIParser
-import core.ai.behavior.BehaviorMainParser
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsGenerated
 import core.commands.CommandsCollection
-import core.commands.GeneratedCommands
+import core.commands.CommandsGenerated
 import core.events.EventListenersCollection
-import core.events.GeneratedEventListeners
+import core.events.EventListenersGenerated
 import core.events.eventParsers.EventParsersCollection
-import core.events.eventParsers.GeneratedEventParsers
-import core.reflection.*
+import core.events.eventParsers.EventParsersGenerated
 import core.target.activator.ActivatorJsonParser
 import core.target.activator.ActivatorParser
 import core.target.creature.CreatureJsonParser
@@ -21,7 +20,7 @@ import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
-import magic.spellCommands.GeneratedSpellCommands
+import magic.spellCommands.SpellCommandsGenerated
 import magic.spellCommands.SpellCommandsCollection
 import quests.QuestJsonParser
 import quests.QuestParser
@@ -69,19 +68,19 @@ object DependencyInjector {
         return mapOf(
                 ActivatorParser::class.java to ActivatorJsonParser(),
                 AIParser::class.java to AIJsonParser(),
-                BehaviorParser::class.java to BehaviorMainParser(),
+                BehaviorsCollection::class.java to BehaviorsGenerated(),
                 CreatureParser::class.java to CreatureJsonParser(),
                 ConditionParser::class.java to ConditionJsonParser(),
+                CommandsCollection::class.java to CommandsGenerated(),
                 EffectParser::class.java to EffectJsonParser(),
+                EventParsersCollection::class.java to EventParsersGenerated(),
+                EventListenersCollection::class.java to EventListenersGenerated(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),
                 QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser(),
-                SpellCommandsCollection::class.java to GeneratedSpellCommands(),
-                CommandsCollection::class.java to GeneratedCommands(),
-                EventParsersCollection::class.java to GeneratedEventParsers(),
-                EventListenersCollection::class.java to GeneratedEventListeners(),
                 ResourceHelper::class.java to KotlinResourceHelper(),
+                SpellCommandsCollection::class.java to SpellCommandsGenerated(),
                 WeatherParser::class.java to WeatherJsonParser(),
         )
     }
