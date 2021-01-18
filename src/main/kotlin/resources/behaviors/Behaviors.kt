@@ -26,7 +26,7 @@ import use.eat.EatFoodEvent
 import use.interaction.InteractEvent
 
 class BaseBehaviors : BehaviorResource {
-    override val behaviors = listOf<Behavior<*>>(
+    override val values = listOf<Behavior<*>>(
             Behavior("Add on Eat", EatFoodEvent::class.java, createEvents = { event, params ->
                 listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, GameState.player))
             }),

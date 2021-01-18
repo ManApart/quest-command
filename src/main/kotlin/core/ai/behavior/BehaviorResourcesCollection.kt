@@ -1,5 +1,5 @@
 package core.ai.behavior
 
-interface BehaviorResource {
+interface BehaviorResourcesCollection {
     val values: List<Behavior<*>>
 }

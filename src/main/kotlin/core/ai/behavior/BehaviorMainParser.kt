@@ -4,6 +4,6 @@ import resources.behaviors.BaseBehaviors
 
 class BehaviorMainParser : BehaviorParser {
     override fun loadBehaviors(): List<Behavior<*>> {
-        return BaseBehaviors().behaviors
+        return BaseBehaviors().values
     }
 }
