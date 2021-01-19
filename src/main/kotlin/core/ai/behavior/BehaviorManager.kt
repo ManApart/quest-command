@@ -22,7 +22,7 @@ object BehaviorManager {
     }
 
     fun getBehavior(recipe: BehaviorRecipe) : Behavior<*>{
-        return behaviors.first { it.name == recipe.name }.copy(params = recipe.params)
+        return behaviors.first { it.name == recipe.name }.copy(recipe.params)
     }
 
 }
