@@ -2,7 +2,7 @@ package quests
 
 import core.events.Event
 import core.events.EventListener
-
+//TODO - make map take actual class instead of string
 class QuestListener : EventListener<Event>() {
     private val listeners = mutableMapOf<String, MutableList<Quest>>()
 
@@ -14,18 +14,18 @@ class QuestListener : EventListener<Event>() {
         return 100
     }
 
-    override fun execute(event: Event) {
+    override fun execute(triggeringEvent: Event) {
         if (listeners.isEmpty()) {
             buildListeners()
         }
-        val clazz = event.javaClass.simpleName
+        val clazz = triggeringEvent.javaClass.simpleName
         if (listeners.containsKey(clazz)) {
             val quests = listeners[clazz]?.toList()
             quests?.forEach { quest ->
-                val stage = quest.getMatchingEvent(event)
-                if (stage != null) {
+                val storyEvent = quest.getMatchingEvent(triggeringEvent)
+                if (storyEvent != null) {
                     removeListeners(quest)
-                    quest.executeEvent(stage)
+                    quest.executeEvent(storyEvent, triggeringEvent)
                     if (!quest.complete) {
                         addListeners(quest)
                     }
@@ -41,7 +41,7 @@ class QuestListener : EventListener<Event>() {
 
     private fun removeListeners(quest: Quest) {
         quest.getListenedForEvents().forEach { event ->
-            val clazz = event.condition.callingEvent
+            val clazz = event.triggeredEvent.triggerEvent.simpleName
             listeners[clazz]?.remove(quest)
             if (listeners[clazz]?.isEmpty() == true) {
                 listeners.remove(clazz)
@@ -57,7 +57,7 @@ class QuestListener : EventListener<Event>() {
 
     private fun addListeners(quest: Quest) {
         quest.getListenedForEvents().forEach { event ->
-            val clazz = event.condition.callingEvent
+            val clazz = event.triggeredEvent.triggerEvent.simpleName
             if (!listeners.containsKey(clazz)) {
                 listeners[clazz] = mutableListOf()
             }

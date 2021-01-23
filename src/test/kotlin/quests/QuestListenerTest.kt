@@ -7,7 +7,6 @@ import core.body.BodyManager
 import core.target.Target
 import org.junit.BeforeClass
 import org.junit.Test
-import quests.triggerCondition.TriggerCondition
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
@@ -33,21 +32,16 @@ class QuestListenerTest {
         }
     }
 
-
     @Test
-    fun questListenerIsRemovedOnExecute() {
-        val quest = Quest("Test Quest")
-        quest.addEvent(StoryEvent("Test Quest", "Test Event", 10, "journal", condition = TriggerCondition("InteractEvent")))
-        quest.initialize()
+    fun oneQuestListenerIsRemovedOnExecute() {
+        val event1 = StoryEvent2("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class.java, { event, _ -> event.target.name == "Pie" }))
+        val event2 = StoryEvent2("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class.java, { event, _ -> event.target.name == "Apple" }))
 
-        val quest2 = Quest("Test Quest2")
-        quest2.addEvent(StoryEvent("Test Quest2", "Test Event", 10, "journal", condition = TriggerCondition("InteractEvent", params = mapOf("source" to "never"))))
-        quest2.initialize()
-
-        val questParser = QuestFakeParser(listOf(quest, quest2))
-        DependencyInjector.setImplementation(QuestParser::class.java, questParser)
+        val questList = StoryEvent2sMock(listOf(event1, event2))
+        DependencyInjector.setImplementation(StoryEvent2sCollection::class.java, questList)
         QuestManager.reset()
 
+        //Only the apple event is executed
         val testEvent = InteractEvent(GameState.player, Target("Apple"))
         val listener = QuestListener()
         listener.execute(testEvent)
@@ -58,13 +52,31 @@ class QuestListenerTest {
     }
 
     @Test
-    fun eventListIsRemovedIfEmpty() {
-        val quest = Quest("Test Quest")
-        quest.addEvent(StoryEvent("Test Quest", "Test Event", 10, "journal", condition = TriggerCondition("InteractEvent")))
-        quest.initialize()
+    fun bothQuestListenersAreRemovedOnExecute() {
+        val event1 = StoryEvent2("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class.java))
+        val event2 = StoryEvent2("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class.java))
 
-        val fakeParser = QuestFakeParser(listOf(quest))
-        DependencyInjector.setImplementation(QuestParser::class.java, fakeParser)
+        val questList = StoryEvent2sMock(listOf(event1, event2))
+        DependencyInjector.setImplementation(StoryEvent2sCollection::class.java, questList)
+        QuestManager.reset()
+
+        //Both events are executed
+        val testEvent = InteractEvent(GameState.player, Target("Apple"))
+        val listener = QuestListener()
+
+        listener.execute(testEvent)
+
+        val results = listener.getListeners()
+        assertEquals(0, results.size)
+        assertEquals(null, results[InteractEvent::class.java.simpleName])
+    }
+
+    @Test
+    fun eventListIsRemovedIfEmpty() {
+        val event1 = StoryEvent2("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class.java))
+
+        val questList = StoryEvent2sMock(listOf(event1))
+        DependencyInjector.setImplementation(StoryEvent2sCollection::class.java, questList)
         QuestManager.reset()
 
         val testEvent = InteractEvent(GameState.player, Target("Apple"))

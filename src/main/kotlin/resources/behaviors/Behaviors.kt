@@ -5,19 +5,16 @@ import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.commands.commandEvent.CommandEvent
 import core.properties.propValChanged.PropertyStatMinnedEvent
-import core.target.Target
 import core.target.activator.ActivatorManager
 import core.utility.parseLocation
 import crafting.DiscoverRecipeEvent
 import crafting.RecipeManager
 import inventory.pickupItem.ItemPickedUpEvent
-import quests.TriggeredEvent2
+import quests.ConditionalEvents
 import status.conditions.RemoveConditionEvent
 import status.statChanged.StatChangeEvent
 import system.message.MessageEvent
 import traveling.RestrictLocationEvent
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationNode
 import traveling.scope.remove.RemoveItemEvent
 import traveling.scope.remove.RemoveScopeEvent
 import traveling.scope.spawn.SpawnActivatorEvent
@@ -28,11 +25,11 @@ import use.interaction.InteractEvent
 
 class BaseBehaviors : BehaviorResource {
     override val values = listOf<Behavior<*>>(
-            Behavior("Add on Eat", TriggeredEvent2(EatFoodEvent::class.java, createEvents = { _, params ->
+            Behavior("Add on Eat", ConditionalEvents(EatFoodEvent::class.java, createEvents = { _, params ->
                 listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, GameState.player))
             })),
 
-            Behavior("Chop Tree", TriggeredEvent2(PropertyStatMinnedEvent::class.java, { event, _ ->
+            Behavior("Chop Tree", ConditionalEvents(PropertyStatMinnedEvent::class.java, { event, _ ->
                 event.stat == "chopHealth"
             }, { event, params ->
                 val treeName = params["treeName"] ?: "tree"
@@ -44,11 +41,11 @@ class BaseBehaviors : BehaviorResource {
                 )
             })),
 
-            Behavior("Climbable", TriggeredEvent2(InteractEvent::class.java, createEvents = { event, _ ->
+            Behavior("Climbable", ConditionalEvents(InteractEvent::class.java, createEvents = { event, _ ->
                 listOf(CommandEvent("climb ${event.target.name}"))
             })),
 
-            Behavior("Burn to Ash", TriggeredEvent2(PropertyStatMinnedEvent::class.java, { event, _ ->
+            Behavior("Burn to Ash", ConditionalEvents(PropertyStatMinnedEvent::class.java, { event, _ ->
                 event.stat == "fireHealth"
             }, { event, params ->
                 val name = params["name"] ?: "object"
@@ -59,7 +56,7 @@ class BaseBehaviors : BehaviorResource {
                 )
             })),
 
-            Behavior("Burn Out", TriggeredEvent2(PropertyStatMinnedEvent::class.java, { event, _ ->
+            Behavior("Burn Out", ConditionalEvents(PropertyStatMinnedEvent::class.java, { event, _ ->
                 event.stat == "fireHealth" && event.target.soul.hasEffect("On Fire")
             }, { event, params ->
                 listOf(
@@ -69,7 +66,7 @@ class BaseBehaviors : BehaviorResource {
                 )
             })),
 
-            Behavior("Slash Harvest", TriggeredEvent2(UseEvent::class.java, { event, _ ->
+            Behavior("Slash Harvest", ConditionalEvents(UseEvent::class.java, { event, _ ->
                 event.used.properties.tags.has("Sharp")
             }, { event, params ->
                 listOf(
@@ -78,7 +75,7 @@ class BaseBehaviors : BehaviorResource {
                 )
             })),
 
-            Behavior("Restrict Destination", TriggeredEvent2(InteractEvent::class.java, createEvents = { event, params ->
+            Behavior("Restrict Destination", ConditionalEvents(InteractEvent::class.java, createEvents = { event, params ->
                 val sourceLocation = parseLocation(params, event.source, "sourceNetwork", "sourceLocation")
                 val destinationLocation = parseLocation(params, event.source, "destinationNetwork", "destinationLocation")
                 val makeRestricted = false
@@ -91,7 +88,7 @@ class BaseBehaviors : BehaviorResource {
                 )
             })),
 
-            Behavior("Mill", TriggeredEvent2(ItemPickedUpEvent::class.java, { event, params ->
+            Behavior("Mill", ConditionalEvents(ItemPickedUpEvent::class.java, { event, params ->
                 event.item.name == params["sourceItem"]
             }, { event, params ->
                 val resultItem = params["resultItem"] ?: "Wheat Flour"
@@ -110,7 +107,7 @@ class BaseBehaviors : BehaviorResource {
                 }
             })),
 
-            Behavior("Learn Recipe", TriggeredEvent2(InteractEvent::class.java, createEvents = { event, params ->
+            Behavior("Learn Recipe", ConditionalEvents(InteractEvent::class.java, createEvents = { event, params ->
                 val sourceItem = event.source.inventory.getItem(params["sourceItem"])
                 val recipe = RecipeManager.getRecipeOrNull(params["recipe"] ?: "")
                 when {

@@ -22,8 +22,8 @@ import crafting.RecipeJsonParser
 import crafting.RecipeParser
 import magic.spellCommands.SpellCommandsGenerated
 import magic.spellCommands.SpellCommandsCollection
-import quests.QuestJsonParser
-import quests.QuestParser
+import quests.StoryEvent2sCollection
+import quests.StoryEvent2sGenerated
 import status.conditions.ConditionJsonParser
 import status.conditions.ConditionParser
 import status.effects.EffectJsonParser
@@ -77,10 +77,10 @@ object DependencyInjector {
                 EventListenersCollection::class.java to EventListenersGenerated(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),
-                QuestParser::class.java to QuestJsonParser(),
                 RecipeParser::class.java to RecipeJsonParser(),
                 ResourceHelper::class.java to KotlinResourceHelper(),
                 SpellCommandsCollection::class.java to SpellCommandsGenerated(),
+                StoryEvent2sCollection::class.java to StoryEvent2sGenerated(),
                 WeatherParser::class.java to WeatherJsonParser(),
         )
     }

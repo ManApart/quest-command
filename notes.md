@@ -738,3 +738,5 @@ AI doesn't seem to be working for enemy in battle: not making a choice / attacki
 Story Events
 - Is there any benefit for a story event to have its own name? I think stage is fine...
 - add validator that stages aren't duplicated
+- delete SetQuestStage
+- Delete trigger conditions and events and parsers (EventParser)

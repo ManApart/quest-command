@@ -8,6 +8,8 @@ import core.events.eventParsers.EventParser
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
+import quests.StoryEvent2
+import quests.StoryEventResource
 import java.io.File
 import java.lang.reflect.Modifier
 
@@ -26,6 +28,7 @@ object ReflectionTools {
         generateCollectionsFile(EventParser::class.java)
         generateCollectionsFile(EventListener::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
+        generateResourcesFile(StoryEventResource::class.java, StoryEvent2::class.java)
     }
 
     private fun generateCollectionsFile(clazz: Class<*>) {

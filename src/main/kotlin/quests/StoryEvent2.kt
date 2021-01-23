@@ -6,17 +6,17 @@ class StoryEvent2(
         val questName: String,
         val stage: Int,
         val journal: String,
-        private val triggerEvent: TriggeredEvent2<*>,
+        val triggeredEvent: ConditionalEvents<*>,
         private val repeatable: Boolean = false,
         private var availableAfter: Int = -1,
         private var availableBefore: Int = -1,
-        private var completesQuest: Boolean = false
+        val completesQuest: Boolean = false
 
 ) {
     var completed = false
 
     fun matches(event: Event): Boolean {
-        return triggerEvent.matches(event)
+        return triggeredEvent.matches(event)
     }
 
     fun canBeListenedFor(stage: Int): Boolean {
@@ -29,6 +29,14 @@ class StoryEvent2(
         }
         if (availableAfter == -1) {
             availableAfter = previousStage
+        }
+    }
+
+    fun execute(triggeringEvent: Event) {
+        if (triggeringEvent.javaClass == triggeredEvent.triggerEvent) {
+            triggeredEvent.execute(triggeringEvent)
+        } else {
+            println("${questName}'s event at stage $stage matched but had the wrong event type (${triggeringEvent.javaClass.simpleName}. This should not happen!")
         }
     }
 

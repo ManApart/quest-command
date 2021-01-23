@@ -9,10 +9,10 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
     private val journalEntries = mutableListOf<String>()
     var complete = false
     var active = false
-    private val storyEvents = mutableMapOf<Int, StoryEvent>()
-    private val listenedForEvents = mutableListOf<StoryEvent>()
+    private val storyEvents = mutableMapOf<Int, StoryEvent2>()
+    private val listenedForEvents = mutableListOf<StoryEvent2>()
 
-    fun addEvent(event: StoryEvent) {
+    fun addEvent(event: StoryEvent2) {
         storyEvents[event.stage] = event
     }
 
@@ -30,11 +30,11 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         listenedForEvents.addAll(storyEvents.values.filter { it.canBeListenedFor(stage) })
     }
 
-    fun getAllEvents(): List<StoryEvent> {
+    fun getAllEvents(): List<StoryEvent2> {
         return storyEvents.values.toList()
     }
 
-    fun getMatchingEvent(event: Event): StoryEvent? {
+    fun getMatchingEvent(event: Event): StoryEvent2? {
         return listenedForEvents.firstOrNull { it.matches(event) }
     }
 
@@ -46,26 +46,22 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         return journalEntries.last()
     }
 
-    fun getListenedForEvents(): List<StoryEvent> {
+    fun getListenedForEvents(): List<StoryEvent2> {
         return listenedForEvents.toList()
     }
 
-    fun executeStage(stage: Int) {
+    //I think this can be deleted
+    fun executeStage(stage: Int, triggeringEvent: Event) {
         if (!storyEvents.containsKey(stage)) {
             display("Could not find stage $stage for quest $name. This shouldn't happen!")
         } else {
             val event = storyEvents[stage]!!
-            executeEvent(event)
-//            if (event.completesQuest){
-//                EventManager.postEvent(CompleteQuestEvent(this))
-//            }
+            executeEvent(event, triggeringEvent)
         }
     }
 
-    fun executeEvent(event: StoryEvent) {
-        event.events.forEach {
-            it.execute()
-        }
+    fun executeEvent(event: StoryEvent2, triggeringEvent: Event) {
+        event.execute(triggeringEvent)
         journalEntries.add(event.journal)
         event.completed = true
 
@@ -76,7 +72,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         stage = event.stage
         EventManager.postEvent(QuestStageUpdatedEvent(this, stage))
         calculateListenedForEvents()
-        if (listenedForEvents.isEmpty()) {
+        if (event.completesQuest || listenedForEvents.isEmpty()) {
             EventManager.postEvent(CompleteQuestEvent(this))
         }
     }

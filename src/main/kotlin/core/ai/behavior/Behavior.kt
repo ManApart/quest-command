@@ -1,12 +1,11 @@
 package core.ai.behavior
 
 import core.events.Event
-import core.events.EventManager
-import quests.TriggeredEvent2
+import quests.ConditionalEvents
 
 class Behavior<E : Event>(
         val name: String,
-        private val triggeredEvent: TriggeredEvent2<E>
+        private val triggeredEvent: ConditionalEvents<E>
 ) {
     fun matches(event: Event): Boolean {
         return triggeredEvent.matches(event)
