@@ -50,16 +50,6 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         return listenedForEvents.toList()
     }
 
-    //I think this can be deleted
-    fun executeStage(stage: Int, triggeringEvent: Event) {
-        if (!storyEvents.containsKey(stage)) {
-            display("Could not find stage $stage for quest $name. This shouldn't happen!")
-        } else {
-            val event = storyEvents[stage]!!
-            executeEvent(event, triggeringEvent)
-        }
-    }
-
     fun executeEvent(event: StoryEvent2, triggeringEvent: Event) {
         event.execute(triggeringEvent)
         journalEntries.add(event.journal)
