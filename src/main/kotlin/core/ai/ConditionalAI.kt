@@ -5,10 +5,10 @@ import combat.attack.StartAttackEvent
 import traveling.position.TargetAim
 import core.GameState
 import core.target.Target
-import quests.triggerCondition.TriggeredEvent
 import core.events.EventManager
+import quests.ConditionalEvents
 
-class ConditionalAI(name: String, creature: Target, val actions: List<TriggeredEvent>) : AI(name, creature) {
+class ConditionalAI(name: String, creature: Target, val actions: List<ConditionalEvents<*>>) : AI(name, creature) {
 
     override fun takeAction() {
         //TODO - replace hardcoding with script informed / generic

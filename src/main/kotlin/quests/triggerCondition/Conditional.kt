@@ -16,7 +16,7 @@ open class Conditional<ParametrizedOption : ConditionalOption<ResultType>, Resul
 
     @JsonIgnore
     fun getOption(): ResultType? {
-        return options.firstOrNull { it.condition.matches(params) }?.apply(params)
+        return options.firstOrNull { it.condition(params) }?.apply(params)
     }
 
 }

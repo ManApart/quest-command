@@ -8,8 +8,6 @@ import core.commands.CommandsCollection
 import core.commands.CommandsGenerated
 import core.events.EventListenersCollection
 import core.events.EventListenersGenerated
-import core.events.eventParsers.EventParsersCollection
-import core.events.eventParsers.EventParsersGenerated
 import core.target.activator.ActivatorJsonParser
 import core.target.activator.ActivatorParser
 import core.target.creature.CreatureJsonParser
@@ -73,7 +71,6 @@ object DependencyInjector {
                 ConditionParser::class.java to ConditionJsonParser(),
                 CommandsCollection::class.java to CommandsGenerated(),
                 EffectParser::class.java to EffectJsonParser(),
-                EventParsersCollection::class.java to EventParsersGenerated(),
                 EventListenersCollection::class.java to EventListenersGenerated(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),

@@ -4,7 +4,6 @@ import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.commands.Command
 import core.events.EventListener
-import core.events.eventParsers.EventParser
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -25,7 +24,6 @@ object ReflectionTools {
     fun generateFiles() {
         generateCollectionsFile(Command::class.java)
         generateCollectionsFile(SpellCommand::class.java)
-        generateCollectionsFile(EventParser::class.java)
         generateCollectionsFile(EventListener::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
