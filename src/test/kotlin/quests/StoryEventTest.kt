@@ -1,8 +1,7 @@
-package core.gamestate.quests
+package quests
 
-import quests.triggerCondition.TriggerCondition
-import quests.StoryEvent
 import org.junit.Test
+import use.interaction.InteractEvent
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
@@ -53,7 +52,7 @@ class StoryEventTest {
     }
 
     private fun createEvent(previousStage: Int, availableBefore: Int = -1, availableAfter: Int = -1, repeatable: Boolean = false): StoryEvent {
-        val event = StoryEvent("quest", "name", 100, "journal", repeatable, availableAfter, availableBefore, TriggerCondition("event"))
+        val event = StoryEvent("quest", 100, "journal", ConditionalEvents(InteractEvent::class.java), repeatable, availableAfter, availableBefore)
         event.setDefaultAvailability(previousStage)
         return event
     }

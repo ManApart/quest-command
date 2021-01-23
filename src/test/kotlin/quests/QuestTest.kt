@@ -16,7 +16,7 @@ class QuestTest {
     @Test
     fun questAddsDefaultEventToEvents() {
         val quest = Quest("quest")
-        quest.addEvent(StoryEvent2("quest", 10, "journal", ConditionalEvents(InteractEvent::class.java)))
+        quest.addEvent(StoryEvent("quest", 10, "journal", ConditionalEvents(InteractEvent::class.java)))
         Assert.assertEquals(1, quest.getAllEvents().size)
     }
 
@@ -56,13 +56,13 @@ class QuestTest {
         Assert.assertTrue(quest.getListenedForEvents().isEmpty())
     }
 
-    private fun createEvents(questName: String, number: Int): List<StoryEvent2> {
+    private fun createEvents(questName: String, number: Int): List<StoryEvent> {
         return (1..number).map {
-            StoryEvent2(questName, it, "journal$it", ConditionalEvents(InteractEvent::class.java))
+            StoryEvent(questName, it, "journal$it", ConditionalEvents(InteractEvent::class.java))
         }
     }
 
-    private fun createQuest(events: List<StoryEvent2>, currentStage: Int = 0): Quest {
+    private fun createQuest(events: List<StoryEvent>, currentStage: Int = 0): Quest {
         val quest = Quest(events.first().questName, currentStage)
         events.forEach {
             quest.addEvent(it)

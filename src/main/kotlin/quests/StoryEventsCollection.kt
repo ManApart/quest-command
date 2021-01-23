@@ -1,5 +1,5 @@
 package quests
 
-interface StoryEventResource {
+interface StoryEventsCollection {
     val values: List<StoryEvent>
 }

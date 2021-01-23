@@ -14,18 +14,18 @@ class QuestListener : EventListener<Event>() {
         return 100
     }
 
-    override fun execute(triggeringEvent: Event) {
+    override fun execute(event: Event) {
         if (listeners.isEmpty()) {
             buildListeners()
         }
-        val clazz = triggeringEvent.javaClass.simpleName
+        val clazz = event.javaClass.simpleName
         if (listeners.containsKey(clazz)) {
             val quests = listeners[clazz]?.toList()
             quests?.forEach { quest ->
-                val storyEvent = quest.getMatchingEvent(triggeringEvent)
+                val storyEvent = quest.getMatchingEvent(event)
                 if (storyEvent != null) {
                     removeListeners(quest)
-                    quest.executeEvent(storyEvent, triggeringEvent)
+                    quest.executeEvent(storyEvent, event)
                     if (!quest.complete) {
                         addListeners(quest)
                     }

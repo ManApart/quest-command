@@ -4,7 +4,7 @@ import core.utility.NameSearchableList
 import core.DependencyInjector
 
 object QuestManager {
-    private var parser = DependencyInjector.getImplementation(StoryEvent2sCollection::class.java)
+    private var parser = DependencyInjector.getImplementation(StoryEventsCollection::class.java)
     var quests = parseQuests(parser.values)
 
     fun getActiveQuests() : NameSearchableList<Quest> {
@@ -16,12 +16,11 @@ object QuestManager {
     }
 
     fun reset(){
-        parser = DependencyInjector.getImplementation(StoryEvent2sCollection::class.java)
+        parser = DependencyInjector.getImplementation(StoryEventsCollection::class.java)
         quests = parseQuests(parser.values)
     }
 
-    //TODO - instead of this make resource files deliver full quests
-    private fun parseQuests(events: List<StoryEvent2>): NameSearchableList<Quest> {
+    private fun parseQuests(events: List<StoryEvent>): NameSearchableList<Quest> {
         val quests = mutableMapOf<String, Quest>()
 
         events.forEach { event ->
