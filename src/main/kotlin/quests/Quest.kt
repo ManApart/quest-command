@@ -54,7 +54,11 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         if (!storyEvents.containsKey(stage)) {
             display("Could not find stage $stage for quest $name. This shouldn't happen!")
         } else {
-            executeEvent(storyEvents[stage]!!)
+            val event = storyEvents[stage]!!
+            executeEvent(event)
+//            if (event.completesQuest){
+//                EventManager.postEvent(CompleteQuestEvent(this))
+//            }
         }
     }
 
