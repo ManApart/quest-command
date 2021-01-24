@@ -20,6 +20,10 @@ object ConditionalManager {
         types = buildTypeMap()
     }
 
+    fun getTypeMap() : Map<ConditionalStringType, List<ConditionalString>> {
+        return types
+    }
+
     fun getConditionalString(name: String, type: ConditionalStringType) : ConditionalString {
         return (types[type] ?: error("Unknown Condition Type $type")).first { it.name == name }
     }

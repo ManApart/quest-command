@@ -12,10 +12,11 @@ class ValidationTest {
     fun allValidationsPass() {
         val warnings =
                 ActivatorValidator().validate() +
-                CommandValidator().validate() +
-                CreatureValidator().validate() +
-                LocationValidator().validate() +
-                QuestValidator().validate()
+                        CommandValidator().validate() +
+                        ConditionalStringValidator().validate() +
+                        CreatureValidator().validate() +
+                        LocationValidator().validate() +
+                        QuestValidator().validate()
 
         assertEquals(0, warnings)
     }
