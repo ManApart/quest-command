@@ -12,6 +12,9 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
     private val listenedForEvents = mutableListOf<StoryEvent>()
 
     fun addEvent(event: StoryEvent) {
+        if (storyEvents.containsKey(event.stage)){
+            println("WARN: Duplicate stage ${event.stage} being replaced.")
+        }
         storyEvents[event.stage] = event
     }
 

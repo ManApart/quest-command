@@ -734,7 +734,3 @@ targets have gravityParent. If that target is removed from scope, the evaluate a
 - collide - use size and location, iterate through other targets
 
 AI doesn't seem to be working for enemy in battle: not making a choice / attacking player
-
-Story Events
-- add validator that stages aren't duplicated
-- Delete trigger conditions and events and parsers (EventParser)

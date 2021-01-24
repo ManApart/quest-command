@@ -2,7 +2,7 @@ package quests
 
 import core.events.Event
 
-class StoryEvent(
+data class StoryEvent(
         val questName: String,
         val stage: Int,
         val journal: String,

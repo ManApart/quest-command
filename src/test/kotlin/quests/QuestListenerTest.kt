@@ -48,7 +48,7 @@ class QuestListenerTest {
 
         val results = listener.getListeners()
         assertEquals(1, results.size)
-        assertEquals(1, results[InteractEvent::class.java.simpleName]?.size)
+        assertEquals(1, results[InteractEvent::class.java]?.size)
     }
 
     @Test
@@ -68,7 +68,7 @@ class QuestListenerTest {
 
         val results = listener.getListeners()
         assertEquals(0, results.size)
-        assertEquals(null, results[InteractEvent::class.java.simpleName])
+        assertEquals(null, results[InteractEvent::class.java])
     }
 
     @Test

@@ -6,6 +6,7 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.commands.CommandsCollection
 import core.commands.CommandsGenerated
+import core.events.EventListener
 import core.events.EventListenersCollection
 import core.events.EventListenersGenerated
 import core.target.activator.ActivatorJsonParser
@@ -20,6 +21,7 @@ import crafting.RecipeJsonParser
 import crafting.RecipeParser
 import magic.spellCommands.SpellCommandsGenerated
 import magic.spellCommands.SpellCommandsCollection
+import quests.QuestListener
 import quests.StoryEventsCollection
 import quests.StoryEventsGenerated
 import status.conditions.ConditionJsonParser
@@ -34,6 +36,7 @@ import traveling.location.weather.WeatherJsonParser
 import traveling.location.weather.WeatherParser
 import traveling.location.weather.WeatherStringsCollection
 import traveling.location.weather.WeatherStringsGenerated
+import kotlin.reflect.KClass
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -64,6 +67,10 @@ object DependencyInjector {
             }
             else -> throw IllegalArgumentException("No implementation could be found for interface ${targetInterface.simpleName}")
         }
+    }
+
+    inline fun <reified T: EventListener<*>> getListener() : T {
+        return getImplementation(EventListenersCollection::class.java).values.first { it::class == T::class } as T
     }
 
     private fun createDefaultImplementations(): Map<Class<*>, Any> {

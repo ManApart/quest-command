@@ -6,6 +6,7 @@ import quests.QuestManager
 class QuestValidator {
 
     private val quests = QuestManager.quests
+    private val storyEvents = QuestManager.storyEvents
 
     fun validate(): Int {
         return noDuplicateStages()
@@ -16,17 +17,12 @@ class QuestValidator {
     }
 
     private fun noDuplicateStages(quest: Quest): Int {
-        val stages = mutableListOf<Int>()
-        var warnings = 0
-        quest.getAllEvents().forEach { storyEvent ->
-            if (stages.contains(storyEvent.stage)) {
-                println("WARN: Quest has multiple events at stage '${storyEvent.stage}'.")
-                warnings++
-            } else {
-                stages.add(storyEvent.stage)
-            }
+        val eventCount = storyEvents.filter { it.questName == quest.name }.size
+        if (eventCount != quest.getAllEvents().size) {
+            println("WARN: Quest ${quest.name} possibly has duplicate stages.")
+            return 1
         }
-        return warnings
+        return 0
     }
 
 }

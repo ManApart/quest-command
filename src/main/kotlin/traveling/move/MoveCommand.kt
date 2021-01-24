@@ -9,6 +9,7 @@ import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
 import core.events.EventManager
 
+//TODO - take optional ignore z
 class MoveCommand : Command() {
 
     override fun getAliases(): Array<String> {

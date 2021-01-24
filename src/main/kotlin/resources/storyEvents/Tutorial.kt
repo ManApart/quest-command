@@ -9,6 +9,7 @@ import system.help.ViewHelpEvent
 import system.message.MessageEvent
 import system.startup.GameStartEvent
 import traveling.arrive.ArriveEvent
+import traveling.move.MoveEvent
 import use.interaction.InteractEvent
 
 class Tutorial : StoryEventResource {
@@ -51,25 +52,37 @@ class Tutorial : StoryEventResource {
                     )
             ),
 
-            StoryEvent("Tutorial", 70, "I should move to and then read the recipe for Apple Pie.",
+            StoryEvent("Tutorial", 70, "I should move to that recipe for Apple Pie by typing 'move 0,10,0'.",
                     ConditionalEvents(LookEvent::class.java,
                             { event, _ -> event.source.location.name == "Farmer's Hut Interior" },
-                            { _, _ -> listOf(MessageEvent("I should move to and then read the recipe for Apple Pie.")) }
+                            { _, _ -> listOf(MessageEvent("I should move to that recipe for Apple Pie by typing 'move 0,10,0'.")) }
                     )
             ),
 
-            //TODO - add how to move to recipe
+            StoryEvent("Tutorial", 80, "I should read the recipe for Apple Pie by typing 'read recipe'.",
+                    ConditionalEvents(MoveEvent::class.java,
+                            { event, _ ->
+                                if (event.creature.location.name == "Farmer's Hut Interior") {
+                                    val recipe = event.creature.location.getLocation().getItems("Apple Pie Recipe").firstOrNull()
+                                    (recipe != null && event.creature.canReach(recipe.position))
+                                } else {
+                                    false
+                                }
+                            },
+                            { _, _ -> listOf(MessageEvent("I should read the recipe for Apple Pie by typing 'read recipe'.")) }
+                    )
+            ),
 
-            StoryEvent("Tutorial", 80, "I should travel to Barren Field.",
+            StoryEvent("Tutorial", 90, "I should travel to Barren Field.",
                     ConditionalEvents(InteractEvent::class.java,
                             { event, _ -> event.source == GameState.player && event.target.name == "Apple Pie Recipe" },
                             { _, _ -> listOf(MessageEvent("Once I'm done here I should travel to Barren Field.")) }
                     )
             ),
 
-            StoryEvent("Tutorial", 90, "I now have a basic knowledge of how I can explore this world.",
+            StoryEvent("Tutorial", 100, "I now have a basic knowledge of how I can explore this world. I can always learn more by using 'help commands' or 'help look' (or another command).",
                     ConditionalEvents(QuestStageUpdatedEvent::class.java,
-                            { event, _ -> event.quest == QuestManager.quests.get("Tutorial") && event.stage == 80 },
+                            { event, _ -> event.quest == QuestManager.quests.get("Tutorial") && event.stage == 90 },
                             { _, _ -> listOf(MessageEvent("Now that I've completed these tasks I feel ready to explore the world.")) }
                     ), completesQuest = true
             ),
