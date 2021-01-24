@@ -14,7 +14,8 @@ class ValidationTest {
                 ActivatorValidator().validate() +
                 CommandValidator().validate() +
                 CreatureValidator().validate() +
-                LocationValidator().validate()
+                LocationValidator().validate() +
+                QuestValidator().validate()
 
         assertEquals(0, warnings)
     }
