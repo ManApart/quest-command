@@ -4,6 +4,8 @@ import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.commands.Command
 import core.events.EventListener
+import core.conditional.ConditionalString
+import core.conditional.WeatherStringResource
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -25,14 +27,19 @@ object ReflectionTools {
         generateCollectionsFile(Command::class.java)
         generateCollectionsFile(SpellCommand::class.java)
         generateCollectionsFile(EventListener::class.java)
+
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
+        generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
     }
 
-    private fun generateCollectionsFile(clazz: Class<*>) {
-        val allClasses = reflections.getSubTypesOf(clazz).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
-        println("Saving ${allClasses.size} classes for ${clazz.name}")
-        val isTyped = clazz.typeParameters.isNotEmpty()
+    /**
+     * Find all classes that extend the collected class interface (Command) and dump them into a list in the generated class (CommandsGenerated)
+     */
+    private fun generateCollectionsFile(collectedClass: Class<*>) {
+        val allClasses = reflections.getSubTypesOf(collectedClass).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
+        println("Saving ${allClasses.size} classes for ${collectedClass.name}")
+        val isTyped = collectedClass.typeParameters.isNotEmpty()
         val typeSuffix = if(isTyped){
             "<*>"
         } else {
@@ -40,82 +47,89 @@ object ReflectionTools {
         }
 
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
+        val newClassName = collectedClass.simpleName
 
-        writeInterfaceFile(clazz, typeSuffix)
-        writeGeneratedFile(clazz, typeSuffix, classes)
-        writeMockedFile(clazz, typeSuffix)
+        writeInterfaceFile(collectedClass, typeSuffix, newClassName)
+        writeGeneratedFile(collectedClass, typeSuffix, classes)
+        writeMockedFile(collectedClass, typeSuffix, newClassName)
     }
-
-    private fun generateResourcesFile(clazz: Class<*>, resourceClass: Class<*>) {
-        val allClasses= reflections.getSubTypesOf(clazz).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
-        println("Saving ${allClasses.size} classes for ${clazz.name}")
-        val isTyped = resourceClass.typeParameters.isNotEmpty()
+    /**
+     * Takes Two Classes
+     * 1) The Resource interface to look for
+     * 2) The implementation or collected class
+     * Find all classes that extend the resource interface (WeatherStringResource) and combines their values into a list in the generated class (WeatherStringsGenerated)
+     */
+    private fun generateResourcesFile(resourceInterface: Class<*>, collectedClass: Class<*>) {
+        val allClasses= reflections.getSubTypesOf(resourceInterface).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
+        println("Saving ${allClasses.size} classes for ${resourceInterface.name}")
+        val isTyped = collectedClass.typeParameters.isNotEmpty()
         val typeSuffix = if(isTyped){
             "<*>"
         } else {
             ""
         }
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
+        val newClassName = resourceInterface.simpleName.replace("Resource", "")
 
-        writeInterfaceFile(resourceClass, typeSuffix)
-        writeGeneratedResourceFile(resourceClass, typeSuffix, classes)
-        writeMockedFile(resourceClass, typeSuffix)
+        writeInterfaceFile(collectedClass, typeSuffix, newClassName)
+        writeGeneratedResourceFile(collectedClass, typeSuffix, classes, newClassName)
+        writeMockedFile(collectedClass, typeSuffix, newClassName)
     }
 
-    private fun writeInterfaceFile(clazz: Class<*>, typeSuffix: String) {
-        val packageName = clazz.packageName.replace(".", "/")
-        File("./src/main/kotlin/$packageName/${clazz.simpleName}sCollection.kt").printWriter().use {
+    private fun writeInterfaceFile(collectedClass: Class<*>, typeSuffix: String, newClassName: String) {
+        val packageName = collectedClass.packageName.replace(".", "/")
+        File("./src/main/kotlin/$packageName/${newClassName}sCollection.kt").printWriter().use {
             it.print(
                 """
-                package ${clazz.packageName}
+                package ${collectedClass.packageName}
 
-                interface ${clazz.simpleName}sCollection {
-                    val values: List<${clazz.simpleName}$typeSuffix>
+                interface ${newClassName}sCollection {
+                    val values: List<${collectedClass.simpleName}$typeSuffix>
                 }
             """.trimIndent()
             )
         }
     }
 
-    private fun writeGeneratedFile(clazz: Class<*>, typeSuffix: String, classes: String) {
-        val packageName = clazz.packageName.replace(".", "/")
-        File("./src/main/kotlin/$packageName/${clazz.simpleName}sGenerated.kt").printWriter().use {
+    private fun writeGeneratedFile(collectedClass: Class<*>, typeSuffix: String, classes: String) {
+        val packageName = collectedClass.packageName.replace(".", "/")
+        File("./src/main/kotlin/$packageName/${collectedClass.simpleName}sGenerated.kt").printWriter().use {
             it.print(
                     """
-                package ${clazz.packageName}
+                package ${collectedClass.packageName}
 
-                class ${clazz.simpleName}sGenerated : ${clazz.simpleName}sCollection {
-                    override val values: List<${clazz.name}$typeSuffix> = listOf($classes)
+                class ${collectedClass.simpleName}sGenerated : ${collectedClass.simpleName}sCollection {
+                    override val values: List<${collectedClass.name}$typeSuffix> = listOf($classes)
                 }
             """.trimIndent()
             )
         }
     }
 
-    private fun writeGeneratedResourceFile(clazz: Class<*>, typeSuffix: String, classes: String) {
-        val packageName = clazz.packageName.replace(".", "/")
+    private fun writeGeneratedResourceFile(collectedClass: Class<*>, typeSuffix: String, classes: String, newClassName: String) {
+        val packageName = collectedClass.packageName.replace(".", "/")
 
-        File("./src/main/kotlin/$packageName/${clazz.simpleName}sGenerated.kt").printWriter().use {
+        File("./src/main/kotlin/$packageName/${newClassName}sGenerated.kt").printWriter().use {
             it.print(
                     """
-                package ${clazz.packageName}
+                package ${collectedClass.packageName}
 
-                class ${clazz.simpleName}sGenerated : ${clazz.simpleName}sCollection {
-                    override val values: List<${clazz.simpleName}$typeSuffix> = listOf($classes).flatMap { it.values }
+                class ${newClassName}sGenerated : ${newClassName}sCollection {
+                    override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf($classes).flatMap { it.values }
                 }
             """.trimIndent()
             )
         }
     }
 
-    private fun writeMockedFile(clazz: Class<*>, typeSuffix: String) {
-        val packageName = clazz.packageName.replace(".", "/")
-        File("./src/test/kotlin/$packageName/${clazz.simpleName}sMock.kt").printWriter().use {
+    private fun writeMockedFile(collectedClass: Class<*>, typeSuffix: String, newClassName: String) {
+        val packageName = collectedClass.packageName.replace(".", "/")
+        File("./src/test/kotlin/$packageName/${newClassName}sMock.kt").printWriter().use {
             it.print(
                     """
-                package ${clazz.packageName}
+                package ${collectedClass.packageName}
 
-                class ${clazz.simpleName}sMock(override val values: List<${clazz.simpleName}$typeSuffix> = listOf()) : ${clazz.simpleName}sCollection
+                class ${newClassName}sMock(override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
             """.trimIndent()
             )
         }
