@@ -34,7 +34,7 @@ import kotlin.math.min
 open class Target(
         name: String,
         base: Target? = null,
-        params: Map<String, String> = mapOf(),
+        private val params: Map<String, String> = mapOf(),
         ai: AI? = null,
         aiName: String? = base?.ai?.name,
         @JsonProperty("behaviors") val behaviorRecipes: List<BehaviorRecipe> = base?.behaviorRecipes ?: listOf(),
@@ -236,7 +236,7 @@ open class Target(
     }
 
     fun getDescription(): String {
-        return dynamicDescription.getOption()
+        return dynamicDescription.getOption().apply(params)
     }
 
     fun getDescriptionWithOptions(): ConditionalStringPointer {
