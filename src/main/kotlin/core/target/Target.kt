@@ -1,21 +1,23 @@
 package core.target
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.GameState
 import core.ai.AI
 import core.ai.AIManager
 import core.ai.DumbAI
+import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.BodyManager
 import core.body.Slot
+import core.conditional.ConditionalStringPointer
 import core.events.Event
 import core.properties.*
 import core.target.item.ItemManager
 import core.utility.*
 import crafting.Recipe
-import dialogue.DialogueOptions
 import inventory.Inventory
 import status.ProtoSoul
 import status.Soul
@@ -31,16 +33,15 @@ import kotlin.math.min
 open class Target(
         name: String,
         base: Target? = null,
-        params: Map<String, String> = mapOf(),
+        private val params: Map<String, String> = mapOf(),
         ai: AI? = null,
         aiName: String? = base?.ai?.name,
-        @JsonProperty("behaviors") behaviorRecipes: MutableList<BehaviorRecipe> = base?.behaviorRecipes
-                ?: mutableListOf(),
+        @JsonProperty("behaviors") val behaviorRecipes: List<BehaviorRecipe> = base?.behaviorRecipes ?: listOf(),
         body: Body? = null,
         bodyName: String? = base?.body?.name,
         equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
-        @JsonProperty("description") dynamicDescription: DialogueOptions = base?.dynamicDescription
-                ?: DialogueOptions(name),
+        @JsonProperty("description") private val dynamicDescription: ConditionalStringPointer = base?.dynamicDescription
+                ?: ConditionalStringPointer(name),
         items: List<String> = base?.inventory?.getItems()?.map { it.name } ?: listOf(),
         var location: LocationNode = base?.location ?: NOWHERE_NODE,
         val parent: Target? = null,
@@ -51,7 +52,6 @@ open class Target(
     override val name = name.apply(params)
     val ai = discernAI(ai, aiName)
 
-    val behaviorRecipes = behaviorRecipes.asSequence().map { BehaviorRecipe(it, params) }.toMutableList()
     val body: Body = getBody(body, base?.body, bodyName)
 
     //Equip slots are the list of slots that this item can be equipped to. They are compared with a body that this item may be equipped to
@@ -60,8 +60,7 @@ open class Target(
     val properties = Properties(properties, params)
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
-    private val dynamicDescription = dynamicDescription.apply(params)
-    private val behaviors = BehaviorManager.getBehaviors(this.behaviorRecipes)
+    @JsonIgnore val behaviors: List<Behavior<*>> = base?.behaviors ?: behaviorRecipes.asSequence().map { BehaviorManager.getBehavior(it) }.toMutableList()
     val knownRecipes = NameSearchableList<Recipe>()
 
     var climbTarget: Target? = null
@@ -125,14 +124,14 @@ open class Target(
         return parent?.getTopParent() ?: this
     }
 
-    open fun canConsume(event: Event): Boolean {
-        return !isPlayer() && behaviors.any { it.evaluate(event) }
+    fun canConsume(event: Event): Boolean {
+        return !isPlayer() && behaviors.any { it.matches(event) }
     }
 
-    open fun consume(event: Event) {
+    fun consume(event: Event) {
         if (!isPlayer()) {
-            behaviors.filter { it.evaluate(event) }
-                    .forEach { it.execute(event, this) }
+            behaviors.filter { it.matches(event) }
+                    .forEach { it.execute(event) }
         }
     }
 
@@ -235,12 +234,12 @@ open class Target(
         climbTarget = null
     }
 
-    fun getDescriptionWithConditions(): DialogueOptions {
-        return dynamicDescription
+    fun getDescription(): String {
+        return dynamicDescription.getOption().apply(params)
     }
 
-    fun getDescription(): String {
-        return dynamicDescription.getOption() ?: ""
+    fun getDescriptionWithOptions(): ConditionalStringPointer {
+        return dynamicDescription
     }
 
     fun isSafe(): Boolean {

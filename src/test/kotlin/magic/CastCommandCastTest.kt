@@ -2,19 +2,19 @@ package magic
 
 import traveling.position.TargetAim
 import core.target.Target
-import core.utility.reflection.MockReflections
-import core.reflection.Reflections
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import core.DependencyInjector
 import core.GameState
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.events.EventManager
-import core.ai.behavior.BehaviorParser
+import magic.spellCommands.SpellCommandsMock
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
+import magic.spellCommands.SpellCommandsCollection
 import traveling.location.location.Location
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser
@@ -25,8 +25,8 @@ class CastCommandCastTest {
 
     companion object {
         init {
-            DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
             DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
         }
 
@@ -42,8 +42,8 @@ class CastCommandCastTest {
         @AfterClass
         @JvmStatic
         fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
-            DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
+            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
     }
@@ -55,9 +55,9 @@ class CastCommandCastTest {
 
     @Test
     fun castWord() {
-        val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
+        val reflections = SpellCommandsMock(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA".split(" "))
 
@@ -67,9 +67,9 @@ class CastCommandCastTest {
 
     @Test
     fun castWordWithParams() {
-        val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
+        val reflections = SpellCommandsMock(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA 1 2".split(" "))
 
@@ -79,9 +79,9 @@ class CastCommandCastTest {
 
     @Test
     fun castWordWithTarget() {
-        val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
+        val reflections = SpellCommandsMock(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA on targetA".split(" "))
 
@@ -91,9 +91,9 @@ class CastCommandCastTest {
 
     @Test
     fun castWordWithTargetsAndParams() {
-        val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
+        val reflections = SpellCommandsMock(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         CastCommand().execute("cast", "testspellA 1 2 on targetA and targetB".split(" "))
 
@@ -102,7 +102,7 @@ class CastCommandCastTest {
         assertTrue(targetsContainByName(spellCommand.targets, targetB))
     }
 
-    private fun targetsContainByName(targetAims: List<TargetAim>, target: Target) : Boolean {
+    private fun targetsContainByName(targetAims: List<TargetAim>, target: Target): Boolean {
         return targetAims.map { it.target }.firstOrNull { target.name == it.name } != null
     }
 

@@ -144,7 +144,14 @@ class CommandComboTest {
 
         assertNotNull(GameState.player.inventory.getItem("Apple Pie"))
         assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
+    }
 
+    @Test
+    fun tutorial() {
+        val input = "help commands && journal && m && w && s && ls && mv 0,10,0 && read recipe "
+        CommandParser.parseCommand(input)
+
+        assertEquals(true, QuestManager.quests.get("Tutorial").complete)
     }
 
     @Test

@@ -9,6 +9,7 @@ import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
 import core.events.EventManager
 
+//TODO - take optional ignore z
 class MoveCommand : Command() {
 
     override fun getAliases(): Array<String> {
@@ -20,7 +21,7 @@ class MoveCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tMove to <vector> - Move to a specific place within a location." +
+        return "\n\tMove to 0,1,0 - Move to a specific place within a location." +
                 "\n\tMove to <target> - Move to a target within a location." +
                 "\n\tMove <distance> towards <direction> - Move a set distance in a direction."
     }

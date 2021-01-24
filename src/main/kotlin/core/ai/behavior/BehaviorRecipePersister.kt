@@ -1,17 +1,18 @@
 package core.ai.behavior
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-
 
 fun getPersisted(dataObject: BehaviorRecipe): Map<String, Any> {
-    val string = jacksonObjectMapper().writeValueAsString(dataObject)
-    val data: MutableMap<String, Any> = jacksonObjectMapper().readValue(string)
+    val data: MutableMap<String, Any> = mutableMapOf()
     data["version"] = 1
+    data["name"] = dataObject.name
+    data["params"] = dataObject.params.toMutableMap()
     return data
 }
 
 @Suppress("UNCHECKED_CAST")
 fun readFromData(data: Map<String, Any>): BehaviorRecipe {
-    return jacksonObjectMapper().readValue(jacksonObjectMapper().writeValueAsString(data))
+    val name = data["name"]!! as String
+    val params = data["params"]!! as Map<String, String>
+
+    return BehaviorRecipe(name, params)
 }

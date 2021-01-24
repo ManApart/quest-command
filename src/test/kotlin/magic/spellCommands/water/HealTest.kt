@@ -4,15 +4,16 @@ import combat.DamageType
 import traveling.position.TargetAim
 import core.DependencyInjector
 import core.GameState
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
-import core.reflection.Reflections
 import core.target.Target
-import core.utility.reflection.MockReflections
-import magic.MockSpellCommand
+import magic.SpellCommandMock
 import magic.castSpell.StartCastSpellEvent
+import magic.spellCommands.SpellCommandsMock
+import magic.spellCommands.SpellCommandsCollection
 import magic.spells.Spell
 import org.junit.AfterClass
 import org.junit.Before
@@ -24,7 +25,6 @@ import status.effects.EffectParser
 import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
@@ -36,8 +36,8 @@ import kotlin.test.assertTrue
 class HealTest {
     companion object {
         init {
-            DependencyInjector.setImplementation(BehaviorParser::class.java, BehaviorFakeParser())
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
 
             DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
             LocationManager.reset()
@@ -77,9 +77,9 @@ class HealTest {
 
     @Test
     fun defaultArgs() {
-        val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
+        val reflections = SpellCommandsMock(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         val spell = castHeal("")
 
@@ -93,9 +93,9 @@ class HealTest {
 
     @Test
     fun amountAndDuration() {
-        val spellCommand = MockSpellCommand("testSpellA", listOf("catA"))
-        val reflections = MockReflections(spellCommands = listOf(spellCommand))
-        DependencyInjector.setImplementation(Reflections::class.java, reflections)
+        val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
+        val reflections = SpellCommandsMock(listOf(spellCommand))
+        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
 
         val spell = castHeal("5 for 10")
 

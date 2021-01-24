@@ -2,10 +2,12 @@ package quests
 
 import core.utility.NameSearchableList
 import core.DependencyInjector
+import core.events.EventListenersCollection
+import core.events.EventListenersGenerated
 
 object QuestManager {
-    private var parser = DependencyInjector.getImplementation(QuestParser::class.java)
-    var quests = parser.parseQuests()
+    var storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class.java).values.map { it.copy() }
+    var quests = parseQuests(storyEvents)
 
     fun getActiveQuests() : NameSearchableList<Quest> {
         return NameSearchableList(quests.filter { it.active})
@@ -16,8 +18,26 @@ object QuestManager {
     }
 
     fun reset(){
-        parser = DependencyInjector.getImplementation(QuestParser::class.java)
-        quests = parser.parseQuests()
+        storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class.java).values.map { it.copy() }
+        quests = parseQuests(storyEvents)
     }
+
+    private fun parseQuests(events: List<StoryEvent>): NameSearchableList<Quest> {
+        val quests = mutableMapOf<String, Quest>()
+
+        events.forEach { event ->
+            if (!quests.containsKey(event.questName)) {
+                quests[event.questName] = Quest(event.questName)
+            }
+            quests[event.questName]?.addEvent(event)
+        }
+
+        quests.values.forEach {
+            it.initialize()
+        }
+
+        return NameSearchableList(quests.values.toList())
+    }
+
 
 }

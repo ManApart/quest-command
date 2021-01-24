@@ -4,11 +4,11 @@ import core.DependencyInjector
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
 import core.body.BodyManager
+import core.conditional.ConditionalStringPointer
 import core.target.Target
 import core.target.activator.ActivatorManager
 import core.target.activator.ActivatorParser
 import core.utility.NameSearchableList
-import dialogue.DialogueOptions
 import org.junit.Before
 import org.junit.Test
 import system.location.LocationFakeParser
@@ -35,7 +35,7 @@ class ActivatorManagerTest {
 
     @Test
     fun topLevelValueIsParameterized() {
-        val activator = Target("Target", dynamicDescription = DialogueOptions("This is a \$key"))
+        val activator = Target("Target", dynamicDescription = ConditionalStringPointer("This is a \$key"))
         val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()
@@ -49,7 +49,7 @@ class ActivatorManagerTest {
     @Test
     fun nestedClimbableGetsParams() {
 //        val activator = Target("Target", climb = Climbable("\$destination", "", true))
-        val activator = Target("Target", dynamicDescription = DialogueOptions("\$destination"))
+        val activator = Target("Target", dynamicDescription = ConditionalStringPointer("\$destination"))
         val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
         DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
         ActivatorManager.reset()

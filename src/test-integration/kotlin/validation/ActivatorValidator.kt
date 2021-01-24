@@ -32,9 +32,9 @@ class ActivatorValidator {
     private fun behaviorsExist(): Int {
         var warnings = 0
         activators.forEach { activator ->
-            activator.behaviorRecipes.forEach { recipe ->
-                if (!BehaviorManager.behaviorExists(recipe)) {
-                    println("WARN: Activator '${activator.name}' references nonexistent behavior: ${recipe.name}.")
+            activator.behaviorRecipes.forEach { name ->
+                if (!BehaviorManager.behaviorExists(name)) {
+                    println("WARN: Activator '${activator.name}' references nonexistent behavior: ${name}.")
                     warnings++
                 }
             }

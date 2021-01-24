@@ -5,20 +5,19 @@ import core.commands.*
 import core.target.Target
 import core.history.display
 import core.utility.NameSearchableList
-import core.reflection.Reflections
 import magic.spellCommands.SpellCommand
 import core.DependencyInjector
 import core.events.EventManager
 import magic.ViewWordHelpEvent
+import magic.spellCommands.SpellCommandsCollection
 import traveling.location.location.Location
 
 class CastCommand : Command() {
-    private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
     //Should this go to the command parser?
     private val spellCommands by lazy { loadSpellCommands() }
 
     private fun loadSpellCommands(): NameSearchableList<SpellCommand> {
-        return NameSearchableList(reflections.getSpellCommands())
+        return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values)
     }
 
     override fun getAliases(): Array<String> {
@@ -122,13 +121,13 @@ class CastCommand : Command() {
 }
 
 fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Location> {
-    val parts =  if (targetAim.bodyPartTargets.isNotEmpty()) {
+    val parts = if (targetAim.bodyPartTargets.isNotEmpty()) {
         targetAim.bodyPartTargets
     } else {
         targetAim.target.body.getParts()
     }
 
-    return if (maxParts > 0){
+    return if (maxParts > 0) {
         parts.take(maxParts)
     } else {
         parts

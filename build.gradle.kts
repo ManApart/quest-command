@@ -83,3 +83,7 @@ task("buildData", type = JavaExec::class) {
     main = "building.AppBuilder"
     classpath = sourceSets["tools"].runtimeClasspath
 }
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.4"
+}

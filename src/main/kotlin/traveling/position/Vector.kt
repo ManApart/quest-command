@@ -192,6 +192,9 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
 
     fun getVectorInDirection(target: Vector, distance: Int): Vector {
         val percent = distance / getDistance(target).toFloat()
+        if (percent.isNaN()){
+            return target
+        }
         val inversePercent = 1 - percent
 
         val newX = x * inversePercent + target.x * percent

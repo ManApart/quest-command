@@ -2,35 +2,37 @@
 <module external.linked.project.id="quest-command:test" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="org.rak.manapart" external.system.module.type="sourceSet" external.system.module.version="1.0-SNAPSHOT" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JVM 1.6" allPlatforms="JVM [1.6]" useProjectSettings="false">
+      <configuration version="3" platform="JVM 11" allPlatforms="JVM [11]">
         <compilerSettings>
           <option name="additionalArguments" value="-Xallow-no-source-files" />
         </compilerSettings>
         <compilerArguments>
           <option name="destination" value="$MODULE_DIR$/../../build/classes/kotlin/test" />
-          <option name="classpath" value="$MODULE_DIR$/../../build/classes/kotlin/main;B:/Coding/Workspace/Games/QuestCommand/build/resources/main;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-kotlin/2.9.0/15ef1e0502a2c3d85b601c9f5b4f289521d8f9e2/jackson-module-kotlin-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.61/2e07c9a84c9e118efb70eede7e579fd663932122/kotlin-reflect-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.9.10/c7f4ea230aedc757ca1499ebcfb2953c81cf8b67/reflections-0.9.10.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jline/jline/3.8.0/48ec7c7b4975d2136390f1bd9d9b7e883e11bee9/jline-3.8.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.3.61/e91d61b7cfd9a45566b580fef18bbd5c32d505b5/kotlin-stdlib-jdk8-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-junit/1.2.51/78997a39174f1731deb7756e3a49c88b02741bf8/kotlin-test-junit-1.2.51.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test/1.3.61/a5931cd3af2c9648e3fa1459fc4968f733aafdb2/kotlin-test-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.3.61/70dffc5f8ac5ea7c34f30deac5b9d8b1d48af066/kotlin-stdlib-jdk7-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.61/4702105e97f7396ae41b113fdbdc180ec1eb1e36/kotlin-stdlib-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.2-GA/1180a90fbad732b60fb728a6bbe8fcb3151423d7/javassist-3.18.2-GA.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.google.code.findbugs/annotations/2.0.1/9ef6656259841cebfb9fb0697bb122ada4485498/annotations-2.0.1.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.0/14fb5f088cc0b0dc90a73ba745bcade4961a3ee3/jackson-databind-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-annotations-common/1.2.51/fdd7f456a2e570bf901bad82c4bf5f51961c5fa4/kotlin-test-annotations-common-1.2.51.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-common/1.3.61/c243c22f908c91f2ad9dc767080d97dec6a33cc4/kotlin-test-common-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.61/65abb71d5afb850b68be03987b08e2c864ca3110/kotlin-stdlib-common-1.3.61.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.0/88e7c6220be3b3497b3074d3fc7754213289b987/jackson-core-2.9.0.jar" />
+          <option name="classpath" value="$MODULE_DIR$/../../build/classes/kotlin/main;N:/Coding/Workspace/games/quest_command/build/resources/main;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.9.10/c7f4ea230aedc757ca1499ebcfb2953c81cf8b67/reflections-0.9.10.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jline/jline/3.8.0/48ec7c7b4975d2136390f1bd9d9b7e883e11bee9/jline-3.8.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-kotlin/2.9.0/15ef1e0502a2c3d85b601c9f5b4f289521d8f9e2/jackson-module-kotlin-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.4.20/756521338269950c2a276f1abe6fef8e1a5e5528/kotlin-stdlib-jdk8-1.4.20.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.4.0/aa2101a19d8688e368ae6e35e8967550ced73884/kotlin-reflect-1.4.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.5.2/f8561a498ec26b24a3a64aebb6b2307fed000a33/junit-jupiter-5.5.2.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test/1.4.20/37f4d139996ed0bbd88df805e4df833040431ff6/kotlin-test-1.4.20.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.18.2-GA/1180a90fbad732b60fb728a6bbe8fcb3151423d7/javassist-3.18.2-GA.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.google.code.findbugs/annotations/2.0.1/9ef6656259841cebfb9fb0697bb122ada4485498/annotations-2.0.1.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.0/14fb5f088cc0b0dc90a73ba745bcade4961a3ee3/jackson-databind-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.4.20/9de2c79e95d4b4699a455e88ba285a95352e0bea/kotlin-stdlib-jdk7-1.4.20.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.4.20/9be77b243a362b745e365f286627b8724337009c/kotlin-stdlib-1.4.20.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.5.2/e0659722923bd9fdfa08602e2da22bd5a9d354e8/junit-jupiter-params-5.5.2.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.5.2/6393db7e4c0265152d8fc4ff146633d1a7d36c47/junit-jupiter-api-5.5.2.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-common/1.4.20/2191d43275c9a8558adea84729c1ca372a463e59/kotlin-test-common-1.4.20.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.0/88e7c6220be3b3497b3074d3fc7754213289b987/jackson-core-2.9.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.4.20/c6761d7805b5312302f2bbd78cda68c976ce0c70/kotlin-stdlib-common-1.4.20.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.5.2/9703df63b65d415b2a027d43ce908c625b3aedce/junit-platform-commons-1.5.2.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.0/fc9dff4bb36d627bdc553de77e1f17efd790876c/apiguardian-api-1.1.0.jar;A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar" />
           <option name="noStdlib" value="true" />
           <option name="noReflect" value="true" />
           <option name="moduleName" value="quest-command" />
+          <option name="jvmTarget" value="11" />
           <option name="friendPaths">
             <array>
               <option value="$MODULE_DIR$/../../build/classes/java/main" />
               <option value="$MODULE_DIR$/../../build/classes/kotlin/main" />
+              <option value="$MODULE_DIR$/../../build/libs/quest-command-dev.jar" />
             </array>
           </option>
-          <option name="languageVersion" value="1.3" />
-          <option name="apiVersion" value="1.3" />
+          <option name="languageVersion" value="1.4" />
+          <option name="apiVersion" value="1.4" />
           <option name="pluginOptions">
             <array />
           </option>
           <option name="pluginClasspaths">
             <array>
-              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.61/e5feb39c8de63dcbdc1154b34ca4413874231605/kotlin-script-runtime-1.3.61.jar" />
-              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.3.61/169747d90a1ccdd30b25c381a06bee3fe579bf2/kotlin-scripting-common-1.3.61.jar" />
-              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.3.61/b9311f022363534f8776e4392aa9c4f4d5a62a44/kotlin-scripting-jvm-1.3.61.jar" />
-              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.61/65abb71d5afb850b68be03987b08e2c864ca3110/kotlin-stdlib-common-1.3.61.jar" />
-              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.61/4702105e97f7396ae41b113fdbdc180ec1eb1e36/kotlin-stdlib-1.3.61.jar" />
-              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.2.1/3839faf625f4197acaeceeb6da000f011a2acb49/kotlinx-coroutines-core-1.2.1.jar" />
+              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.4.20/9793d2f6b262847a2d8127951c5786cf907cc7b1/kotlin-script-runtime-1.4.20.jar" />
+              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.4.20/2e2bf29688a76cec111df56bc5e358c5bbc5057/kotlin-scripting-common-1.4.20.jar" />
+              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.4.20/83704fbbe39946cc2ac6d0f07f41947abeb8dc20/kotlin-scripting-jvm-1.4.20.jar" />
+              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.4.20/c6761d7805b5312302f2bbd78cda68c976ce0c70/kotlin-stdlib-common-1.4.20.jar" />
+              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.4.20/9be77b243a362b745e365f286627b8724337009c/kotlin-stdlib-1.4.20.jar" />
+              <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.3.7/8e2eb78158638b33793d204ffef0b65c4a578e1c/kotlinx-coroutines-core-1.3.7.jar" />
               <option value="A:/Programs/Coding/gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
             </array>
           </option>
@@ -41,36 +43,4 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output-test url="file://$MODULE_DIR$/../../out/test/classes" />
-    <exclude-output />
-    <content url="file://$MODULE_DIR$/../../src/test">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/test/kotlin" isTestSource="true" />
-    </content>
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="quest-command.main" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: org.reflections:reflections:0.9.10" level="project" />
-    <orderEntry type="library" name="Gradle: org.jline:jline:3.8.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test-junit:1.2.51" level="project" />
-    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.guava:guava:18.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.javassist:javassist:3.18.2-GA" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.findbugs:annotations:2.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.9.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test-annotations-common:1.2.51" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-test-common:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.3.61" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.0" level="project" />
-  </component>
-  <component name="TestModuleProperties" production-module="quest-command.main" />
 </module>

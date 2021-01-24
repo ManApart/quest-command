@@ -71,6 +71,10 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         return conditions.get(name)
     }
 
+    fun getConditionWithEffect(name: String): Condition {
+        return conditions.first { it.hasEffect(name) }
+    }
+
     fun getCurrent(name: String, default: Int = 0): Int {
         return getStatOrNull(name)?.current ?: default
     }

@@ -1,25 +1,22 @@
 package quests
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import core.events.Event
-import quests.triggerCondition.TriggerCondition
-import quests.triggerCondition.TriggeredEvent
 
-class StoryEvent(
-        @JsonProperty("quest") val questName: String,
-        val name: String,
+data class StoryEvent(
+        val questName: String,
         val stage: Int,
         val journal: String,
+        val triggeredEvent: ConditionalEvents<*>,
         private val repeatable: Boolean = false,
         private var availableAfter: Int = -1,
         private var availableBefore: Int = -1,
-        val condition: TriggerCondition,
-        val events: List<TriggeredEvent> = listOf()
+        val completesQuest: Boolean = false
+
 ) {
     var completed = false
 
     fun matches(event: Event): Boolean {
-        return condition.matches(event)
+        return triggeredEvent.matches(event)
     }
 
     fun canBeListenedFor(stage: Int): Boolean {
@@ -32,6 +29,14 @@ class StoryEvent(
         }
         if (availableAfter == -1) {
             availableAfter = previousStage
+        }
+    }
+
+    fun execute(triggeringEvent: Event) {
+        if (triggeringEvent.javaClass == triggeredEvent.triggerEvent) {
+            triggeredEvent.execute(triggeringEvent)
+        } else {
+            println("${questName}'s event at stage $stage matched but had the wrong event type (${triggeringEvent.javaClass.simpleName}. This should not happen!")
         }
     }
 

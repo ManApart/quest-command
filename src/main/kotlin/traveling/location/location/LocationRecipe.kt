@@ -1,8 +1,8 @@
 package traveling.location.location
 
+import core.conditional.ConditionalStringPointer
 import core.properties.Properties
 import core.utility.Named
-import dialogue.DialogueOptions
 
 val NOWHERE = LocationRecipe("Nowhere")
 
@@ -13,12 +13,12 @@ const val LIGHT = "Light"
 //only do equip check if slots exist
 class LocationRecipe(
         override val name: String,
-        private val description: DialogueOptions = DialogueOptions(""),
+        private val description: ConditionalStringPointer = ConditionalStringPointer(""),
         val activators: List<LocationTarget> = listOf(),
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
         val weatherChangeFrequency: Int = 5,
-        private val weather: DialogueOptions = DialogueOptions("Still"),
+        private val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
         val properties: Properties = Properties(),
         val slots: List<String> = listOf()
 ) : Named {
@@ -39,11 +39,11 @@ class LocationRecipe(
     }
 
     fun getWeatherName() : String {
-        return weather.getOption() ?: ""
+        return weather.getOption()
     }
 
     fun getDescription(): String {
-        return description.getOption() ?: ""
+        return description.getOption()
     }
 
 }

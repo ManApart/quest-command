@@ -17,6 +17,10 @@ object RecipeManager {
         return recipes.get(name)
     }
 
+    fun getRecipeOrNull(name: String): Recipe? {
+        return recipes.getOrNull(name)
+    }
+
     fun getRecipes(names: List<String>): List<Recipe> {
         return names.map { recipes.getAll(it) }.flatten()
     }

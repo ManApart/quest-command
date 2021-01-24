@@ -3,13 +3,16 @@ package magic
 import core.events.EventListener
 import core.history.display
 import core.utility.NameSearchableList
-import core.reflection.Reflections
 import magic.spellCommands.SpellCommand
 import core.DependencyInjector
+import magic.spellCommands.SpellCommandsCollection
 
 class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
-    private var reflections = DependencyInjector.getImplementation(Reflections::class.java)
-    private val wordsOfPower = NameSearchableList(reflections.getSpellCommands())
+    private val wordsOfPower by lazy { loadSpellCommands() }
+
+    private fun loadSpellCommands(): NameSearchableList<SpellCommand> {
+        return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values)
+    }
 
     override fun execute(event: ViewWordHelpEvent) {
         when {

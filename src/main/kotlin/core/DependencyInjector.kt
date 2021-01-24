@@ -2,10 +2,13 @@ package core
 
 import core.ai.AIJsonParser
 import core.ai.AIParser
-import core.ai.behavior.BehaviorJsonParser
-import core.ai.behavior.BehaviorParser
-import core.reflection.GeneratedReflections
-import core.reflection.Reflections
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsGenerated
+import core.commands.CommandsCollection
+import core.commands.CommandsGenerated
+import core.events.EventListener
+import core.events.EventListenersCollection
+import core.events.EventListenersGenerated
 import core.target.activator.ActivatorJsonParser
 import core.target.activator.ActivatorParser
 import core.target.creature.CreatureJsonParser
@@ -16,16 +19,24 @@ import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
-import quests.QuestJsonParser
-import quests.QuestParser
+import magic.spellCommands.SpellCommandsGenerated
+import magic.spellCommands.SpellCommandsCollection
+import quests.QuestListener
+import quests.StoryEventsCollection
+import quests.StoryEventsGenerated
 import status.conditions.ConditionJsonParser
 import status.conditions.ConditionParser
 import status.effects.EffectJsonParser
 import status.effects.EffectParser
+import traveling.location.location.LocationDescriptionsCollection
+import traveling.location.location.LocationDescriptionsGenerated
 import traveling.location.location.LocationJsonParser
 import traveling.location.location.LocationParser
 import traveling.location.weather.WeatherJsonParser
 import traveling.location.weather.WeatherParser
+import traveling.location.weather.WeatherStringsCollection
+import traveling.location.weather.WeatherStringsGenerated
+import kotlin.reflect.KClass
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -58,21 +69,29 @@ object DependencyInjector {
         }
     }
 
+    inline fun <reified T: EventListener<*>> getListener() : T {
+        return getImplementation(EventListenersCollection::class.java).values.first { it::class == T::class } as T
+    }
+
     private fun createDefaultImplementations(): Map<Class<*>, Any> {
         return mapOf(
                 ActivatorParser::class.java to ActivatorJsonParser(),
                 AIParser::class.java to AIJsonParser(),
-                BehaviorParser::class.java to BehaviorJsonParser(),
+                BehaviorsCollection::class.java to BehaviorsGenerated(),
                 CreatureParser::class.java to CreatureJsonParser(),
                 ConditionParser::class.java to ConditionJsonParser(),
+                CommandsCollection::class.java to CommandsGenerated(),
                 EffectParser::class.java to EffectJsonParser(),
+                EventListenersCollection::class.java to EventListenersGenerated(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),
-                QuestParser::class.java to QuestJsonParser(),
+                LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
                 RecipeParser::class.java to RecipeJsonParser(),
-                Reflections::class.java to GeneratedReflections(),
                 ResourceHelper::class.java to KotlinResourceHelper(),
-                WeatherParser::class.java to WeatherJsonParser()
+                SpellCommandsCollection::class.java to SpellCommandsGenerated(),
+                StoryEventsCollection::class.java to StoryEventsGenerated(),
+                WeatherParser::class.java to WeatherJsonParser(),
+                WeatherStringsCollection::class.java to WeatherStringsGenerated(),
         )
     }
 

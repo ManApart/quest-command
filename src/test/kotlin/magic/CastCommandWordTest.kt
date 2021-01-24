@@ -1,7 +1,5 @@
 package magic
 
-import core.utility.reflection.MockReflections
-import core.reflection.Reflections
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
@@ -9,29 +7,31 @@ import org.junit.Test
 import core.DependencyInjector
 import core.events.EventManager
 import magic.castSpell.CastCommand
+import magic.spellCommands.SpellCommandsMock
+import magic.spellCommands.SpellCommandsCollection
 import kotlin.test.*
 
 class CastCommandWordTest {
 
     companion object {
-        private val spellA = MockSpellCommand("testSpellA", listOf("catA"))
-        private val spellB = MockSpellCommand("testSpellB", listOf("catA"))
-        private val spellC = MockSpellCommand("testSpellC")
+        private val spellA = SpellCommandMock("testSpellA", listOf("catA"))
+        private val spellB = SpellCommandMock("testSpellB", listOf("catA"))
+        private val spellC = SpellCommandMock("testSpellC")
 
         @BeforeClass
         @JvmStatic
         fun setupAll() {
-            val reflections = MockReflections(spellCommands = listOf(
+            val reflections = SpellCommandsMock(listOf(
                     spellA, spellB, spellC
             ))
-            DependencyInjector.setImplementation(Reflections::class.java, reflections)
+            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
         }
 
 
         @AfterClass
         @JvmStatic
         fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
+            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
         }
     }
 

@@ -22,8 +22,12 @@ class Inventory(private val name: String = "Inventory", private val body: Body =
         return getItemsNameSearchable().exists(item) || NameSearchableList(getAllItems()).exists(item)
     }
 
-    fun getItem(name: String): Target? {
-        return getAllItems().toNameSearchableList().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
+    fun getItem(name: String?): Target? {
+        return if (name == null) {
+            null
+        } else {
+            getAllItems().toNameSearchableList().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
+        }
     }
 
     fun getItems(name: String): List<Target> {

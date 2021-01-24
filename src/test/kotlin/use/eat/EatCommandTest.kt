@@ -4,29 +4,28 @@ import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.commands.CommandParser
+import core.commands.CommandsCollection
+import core.commands.CommandsMock
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
-import core.reflection.Reflections
 import core.target.Target
 import core.target.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
-import core.utility.reflection.MockReflections
 import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
 import traveling.location.location.NOWHERE_NODE
 import use.StartUseEvent
-import use.UseEvent
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -38,14 +37,14 @@ class EatCommandTest {
         @BeforeClass
         @JvmStatic
         fun setupAll() {
-            DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
+            DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
         }
 
         @AfterClass
         @JvmStatic
         fun teardown() {
-            DependencyInjector.clearImplementation(Reflections::class.java)
-            DependencyInjector.clearImplementation(BehaviorParser::class.java)
+            DependencyInjector.clearImplementation(CommandsCollection::class.java)
+            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
             DependencyInjector.clearImplementation(LocationParser::class.java)
         }
     }
@@ -59,8 +58,8 @@ class EatCommandTest {
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
-        val behaviorParser = BehaviorFakeParser()
-        DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
+        val behaviorParser = BehaviorsMock()
+        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
         val locationParser = LocationFakeParser()

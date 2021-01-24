@@ -2,7 +2,6 @@ package quests
 
 import core.events.Event
 import core.events.EventManager
-import core.history.display
 import core.utility.Named
 
 class Quest(override val name: String, var stage: Int = 0) : Named {
@@ -13,6 +12,9 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
     private val listenedForEvents = mutableListOf<StoryEvent>()
 
     fun addEvent(event: StoryEvent) {
+        if (storyEvents.containsKey(event.stage)){
+            println("WARN: Duplicate stage ${event.stage} being replaced.")
+        }
         storyEvents[event.stage] = event
     }
 
@@ -50,18 +52,8 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         return listenedForEvents.toList()
     }
 
-    fun executeStage(stage: Int) {
-        if (!storyEvents.containsKey(stage)) {
-            display("Could not find stage $stage for quest $name. This shouldn't happen!")
-        } else {
-            executeEvent(storyEvents[stage]!!)
-        }
-    }
-
-    fun executeEvent(event: StoryEvent) {
-        event.events.forEach {
-            it.execute()
-        }
+    fun executeEvent(event: StoryEvent, triggeringEvent: Event) {
+        event.execute(triggeringEvent)
         journalEntries.add(event.journal)
         event.completed = true
 
@@ -72,7 +64,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         stage = event.stage
         EventManager.postEvent(QuestStageUpdatedEvent(this, stage))
         calculateListenedForEvents()
-        if (listenedForEvents.isEmpty()) {
+        if (event.completesQuest || listenedForEvents.isEmpty()) {
             EventManager.postEvent(CompleteQuestEvent(this))
         }
     }

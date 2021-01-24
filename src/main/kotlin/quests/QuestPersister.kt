@@ -6,6 +6,7 @@ fun getPersisted(dataObject: Quest): Map<String, Any> {
     data["stage"] = dataObject.stage
     data["complete"] = dataObject.complete
     data["active"] = dataObject.active
+    //TODO - persist if each stage is complete
     data["journalEntries"] = dataObject.getAllJournalEntries()
 
     return data

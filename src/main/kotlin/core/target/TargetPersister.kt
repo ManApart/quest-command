@@ -1,6 +1,8 @@
 package core.target
 
 import core.ai.behavior.getPersisted
+import core.conditional.getPersisted
+import core.conditional.readFromData
 import core.properties.getPersisted
 import status.ProtoSoul
 import system.persistance.clean
@@ -22,7 +24,7 @@ fun persist(dataObject: Target, path: String) {
     data["aiName"] = dataObject.ai.name
     data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
-    data["description"] = dialogue.getPersisted(dataObject.getDescriptionWithConditions())
+    data["description"] = getPersisted(dataObject.getDescriptionWithOptions())
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
     data["properties"] = getPersisted(dataObject.properties)
@@ -37,20 +39,21 @@ fun persist(dataObject: Target, path: String) {
 
 @Suppress("UNCHECKED_CAST")
 fun load(path: String, parentLocation: Network? = null): Target {
+    val params = mutableMapOf<String, String>()
     val folderPath = path.removeSuffix(".json")
     val data = loadMap(path)
     val name = data["name"] as String
     val aiName = data["aiName"] as String
-    val behaviorRecipes = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
+    val behaviors = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
     val equipSlots = (data["equipSlots"] as List<List<String>>)
-    val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
+    val dynamicDescription = readFromData(data["description"] as Map<String, Any>)
     val location = getLocation(parentLocation, data)
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
     val bodyName = data["body"] as String
     val body = core.body.load(folderPath, bodyName)
 
-    val target = Target(name, null, mapOf(), null, aiName, behaviorRecipes, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
+    val target = Target(name, null, params, null, aiName, behaviors, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
     status.readFromData(data["soul"] as Map<String, Any>, target.soul)
 
     return target

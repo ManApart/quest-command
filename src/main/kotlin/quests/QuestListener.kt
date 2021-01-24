@@ -2,11 +2,10 @@ package quests
 
 import core.events.Event
 import core.events.EventListener
-
 class QuestListener : EventListener<Event>() {
-    private val listeners = mutableMapOf<String, MutableList<Quest>>()
+    private val listeners = mutableMapOf<Class<*>, MutableList<Quest>>()
 
-    fun getListeners(): Map<String, List<Quest>> {
+    fun getListeners(): Map<Class<*>, List<Quest>> {
         return listeners
     }
 
@@ -18,14 +17,14 @@ class QuestListener : EventListener<Event>() {
         if (listeners.isEmpty()) {
             buildListeners()
         }
-        val clazz = event.javaClass.simpleName
+        val clazz = event.javaClass
         if (listeners.containsKey(clazz)) {
             val quests = listeners[clazz]?.toList()
             quests?.forEach { quest ->
-                val stage = quest.getMatchingEvent(event)
-                if (stage != null) {
+                val storyEvent = quest.getMatchingEvent(event)
+                if (storyEvent != null) {
                     removeListeners(quest)
-                    quest.executeEvent(stage)
+                    quest.executeEvent(storyEvent, event)
                     if (!quest.complete) {
                         addListeners(quest)
                     }
@@ -41,7 +40,7 @@ class QuestListener : EventListener<Event>() {
 
     private fun removeListeners(quest: Quest) {
         quest.getListenedForEvents().forEach { event ->
-            val clazz = event.condition.callingEvent
+            val clazz = event.triggeredEvent.triggerEvent
             listeners[clazz]?.remove(quest)
             if (listeners[clazz]?.isEmpty() == true) {
                 listeners.remove(clazz)
@@ -57,7 +56,7 @@ class QuestListener : EventListener<Event>() {
 
     private fun addListeners(quest: Quest) {
         quest.getListenedForEvents().forEach { event ->
-            val clazz = event.condition.callingEvent
+            val clazz = event.triggeredEvent.triggerEvent
             if (!listeners.containsKey(clazz)) {
                 listeners[clazz] = mutableListOf()
             }

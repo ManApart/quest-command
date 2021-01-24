@@ -9,13 +9,13 @@ import core.ai.AIFakeParser
 import core.ai.AIManager
 import core.ai.AIParser
 import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorParser
+import core.ai.behavior.BehaviorsCollection
+import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.events.EventManager
 import core.target.Target
 import org.junit.Before
 import org.junit.Test
-import system.BehaviorFakeParser
 import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
@@ -38,8 +38,8 @@ class AttackCommandTest {
         DependencyInjector.setImplementation(AIParser::class.java, aiParser)
         AIManager.reset()
 
-        val behaviorParser = BehaviorFakeParser()
-        DependencyInjector.setImplementation(BehaviorParser::class.java, behaviorParser)
+        val behaviorParser = BehaviorsMock()
+        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
         val locationParser = LocationFakeParser()
