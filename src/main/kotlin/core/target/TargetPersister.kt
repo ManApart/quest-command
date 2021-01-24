@@ -1,6 +1,8 @@
 package core.target
 
 import core.ai.behavior.getPersisted
+import core.conditional.getPersisted
+import core.conditional.readFromData
 import core.properties.getPersisted
 import status.ProtoSoul
 import system.persistance.clean
@@ -22,7 +24,7 @@ fun persist(dataObject: Target, path: String) {
     data["aiName"] = dataObject.ai.name
     data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
-    data["description"] = dialogue.getPersisted(dataObject.getDescriptionWithConditions())
+    data["description"] = getPersisted(dataObject.getDescriptionWithOptions())
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
     data["soul"] = status.getPersisted(dataObject.soul)
     data["properties"] = getPersisted(dataObject.properties)
@@ -44,7 +46,7 @@ fun load(path: String, parentLocation: Network? = null): Target {
     val aiName = data["aiName"] as String
     val behaviors = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
     val equipSlots = (data["equipSlots"] as List<List<String>>)
-    val dynamicDescription = dialogue.readFromData(data["description"] as Map<String, Any>)
+    val dynamicDescription = readFromData(data["description"] as Map<String, Any>)
     val location = getLocation(parentLocation, data)
     val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 

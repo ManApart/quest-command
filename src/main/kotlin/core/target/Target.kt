@@ -12,6 +12,7 @@ import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.BodyManager
 import core.body.Slot
+import core.conditional.ConditionalStringPointer
 import core.events.Event
 import core.properties.*
 import core.target.item.ItemManager
@@ -40,8 +41,8 @@ open class Target(
         body: Body? = null,
         bodyName: String? = base?.body?.name,
         equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
-        @JsonProperty("description") dynamicDescription: DialogueOptions = base?.dynamicDescription
-                ?: DialogueOptions(name),
+        @JsonProperty("description") private val dynamicDescription: ConditionalStringPointer = base?.dynamicDescription
+                ?: ConditionalStringPointer(name),
         items: List<String> = base?.inventory?.getItems()?.map { it.name } ?: listOf(),
         var location: LocationNode = base?.location ?: NOWHERE_NODE,
         val parent: Target? = null,
@@ -60,7 +61,6 @@ open class Target(
     val properties = Properties(properties, params)
     val soul: Soul = Soul(this, base?.soul?.getStats() ?: listOf(), soulStats.stats)
     var position = Vector()
-    private val dynamicDescription = dynamicDescription.apply(params)
     @JsonIgnore val behaviors: List<Behavior<*>> = base?.behaviors ?: behaviorRecipes.asSequence().map { BehaviorManager.getBehavior(it) }.toMutableList()
     val knownRecipes = NameSearchableList<Recipe>()
 
@@ -235,12 +235,12 @@ open class Target(
         climbTarget = null
     }
 
-    fun getDescriptionWithConditions(): DialogueOptions {
-        return dynamicDescription
+    fun getDescription(): String {
+        return dynamicDescription.getOption()
     }
 
-    fun getDescription(): String {
-        return dynamicDescription.getOption() ?: ""
+    fun getDescriptionWithOptions(): ConditionalStringPointer {
+        return dynamicDescription
     }
 
     fun isSafe(): Boolean {

@@ -39,11 +39,11 @@ class LocationRecipe(
     }
 
     fun getWeatherName() : String {
-        return weather.getOption() ?: ""
+        return weather.getOption()
     }
 
     fun getDescription(): String {
-        return description.getOption() ?: ""
+        return description.getOption()
     }
 
 }

@@ -1,6 +1,7 @@
 package core
 
 import core.commands.CommandParser
+import core.conditional.ConditionalStringPointer
 import core.events.EventManager
 import core.history.ChatHistory
 import core.target.Target
@@ -61,7 +62,7 @@ object GameManager {
 
     fun newPlayer(
             name: String = "Player",
-            dynamicDescription: DialogueOptions = DialogueOptions("Our Hero!"),
+            dynamicDescription: ConditionalStringPointer = ConditionalStringPointer("Our Hero!"),
             body: String = "Human",
             location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
     ): Target {
