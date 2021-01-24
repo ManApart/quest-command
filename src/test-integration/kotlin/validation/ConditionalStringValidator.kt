@@ -3,6 +3,7 @@ package validation
 import quests.Quest
 import quests.QuestManager
 //All have at least one option
+//All types in enum represented in manager
 class ConditionalStringValidator {
 
     private val quests = QuestManager.quests

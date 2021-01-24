@@ -1,19 +1,27 @@
 package core.conditional
 
 import core.DependencyInjector
+import traveling.location.location.LocationDescriptionsCollection
+import traveling.location.weather.WeatherStringsCollection
+import core.conditional.ConditionalStringType.*
 
-//Eventually enum of what type to point to  (dialogue, description, weather, etc)
 object ConditionalManager {
-    private var parser = DependencyInjector.getImplementation(WeatherStringsCollection::class.java)
-    private var conditionalStrings = parser.values
+    private var types = buildTypeMap()
+
+    private fun buildTypeMap() : Map<ConditionalStringType, List<ConditionalString>>{
+        return mapOf(
+                DEFAULT to listOf(),
+                LOCATION_DESCRIPTION to DependencyInjector.getImplementation(LocationDescriptionsCollection::class.java).values,
+                WEATHER to DependencyInjector.getImplementation(WeatherStringsCollection::class.java).values
+        )
+    }
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(WeatherStringsCollection::class.java)
-        conditionalStrings = parser.values
+        types = buildTypeMap()
     }
 
     fun getConditionalString(name: String, type: ConditionalStringType) : ConditionalString {
-        return conditionalStrings.first { it.name == name }
+        return (types[type] ?: error("Unknown Condition Type $type")).first { it.name == name }
     }
 
     fun getOption(name: String, type: ConditionalStringType) : String {

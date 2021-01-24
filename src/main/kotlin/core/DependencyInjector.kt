@@ -26,10 +26,14 @@ import status.conditions.ConditionJsonParser
 import status.conditions.ConditionParser
 import status.effects.EffectJsonParser
 import status.effects.EffectParser
+import traveling.location.location.LocationDescriptionsCollection
+import traveling.location.location.LocationDescriptionsGenerated
 import traveling.location.location.LocationJsonParser
 import traveling.location.location.LocationParser
 import traveling.location.weather.WeatherJsonParser
 import traveling.location.weather.WeatherParser
+import traveling.location.weather.WeatherStringsCollection
+import traveling.location.weather.WeatherStringsGenerated
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -74,11 +78,13 @@ object DependencyInjector {
                 EventListenersCollection::class.java to EventListenersGenerated(),
                 ItemParser::class.java to ItemJsonParser(),
                 LocationParser::class.java to LocationJsonParser(),
+                LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
                 RecipeParser::class.java to RecipeJsonParser(),
                 ResourceHelper::class.java to KotlinResourceHelper(),
                 SpellCommandsCollection::class.java to SpellCommandsGenerated(),
                 StoryEventsCollection::class.java to StoryEventsGenerated(),
                 WeatherParser::class.java to WeatherJsonParser(),
+                WeatherStringsCollection::class.java to WeatherStringsGenerated(),
         )
     }
 

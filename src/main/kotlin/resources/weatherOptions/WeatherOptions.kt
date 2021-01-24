@@ -2,7 +2,7 @@ package resources.weatherOptions
 
 import core.utility.RandomManager
 import core.conditional.ConditionalString
-import core.conditional.WeatherStringResource
+import traveling.location.weather.WeatherStringResource
 import core.conditional.StringOption
 
 class WeatherOptions : WeatherStringResource {

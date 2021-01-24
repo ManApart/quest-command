@@ -5,12 +5,13 @@ import core.ai.behavior.BehaviorResource
 import core.commands.Command
 import core.events.EventListener
 import core.conditional.ConditionalString
-import core.conditional.WeatherStringResource
+import traveling.location.weather.WeatherStringResource
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import quests.StoryEvent
 import quests.StoryEventResource
+import traveling.location.location.LocationDescriptionResource
 import java.io.File
 import java.lang.reflect.Modifier
 
@@ -29,8 +30,9 @@ object ReflectionTools {
         generateCollectionsFile(EventListener::class.java)
 
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
-        generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
+        generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
+        generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
     }
 
     /**
@@ -49,9 +51,9 @@ object ReflectionTools {
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
         val newClassName = collectedClass.simpleName
 
-        writeInterfaceFile(collectedClass, typeSuffix, newClassName)
+        writeInterfaceFile(collectedClass, collectedClass, typeSuffix, newClassName)
         writeGeneratedFile(collectedClass, typeSuffix, classes)
-        writeMockedFile(collectedClass, typeSuffix, newClassName)
+        writeMockedFile(collectedClass, collectedClass, typeSuffix, newClassName)
     }
     /**
      * Takes Two Classes
@@ -71,17 +73,18 @@ object ReflectionTools {
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
         val newClassName = resourceInterface.simpleName.replace("Resource", "")
 
-        writeInterfaceFile(collectedClass, typeSuffix, newClassName)
-        writeGeneratedResourceFile(collectedClass, typeSuffix, classes, newClassName)
-        writeMockedFile(collectedClass, typeSuffix, newClassName)
+        writeInterfaceFile(resourceInterface, collectedClass, typeSuffix, newClassName)
+        writeGeneratedResourceFile(resourceInterface, collectedClass, typeSuffix, classes, newClassName)
+        writeMockedFile(resourceInterface, collectedClass, typeSuffix, newClassName)
     }
 
-    private fun writeInterfaceFile(collectedClass: Class<*>, typeSuffix: String, newClassName: String) {
-        val packageName = collectedClass.packageName.replace(".", "/")
+    private fun writeInterfaceFile(resourceInterface: Class<*>, collectedClass: Class<*>, typeSuffix: String, newClassName: String) {
+        val packageName = resourceInterface.packageName.replace(".", "/")
         File("./src/main/kotlin/$packageName/${newClassName}sCollection.kt").printWriter().use {
             it.print(
                 """
-                package ${collectedClass.packageName}
+                package ${resourceInterface.packageName}
+                import ${collectedClass.name}
 
                 interface ${newClassName}sCollection {
                     val values: List<${collectedClass.simpleName}$typeSuffix>
@@ -106,13 +109,14 @@ object ReflectionTools {
         }
     }
 
-    private fun writeGeneratedResourceFile(collectedClass: Class<*>, typeSuffix: String, classes: String, newClassName: String) {
-        val packageName = collectedClass.packageName.replace(".", "/")
+    private fun writeGeneratedResourceFile(resourceInterface: Class<*>, collectedClass: Class<*>, typeSuffix: String, classes: String, newClassName: String) {
+        val packageName = resourceInterface.packageName.replace(".", "/")
 
         File("./src/main/kotlin/$packageName/${newClassName}sGenerated.kt").printWriter().use {
             it.print(
                     """
-                package ${collectedClass.packageName}
+                package ${resourceInterface.packageName}
+                import ${collectedClass.name}
 
                 class ${newClassName}sGenerated : ${newClassName}sCollection {
                     override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf($classes).flatMap { it.values }
@@ -122,17 +126,22 @@ object ReflectionTools {
         }
     }
 
-    private fun writeMockedFile(collectedClass: Class<*>, typeSuffix: String, newClassName: String) {
-        val packageName = collectedClass.packageName.replace(".", "/")
-        File("./src/test/kotlin/$packageName/${newClassName}sMock.kt").printWriter().use {
+    private fun writeMockedFile(resourceInterface: Class<*>, collectedClass: Class<*>, typeSuffix: String, newClassName: String) {
+        val packageName = resourceInterface.packageName.replace(".", "/")
+        val file = File("./src/test/kotlin/$packageName/${newClassName}sMock.kt")
+        file.parentFile.mkdirs()
+        file.printWriter().use {
             it.print(
                     """
-                package ${collectedClass.packageName}
+                package ${resourceInterface.packageName}
+                import ${collectedClass.name}
 
                 class ${newClassName}sMock(override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
             """.trimIndent()
             )
         }
     }
+
+
 
 }
