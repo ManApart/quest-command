@@ -269,7 +269,7 @@ class Location(
     }
 
     fun applyWeatherEffects() {
-        val conditionRecipes = weather.conditionNames.mapNotNull { it.getOption() }
+        val conditionRecipes = weather.conditionNames
         conditionRecipes.forEach { recipeName ->
             getAllTargets().forEach { target ->
                 val parts = target.body.getParts()

@@ -18,7 +18,6 @@ import core.properties.*
 import core.target.item.ItemManager
 import core.utility.*
 import crafting.Recipe
-import dialogue.DialogueOptions
 import inventory.Inventory
 import status.ProtoSoul
 import status.Soul
