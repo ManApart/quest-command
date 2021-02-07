@@ -1,11 +1,13 @@
 package conversation.input
 
-class EvaluationBuilder {
-    var condition: () -> Boolean = { true }
-    val children: MutableList<EvaluationBuilder> = mutableListOf()
-    var result: String? = null
+import conversation.dialogue.ConversationContext
 
-    fun convo(condition: () -> Boolean = { true }, initializer: EvaluationBuilder.() -> Unit)  {
+class EvaluationBuilder {
+    var condition: (ConversationContext) -> Boolean = { true }
+    val children: MutableList<EvaluationBuilder> = mutableListOf()
+    var result: ((ConversationContext) -> String)? = null
+
+    fun convo(condition: (ConversationContext) -> Boolean = { true }, initializer: EvaluationBuilder.() -> Unit)  {
         children.add(conversation.input.convo(condition, initializer))
     }
 
@@ -13,7 +15,7 @@ class EvaluationBuilder {
         return build(listOf())
     }
 
-    private fun build(parentConditions: List<() -> Boolean>): List<Evaluation> {
+    private fun build(parentConditions: List<(ConversationContext) -> Boolean>): List<Evaluation> {
         val conditions = parentConditions + listOf(condition)
         val results = mutableListOf<Evaluation>()
 
@@ -29,6 +31,6 @@ class EvaluationBuilder {
     }
 }
 
-fun convo(condition: () -> Boolean = { true }, initializer: EvaluationBuilder.() -> Unit): EvaluationBuilder {
+fun convo(condition: (ConversationContext) -> Boolean = { true }, initializer: EvaluationBuilder.() -> Unit): EvaluationBuilder {
     return EvaluationBuilder().apply(initializer)
 }
