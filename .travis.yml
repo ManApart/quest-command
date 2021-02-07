@@ -11,7 +11,7 @@ before_install:
 - chmod +x gradle/wrapper/gradle-wrapper.jar
 
 script:
-- ./gradlew build integrationTest jar
+- ./gradlew build buildData integrationTest jar
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 - docker build . -t manapart/quest-command:dev
 - docker tag manapart/quest-command:dev manapart/quest-command:stable
