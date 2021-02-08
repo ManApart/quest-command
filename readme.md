@@ -17,6 +17,9 @@ Run `gradlew build jar` to build a jar. This should be found in `QuestCommand/bu
 #### Gradle failing to build
 `./gradlew: 68: Syntax error: word unexpected (expecting "in")` is due to [differences between windows and linux](https://stackoverflow.com/questions/55342922/gradle-gradlew-expecting-in) and can be solved by `sed -i.bak 's/\r$//' gradlew`
 
+#### PackageName Unresolved
+Getting `Unresolved reference: packageName`? You're probably running gradle on something less than 11. Check `java -version` on the terminal and Settings > Build Execution Deployment > Gradle has Gradle JVM set appropriately
+
 ### Running
 Try any one of the below: 
 
