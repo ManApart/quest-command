@@ -7,8 +7,8 @@ import core.GameState
 import use.interaction.InteractEvent
 
 class UseCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Use", "u", "Read")
+    override fun getAliases(): List<String> {
+        return listOf("Use", "u", "Read")
     }
 
     override fun getDescription(): String {

@@ -7,8 +7,8 @@ import core.events.EventManager
 
 class HelpCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Help", "h")
+    override fun getAliases(): List<String> {
+        return listOf("Help", "h")
     }
 
     override fun getDescription(): String {

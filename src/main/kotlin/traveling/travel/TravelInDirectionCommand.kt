@@ -12,13 +12,13 @@ import traveling.direction.Direction
 import traveling.location.location.LocationNode
 
 class TravelInDirectionCommand : Command() {
-    override fun getAliases(): Array<String> {
+    override fun getAliases(): List<String> {
         val aliases = mutableListOf("Direction")
         Direction.values().forEach {
             aliases.add(it.name)
             aliases.add(it.shortcut)
         }
-        return aliases.toTypedArray()
+        return aliases
     }
 
     override fun getDescription(): String {

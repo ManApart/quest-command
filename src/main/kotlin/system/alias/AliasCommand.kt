@@ -7,8 +7,8 @@ import core.events.EventManager
 import core.history.display
 
 class AliasCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Alias", "al")
+    override fun getAliases(): List<String> {
+        return listOf("Alias", "al")
     }
 
     override fun getDescription(): String {

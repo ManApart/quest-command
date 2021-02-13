@@ -9,8 +9,8 @@ import core.events.EventManager
 import crafting.Recipe
 
 class CraftRecipeCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Craft", "Make", "Build")
+    override fun getAliases(): List<String> {
+        return listOf("Craft", "Make", "Build")
     }
 
     override fun getDescription(): String {

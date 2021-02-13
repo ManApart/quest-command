@@ -9,8 +9,8 @@ import core.target.Target
 import traveling.move.StartMoveEvent
 
 class RetreatCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Retreat", "backward", "back")
+    override fun getAliases(): List<String> {
+        return listOf("Retreat", "backward", "back")
     }
 
     override fun getDescription(): String {

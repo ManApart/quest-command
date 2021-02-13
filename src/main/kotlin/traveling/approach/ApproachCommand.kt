@@ -9,8 +9,8 @@ import core.target.Target
 import traveling.move.StartMoveEvent
 
 class ApproachCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Approach", "forward", "advance", "app")
+    override fun getAliases(): List<String> {
+        return listOf("Approach", "forward", "advance", "app")
     }
 
     override fun getDescription(): String {

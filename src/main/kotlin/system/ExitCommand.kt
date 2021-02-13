@@ -5,8 +5,8 @@ import core.history.display
 import kotlin.system.exitProcess
 
 class ExitCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Exit", "Quit", "qqq")
+    override fun getAliases(): List<String> {
+        return listOf("Exit", "Quit", "qqq")
     }
 
     override fun getDescription(): String {

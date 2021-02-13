@@ -9,8 +9,8 @@ import core.events.EventManager
 import core.history.display
 
 class RestCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Rest", "Sleep", "Camp", "rs")
+    override fun getAliases(): List<String> {
+        return listOf("Rest", "Sleep", "Camp", "rs")
     }
 
     override fun getDescription(): String {

@@ -10,8 +10,8 @@ import core.target.Target
 import use.StartUseEvent
 
 class EatCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Eat")
+    override fun getAliases(): List<String> {
+        return listOf("Eat")
     }
 
     override fun getDescription(): String {

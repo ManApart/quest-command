@@ -8,8 +8,8 @@ import core.events.EventManager
 import core.history.display
 
 class RecipeCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Recipe", "Recipes")
+    override fun getAliases(): List<String> {
+        return listOf("Recipe", "Recipes")
     }
 
     override fun getDescription(): String {

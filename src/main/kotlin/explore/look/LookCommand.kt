@@ -8,8 +8,8 @@ import core.events.EventManager
 import core.history.display
 
 class LookCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Look", "ls")
+    override fun getAliases(): List<String> {
+        return listOf("Look", "ls")
     }
 
     override fun getDescription(): String {

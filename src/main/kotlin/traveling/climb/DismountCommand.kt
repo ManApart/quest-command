@@ -8,8 +8,8 @@ import core.properties.IS_CLIMBING
 import traveling.location.location.LocationPoint
 
 class DismountCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Dismount", "dis")
+    override fun getAliases(): List<String> {
+        return listOf("Dismount", "dis")
     }
 
     override fun getDescription(): String {

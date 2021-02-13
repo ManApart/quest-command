@@ -10,8 +10,8 @@ import status.stat.StatKind
 
 class DebugCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("debug", "db")
+    override fun getAliases(): List<String> {
+        return listOf("debug", "db")
     }
 
     override fun getDescription(): String {

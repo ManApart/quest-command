@@ -9,8 +9,8 @@ import core.history.display
 import core.target.Target
 
 class InventoryCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Bag", "b", "backpack")
+    override fun getAliases(): List<String> {
+        return listOf("Bag", "b", "backpack")
     }
 
     override fun getDescription(): String {

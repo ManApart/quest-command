@@ -12,8 +12,8 @@ import core.events.EventManager
 //TODO - take optional ignore z
 class MoveCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Move", "mv", "walk", "run")
+    override fun getAliases(): List<String> {
+        return listOf("Move", "mv", "walk", "run")
     }
 
     override fun getDescription(): String {

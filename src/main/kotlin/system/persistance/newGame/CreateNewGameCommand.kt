@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.display
 
 class CreateNewGameCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("New", "ng")
+    override fun getAliases(): List<String> {
+        return listOf("New", "ng")
     }
 
     override fun getDescription(): String {

@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.display
 
 class PlayAsCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Be", "Play")
+    override fun getAliases(): List<String> {
+        return listOf("Be", "Play")
     }
 
     override fun getDescription(): String {

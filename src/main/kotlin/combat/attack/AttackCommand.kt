@@ -11,13 +11,13 @@ import status.stat.HEALTH
 import use.StartUseEvent
 
 class AttackCommand : Command() {
-    override fun getAliases(): Array<String> {
+    override fun getAliases(): List<String> {
         val aliases = mutableListOf("Attack")
         AttackType.values().forEach {
             aliases.add(it.name.toLowerCase())
             aliases.add(it.alias.toLowerCase())
         }
-        return aliases.toTypedArray()
+        return aliases
     }
 
     override val name = "Chop, Slash, Stab"

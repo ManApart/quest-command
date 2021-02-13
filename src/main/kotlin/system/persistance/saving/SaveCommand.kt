@@ -4,8 +4,8 @@ import core.commands.Command
 import core.events.EventManager
 
 class SaveCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Save", "sa")
+    override fun getAliases(): List<String> {
+        return listOf("Save", "sa")
     }
 
     override fun getDescription(): String {

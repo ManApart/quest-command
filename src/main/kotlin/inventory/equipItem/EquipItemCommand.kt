@@ -9,8 +9,8 @@ import core.history.display
 import core.events.EventManager
 
 class EquipItemCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Equip")
+    override fun getAliases(): List<String> {
+        return listOf("Equip")
     }
 
     override fun getDescription(): String {

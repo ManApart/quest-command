@@ -6,8 +6,8 @@ import core.events.EventManager
 
 class HistoryCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("History")
+    override fun getAliases(): List<String> {
+        return listOf("History")
     }
 
     override fun execute(keyword: String, args: List<String>) {

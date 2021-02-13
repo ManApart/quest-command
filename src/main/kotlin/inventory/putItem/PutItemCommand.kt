@@ -12,8 +12,8 @@ import core.utility.filterUniqueByName
 
 class PutItemCommand : core.commands.Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Put", "Give")
+    override fun getAliases(): List<String> {
+        return listOf("Put", "Give")
     }
 
     override fun getDescription(): String {

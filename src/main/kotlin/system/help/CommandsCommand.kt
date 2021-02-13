@@ -6,8 +6,8 @@ import core.commands.ResponseRequest
 
 class CommandsCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Commands")
+    override fun getAliases(): List<String> {
+        return listOf("Commands")
     }
 
     override fun getDescription(): String {

@@ -3,13 +3,12 @@ package combat.dodge
 import core.commands.Command
 import core.commands.parseDirection
 import core.GameState
-import core.history.display
 import core.events.EventManager
 import traveling.move.StartMoveEvent
 
 class DodgeCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Dodge")
+    override fun getAliases(): List<String> {
+        return listOf("Dodge")
     }
 
     override fun getDescription(): String {

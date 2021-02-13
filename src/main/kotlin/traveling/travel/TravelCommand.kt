@@ -12,8 +12,8 @@ import traveling.location.location.NOWHERE_NODE
 import traveling.routes.FindRouteEvent
 
 class TravelCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Travel", "t", "go", "cd")
+    override fun getAliases(): List<String> {
+        return listOf("Travel", "t", "go", "cd")
     }
 
     override fun getDescription(): String {

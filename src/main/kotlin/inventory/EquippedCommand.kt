@@ -5,8 +5,8 @@ import core.GameState
 import core.history.display
 
 class EquippedCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Equipped")
+    override fun getAliases(): List<String> {
+        return listOf("Equipped")
     }
 
     override fun getDescription(): String {

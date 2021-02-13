@@ -11,8 +11,8 @@ import core.utility.filterUniqueByName
 import inventory.putItem.TransferItemEvent
 
 class TakeItemCommand : core.commands.Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Take", "pickup", "p", "get", "add", "grab")
+    override fun getAliases(): List<String> {
+        return listOf("Take", "pickup", "p", "get", "add", "grab")
     }
 
     override fun getDescription(): String {

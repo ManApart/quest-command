@@ -8,8 +8,8 @@ import core.events.EventManager
 import traveling.location.location.LocationManager
 
 class RouteCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Route", "rr")
+    override fun getAliases(): List<String> {
+        return listOf("Route", "rr")
     }
 
     override fun getDescription(): String {

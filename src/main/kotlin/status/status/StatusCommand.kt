@@ -9,8 +9,8 @@ import core.events.EventManager
 import core.utility.filterUniqueByName
 
 class StatusCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Status", "Info", "stats", "stat")
+    override fun getAliases(): List<String> {
+        return listOf("Status", "Info", "stats", "stat")
     }
 
     override fun getDescription(): String {

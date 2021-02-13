@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.display
 
 class LoadCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Load", "lo")
+    override fun getAliases(): List<String> {
+        return listOf("Load", "lo")
     }
 
     override fun getDescription(): String {

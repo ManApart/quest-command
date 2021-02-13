@@ -20,8 +20,8 @@ class CastCommand : Command() {
         return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values)
     }
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Cast", "word", "c")
+    override fun getAliases(): List<String> {
+        return listOf("Cast", "word", "c")
     }
 
     override fun getDescription(): String {
