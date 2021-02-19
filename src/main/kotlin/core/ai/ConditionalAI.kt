@@ -4,22 +4,25 @@ import combat.DamageType
 import combat.attack.StartAttackEvent
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
-import traveling.position.TargetAim
 import core.GameState
-import core.target.Target
 import core.events.EventManager
-import quests.ConditionalEvents
 import core.history.display
+import core.target.Target
+import traveling.position.TargetAim
 
-class ConditionalAI(name: String, creature: Target, val actions: List<ConditionalEvents<*>>) : AI(name, creature) {
+class ConditionalAI(name: String, private val owner: Target, private val actions: List<AIAction>) : AI(name, owner) {
 
     override fun takeAction() {
-        //TODO - replace hardcoding with script informed / generic
-        if (actions.isEmpty()) {
-            defaultHardCodedAction()
+        val action = determineAction()
+        if (action != null) {
+            action.execute(owner)
         } else {
-            //TODO - evaluate triggered events
+            defaultHardCodedAction()
         }
+    }
+
+    private fun determineAction() : AIAction? {
+        return actions.firstOrNull { it.canRun(creature) }
     }
 
     private fun defaultHardCodedAction() {
