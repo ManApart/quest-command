@@ -13,7 +13,6 @@ repositories {
 
 dependencies {
     implementation("org.reflections:reflections:0.9.10")
-    implementation("org.jline:jline:3.8.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")

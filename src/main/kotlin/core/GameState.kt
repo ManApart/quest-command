@@ -1,8 +1,10 @@
 package core
 
 import core.properties.Properties
+import core.target.Target
 import time.TimeManager
 import traveling.location.location.Location
+import java.lang.IllegalArgumentException
 
 object GameState {
     var gameName = "Kanbara"
