@@ -1,5 +1,7 @@
 package core.reflection
 
+import conversation.input.Dialogue
+import conversation.input.DialogueResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.commands.Command
@@ -30,6 +32,7 @@ object ReflectionTools {
         generateCollectionsFile(EventListener::class.java)
 
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
+        generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
         generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)

@@ -3,7 +3,6 @@ package core.ai
 import combat.DamageType
 import combat.attack.StartAttackEvent
 import conversation.dialogue.DialogueEvent
-import conversation.dialogue.DialogueOptionsManager
 import traveling.position.TargetAim
 import core.GameState
 import core.target.Target
@@ -42,11 +41,8 @@ class ConditionalAI(name: String, creature: Target, val actions: List<Conditiona
     }
 
     override fun hear(event: DialogueEvent) {
-        display(event.print())
+        display(event.line)
 
-        DialogueOptionsManager.getConversationResponses()
-                .firstOrNull { it.matches(event.getFieldsAsParams()) }
-                ?.execute(event.listener, event.getFieldsAsParams())
     }
 
 }

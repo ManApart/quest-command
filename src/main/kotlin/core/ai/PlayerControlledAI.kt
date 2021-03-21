@@ -9,6 +9,9 @@ import core.history.display
 const val PLAYER_CONTROLLED_ID = "Player Controlled"
 
 class PlayerControlledAI(creature: Target) : AI(PLAYER_CONTROLLED_ID, creature) {
+    override fun hear(event: DialogueEvent) {
+        display("" + event.speaker + ":" + event.line)
+    }
 
     override fun takeAction() {
         val oldCreature = CommandParser.commandSource ?: GameState.player

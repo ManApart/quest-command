@@ -28,7 +28,7 @@ class ConversationsTest {
     @Test
     fun whereKanbara() {
         CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where is kanbara?")
-        assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
+        CommandParser.parseCommand("what is kanbara?")
+        assertEquals("Farmer: Kanbara be a city.", ChatHistory.getLastOutput())
     }
 }

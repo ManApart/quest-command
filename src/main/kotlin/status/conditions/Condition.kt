@@ -1,6 +1,5 @@
 package status.conditions
 
-import core.events.EventManager
 import core.utility.NameSearchableList
 import core.utility.Named
 import magic.Element

@@ -2,17 +2,15 @@ package core.ai
 
 import conversation.dialogue.DialogueEvent
 import core.events.DelayedEvent
+import core.events.Event
 import core.history.display
 import core.properties.ACTION_POINTS
 import core.target.Target
 import status.stat.WISDOM
 
 abstract class AI(val name: String, val creature: Target) {
+    abstract fun hear(event: DialogueEvent)
     abstract fun takeAction()
-
-    open fun hear(event: DialogueEvent) {
-        display(event.print())
-    }
 
     var aggroTarget: Target? = null
     var action: DelayedEvent? = null

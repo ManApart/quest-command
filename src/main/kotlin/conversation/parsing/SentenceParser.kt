@@ -1,17 +1,18 @@
 package conversation.parsing
 
-import conversation.dialogue.DialogueEvent
+import conversation.Conversation
+import conversation.dialogue.ParsedDialogue
 import core.history.display
 import core.target.Target
 import core.utility.Named
 import traveling.location.location.NOWHERE_NODE
 
-class SentenceParser(private val speaker: Target, private val listener: Target, sentenceToParse: String) {
+class SentenceParser(private val speaker: Target, private val listener: Target, conversation: Conversation, sentenceToParse: String) {
     private val sentence = Sentence(sentenceToParse)
 
-    val event by lazy { parseEvent() }
+    val parsedDialogue = parseDialogue()
 
-    private fun parseEvent(): DialogueEvent? {
+    private fun parseDialogue(): ParsedDialogue? {
         parseQuestionType(sentence)
         parseVerb(sentence)
         parseSubject(sentence)
@@ -20,7 +21,7 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
         when {
             !sentence.hasMapped(PartOfSpeech.QUESTION_TYPE) -> display("Could not parse type of question from '${sentence.sentence}'.")
             !sentence.hasMapped(PartOfSpeech.VERB) -> display("Could not parse verb from '${sentence.sentence}'.")
-            else -> return DialogueEvent(speaker, listener, sentence.subject, sentence.verb, sentence.verbOptions, sentence.questionType)
+            else -> return ParsedDialogue(speaker, listener, sentence.subject, sentence.verb, sentence.verbOptions, sentence.questionType)
         }
         return null
     }

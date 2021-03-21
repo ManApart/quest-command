@@ -1,1 +1,0 @@
-[{"name":"where be","condition":{"callingEvent":"DialogueEvent","params":{"questionType":"where","verb":"be","listener":"$subject"}},"events":[{"className":"MessageEvent","params":["$listener: I be here."]}]}]

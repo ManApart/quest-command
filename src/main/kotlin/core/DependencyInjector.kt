@@ -1,7 +1,7 @@
 package core
 
-import conversation.dialogue.DialogueOptionsJsonParser
-import conversation.dialogue.DialogueOptionsParser
+import conversation.input.DialoguesCollection
+import conversation.input.DialoguesGenerated
 import core.ai.AIJsonParser
 import core.ai.AIParser
 import core.ai.behavior.BehaviorsCollection
@@ -21,9 +21,8 @@ import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
-import magic.spellCommands.SpellCommandsGenerated
 import magic.spellCommands.SpellCommandsCollection
-import quests.QuestListener
+import magic.spellCommands.SpellCommandsGenerated
 import quests.StoryEventsCollection
 import quests.StoryEventsGenerated
 import status.conditions.ConditionJsonParser
@@ -38,7 +37,6 @@ import traveling.location.weather.WeatherJsonParser
 import traveling.location.weather.WeatherParser
 import traveling.location.weather.WeatherStringsCollection
 import traveling.location.weather.WeatherStringsGenerated
-import kotlin.reflect.KClass
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -83,6 +81,7 @@ object DependencyInjector {
                 CreatureParser::class.java to CreatureJsonParser(),
                 ConditionParser::class.java to ConditionJsonParser(),
                 CommandsCollection::class.java to CommandsGenerated(),
+                DialoguesCollection::class.java to DialoguesGenerated(),
                 EffectParser::class.java to EffectJsonParser(),
                 EventListenersCollection::class.java to EventListenersGenerated(),
                 ItemParser::class.java to ItemJsonParser(),

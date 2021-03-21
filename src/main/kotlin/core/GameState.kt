@@ -1,5 +1,6 @@
 package core
 
+import conversation.Conversation
 import core.properties.Properties
 import time.TimeManager
 import traveling.location.location.Location
@@ -10,7 +11,7 @@ object GameState {
     val timeManager = TimeManager()
     var player = GameManager.newPlayer()
     val aliases = mutableMapOf<String, String>()
-
+    var conversation = Conversation(player, player)
 
     fun reset() {
         player = GameManager.newPlayer()
