@@ -2,6 +2,7 @@ package core.ai
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
+import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
 import traveling.position.TargetAim
 import core.GameState
@@ -25,10 +26,10 @@ class ConditionalAI(name: String, creature: Target, val actions: List<Conditiona
         if (aggroTarget != null) {
             val playerBody = GameState.player.body
             val possibleParts = listOf(
-                    playerBody.getPart("Right Leg"),
-                    playerBody.getPart("Right Foot"),
-                    playerBody.getPart("Left Leg"),
-                    playerBody.getPart("Left Leg")
+                playerBody.getPart("Right Leg"),
+                playerBody.getPart("Right Foot"),
+                playerBody.getPart("Left Leg"),
+                playerBody.getPart("Left Leg")
             )
             val targetPart = listOf(possibleParts.random())
             val defaultPart = if (creature.body.hasPart("Small Claws")) {
@@ -42,7 +43,10 @@ class ConditionalAI(name: String, creature: Target, val actions: List<Conditiona
 
     override fun hear(event: DialogueEvent) {
         display(event.line)
-
+        //Find first or highest priortiy comment and send event
+        val matches = ConversationManager.getMatchingDialogue(event.conversation)
+        val response = matches.maxByOrNull { it.priority }!!
+        response.result(event.conversation).forEach { EventManager.postEvent(it) }
     }
 
 }

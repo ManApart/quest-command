@@ -14,25 +14,16 @@ data class ParsedDialogue(val speaker: Target, val listener: Target, val subject
         return "${speaker.name}: ${questionType.name.toLowerCase().capitalize()} ${subject.name} ${verb.name.toLowerCase()}${verbOptionSuffix}?"
     }
 
-    fun getFieldsAsParams(): Map<String, String> {
-        val params = mutableMapOf(
-                "speaker" to speaker.name.toLowerCase(),
-                "listener" to listener.name.toLowerCase(),
-                "subject" to subject.name.toLowerCase(),
-                "verb" to verb.name.toLowerCase(),
-                "questionType" to questionType.name.toLowerCase()
-        )
-        if (verbOption != null) {
-            params["verbOption"] = verbOption.toLowerCase()
+    fun matches(questionType: QuestionType? = null, subject: Named? = null, verb: Verb? = null, speaker: Target? = null, listener: Target? = null): Boolean {
+        return when {
+            questionType != null && questionType != this.questionType -> false
+            subject != null && subject != this.subject -> false
+            verb != null && verb != this.verb -> false
+            speaker != null && speaker != this.speaker -> false
+            listener != null && listener != this.listener -> false
+            else -> true
         }
 
-        params["subjectType"] = when (subject) {
-            is Target -> "target"
-            is LocationNode -> "location"
-            else -> "named"
-        }
-
-        return params
     }
 
 }
