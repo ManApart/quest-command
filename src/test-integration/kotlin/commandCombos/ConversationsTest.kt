@@ -19,16 +19,23 @@ class ConversationsTest {
     }
 
     @Test
+    fun noCriteriaMet() {
+        CommandParser.parseCommand("w && speak with farmer")
+        CommandParser.parseCommand("why is the sky blue?")
+        assertEquals("Farmer: I have nothing to say to you.", ChatHistory.getLastOutput())
+    }
+
+    @Test
     fun talkWithFarmer() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
         assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
     }
 
-    @Test
-    fun whereKanbara() {
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("what is kanbara?")
-        assertEquals("Farmer: Kanbara be a city.", ChatHistory.getLastOutput())
-    }
+//    @Test
+//    fun whereKanbara() {
+//        CommandParser.parseCommand("w && speak with farmer")
+//        CommandParser.parseCommand("what is kanbara?")
+//        assertEquals("Farmer: Kanbara be a city.", ChatHistory.getLastOutput())
+//    }
 }

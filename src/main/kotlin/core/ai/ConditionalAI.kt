@@ -43,7 +43,6 @@ class ConditionalAI(name: String, creature: Target, val actions: List<Conditiona
 
     override fun hear(event: DialogueEvent) {
         display(event.line)
-        //Find first or highest priortiy comment and send event
         val matches = ConversationManager.getMatchingDialogue(event.conversation)
         val response = matches.maxByOrNull { it.priority }!!
         response.result(event.conversation).forEach { EventManager.postEvent(it) }
