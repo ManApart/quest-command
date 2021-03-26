@@ -5,6 +5,7 @@ import conversation.dialogue.ParsedDialogue
 import core.history.display
 import core.target.Target
 import core.utility.Named
+import traveling.location.location.LocationManager
 import traveling.location.location.NOWHERE_NODE
 
 class SentenceParser(private val speaker: Target, private val listener: Target, conversation: Conversation, sentenceToParse: String) {
@@ -80,7 +81,7 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
             return subjects.first()
         }
 
-        val location = speaker.location.network.findLocation(subjectName)
+        val location = LocationManager.findLocationInAnyNetwork(subjectName)
         if (location != NOWHERE_NODE) {
             return location
         }

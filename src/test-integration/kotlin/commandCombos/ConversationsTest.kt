@@ -32,10 +32,12 @@ class ConversationsTest {
         assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
     }
 
-//    @Test
-//    fun whereKanbara() {
-//        CommandParser.parseCommand("w && speak with farmer")
-//        CommandParser.parseCommand("what is kanbara?")
-//        assertEquals("Farmer: Kanbara be a city.", ChatHistory.getLastOutput())
-//    }
+    @Test
+    fun whereKanbara() {
+        CommandParser.parseCommand("w && speak with farmer")
+        CommandParser.parseCommand("what is kanbara city?")
+        assertEquals("Farmer: Kanbara be a city.", ChatHistory.getLastOutput())
+    }
+    //TODO - make work with partial location name
+    //TODO - make work with 'city' tag instead of hard coding Kanbara city
 }

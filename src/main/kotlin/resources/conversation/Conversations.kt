@@ -5,6 +5,7 @@ import conversation.input.DialogueResource
 import conversation.input.conversations
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
+import traveling.location.location.LocationManager
 
 class GenericConversations : DialogueResource {
     override val values = conversations {
@@ -13,6 +14,11 @@ class GenericConversations : DialogueResource {
         convo {
             condition = {  it.history.last().parsed?.matches(QuestionType.WHERE, it.getLatestListener(), Verb.BE) ?: false }
             resultLine { "I be here." }
+        }
+
+        convo {
+            condition = {  it.history.last().parsed?.matches(QuestionType.WHAT, LocationManager.findLocationInAnyNetwork("Kanbara City"), Verb.BE) ?: false }
+            resultLine { "Kanbara be a city." }
         }
 
         convo {
