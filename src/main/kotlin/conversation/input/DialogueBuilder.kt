@@ -2,7 +2,10 @@ package conversation.input
 
 import conversation.Conversation
 import conversation.dialogue.DialogueEvent
+import conversation.parsing.QuestionType
+import conversation.parsing.Verb
 import core.events.Event
+import core.utility.Named
 
 class DialogueBuilder {
 //TODO - are conditions just using the default? Add more tests and make sure evaluates
@@ -50,4 +53,17 @@ class DialogueBuilder {
 
 fun conversations(initializer: DialogueBuilder.() -> Unit): DialogueBuilder {
     return DialogueBuilder().apply(initializer)
+}
+
+
+fun Conversation.question() : QuestionType? {
+    return history.last().parsed?.questionType
+}
+
+fun Conversation.verb() : Verb? {
+    return history.last().parsed?.verb
+}
+
+fun Conversation.subject() : Named? {
+    return history.last().parsed?.subject
 }
