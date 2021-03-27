@@ -10,26 +10,26 @@ class GenericConversations : DialogueResource {
     override val values = conversations {
         result { DialogueEvent(it.getLatestListener(), it, "I have nothing to say to you.") }
 
-        convo {
-            condition = { it.history.last().parsed?.matches(QuestionType.WHERE, it.getLatestListener(), Verb.BE) ?: false }
-            resultLine { "I be here." }
+        cond({ it.question() == QuestionType.WHERE }) {
+            cond({ it.verb() == Verb.BE }) {
+                cond({ it.subject() == it.getLatestListener()}) {
+                    resultLine { "I be here." }
+                }
+                cond({ it.subject() == it.getLatestSpeaker()}) {
+                    resultLine { "You be here." }
+                }
+            }
         }
 
-        convo {
-            condition = { it.question() == QuestionType.WHAT }
-
-            convo {
-                condition = { it.verb() == Verb.BE }
-
-                convo {
-                    condition = { it.subject() == LocationManager.findLocationInAnyNetwork("Kanbara City") }
+        cond({ it.question() == QuestionType.WHAT }) {
+            cond({ it.verb() == Verb.BE }) {
+                cond({ it.subject() == LocationManager.findLocationInAnyNetwork("Kanbara City") }) {
                     resultLine { "Kanbara be a city." }
                 }
             }
         }
 
-        convo {
-            condition = { !it.getLatestListener().isSafe() }
+        cond({ !it.getLatestListener().isSafe() }) {
             result { DialogueEvent(it.getLatestListener(), it, "${it.getLatestListener()} is not safe") }
         }
 

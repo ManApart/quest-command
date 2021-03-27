@@ -7,15 +7,14 @@ import conversation.parsing.Verb
 import core.events.Event
 import core.utility.Named
 
-class DialogueBuilder {
-//TODO - are conditions just using the default? Add more tests and make sure evaluates
-    var condition: (Conversation) -> Boolean = { true }
+class DialogueBuilder(val condition: (Conversation) -> Boolean) {
+//    var condition: (Conversation) -> Boolean = { true }
     var priority: Int? = null
     private val children: MutableList<DialogueBuilder> = mutableListOf()
     private var results: ((Conversation) -> List<Event>)? = null
 
-    fun convo(initializer: DialogueBuilder.() -> Unit) {
-        children.add(conversations(initializer))
+    fun cond(condition: (Conversation) -> Boolean = { true }, initializer: DialogueBuilder.() -> Unit) {
+        children.add(conversations(condition, initializer))
     }
 
     fun resultLine(line: ((Conversation) -> String)) {
@@ -51,8 +50,8 @@ class DialogueBuilder {
     }
 }
 
-fun conversations(initializer: DialogueBuilder.() -> Unit): DialogueBuilder {
-    return DialogueBuilder().apply(initializer)
+fun conversations(condition: (Conversation) -> Boolean = { true }, initializer: DialogueBuilder.() -> Unit): DialogueBuilder {
+    return DialogueBuilder(condition).apply(initializer)
 }
 
 

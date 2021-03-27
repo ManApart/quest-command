@@ -9,7 +9,7 @@ import traveling.location.location.LocationManager
 import traveling.location.location.NOWHERE_NODE
 
 class SentenceParser(private val speaker: Target, private val listener: Target, conversation: Conversation, sentenceToParse: String) {
-    private val sentence = Sentence(sentenceToParse)
+    private val sentence = Sentence(sentenceToParse.toLowerCase())
 
     val parsedDialogue = parseDialogue()
 

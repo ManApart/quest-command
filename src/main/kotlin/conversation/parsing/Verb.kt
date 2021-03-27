@@ -1,7 +1,7 @@
 package conversation.parsing
 
 enum class Verb(private vararg val synonyms: String = arrayOf()) {
-    BE("are", "is");
+    BE("are", "is", "am");
 
     fun matches(word: String): Boolean {
         return name.toLowerCase() == word || synonyms.contains(word)
