@@ -173,6 +173,10 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         return results.toNameSearchableList()
     }
 
+    fun getExact(name: String): N? {
+        return firstOrNull { it.name.equals(name, ignoreCase = true) }
+    }
+
     fun getOrNull(name: String): N? {
         if (containsProxy(name)) {
             return proxies[name]

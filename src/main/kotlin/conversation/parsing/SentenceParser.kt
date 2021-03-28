@@ -76,15 +76,21 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
 
     private fun findNamed(subjectName: String): List<Named> {
         val subjects = speaker.location.getLocation().getTargets(subjectName, speaker)
+        val exact = subjects.getExact(subjectName)
+        if (exact != null){
+            return listOf(exact)
+        }
         if (subjects.isNotEmpty()) {
             return subjects
         }
 
         val locations = LocationManager.findLocationsInAnyNetwork(subjectName)
-        if (locations.isNotEmpty()) {
-            return locations
-        }
+        val exactMatch = locations.firstOrNull { it.name.toLowerCase() == subjectName }
 
-        return listOf(listener)
+        return when {
+            exactMatch != null -> listOf(exactMatch)
+            locations.isNotEmpty() -> locations
+            else -> listOf(listener)
+        }
     }
 }
