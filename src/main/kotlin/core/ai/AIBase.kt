@@ -4,7 +4,7 @@ import core.target.Target
 import core.utility.Named
 import quests.ConditionalEvents
 
-class AIBase(override val name: String, val actions: List<ConditionalEvents<*>> = listOf()) : Named {
+class AIBase(override val name: String, val actions: List<AIAction> = listOf()) : Named {
 
     fun createConditional(creature: Target) : AI {
         return ConditionalAI(name, creature, actions)
