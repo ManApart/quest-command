@@ -7,7 +7,8 @@ import core.utility.Named
 import core.utility.StringFormatter
 import traveling.location.location.LocationNode
 
-data class ParsedDialogue(val speaker: Target, val listener: Target, val subject: Named, val verb: Verb, val verbOption: String?, val questionType: QuestionType = QuestionType.STATEMENT) {
+data class ParsedDialogue(val speaker: Target, val listener: Target, val subjects: List<Named>, val verb: Verb, val verbOption: String?, val questionType: QuestionType = QuestionType.STATEMENT) {
+    val subject = subjects.first()
 
     fun print(): String {
         val verbOptionSuffix = StringFormatter.format(verbOption != null, " $verbOption", "")

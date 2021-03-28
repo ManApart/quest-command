@@ -28,7 +28,7 @@ class SentenceParserTest {
         val input = "where listener be?"
         val conversation = Conversation(speaker, listener)
         val parser = SentenceParser(speaker, listener, conversation, input)
-        val expectedEvent = ParsedDialogue(speaker, listener, listener, Verb.BE, null, QuestionType.WHERE)
+        val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
 
@@ -37,7 +37,7 @@ class SentenceParserTest {
         val input = "where listener is?"
         val conversation = Conversation(speaker, listener)
         val parser = SentenceParser(speaker, listener, conversation, input)
-        val expectedEvent = ParsedDialogue(speaker, listener, listener, Verb.BE, null, QuestionType.WHERE)
+        val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
 
@@ -46,7 +46,7 @@ class SentenceParserTest {
         val input = "where be listener?"
         val conversation = Conversation(speaker, listener)
         val parser = SentenceParser(speaker, listener, conversation, input)
-        val expectedEvent = ParsedDialogue(speaker, listener, listener, Verb.BE, null, QuestionType.WHERE)
+        val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
 
@@ -55,7 +55,7 @@ class SentenceParserTest {
         val input = "where be you?"
         val conversation = Conversation(speaker, listener)
         val parser = SentenceParser(speaker, listener, conversation, input)
-        val expectedEvent = ParsedDialogue(speaker, listener, listener, Verb.BE, null, QuestionType.WHERE)
+        val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
 
@@ -64,7 +64,7 @@ class SentenceParserTest {
         val input = "where be i?"
         val conversation = Conversation(speaker, listener)
         val parser = SentenceParser(speaker, listener, conversation, input)
-        val expectedEvent = ParsedDialogue(speaker, listener, speaker, Verb.BE, null, QuestionType.WHERE)
+        val expectedEvent = ParsedDialogue(speaker, listener, listOf(speaker), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
 
@@ -73,7 +73,7 @@ class SentenceParserTest {
         val input = "where be?"
         val conversation = Conversation(speaker, listener)
         val parser = SentenceParser(speaker, listener, conversation, input)
-        val expectedEvent = ParsedDialogue(speaker, listener, listener, Verb.BE, null, QuestionType.WHERE)
+        val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
 

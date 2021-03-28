@@ -11,6 +11,11 @@ class GenericConversations : DialogueResource {
     override val values = conversations {
         result { DialogueEvent(it.getLatestListener(), it, "I have nothing to say to you.") }
 
+        cond({ it.subjects()?.size ?: 0 > 1 }) {
+            priority = 50
+            resultLine { "What you mean? You mean ${it.subjects()!![0]} or ${it.subjects()!![1]}?" }
+        }
+
         cond({ it.question() == QuestionType.WHERE }) {
             cond({ it.verb() == Verb.BE }) {
                 cond({ it.subject() == it.getLatestListener()}) {

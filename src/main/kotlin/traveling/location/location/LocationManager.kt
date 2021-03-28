@@ -72,6 +72,10 @@ object LocationManager {
         return target
     }
 
+    fun findLocationsInAnyNetwork(name: String): List<LocationNode> {
+        return getNetworks().flatMap { it.findLocations(name) }
+    }
+
     private fun findTarget(name: String, network: Network): LocationNode? {
         return if (network.locationRecipeExists(name)) {
             network.findLocation(name)

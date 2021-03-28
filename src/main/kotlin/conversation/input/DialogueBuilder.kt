@@ -67,6 +67,10 @@ fun Conversation.subject(): Named? {
     return history.last().parsed?.subject
 }
 
+fun Conversation.subjects(): List<Named>? {
+    return history.last().parsed?.subjects
+}
+
 fun Named?.hasTag(tag: String): Boolean {
     return if (this != null) {
         (this is LocationNode && getLocation().properties.tags.has(tag)) ||

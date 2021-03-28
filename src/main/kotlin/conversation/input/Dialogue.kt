@@ -1,10 +1,12 @@
 package conversation.input
 
 import conversation.Conversation
+import conversation.dialogue.DialogueEvent
 import core.events.Event
 import core.target.Target
 
-//TODO - make nice toString method
+private val sampleConvo by lazy { buildSampleConvo() }
+
 class Dialogue(
     val result: (Conversation) -> List<Event>,
     val conditions: List<(Conversation) -> Boolean>,
@@ -12,11 +14,18 @@ class Dialogue(
 ) {
 
     override fun toString(): String {
-        val sample = result(Conversation(Target("Speaker"), Target("Listener"))).first()
+        val sample = result(sampleConvo).first()
         return "Priority: $priority, Sample: $sample"
     }
 
     fun matches(conversation: Conversation): Boolean {
         return conditions.all { it(conversation) }
     }
+}
+
+private fun buildSampleConvo(): Conversation {
+    val speaker = Target("Speaker")
+    val sampleConvo = Conversation(speaker, Target("Listener"))
+    sampleConvo.history.add(DialogueEvent(speaker, sampleConvo, "Sample Line"))
+    return sampleConvo
 }

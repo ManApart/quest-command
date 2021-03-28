@@ -7,7 +7,8 @@ class Sentence(sentenceIn: String) {
     val isQuestion = sentenceIn.endsWith("?")
     val sentence = sentenceIn.replace("?", "")
     val words = sentence.split(" ")
-    var subject: Named = NOWHERE_NODE
+    var subjects: List<Named> = listOf()
+//    var subject: Named = NOWHERE_NODE
     var questionType = QuestionType.STATEMENT
     var verb = Verb.BE
     var verbOptions: String? = null

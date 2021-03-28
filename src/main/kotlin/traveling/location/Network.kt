@@ -53,6 +53,10 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         }
     }
 
+    fun findLocations(name: String): List<LocationNode> {
+        return locationNodes.getAll(name)
+    }
+
     fun countLocationNodes(): Int {
         return locationNodes.size
     }

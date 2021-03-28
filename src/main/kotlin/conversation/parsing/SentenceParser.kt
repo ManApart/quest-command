@@ -22,7 +22,7 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
         when {
             !sentence.hasMapped(PartOfSpeech.QUESTION_TYPE) -> display("Could not parse type of question from '${sentence.sentence}'.")
             !sentence.hasMapped(PartOfSpeech.VERB) -> display("Could not parse verb from '${sentence.sentence}'.")
-            else -> return ParsedDialogue(speaker, listener, sentence.subject, sentence.verb, sentence.verbOptions, sentence.questionType)
+            else -> return ParsedDialogue(speaker, listener, sentence.subjects, sentence.verb, sentence.verbOptions, sentence.questionType)
         }
         return null
     }
@@ -60,32 +60,31 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
 
     private fun parseSubject(sentence: Sentence) {
         val filteredWords = sentence.getUnmappedWords()
-        val subject: Named = findSubject(filteredWords)
-        sentence.subject = subject
+        sentence.subjects = findSubject(filteredWords)
         sentence.getUnmappedWordPositions().forEach { sentence.mapWord(it, PartOfSpeech.SUBJECT) }
     }
 
-    private fun findSubject(filteredWords: List<String>): Named {
+    private fun findSubject(filteredWords: List<String>): List<Named> {
         val subjectName = filteredWords.joinToString(" ")
         return when {
-            subjectName == "you" -> listener
-            subjectName == "i" -> speaker
-            subjectName.isNotBlank() -> findNamed(subjectName) ?: listener
-            else -> listener
+            subjectName == "you" -> listOf(listener)
+            subjectName == "i" -> listOf(speaker)
+            subjectName.isNotBlank() -> findNamed(subjectName)
+            else -> listOf(listener)
         }
     }
 
-    private fun findNamed(subjectName: String): Named? {
+    private fun findNamed(subjectName: String): List<Named> {
         val subjects = speaker.location.getLocation().getTargets(subjectName, speaker)
         if (subjects.isNotEmpty()) {
-            return subjects.first()
+            return subjects
         }
 
-        val location = LocationManager.findLocationInAnyNetwork(subjectName)
-        if (location != NOWHERE_NODE) {
-            return location
+        val locations = LocationManager.findLocationsInAnyNetwork(subjectName)
+        if (locations.isNotEmpty()) {
+            return locations
         }
 
-        return null
+        return listOf(listener)
     }
 }

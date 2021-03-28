@@ -26,7 +26,7 @@ class ConversationsTest {
     }
 
     @Test
-    fun talkWithFarmer() {
+    fun whereListener() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
         assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
@@ -40,10 +40,16 @@ class ConversationsTest {
     }
 
     @Test
-    fun whatKanbara() {
+    fun whatKanbaraCity() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("what is kanbara city?")
         assertEquals("Farmer: Kanbara City be a city.", ChatHistory.getLastOutput())
     }
-    //TODO - make work with partial location name?
+
+    @Test
+    fun whatLocationWithMultipleMatches() {
+        CommandParser.parseCommand("w && speak with farmer")
+        CommandParser.parseCommand("what is kanbara?")
+        assertEquals("Farmer: What you mean? You mean Kanbara Gate or Kanbara City?", ChatHistory.getLastOutput())
+    }
 }
