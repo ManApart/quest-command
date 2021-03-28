@@ -1,8 +1,7 @@
 import core.DependencyInjector
-import core.ai.AIFakeParser
 import core.ai.AIManager
-import core.ai.AIParser
-import core.ai.behavior.BehaviorManager
+import core.ai.AIsCollection
+import core.ai.AIsMock
 import core.body.BodyManager
 import core.properties.*
 import core.target.Target
@@ -85,7 +84,7 @@ fun injectAllDefaultMocks() {
     DependencyInjector.setImplementation(ActivatorParser::class.java, ActivatorFakeParser())
     ActivatorManager.reset()
 
-    DependencyInjector.setImplementation(AIParser::class.java, AIFakeParser())
+    DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
     AIManager.reset()
 
 //    BehaviorManager.reset()

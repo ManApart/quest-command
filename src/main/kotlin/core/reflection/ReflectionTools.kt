@@ -2,6 +2,10 @@ package core.reflection
 
 import conversation.input.Dialogue
 import conversation.input.DialogueResource
+import core.ai.AIBase
+import core.ai.AIResource
+import core.ai.action.AIAction
+import core.ai.action.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.commands.Command
@@ -31,6 +35,8 @@ object ReflectionTools {
         generateCollectionsFile(SpellCommand::class.java)
         generateCollectionsFile(EventListener::class.java)
 
+        generateResourcesFile(AIResource::class.java, AIBase::class.java)
+        generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
@@ -123,10 +129,9 @@ object ReflectionTools {
             it.print(
                     """
                 package ${resourceInterface.packageName}
-                import ${collectedClass.name}
 
                 class ${newClassName}sGenerated : ${newClassName}sCollection {
-                    override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf($classes).flatMap { it.values }
+                    override val values = listOf<${resourceInterface.simpleName}>($classes).flatMap { it.values }
                 }
             """.trimIndent()
             )

@@ -5,9 +5,9 @@ import combat.attack.StartAttackEvent
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
-import core.ai.AIFakeParser
 import core.ai.AIManager
-import core.ai.AIParser
+import core.ai.AIsCollection
+import core.ai.AIsMock
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
@@ -34,8 +34,7 @@ class AttackCommandTest {
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
-        val aiParser = AIFakeParser()
-        DependencyInjector.setImplementation(AIParser::class.java, aiParser)
+        DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
         AIManager.reset()
 
         val behaviorParser = BehaviorsMock()

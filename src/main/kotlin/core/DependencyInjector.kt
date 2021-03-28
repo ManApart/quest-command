@@ -2,8 +2,10 @@ package core
 
 import conversation.input.DialoguesCollection
 import conversation.input.DialoguesGenerated
-import core.ai.AIJsonParser
-import core.ai.AIParser
+import core.ai.AIsCollection
+import core.ai.AIsGenerated
+import core.ai.action.AIActionsCollection
+import core.ai.action.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.commands.CommandsCollection
@@ -69,30 +71,31 @@ object DependencyInjector {
         }
     }
 
-    inline fun <reified T: EventListener<*>> getListener() : T {
+    inline fun <reified T : EventListener<*>> getListener(): T {
         return getImplementation(EventListenersCollection::class.java).values.first { it::class == T::class } as T
     }
 
     private fun createDefaultImplementations(): Map<Class<*>, Any> {
         return mapOf(
-                ActivatorParser::class.java to ActivatorJsonParser(),
-                AIParser::class.java to AIJsonParser(),
-                BehaviorsCollection::class.java to BehaviorsGenerated(),
-                CreatureParser::class.java to CreatureJsonParser(),
-                ConditionParser::class.java to ConditionJsonParser(),
-                CommandsCollection::class.java to CommandsGenerated(),
-                DialoguesCollection::class.java to DialoguesGenerated(),
-                EffectParser::class.java to EffectJsonParser(),
-                EventListenersCollection::class.java to EventListenersGenerated(),
-                ItemParser::class.java to ItemJsonParser(),
-                LocationParser::class.java to LocationJsonParser(),
-                LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
-                RecipeParser::class.java to RecipeJsonParser(),
-                ResourceHelper::class.java to KotlinResourceHelper(),
-                SpellCommandsCollection::class.java to SpellCommandsGenerated(),
-                StoryEventsCollection::class.java to StoryEventsGenerated(),
-                WeatherParser::class.java to WeatherJsonParser(),
-                WeatherStringsCollection::class.java to WeatherStringsGenerated(),
+            ActivatorParser::class.java to ActivatorJsonParser(),
+            AIsCollection::class.java to AIsGenerated(),
+            AIActionsCollection::class.java to AIActionsGenerated(),
+            BehaviorsCollection::class.java to BehaviorsGenerated(),
+            CreatureParser::class.java to CreatureJsonParser(),
+            ConditionParser::class.java to ConditionJsonParser(),
+            CommandsCollection::class.java to CommandsGenerated(),
+            DialoguesCollection::class.java to DialoguesGenerated(),
+            EffectParser::class.java to EffectJsonParser(),
+            EventListenersCollection::class.java to EventListenersGenerated(),
+            ItemParser::class.java to ItemJsonParser(),
+            LocationParser::class.java to LocationJsonParser(),
+            LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
+            RecipeParser::class.java to RecipeJsonParser(),
+            ResourceHelper::class.java to KotlinResourceHelper(),
+            SpellCommandsCollection::class.java to SpellCommandsGenerated(),
+            StoryEventsCollection::class.java to StoryEventsGenerated(),
+            WeatherParser::class.java to WeatherJsonParser(),
+            WeatherStringsCollection::class.java to WeatherStringsGenerated(),
         )
     }
 

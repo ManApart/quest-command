@@ -1,4 +1,4 @@
-package core.ai
+package core.ai.action
 
 import core.events.Event
 import core.events.EventManager

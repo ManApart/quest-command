@@ -5,6 +5,7 @@ import combat.attack.StartAttackEvent
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
 import core.GameState
+import core.ai.action.AIAction
 import core.events.EventManager
 import core.history.display
 import core.target.Target

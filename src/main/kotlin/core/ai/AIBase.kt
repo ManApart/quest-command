@@ -1,8 +1,8 @@
 package core.ai
 
+import core.ai.action.AIAction
 import core.target.Target
 import core.utility.Named
-import quests.ConditionalEvents
 
 class AIBase(override val name: String, val actions: List<AIAction> = listOf()) : Named {
 

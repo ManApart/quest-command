@@ -3,19 +3,18 @@ package core.ai
 import core.target.Target
 import core.utility.NameSearchableList
 import core.DependencyInjector
+import core.ai.behavior.BehaviorsCollection
+import core.utility.toNameSearchableList
 
 object AIManager {
-    private var AIs = loadAI()
+    private var parser = DependencyInjector.getImplementation(AIsCollection::class.java)
+    private var AIs = parser.values.toNameSearchableList()
     private val defaultAI = AIBase("NONE")
     private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
 
     fun reset() {
-        AIs = loadAI()
-    }
-
-    private fun loadAI(): NameSearchableList<AIBase> {
-        val parser = DependencyInjector.getImplementation(AIParser::class.java)
-        return parser.loadAI()
+        parser = DependencyInjector.getImplementation(AIsCollection::class.java)
+        AIs = parser.values.toNameSearchableList()
     }
 
     fun getAI(name: String?, creature: Target): AI {
