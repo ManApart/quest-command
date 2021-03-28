@@ -5,10 +5,11 @@ import conversation.dialogue.DialogueEvent
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
 import core.events.Event
+import core.target.Target
 import core.utility.Named
+import traveling.location.location.LocationNode
 
 class DialogueBuilder(val condition: (Conversation) -> Boolean) {
-//    var condition: (Conversation) -> Boolean = { true }
     var priority: Int? = null
     private val children: MutableList<DialogueBuilder> = mutableListOf()
     private var results: ((Conversation) -> List<Event>)? = null
@@ -54,15 +55,23 @@ fun conversations(condition: (Conversation) -> Boolean = { true }, initializer: 
     return DialogueBuilder(condition).apply(initializer)
 }
 
-
-fun Conversation.question() : QuestionType? {
+fun Conversation.question(): QuestionType? {
     return history.last().parsed?.questionType
 }
 
-fun Conversation.verb() : Verb? {
+fun Conversation.verb(): Verb? {
     return history.last().parsed?.verb
 }
 
-fun Conversation.subject() : Named? {
+fun Conversation.subject(): Named? {
     return history.last().parsed?.subject
+}
+
+fun Named?.hasTag(tag: String): Boolean {
+    return if (this != null) {
+        (this is LocationNode && getLocation().properties.tags.has(tag)) ||
+                (this is Target && properties.tags.has(tag))
+    } else {
+        false
+    }
 }

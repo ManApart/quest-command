@@ -36,15 +36,14 @@ class ConversationsTest {
     fun whereBeMe() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where am I?")
-        assertEquals("Farmer: You be here.", ChatHistory.getLastOutput())
+        assertEquals("Farmer: You be in Farmer's Hut.", ChatHistory.getLastOutput())
     }
 
     @Test
     fun whatKanbara() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("what is kanbara city?")
-        assertEquals("Farmer: Kanbara be a city.", ChatHistory.getLastOutput())
+        assertEquals("Farmer: Kanbara City be a city.", ChatHistory.getLastOutput())
     }
     //TODO - make work with partial location name?
-    //TODO - make work with 'city' tag instead of hard coding Kanbara city
 }

@@ -6,6 +6,7 @@
     "name": "Kanbara",
     "extends": "Outside",
     "description": "The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia"
+
   },
   {
     "name": "Kanbara City",
@@ -13,14 +14,24 @@
     "description": "The city of Kanbara is one of the most densely packed cities in all of Lenovia",
     "activators": [
       "City Wall"
-    ]
+    ],
+    "properties": {
+      "tags": [
+        "City"
+      ]
+    }
   },
   {
     "name": "City Wall",
     "extends": "Outside",
     "activators": [
       "City Wall"
-    ]
+    ],
+    "properties": {
+      "tags": [
+        "City"
+      ]
+    }
   },
   {
     "name": "Kanbara Gate",
@@ -28,7 +39,12 @@
     "description": "The large gate of Kanbara seems to be its only entrance point.",
     "activators": [
       "Kanbara Gate (Closed)"
-    ]
+    ],
+    "properties": {
+      "tags": [
+        "City"
+      ]
+    }
   },
   {
     "name": "Farmer's Hut",
