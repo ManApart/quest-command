@@ -1,6 +1,16 @@
 package wiki
 
+import java.io.File
+
 private val newLineAtLineStart = Regex("^\n")
+
+internal fun getExistingText(filePath: String, matchText: String): String {
+    val fullExisting = File(filePath).readText()
+
+    val i = fullExisting.indexOf(matchText)
+
+    return fullExisting.substring(0, i + matchText.length) + "\n"
+}
 
 internal fun prepareDescription(description: String): String {
     return prepareLines(description.substringAfter(":\n"))
