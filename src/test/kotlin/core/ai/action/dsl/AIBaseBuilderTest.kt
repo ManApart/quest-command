@@ -5,7 +5,6 @@ import core.ai.AIManager
 import core.ai.AIsCollection
 import core.ai.AIsMock
 import core.ai.action.AIAction
-import core.body.BodyManager
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals

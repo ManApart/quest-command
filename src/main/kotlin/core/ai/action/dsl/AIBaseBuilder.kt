@@ -17,7 +17,6 @@ class AIBaseBuilder(val name: String) {
         return AIBase(name, actions)
     }
 
-    //TODO test
     fun prep(aiBuilders: Map<String, AIBaseBuilder>, dependents: MutableSet<AIBaseBuilder> = mutableSetOf()) {
         if (dependents.contains(this)){
             throw IllegalArgumentException("Circular Dependency found with $name in list ${dependents.joinToString(",") { it.name}}")

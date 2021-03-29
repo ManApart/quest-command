@@ -11,23 +11,24 @@ import traveling.location.location.LocationNode
 
 class DialogueBuilder(val condition: (Conversation) -> Boolean) {
     var priority: Int? = null
+    val depthScale: Int = 2
     private val children: MutableList<DialogueBuilder> = mutableListOf()
-    private var results: ((Conversation) -> List<Event>)? = null
+    private var results: MutableList<((Conversation) -> List<Event>)> = mutableListOf()
 
     fun cond(condition: (Conversation) -> Boolean = { true }, initializer: DialogueBuilder.() -> Unit) {
         children.add(conversations(condition, initializer))
     }
 
     fun resultLine(line: ((Conversation) -> String)) {
-        this.results = { it: Conversation -> listOf(DialogueEvent(it.getLatestListener(), it, line(it))) }
+        this.results.add { listOf(DialogueEvent(it.getLatestListener(), it, line(it))) }
     }
 
     fun result(result: ((Conversation) -> Event)) {
-        this.results = { listOf(result(it)) }
+        this.results.add { listOf(result(it)) }
     }
 
     fun results(results: ((Conversation) -> List<Event>)) {
-        this.results = results
+        this.results.add(results)
     }
 
     fun build(): List<Dialogue> {
@@ -37,10 +38,10 @@ class DialogueBuilder(val condition: (Conversation) -> Boolean) {
     private fun build(parentConditions: List<(Conversation) -> Boolean>, depth: Int = 0): List<Dialogue> {
         val conditions = parentConditions + listOf(condition)
         val evaluations = mutableListOf<Dialogue>()
-        val usedPriority = priority ?: (10 + 2 * depth)
+        val usedPriority = priority ?: (10 + depthScale * depth)
 
-        if (results != null) {
-            evaluations.add(Dialogue(results!!, conditions, usedPriority))
+        results.forEach { result ->
+            evaluations.add(Dialogue(result, conditions, usedPriority))
         }
 
         if (children.isNotEmpty()) {
