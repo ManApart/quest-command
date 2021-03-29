@@ -1,11 +1,13 @@
 package commandCombos
 
 import core.GameManager
+import core.GameState
 import core.commands.CommandParser
 import core.events.EventManager
 import core.history.ChatHistory
 import org.junit.Before
 import org.junit.Test
+import system.debug.DebugType
 import kotlin.test.assertEquals
 
 class ConversationsTest {
@@ -20,16 +22,26 @@ class ConversationsTest {
 
     @Test
     fun noCriteriaMet() {
+        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 0)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("why is the sky blue?")
-        assertEquals("Farmer: I have nothing to say to you.", ChatHistory.getLastOutput())
+        assertEquals("Farmer", GameState.conversation.getLatestSpeaker().name)
     }
 
     @Test
     fun whereListener() {
+        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 0)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
         assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
+    }
+
+    @Test
+    fun multipleMatchesPicksAtRandom() {
+        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 1)
+        CommandParser.parseCommand("w && speak with farmer")
+        CommandParser.parseCommand("where are you?")
+        assertEquals("Farmer: I be with you.", ChatHistory.getLastOutput())
     }
 
     @Test

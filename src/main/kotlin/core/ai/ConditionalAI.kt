@@ -9,6 +9,7 @@ import core.ai.action.AIAction
 import core.events.EventManager
 import core.history.display
 import core.target.Target
+import core.utility.RandomManager
 import traveling.position.TargetAim
 
 class ConditionalAI(name: String, private val owner: Target, private val actions: List<AIAction>) : AI(name, owner) {
@@ -22,7 +23,7 @@ class ConditionalAI(name: String, private val owner: Target, private val actions
         }
     }
 
-    private fun determineAction() : AIAction? {
+    private fun determineAction(): AIAction? {
         return actions.firstOrNull { it.canRun(creature) }
     }
 
@@ -48,7 +49,9 @@ class ConditionalAI(name: String, private val owner: Target, private val actions
     override fun hear(event: DialogueEvent) {
         display(event.line)
         val matches = ConversationManager.getMatchingDialogue(event.conversation)
-        val response = matches.maxByOrNull { it.priority }!!
+        val priority = matches.maxOf { it.priority }
+        val topMatches = matches.filter { it.priority == priority }
+        val response = RandomManager.getRandom(topMatches)
         response.result(event.conversation).forEach { EventManager.postEvent(it) }
     }
 

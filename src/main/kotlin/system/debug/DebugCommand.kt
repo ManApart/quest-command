@@ -47,7 +47,7 @@ class DebugCommand : Command() {
                 "list" -> EventManager.postEvent(DebugListEvent())
                 "lvlreq" -> sendDebugToggleEvent(DebugType.LEVEL_REQ, arguments)
                 "statchanges" -> sendDebugToggleEvent(DebugType.STAT_CHANGES, arguments)
-                "random" -> sendDebugToggleEvent(DebugType.RANDOM, arguments)
+                "random" -> sendDebugToggleEvent(DebugType.RANDOM_SUCCEED, arguments)
                 "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
                 "stat" -> sendDebugStatEvent(StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(StatKind.PROP_VAL, arguments)

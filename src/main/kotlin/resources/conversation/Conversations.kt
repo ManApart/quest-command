@@ -20,6 +20,7 @@ class GenericConversations : DialogueResource {
             cond({ it.verb() == Verb.BE }) {
                 cond({ it.subject() == it.getLatestListener()}) {
                     resultLine { "I be here." }
+                    resultLine { "I be with you." }
                 }
                 cond({ it.subject() == it.getLatestSpeaker()}) {
                     resultLine { "You be in ${it.getLatestSpeaker().location}." }

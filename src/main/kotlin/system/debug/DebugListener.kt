@@ -17,7 +17,7 @@ class DebugToggleListener : EventListener<DebugToggleEvent>() {
         if (event.debugType == DebugType.DEBUG_GROUP) {
             GameState.properties.values.put(DebugType.LEVEL_REQ.propertyName, event.toggledOn)
             GameState.properties.values.put(DebugType.STAT_CHANGES.propertyName, event.toggledOn)
-            GameState.properties.values.put(DebugType.RANDOM.propertyName, event.toggledOn)
+            GameState.properties.values.put(DebugType.RANDOM_SUCCEED.propertyName, event.toggledOn)
             display("Gamestate properties are: " + GameState.properties.toString())
         } else {
             GameState.properties.values.put(event.debugType.propertyName, event.toggledOn)
