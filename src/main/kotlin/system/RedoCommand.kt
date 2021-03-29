@@ -6,8 +6,8 @@ import core.history.ChatHistory
 import core.history.display
 
 class RedoCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Redo", "Repeat", "r")
+    override fun getAliases(): List<String> {
+        return listOf("Redo", "Repeat", "r")
     }
 
     override fun getDescription(): String {

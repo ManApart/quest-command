@@ -8,8 +8,8 @@ import core.history.display
 import core.events.EventManager
 
 class JournalCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Quest", "Quests", "Journal", "Q")
+    override fun getAliases(): List<String> {
+        return listOf("Quest", "Quests", "Journal", "Q")
     }
 
     override fun getDescription(): String {

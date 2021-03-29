@@ -6,12 +6,11 @@ import core.commands.Command
 import core.commands.parseBodyParts
 import core.GameState
 import core.target.Target
-import core.history.display
 import core.events.EventManager
 
 class BlockCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Block")
+    override fun getAliases(): List<String> {
+        return listOf("Block")
     }
 
     override fun getDescription(): String {

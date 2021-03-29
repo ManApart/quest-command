@@ -12,8 +12,8 @@ import core.events.EventManager
 
 class UnEquipItemCommand : Command() {
     private val delimiters = listOf("from")
-    override fun getAliases(): Array<String> {
-        return arrayOf("UnEquip")
+    override fun getAliases(): List<String> {
+        return listOf("UnEquip")
     }
 
     override fun getDescription(): String {

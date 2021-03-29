@@ -9,8 +9,8 @@ import core.events.EventManager
 import traveling.location.location.LocationManager
 
 class ReadMapCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Map", "m")
+    override fun getAliases(): List<String> {
+        return listOf("Map", "m")
     }
 
     override fun getDescription(): String {

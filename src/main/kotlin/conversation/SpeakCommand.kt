@@ -12,8 +12,8 @@ import core.history.display
 import core.target.Target
 
 class SpeakCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Speak", "spk", "talk")
+    override fun getAliases(): List<String> {
+        return listOf("Speak", "spk", "talk")
     }
 
     override fun getDescription(): String {

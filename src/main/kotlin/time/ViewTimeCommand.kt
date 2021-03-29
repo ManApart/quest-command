@@ -4,8 +4,8 @@ import core.commands.Command
 import core.events.EventManager
 
 class ViewTimeCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Time", "tm")
+    override fun getAliases(): List<String> {
+        return listOf("Time", "tm")
     }
 
     override fun getDescription(): String {

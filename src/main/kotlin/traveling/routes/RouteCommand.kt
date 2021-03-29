@@ -12,8 +12,8 @@ import traveling.location.location.LocationManager
 import traveling.location.location.LocationNode
 
 class RouteCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Route", "rr")
+    override fun getAliases(): List<String> {
+        return listOf("Route", "rr")
     }
 
     override fun getDescription(): String {

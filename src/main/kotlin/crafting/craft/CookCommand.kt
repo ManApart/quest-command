@@ -12,8 +12,8 @@ import crafting.RecipeManager
 
 class CookCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Cook", "Bake")
+    override fun getAliases(): List<String> {
+        return listOf("Cook", "Bake")
     }
 
     override fun getDescription(): String {

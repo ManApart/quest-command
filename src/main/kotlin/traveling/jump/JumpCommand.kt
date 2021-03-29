@@ -9,8 +9,8 @@ import traveling.direction.Direction
 
 //TODO - eventually jump to specific part while climbing (in any direction)
 class JumpCommand : Command() {
-    override fun getAliases(): Array<String> {
-        return arrayOf("Jump", "j")
+    override fun getAliases(): List<String> {
+        return listOf("Jump", "j")
     }
 
     override fun getDescription(): String {

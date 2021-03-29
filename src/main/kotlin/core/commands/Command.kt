@@ -6,7 +6,7 @@ import core.utility.Named
 
 abstract class Command : Named {
 
-    abstract fun getAliases(): Array<String>
+    abstract fun getAliases(): List<String>
     abstract fun getDescription(): String
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>

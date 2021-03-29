@@ -7,8 +7,8 @@ import core.history.display
 
 class UnknownCommand : Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("")
+    override fun getAliases(): List<String> {
+        return listOf("")
     }
 
     override fun getDescription(): String {

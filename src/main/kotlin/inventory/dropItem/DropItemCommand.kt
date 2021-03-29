@@ -8,8 +8,8 @@ import traveling.position.Vector
 
 class DropItemCommand : core.commands.Command() {
 
-    override fun getAliases(): Array<String> {
-        return arrayOf("Drop", "Place")
+    override fun getAliases(): List<String> {
+        return listOf("Drop", "Place")
     }
 
     override fun getDescription(): String {

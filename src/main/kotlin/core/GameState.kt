@@ -30,4 +30,3 @@ const val AUTO_LOAD = "autoload"
 const val SKIP_SAVE_STATS = "skip save stats"
 const val LAST_SAVE_CHARACTER_NAME = "last save character name"
 const val LAST_SAVE_GAME_NAME = "last save character name"
-
