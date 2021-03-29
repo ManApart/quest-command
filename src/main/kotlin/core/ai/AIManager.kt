@@ -1,20 +1,27 @@
 package core.ai
 
 import core.target.Target
-import core.utility.NameSearchableList
 import core.DependencyInjector
-import core.ai.behavior.BehaviorsCollection
+import core.ai.action.AIAction
+import core.ai.action.dsl.AIActionsCollection
 import core.utility.toNameSearchableList
 
 object AIManager {
-    private var parser = DependencyInjector.getImplementation(AIsCollection::class.java)
-    private var AIs = parser.values.toNameSearchableList()
+    private var aIsCollection = DependencyInjector.getImplementation(AIsCollection::class.java)
+    private var actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class.java)
+
+    private var AIs = aIsCollection.values.toNameSearchableList()
+    private var actions = actionsCollection.values.toNameSearchableList()
+
     private val defaultAI = AIBase("NONE")
     private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(AIsCollection::class.java)
-        AIs = parser.values.toNameSearchableList()
+        aIsCollection = DependencyInjector.getImplementation(AIsCollection::class.java)
+        actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class.java)
+
+        AIs = aIsCollection.values.toNameSearchableList()
+        actions = actionsCollection.values.toNameSearchableList()
     }
 
     fun getAI(name: String?, creature: Target): AI {
@@ -23,6 +30,10 @@ object AIManager {
             name != null && AIs.exists(name) -> AIs.get(name).createConditional(creature)
             else -> defaultAI.createConditional(creature)
         }
+    }
+
+    fun getAIAction(name: String): AIAction {
+        return actions.get(name)
     }
 
 }

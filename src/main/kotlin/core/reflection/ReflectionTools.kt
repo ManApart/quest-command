@@ -5,7 +5,7 @@ import conversation.input.DialogueResource
 import core.ai.AIBase
 import core.ai.AIResource
 import core.ai.action.AIAction
-import core.ai.action.AIActionResource
+import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.commands.Command

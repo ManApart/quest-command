@@ -4,8 +4,8 @@ import conversation.input.DialoguesCollection
 import conversation.input.DialoguesGenerated
 import core.ai.AIsCollection
 import core.ai.AIsGenerated
-import core.ai.action.AIActionsCollection
-import core.ai.action.AIActionsGenerated
+import core.ai.action.dsl.AIActionsCollection
+import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.commands.CommandsCollection
