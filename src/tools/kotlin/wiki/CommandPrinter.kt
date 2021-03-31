@@ -26,12 +26,13 @@ private fun generateTable(category: String, commands: List<Command>): String {
     val tableHeader = """
         ### $category
         
-        Command | Aliases | Description | Usages <img width=1000/>
-         --- | --- | --- | --- 
+        Command | Aliases | Details <img width=1000/>
+         --- | --- | ---  
         """.trimIndent()
 
     val rows = commands.joinToString("\n") { command ->
-        "\n ${command.name} | ${command.getAliases().joinToString(", ")} | ${prepareDescription(command.getDescription())} | ${prepareManual(command.getManual())}"
+        "\n ${command.name} | ${command.getAliases().joinToString("<br/>")} | ${prepareDescription(command.getDescription())} <br/> ${prepareManual(command.getManual())}"
+//        "\n **${command.name}** <br/><br/> (${command.getAliases().joinToString(", ")}) | ${prepareDescription(command.getDescription())} <br/> ${prepareManual(command.getManual())}"
     }.replace("\n\n", "\n")
     return tableHeader + rows
 }
