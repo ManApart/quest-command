@@ -6,8 +6,8 @@ import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.ai.AIManager
-import core.ai.AIsCollection
-import core.ai.AIsMock
+import core.ai.dsl.AIsCollection
+import core.ai.dsl.AIsMock
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock

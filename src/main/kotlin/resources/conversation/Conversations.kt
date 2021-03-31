@@ -1,11 +1,9 @@
 package resources.conversation
 
 import conversation.dialogue.DialogueEvent
-import conversation.input.*
+import conversation.dsl.*
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationNode
 
 class GenericConversations : DialogueResource {
     override val values = conversations {

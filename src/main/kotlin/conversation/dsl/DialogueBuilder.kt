@@ -1,4 +1,4 @@
-package conversation.input
+package conversation.dsl
 
 import conversation.Conversation
 import conversation.dialogue.DialogueEvent
@@ -41,7 +41,7 @@ class DialogueBuilder(val condition: (Conversation) -> Boolean) {
         val usedPriority = priority ?: (10 + depthScale * depth)
 
         results.forEach { result ->
-            evaluations.add(Dialogue(result, conditions, usedPriority))
+            evaluations.add(Dialogue(conditions, result, usedPriority))
         }
 
         if (children.isNotEmpty()) {

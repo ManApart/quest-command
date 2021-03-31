@@ -1,4 +1,4 @@
-package core.ai.action.dsl
+package core.ai.dsl
 
 import core.ai.AIBase
 import core.ai.AIManager

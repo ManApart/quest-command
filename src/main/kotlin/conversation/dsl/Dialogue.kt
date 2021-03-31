@@ -1,4 +1,4 @@
-package conversation.input
+package conversation.dsl
 
 import conversation.Conversation
 import conversation.dialogue.DialogueEvent
@@ -8,8 +8,8 @@ import core.target.Target
 private val sampleConvo by lazy { buildSampleConvo() }
 
 class Dialogue(
-    val result: (Conversation) -> List<Event>,
     val conditions: List<(Conversation) -> Boolean>,
+    val result: (Conversation) -> List<Event>,
     val priority: Int = 10
 ) {
 

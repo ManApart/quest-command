@@ -1,9 +1,9 @@
 package core.reflection
 
-import conversation.input.Dialogue
-import conversation.input.DialogueResource
+import conversation.dsl.Dialogue
+import conversation.dsl.DialogueResource
 import core.ai.AIBase
-import core.ai.AIResource
+import core.ai.dsl.AIResource
 import core.ai.action.AIAction
 import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior

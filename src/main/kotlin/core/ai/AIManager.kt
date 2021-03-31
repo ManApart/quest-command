@@ -4,6 +4,7 @@ import core.target.Target
 import core.DependencyInjector
 import core.ai.action.AIAction
 import core.ai.action.dsl.AIActionsCollection
+import core.ai.dsl.AIsCollection
 import core.utility.toNameSearchableList
 
 object AIManager {

@@ -1,9 +1,9 @@
 package core
 
-import conversation.input.DialoguesCollection
-import conversation.input.DialoguesGenerated
-import core.ai.AIsCollection
-import core.ai.AIsGenerated
+import conversation.dsl.DialoguesCollection
+import conversation.dsl.DialoguesGenerated
+import core.ai.dsl.AIsCollection
+import core.ai.dsl.AIsGenerated
 import core.ai.action.dsl.AIActionsCollection
 import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection

@@ -1,4 +1,4 @@
-package core.ai
+package core.ai.dsl
 import core.ai.AIBase
 
 interface AIsCollection {

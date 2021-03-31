@@ -1,7 +1,7 @@
 package conversation
 
-import conversation.input.Dialogue
-import conversation.input.DialoguesCollection
+import conversation.dsl.Dialogue
+import conversation.dsl.DialoguesCollection
 import core.DependencyInjector
 
 object ConversationManager {

@@ -1,6 +1,6 @@
 package resources.ai
 
-import core.ai.AIResource
+import core.ai.dsl.AIResource
 import core.ai.action.dsl.aiBuilder
 
 class CommonAI : AIResource {

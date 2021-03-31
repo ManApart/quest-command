@@ -1,7 +1,7 @@
 import core.DependencyInjector
 import core.ai.AIManager
-import core.ai.AIsCollection
-import core.ai.AIsMock
+import core.ai.dsl.AIsCollection
+import core.ai.dsl.AIsMock
 import core.body.BodyManager
 import core.properties.*
 import core.target.Target

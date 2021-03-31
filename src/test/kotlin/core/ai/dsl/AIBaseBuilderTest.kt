@@ -1,10 +1,10 @@
-package core.ai.action.dsl
+package core.ai.dsl
 
 import core.DependencyInjector
 import core.ai.AIManager
-import core.ai.AIsCollection
-import core.ai.AIsMock
 import core.ai.action.AIAction
+import core.ai.action.dsl.AIActionsCollection
+import core.ai.action.dsl.AIActionsMock
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals

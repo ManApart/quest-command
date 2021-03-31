@@ -1,4 +1,3 @@
-package conversation.input
-import conversation.input.Dialogue
+package conversation.dsl
 
 class DialoguesMock(override val values: List<Dialogue> = listOf()) : DialoguesCollection

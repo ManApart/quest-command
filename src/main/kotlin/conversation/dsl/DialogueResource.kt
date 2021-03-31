@@ -1,4 +1,4 @@
-package conversation.input
+package conversation.dsl
 
 interface DialogueResource {
     val values: List<Dialogue>

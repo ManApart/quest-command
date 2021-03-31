@@ -7,15 +7,14 @@ import core.utility.Named
 
 class AIAction(
     override val name: String,
-    private val condition: (Target, Map<String, String>) -> Boolean = {_, _ -> true},
-    private val createEvents: (Target, Map<String, String>) -> List<Event> = {_,_ -> listOf()},
-    val params: Map<String, String> = mapOf()
+    private val condition: (Target) -> Boolean = { true},
+    private val createEvents: (Target) -> List<Event> = { listOf()},
 ) : Named {
     fun canRun(owner: Target): Boolean {
-        return condition(owner, params)
+        return condition(owner)
     }
 
     fun execute(owner: Target) {
-        createEvents(owner, params).forEach { EventManager.postEvent(it) }
+        createEvents(owner).forEach { EventManager.postEvent(it) }
     }
 }

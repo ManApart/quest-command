@@ -1,5 +1,4 @@
-package conversation.input
-import conversation.input.Dialogue
+package conversation.dsl
 
 interface DialoguesCollection {
     val values: List<Dialogue>
