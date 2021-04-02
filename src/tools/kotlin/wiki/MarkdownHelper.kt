@@ -13,7 +13,7 @@ internal fun getExistingText(filePath: String, matchText: String): String {
 }
 
 internal fun prepareDescription(description: String): String {
-    return prepareLines(description.substringAfter(":\n"))
+    return prepareLines(description)
 }
 
 internal fun prepareManual(manual: String): String {

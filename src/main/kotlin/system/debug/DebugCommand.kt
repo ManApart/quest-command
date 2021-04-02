@@ -15,20 +15,22 @@ class DebugCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Debug: \n\tChange various settings for testing/cheating."
+        return "Change various settings for testing/cheating."
     }
 
     override fun getManual(): String {
-        return "\n\tDebug - Toggle various debug settings all on or off at once." +
-                "\n\tDebug list - View the gamestate's properties." +
-                "\n\tDebug lvlreq <on/off> - Toggle the requirement for skills/spells to have a specific level." +
-                "\n\tDebug statchanges <on/off> - Toggle whether stats (stamina, focus, health, etc) can be depleted." +
-                "\n\tDebug random <on/off> - Toggle random chances always succeeding. " +
-                "\n\tDebug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). " +
-                "\n\tDebug stat <stat name> <desired level> on *<target> - Set a stat to the desired level." +
-                "\n\tDebug prop <prop name> <desired level> on *<target> - Set a property to the desired level." +
-                "\n\tDebug tag *<remove> <tag name> on *<target> - Add (or remove) a tag." +
-                "\n\tDebug weather <weather name> - Set weather in current location to the given weather, if it exists."
+        return """ 
+    Debug - Toggle various debug settings all on or off at once.
+    Debug list - View the gamestate's properties.
+    Debug lvlreq <on/off> - Toggle the requirement for skills/spells to have a specific level.
+    Debug statchanges <on/off> - Toggle whether stats (stamina, focus, health, etc) can be depleted.
+    Debug random <on/off> - Toggle random chances always succeeding. 
+    Debug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). 
+    Debug stat <stat name> <desired level> on *<target> - Set a stat to the desired level.
+    Debug prop <prop name> <desired level> on *<target> - Set a property to the desired level.
+    Debug tag *<remove> <tag name> on *<target> - Add (or remove) a tag.
+    Debug weather <weather name> - Set weather in current location to the given weather, if it exists.
+        """
     }
 
     override fun getCategory(): List<String> {

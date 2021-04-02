@@ -60,7 +60,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         //TODO - sort alphabetically
         CommandParser.commands.forEach { command ->
             if (command.getCategory().map { it.toLowerCase() }.toTypedArray() contentEquals args.toTypedArray()) {
-                description += command.getDescription() + "\n"
+                description += command.name + ": " + command.getDescription() + "\n"
             }
         }
         display(description)

@@ -38,11 +38,15 @@ object ReflectionTools {
         generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
     }
 
+    fun getClasses(superClass: Class<*>): List<Class<*>> {
+        return reflections.getSubTypesOf(superClass).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
+    }
+
     /**
      * Find all classes that extend the collected class interface (Command) and dump them into a list in the generated class (CommandsGenerated)
      */
     private fun generateCollectionsFile(collectedClass: Class<*>) {
-        val allClasses = reflections.getSubTypesOf(collectedClass).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
+        val allClasses = getClasses(collectedClass)
         println("Saving ${allClasses.size} classes for ${collectedClass.name}")
         val isTyped = collectedClass.typeParameters.isNotEmpty()
         val typeSuffix = if(isTyped){

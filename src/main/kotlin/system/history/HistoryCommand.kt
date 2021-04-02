@@ -19,13 +19,13 @@ class HistoryCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "History: \n\tView the chat history."
+        return "View the chat history."
     }
 
     override fun getManual(): String {
         return "\n\tHistory - View the recent chat history." +
-                "\n\tHistory <number> - View <number> lines of chat history X" +
-                "\n\tHistory responses - View both commands and responses X"
+                "\n\tHistory <number> - View <number> lines of chat history" +
+                "\n\tHistory responses - View both commands and responses"
     }
 
     override fun getCategory(): List<String> {

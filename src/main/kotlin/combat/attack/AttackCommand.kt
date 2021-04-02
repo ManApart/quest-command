@@ -23,15 +23,16 @@ class AttackCommand : Command() {
     override val name = "Chop, Slash, Stab"
 
     override fun getDescription(): String {
-        return "Attack:\n\tChop/Stab/Slash/Crush the target"
+        return "Chop/Stab/Slash/Crush the target"
     }
 
     override fun getManual(): String {
-        return "\n\t<attack> <target> - Chop, crush, slash, or stab the target with the item in your right hand" +
-                "\n\t<attack> <target> with <hand> - Attack the target with the item in your left/right hand" +
-                "\n\t<attack> <part> of <target> - Attack the target, aiming for a specific body part" +
-                "\n\t<attack> <target> with <item> - Attack the target with the item in your left/right hand" +
-                "\n\tAttacking a target damages it based on the chop/stab/slash damage of the item you're holding in that hand, or the damage you do if empty handed"
+        return """
+	<attack> <target> - Chop, crush, slash, or stab the target with the item in your right hand
+	<attack> <target> with <hand> - Attack the target with the item in your left/right hand
+	<attack> <part> of <target> - Attack the target, aiming for a specific body part
+	<attack> <target> with <item> - Attack the target with the item in your left/right hand
+	Attacking a target damages it based on the chop/stab/slash damage of the item you're holding in that hand, or the damage you do if empty handed"""
     }
 
     override fun getCategory(): List<String> {
@@ -133,7 +134,7 @@ class AttackCommand : Command() {
     }
 
     private fun isAttackingActivatorWithWeapon(target: TargetAim?, handHelper: HandHelper) =
-            target != null && handHelper.weapon != null && target.target.properties.isActivator()
+        target != null && handHelper.weapon != null && target.target.properties.isActivator()
 
 
 }

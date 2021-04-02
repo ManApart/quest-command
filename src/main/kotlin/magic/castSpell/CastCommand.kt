@@ -29,13 +29,14 @@ class CastCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tword list - list known words." +
-                "\n\tword <word> - view the manual for that word." +
-                "\n\tCast <word> <word args> on *<target> - cast a spell with specific arguments on a target" +
-                "\n\tSimple Example:" +
-                "\n\t\t'Cast shard 5 on bandit'. This would cast an ice shard with 5 points of damage at a random body part of the bandit." +
-                "\n\tComplicated Example:" +
-                "\n\t\t'Cast shard 5 on left arm chest of bandit and head of rat'. This would cast an ice shard with five damage at the left arm of the bandit, another at the bandit's chest, and a third at the head of the rat."
+        return """
+    word list - list known words. 
+    word <word> - view the manual for that word.
+    cast <word> <word args> on *<target> - cast a spell with specific arguments on a target
+    Simple Example:
+        Cast shard 5 on bandit - This would cast an ice shard with 5 points of damage at a random body part of the bandit.
+    Complicated Example:
+        Cast shard 5 on left arm chest of bandit and head of rat - This would cast an ice shard with five damage at the left arm of the bandit, another at the bandit's chest, and a third at the head of the rat.""""
     }
 
     override fun getCategory(): List<String> {

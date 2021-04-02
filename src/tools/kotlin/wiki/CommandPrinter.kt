@@ -17,7 +17,7 @@ internal fun printCommands() {
 }
 
 private fun generateTables(): String {
-    return CommandParser.getGroupedCommands().entries.joinToString("\n\n") { (category, commands) ->
+    return CommandParser.getGroupedCommands().entries.filter { it.key.isNotBlank() }.joinToString("\n\n") { (category, commands) ->
         generateTable(category, commands)
     }
 }
@@ -32,7 +32,6 @@ private fun generateTable(category: String, commands: List<Command>): String {
 
     val rows = commands.joinToString("\n") { command ->
         "\n ${command.name} | ${command.getAliases().joinToString("<br/>")} | ${prepareDescription(command.getDescription())} <br/> ${prepareManual(command.getManual())}"
-//        "\n **${command.name}** <br/><br/> (${command.getAliases().joinToString(", ")}) | ${prepareDescription(command.getDescription())} <br/> ${prepareManual(command.getManual())}"
     }.replace("\n\n", "\n")
     return tableHeader + rows
 }

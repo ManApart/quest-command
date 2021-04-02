@@ -12,14 +12,17 @@ class AliasCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Alias:\n\tManage shortcuts for commands."
+        return "Manage shortcuts for commands."
     }
 
     override fun getManual(): String {
-        return "\n\tAlias - list existing aliases." +
-                "\n\tAlias create <word> <meaning> - from now on typing <word> will be the same as typing <meaning>." +
-                "\n\tAlias delete <word> - remove that alias." +
-                "\n\tHint: When creating a command you can use a single & to pipe multiple commands together. The single & will be replaced by && when the command is used."
+        return """ 
+    Alias - list existing aliases.
+    Alias create <word> <meaning> - from now on typing <word> will be the same as typing <meaning>.
+    Alias delete <word> - remove that alias.
+    Hint: When creating a command you can use a single & to pipe multiple commands together. The single & will be replaced by && when the command is used.
+        """
+
     }
 
     override fun getCategory(): List<String> {

@@ -17,7 +17,7 @@ class CookCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Cook:\n\tCook food"
+        return "Cook food"
     }
 
     override fun getManual(): String {
