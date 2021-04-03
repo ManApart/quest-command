@@ -23,11 +23,12 @@ class Adrenaline : SpellCommand() {
     override val name = "Adrenaline"
 
     override fun getDescription(): String {
-        return "Cast Adrenaline:\n\tIncrease how fast you can attack."
+        return "Increase how fast you can attack."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Adrenaline <amount> for <duration> on *<targets> - Increase action point gain. The higher the amount, faster the action point gain. Hindered by encumbrance and enhanced by higher agility."
+        return """
+	Cast Adrenaline <amount> for <duration> on *<targets> - Increase action point gain. The higher the amount, faster the action point gain. Hindered by encumbrance and enhanced by higher agility."""
     }
 
     override fun getCategory(): List<String> {

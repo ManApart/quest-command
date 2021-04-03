@@ -23,11 +23,12 @@ class Rock : SpellCommand() {
     override val name = "Rock"
 
     override fun getDescription(): String {
-        return "Cast Rock:\n\tHit the target with a rock."
+        return "Hit the target with a rock."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Rock <power> size <size> on <target> - Hit the target with a rock. Size can be 1, 2, or 3 (small, medium or large). Small size can be rapidly fired while larger sizes do more than linearly more damage, can cause stun, and take longer to fire."
+        return """
+	Cast Rock <power> size <size> on <target> - Hit the target with a rock. Size can be 1, 2, or 3 (small, medium or large). Small size can be rapidly fired while larger sizes do more than linearly more damage, can cause stun, and take longer to fire."""
     }
 
     override fun getCategory(): List<String> {

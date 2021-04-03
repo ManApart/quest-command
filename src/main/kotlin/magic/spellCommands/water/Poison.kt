@@ -22,11 +22,12 @@ class Poison : SpellCommand() {
     override val name = "Poison"
 
     override fun getDescription(): String {
-        return "Cast Poison:\n\tPoison a target, doing damage over time."
+        return "Poison a target, doing damage over time."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Poison <amount> for <duration> on *<targets> - Does damage over time."
+        return """
+	Cast Poison <amount> for <duration> on *<targets> - Does damage over time."""
     }
 
     override fun getCategory(): List<String> {

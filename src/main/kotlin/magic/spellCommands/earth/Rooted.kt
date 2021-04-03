@@ -21,11 +21,12 @@ class Rooted : SpellCommand() {
     override val name = "Rooted"
 
     override fun getDescription(): String {
-        return "Cast Rooted:\n\tEncase the target in earth to increase their defense."
+        return "Encase the target in earth to increase their defense."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Rooted <amount> for <duration> on <target> - Encase the target in earth to increase their defense. Increases defense by amount * percent encumbered. Fully encumbers target."
+        return """
+	Cast Rooted <amount> for <duration> on <target> - Encase the target in earth to increase their defense. Increases defense by amount * percent encumbered. Fully encumbers target."""
     }
 
     override fun getCategory(): List<String> {

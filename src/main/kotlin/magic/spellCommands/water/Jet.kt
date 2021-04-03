@@ -18,11 +18,12 @@ class Jet : SpellCommand() {
     override val name = "Jet"
 
     override fun getDescription(): String {
-        return "Cast Jet:\n\tBurst of water that does one time damage to one or more targets."
+        return "Burst of water that does one time damage to one or more targets."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Jet <damage amount> on *<targets> - Burst of water that does one time damage to one or more targets."
+        return """
+	Cast Jet <damage amount> on *<targets> - Burst of water that does one time damage to one or more targets."""
     }
 
     override fun getCategory(): List<String> {

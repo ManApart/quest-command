@@ -21,12 +21,13 @@ class Pull : SpellCommand() {
     override val name = "Pull"
 
     override fun getDescription(): String {
-        return "Cast Pull:\n\tPull targets closer to you."
+        return "Pull targets closer to you."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Pull <power> on *<targets> - Pull the targets a set distance closer to you. The higher the power, the further the target will be pulled. Lighter targets are pulled further." +
-                "\n\tCast Pull <power> towards <direction> on *<targets> - Pull the targets a set distance in the given direction."
+        return """
+	Cast Pull <power> on *<targets> - Pull the targets a set distance closer to you. The higher the power, the further the target will be pulled. Lighter targets are pulled further.
+	Cast Pull <power> towards <direction> on *<targets> - Pull the targets a set distance in the given direction."""
     }
 
     override fun getCategory(): List<String> {

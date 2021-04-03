@@ -21,12 +21,13 @@ class Push : SpellCommand() {
     override val name = "Push"
 
     override fun getDescription(): String {
-        return "Cast Push:\n\tPush targets away from you."
+        return "Push targets away from you."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Push <power> on *<targets> - Push the targets away from you. The higher the power, the further the target will be pushed. Lighter targets are pushed further." +
-                "\n\tCast Push <power> towards <direction> on *<targets> - Push the targets a set distance in the given direction."
+        return """
+	Cast Push <power> on *<targets> - Push the targets away from you. The higher the power, the further the target will be pushed. Lighter targets are pushed further.
+	Cast Push <power> towards <direction> on *<targets> - Push the targets a set distance in the given direction."""
     }
 
     override fun getCategory(): List<String> {

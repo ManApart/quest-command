@@ -22,11 +22,12 @@ class Heal : SpellCommand() {
     override val name = "Heal"
 
     override fun getDescription(): String {
-        return "Cast Heal:\n\tHeal yourself or others."
+        return "Heal yourself or others."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Heal <amount> for <duration> on *<targets> - Heals damage taken over time."
+        return """
+	Cast Heal <amount> for <duration> on *<targets> - Heals damage taken over time."""
     }
 
     override fun getCategory(): List<String> {

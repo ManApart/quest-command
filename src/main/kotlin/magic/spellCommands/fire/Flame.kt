@@ -24,11 +24,12 @@ class Flame : SpellCommand() {
     override val name = "Flame"
 
     override fun getDescription(): String {
-        return "Cast Flame:\n\tHigh damage short range attack that leaves the target burning."
+        return "High damage short range attack that leaves the target burning."
     }
 
     override fun getManual(): String {
-        return "\n\tCast Flame <power> on *<targets> - High damage short range attack that leaves the target burning. Burns caster a proportional amount (minus immunity)."
+        return """
+	Cast Flame <power> on *<targets> - High damage short range attack that leaves the target burning. Burns caster a proportional amount (minus immunity)."""
     }
 
     override fun getCategory(): List<String> {
