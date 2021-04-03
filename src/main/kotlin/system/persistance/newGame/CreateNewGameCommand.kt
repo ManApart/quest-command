@@ -15,7 +15,8 @@ class CreateNewGameCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tNew <name> - Create a new game with a specific name"
+        return """
+	New <name> - Create a new game with a specific name""""
     }
 
     override fun getCategory(): List<String> {

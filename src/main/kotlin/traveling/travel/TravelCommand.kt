@@ -21,10 +21,11 @@ class TravelCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tTravel to <location> - Start traveling to a location, if a route can be found." +
-                "\n\tTravel - Continue traveling to a goal location." +
-                "\n\tTravel s - The s flag silences travel, meaning a minimum amount of output" +
-                "\n\tTo view a route, see the Route command"
+        return """
+	Travel to <location> - Start traveling to a location, if a route can be found.
+	Travel - Continue traveling to a goal location.
+	Travel s - The s flag silences travel, meaning a minimum amount of output
+	To view a route, see the Route command""""
     }
 
     override fun getCategory(): List<String> {

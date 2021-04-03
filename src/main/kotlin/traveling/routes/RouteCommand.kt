@@ -21,9 +21,10 @@ class RouteCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tRoute - View your current route." +
-                "\n\tRoute *<location> - Find a route to <location>." +
-                "\n\tRoutes are used with the Move command."
+        return """
+	Route - View your current route.
+	Route *<location> - Find a route to <location>.
+	Routes are used with the Move command.""""
     }
 
     override fun getCategory(): List<String> {

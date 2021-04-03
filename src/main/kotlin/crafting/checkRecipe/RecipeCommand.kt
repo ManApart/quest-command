@@ -17,8 +17,9 @@ class RecipeCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tRecipe all - View the Recipes that you know." +
-                "\n\tRecipe <Recipe> - View the details of a recipe."
+        return """
+	Recipe all - View the Recipes that you know.
+	Recipe <Recipe> - View the details of a recipe.""""
     }
 
     override fun getCategory(): List<String> {

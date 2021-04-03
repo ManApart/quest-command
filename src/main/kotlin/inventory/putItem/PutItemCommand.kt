@@ -21,7 +21,8 @@ class PutItemCommand : core.commands.Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tPut <item> in <target> - Place an item from your inventory into another container."
+        return """
+	Put <item> in <target> - Place an item from your inventory into another container.""""
     }
 
     override fun getCategory(): List<String> {

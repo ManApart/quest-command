@@ -18,8 +18,9 @@ class ApproachCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tApproach <target> - Move to the target." +
-                "\n\tApproach <target> by <amount> - Move closer to the target by a certain amount."
+        return """
+	Approach <target> - Move to the target.
+	Approach <target> by <amount> - Move closer to the target by a certain amount.""""
     }
 
     override fun getCategory(): List<String> {

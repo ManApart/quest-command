@@ -21,12 +21,13 @@ class SpeakCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tSpeak with <target> - Start a conversation with someone." +
-                "\n\tTo stop talking, type 'goodbye' or 'exit'." +
-                "\n\tTo ask a question, end your statement with '?'." +
-                "\n\tEx: 'Where you are?'." +
-                "\n\tAvailable question types: " + QuestionType.values().map { it.name.toLowerCase().capitalize() } +
-                "\n\tAvailable verbs: " + Verb.values().map { it.name.toLowerCase().capitalize() }
+        return """
+	Speak with <target> - Start a conversation with someone.
+	To stop talking, type 'goodbye' or 'exit'.
+	To ask a question, end your statement with '?'.
+	Ex: 'Where you are?'.
+	Available question types:  QuestionType.values().map { it.name.toLowerCase().capitalize() } +
+	Available verbs:  Verb.values().map { it.name.toLowerCase().capitalize() }"""
     }
 
     override fun getCategory(): List<String> {

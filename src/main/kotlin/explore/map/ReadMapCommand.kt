@@ -18,8 +18,9 @@ class ReadMapCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tMap *<location> - List your current location (or given location) and the surrounding areas." +
-                "\n\tMap *depth - List neighbors to <depth> levels away from the location."
+        return """
+	Map *<location> - List your current location (or given location) and the surrounding areas.
+	Map *depth - List neighbors to <depth> levels away from the location.""""
     }
 
     override fun getCategory(): List<String> {

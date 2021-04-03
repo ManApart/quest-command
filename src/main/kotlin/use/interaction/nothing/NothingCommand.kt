@@ -19,7 +19,8 @@ class NothingCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tNothing - Do Nothing."
+        return """
+	Nothing - Do Nothing.""""
     }
 
     override fun getCategory(): List<String> {

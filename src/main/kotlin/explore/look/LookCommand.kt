@@ -17,8 +17,9 @@ class LookCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tLook all - View the objects you can interact with." +
-                "\n\tLook <target> - Look at a specific target."
+        return """
+	Look all - View the objects you can interact with.
+	Look <target> - Look at a specific target.""""
     }
 
     override fun getCategory(): List<String> {

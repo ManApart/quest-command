@@ -9,7 +9,7 @@ fun main() {
     val classes = ReflectionTools.getClasses(Command::class.java)
 
     classes.forEach { clean(it, it.declaredConstructors.first().newInstance() as Command) }
-//    classes.filter { it.simpleName == "AttackCommand"}.forEach { clean(it, it.declaredConstructors.first().newInstance() as Command) }
+//    classes.filter { it.simpleName == "SpeakCommand"}.forEach { clean(it, it.declaredConstructors.first().newInstance() as Command) }
 //    clean(classes.first(), classes.first().declaredConstructors.first().newInstance() as Command)
 
 }
@@ -26,7 +26,7 @@ fun clean(clazz: Class<*>, command: Command) {
     }
 
     val manSignature = classText.lineOf("override fun getManual(): String {")
-    if (classText[manSignature+1].contains("return = \"\n\t")) {
+    if (classText[manSignature+1].contains("return \"\\n\\t")) {
         val manClose = classText.lineOf("}", manSignature)
 
         (manSignature..manClose).forEach { i ->

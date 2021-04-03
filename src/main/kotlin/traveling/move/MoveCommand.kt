@@ -21,9 +21,10 @@ class MoveCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tMove to 0,1,0 - Move to a specific place within a location." +
-                "\n\tMove to <target> - Move to a target within a location." +
-                "\n\tMove <distance> towards <direction> - Move a set distance in a direction."
+        return """
+	Move to 0,1,0 - Move to a specific place within a location.
+	Move to <target> - Move to a target within a location.
+	Move <distance> towards <direction> - Move a set distance in a direction.""""
     }
 
     override fun getCategory(): List<String> {

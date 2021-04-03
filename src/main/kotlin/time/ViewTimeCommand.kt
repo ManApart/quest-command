@@ -13,7 +13,8 @@ class ViewTimeCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tTime - View the current time."
+        return """
+	Time - View the current time.""""
     }
 
     override fun getCategory(): List<String> {

@@ -19,7 +19,8 @@ class EatCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tEat <item> - Eat an item"
+        return """
+	Eat <item> - Eat an item""""
     }
 
     override fun getCategory(): List<String> {

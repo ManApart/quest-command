@@ -14,8 +14,9 @@ class PlayAsCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tBe ls - List characters in the current game" +
-                "\n\tBe <name> - Play as a specific character."
+        return """
+	Be ls - List characters in the current game
+	Be <name> - Play as a specific character.""""
     }
 
     override fun getCategory(): List<String> {

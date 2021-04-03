@@ -21,8 +21,9 @@ class UnEquipItemCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tUnEquip <item> - UnEquip an item" +
-                "\n\tUnEquip <body part> - UnEquip any items worn on a specific body part (ex: left hand) X"
+        return """
+	UnEquip <item> - UnEquip an item
+	UnEquip <body part> - UnEquip any items worn on a specific body part (ex: left hand) X""""
     }
 
     override fun getCategory(): List<String> {

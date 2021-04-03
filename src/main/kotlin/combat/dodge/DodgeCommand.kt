@@ -16,7 +16,8 @@ class DodgeCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tDodge <direction> *<distance> - Attempt to dodge a blow. Uses more stamina, but is faster than just moving."
+        return """
+	Dodge <direction> *<distance> - Attempt to dodge a blow. Uses more stamina, but is faster than just moving.""""
     }
 
     override fun getCategory(): List<String> {

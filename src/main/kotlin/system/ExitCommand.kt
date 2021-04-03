@@ -14,7 +14,8 @@ class ExitCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tExit - Exit the program."
+        return """
+	Exit - Exit the program.""""
     }
 
     override fun getCategory(): List<String> {

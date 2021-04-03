@@ -17,9 +17,10 @@ class JournalCommand : Command() {
     }
 
     override fun getManual(): String {
-        return "\n\tQuest active - View active Quests." +
-                "\n\tQuest all - View all quests." +
-                "\n\tQuest <quest> - View entries for a specific quest."
+        return """
+	Quest active - View active Quests.
+	Quest all - View all quests.
+	Quest <quest> - View entries for a specific quest.""""
     }
 
     override fun getCategory(): List<String> {
