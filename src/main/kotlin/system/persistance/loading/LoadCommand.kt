@@ -10,7 +10,7 @@ class LoadCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Load:\n\tLoad your game."
+        return "Load your game."
     }
 
     override fun getManual(): String {

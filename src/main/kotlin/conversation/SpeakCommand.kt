@@ -17,7 +17,7 @@ class SpeakCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Speak:\n\tStart a conversation with someone."
+        return "Start a conversation with someone."
     }
 
     override fun getManual(): String {

@@ -17,7 +17,7 @@ class RouteCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Route:\n\tView your current Route."
+        return "View your current Route."
     }
 
     override fun getManual(): String {

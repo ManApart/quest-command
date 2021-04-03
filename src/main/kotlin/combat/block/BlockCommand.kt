@@ -14,7 +14,7 @@ class BlockCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Block:\n\tAttempt to block a blow."
+        return "Attempt to block a blow."
     }
 
     override fun getManual(): String {

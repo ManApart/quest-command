@@ -13,7 +13,7 @@ class LookCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Look:\n\tObserve your surroundings."
+        return "Observe your surroundings."
     }
 
     override fun getManual(): String {

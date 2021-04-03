@@ -15,7 +15,7 @@ class EatCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Eat:\n\tEat an item"
+        return "Eat an item"
     }
 
     override fun getManual(): String {

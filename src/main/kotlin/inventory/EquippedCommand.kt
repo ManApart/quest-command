@@ -10,7 +10,7 @@ class EquippedCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Equipped:\n\tView what you currently have equipped"
+        return "View what you currently have equipped"
     }
 
     override fun getManual(): String {

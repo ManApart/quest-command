@@ -13,7 +13,7 @@ class ExamineCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Examine:\n\tExamine your surroundings in detail."
+        return "Examine your surroundings in detail."
     }
 
     override fun getManual(): String {

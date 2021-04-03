@@ -14,7 +14,7 @@ class StatusCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Status:\n\tGet information about your or something else's status"
+        return "Get information about your or something else's status"
     }
 
     override fun getManual(): String {

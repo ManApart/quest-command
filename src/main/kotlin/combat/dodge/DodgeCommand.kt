@@ -12,7 +12,7 @@ class DodgeCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Dodge:\n\tAttempt to dodge a blow."
+        return "Attempt to dodge a blow."
     }
 
     override fun getManual(): String {

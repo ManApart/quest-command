@@ -14,7 +14,7 @@ class RetreatCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Retreat:\n\tMove further from the target."
+        return "Move further from the target."
     }
 
     override fun getManual(): String {

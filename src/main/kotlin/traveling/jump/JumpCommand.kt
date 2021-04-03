@@ -14,7 +14,7 @@ class JumpCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Jump:\n\tJump over obstacles or down to a lower area."
+        return "Jump over obstacles or down to a lower area."
 
     }
 

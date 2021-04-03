@@ -17,7 +17,7 @@ class TravelCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Travel:\n\tTravel to different locations."
+        return "Travel to different locations."
     }
 
     override fun getManual(): String {

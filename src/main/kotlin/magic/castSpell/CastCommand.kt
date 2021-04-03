@@ -25,7 +25,7 @@ class CastCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Cast:\n\tSpeak a word of power."
+        return "Speak a word of power."
     }
 
     override fun getManual(): String {

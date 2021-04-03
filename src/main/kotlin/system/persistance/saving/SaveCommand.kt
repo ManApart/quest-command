@@ -9,7 +9,7 @@ class SaveCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Save:\n\tSave your game."
+        return "Save your game."
 
     }
 

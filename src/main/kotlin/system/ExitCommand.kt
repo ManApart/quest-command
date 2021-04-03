@@ -10,7 +10,7 @@ class ExitCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Exit:\n\tExit the program."
+        return "Exit the program."
     }
 
     override fun getManual(): String {

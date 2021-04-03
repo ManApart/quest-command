@@ -17,7 +17,7 @@ class MoveCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Move:\n\tMove within locations."
+        return "Move within locations."
     }
 
     override fun getManual(): String {

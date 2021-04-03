@@ -12,7 +12,7 @@ class UseCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Use:\n\tUse an item or your surroundings"
+        return "Use an item or your surroundings"
     }
 
     override fun getManual(): String {

@@ -14,7 +14,7 @@ class ApproachCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Approach:\n\tMove closer to the target."
+        return "Move closer to the target."
     }
 
     override fun getManual(): String {

@@ -11,7 +11,7 @@ class RedoCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Redo:\n\tRedo your last command."
+        return "Redo your last command."
     }
 
     override fun getManual(): String {

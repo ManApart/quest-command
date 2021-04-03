@@ -14,7 +14,7 @@ class RestCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Rest:\n\tRest and regain your stamina."
+        return "Rest and regain your stamina."
     }
 
     override fun getManual(): String {

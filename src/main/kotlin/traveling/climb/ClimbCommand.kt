@@ -20,7 +20,7 @@ class ClimbCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Climb:\n\tClimb over obstacles"
+        return "Climb over obstacles"
     }
 
     override fun getManual(): String {

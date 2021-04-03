@@ -13,7 +13,7 @@ class RecipeCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Recipe:\n\tView your recipes"
+        return "View your recipes"
     }
 
     override fun getManual(): String {
