@@ -26,8 +26,8 @@ class SpeakCommand : Command() {
 	To stop talking, type 'goodbye' or 'exit'.
 	To ask a question, end your statement with '?'.
 	Ex: 'Where you are?'.
-	Available question types:  QuestionType.values().map { it.name.toLowerCase().capitalize() } +
-	Available verbs:  Verb.values().map { it.name.toLowerCase().capitalize() }"""
+	Available question types:  ${QuestionType.values().map { it.name.toLowerCase().capitalize() }}
+	Available verbs:  ${Verb.values().map { it.name.toLowerCase().capitalize() }}"""
     }
 
     override fun getCategory(): List<String> {
