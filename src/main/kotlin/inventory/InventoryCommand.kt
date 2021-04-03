@@ -20,7 +20,7 @@ class InventoryCommand : Command() {
     override fun getManual(): String {
         return """
 	Bag - list items in your inventory.
-	Bag <target> - list items in the target's inventory, if possible.""""
+	Bag <target> - list items in the target's inventory, if possible."""
     }
 
     override fun getCategory(): List<String> {

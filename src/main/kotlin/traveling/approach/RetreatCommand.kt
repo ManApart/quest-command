@@ -20,7 +20,7 @@ class RetreatCommand : Command() {
     override fun getManual(): String {
         return """
 	Retreat from <target> - Move away from the target.
-	Retreat from <target> by <amount> - Move away from the target by the amount.""""
+	Retreat from <target> by <amount> - Move away from the target by the amount."""
     }
 
     override fun getCategory(): List<String> {

@@ -24,7 +24,7 @@ class RouteCommand : Command() {
         return """
 	Route - View your current route.
 	Route *<location> - Find a route to <location>.
-	Routes are used with the Move command.""""
+	Routes are used with the Move command."""
     }
 
     override fun getCategory(): List<String> {

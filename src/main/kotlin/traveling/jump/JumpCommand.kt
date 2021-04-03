@@ -21,7 +21,7 @@ class JumpCommand : Command() {
     override fun getManual(): String {
         return """
 	Jump <obstacle> - Jump over an obstacle. X
-	Jump - Jump down to the location below, possibly taking damage.""""
+	Jump - Jump down to the location below, possibly taking damage."""
     }
 
     override fun getCategory(): List<String> {

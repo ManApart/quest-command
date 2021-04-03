@@ -19,7 +19,7 @@ class ExamineCommand : Command() {
     override fun getManual(): String {
         return """
 	Examine all - Look more closely at your surroundings. Gives more detailed information than look, based on how perceptive you are.
-	Examine <target> - Look closely at a specific target.""""
+	Examine <target> - Look closely at a specific target."""
     }
 
     override fun getCategory(): List<String> {

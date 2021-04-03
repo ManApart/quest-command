@@ -26,7 +26,7 @@ class HistoryCommand : Command() {
         return """
 	History - View the recent chat history.
 	History <number> - View <number> lines of chat history
-	History responses - View both commands and responses""""
+	History responses - View both commands and responses"""
     }
 
     override fun getCategory(): List<String> {

@@ -25,7 +25,7 @@ class TravelCommand : Command() {
 	Travel to <location> - Start traveling to a location, if a route can be found.
 	Travel - Continue traveling to a goal location.
 	Travel s - The s flag silences travel, meaning a minimum amount of output
-	To view a route, see the Route command""""
+	To view a route, see the Route command"""
     }
 
     override fun getCategory(): List<String> {

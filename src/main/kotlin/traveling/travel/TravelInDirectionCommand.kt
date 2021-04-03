@@ -28,7 +28,7 @@ class TravelInDirectionCommand : Command() {
     override fun getManual(): String {
         return """
 	<direction> - Start moving to the nearest location in that direction, if it exists.
-	<direction> s - The s flag silences travel, meaning a minimum amount of output""""
+	<direction> s - The s flag silences travel, meaning a minimum amount of output"""
     }
 
     override fun getCategory(): List<String> {

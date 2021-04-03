@@ -21,7 +21,7 @@ class EquipItemCommand : Command() {
         return """
 	Equip <item> - Equip an item
 	Equip <item> to <body part> - Equip an item to a specific body part (ex: left hand). X
-	Equip <item> to <body part> f - Equip an item even if that means unequipping what's already equipped there. X""""
+	Equip <item> to <body part> f - Equip an item even if that means unequipping what's already equipped there. X"""
     }
 
     override fun getCategory(): List<String> {

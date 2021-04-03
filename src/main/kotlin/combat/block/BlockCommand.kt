@@ -20,7 +20,7 @@ class BlockCommand : Command() {
     override fun getManual(): String {
         return """
 	Block <direction> with <hand> - Attempt to block a direction with the item in your left/right hand. (Only works in battle).
-	You stop blocking next time you choose an action.""""
+	You stop blocking next time you choose an action."""
     }
 
     override fun getCategory(): List<String> {

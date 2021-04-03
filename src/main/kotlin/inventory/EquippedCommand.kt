@@ -15,7 +15,7 @@ class EquippedCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Equipped - View what you currently have equipped""""
+	Equipped - View what you currently have equipped"""
     }
 
     override fun getCategory(): List<String> {

@@ -17,7 +17,7 @@ class LoadCommand : Command() {
         return """
 	Load - Load your game.
 	Load ls - List games (which contain a world and character saves)
-	Load <name> - Load a game (which contains a world and character saves).""""
+	Load <name> - Load a game (which contains a world and character saves)."""
     }
 
     override fun getCategory(): List<String> {

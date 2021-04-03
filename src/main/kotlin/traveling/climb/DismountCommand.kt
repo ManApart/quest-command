@@ -18,7 +18,7 @@ class DismountCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Dismount -Stop climbing (only at top or bottom of obstacle)""""
+	Dismount -Stop climbing (only at top or bottom of obstacle)"""
     }
 
     override fun getCategory(): List<String> {

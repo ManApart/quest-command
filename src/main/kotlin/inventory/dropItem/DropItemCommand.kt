@@ -19,7 +19,7 @@ class DropItemCommand : core.commands.Command() {
     override fun getManual(): String {
         return """
 	Drop <item> - Drop an item an item from your inventory.
-	Place <item> at <vector> - Place the item at a specific place.""""
+	Place <item> at <vector> - Place the item at a specific place."""
     }
 
     override fun getCategory(): List<String> {

@@ -26,8 +26,8 @@ fun clean(clazz: Class<*>, command: Command) {
     }
 
     val manSignature = classText.lineOf("override fun getManual(): String {")
+    val manClose = classText.lineOf("}", manSignature)
     if (classText[manSignature+1].contains("return \"\\n\\t")) {
-        val manClose = classText.lineOf("}", manSignature)
 
         (manSignature..manClose).forEach { i ->
             classText[i] = classText[i]
@@ -39,6 +39,11 @@ fun clean(clazz: Class<*>, command: Command) {
         }
         classText[manClose - 1] = classText[manClose - 1] + "\"\"\""
     }
+
+    if (classText[manClose-1].endsWith("\"\"\"\"")) {
+        classText[manClose-1] = classText[manClose-1].replace("\"\"\"\"", "\"\"\"")
+    }
+
 
 //    println(classText.joinToString("\n"))
     classFile.printWriter().use {

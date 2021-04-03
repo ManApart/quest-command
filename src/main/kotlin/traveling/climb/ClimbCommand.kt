@@ -28,7 +28,7 @@ class ClimbCommand : Command() {
 	Climb <part> of <target> - Climb (onto) the target
 	Climb <direction> - Continue climbing in <direction>
 	Climb to <part> - Climb to <part>
-	Climb s - The s flag silences travel, meaning a minimum amount of output""""
+	Climb s - The s flag silences travel, meaning a minimum amount of output"""
     }
 
     override fun getCategory(): List<String> {

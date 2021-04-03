@@ -20,7 +20,7 @@ class JournalCommand : Command() {
         return """
 	Quest active - View active Quests.
 	Quest all - View all quests.
-	Quest <quest> - View entries for a specific quest.""""
+	Quest <quest> - View entries for a specific quest."""
     }
 
     override fun getCategory(): List<String> {

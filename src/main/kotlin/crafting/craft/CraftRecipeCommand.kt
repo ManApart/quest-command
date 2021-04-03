@@ -19,7 +19,7 @@ class CraftRecipeCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Craft <Recipe> - Craft a recipe.""""
+	Craft <Recipe> - Craft a recipe."""
     }
 
     override fun getCategory(): List<String> {

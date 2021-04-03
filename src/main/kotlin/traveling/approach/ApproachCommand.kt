@@ -20,7 +20,7 @@ class ApproachCommand : Command() {
     override fun getManual(): String {
         return """
 	Approach <target> - Move to the target.
-	Approach <target> by <amount> - Move closer to the target by a certain amount.""""
+	Approach <target> by <amount> - Move closer to the target by a certain amount."""
     }
 
     override fun getCategory(): List<String> {

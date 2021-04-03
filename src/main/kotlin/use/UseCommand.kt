@@ -18,7 +18,7 @@ class UseCommand : Command() {
     override fun getManual(): String {
         return """
 	Use <item> - Interact with an item or target
-	Use <item> on <target> - Use an item on a target.""""
+	Use <item> on <target> - Use an item on a target."""
     }
 
     override fun getCategory(): List<String> {

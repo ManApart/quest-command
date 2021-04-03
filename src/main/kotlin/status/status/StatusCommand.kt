@@ -20,7 +20,7 @@ class StatusCommand : Command() {
     override fun getManual(): String {
         return """
 	Status - Get your current status
-	Status <target> - Get the status of a target.""""
+	Status <target> - Get the status of a target."""
     }
 
     override fun getCategory(): List<String> {

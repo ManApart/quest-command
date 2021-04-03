@@ -20,7 +20,7 @@ class NothingCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Nothing - Do Nothing.""""
+	Nothing - Do Nothing."""
     }
 
     override fun getCategory(): List<String> {

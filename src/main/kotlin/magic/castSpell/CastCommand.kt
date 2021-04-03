@@ -36,7 +36,7 @@ class CastCommand : Command() {
     Simple Example:
         Cast shard 5 on bandit - This would cast an ice shard with 5 points of damage at a random body part of the bandit.
     Complicated Example:
-        Cast shard 5 on left arm chest of bandit and head of rat - This would cast an ice shard with five damage at the left arm of the bandit, another at the bandit's chest, and a third at the head of the rat.""""
+        Cast shard 5 on left arm chest of bandit and head of rat - This would cast an ice shard with five damage at the left arm of the bandit, another at the bandit's chest, and a third at the head of the rat."""
     }
 
     override fun getCategory(): List<String> {

@@ -20,7 +20,7 @@ class EatCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Eat <item> - Eat an item""""
+	Eat <item> - Eat an item"""
     }
 
     override fun getCategory(): List<String> {

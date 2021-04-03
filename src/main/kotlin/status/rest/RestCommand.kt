@@ -20,7 +20,7 @@ class RestCommand : Command() {
     override fun getManual(): String {
         return """
 	Rest - Rest for an hour.
-	Rest <duration> - Rest for a set amount of time.""""
+	Rest <duration> - Rest for a set amount of time."""
     }
 
     override fun getCategory(): List<String> {

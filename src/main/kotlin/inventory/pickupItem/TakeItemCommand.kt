@@ -22,7 +22,7 @@ class TakeItemCommand : core.commands.Command() {
     override fun getManual(): String {
         return """
 	Take <item> - take an item.
-	Take <item> from <target> - take item from target's inventory, if possible.""""
+	Take <item> from <target> - take item from target's inventory, if possible."""
     }
 
     override fun getCategory(): List<String> {
