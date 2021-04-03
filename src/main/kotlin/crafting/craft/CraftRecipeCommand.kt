@@ -14,7 +14,7 @@ class CraftRecipeCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Craft:\n\tCraft a recipe you know"
+        return "Craft a recipe you know"
     }
 
     override fun getManual(): String {

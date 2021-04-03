@@ -14,7 +14,7 @@ class ReadMapCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Map:\n\tGet information on your current and other locations."
+        return "Get information on your current and other locations."
     }
 
     override fun getManual(): String {

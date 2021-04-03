@@ -17,7 +17,7 @@ class PutItemCommand : core.commands.Command() {
     }
 
     override fun getDescription(): String {
-        return "Put:\n\tPut an item from your inventory into another container."
+        return "Put an item from your inventory into another container."
     }
 
     override fun getManual(): String {

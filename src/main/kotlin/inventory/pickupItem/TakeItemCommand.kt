@@ -16,7 +16,7 @@ class TakeItemCommand : core.commands.Command() {
     }
 
     override fun getDescription(): String {
-        return "Take:\n\tAdd an item to your inventory."
+        return "Add an item to your inventory."
     }
 
     override fun getManual(): String {

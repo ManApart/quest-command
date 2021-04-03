@@ -10,7 +10,7 @@ class PlayAsCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Be:\n\tBe a different character that you have unlocked."
+        return "Be a different character that you have unlocked."
     }
 
     override fun getManual(): String {

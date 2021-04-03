@@ -9,7 +9,7 @@ class ViewTimeCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Time:\n\tView the current time."
+        return "View the current time."
     }
 
     override fun getManual(): String {

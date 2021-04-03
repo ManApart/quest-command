@@ -17,7 +17,7 @@ class UnEquipItemCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "UnEquip:\n\tUnEquip an item you're wearing"
+        return "UnEquip an item you're wearing"
     }
 
     override fun getManual(): String {

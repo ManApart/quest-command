@@ -14,7 +14,7 @@ class EquipItemCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Equip:\n\tEquip an item from your inventory"
+        return "Equip an item from your inventory"
     }
 
     override fun getManual(): String {

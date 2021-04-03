@@ -13,7 +13,7 @@ class DropItemCommand : core.commands.Command() {
     }
 
     override fun getDescription(): String {
-        return "Drop:\n\tDrop an item from your inventory onto the ground."
+        return "Drop an item from your inventory onto the ground."
     }
 
     override fun getManual(): String {

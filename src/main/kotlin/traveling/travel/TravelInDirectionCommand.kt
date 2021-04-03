@@ -22,7 +22,7 @@ class TravelInDirectionCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Direction:\n\tMove to the nearest location in the specified direction."
+        return "Move to the nearest location in the specified direction."
     }
 
     override fun getManual(): String {

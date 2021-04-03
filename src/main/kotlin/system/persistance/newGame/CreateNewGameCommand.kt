@@ -10,7 +10,7 @@ class CreateNewGameCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "New:\n\tCreate a new game."
+        return "Create a new game."
 
     }
 

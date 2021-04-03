@@ -19,10 +19,12 @@ fun clean(clazz: Class<*>, command: Command) {
     val classFile = File("./src/main/kotlin/" + clazz.name.replace(".", "/") + ".kt")
     val classText = classFile.readText().split("\n").toMutableList()
 
-    if (command.getDescription().startsWith("$name:\n\t")) {
+    if (command.getDescription().startsWith("$name:\n\t") || command.getAliases().any { command.getDescription().startsWith("$it:\n\t") }) {
         val descriptionSignature = classText.lineOf("override fun getDescription(): String {")
+        val newLine = (listOf(classText[descriptionSignature+1]) + command.getAliases() + listOf(name)).reduce { acc, alias -> acc.replace("$alias:\\n\\t", "") }
 
-        classText[descriptionSignature+1] = classText[descriptionSignature+1].replace("$name:\\n\\t", "")
+        classText[descriptionSignature+1] = newLine
+//        classText[descriptionSignature+1] = classText[descriptionSignature+1].replace("$name:\\n\\t", "")
     }
 
     val manSignature = classText.lineOf("override fun getManual(): String {")

@@ -14,13 +14,13 @@ class NothingCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Nothing\n\tLike resting, but less useful." +
-                "\n\tNothing <duration> - Do nothing for a set amount of time."
+        return "Nothing - Do Nothing."
     }
 
     override fun getManual(): String {
         return """
-	Nothing - Do Nothing."""
+    Like resting, but less useful.
+    Nothing <duration> - Do nothing for a set amount of time."""
     }
 
     override fun getCategory(): List<String> {

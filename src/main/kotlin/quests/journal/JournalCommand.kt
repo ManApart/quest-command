@@ -13,7 +13,7 @@ class JournalCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Quest:\n\tView your active and completed Quests."
+        return "View your active and completed Quests."
     }
 
     override fun getManual(): String {

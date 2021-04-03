@@ -14,7 +14,7 @@ class InventoryCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Bag:\n\tView and manage your inventory."
+        return "View and manage your inventory."
     }
 
     override fun getManual(): String {
