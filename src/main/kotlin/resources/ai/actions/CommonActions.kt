@@ -1,9 +1,11 @@
 package resources.ai.actions
 
-import core.ai.action.AIAction
 import core.ai.action.dsl.AIActionResource
+import core.ai.action.dsl.actions
 
 class CommonActions : AIActionResource {
-    override val values =  listOf<AIAction>()
+    override val values =  actions {
 
+
+    }.build()
 }

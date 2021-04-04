@@ -21,7 +21,7 @@ class SpeakCommand : Command() {
     }
 
     override fun getManual(): String {
-        return """
+        return """  
 	Speak with <target> - Start a conversation with someone.
 	To stop talking, type 'goodbye' or 'exit'.
 	To ask a question, end your statement with '?'.
