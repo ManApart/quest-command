@@ -13,7 +13,6 @@ object AIManager {
 
     private var AIs = aIsCollection.values.toNameSearchableList()
     private var actions = actionsCollection.values.toNameSearchableList()
-
     private val defaultAI = AIBase("NONE")
     private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
 

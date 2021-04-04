@@ -7,11 +7,12 @@ import core.utility.Named
 
 class AIAction(
     override val name: String,
-    private val condition: (Target) -> Boolean = { true},
+    private val conditions: List<(Target) -> Boolean> = listOf(),
     private val createEvents: (Target) -> List<Event> = { listOf()},
+    val priority: Int = 10
 ) : Named {
     fun canRun(owner: Target): Boolean {
-        return condition(owner)
+        return conditions.all { it(owner) }
     }
 
     fun execute(owner: Target) {

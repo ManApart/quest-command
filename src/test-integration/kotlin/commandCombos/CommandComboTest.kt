@@ -9,6 +9,7 @@ import org.junit.Before
 import org.junit.Test
 import quests.QuestManager
 import status.stat.HEALTH
+import system.debug.DebugType
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -94,6 +95,14 @@ class CommandComboTest {
         val input = "slash body of rat && r && r"
         CommandParser.parseCommand(input)
         assertEquals("Rat has died.", ChatHistory.getLastOutput())
+    }
+
+    @Test
+    fun ratFightsBack() {
+        GameState.properties.values.put(DebugType.RANDOM_SUCCEED.propertyName, true)
+        CommandParser.parseCommand("s && nothing && nothing && nothing && nothing")
+ChatHistory.getLastInput()
+        assertEquals("Oh dear, you have died!", ChatHistory.getLastOutput())
     }
 
     @Test

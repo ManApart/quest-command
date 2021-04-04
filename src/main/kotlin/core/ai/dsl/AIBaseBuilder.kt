@@ -1,7 +1,6 @@
 package core.ai.dsl
 
 import core.ai.AIBase
-import core.ai.AIManager
 import java.lang.IllegalArgumentException
 
 class AIBaseBuilder(val name: String) {
@@ -11,15 +10,13 @@ class AIBaseBuilder(val name: String) {
     private val completeActionList = mutableSetOf<String>()
     private var prepped = false
 
-
     fun build(): AIBase {
-        val actions = completeActionList.map { AIManager.getAIAction(it) }
-        return AIBase(name, actions)
+        return AIBase(name, completeActionList.toList())
     }
 
     fun prep(aiBuilders: Map<String, AIBaseBuilder>, dependents: MutableSet<AIBaseBuilder> = mutableSetOf()) {
-        if (dependents.contains(this)){
-            throw IllegalArgumentException("Circular Dependency found with $name in list ${dependents.joinToString(",") { it.name}}")
+        if (dependents.contains(this)) {
+            throw IllegalArgumentException("Circular Dependency found with $name in list ${dependents.joinToString(",") { it.name }}")
         }
         if (!prepped) {
             inheritFromParent(aiBuilders, dependents)

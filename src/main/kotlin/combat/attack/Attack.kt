@@ -43,7 +43,8 @@ class Attack : EventListener<AttackEvent>() {
         }
 
         if (attackedParts.isEmpty()) {
-            display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")}!")
+            val missedParts = event.target.bodyPartTargets.joinToString(", ") { it.name }
+            display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")} $missedParts!")
         } else {
             val verb = StringFormatter.format(event.source.isPlayer(), event.type.verbPlural, event.type.verb)
 //            display("$subject $verb at $defenderName.")

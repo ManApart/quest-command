@@ -11,8 +11,10 @@ class CommonAI : AIResource {
             exclude = listOf("action")
         }
         ai("Cowardly Predator") {
+            additional = listOf("Nothing", "Rat Attack")
         }
         ai("Commoner") {
+            additional = listOf("Nothing")
         }
     }.build()
 }

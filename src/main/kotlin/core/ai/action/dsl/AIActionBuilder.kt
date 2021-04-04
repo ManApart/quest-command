@@ -30,8 +30,8 @@ class AIActionBuilder(val condition: (Target) -> Boolean) {
         val evaluations = mutableListOf<AIAction>()
         val usedPriority = priority ?: (10 + depthScale * depth)
 
-        protoActions.forEach { result ->
-            evaluations.add(AIAction(conditions, result, usedPriority))
+        protoActions.forEach { protoAction ->
+            evaluations.add(AIAction(protoAction.name, conditions, protoAction.createEvents, usedPriority))
         }
 
         if (children.isNotEmpty()) {

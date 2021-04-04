@@ -29,6 +29,14 @@ object RandomManager {
         return list[getRandom(0, list.size - 1)]
     }
 
+    fun <E> getRandomOrNull(list: List<E>): E? {
+        return if (list.isEmpty()) {
+            null
+        } else {
+            list[getRandom(0, list.size - 1)]
+        }
+    }
+
     fun getRandom(min: Int, max: Int): Int {
         if (GameState.properties.values.hasInt(DebugType.RANDOM_RESPONSE.propertyName)) {
             return GameState.properties.values.getInt(DebugType.RANDOM_RESPONSE.propertyName)
