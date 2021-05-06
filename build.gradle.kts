@@ -15,13 +15,10 @@ repositories {
 dependencies {
     implementation("org.reflections:reflections:0.9.12")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0")
-//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.3")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
-    testImplementation("junit:junit:4.12")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.0")
 
-//    testImplementation(kotlin("test-testng"))
 }
 
 sourceSets.getByName("main") {
