@@ -20,6 +20,9 @@ Run `gradlew build jar` to build a jar. This should be found in `QuestCommand/bu
 #### PackageName Unresolved
 Getting `Unresolved reference: packageName`? You're probably running gradle on something less than 11. Check `java -version` on the terminal and Settings > Build Execution Deployment > Gradle has Gradle JVM set appropriately
 
+#### Checking for later versions
+Run `./gradlew dependencyUpdates` to check for later versions of dependencies
+
 ### Running
 Try any one of the below: 
 

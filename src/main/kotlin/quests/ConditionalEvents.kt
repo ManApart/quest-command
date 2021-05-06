@@ -15,6 +15,7 @@ data class ConditionalEvents<E: Event>(
     }
 
     fun execute(event: Event) {
+        @Suppress("UNCHECKED_CAST")
         createEvents(event as E, params).forEach { EventManager.postEvent(it) }
     }
 }
