@@ -1,14 +1,15 @@
 package traveling.jump
 
-import core.events.EventListener
 import core.GameState
-import traveling.location.location.LocationPoint
+import core.events.EventListener
+import core.events.EventManager
+import core.history.display
 import status.stat.AGILITY
 import status.stat.HEALTH
-import core.history.display
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
 import traveling.arrive.ArriveEvent
+import traveling.location.location.LocationPoint
+import kotlin.math.max
 
 class PlayerFall : EventListener<FallEvent>() {
     override fun shouldExecute(event: FallEvent): Boolean {
@@ -27,7 +28,7 @@ class PlayerFall : EventListener<FallEvent>() {
 
     private fun takeDamage(event: FallEvent) {
         //TODO add defense per their foot defense
-        val amount = Math.max(0, event.fallHeight - event.creature.soul.getCurrent(AGILITY))
+        val amount = max(0, event.fallHeight - event.creature.soul.getCurrent(AGILITY))
         if (amount != 0) {
             EventManager.postEvent(StatChangeEvent(event.creature, "Falling", HEALTH, -amount))
         } else {

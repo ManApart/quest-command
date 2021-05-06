@@ -40,7 +40,7 @@ class ExamineCommand : Command() {
     private fun clarifyTarget() {
         val targets  = (listOf("all") + GameState.currentLocation().getTargets().map { it.name })
         val message = "Examine what?\n\t${targets.joinToString(", ")}"
-        val response = ResponseRequest(message, targets.map { it to "examine $it" }.toMap())
+        val response = ResponseRequest(message, targets.associateWith { "examine $it" })
         CommandParser.setResponseRequest(response)
     }
 

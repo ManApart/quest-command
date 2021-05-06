@@ -20,8 +20,10 @@ class PlayAs : EventListener<PlayAsEvent>() {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }
-        val noMatchResponse = ResponseRequest("Could not find a match for $playerSaveName. What character would you like to play?\n\t${allSaves.joinToString(", ")}", allSaves.map { it to "Be $it" }.toMap())
-        val tooManyMatchesResponse = ResponseRequest("What character would you like to play?\n\t${saves.joinToString(", ")}", saves.map { it to "Be $it" }.toMap())
+        val noMatchResponse = ResponseRequest("Could not find a match for $playerSaveName. What character would you like to play?\n\t${allSaves.joinToString(", ")}",
+            allSaves.associateWith { "Be $it" })
+        val tooManyMatchesResponse = ResponseRequest("What character would you like to play?\n\t${saves.joinToString(", ")}",
+            saves.associateWith { "Be $it" })
         when {
             saves.isEmpty() -> CommandParser.setResponseRequest(noMatchResponse)
             saves.size > 1 -> CommandParser.setResponseRequest(tooManyMatchesResponse)

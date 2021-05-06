@@ -40,7 +40,8 @@ class Flame : SpellCommand() {
         val initialPower = args.getBaseNumber()
 
         val powerOptions = listOf("1", "3", "5", "10", "50", "#")
-        val powerResponse = ResponseRequest("Cast Flame with what power?", powerOptions.map { it to "cast flame $it on ${targets.toCommandString()}" }.toMap())
+        val powerResponse = ResponseRequest("Cast Flame with what power?",
+            powerOptions.associateWith { "cast flame $it on ${targets.toCommandString()}" })
 
         val responseHelper = ResponseRequestHelper(mapOf(
                 "power" to ResponseRequestWrapper(initialPower, powerResponse, useDefaults, 1)

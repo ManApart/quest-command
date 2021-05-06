@@ -63,12 +63,12 @@ class TravelInDirectionCommand : Command() {
     private fun clarifyDirection() {
         val targets = Direction.values().map { it.name }
         val message = "Travel in which direction?"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to it }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { it }))
     }
 
     private fun requestLocation(openNeighbors: List<LocationNode>) {
         val message = "Travel towards what location?\n\t${openNeighbors.joinToString(", ")}"
-        val response = ResponseRequest(message, openNeighbors.map { it.name to "travel ${it.name}" }.toMap())
+        val response = ResponseRequest(message, openNeighbors.associate { it.name to "travel ${it.name}" })
          CommandParser.setResponseRequest(response)
     }
 

@@ -52,7 +52,7 @@ class ConditionalStringValidator {
     }
 
     private fun noDuplicateKeys(): Int {
-        return ConditionalStringType.values().map { noDuplicateKeys(it) }.sum()
+        return ConditionalStringType.values().sumOf { noDuplicateKeys(it) }
     }
 
     private fun noDuplicateKeys(type: ConditionalStringType): Int {

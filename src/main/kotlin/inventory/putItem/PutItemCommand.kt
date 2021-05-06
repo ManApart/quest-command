@@ -42,7 +42,7 @@ class PutItemCommand : core.commands.Command() {
     private fun clarifyItemToPlace() {
         val targets = GameState.player.inventory.getItems().map { it.name }
         val message = "Give what item?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "place $it in" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "place $it in" }))
     }
 
     private fun placeItemInContainer(args: Args) {
@@ -62,7 +62,7 @@ class PutItemCommand : core.commands.Command() {
 
     private fun giveToWhat(creatures: List<Target>, itemName: String) {
         val message = "Give $itemName to what?\n\t${creatures.joinToString(", ")}"
-        val response = ResponseRequest(message, creatures.map { it.name to "give $itemName to ${it.name}" }.toMap())
+        val response = ResponseRequest(message, creatures.associate { it.name to "give $itemName to ${it.name}" })
          CommandParser.setResponseRequest(response)
     }
 

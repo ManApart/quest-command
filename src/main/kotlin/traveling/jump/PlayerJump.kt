@@ -1,15 +1,17 @@
 package traveling.jump
 
-import core.events.EventListener
 import core.GameState
-import traveling.position.NO_VECTOR
-import traveling.location.location.LocationPoint
+import core.events.EventListener
+import core.events.EventManager
+import core.history.display
 import status.stat.AGILITY
 import status.stat.HEALTH
-import core.history.display
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
 import traveling.arrive.ArriveEvent
+import traveling.location.location.LocationPoint
+import traveling.position.NO_VECTOR
+import kotlin.math.abs
+import kotlin.math.max
 
 class PlayerJump : EventListener<JumpEvent>() {
     override fun shouldExecute(event: JumpEvent): Boolean {
@@ -33,11 +35,11 @@ class PlayerJump : EventListener<JumpEvent>() {
     private fun calculateJumpDamage(event: JumpEvent): Int {
         val soul = event.creature.soul
         val position = event.source.getConnection(event.destination)?.vector ?: NO_VECTOR
-        val height = event.fallDistance ?: Math.abs(position.z)
+        val height = event.fallDistance ?: abs(position.z)
         val damage = height - 2*soul.getCurrent(AGILITY)
 
         //TODO - look at foot defense and factor that in
         //TODO - factor in encumbrance. The higher the encumbrance, the greater the damage
-        return -Math.max(damage, 0)
+        return -max(damage, 0)
     }
 }

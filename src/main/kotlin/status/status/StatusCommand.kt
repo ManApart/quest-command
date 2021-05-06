@@ -40,7 +40,7 @@ class StatusCommand : Command() {
     private fun clarifyStatus() {
         val targets = GameState.currentLocation().getCreatures().map { it.name }
         val message = "Status of what?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "status $it" }.toMap()))
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "status $it" }))
     }
 
 

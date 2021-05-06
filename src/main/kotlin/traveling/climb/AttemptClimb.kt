@@ -1,23 +1,24 @@
 package traveling.climb
 
-import core.events.EventListener
-import traveling.direction.Direction
 import core.GameState
-import core.target.Target
-import traveling.location.location.LocationNode
-import traveling.location.location.LocationPoint
-import traveling.location.RouteFinder
-import status.stat.CLIMBING
-import status.stat.STAMINA
+import core.events.EventListener
+import core.events.EventManager
 import core.history.display
+import core.target.Target
 import core.utility.RandomManager
 import core.utility.StringFormatter
-import time.ViewTimeEvent
 import status.ExpGainedEvent
+import status.stat.CLIMBING
+import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
+import time.ViewTimeEvent
 import traveling.arrive.ArriveEvent
+import traveling.direction.Direction
 import traveling.jump.FallEvent
+import traveling.location.RouteFinder
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationPoint
+import kotlin.math.max
 
 class AttemptClimb : EventListener<AttemptClimbEvent>() {
     override fun shouldExecute(event: AttemptClimbEvent): Boolean {
@@ -63,7 +64,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         //TODO - segment difficulty by material
         val skill = creature.soul.getCurrent(CLIMBING)
         val segmentDifficulty = 1
-        val challenge = Math.max(segmentDistance * segmentDifficulty, 1)
+        val challenge = max(segmentDistance * segmentDifficulty, 1)
         return skill / challenge.toDouble()
     }
 

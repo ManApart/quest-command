@@ -54,25 +54,25 @@ class UseCommand : Command() {
     private fun clarifyAction() {
         val targets = listOf("Use Item", "Use Item on Target")
         val message = "Do what?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to it }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { it }))
     }
 
     private fun clarifyItem() {
         val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $it" }))
     }
 
     private fun clarifyItemForTarget() {
         val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $it on" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $it on" }))
     }
 
     private fun clarifyTarget(used: String) {
         val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
         val message = "Use $used on what?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "use $used on $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $used on $it" }))
     }
 
 }

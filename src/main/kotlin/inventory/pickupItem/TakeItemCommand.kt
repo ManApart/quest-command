@@ -52,7 +52,7 @@ class TakeItemCommand : core.commands.Command() {
             display("Nothing to pickup!")
         } else {
             val message = "Take which item?\n\t${items.joinToString(", ")}"
-            val response = ResponseRequest(message, items.map { it.name to "take ${it.name}" }.toMap())
+            val response = ResponseRequest(message, items.associate { it.name to "take ${it.name}" })
             CommandParser.setResponseRequest(response)
         }
     }
@@ -68,7 +68,7 @@ class TakeItemCommand : core.commands.Command() {
 
     private fun takeFromWhat(creatures: List<Target>, itemName: String) {
         val message = "Take $itemName from what?\n\t${creatures.joinToString(", ")}"
-        val response = ResponseRequest(message, creatures.map { it.name to "take $itemName from ${it.name}." }.toMap())
+        val response = ResponseRequest(message, creatures.associate { it.name to "take $itemName from ${it.name}." })
         CommandParser.setResponseRequest(response)
     }
 

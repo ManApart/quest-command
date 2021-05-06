@@ -39,8 +39,10 @@ class Rooted : SpellCommand() {
         val initialDuration = spellArgs.getNumber("for")
 
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Increase defense how much?", options.map { it to "cast rooted $it for ${initialDuration.toString()} on ${targets.toCommandString()}" }.toMap())
-        val durationResponse = ResponseRequest("Increase for how long?", options.map { it to "cast rooted ${initialPower.toString()} for $it on ${targets.toCommandString()}" }.toMap())
+        val amountResponse = ResponseRequest("Increase defense how much?",
+            options.associateWith { "cast rooted $it for ${initialDuration.toString()} on ${targets.toCommandString()}" })
+        val durationResponse = ResponseRequest("Increase for how long?",
+            options.associateWith { "cast rooted ${initialPower.toString()} for $it on ${targets.toCommandString()}" })
         val responseHelper = ResponseRequestHelper(mapOf(
                 "power" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)

@@ -63,19 +63,19 @@ class HelpCommand : Command() {
     private fun clarifyCommandGroupHelp() {
         val targets = getCommandGroups()
         val message = "Help about which command group?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "help $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "help $it" }))
     }
 
     private fun clarifyCommandFromGroupHelp() {
         val targets = getCommandGroups()
         val message = "Help about a command from which command group?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "help command $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "help command $it" }))
     }
 
     private fun clarifyCommandHelp(group: String) {
         val targets = getCommands(group).map { it.name }
         val message = "Help about what command?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "help $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "help $it" }))
     }
 
 }

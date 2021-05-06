@@ -52,13 +52,13 @@ class JournalCommand : Command() {
     private fun clarifyQuest() {
         val targets = listOf("Active", "All", "Quest")
         val message = "Info about what type?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "quest $it" }.toMap()))
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "quest $it" }))
     }
 
     private fun clarifyWhichQuest() {
         val targets = QuestManager.getAllPlayerQuests().map { it.name }
         val message = "Info about which quest?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.map { it to "quest $it" }.toMap()))
+        CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "quest $it" }))
     }
 
 }

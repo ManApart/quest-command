@@ -41,9 +41,11 @@ class Rock : SpellCommand() {
         val initialSize = spellArgs.getNumber("size")
 
         val powerOptions = listOf("1", "3", "5", "10", "50", "#")
-        val powerResponse = ResponseRequest("Cast Rock with what power?", powerOptions.map { it to "cast rock $it size ${initialSize ?: ""} on ${targets.toCommandString()}" }.toMap())
+        val powerResponse = ResponseRequest("Cast Rock with what power?",
+            powerOptions.associateWith { "cast rock $it size ${initialSize ?: ""} on ${targets.toCommandString()}" })
         val sizeOptions = listOf("1", "2", "3")
-        val sizeResponse = ResponseRequest("Cast Rock with what size?", sizeOptions.map { it to "cast rock ${initialPower ?: ""} size $it on ${targets.toCommandString()}" }.toMap())
+        val sizeResponse = ResponseRequest("Cast Rock with what size?",
+            sizeOptions.associateWith { "cast rock ${initialPower ?: ""} size $it on ${targets.toCommandString()}" })
 
         val responseHelper = ResponseRequestHelper(mapOf(
                 "power" to ResponseRequestWrapper(initialPower, powerResponse, useDefaults, 1),

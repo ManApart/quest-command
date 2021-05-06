@@ -40,7 +40,7 @@ class LookCommand : Command() {
     private fun clarifyTarget() {
         val targets  = (listOf("all") + GameState.currentLocation().getTargets().map { it.name })
         val message = "Look at what?\n\t${targets.joinToString(", ")}"
-        val response = ResponseRequest(message, targets.map { it to "look $it" }.toMap())
+        val response = ResponseRequest(message, targets.associateWith { "look $it" })
         CommandParser.setResponseRequest(response)
     }
 

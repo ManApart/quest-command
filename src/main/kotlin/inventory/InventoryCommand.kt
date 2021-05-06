@@ -45,7 +45,7 @@ class InventoryCommand : Command() {
     private fun clarifyTarget(targets: List<Target>) {
         val names = targets.map { it.name }
         val message = "View whose inventory?\n\t${names.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, names.map { it to "bag $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, names.associateWith { "bag $it" }))
     }
 
 

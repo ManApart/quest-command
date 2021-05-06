@@ -1,12 +1,12 @@
 package inventory.equipItem
 
-import core.commands.*
 import core.GameState
-import core.target.Target
 import core.body.Body
 import core.body.Slot
-import core.history.display
+import core.commands.*
 import core.events.EventManager
+import core.history.display
+import core.target.Target
 
 class EquipItemCommand : Command() {
     override fun getAliases(): List<String> {
@@ -86,7 +86,7 @@ class EquipItemCommand : Command() {
     private fun suggestEquippableItems() {
         val equippableItems = getEquipableItems()
         val message = "What do you want to equip?\n\t${equippableItems.joinToString(", ")}"
-        val response = ResponseRequest(message, equippableItems.map { it.name to "equip ${it.name}" }.toMap())
+        val response = ResponseRequest(message, equippableItems.associate { it.name to "equip ${it.name}" })
          CommandParser.setResponseRequest(response)
     }
 
@@ -98,7 +98,8 @@ class EquipItemCommand : Command() {
 
     private fun suggestAttachPoints(attachPointGuess: String?, item: Target) {
         val message = "Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}"
-        val response = ResponseRequest(message, item.equipSlots.flatMap { it.attachPoints }.map { it to "equip $item to $it" }.toMap())
+        val response = ResponseRequest(message,
+            item.equipSlots.flatMap { it.attachPoints }.associateWith { "equip $item to $it" })
          CommandParser.setResponseRequest(response)
     }
 

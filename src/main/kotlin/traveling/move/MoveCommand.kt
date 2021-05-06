@@ -56,10 +56,12 @@ class MoveCommand : Command() {
 
     private fun parseDirectionAndDistance(source: Target, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
-        val distanceResponse = ResponseRequest("Move how far?\n\t${distanceOptions.joinToString(", ")}", distanceOptions.map { it to "move $it towards ${initialDirection.toString()}" }.toMap())
+        val distanceResponse = ResponseRequest("Move how far?\n\t${distanceOptions.joinToString(", ")}",
+            distanceOptions.associateWith { "move $it towards ${initialDirection.toString()}" })
 
         val directionOptions = Direction.values().map { it.name }
-        val directionResponse = ResponseRequest("Move in what direction?\n\t${directionOptions.joinToString(", ")}", directionOptions.map { it to "move ${initialDirection ?: ""} towards $it" }.toMap())
+        val directionResponse = ResponseRequest("Move in what direction?\n\t${directionOptions.joinToString(", ")}",
+            directionOptions.associateWith { "move ${initialDirection ?: ""} towards $it" })
 
         val responseHelper = ResponseRequestHelper(mapOf(
                 "direction" to ResponseRequestWrapper(initialDirection?.name, directionResponse, useDefault, Direction.NORTH.name),

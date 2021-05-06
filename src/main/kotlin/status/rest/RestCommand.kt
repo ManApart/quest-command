@@ -40,7 +40,7 @@ class RestCommand : Command() {
     private fun clarifyHours() {
         val targets = listOf("1", "3", "5", "10")
         val message = "Rest for how many hours?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "rest $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "rest $it" }))
     }
 
     private fun rest(hours: Int) {

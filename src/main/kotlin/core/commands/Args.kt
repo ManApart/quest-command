@@ -1,8 +1,8 @@
 package core.commands
 
-import traveling.direction.Direction
-import core.utility.safeSubList
 import core.utility.lowercase
+import core.utility.safeSubList
+import traveling.direction.Direction
 
 private const val BASE = "base"
 

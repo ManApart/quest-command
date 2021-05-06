@@ -51,7 +51,7 @@ class SpeakCommand : Command() {
         } else {
             val creatures = speaker.location.getLocation().getCreatures(speaker)
             val message = "Speak to who?\n\t${creatures.joinToString(", ")}"
-            val response = ResponseRequest(message, creatures.map { it.name to "speak to ${it.name}." }.toMap())
+            val response = ResponseRequest(message, creatures.associate { it.name to "speak to ${it.name}." })
             CommandParser.setResponseRequest(response)
         }
     }

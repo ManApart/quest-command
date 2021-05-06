@@ -39,7 +39,7 @@ class Location(
 
     //    var needsSaved = false
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
-    private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.map { it.lowercase() to null }.toMap().toMutableMap()
+    private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.associate { it.lowercase() to null }.toMutableMap()
 
     init {
         if (initialize) {

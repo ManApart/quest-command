@@ -1,16 +1,16 @@
 package magic.castSpell
 
-import traveling.position.TargetAim
-import core.commands.*
-import core.target.Target
-import core.history.display
-import core.utility.NameSearchableList
-import magic.spellCommands.SpellCommand
 import core.DependencyInjector
+import core.commands.*
 import core.events.EventManager
+import core.history.display
+import core.target.Target
+import core.utility.NameSearchableList
 import magic.ViewWordHelpEvent
+import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
 import traveling.location.location.Location
+import traveling.position.TargetAim
 
 class CastCommand : Command() {
     //Should this go to the command parser?
@@ -122,9 +122,7 @@ class CastCommand : Command() {
 }
 
 fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Location> {
-    val parts = if (targetAim.bodyPartTargets.isNotEmpty()) {
-        targetAim.bodyPartTargets
-    } else {
+    val parts = targetAim.bodyPartTargets.ifEmpty {
         targetAim.target.body.getParts()
     }
 
@@ -137,9 +135,7 @@ fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Locati
 }
 
 fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<Location> {
-    return if (targetAim.bodyPartTargets.isNotEmpty()) {
-        targetAim.bodyPartTargets
-    } else {
+    return targetAim.bodyPartTargets.ifEmpty {
         listOfNotNull(targetAim.target.body.getRootPart())
     }
 }

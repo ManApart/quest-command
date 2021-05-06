@@ -13,7 +13,7 @@ class QuestValidator {
     }
 
     private fun noDuplicateStages(): Int {
-        return quests.map { noDuplicateStages(it) }.sum()
+        return quests.sumOf { noDuplicateStages(it) }
     }
 
     private fun noDuplicateStages(quest: Quest): Int {

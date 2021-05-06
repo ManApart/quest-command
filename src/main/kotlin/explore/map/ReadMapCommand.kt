@@ -42,7 +42,7 @@ class ReadMapCommand : Command() {
     private fun clarifyDepth() {
         val targets = listOf("1", "3", "5", "10", "20")
         val message = "View how many hops?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.map { it to "map $it" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "map $it" }))
     }
 
     private fun currentLocation(depth: Int){

@@ -27,9 +27,7 @@
     "description": "It glistens and smells of spring blossoms.",
     "properties": {
       "values": {
-        "weight": "1"
-      },
-      "values": {
+        "weight": "1",
         "healAmount": 1
       },
       "tags": [
@@ -45,9 +43,7 @@
     "description": "Its golden brown crust smells delicious.",
     "properties": {
       "values": {
-        "weight": "1"
-      },
-      "values": {
+        "weight": "1",
         "healAmount": 10
       },
       "tags": [

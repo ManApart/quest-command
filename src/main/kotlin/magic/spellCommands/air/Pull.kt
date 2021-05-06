@@ -42,7 +42,8 @@ class Pull : SpellCommand() {
         if (power == null) {
             val message =  "Pull ${targets.toCommandString()} how hard?"
             val options = listOf("1", "3", "5", "10", "50")
-            val response = ResponseRequest(message, options.map { it to "pull $it towards ${direction.name} on ${targets.toCommandString()}}" }.toMap())
+            val response = ResponseRequest(message,
+                options.associateWith { "pull $it towards ${direction.name} on ${targets.toCommandString()}}" })
              CommandParser.setResponseRequest(response)
         } else {
             val hitCount = targets.count()
