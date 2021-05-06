@@ -63,7 +63,7 @@ tasks.withType<Jar> {
     })
 }
 
-task("integrationTest", type = Test::class) {
+task("test-integration", type = Test::class) {
     val integration = sourceSets["integrationTest"]
     description = "Runs the integration tests."
     group = "verification"
@@ -72,6 +72,12 @@ task("integrationTest", type = Test::class) {
 
     outputs.upToDateWhen { false }
     mustRunAfter(tasks["test"])
+}
+
+task("test-all"){
+    description = "Run unit AND integration tests"
+    dependsOn("test")
+    dependsOn("test-integration")
 }
 
 task("buildData", type = JavaExec::class) {

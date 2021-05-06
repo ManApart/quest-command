@@ -1,13 +1,12 @@
 package conversation.parsing
 
-import conversation.Conversation
 import conversation.dialogue.ParsedDialogue
 import core.history.display
 import core.target.Target
 import core.utility.Named
 import traveling.location.location.LocationManager
 
-class SentenceParser(private val speaker: Target, private val listener: Target, conversation: Conversation, sentenceToParse: String) {
+class SentenceParser(private val speaker: Target, private val listener: Target, sentenceToParse: String) {
     private val sentence = Sentence(sentenceToParse.lowercase())
 
     val parsedDialogue = parseDialogue()

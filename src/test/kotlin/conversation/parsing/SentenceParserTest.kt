@@ -1,6 +1,5 @@
 package conversation.parsing
 
-import conversation.Conversation
 import conversation.dialogue.ParsedDialogue
 import core.target.Target
 import injectAllDefaultMocks
@@ -26,8 +25,7 @@ class SentenceParserTest {
     @Test
     fun basicQuestion() {
         val input = "where listener be?"
-        val conversation = Conversation(speaker, listener)
-        val parser = SentenceParser(speaker, listener, conversation, input)
+        val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
@@ -35,8 +33,7 @@ class SentenceParserTest {
     @Test
     fun verbAlias() {
         val input = "where listener is?"
-        val conversation = Conversation(speaker, listener)
-        val parser = SentenceParser(speaker, listener, conversation, input)
+        val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
@@ -44,8 +41,7 @@ class SentenceParserTest {
     @Test
     fun verbBeforeSubject() {
         val input = "where be listener?"
-        val conversation = Conversation(speaker, listener)
-        val parser = SentenceParser(speaker, listener, conversation, input)
+        val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
@@ -53,8 +49,7 @@ class SentenceParserTest {
     @Test
     fun youReturnsListener() {
         val input = "where be you?"
-        val conversation = Conversation(speaker, listener)
-        val parser = SentenceParser(speaker, listener, conversation, input)
+        val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
@@ -62,8 +57,7 @@ class SentenceParserTest {
     @Test
     fun iReturnsSpeaker() {
         val input = "where be i?"
-        val conversation = Conversation(speaker, listener)
-        val parser = SentenceParser(speaker, listener, conversation, input)
+        val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(speaker), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
@@ -71,8 +65,7 @@ class SentenceParserTest {
     @Test
     fun impliedYou() {
         val input = "where be?"
-        val conversation = Conversation(speaker, listener)
-        val parser = SentenceParser(speaker, listener, conversation, input)
+        val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
         assertEquals(expectedEvent, parser.parsedDialogue)
     }
