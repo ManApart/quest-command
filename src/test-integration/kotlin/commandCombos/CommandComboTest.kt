@@ -59,7 +59,7 @@ class CommandComboTest {
 
     @Test
     fun cookApple() {
-        val stat = GameState.player.soul.getStats().first { it.name.toLowerCase() == "cooking" }
+        val stat = GameState.player.soul.getStats().first { it.name.lowercase() == "cooking" }
         stat.setLevel(2)
 
         val input = "w && s && move to range && cook apple on range"

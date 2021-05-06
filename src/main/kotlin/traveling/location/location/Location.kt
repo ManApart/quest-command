@@ -39,7 +39,7 @@ class Location(
 
     //    var needsSaved = false
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
-    private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.map { it.toLowerCase() to null }.toMap().toMutableMap()
+    private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.map { it.lowercase() to null }.toMap().toMutableMap()
 
     init {
         if (initialize) {
@@ -71,11 +71,11 @@ class Location(
     }
 
     fun hasAttachPoint(attachPoint: String): Boolean {
-        return equippedItems.map { it.key.toLowerCase() }.contains(attachPoint.toLowerCase())
+        return equippedItems.map { it.key.lowercase() }.contains(attachPoint.lowercase())
     }
 
     fun getEquippedItem(slot: String): Target? {
-        return equippedItems[slot.toLowerCase()]
+        return equippedItems[slot.lowercase()]
     }
 
     fun getEquippedItems(): List<Target> {
@@ -91,10 +91,10 @@ class Location(
     }
 
     fun equipItem(attachPoint: String, item: Target) {
-        if (!equippedItems.containsKey(attachPoint.toLowerCase())) {
+        if (!equippedItems.containsKey(attachPoint.lowercase())) {
             display("Couldn't equip $item to $attachPoint of body part ${locationRecipe.name}. This should never happen!")
         } else {
-            equippedItems[attachPoint.toLowerCase()] = item
+            equippedItems[attachPoint.lowercase()] = item
             addTarget(item)
         }
     }

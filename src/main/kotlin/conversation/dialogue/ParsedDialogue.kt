@@ -12,7 +12,7 @@ data class ParsedDialogue(val speaker: Target, val listener: Target, val subject
 
     fun print(): String {
         val verbOptionSuffix = StringFormatter.format(verbOption != null, " $verbOption", "")
-        return "${speaker.name}: ${questionType.name.toLowerCase().capitalize()} ${subject.name} ${verb.name.toLowerCase()}${verbOptionSuffix}?"
+        return "${speaker.name}: ${questionType.name.lowercase().capitalize()} ${subject.name} ${verb.name.lowercase()}${verbOptionSuffix}?"
     }
 
     fun matches(questionType: QuestionType? = null, subject: Named? = null, verb: Verb? = null, speaker: Target? = null, listener: Target? = null): Boolean {

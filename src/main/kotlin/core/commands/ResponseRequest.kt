@@ -5,12 +5,12 @@ import core.utility.NameSearchableList
 class ResponseRequest(val message: String, responses: Map<String, String>) {
     constructor(responses: Map<String, String>) : this("", responses)
     private val responses: Map<String, String> = processResponses(responses)
-    private val responseKeys = NameSearchableList.from(this.responses.keys.map { it.toLowerCase() })
+    private val responseKeys = NameSearchableList.from(this.responses.keys.map { it.lowercase() })
 
     private fun processResponses(responses: Map<String, String>): Map<String, String> {
         val newMap = mutableMapOf<String, String>()
         responses.forEach {
-            val newKey = it.key.toLowerCase()
+            val newKey = it.key.lowercase()
             when (newKey) {
                 "yes" -> newMap["y"] = it.value
                 "y" -> newMap["yes"] = it.value
@@ -24,7 +24,7 @@ class ResponseRequest(val message: String, responses: Map<String, String>) {
     }
 
     fun getCommand(input: String): String? {
-        val cleaned = input.trim().toLowerCase()
+        val cleaned = input.trim().lowercase()
 
         if (responseKeys.existsExact(cleaned)) {
             return responses[responseKeys.getOrNull(cleaned)!!.name]

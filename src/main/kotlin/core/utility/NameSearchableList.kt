@@ -79,7 +79,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         if (!exists(item)) {
             add(item)
         }
-        proxies[name.toLowerCase()] = item
+        proxies[name.lowercase()] = item
     }
 
     private fun addAllProxies(other: NameSearchableList<N>) {
@@ -99,17 +99,17 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
     fun existsExact(name: String): Boolean {
         if (name.isNotBlank()) {
-            val cleaned = name.toLowerCase().trim()
-            return containsProxy(cleaned) || any { cleaned == it.name.toLowerCase() }
+            val cleaned = name.lowercase().trim()
+            return containsProxy(cleaned) || any { cleaned == it.name.lowercase() }
         }
         return false
     }
 
     fun existsByWholeWord(name: String): Boolean {
         if (name.isNotBlank()) {
-            val cleaned = name.toLowerCase().split(" ")
-            return containsProxy(name.toLowerCase()) || any { item ->
-                val itemWords = item.name.toLowerCase().split(" ")
+            val cleaned = name.lowercase().split(" ")
+            return containsProxy(name.lowercase()) || any { item ->
+                val itemWords = item.name.lowercase().split(" ")
                 cleaned.any { itemWords.contains(it) }
             }
         }
@@ -127,13 +127,13 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         if (name.isBlank()) {
             return 0
         }
-        val proxyCount = if (containsProxy(name.toLowerCase())) {
+        val proxyCount = if (containsProxy(name.lowercase())) {
             1
         } else {
             0
         }
 
-        val cleaned = name.toLowerCase().trim()
+        val cleaned = name.lowercase().trim()
         return proxyCount + this.filter { item ->
             cleaned == item.name
         }.size
@@ -141,15 +141,15 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
     fun countByWholeWord(name: String): Int {
         if (name.isNotBlank()) {
-            val cleaned = name.toLowerCase().split(" ")
-            val proxyCount = if (containsProxy(name.toLowerCase())) {
+            val cleaned = name.lowercase().split(" ")
+            val proxyCount = if (containsProxy(name.lowercase())) {
                 1
             } else {
                 0
             }
 
             return proxyCount + this.filter { item ->
-                val itemWords = item.name.toLowerCase().split(" ")
+                val itemWords = item.name.lowercase().split(" ")
                 cleaned.any { itemWords.contains(it) }
             }.size
         }
@@ -166,7 +166,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         if (name.isBlank()) {
             return NameSearchableList()
         }
-        val includingDuplicates = filter { it.name.toLowerCase().contains(name.toLowerCase()) } + proxies.filter { it.key.contains(name) }.map { it.value }
+        val includingDuplicates = filter { it.name.lowercase().contains(name.lowercase()) } + proxies.filter { it.key.contains(name) }.map { it.value }
 
         val results = mutableSetOf<N>()
         includingDuplicates.forEach { results.add(it) }
@@ -216,16 +216,16 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
 
 
     private fun containsProxy(name: String): Boolean {
-        return proxies.containsKey(name.toLowerCase())
+        return proxies.containsKey(name.lowercase())
     }
 
     private fun bestMatch(matches: List<N>, name: String): N {
-        val cleaned = name.toLowerCase()
+        val cleaned = name.lowercase()
         return firstOrNull {
-            it.name.toLowerCase() == cleaned
+            it.name.lowercase() == cleaned
         } ?: firstOrNull { named ->
             val cleanedParts = cleaned.split(" ")
-            val trialWords = named.name.toLowerCase().split(" ")
+            val trialWords = named.name.lowercase().split(" ")
             cleanedParts.any { trialWords.contains(it) }
         } ?: matches[0]
     }

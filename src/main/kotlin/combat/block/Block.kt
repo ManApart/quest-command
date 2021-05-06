@@ -31,7 +31,7 @@ class Block : EventListener<BlockEvent>() {
 
     private fun getTotalDefense(apparel: Target): Int {
         val values = apparel.properties.values
-        return values.getInt(DEFENSE) + DamageType.values().sumBy { values.getInt(it.defense) }
+        return values.getInt(DEFENSE) + DamageType.values().sumOf { values.getInt(it.defense) }
     }
 
 }

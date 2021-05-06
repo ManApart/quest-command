@@ -10,6 +10,7 @@ import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
 import core.target.Target
+import core.utility.capitalize2
 
 class SpeakCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,8 +27,8 @@ class SpeakCommand : Command() {
 	To stop talking, type 'goodbye' or 'exit'.
 	To ask a question, end your statement with '?'.
 	Ex: 'Where you are?'.
-	Available question types:  ${QuestionType.values().map { it.name.toLowerCase().capitalize() }}
-	Available verbs:  ${Verb.values().map { it.name.toLowerCase().capitalize() }}"""
+	Available question types:  ${QuestionType.values().map { it.name.lowercase().capitalize2() }}
+	Available verbs:  ${Verb.values().map { it.name.lowercase().capitalize2() }}"""
     }
 
     override fun getCategory(): List<String> {

@@ -9,7 +9,7 @@ import traveling.location.location.LocationManager
 import traveling.location.location.NOWHERE_NODE
 
 class SentenceParser(private val speaker: Target, private val listener: Target, conversation: Conversation, sentenceToParse: String) {
-    private val sentence = Sentence(sentenceToParse.toLowerCase())
+    private val sentence = Sentence(sentenceToParse.lowercase())
 
     val parsedDialogue = parseDialogue()
 
@@ -85,7 +85,7 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
         }
 
         val locations = LocationManager.findLocationsInAnyNetwork(subjectName)
-        val exactMatch = locations.firstOrNull { it.name.toLowerCase() == subjectName }
+        val exactMatch = locations.firstOrNull { it.name.lowercase() == subjectName }
 
         return when {
             exactMatch != null -> listOf(exactMatch)

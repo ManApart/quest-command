@@ -22,9 +22,9 @@ enum class Direction(val shortcut: String, val vector: Vector) {
 
     companion object {
         fun getDirection(value: String) : Direction {
-            val cleaned = value.toLowerCase().trim()
+            val cleaned = value.lowercase().trim()
             return values().firstOrNull {
-                cleaned == it.name.toLowerCase() || cleaned == it.shortcut.toLowerCase()
+                cleaned == it.name.lowercase() || cleaned == it.shortcut.lowercase()
             } ?: NONE
         }
     }

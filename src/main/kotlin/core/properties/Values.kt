@@ -21,15 +21,15 @@ class Values(properties: Map<String, String> = mapOf()) {
     private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
         val parsed = mutableMapOf<String, String>()
         properties.entries.forEach {
-            parsed[it.key.toLowerCase()] = it.value.toLowerCase()
+            parsed[it.key.lowercase()] = it.value.lowercase()
         }
         return parsed
     }
 
     fun getInt(key: String, default: Int = 0): Int {
-        if (properties.containsKey(key.toLowerCase())) {
+        if (properties.containsKey(key.lowercase())) {
             return try {
-                Integer.parseInt(properties[key.toLowerCase()])
+                Integer.parseInt(properties[key.lowercase()])
             } catch (e: NumberFormatException) {
                 default
             }
@@ -38,34 +38,34 @@ class Values(properties: Map<String, String> = mapOf()) {
     }
 
     fun getBoolean(key: String, default: Boolean = false): Boolean {
-        if (properties.containsKey(key.toLowerCase())) {
-            return properties[key.toLowerCase()]!!.toBoolean()
+        if (properties.containsKey(key.lowercase())) {
+            return properties[key.lowercase()]!!.toBoolean()
         }
         return default
     }
 
     fun getString(key: String, default: String = ""): String {
-        return properties[key.toLowerCase()] ?: default
+        return properties[key.lowercase()] ?: default
     }
 
     fun getList(key: String, delimiter: String = ",", default: List<String> = listOf()): List<String> {
-        return properties[key.toLowerCase()]?.split(delimiter) ?: default
+        return properties[key.lowercase()]?.split(delimiter) ?: default
     }
 
     fun put(key: String, value: String) {
-        val lowKey = key.toLowerCase()
+        val lowKey = key.lowercase()
         val guarded = getGuardedValue(lowKey, getString(lowKey), value)
         properties[lowKey] = guarded
     }
 
     fun put(key: String, value: Int) {
-        val lowKey = key.toLowerCase()
+        val lowKey = key.lowercase()
         val guarded = getGuardedValue(lowKey, getString(lowKey), value.toString())
         properties[lowKey] = guarded
     }
 
     fun put(key: String, value: Boolean) {
-        val lowKey = key.toLowerCase()
+        val lowKey = key.lowercase()
         val guarded = getGuardedValue(lowKey, getString(lowKey), value.toString())
         properties[lowKey] = guarded
     }
@@ -79,7 +79,7 @@ class Values(properties: Map<String, String> = mapOf()) {
     }
 
     fun has(value: String): Boolean {
-        return properties.containsKey(value.toLowerCase())
+        return properties.containsKey(value.lowercase())
     }
 
     fun hasInt(value: String): Boolean {
@@ -107,7 +107,7 @@ class Values(properties: Map<String, String> = mapOf()) {
     }
 
     fun inc(key: String, amount: Int) {
-        put(key.toLowerCase(), (getInt(key, 0) + amount).toString())
+        put(key.lowercase(), (getInt(key, 0) + amount).toString())
     }
 
 }

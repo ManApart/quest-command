@@ -34,7 +34,7 @@ class RetreatCommand : Command() {
         val distance = arguments.getNumber()
         when {
             target != null && distance != null -> retreatByAmount(target, distance)
-            target != null && keyword.toLowerCase() == "retreat" -> clarifyAmount(target)
+            target != null && keyword.lowercase() == "retreat" -> clarifyAmount(target)
             target != null -> retreatByAmount(target, HUMAN_LENGTH)
             else -> clarifyTarget(creatures)
         }

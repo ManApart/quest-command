@@ -14,8 +14,8 @@ class AttackCommand : Command() {
     override fun getAliases(): List<String> {
         val aliases = mutableListOf("Attack")
         AttackType.values().forEach {
-            aliases.add(it.name.toLowerCase())
-            aliases.add(it.alias.toLowerCase())
+            aliases.add(it.name.lowercase())
+            aliases.add(it.alias.lowercase())
         }
         return aliases
     }
@@ -40,12 +40,12 @@ class AttackCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
-        if (keyword.toLowerCase() == "attack") {
+        if (keyword.lowercase() == "attack") {
             clarifyAttackType(args)
         } else {
             val arguments = Args(args, listOf("with"))
             val attackType = fromString(keyword)
-            val handHelper = HandHelper(source, arguments.getString("with"), attackType.damageType.damage.toLowerCase())
+            val handHelper = HandHelper(source, arguments.getString("with"), attackType.damageType.damage.lowercase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
             val target = getTarget(keyword, arguments, weaponName, source)
 
@@ -92,7 +92,7 @@ class AttackCommand : Command() {
     }
 
     private fun isAlias(keyword: String): Boolean {
-        return AttackType.values().map { it.alias }.contains(keyword.toLowerCase())
+        return AttackType.values().map { it.alias }.contains(keyword.lowercase())
     }
 
     private fun clarifyAttackType(args: List<String>) {

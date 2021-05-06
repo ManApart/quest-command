@@ -98,7 +98,7 @@ class LocationNode(
     }
 
     fun nameMatches(args: List<String>): Boolean {
-        return name.toLowerCase().split(" ").contains(args[0])
+        return name.lowercase().split(" ").contains(args[0])
     }
 
     fun getConnection(destination: LocationNode): Connection? {

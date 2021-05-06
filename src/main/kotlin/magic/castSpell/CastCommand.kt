@@ -69,10 +69,10 @@ class CastCommand : Command() {
     }
 
     private fun isCategory(args: List<String>): Boolean {
-        val word = args.first().toLowerCase()
+        val word = args.first().lowercase()
         val categories = spellCommands.map { command ->
             command.getCategory().map { category ->
-                category.toLowerCase()
+                category.lowercase()
             }
         }.flatten()
         return categories.contains(word)

@@ -26,7 +26,7 @@ class DirectionParserTest {
     fun directionNames() {
         Direction.values().forEach {
             assertEquals(it, parseDirection(listOf(it.name)), "$it should parse correctly")
-            assertEquals(it, parseDirection(listOf(it.name.toLowerCase())), "${it.name.toLowerCase()} should parse correctly")
+            assertEquals(it, parseDirection(listOf(it.name.lowercase())), "${it.name.lowercase()} should parse correctly")
         }
     }
 
@@ -34,7 +34,7 @@ class DirectionParserTest {
     fun directionShortcuts() {
         Direction.values().forEach {
             assertEquals(it, parseDirection(listOf(it.shortcut)), "${it.shortcut} should parse correctly")
-            assertEquals(it, parseDirection(listOf(it.name.toUpperCase())), "${it.shortcut.toUpperCase()} should parse correctly")
+            assertEquals(it, parseDirection(listOf(it.name.uppercase())), "${it.shortcut.uppercase()} should parse correctly")
         }
     }
 

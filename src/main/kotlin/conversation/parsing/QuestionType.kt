@@ -5,6 +5,6 @@ enum class QuestionType {
 }
 
 fun questionTypeFromWord(word: String): QuestionType? {
-    val cleanWord = word.toLowerCase().trim()
-    return QuestionType.values().firstOrNull { it.name.toLowerCase() == cleanWord }
+    val cleanWord = word.lowercase().trim()
+    return QuestionType.values().firstOrNull { it.name.lowercase() == cleanWord }
 }

@@ -10,6 +10,6 @@ enum class AttackType(val alias: String, val damageType: DamageType) {
 }
 
 fun fromString(keyword: String) : AttackType {
-    val cleaned = keyword.toLowerCase()
-    return AttackType.values().first { it.name.toLowerCase() == cleaned || it.alias == cleaned }
+    val cleaned = keyword.lowercase()
+    return AttackType.values().first { it.name.lowercase() == cleaned || it.alias == cleaned }
 }

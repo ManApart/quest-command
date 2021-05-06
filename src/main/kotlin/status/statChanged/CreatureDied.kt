@@ -10,7 +10,7 @@ import inventory.dropItem.PlaceItemEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return !event.target.isPlayer() && event.stat.equals(HEALTH, ignoreCase = true)
+        return !event.target.isPlayer() && event.stat.lowercase() == HEALTH.lowercase()
     }
 
     override fun execute(event: StatMinnedEvent) {

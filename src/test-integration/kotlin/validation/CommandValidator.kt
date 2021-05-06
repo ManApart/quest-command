@@ -16,10 +16,10 @@ class CommandValidator {
     private fun noAliasCategoryOverlap(): Int {
         val suspectCategories = mutableListOf<String>()
         var warnings = 0
-        val cleanedCategories = categories.map { it.toLowerCase() }
+        val cleanedCategories = categories.map { it.lowercase() }
 
         commands.forEach { command ->
-            command.getAliases().map { it.toLowerCase() }.forEach {
+            command.getAliases().map { it.lowercase() }.forEach {
                 if (cleanedCategories.contains(it) && command.javaClass.simpleName != UnknownCommand::class.java.simpleName) {
                     println("WARN: Alias '$it' from ${command.javaClass.simpleName} is a category")
                     suspectCategories.add(it)

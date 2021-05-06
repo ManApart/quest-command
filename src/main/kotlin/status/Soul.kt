@@ -94,7 +94,7 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         return if (name == null) {
             null
         } else {
-            leveledStats.firstOrNull { it.name.toLowerCase() == name.toLowerCase() }
+            leveledStats.firstOrNull { it.name.lowercase() == name.lowercase() }
         }
     }
 

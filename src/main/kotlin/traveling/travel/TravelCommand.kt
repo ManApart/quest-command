@@ -44,7 +44,7 @@ class TravelCommand : Command() {
                 route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination.location))
                 else -> display("You're not on a route right now.")
             }
-        } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.toLowerCase() }.contains(args[0].toLowerCase())) {
+        } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.lowercase() }.contains(args[0].lowercase())) {
             CommandParser.parseCommand(args.joinToString(" "))
         } else {
             val arguments = Args(args, excludedWords = listOf("to"), flags = listOf("s"))
@@ -69,7 +69,7 @@ class TravelCommand : Command() {
             return false
         }
         args.forEach {
-            if (found.name.toLowerCase().contains(it)) {
+            if (found.name.lowercase().contains(it)) {
                 return true
             }
         }

@@ -3,7 +3,7 @@ package core.commands
 class ArgDelimiter(aliases: List<String>) {
     constructor(alias: String) : this(listOf(alias))
 
-    private val aliases = aliases.map { it.toLowerCase() }
+    private val aliases = aliases.map { it.lowercase() }
     val key = aliases.first()
 
     fun contains(word: String): Boolean {

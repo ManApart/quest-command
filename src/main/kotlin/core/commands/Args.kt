@@ -2,15 +2,15 @@ package core.commands
 
 import traveling.direction.Direction
 import core.utility.safeSubList
-import core.utility.toLowerCase
+import core.utility.lowercase
 
 private const val BASE = "base"
 
 class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
     constructor(origArgs: List<String>, delimiters: List<String>) : this(origArgs, delimiters.map { ArgDelimiter(listOf(it)) })
 
-    private val excludedWords = excludedWords.toLowerCase()
-    private val flags = flags.toLowerCase()
+    private val excludedWords = excludedWords.lowercase()
+    private val flags = flags.lowercase()
     val args = cleanArgs(origArgs)
     private val foundFlags = findFlags()
 
@@ -23,7 +23,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     private fun cleanArgs(origArgs: List<String>): List<String> {
-        return origArgs.extractCommas().filter { it != "" }.addSpaces().toLowerCase()
+        return origArgs.extractCommas().filter { it != "" }.addSpaces().lowercase()
     }
 
     private fun List<String>.extractCommas(): List<String> {
@@ -69,7 +69,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
      */
     fun has(word: String, condition: Boolean = true): Boolean {
         return if (condition) {
-            args.any { it == word.toLowerCase() }
+            args.any { it == word.lowercase() }
         } else {
             false
         }
@@ -85,7 +85,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
      * Returns if the word is contained in any of the words in the arg list
      */
     fun contains(word: String): Boolean {
-        return args.any { it.contains(word.toLowerCase()) }
+        return args.any { it.contains(word.lowercase()) }
     }
 
     /**
@@ -123,7 +123,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     fun argsWithout(words: List<String>): List<String> {
-        val lowerCaseWords = words.map { it.toLowerCase() }
+        val lowerCaseWords = words.map { it.lowercase() }
         return args.filterNot { lowerCaseWords.contains(it) }
     }
 
@@ -142,7 +142,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         } else {
             "-$flag"
         }
-        return foundFlags.contains(flag.toLowerCase()) || foundFlags.contains(flagAlt.toLowerCase())
+        return foundFlags.contains(flag.lowercase()) || foundFlags.contains(flagAlt.lowercase())
     }
 
     private fun parseArgGroups(): Map<String, List<List<String>>> {

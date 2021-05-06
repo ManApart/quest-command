@@ -36,7 +36,7 @@ class Slot(val attachPoints: List<String>) {
     }
 
     fun contains(attachPoint: String) : Boolean {
-        return attachPoints.firstOrNull { attachPoint.toLowerCase() == it.toLowerCase() } != null
+        return attachPoints.firstOrNull { attachPoint.lowercase() == it.lowercase() } != null
     }
 
 }

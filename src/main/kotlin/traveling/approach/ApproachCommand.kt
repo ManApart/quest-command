@@ -34,7 +34,7 @@ class ApproachCommand : Command() {
         val distance = arguments.getNumber()
         when {
             target != null && distance != null -> approachByAmount(target, distance)
-            target != null && keyword.toLowerCase() == "approach" -> clarifyAmount(target)
+            target != null && keyword.lowercase() == "approach" -> clarifyAmount(target)
             target != null -> EventManager.postEvent(StartMoveEvent(GameState.player, target.position))
             else -> clarifyTarget(creatures)
         }

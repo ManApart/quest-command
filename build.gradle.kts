@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm") version "1.5.0"
 }
 
 group = "org.rak.manapart"
@@ -15,7 +15,7 @@ dependencies {
     implementation("org.reflections:reflections:0.9.10")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
     testImplementation("junit:junit:4.12")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.4.20")
@@ -52,10 +52,6 @@ sourceSets.create("integrationTest") {
     runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
 }
 
-tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "11"
-}
-
 tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "MainKt"
@@ -85,5 +81,6 @@ task("buildData", type = JavaExec::class) {
 
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    languageVersion = "1.4"
+    languageVersion = "1.5"
+    jvmTarget = "11"
 }

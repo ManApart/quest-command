@@ -21,18 +21,18 @@ class NestedValues(properties: Map<String, Map<String, String>> = mapOf()) {
         properties.entries.forEach { outerEntry ->
             val map = mutableMapOf<String, String>()
             outerEntry.value.entries.forEach {
-                map[it.key.toLowerCase()] = it.value.toLowerCase()
+                map[it.key.lowercase()] = it.value.lowercase()
             }
-            parsed[outerEntry.key.toLowerCase()] = map
+            parsed[outerEntry.key.lowercase()] = map
         }
         return parsed
     }
 
     fun getInt(group: String, key: String, default: Int = 0): Int {
-        if (properties.containsKey(key.toLowerCase())) {
+        if (properties.containsKey(key.lowercase())) {
             return try {
                 if (hasInt(group, key)) {
-                    Integer.parseInt(properties[group.toLowerCase()]!![key.toLowerCase()])
+                    Integer.parseInt(properties[group.lowercase()]!![key.lowercase()])
                 } else {
                     default
                 }
@@ -45,28 +45,28 @@ class NestedValues(properties: Map<String, Map<String, String>> = mapOf()) {
 
     fun getBoolean(group: String, key: String, default: Boolean = false): Boolean {
         if (has(group, key)) {
-            return properties[group.toLowerCase()]!![key.toLowerCase()]!!.toBoolean()
+            return properties[group.lowercase()]!![key.lowercase()]!!.toBoolean()
         }
         return default
     }
 
     fun getString(group: String, key: String, default: String = ""): String {
-        return properties[group.toLowerCase()]?.get(key.toLowerCase()) ?: default
+        return properties[group.lowercase()]?.get(key.lowercase()) ?: default
     }
 
     fun put(group: String, key: String, value: String) {
         properties.putIfAbsent(group, mutableMapOf())
-        properties[group.toLowerCase()]!![key.toLowerCase()] = value
+        properties[group.lowercase()]!![key.lowercase()] = value
     }
 
     fun put(group: String, key: String, value: Int) {
         properties.putIfAbsent(group, mutableMapOf())
-        properties[group.toLowerCase()]!![key.toLowerCase()] = value.toString()
+        properties[group.lowercase()]!![key.lowercase()] = value.toString()
     }
 
     fun put(group: String, key: String, value: Boolean) {
         properties.putIfAbsent(group, mutableMapOf())
-        properties[group.toLowerCase()]!![key.toLowerCase()] = value.toString()
+        properties[group.lowercase()]!![key.lowercase()] = value.toString()
     }
 
     fun clear(group: String) {
@@ -82,7 +82,7 @@ class NestedValues(properties: Map<String, Map<String, String>> = mapOf()) {
     }
 
     fun has(group: String, key: String): Boolean {
-        return properties[group.toLowerCase()]?.containsKey(key.toLowerCase()) ?: false
+        return properties[group.lowercase()]?.containsKey(key.lowercase()) ?: false
     }
 
     fun hasInt(group: String, key: String): Boolean {

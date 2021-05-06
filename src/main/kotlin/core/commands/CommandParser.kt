@@ -106,7 +106,7 @@ object CommandParser {
     }
 
     fun cleanLine(line: String): List<String> {
-        return line.toLowerCase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+        return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
     }
 
     private fun findAliasCommand(alias: String): String? {

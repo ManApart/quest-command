@@ -57,7 +57,7 @@ private fun parseTarget(name: String, targets: NameSearchableList<Target>): Targ
 }
 
 fun parseBodyParts(target: Target, names: List<String>): List<Location> {
-    if (names.size == 1 && names.first().toLowerCase() == "all") {
+    if (names.size == 1 && names.first().lowercase() == "all") {
         return target.body.getParts()
     }
     return target.body.getAnyParts(names)

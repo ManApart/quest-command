@@ -36,7 +36,7 @@ class TravelInDirectionCommand : Command() {
     }
 
     override fun execute(keyword: String, args: List<String>) {
-        if (keyword.toLowerCase() == "direction") {
+        if (keyword.lowercase() == "direction") {
             clarifyDirection()
         } else {
             val direction = Direction.getDirection(keyword)

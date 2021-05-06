@@ -98,7 +98,7 @@ class LeveledStat(val name: String, private val parent: Target, level: Int = 1, 
     }
 
     fun isHealth(): Boolean {
-        return name.toLowerCase().endsWith("health")
+        return name.lowercase().endsWith("health")
     }
 
     private fun determineLevel() {

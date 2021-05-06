@@ -15,7 +15,7 @@ data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
 
     fun findMatchingIngredient(ingredients: List<Target>): Target? {
         val filtered = if (name != null) {
-            ingredients.filter { it.name.toLowerCase() == name.toLowerCase() }
+            ingredients.filter { it.name.lowercase() == name.lowercase() }
         } else {
             ingredients
         }

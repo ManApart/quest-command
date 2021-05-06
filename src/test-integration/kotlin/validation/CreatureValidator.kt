@@ -47,7 +47,7 @@ class CreatureValidator {
     }
 
     private fun itemExists(item: String): Boolean {
-        return itemMap.any { (it["name"] as String).toLowerCase() == item.toLowerCase() }
+        return itemMap.any { (it["name"] as String).lowercase() == item.lowercase() }
     }
 
 

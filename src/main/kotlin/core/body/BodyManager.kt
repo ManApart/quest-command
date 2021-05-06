@@ -53,7 +53,7 @@ object BodyManager {
     }
 
     fun bodyExists(name: String): Boolean {
-        return bodies.firstOrNull { it.name.toLowerCase() == name.toLowerCase() } != null
+        return bodies.firstOrNull { it.name.lowercase() == name.lowercase() } != null
     }
 
     fun getBody(name: String): Body {

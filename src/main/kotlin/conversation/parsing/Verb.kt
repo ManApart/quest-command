@@ -4,11 +4,11 @@ enum class Verb(private vararg val synonyms: String = arrayOf()) {
     BE("are", "is", "am");
 
     fun matches(word: String): Boolean {
-        return name.toLowerCase() == word || synonyms.contains(word)
+        return name.lowercase() == word || synonyms.contains(word)
     }
 }
 
 fun verbFromWord(word: String): Verb? {
-    val cleanWord = word.toLowerCase().trim()
+    val cleanWord = word.lowercase().trim()
     return Verb.values().firstOrNull { it.matches(cleanWord) }
 }

@@ -4,8 +4,8 @@ fun List<String>.matches(other: List<String>): Boolean {
     if (size != other.size) {
         return false
     }
-    val listLower = map { it.toLowerCase() }
-    val otherLower = other.map { it.toLowerCase() }
+    val listLower = map { it.lowercase() }
+    val otherLower = other.map { it.lowercase() }
 
     listLower.forEach {
         if (!otherLower.contains(it)) {
@@ -54,8 +54,8 @@ fun <E> List<E>.random(): E? {
     }
 }
 
-fun List<String>.toLowerCase(): List<String> {
-    return this.map { it.toLowerCase() }
+fun List<String>.lowercase(): List<String> {
+    return this.map { it.lowercase() }
 }
 
 fun List<String>.removeFirstItem(): List<String> {

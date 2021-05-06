@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.UnknownCommand
 
 fun isCommandGroup(args: List<String>): Boolean {
-    return CommandParser.commands.asSequence().map { command -> command.getCategory().map { category -> category.toLowerCase() } }.contains(args)
+    return CommandParser.commands.asSequence().map { command -> command.getCategory().map { category -> category.lowercase() } }.contains(args)
 }
 
 fun isCommand(args: List<String>) =
@@ -16,10 +16,10 @@ fun getCommandGroups(): List<String> {
 }
 
 fun getCommands(group: String): List<Command> {
-    val cleanGroup = group.trim().toLowerCase()
+    val cleanGroup = group.trim().lowercase()
     return CommandParser.commands.filter {command ->
         command.getCategory().map {category ->
-            category.toLowerCase()
+            category.lowercase()
         }.contains(cleanGroup)
     }
 }

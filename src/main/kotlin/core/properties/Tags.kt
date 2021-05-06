@@ -13,7 +13,7 @@ class Tags(tags: List<String> = listOf()) {
     }
 
     fun has(tag: String): Boolean {
-        return lowerCaseTags().contains(tag.toLowerCase())
+        return lowerCaseTags().contains(tag.lowercase())
     }
 
     fun add(vararg tags: String) {
@@ -63,7 +63,7 @@ class Tags(tags: List<String> = listOf()) {
     }
 
     private fun lowerCaseTags(): List<String> {
-        return tags.asSequence().map { it.toLowerCase() }.toList()
+        return tags.asSequence().map { it.lowercase() }.toList()
     }
 
 }

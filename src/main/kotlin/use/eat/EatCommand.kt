@@ -31,7 +31,7 @@ class EatCommand : Command() {
         val argsString = args.joinToString(" ")
         val allFood = GameState.currentLocation().getItemsIncludingPlayerInventory().filter { it.properties.tags.has("food") }
         val pickedFood = GameState.currentLocation().getItemsIncludingPlayerInventory(argsString, GameState.player)
-        val topChoice = pickedFood.firstOrNull { it.name.toLowerCase() == argsString }
+        val topChoice = pickedFood.firstOrNull { it.name.lowercase() == argsString }
 
         when {
             args.isEmpty() -> eatWhat(allFood)

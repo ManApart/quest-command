@@ -17,8 +17,8 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
     override fun execute(event: ViewWordHelpEvent) {
         when {
             event.word == null -> listWords()
-            event.groups -> printWordGroup(event.word.toLowerCase())
-            else -> helpWord(event.word.toLowerCase())
+            event.groups -> printWordGroup(event.word.lowercase())
+            else -> helpWord(event.word.lowercase())
         }
     }
 
@@ -43,7 +43,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
     private fun printWordGroup(group: String) {
         var description = "Help <Word> to learn more about on of the following topics:\n"
         wordsOfPower.forEach { word ->
-            if (word.getCategory().map { it.toLowerCase() }.contains(group)) {
+            if (word.getCategory().map { it.lowercase() }.contains(group)) {
                 description += word.getDescription() + "\n"
             }
         }
@@ -60,7 +60,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
 
 
     private fun isCategory(args: List<String>): Boolean {
-        return wordsOfPower.asSequence().map { command -> command.getCategory().map { category -> category.toLowerCase() } }.contains(args)
+        return wordsOfPower.asSequence().map { command -> command.getCategory().map { category -> category.lowercase() } }.contains(args)
     }
 
     private fun isWordOfPower(args: List<String>) =
@@ -71,10 +71,10 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
     }
 
     private fun getCommands(group: String): List<SpellCommand> {
-        val cleanGroup = group.trim().toLowerCase()
+        val cleanGroup = group.trim().lowercase()
         return wordsOfPower.filter { word ->
             word.getCategory().map { category ->
-                category.toLowerCase()
+                category.lowercase()
             }.contains(cleanGroup)
         }
     }

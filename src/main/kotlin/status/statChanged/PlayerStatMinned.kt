@@ -12,9 +12,9 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     }
 
     override fun execute(event: StatMinnedEvent) {
-        when (event.stat.toLowerCase()){
-            HEALTH.toLowerCase() -> display("Oh dear, you have died!")
-            STAMINA.toLowerCase() -> display("You are completely exhausted.")
+        when (event.stat.lowercase()){
+            HEALTH.lowercase() -> display("Oh dear, you have died!")
+            STAMINA.lowercase() -> display("You are completely exhausted.")
         }
     }
 }
