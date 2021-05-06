@@ -52,17 +52,15 @@ sourceSets.create("integrationTest") {
     runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
 }
 
-tasks.withType<Jar> {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    manifest {
-        attributes["Main-Class"] = "MainKt"
-    }
-    from(sourceSets.main.get().output)
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.5"
+    jvmTarget = "11"
+}
 
+task("buildData", type = JavaExec::class) {
+    main = "building.AppBuilder"
+    classpath = sourceSets["tools"].runtimeClasspath
 }
 
 task("test-integration", type = Test::class) {
@@ -82,13 +80,15 @@ task("test-all") {
     dependsOn("test-integration")
 }
 
-task("buildData", type = JavaExec::class) {
-    main = "building.AppBuilder"
-    classpath = sourceSets["tools"].runtimeClasspath
-}
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    manifest {
+        attributes["Main-Class"] = "MainKt"
+    }
+    from(sourceSets.main.get().output)
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    languageVersion = "1.5"
-    jvmTarget = "11"
 }
