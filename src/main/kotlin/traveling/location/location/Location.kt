@@ -288,7 +288,7 @@ class Location(
      * How much do all of the items in this location weigh?
      */
     private fun getWeight(): Int {
-        return getItems().sumBy { it.getWeight() }
+        return getItems().sumOf { it.getWeight() }
     }
 
     fun hasRoomFor(target: Target): Boolean {

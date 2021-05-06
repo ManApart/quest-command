@@ -2,14 +2,13 @@ package traveling.routes
 
 import core.commands.Args
 import core.commands.Command
-import core.GameState
-import traveling.location.location.NOWHERE_NODE
 import core.events.EventManager
 import core.target.Target
 import core.utility.NameSearchableList
 import traveling.location.RouteNeighborFinder
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationNode
+import traveling.location.location.NOWHERE_NODE
 
 class RouteCommand : Command() {
     override fun getAliases(): List<String> {

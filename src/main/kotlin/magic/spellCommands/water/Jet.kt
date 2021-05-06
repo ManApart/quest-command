@@ -33,7 +33,7 @@ class Jet : SpellCommand() {
     override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
-        val hitCount = targets.sumBy { getTargetedPartsOrAll(it).size }
+        val hitCount = targets.sumOf { getTargetedPartsOrAll(it).size }
         val totalCost = damageAmount * hitCount
 //        val levelRequirement = damageAmount + (hitCount / 2)
         val levelRequirement = damageAmount/2

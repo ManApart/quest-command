@@ -2,12 +2,11 @@ package combat.takeDamage
 
 import combat.DamageType
 import core.events.EventListener
+import core.events.EventManager
 import core.target.Target
 import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 import kotlin.math.max
 
 class TakeDamage : EventListener<TakeDamageEvent>() {

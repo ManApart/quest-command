@@ -11,8 +11,6 @@ import core.target.item.ITEM_TAG
 import createPouch
 import inventory.pickupItem.TakeItem
 import inventory.pickupItem.TakeItemEvent
-import inventory.putItem.TransferItem
-import inventory.putItem.TransferItemEvent
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

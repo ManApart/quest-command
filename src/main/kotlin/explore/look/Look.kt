@@ -2,11 +2,7 @@ package explore.look
 
 import core.GameState
 import core.events.EventListener
-import core.history.display
 import core.properties.IS_CLIMBING
-import core.target.Target
-import core.target.targetsToString
-import traveling.position.NO_VECTOR
 
 class Look : EventListener<LookEvent>() {
 

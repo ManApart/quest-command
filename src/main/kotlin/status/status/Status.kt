@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.history.display
 import core.properties.ENCUMBRANCE
 import core.utility.StringFormatter
+import core.utility.capitalize2
 import status.stat.FOCUS
 import status.stat.HEALTH
 import status.stat.STAMINA
@@ -22,7 +23,7 @@ class Status : EventListener<StatusEvent>() {
             val youHave = StringFormatter.format(event.creature.isPlayer(), "You (${event.creature.name}) have", "${event.creature.name} has")
             val youAre = StringFormatter.format(event.creature.isPlayer(), "You are", "${event.creature.name} is")
             val encumbrancePercent = (event.creature.getEncumbrance() * 100).toInt()
-            val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0).toInt()
+            val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0)
             val encumberedStats = "${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
             display("$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${soul.getCurrent(FOCUS)}/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre $encumbrancePercent% encumbered ($encumberedStats).")
         }
@@ -34,7 +35,7 @@ class Status : EventListener<StatusEvent>() {
         val statString = soul.getStats().asSequence()
                 .filter { it != soul.getStatOrNull(HEALTH) && it != soul.getStatOrNull(FOCUS) && it != soul.getStatOrNull(STAMINA) }
                 .joinToString("\n\t") {
-                    "${it.name.capitalize()}: ${it.current}/${it.max} (${it.xp.toInt()}/${it.getNextLevelXP().toInt()}xp)"
+                    "${it.name.capitalize2()}: ${it.current}/${it.max} (${it.xp.toInt()}/${it.getNextLevelXP().toInt()}xp)"
                 }
         display("$subject stats:\n\t$statString")
     }

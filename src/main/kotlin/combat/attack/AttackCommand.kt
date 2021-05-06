@@ -1,13 +1,13 @@
 package combat.attack
 
 import combat.HandHelper
-import traveling.position.TargetAim
 import core.GameState
 import core.commands.*
 import core.events.EventManager
 import core.history.display
 import core.target.Target
 import status.stat.HEALTH
+import traveling.position.TargetAim
 import use.StartUseEvent
 
 class AttackCommand : Command() {
@@ -98,27 +98,28 @@ class AttackCommand : Command() {
     private fun clarifyAttackType(args: List<String>) {
         val options = listOf("Chop", "Crush", "Slash", "Stab")
         val message = "Attack how?\n\t${options.joinToString(", ")}"
-        val response = ResponseRequest(message, options.map { it to "$it ${args.joinToString(" ")}" }.toMap())
+        val response = ResponseRequest(message, options.associateWith { "$it ${args.joinToString(" ")}" })
         CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTarget(keyword: String, weaponName: String) {
         val options = GameState.currentLocation().getTargets()
         val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ")}"
-        val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name}" }.toMap())
+        val response = ResponseRequest(message, options.associate { it.name to "$keyword ${it.name}" })
         CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTargets(keyword: String, options: List<TargetAim>, weaponName: String) {
         val message = "$keyword which one with $weaponName?\n\t${options.joinToString(", ")}"
-        val response = ResponseRequest(message, options.map { it.target.name to "$keyword ${it.target.name}" }.toMap())
+        val response = ResponseRequest(message, options.associate { it.target.name to "$keyword ${it.target.name}" })
         CommandParser.setResponseRequest(response)
     }
 
     private fun clarifyTargetPart(keyword: String, target: TargetAim, weaponName: String) {
         val options = target.target.body.getParts()
         val message = "$keyword what part of ${target.target.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
-        val response = ResponseRequest(message, options.map { it.name to "$keyword ${it.name} of ${target.target.name}" }.toMap())
+        val response = ResponseRequest(message,
+            options.associate { it.name to "$keyword ${it.name} of ${target.target.name}" })
         CommandParser.setResponseRequest(response)
     }
 

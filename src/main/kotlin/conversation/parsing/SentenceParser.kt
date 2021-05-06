@@ -6,7 +6,6 @@ import core.history.display
 import core.target.Target
 import core.utility.Named
 import traveling.location.location.LocationManager
-import traveling.location.location.NOWHERE_NODE
 
 class SentenceParser(private val speaker: Target, private val listener: Target, conversation: Conversation, sentenceToParse: String) {
     private val sentence = Sentence(sentenceToParse.lowercase())

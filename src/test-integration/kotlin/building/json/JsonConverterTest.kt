@@ -7,13 +7,13 @@ class JsonConverterTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun itemWithoutNameThrowsError() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(mutableMapOf("weight" to "1")))
+        val data = createConversions(listOf(mutableMapOf("weight" to "1")))
         JsonConverter(data).transform(data.first())
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun itemWithoutStringNameThrowsError() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(mutableMapOf("name" to 1)))
+        val data = createConversions(listOf(mutableMapOf("name" to 1)))
         JsonConverter(data).transform(data.first())
     }
 
@@ -25,13 +25,13 @@ class JsonConverterTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun itemExtendsNonExistentItemThrowsError() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(mutableMapOf("name" to "Apple", "extends" to "Nothing")))
+        val data = createConversions(listOf(mutableMapOf("name" to "Apple", "extends" to "Nothing")))
         JsonConverter(data).transform(data.first())
     }
 
     @Test
     fun propertyInherited() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(
+        val data = createConversions(listOf(
                 mutableMapOf("name" to "Apple", "weight" to "1"),
                 mutableMapOf("name" to "Pear", "extends" to "Apple")))
 
@@ -44,7 +44,7 @@ class JsonConverterTest {
 
     @Test
     fun propertyValueOverwrittenByChild() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(
+        val data = createConversions(listOf(
                 mutableMapOf("name" to "Apple", "weight" to "1"),
                 mutableMapOf("name" to "Pear", "weight" to "2", "extends" to "Apple")))
 
@@ -57,7 +57,7 @@ class JsonConverterTest {
 
     @Test
     fun nestedPropertyInherited() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(
+        val data = createConversions(listOf(
                 mutableMapOf("name" to "Apple", "properties" to mutableMapOf("values" to mutableMapOf("healAmount" to 1))),
                 mutableMapOf("name" to "Pear", "extends" to "Apple")))
 
@@ -83,7 +83,7 @@ class JsonConverterTest {
 
     @Test
     fun stringArrayInherited() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(
+        val data = createConversions(listOf(
                 mutableMapOf("name" to "Apple", "tags" to listOf("1", "2")),
                 mutableMapOf("name" to "Pear", "extends" to "Apple")))
 
@@ -109,7 +109,7 @@ class JsonConverterTest {
 
     @Test
     fun extensionIsRecursive() {
-        val data = createConversions(listOf<MutableMap<String, Any>>(
+        val data = createConversions(listOf(
                 mutableMapOf("name" to "Apple", "weight" to "1"),
                 mutableMapOf("name" to "Pear", "extends" to "Apple", "value" to "1"),
                 mutableMapOf("name" to "Orange", "extends" to "Pear", "color" to "Orange")))

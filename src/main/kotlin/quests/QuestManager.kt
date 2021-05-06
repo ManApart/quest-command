@@ -1,9 +1,7 @@
 package quests
 
-import core.utility.NameSearchableList
 import core.DependencyInjector
-import core.events.EventListenersCollection
-import core.events.EventListenersGenerated
+import core.utility.NameSearchableList
 
 object QuestManager {
     var storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class.java).values.map { it.copy() }

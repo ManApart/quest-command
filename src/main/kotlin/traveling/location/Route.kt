@@ -44,7 +44,7 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
         return connections.asSequence()
                 .map { it.vector.direction.shortcut }
                 .joinToString(", ")
-                .toUpperCase()
+                .uppercase()
     }
 
     fun isOnRoute(location: LocationNode): Boolean {

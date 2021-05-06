@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
 class BodyManagerTest {
 
     @Test
-    fun NONEBodyLoads() {
+    fun `NONE Body Loads`() {
         assertNotNull(NONE)
     }
 

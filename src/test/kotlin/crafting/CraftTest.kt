@@ -13,7 +13,6 @@ import crafting.craft.CraftRecipeEvent
 import createItem
 import createPouch
 import inventory.pickupItem.TakeItem
-import inventory.putItem.TransferItem
 import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser

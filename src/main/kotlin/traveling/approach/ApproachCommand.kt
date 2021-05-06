@@ -57,7 +57,8 @@ class ApproachCommand : Command() {
     private fun clarifyAmount(target: Target) {
         val targetRange = GameState.player.position.getDistance(target.position)
         val targets = mapOf("minimum" to Distances.MIN_RANGE, "halfway" to targetRange / 2, "all the way" to targetRange)
-        CommandParser.setResponseRequest(ResponseRequest("Move how much?\n\t${targets.keys.joinToString(", ")}", targets.entries.map { it.key to "approach ${target.name} by ${it.value}" }.toMap()))
+        CommandParser.setResponseRequest(ResponseRequest("Move how much?\n\t${targets.keys.joinToString(", ")}",
+            targets.entries.associate { it.key to "approach ${target.name} by ${it.value}" }))
     }
 
     private fun clarifyTarget(creatures: List<Target>) {
@@ -65,7 +66,7 @@ class ApproachCommand : Command() {
             display("Couldn't find anything to approach.")
         } else {
             val message = "Approach what?\n\t${creatures.joinToString(", ")}"
-            val response = ResponseRequest(message, creatures.map { it.name to "approach ${it.name}" }.toMap())
+            val response = ResponseRequest(message, creatures.associate { it.name to "approach ${it.name}" })
             CommandParser.setResponseRequest(response)
         }
     }

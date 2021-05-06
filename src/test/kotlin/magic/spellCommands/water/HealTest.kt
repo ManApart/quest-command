@@ -108,7 +108,7 @@ class HealTest {
     }
 
 
-    private fun castHeal(input: String): Spell? {
+    private fun castHeal(input: String): Spell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
         Heal().execute(targetA, args, listOf(TargetAim(targetA)), true)
         return (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell

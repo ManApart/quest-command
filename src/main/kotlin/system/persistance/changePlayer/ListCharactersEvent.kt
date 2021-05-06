@@ -2,4 +2,4 @@ package system.persistance.changePlayer
 
 import core.events.Event
 
-class ListCharactersEvent() : Event
+class ListCharactersEvent : Event

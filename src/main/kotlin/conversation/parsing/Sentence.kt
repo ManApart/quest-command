@@ -1,7 +1,6 @@
 package conversation.parsing
 
 import core.utility.Named
-import traveling.location.location.NOWHERE_NODE
 
 class Sentence(sentenceIn: String) {
     val isQuestion = sentenceIn.endsWith("?")

@@ -1,7 +1,6 @@
 package core.body
 
 import system.persistance.*
-import traveling.location.location.LocationNode
 
 fun persist(dataObject: Body, path: String) {
     if (dataObject.name == NONE.name) {

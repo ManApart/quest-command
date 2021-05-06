@@ -100,7 +100,7 @@ class CastCommand : Command() {
     private fun clarifyWord() {
         val options = spellCommands.map { it.name }
         val message = "Cast what?\n\t${options.joinToString(", ")}"
-        val response = ResponseRequest(message, options.map { it to "cast $it" }.toMap())
+        val response = ResponseRequest(message, options.associateWith { "cast $it" })
         CommandParser.setResponseRequest(response)
     }
 

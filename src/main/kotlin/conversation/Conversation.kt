@@ -1,7 +1,6 @@
 package conversation
 
 import conversation.dialogue.DialogueEvent
-import conversation.dialogue.ParsedDialogue
 import core.target.Target
 
 class Conversation(private val firstSpeaker: Target, private val firstListener: Target) {

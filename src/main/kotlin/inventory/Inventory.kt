@@ -106,7 +106,7 @@ class Inventory(private val name: String = "Inventory", private val body: Body =
     }
 
     fun getWeight(): Int {
-        return getItems().sumBy { it.getWeight() }
+        return getItems().sumOf { it.getWeight() }
     }
 
 }

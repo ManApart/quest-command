@@ -2,8 +2,6 @@ package core.ai
 
 import conversation.dialogue.DialogueEvent
 import core.events.DelayedEvent
-import core.events.Event
-import core.history.display
 import core.properties.ACTION_POINTS
 import core.target.Target
 import status.stat.WISDOM

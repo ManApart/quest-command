@@ -60,7 +60,7 @@ class AliasCommand : Command() {
             //TODO - get from command parser
             val aliases = listOf("alias1", "alias2")
             val message = "Delete which alias?\n\t${aliases.joinToString(", ")}"
-            val response = ResponseRequest(message, aliases.map { it to "alias delete $it" }.toMap())
+            val response = ResponseRequest(message, aliases.associateWith { "alias delete $it" })
             CommandParser.setResponseRequest(response)
         } else {
             EventManager.postEvent(DeleteAliasEvent(args[1]))

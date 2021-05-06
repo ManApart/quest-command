@@ -5,14 +5,14 @@ import conversation.parsing.Verb
 import core.target.Target
 import core.utility.Named
 import core.utility.StringFormatter
-import traveling.location.location.LocationNode
+import core.utility.capitalize2
 
 data class ParsedDialogue(val speaker: Target, val listener: Target, val subjects: List<Named>, val verb: Verb, val verbOption: String?, val questionType: QuestionType = QuestionType.STATEMENT) {
     val subject = subjects.first()
 
     fun print(): String {
         val verbOptionSuffix = StringFormatter.format(verbOption != null, " $verbOption", "")
-        return "${speaker.name}: ${questionType.name.lowercase().capitalize()} ${subject.name} ${verb.name.lowercase()}${verbOptionSuffix}?"
+        return "${speaker.name}: ${questionType.name.lowercase().capitalize2()} ${subject.name} ${verb.name.lowercase()}${verbOptionSuffix}?"
     }
 
     fun matches(questionType: QuestionType? = null, subject: Named? = null, verb: Verb? = null, speaker: Target? = null, listener: Target? = null): Boolean {

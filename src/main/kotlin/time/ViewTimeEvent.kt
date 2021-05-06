@@ -2,4 +2,4 @@ package time
 
 import core.events.Event
 
-class ViewTimeEvent() : Event
+class ViewTimeEvent : Event

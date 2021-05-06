@@ -3,7 +3,6 @@ package status.effects
 import core.DependencyInjector
 import core.utility.NameSearchableList
 import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
 
 object EffectManager {
     private var effects = loadEffects()

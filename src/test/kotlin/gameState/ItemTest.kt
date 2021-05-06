@@ -1,4 +1,4 @@
-package core.gamestate
+package gameState
 
 import core.properties.Properties
 import core.properties.Tags
