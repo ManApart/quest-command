@@ -53,6 +53,7 @@ sourceSets.create("integrationTest") {
 }
 
 tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes["Main-Class"] = "MainKt"
     }
@@ -61,6 +62,7 @@ tasks.withType<Jar> {
     from({
         configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
     })
+
 }
 
 task("test-integration", type = Test::class) {
@@ -74,7 +76,7 @@ task("test-integration", type = Test::class) {
     mustRunAfter(tasks["test"])
 }
 
-task("test-all"){
+task("test-all") {
     description = "Run unit AND integration tests"
     dependsOn("test")
     dependsOn("test-integration")
