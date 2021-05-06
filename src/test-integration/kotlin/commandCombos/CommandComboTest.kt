@@ -100,7 +100,8 @@ class CommandComboTest {
     @Test
     fun ratFightsBack() {
         GameState.properties.values.put(DebugType.RANDOM_SUCCEED.propertyName, true)
-        CommandParser.parseCommand("s && nothing && nothing && nothing && nothing")
+        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 0)
+        CommandParser.parseCommand("s && nothing && nothing && nothing && nothing && nothing")
 ChatHistory.getLastInput()
         assertEquals("Oh dear, you have died!", ChatHistory.getLastOutput())
     }
