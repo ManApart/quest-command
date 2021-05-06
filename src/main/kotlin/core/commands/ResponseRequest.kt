@@ -58,10 +58,8 @@ class ResponseRequest(val message: String, responses: Map<String, String>) {
             if (keys.size != values.size) {
                 throw IllegalArgumentException("Keys and values must have the same number of items!")
             }
-            val responseMap = mutableMapOf<String, String>()
-            for (i in keys.indices) {
-                responseMap[keys[i]] = values[i]
-            }
+            val responseMap = keys.indices.associate { i -> keys[i] to values[i]}
+
             return ResponseRequest(message, responseMap)
         }
     }
