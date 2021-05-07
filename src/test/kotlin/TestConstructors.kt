@@ -17,6 +17,8 @@ import crafting.RecipeManager
 import crafting.RecipeParser
 import inventory.createInventoryBody
 import quests.QuestManager
+import quests.StoryEventsCollection
+import quests.StoryEventsMock
 import status.conditions.ConditionFakeParser
 import status.conditions.ConditionManager
 import status.conditions.ConditionParser
@@ -108,7 +110,7 @@ fun injectAllDefaultMocks() {
     LocationManager.reset()
 
 
-//    DependencyInjector.setImplementation(QuestParser::class.java, QuestFakeParser())
+    DependencyInjector.setImplementation(StoryEventsCollection::class.java, StoryEventsMock())
     QuestManager.reset()
 
     DependencyInjector.setImplementation(RecipeParser::class.java, RecipeFakeParser())
