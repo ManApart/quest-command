@@ -2,8 +2,8 @@ name: Deploy Docker Latest
 
 on:
   push:
-    branches:
-      - 'master'
+#    branches:
+#      - 'master'
 
 jobs:
   docker:
