@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.GameState
 import core.events.EventManager
 import core.target.Target
-import injectAllDefaultMocks
+import createMockedGame
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
 import magic.spellCommands.SpellCommandsCollection
@@ -21,7 +21,7 @@ class CastCommandCastTest {
 
     companion object {
         init {
-            injectAllDefaultMocks()
+            createMockedGame()
         }
 
         private val targetA = Target("targetA")

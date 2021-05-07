@@ -1,12 +1,7 @@
 package use.eat
 
-import core.DependencyInjector
 import core.GameManager
 import core.GameState
-import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorsCollection
-import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
 import core.commands.CommandParser
 import core.events.EventManager
 import core.properties.Properties
@@ -14,14 +9,9 @@ import core.properties.Tags
 import core.target.Target
 import core.target.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
-import injectAllDefaultMocks
+import createMockedGame
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
 import traveling.location.location.NOWHERE_NODE
 import use.StartUseEvent
 import kotlin.test.assertEquals
@@ -31,31 +21,9 @@ import kotlin.test.assertTrue
 
 class EatCommandTest {
 
-    companion object {
-        @BeforeClass
-        @JvmStatic
-        fun setupAll() {
-            injectAllDefaultMocks()
-        }
-
-    }
-
     @Before
     fun setup() {
-        EventManager.clear()
-        CommandParser.setResponseRequest(null)
-
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
-        BodyManager.reset()
-
-        val behaviorParser = BehaviorsMock()
-        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
-        BehaviorManager.reset()
-
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
-        LocationManager.reset()
+        createMockedGame()
 
         GameState.player = GameManager.newPlayer(location = NOWHERE_NODE)
     }

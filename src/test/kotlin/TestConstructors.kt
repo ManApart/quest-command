@@ -12,6 +12,7 @@ import core.ai.behavior.BehaviorsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
 import core.body.BodyManager
+import core.commands.CommandParser
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
 import core.events.EventListenersCollection
@@ -111,7 +112,7 @@ fun createPackMule(strength: Int = 1): Target {
     )
 }
 
-fun injectAllDefaultMocks() {
+fun createMockedGame() {
     DependencyInjector.clearAllImplementations()
     DependencyInjector.setImplementation(ActivatorParser::class.java, ActivatorFakeParser())
     ActivatorManager.reset()
@@ -163,6 +164,7 @@ fun injectAllDefaultMocks() {
     WeatherManager.reset()
 
     EventManager.clear()
+    CommandParser.setResponseRequest(null)
     GameState.player = GameManager.newPlayer()
 
 }

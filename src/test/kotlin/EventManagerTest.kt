@@ -28,7 +28,7 @@ class EventManagerTest {
     companion object {
         @BeforeClass
         @JvmStatic fun setupAll() {
-            injectAllDefaultMocks()
+            createMockedGame()
         }
 
     }

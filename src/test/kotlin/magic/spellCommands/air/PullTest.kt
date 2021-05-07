@@ -7,7 +7,7 @@ import core.commands.Args
 import core.events.EventManager
 import core.properties.WEIGHT
 import core.target.Target
-import injectAllDefaultMocks
+import createMockedGame
 import magic.castSpell.StartCastSpellEvent
 import magic.spells.MoveTargetSpell
 import org.junit.Before
@@ -29,7 +29,7 @@ class PullTest {
 
     companion object {
         init {
-            injectAllDefaultMocks()
+            createMockedGame()
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Air Blasted", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.AIR)
             )))

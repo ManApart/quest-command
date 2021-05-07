@@ -2,7 +2,6 @@ package crafting
 
 import core.DependencyInjector
 import core.GameManager
-import core.body.BodyManager
 import core.events.EventManager
 import core.properties.Tags
 import core.target.Target
@@ -12,15 +11,11 @@ import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
 import createPouch
-import injectAllDefaultMocks
+import createMockedGame
 import inventory.pickupItem.TakeItem
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
 import system.ItemFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -29,7 +24,7 @@ class CraftTest {
 
     @Before
     fun setup() {
-        injectAllDefaultMocks()
+        createMockedGame()
     }
 
     @Test

@@ -6,7 +6,7 @@ import core.DependencyInjector
 import core.GameState
 import core.body.BodyManager
 import core.target.Target
-import injectAllDefaultMocks
+import createMockedGame
 import org.junit.Test
 import system.BodyFakeParser
 import traveling.location.location.LocationNode
@@ -26,7 +26,7 @@ class TargetAimParserTest {
         private val bodyPartC = LocationRecipe("bodyPartC")
 
         init {
-            injectAllDefaultMocks()
+            createMockedGame()
 
             val bodyParser = BodyFakeParser(
                     listOf(

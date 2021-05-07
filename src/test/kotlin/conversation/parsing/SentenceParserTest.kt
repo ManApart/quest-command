@@ -2,7 +2,7 @@ package conversation.parsing
 
 import conversation.dialogue.ParsedDialogue
 import core.target.Target
-import injectAllDefaultMocks
+import createMockedGame
 import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -16,7 +16,7 @@ class SentenceParserTest {
         @JvmStatic
         @BeforeClass
         fun setup() {
-            injectAllDefaultMocks()
+            createMockedGame()
 
             speaker.location.getLocation().addTarget(listener)
         }

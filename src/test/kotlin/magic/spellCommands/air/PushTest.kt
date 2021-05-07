@@ -4,19 +4,13 @@ import combat.DamageType
 import traveling.position.TargetAim
 import core.DependencyInjector
 import core.GameState
-import core.ai.behavior.BehaviorsCollection
-import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
 import core.properties.WEIGHT
 import core.target.Target
-import injectAllDefaultMocks
+import createMockedGame
 import magic.castSpell.StartCastSpellEvent
-import magic.spellCommands.SpellCommandsMock
-import magic.spellCommands.SpellCommandsCollection
 import magic.spells.MoveTargetSpell
-import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
 import status.effects.EffectBase
@@ -26,12 +20,8 @@ import status.effects.EffectParser
 import status.stat.AIR_MAGIC
 import status.stat.FOCUS
 import status.stat.StatEffect
-import system.BodyFakeParser
-import system.location.LocationFakeParser
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -39,7 +29,7 @@ class PushTest {
 
     companion object {
         init {
-            injectAllDefaultMocks()
+            createMockedGame()
 
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Air Blasted", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.AIR)

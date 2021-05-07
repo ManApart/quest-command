@@ -4,13 +4,10 @@ import combat.DamageType
 import traveling.position.TargetAim
 import core.DependencyInjector
 import core.GameState
-import core.ai.behavior.BehaviorsCollection
-import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
 import core.target.Target
-import injectAllDefaultMocks
+import createMockedGame
 import magic.SpellCommandMock
 import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommandsMock
@@ -25,10 +22,6 @@ import status.effects.EffectParser
 import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
-import system.BodyFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -36,7 +29,7 @@ import kotlin.test.assertTrue
 class HealTest {
     companion object {
         init {
-            injectAllDefaultMocks()
+            createMockedGame()
 
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
