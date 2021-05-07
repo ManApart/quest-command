@@ -11,6 +11,7 @@ import core.GameState
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.events.EventManager
+import injectAllDefaultMocks
 import magic.spellCommands.SpellCommandsMock
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
@@ -25,9 +26,7 @@ class CastCommandCastTest {
 
     companion object {
         init {
-            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
-            DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
+            injectAllDefaultMocks()
         }
 
         private val targetA = Target("targetA")

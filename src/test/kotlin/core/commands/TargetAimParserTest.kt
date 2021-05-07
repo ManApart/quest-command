@@ -3,11 +3,13 @@ package core.commands
 import assertContainsByName
 import assertEqualsByName
 import core.DependencyInjector
+import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.target.Target
+import injectAllDefaultMocks
 import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
 import org.junit.AfterClass
@@ -31,9 +33,7 @@ class TargetAimParserTest {
         private val bodyPartC = LocationRecipe("bodyPartC")
 
         init {
-            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
-            DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
+            injectAllDefaultMocks()
 
             val bodyParser = BodyFakeParser(
                     listOf(
@@ -51,10 +51,12 @@ class TargetAimParserTest {
 
             DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
             BodyManager.reset()
+            GameState.player = GameManager.newPlayer()
         }
 
         private val targetA = Target("targetA", bodyName = "testBody")
         private val targetB = Target("targetB", bodyName = "testBody")
+
         private val scope = GameState.currentLocation()
 
         init {

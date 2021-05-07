@@ -6,6 +6,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import core.DependencyInjector
 import core.events.EventManager
+import injectAllDefaultMocks
 import magic.castSpell.CastCommand
 import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
@@ -21,6 +22,7 @@ class CastCommandWordTest {
         @BeforeClass
         @JvmStatic
         fun setupAll() {
+            injectAllDefaultMocks()
             val reflections = SpellCommandsMock(listOf(
                     spellA, spellB, spellC
             ))

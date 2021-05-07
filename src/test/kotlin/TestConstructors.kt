@@ -23,6 +23,8 @@ import crafting.RecipeFakeParser
 import crafting.RecipeManager
 import crafting.RecipeParser
 import inventory.createInventoryBody
+import magic.spellCommands.SpellCommandsCollection
+import magic.spellCommands.SpellCommandsMock
 import quests.QuestManager
 import quests.StoryEventsCollection
 import quests.StoryEventsMock
@@ -132,12 +134,13 @@ fun injectAllDefaultMocks() {
     DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
     LocationManager.reset()
 
+    DependencyInjector.setImplementation(RecipeParser::class.java, RecipeFakeParser())
+    RecipeManager.reset()
 
     DependencyInjector.setImplementation(StoryEventsCollection::class.java, StoryEventsMock())
     QuestManager.reset()
 
-    DependencyInjector.setImplementation(RecipeParser::class.java, RecipeFakeParser())
-    RecipeManager.reset()
+    DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
 
 //    DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
 

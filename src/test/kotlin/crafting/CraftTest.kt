@@ -12,6 +12,7 @@ import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
 import createPouch
+import injectAllDefaultMocks
 import inventory.pickupItem.TakeItem
 import org.junit.Before
 import org.junit.Test
@@ -28,14 +29,7 @@ class CraftTest {
 
     @Before
     fun setup() {
-
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
-        LocationManager.reset()
-
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
-        BodyManager.reset()
+        injectAllDefaultMocks()
     }
 
     @Test
