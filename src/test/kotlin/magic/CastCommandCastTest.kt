@@ -1,24 +1,19 @@
 package magic
 
-import traveling.position.TargetAim
-import core.target.Target
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.Test
-import system.BodyFakeParser
 import core.DependencyInjector
 import core.GameState
-import core.ai.behavior.BehaviorsCollection
-import core.ai.behavior.BehaviorsMock
 import core.events.EventManager
+import core.target.Target
 import injectAllDefaultMocks
-import magic.spellCommands.SpellCommandsMock
 import magic.castSpell.CastCommand
 import magic.castSpell.getTargetedPartsOrAll
 import magic.spellCommands.SpellCommandsCollection
+import magic.spellCommands.SpellCommandsMock
+import org.junit.Before
+import org.junit.Test
 import traveling.location.location.Location
 import traveling.location.location.LocationNode
-import traveling.location.location.LocationParser
+import traveling.position.TargetAim
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -38,13 +33,6 @@ class CastCommandCastTest {
             scope.addTarget(targetB)
         }
 
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
-            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
-            DependencyInjector.clearImplementation(LocationParser::class.java)
-        }
     }
 
     @Before

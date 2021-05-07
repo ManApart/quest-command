@@ -11,6 +11,7 @@ import core.commands.Args
 import core.events.EventManager
 import core.properties.WEIGHT
 import core.target.Target
+import injectAllDefaultMocks
 import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
@@ -38,19 +39,11 @@ class PushTest {
 
     companion object {
         init {
-            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
-
-            DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
-            LocationManager.reset()
-
-            DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
-            BodyManager.reset()
+            injectAllDefaultMocks()
 
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Air Blasted", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.AIR)
             )))
-            EventManager.reset()
             EffectManager.reset()
         }
 
@@ -61,13 +54,6 @@ class PushTest {
         init {
             scope.addTarget(caster)
             scope.addTarget(victim)
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            DependencyInjector.clearAllImplementations()
-            EventManager.clear()
         }
     }
 

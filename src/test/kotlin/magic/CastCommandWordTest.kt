@@ -29,12 +29,6 @@ class CastCommandWordTest {
             DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
         }
 
-
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
-        }
     }
 
     @Before

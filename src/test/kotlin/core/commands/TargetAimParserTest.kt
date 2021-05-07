@@ -3,22 +3,15 @@ package core.commands
 import assertContainsByName
 import assertEqualsByName
 import core.DependencyInjector
-import core.GameManager
 import core.GameState
-import core.ai.behavior.BehaviorsCollection
-import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.target.Target
 import injectAllDefaultMocks
-import magic.spellCommands.SpellCommandsMock
-import magic.spellCommands.SpellCommandsCollection
-import org.junit.AfterClass
 import org.junit.Test
 import system.BodyFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationNode
 import traveling.location.location.LocationParser
+import traveling.location.location.LocationRecipe
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)
@@ -51,7 +44,6 @@ class TargetAimParserTest {
 
             DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
             BodyManager.reset()
-            GameState.player = GameManager.newPlayer()
         }
 
         private val targetA = Target("targetA", bodyName = "testBody")
@@ -64,13 +56,6 @@ class TargetAimParserTest {
             scope.addTarget(targetB)
         }
 
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            DependencyInjector.clearImplementation(SpellCommandsCollection::class.java)
-            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
-            DependencyInjector.clearImplementation(LocationParser::class.java)
-        }
     }
 
 

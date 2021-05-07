@@ -8,15 +8,13 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
 import core.commands.CommandParser
-import core.commands.CommandsCollection
-import core.commands.CommandsMock
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
 import core.target.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
-import org.junit.AfterClass
+import injectAllDefaultMocks
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -37,16 +35,9 @@ class EatCommandTest {
         @BeforeClass
         @JvmStatic
         fun setupAll() {
-            DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
+            injectAllDefaultMocks()
         }
 
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            DependencyInjector.clearImplementation(CommandsCollection::class.java)
-            DependencyInjector.clearImplementation(BehaviorsCollection::class.java)
-            DependencyInjector.clearImplementation(LocationParser::class.java)
-        }
     }
 
     @Before

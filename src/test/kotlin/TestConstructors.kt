@@ -1,4 +1,8 @@
+import conversation.dsl.DialoguesCollection
+import conversation.dsl.DialoguesMock
 import core.DependencyInjector
+import core.GameManager
+import core.GameState
 import core.ai.AIManager
 import core.ai.action.dsl.AIActionsCollection
 import core.ai.action.dsl.AIActionsMock
@@ -8,14 +12,18 @@ import core.ai.behavior.BehaviorsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
 import core.body.BodyManager
+import core.commands.CommandsCollection
+import core.commands.CommandsMock
 import core.events.EventListenersCollection
 import core.events.EventListenersMock
+import core.events.EventManager
 import core.properties.*
 import core.target.Target
 import core.target.activator.ACTIVATOR_TAG
 import core.target.activator.ActivatorManager
 import core.target.activator.ActivatorParser
 import core.target.creature.CREATURE_TAG
+import core.target.creature.CreatureParser
 import core.target.item.ITEM_TAG
 import core.target.item.ItemManager
 import core.target.item.ItemParser
@@ -104,6 +112,7 @@ fun createPackMule(strength: Int = 1): Target {
 }
 
 fun injectAllDefaultMocks() {
+    DependencyInjector.clearAllImplementations()
     DependencyInjector.setImplementation(ActivatorParser::class.java, ActivatorFakeParser())
     ActivatorManager.reset()
 
@@ -117,16 +126,20 @@ fun injectAllDefaultMocks() {
     DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser.parserWithFakePlayer())
     BodyManager.reset()
 
-//    DependencyInjector.setImplementation(CreatureParser::class.java, Cre())
+//    DependencyInjector.setImplementation(CreatureParser::class.java, Creature())
+
+    DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
 
     DependencyInjector.setImplementation(ConditionParser::class.java, ConditionFakeParser())
     ConditionManager.reset()
 
-//    DependencyInjector.setImplementation(DialogueOptionsParser::class.java, DialogOpt())
+    DependencyInjector.setImplementation(DialoguesCollection::class.java, DialoguesMock())
+
     DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser())
     EffectManager.reset()
 
     DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())
+    EventManager.reset()
 
     DependencyInjector.setImplementation(ItemParser::class.java, ItemFakeParser())
     ItemManager.reset()
@@ -148,6 +161,9 @@ fun injectAllDefaultMocks() {
 
     DependencyInjector.setImplementation(WeatherParser::class.java, WeatherFakeParser())
     WeatherManager.reset()
+
+    EventManager.clear()
+    GameState.player = GameManager.newPlayer()
 
 }
 

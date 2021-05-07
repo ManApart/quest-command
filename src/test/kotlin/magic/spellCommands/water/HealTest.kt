@@ -10,12 +10,12 @@ import core.body.BodyManager
 import core.commands.Args
 import core.events.EventManager
 import core.target.Target
+import injectAllDefaultMocks
 import magic.SpellCommandMock
 import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
 import magic.spells.Spell
-import org.junit.AfterClass
 import org.junit.Before
 import org.junit.Test
 import status.effects.EffectBase
@@ -36,20 +36,12 @@ import kotlin.test.assertTrue
 class HealTest {
     companion object {
         init {
-            DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
-
-            DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
-            LocationManager.reset()
-
-            DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser())
-            BodyManager.reset()
+            injectAllDefaultMocks()
 
             DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
                     EffectBase("Wet", "", statTarget = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
             )))
-            EventManager.reset()
             EffectManager.reset()
         }
 
@@ -60,12 +52,6 @@ class HealTest {
             scope.addTarget(targetA)
         }
 
-        @AfterClass
-        @JvmStatic
-        fun teardown() {
-            DependencyInjector.clearAllImplementations()
-            EventManager.clear()
-        }
     }
 
     @Before
