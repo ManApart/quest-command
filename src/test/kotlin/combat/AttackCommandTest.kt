@@ -18,6 +18,7 @@ import core.events.EventListenersCollection
 import core.events.EventListenersMock
 import core.events.EventManager
 import core.target.Target
+import injectAllDefaultMocks
 import org.junit.Before
 import org.junit.Test
 import system.BodyFakeParser
@@ -34,30 +35,7 @@ class AttackCommandTest {
 
     @Before
     fun setup() {
-
-        DependencyInjector.setImplementation(AIActionsCollection::class.java, AIActionsMock())
-        DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
-        AIManager.reset()
-
-        DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())
-
-        val bodyParser = BodyFakeParser.parserWithFakePlayer()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
-        BodyManager.reset()
-
-
-        val behaviorParser = BehaviorsMock()
-        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
-        BehaviorManager.reset()
-
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
-        LocationManager.reset()
-
-        val weatherParser = WeatherFakeParser()
-        DependencyInjector.setImplementation(WeatherParser::class.java, weatherParser)
-        WeatherManager.reset()
-
+        injectAllDefaultMocks()
         EventManager.clear()
 
         GameState.player = GameManager.newPlayer()
