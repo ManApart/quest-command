@@ -6,12 +6,16 @@ import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.ai.AIManager
+import core.ai.action.dsl.AIActionsCollection
+import core.ai.action.dsl.AIActionsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.body.BodyManager
+import core.events.EventListenersCollection
+import core.events.EventListenersMock
 import core.events.EventManager
 import core.target.Target
 import org.junit.Before
@@ -30,12 +34,17 @@ class AttackCommandTest {
 
     @Before
     fun setup() {
+
+        DependencyInjector.setImplementation(AIActionsCollection::class.java, AIActionsMock())
+        DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
+        AIManager.reset()
+
+        DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())
+
         val bodyParser = BodyFakeParser.parserWithFakePlayer()
         DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
         BodyManager.reset()
 
-        DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
-        AIManager.reset()
 
         val behaviorParser = BehaviorsMock()
         DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
