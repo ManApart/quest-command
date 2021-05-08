@@ -2,9 +2,8 @@ name: Deploy Docker Latest
 
 on:
   push:
-    branches:
-      - 'master'
-      - 'release'
+    tags:
+      - '*'
 
 jobs:
   docker:
@@ -38,4 +37,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker Push Dev
         if: contains(github.ref, 'master')
-        run: docker push manapart/quest-command:dev
+        run: docker push manapart/quest-command:${GITHUB_REF#refs/*/}
