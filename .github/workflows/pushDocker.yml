@@ -42,4 +42,3 @@ jobs:
       - name: Docker Push Stable
         if: contains(github.ref, 'release')
         run: docker push manapart/quest-command:stable
-      - name: Docker Don't Push
