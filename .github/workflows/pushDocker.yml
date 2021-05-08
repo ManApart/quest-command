@@ -25,7 +25,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
-        run: ./gradlew build 
+        run: ./gradlew build jar
+      - name: Test output
+        run: ls && ls ./build/libs
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
