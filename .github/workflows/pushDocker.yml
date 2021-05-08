@@ -31,7 +31,7 @@ jobs:
       - name: Docker Tag
         run: docker tag manapart/quest-command:dev manapart/quest-command:stable
       - name: Docker Login
-        run: echo ${{ secrets.DOCKER_USERNAME }}| docker login -u ${{ secrets.DOCKER_PASSWORD }} --password-stdin
+        run: echo ${{ secrets.DOCKER_USERNAME }} | docker login -u ${{ secrets.DOCKER_PASSWORD }} --password-stdin
       - name: Docker Push
         run: docker push manapart/quest-command:dev
 #      - name: Set up QEMU
