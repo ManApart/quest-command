@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker Push Dev
-        if: "${GITHUB_REF##*/}" == "master"
+        if: contains(github.ref, "master")
         run: docker push manapart/quest-command:dev
 #      - name: Docker Push Stable
 #        if: ${GITHUB_REF##*/} == "release"
