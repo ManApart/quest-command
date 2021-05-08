@@ -26,12 +26,12 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
         run: ./gradlew build jar
-      - name: Docker Login
-        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - name: Docker Build
         run: build . -t manapart/quest-command:dev
       - name: Docker Tag
         run: docker tag manapart/quest-command:dev manapart/quest-command:stable
+      - name: Docker Login
+        run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - name: Docker Push
         run: docker push manapart/quest-command:dev
 #      - name: Set up QEMU
