@@ -2,8 +2,9 @@ name: Deploy Docker Latest
 
 on:
   push:
-#    branches:
+    branches:
 #      - 'master'
+#      - 'release'
 
 jobs:
   docker:
@@ -35,19 +36,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-#      - name: Docker Login
-#        run: echo "${{ secrets.DOCKER_USERNAME }}" | docker login -u "${{ secrets.DOCKER_PASSWORD }}" --password-stdin
-      - name: Docker Push
+      - name: Docker Push Dev
+        if: ${GITHUB_REF##*/} == "master"
         run: docker push manapart/quest-command:dev
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v1
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v1
-#      - name: Build and push
-#        id: docker_build
-#        uses: docker/build-push-action@v2
-#        with:
-#          push: true
-#          tags: manapart/quest-command:dev
-#      - name: Image digest
-#        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Docker Push Stable
+        if: ${GITHUB_REF##*/} == "release"
+        run: docker push manapart/quest-command:stable
+      - name: Docker Don't Push
+        if: ${GITHUB_REF##*/} != "release" && ${GITHUB_REF##*/} != "master"
+        run: echo "Skipping push on ${GITHUB_REF##*/}"
