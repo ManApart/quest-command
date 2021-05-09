@@ -26,9 +26,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build jar
       - name: Docker Build
-        run: docker build . -t manapart/quest-command:dev
-      - name: Docker Tag
-        run: docker tag manapart/quest-command:${GITHUB_REF#refs/*/}
+        run: docker build . -t manapart/quest-command:${GITHUB_REF#refs/*/}
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:

@@ -28,8 +28,6 @@ jobs:
         run: ./gradlew build jar
       - name: Docker Build
         run: docker build . -t manapart/quest-command:dev
-      - name: Docker Tag
-        run: docker tag manapart/quest-command:dev
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:

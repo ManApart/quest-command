@@ -1,6 +1,6 @@
 # Quest Command
 
-[![Build Status](https://travis-ci.org/ManApart/QuestCommand.svg?branch=master)](https://travis-ci.org/ManApart/QuestCommand)
+[![Build and Test](https://github.com/ManApart/QuestCommand/actions/workflows/runTests.yml/badge.svg)](https://github.com/ManApart/QuestCommand/actions/workflows/runTests.yml)
 
 An open world rpg with intense levels of interaction, experienced through the command prompt.
 
