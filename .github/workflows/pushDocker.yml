@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'release'
 
 jobs:
   docker:
@@ -37,5 +36,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker Push Dev
-        if: contains(github.ref, 'master')
         run: docker push manapart/quest-command:dev
