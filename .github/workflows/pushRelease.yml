@@ -1,4 +1,4 @@
-name: Deploy Docker Latest
+name: Deploy Docker Releases
 
 on:
   release:
