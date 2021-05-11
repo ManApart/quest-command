@@ -1,8 +1,9 @@
 name: Deploy Docker Releases
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   docker:
@@ -27,6 +28,12 @@ jobs:
         run: ./gradlew build jar
       - name: Docker Build
         run: docker build . -t manapart/quest-command:${GITHUB_REF#refs/*/}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./build/libs/quest-command-dev.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
