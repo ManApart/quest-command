@@ -10,7 +10,7 @@ class AIActionBuilder(val condition: (Target) -> Boolean) {
     private var protoActions: MutableList<ProtoAction> = mutableListOf()
 
     fun cond(condition: (Target) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit) {
-        children.add(actions(condition, initializer))
+        children.add(AIActionBuilder(condition).apply(initializer))
     }
 
     fun action(name: String, result: ((Target) -> Event)) {
@@ -21,7 +21,7 @@ class AIActionBuilder(val condition: (Target) -> Boolean) {
         this.protoActions.add(ProtoAction(name, results))
     }
 
-    fun build(): List<AIAction> {
+    internal fun build(): List<AIAction> {
         return build(listOf())
     }
 
@@ -42,6 +42,6 @@ class AIActionBuilder(val condition: (Target) -> Boolean) {
     }
 }
 
-fun actions(condition: (Target) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit): AIActionBuilder {
-    return AIActionBuilder(condition).apply(initializer)
+fun actions(condition: (Target) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit): List<AIAction> {
+    return AIActionBuilder(condition).apply(initializer).build()
 }

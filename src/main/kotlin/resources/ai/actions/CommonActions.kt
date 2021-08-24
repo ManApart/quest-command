@@ -17,7 +17,7 @@ class CommonActions : AIActionResource {
     override val values = actions {
         action("Rat Attack", ::ratAttack)
 
-    }.build() + listOf(defaultAction)
+    } + listOf(defaultAction)
 }
 
 private fun ratAttack(owner: Target): Event {

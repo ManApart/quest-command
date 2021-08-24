@@ -16,7 +16,7 @@ class DialogueBuilder(val condition: (Conversation) -> Boolean) {
     private var results: MutableList<((Conversation) -> List<Event>)> = mutableListOf()
 
     fun cond(condition: (Conversation) -> Boolean = { true }, initializer: DialogueBuilder.() -> Unit) {
-        children.add(conversations(condition, initializer))
+        children.add(DialogueBuilder(condition).apply(initializer))
     }
 
     fun resultLine(line: ((Conversation) -> String)) {
@@ -31,7 +31,7 @@ class DialogueBuilder(val condition: (Conversation) -> Boolean) {
         this.results.add(results)
     }
 
-    fun build(): List<Dialogue> {
+    internal fun build(): List<Dialogue> {
         return build(listOf())
     }
 
@@ -52,8 +52,11 @@ class DialogueBuilder(val condition: (Conversation) -> Boolean) {
     }
 }
 
-fun conversations(condition: (Conversation) -> Boolean = { true }, initializer: DialogueBuilder.() -> Unit): DialogueBuilder {
-    return DialogueBuilder(condition).apply(initializer)
+fun conversations(
+    condition: (Conversation) -> Boolean = { true },
+    initializer: DialogueBuilder.() -> Unit
+): List<Dialogue> {
+    return DialogueBuilder(condition).apply(initializer).build()
 }
 
 fun Conversation.question(): QuestionType? {

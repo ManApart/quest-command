@@ -38,5 +38,5 @@ class GenericConversations : DialogueResource {
             result { DialogueEvent(it.getLatestListener(), it, "${it.getLatestListener()} is not safe") }
         }
 
-    }.build()
+    }
 }
