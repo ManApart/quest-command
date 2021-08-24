@@ -1,8 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.0"
-    id("com.github.ben-manes.versions") version("0.38.0")
+    kotlin("jvm") version "1.5.20"
 }
 
 group = "org.rak.manapart"
@@ -15,8 +14,10 @@ repositories {
 dependencies {
     implementation("org.reflections:reflections:0.9.12")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.0")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.0")
+    //Upgrading jackson breaks secondary constructor objects (see MultiObjectParserTest)
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
 }
 
 sourceSets.getByName("main") {
