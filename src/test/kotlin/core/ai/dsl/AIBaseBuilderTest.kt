@@ -31,7 +31,7 @@ class AIBaseBuilderTest {
                 additional = listOf("swim")
                 exclude = listOf("run")
             }
-        }.build()
+        }
 
         assertEquals(2, values.size)
 
@@ -49,19 +49,19 @@ class AIBaseBuilderTest {
 
     @Test
     fun circularDependenciesAreFound() {
-        val builder = aiBuilder {
-            ai("parent") {
-                inherits = listOf("child")
-                additional = listOf("run", "jump")
-            }
-            ai("child") {
-                inherits = listOf("parent")
-                additional = listOf("swim")
-                exclude = listOf("run")
+        assertFails {
+            aiBuilder {
+                ai("parent") {
+                    inherits = listOf("child")
+                    additional = listOf("run", "jump")
+                }
+                ai("child") {
+                    inherits = listOf("parent")
+                    additional = listOf("swim")
+                    exclude = listOf("run")
+                }
             }
         }
-
-        assertFails { builder.build() }
     }
 
 }

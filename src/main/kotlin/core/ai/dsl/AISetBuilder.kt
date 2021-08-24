@@ -9,12 +9,12 @@ class AISetBuilder {
         aiBuilders[name] = AIBaseBuilder(name).apply(initializer)
     }
 
-    fun build(): List<AIBase> {
+    internal fun build(): List<AIBase> {
         aiBuilders.values.forEach { it.prep(aiBuilders) }
         return aiBuilders.values.map { it.build() }
     }
 }
 
-fun aiBuilder(initializer: AISetBuilder.() -> Unit): AISetBuilder {
-    return AISetBuilder().apply(initializer)
+fun aiBuilder(initializer: AISetBuilder.() -> Unit): List<AIBase> {
+    return AISetBuilder().apply(initializer).build()
 }

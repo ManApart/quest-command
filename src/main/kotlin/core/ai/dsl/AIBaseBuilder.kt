@@ -10,7 +10,7 @@ class AIBaseBuilder(val name: String) {
     private val completeActionList = mutableSetOf<String>()
     private var prepped = false
 
-    fun build(): AIBase {
+    internal fun build(): AIBase {
         return AIBase(name, completeActionList.toList())
     }
 
@@ -39,6 +39,6 @@ class AIBaseBuilder(val name: String) {
     }
 }
 
-fun ai(name: String, initializer: AIBaseBuilder.() -> Unit): AIBaseBuilder {
-    return AIBaseBuilder(name).apply(initializer)
+fun ai(name: String, initializer: AIBaseBuilder.() -> Unit): AIBase {
+    return AIBaseBuilder(name).apply(initializer).build()
 }

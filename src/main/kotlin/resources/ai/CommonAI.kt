@@ -16,5 +16,5 @@ class CommonAI : AIResource {
         ai("Commoner") {
             additional = listOf("Nothing")
         }
-    }.build()
+    }
 }
