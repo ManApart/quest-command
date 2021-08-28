@@ -12,6 +12,10 @@ class Tags(tags: List<String> = listOf()) {
         return tags.joinToString(", ")
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is Tags && tags == other.tags
+    }
+
     fun has(tag: String): Boolean {
         return lowerCaseTags().contains(tag.lowercase())
     }

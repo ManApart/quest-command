@@ -1,6 +1,6 @@
-package building.json.dsl
+package core.target
 
-import core.target.Target
+import core.properties.PropsBuilder
 
 class TargetBuilder(private val name: String) {
     private var propsBuilder = PropsBuilder()
