@@ -30,6 +30,7 @@ import traveling.location.location.NOWHERE_NODE
 import kotlin.math.max
 import kotlin.math.min
 
+//TODO - can we get rid of optional constructor params once we're using DSL to handle them?
 open class Target(
         name: String,
         base: Target? = null,

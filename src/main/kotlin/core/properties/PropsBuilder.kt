@@ -1,27 +1,21 @@
 package core.properties
 
-class PropsBuilder {
-    private val tags = mutableListOf<String>()
-    private val values = mutableMapOf<String, String>()
+import core.utility.MapBuilder
 
-    fun tag(vararg tags: String){
+class PropsBuilder() {
+    private val tags = mutableListOf<String>()
+    private val values: MapBuilder = MapBuilder()
+
+    fun tag(vararg tags: String) {
         this.tags.addAll(tags)
     }
 
-    fun value(values: Map<String, Any>){
-        values.entries.forEach { (key, value)-> this.values[key] = value.toString() }
-    }
-
-    fun value(key: String, value: String){
-        values[key] = value
-    }
-
-    fun value(key: String, value: Int){
-        values[key] = value.toString()
-    }
+    fun value(vararg values: Pair<String, Any>) = this.values.entry(values.toList())
+    fun value(key: String, value: String) = values.entry(key, value)
+    fun value(key: String, value: Int) = values.entry(key, value)
 
     internal fun build(): Properties {
-        return Properties(Values(values), Tags(tags))
+        return Properties(Values(values.build()), Tags(tags))
     }
 }
 
