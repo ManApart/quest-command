@@ -16,7 +16,7 @@ import traveling.location.location.LocationNode
 
 val NONE = Body("None")
 
-class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
+data class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
 
     constructor(base: Body) : this(base.name, Network(base.layout))
 
