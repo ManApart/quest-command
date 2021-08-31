@@ -11,7 +11,7 @@ import core.utility.toNameSearchableList
 import traveling.location.location.Location
 
 
-class Inventory(private val name: String = "Inventory", private val body: Body = createInventoryBody(name)) {
+data class Inventory(private val name: String = "Inventory", private val body: Body = createInventoryBody(name)) {
     constructor(name: String, items: List<Target>) : this(name, Body().also { it.layout.rootNode.getLocation().addTargets(items) })
 
     override fun toString(): String {

@@ -14,6 +14,11 @@ class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats
         addStats(stats)
     }
 
+    //TODO - make more precise, possibly use data class
+    override fun equals(other: Any?): Boolean {
+        return other is Soul && leveledStats.size == other.leveledStats.size && conditions.size == other.conditions.size
+    }
+
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
             val stat = getOrCreateStat(name)
