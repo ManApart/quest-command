@@ -2,6 +2,7 @@ package core.target
 
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
+import core.body.BodyBuilder
 import core.body.BodyManager
 import core.body.NONE
 import core.conditional.ConditionalStringPointer
@@ -11,13 +12,12 @@ import core.utility.MapBuilder
 
 class TargetBuilder(internal val name: String) {
     private var propsBuilder = PropsBuilder()
+    private var bodyBuilder = BodyBuilder()
+    private var body: Body? = null
     private var description: ConditionalStringPointer? = null
     private val params: MapBuilder = MapBuilder()
     private val behaviors = mutableListOf<BehaviorRecipe>()
     private val itemNames = mutableListOf<String>()
-    //TODO - replace with body builder (grain chute)
-    private var bodyName: String? = null
-    private var body: Body? = null
     internal var baseName: String? = null
 
     fun extends(other: String){
@@ -48,12 +48,12 @@ class TargetBuilder(internal val name: String) {
         behaviors.addAll(recipes)
     }
 
-    fun body(name: String){
-        bodyName = name
+    fun body(body: Body) {
+        this.body = body
     }
 
-    fun body(body: Body){
-        this.body = body
+    fun body(name: String = NONE.name, initializer: BodyBuilder.() -> Unit = {}) {
+        bodyBuilder = BodyBuilder(name).apply(initializer)
     }
 
     fun item(vararg itemName: String){
@@ -62,13 +62,13 @@ class TargetBuilder(internal val name: String) {
 
     fun build(base: TargetBuilder? = null): Target {
         val props = propsBuilder.build()
-        val actualBody = body ?: bodyName?.let{ BodyManager.getBody(bodyName!!) } ?: NONE
+        val body = this.body ?: bodyBuilder.build()
 
         return Target(
             name,
             params = params.build(),
             dynamicDescription = description ?: ConditionalStringPointer(name),
-            body = actualBody,
+            body = body,
             properties = props,
         )
     }
