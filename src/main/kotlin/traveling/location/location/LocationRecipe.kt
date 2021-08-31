@@ -11,7 +11,7 @@ const val LIGHT = "Light"
 
 //TODO - combine items and equipped items
 //only do equip check if slots exist
-class LocationRecipe(
+data class LocationRecipe(
         override val name: String,
         private val description: ConditionalStringPointer = ConditionalStringPointer(""),
         val activators: List<LocationTarget> = listOf(),

@@ -11,10 +11,7 @@ class BodyBuilder(private val name: String) {
     }
 
     internal fun build(): Body {
-        return Body(
-            name,
-            part!!
-        )
+        return Body(name, part!!)
     }
 
 }
