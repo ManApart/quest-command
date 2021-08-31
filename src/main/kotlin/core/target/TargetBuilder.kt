@@ -28,9 +28,9 @@ class TargetBuilder(internal val name: String) {
         propsBuilder.apply(initializer)
     }
 
-    fun params(vararg values: Pair<String, Any>) = this.params.entry(values.toList())
-    fun params(key: String, value: String) = params.entry(key, value)
-    fun params(key: String, value: Int) = params.entry(key, value)
+    fun param(vararg values: Pair<String, Any>) = this.params.entry(values.toList())
+    fun param(key: String, value: String) = params.entry(key to value)
+    fun param(key: String, value: Int) = params.entry(key to value.toString())
 
     fun description(desc: String) {
         description = ConditionalStringPointer(desc)

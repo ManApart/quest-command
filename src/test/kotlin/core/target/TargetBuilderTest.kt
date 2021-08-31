@@ -44,7 +44,7 @@ class TargetBuilderTest {
 
         val actual = target("Bob") {
             description("A normal dude")
-            params("this" to "that")
+            param("this" to "that")
             body("human")
             props {
                 tag("Person")
@@ -67,7 +67,7 @@ class TargetBuilderTest {
 
         val actual = target("Jim") {
             description("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION)
-            params("another" to "thing")
+            param("another" to "thing")
             body(BodyManager.getBody("Human"))
             props {
                 tag("Warrior")
