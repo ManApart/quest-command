@@ -78,13 +78,3 @@ class TargetBuilder(internal val name: String) {
 fun target(name: String, initializer: TargetBuilder.() -> Unit): TargetBuilder {
     return TargetBuilder(name).apply(initializer)
 }
-
-fun List<TargetBuilder>.buildAll(): List<Target>{
-    val builders = associateBy { it.name }
-    return builders.values.map { buildTarget(it, builders) }.toList()
-}
-
-private fun buildTarget(builder: TargetBuilder, builders: Map<String, TargetBuilder>): Target {
-    val base = builder.baseName?.let { builders[builder.baseName] }
-    return builder.build(base)
-}
