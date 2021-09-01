@@ -1,24 +1,28 @@
 package core.target
 
+import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
+
 class TargetsBuilder {
-    private val children = mutableListOf<TargetBuilder>()
+    internal val children = mutableListOf<TargetBuilder>()
 
     fun target(name: String, initializer: TargetBuilder.() -> Unit) {
         children.add(TargetBuilder(name).apply(initializer))
     }
-
-    internal fun build(): List<Target> {
-        val builders = children.associateBy { it.name }
-        return builders.values.map { buildTarget(it, builders) }.toList()
-    }
-
-    private fun buildTarget(builder: TargetBuilder, builders: Map<String, TargetBuilder>): Target {
-        val base = builder.baseName?.let { builders[builder.baseName] }
-        return builder.build(base)
-    }
 }
 
-fun targets(initializer: TargetsBuilder.() -> Unit): List<Target> {
-    return TargetsBuilder().apply(initializer).build()
+fun targets(initializer: TargetsBuilder.() -> Unit): List<TargetBuilder> {
+    return TargetsBuilder().apply(initializer).children
 }
 
+fun List<TargetBuilder>.build() : NameSearchableList<Target> {
+    val builders = associateBy { it.name }
+    return builders.values.map {
+        try {
+            it.buildWithBase(builders)
+        } catch (e: Exception) {
+            println("Failed to build ${it.name}: ${e.message ?: e.cause ?: e.toString()}")
+            throw  e
+        }
+    }.toNameSearchableList()
+}

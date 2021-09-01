@@ -22,9 +22,9 @@ import core.properties.*
 import core.target.Target
 import core.target.activator.ACTIVATOR_TAG
 import core.target.activator.ActivatorManager
-import core.target.activator.ActivatorParser
+import core.target.activator.dsl.ActivatorsCollection
+import core.target.activator.dsl.ActivatorsMock
 import core.target.creature.CREATURE_TAG
-import core.target.creature.CreatureParser
 import core.target.item.ITEM_TAG
 import core.target.item.ItemManager
 import core.target.item.ItemParser
@@ -44,7 +44,6 @@ import status.effects.EffectFakeParser
 import status.effects.EffectManager
 import status.effects.EffectParser
 import status.stat.STRENGTH
-import system.ActivatorFakeParser
 import system.BodyFakeParser
 import system.ItemFakeParser
 import system.location.LocationFakeParser
@@ -114,7 +113,7 @@ fun createPackMule(strength: Int = 1): Target {
 
 fun createMockedGame() {
     DependencyInjector.clearAllImplementations()
-    DependencyInjector.setImplementation(ActivatorParser::class.java, ActivatorFakeParser())
+    DependencyInjector.setImplementation(ActivatorsCollection::class.java, ActivatorsMock())
     ActivatorManager.reset()
 
     DependencyInjector.setImplementation(AIActionsCollection::class.java, AIActionsMock())

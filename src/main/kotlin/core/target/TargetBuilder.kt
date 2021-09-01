@@ -68,9 +68,15 @@ class TargetBuilder(internal val name: String) {
             name,
             params = params.build(),
             dynamicDescription = description ?: ConditionalStringPointer(name),
+            behaviorRecipes = behaviors,
             body = body,
             properties = props,
         )
+    }
+
+    fun buildWithBase(builders: Map<String, TargetBuilder>): Target {
+        val base = baseName?.let { builders[baseName] }
+        return build(base)
     }
 
 }

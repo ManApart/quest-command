@@ -3,7 +3,9 @@ package core.target.activator
 import core.DependencyInjector
 import core.target.Target
 import core.target.activator.dsl.ActivatorsCollection
+import core.target.build
 import core.utility.NameSearchableList
+import core.utility.Named
 import core.utility.toNameSearchableList
 import traveling.location.location.LocationTarget
 
@@ -12,11 +14,16 @@ const val ACTIVATOR_TAG = "Activator"
 object ActivatorManager {
     private var activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
 
-    private var activators = activatorsCollection.values.toNameSearchableList()
+    private var activators = activatorsCollection.values.build()
+
+    init {
+        activators.forEach { it.properties.tags.add(ACTIVATOR_TAG) }
+    }
 
     fun reset() {
-        activators = activatorsCollection.values.toNameSearchableList()
-        activators.map { it.properties.tags.add(ACTIVATOR_TAG) }
+        activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
+        activators = activatorsCollection.values.build()
+        activators.forEach { it.properties.tags.add(ACTIVATOR_TAG) }
     }
 
     fun getActivator(name: String): Target {

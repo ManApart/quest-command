@@ -19,7 +19,7 @@ class CommonActivators : ActivatorResource {
 
         target("Apple Tree") {
             description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
-            body("tree")
+            body("tree") { part { } }
             props {
                 value("chopHealth", 5)
                 value("fireHealth", 5)
@@ -134,7 +134,7 @@ class CommonActivators : ActivatorResource {
             )
         }
 
-        target("Grain Bin"){
+        target("Grain Bin") {
             description("Place grain in the chute above to pick up the milled contents here.")
             props {
                 value("size", 3)
@@ -142,15 +142,15 @@ class CommonActivators : ActivatorResource {
             }
         }
 
-        target("Stairs"){
+        target("Stairs") {
             description("The stairs lead to another floor.")
-            body("Stairs")
+            body("Stairs") { part { } }
             behavior("Climbable", "climbable" to "Stairs")
         }
 
-        target("City Wall"){
+        target("City Wall") {
             description("The squared stones rise high above you.")
-            body("City Wall")
+            body("City Wall") { part { } }
             props {
                 tag("Climbable")
             }

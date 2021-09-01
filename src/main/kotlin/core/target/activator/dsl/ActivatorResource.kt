@@ -1,7 +1,7 @@
 package core.target.activator.dsl
 
-import core.target.Target
+import core.target.TargetBuilder
 
 interface ActivatorResource {
-    val values: List<Target>
+    val values: List<TargetBuilder>
 }

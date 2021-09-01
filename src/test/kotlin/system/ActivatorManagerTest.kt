@@ -7,7 +7,9 @@ import core.body.BodyManager
 import core.conditional.ConditionalStringPointer
 import core.target.Target
 import core.target.activator.ActivatorManager
-import core.target.activator.ActivatorParser
+import core.target.activator.dsl.ActivatorsCollection
+import core.target.activator.dsl.ActivatorsMock
+import core.target.target
 import core.utility.NameSearchableList
 import org.junit.Before
 import org.junit.Test
@@ -35,9 +37,11 @@ class ActivatorManagerTest {
 
     @Test
     fun topLevelValueIsParameterized() {
-        val activator = Target("Target", dynamicDescription = ConditionalStringPointer("This is a \$key"))
-        val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
-        DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
+        val activator = target("Target"){
+            description("This is a \$key")
+        }
+        val fakeParser = ActivatorsMock(listOf(activator))
+        DependencyInjector.setImplementation(ActivatorsCollection::class.java, fakeParser)
         ActivatorManager.reset()
 
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("key" to "value"))
@@ -48,10 +52,11 @@ class ActivatorManagerTest {
 
     @Test
     fun nestedClimbableGetsParams() {
-//        val activator = Target("Target", climb = Climbable("\$destination", "", true))
-        val activator = Target("Target", dynamicDescription = ConditionalStringPointer("\$destination"))
-        val fakeParser = ActivatorFakeParser(NameSearchableList(listOf(activator)))
-        DependencyInjector.setImplementation(ActivatorParser::class.java, fakeParser)
+        val activator = target("Target"){
+            description("\$destination")
+        }
+        val fakeParser = ActivatorsMock(listOf(activator))
+        DependencyInjector.setImplementation(ActivatorsCollection::class.java, fakeParser)
         ActivatorManager.reset()
 
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("destination" to "resort"))
