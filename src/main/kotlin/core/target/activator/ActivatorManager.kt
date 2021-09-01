@@ -2,19 +2,20 @@ package core.target.activator
 
 import core.DependencyInjector
 import core.target.Target
+import core.target.activator.dsl.ActivatorsCollection
 import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 import traveling.location.location.LocationTarget
 
 const val ACTIVATOR_TAG = "Activator"
 
 object ActivatorManager {
-    private var parser = DependencyInjector.getImplementation(ActivatorParser::class.java)
+    private var activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
 
-    private var activators = parser.loadActivators()
+    private var activators = activatorsCollection.values.toNameSearchableList()
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(ActivatorParser::class.java)
-        activators = parser.loadActivators()
+        activators = activatorsCollection.values.toNameSearchableList()
         activators.map { it.properties.tags.add(ACTIVATOR_TAG) }
     }
 

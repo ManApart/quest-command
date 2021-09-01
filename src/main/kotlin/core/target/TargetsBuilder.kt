@@ -1,6 +1,6 @@
 package core.target
 
-class TargetsBuilder{
+class TargetsBuilder {
     private val children = mutableListOf<TargetBuilder>()
 
     fun target(name: String, initializer: TargetBuilder.() -> Unit) {

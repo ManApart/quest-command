@@ -13,8 +13,8 @@ import core.commands.CommandsGenerated
 import core.events.EventListener
 import core.events.EventListenersCollection
 import core.events.EventListenersGenerated
-import core.target.activator.ActivatorJsonParser
-import core.target.activator.ActivatorParser
+import core.target.activator.dsl.ActivatorsCollection
+import core.target.activator.dsl.ActivatorsGenerated
 import core.target.creature.CreatureJsonParser
 import core.target.creature.CreatureParser
 import core.target.item.ItemJsonParser
@@ -77,7 +77,7 @@ object DependencyInjector {
 
     private fun createDefaultImplementations(): Map<Class<*>, Any> {
         return mapOf(
-            ActivatorParser::class.java to ActivatorJsonParser(),
+            ActivatorsCollection::class.java to ActivatorsGenerated(),
             AIsCollection::class.java to AIsGenerated(),
             AIActionsCollection::class.java to AIActionsGenerated(),
             BehaviorsCollection::class.java to BehaviorsGenerated(),

@@ -11,8 +11,8 @@ class PropsBuilder() {
     }
 
     fun value(vararg values: Pair<String, Any>) = this.values.entry(values.toList())
-    fun value(key: String, value: String) = values.entry(key, value)
-    fun value(key: String, value: Int) = values.entry(key, value)
+    fun value(key: String, value: String) = values.entry(key to value)
+    fun value(key: String, value: Int) = values.entry(key to value.toString())
 
     internal fun build(): Properties {
         return Properties(Values(values.build()), Tags(tags))
