@@ -12,7 +12,9 @@ import core.commands.Command
 import core.conditional.ConditionalString
 import core.events.EventListener
 import core.target.Target
+import core.target.TargetBuilder
 import core.target.activator.dsl.ActivatorResource
+import core.target.item.ItemResource
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -39,7 +41,8 @@ object ReflectionTools {
 
         generateResourcesFile(AIResource::class.java, AIBase::class.java)
         generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
-        generateResourcesFile(ActivatorResource::class.java, Target::class.java)
+        generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
+        generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)

@@ -6,6 +6,10 @@ import core.utility.toNameSearchableList
 class TargetsBuilder {
     internal val children = mutableListOf<TargetBuilder>()
 
+    fun target(item: TargetBuilder) {
+        children.add(item)
+    }
+
     fun target(name: String, initializer: TargetBuilder.() -> Unit) {
         children.add(TargetBuilder(name).apply(initializer))
     }

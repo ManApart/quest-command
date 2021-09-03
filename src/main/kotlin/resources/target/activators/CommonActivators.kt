@@ -1,21 +1,14 @@
-package resources.activators
+package resources.target.activators
 
-import core.ai.behavior.BehaviorRecipe
 import core.target.activator.dsl.ActivatorResource
 import core.target.targets
+import resources.target.burnToAsh
+import resources.target.burnable
 
 class CommonActivators : ActivatorResource {
-    private val burnToAsh = BehaviorRecipe("Burn to Ash", mapOf("name" to "\$itemName"))
 
     override val values = targets {
-        target("Burnable") {
-            param("fireHealth" to 1, "itemName" to "Item")
-            props {
-                value("fireHealth", "\$fireHealth")
-                tag("Flammable")
-            }
-            behavior(burnToAsh)
-        }
+        target(burnable)
 
         target("Apple Tree") {
             description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
