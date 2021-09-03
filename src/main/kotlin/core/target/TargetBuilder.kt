@@ -12,7 +12,6 @@ import core.utility.MapBuilder
 class TargetBuilder(internal val name: String) {
     private var propsBuilder = PropsBuilder()
     private var bodyBuilder = BodyBuilder()
-    private var body: Body? = null
     private var description: ConditionalStringPointer? = null
     private val params: MapBuilder = MapBuilder()
     private val behaviors = mutableListOf<BehaviorRecipe>()
@@ -52,9 +51,8 @@ class TargetBuilder(internal val name: String) {
 
     fun behavior(vararg recipes: BehaviorRecipe) = behaviors.addAll(recipes)
 
-    //Replace this with builder so builder has both body name and parts or full body
     fun body(body: Body) {
-        this.body = body
+        bodyBuilder.body(body)
     }
 
     fun body(name: String = NONE.name, initializer: BodyBuilder.() -> Unit = {}) {
@@ -69,8 +67,7 @@ class TargetBuilder(internal val name: String) {
         val props = propsBuilder.build(base?.propsBuilder)
         val params = params.build(base?.params)
         val desc = description ?: base?.description ?: ConditionalStringPointer(name)
-        val body = this.body ?: if (bodyBuilder.isConfigured()) bodyBuilder.build() else null ?: base?.body
-        ?: base?.bodyBuilder?.build() ?: bodyBuilder.build()
+        val body = bodyBuilder.build(base?.bodyBuilder)
         val allBehaviors = behaviors + (base?.behaviors ?: emptyList())
 
         return Target(
@@ -89,8 +86,7 @@ class TargetBuilder(internal val name: String) {
         val params = params.build(bases.map { it.params })
         val desc = description ?: bases.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
 
-        val body = this.body ?: if (bodyBuilder.isConfigured()) bodyBuilder.build() else null ?: bases.firstNotNullOfOrNull { it.body } ?: bases.firstOrNull { it.bodyBuilder.isConfigured() }?.body ?: bodyBuilder.build()
-
+        val body = bodyBuilder.build(bases.map { it.bodyBuilder })
         val allBehaviors = behaviors + bases.flatMap { it.behaviors }
 
         return Target(
