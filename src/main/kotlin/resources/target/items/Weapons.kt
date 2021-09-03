@@ -10,18 +10,29 @@ class Weapons : ItemResource {
     override val values = targets {
         target(burnable)
 
-        target("Apple Tree") {
-            description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
-            body("tree")
+        target("Rusty Dagger") {
+            description("It once held a cutting edge, but those days are little remembered.")
+            equipSlot("Right Hand Grip")
+            equipSlot("Left Hand Grip")
             props {
-                value("chopHealth", 5)
-                value("fireHealth", 5)
-                tag("Climbable", "Container", "Flammable", "Open", "Wood")
+                value("weight", 1)
+                value("slashDamage", 1)
+                value("stabDamage", 2)
+                value("range", 2)
+                tag("Weapon", "Sharp", "Small")
             }
-            item("Apple")
-            behavior("Chop Tree", "treeName" to "Apple Tree", "resultItemName" to "Apple")
-            behavior(burnToAsh)
-            behavior("Climbable", "climbable" to "Apple Tree")
+        }
+
+        target("Dulled Hatchet") {
+            description("The handle has been polished through much use.")
+            equipSlot("Right Hand Grip")
+            equipSlot("Left Hand Grip")
+            props {
+                value("weight", 4)
+                value("chopDamage", 4)
+                value("range", 5)
+                tag("Weapon", "Sharp", "Small")
+            }
         }
 
 

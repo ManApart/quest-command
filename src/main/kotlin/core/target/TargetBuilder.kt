@@ -19,10 +19,12 @@ class TargetBuilder(internal val name: String) {
     private val itemNames = mutableListOf<String>()
     private var baseName: String? = null
     private var base: TargetBuilder? = null
+    private val slots = mutableListOf<List<String>>()
 
     fun extends(other: String) {
         baseName = other
     }
+
     fun extends(other: TargetBuilder) {
         base = other
     }
@@ -63,6 +65,10 @@ class TargetBuilder(internal val name: String) {
         itemNames.addAll(itemName)
     }
 
+    fun equipSlot(vararg attachPoints: String) {
+        slots.add(attachPoints.toList())
+    }
+
     fun build(base: TargetBuilder? = null): Target {
         val props = propsBuilder.build(base?.propsBuilder)
         val params = params.build(base?.params)
@@ -77,6 +83,7 @@ class TargetBuilder(internal val name: String) {
             dynamicDescription = desc,
             behaviorRecipes = allBehaviors,
             body = body,
+            equipSlots = this.slots,
             properties = props,
         )
     }
