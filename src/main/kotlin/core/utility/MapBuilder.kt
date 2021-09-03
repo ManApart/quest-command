@@ -24,6 +24,15 @@ class MapBuilder {
             values.forEach { (key, value) -> it[key] = value }
         }
     }
+
+    internal fun build(bases: List<MapBuilder>): Map<String, String> {
+        val all = bases + listOf(this)
+        val result = mutableMapOf<String, String>()
+        all.subList(1, all.size).forEach { next ->
+            next.values.forEach { (key, value) -> result[key] = value }
+        }
+        return result
+    }
 }
 
 fun props(initializer: MapBuilder.() -> Unit): Map<String, String> {

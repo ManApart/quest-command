@@ -17,17 +17,18 @@ class TargetBuilder(internal val name: String) {
     private val params: MapBuilder = MapBuilder()
     private val behaviors = mutableListOf<BehaviorRecipe>()
     private val itemNames = mutableListOf<String>()
-    private var baseName: String? = null
-    private var base: TargetBuilder? = null
+    private var baseNames = mutableListOf<String>()
+    private var bases = mutableListOf<TargetBuilder>()
     private val slots = mutableListOf<List<String>>()
 
-    fun extends(other: String) {
-        baseName = other
-    }
-
-    fun extends(other: TargetBuilder) {
-        base = other
-    }
+    /**
+     * Note that each time this function is used, the latter extends object will win any extension conflicts.
+     * extends(tree) - fire health 2
+     * extends(burnable) - fire health 1
+     * The end target will have fire health 1
+     */
+    fun extends(other: String) = baseNames.add(other)
+    fun extends(other: TargetBuilder) = bases.add(other)
 
     fun props(initializer: PropsBuilder.() -> Unit) {
         propsBuilder.apply(initializer)
@@ -49,10 +50,9 @@ class TargetBuilder(internal val name: String) {
         behaviors.add(BehaviorRecipe(name, params.associate { it.first to it.second.toString() }))
     }
 
-    fun behavior(vararg recipes: BehaviorRecipe) {
-        behaviors.addAll(recipes)
-    }
+    fun behavior(vararg recipes: BehaviorRecipe) = behaviors.addAll(recipes)
 
+    //Replace this with builder so builder has both body name and parts or full body
     fun body(body: Body) {
         this.body = body
     }
@@ -61,13 +61,9 @@ class TargetBuilder(internal val name: String) {
         bodyBuilder = BodyBuilder(name).apply(initializer)
     }
 
-    fun item(vararg itemName: String) {
-        itemNames.addAll(itemName)
-    }
+    fun item(vararg itemName: String) = itemNames.addAll(itemName)
 
-    fun equipSlot(vararg attachPoints: String) {
-        slots.add(attachPoints.toList())
-    }
+    fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
 
     fun build(base: TargetBuilder? = null): Target {
         val props = propsBuilder.build(base?.propsBuilder)
@@ -88,9 +84,29 @@ class TargetBuilder(internal val name: String) {
         )
     }
 
+    fun build(bases: List<TargetBuilder>): Target {
+        val props = propsBuilder.build(bases.map { it.propsBuilder })
+        val params = params.build(bases.map { it.params })
+        val desc = description ?: bases.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
+
+        val body = this.body ?: if (bodyBuilder.isConfigured()) bodyBuilder.build() else null ?: bases.firstNotNullOfOrNull { it.body } ?: bases.firstOrNull { it.bodyBuilder.isConfigured() }?.body ?: bodyBuilder.build()
+
+        val allBehaviors = behaviors + bases.flatMap { it.behaviors }
+
+        return Target(
+            name,
+            params = params,
+            dynamicDescription = desc,
+            behaviorRecipes = allBehaviors,
+            body = body,
+            equipSlots = this.slots,
+            properties = props,
+        )
+    }
+
     fun buildWithBase(builders: Map<String, TargetBuilder>): Target {
-        val base = this.base ?: baseName?.let { builders[baseName] }
-        return build(base)
+        val bases = this.bases + baseNames.map { builders[it]!! }
+        return build(bases)
     }
 
 }

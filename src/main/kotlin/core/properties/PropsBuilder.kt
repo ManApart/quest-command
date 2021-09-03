@@ -2,7 +2,7 @@ package core.properties
 
 import core.utility.MapBuilder
 
-class PropsBuilder() {
+class PropsBuilder {
     private val tags = mutableListOf<String>()
     private val values: MapBuilder = MapBuilder()
 
@@ -23,8 +23,20 @@ class PropsBuilder() {
         val inheritedProps = base?.build()?.also { it.overrideWith(ourProps) }
         return inheritedProps ?: ourProps
     }
+
+    fun build(bases: List<PropsBuilder>): Properties {
+        val built = (bases + listOf(this)).map { it.build() }
+        return built.reduce { acc, props ->
+            acc.overrideWith(props)
+            acc
+        }
+    }
 }
 
 fun props(initializer: PropsBuilder.() -> Unit): Properties {
     return PropsBuilder().apply(initializer).build()
+}
+
+fun propsUnbuilt(initializer: PropsBuilder.() -> Unit): PropsBuilder {
+    return PropsBuilder().apply(initializer)
 }

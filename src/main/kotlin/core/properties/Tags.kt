@@ -13,7 +13,7 @@ class Tags(tags: List<String> = listOf()) {
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is Tags && tags == other.tags
+        return other is Tags && tags.sorted() == other.tags.sorted()
     }
 
     fun has(tag: String): Boolean {
