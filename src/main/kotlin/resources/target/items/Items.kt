@@ -8,20 +8,46 @@ import resources.target.burnable
 class Items : ItemResource {
 
     override val values = targets {
-        target(burnable)
 
-        target("Apple Tree") {
-            description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
-            body("tree")
+        target("Tinder Box") {
+            description("This can light flammable things on fire.")
             props {
-                value("chopHealth", 5)
-                value("fireHealth", 5)
-                tag("Climbable", "Container", "Flammable", "Open", "Wood")
+                value("weight", 1)
+                tag("Fire Starter")
             }
-            item("Apple")
-            behavior("Chop Tree", "treeName" to "Apple Tree", "resultItemName" to "Apple")
-            behavior(burnToAsh)
-            behavior("Climbable", "climbable" to "Apple Tree")
+        }
+
+        target("Ash") {
+            description("The result of a fire's unconstrained hunger.")
+        }
+
+        target("Bucket") {
+            description("Any empty bucket that can be filled with liquids. Avoid kicking it.")
+            props {
+                value("weight", 1)
+            }
+        }
+
+        target("Bucket of Water") {
+            description("Looks clean enough.")
+            props {
+                value("weight", 2)
+            }
+        }
+
+        target("Pot") {
+            description("An empty pot that can be filled with fine grained solids.")
+            props {
+                value("weight", 1)
+            }
+        }
+
+        target("Apple Pie Recipe") {
+            description("It's a recipe to make Apple Pie")
+            props {
+                value("weight", 0)
+            }
+            behavior("Learn Recipe", "recipe" to "Apple Pie")
         }
 
 

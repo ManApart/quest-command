@@ -19,7 +19,7 @@ class CommonActivators : ActivatorResource {
             item("Apple")
             behavior("Chop Tree", "treeName" to "Apple Tree", "resultItemName" to "Apple")
             behavior(burnToAsh)
-            behavior("Climbable", "climbable" to "Apple Tree")
+            behavior("Climbable")
         }
 
         target("Apple Tree Branches") {
