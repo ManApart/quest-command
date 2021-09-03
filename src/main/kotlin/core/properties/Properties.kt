@@ -20,6 +20,10 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     fun replaceWith(other: Properties) {
         tags.clear()
         values.clear()
+        overrideWith(other)
+    }
+
+    fun overrideWith(other: Properties) {
         tags.addAll(other.tags)
         other.values.getAll().forEach { (key, value) -> values.put(key, value) }
     }

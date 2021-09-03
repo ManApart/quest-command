@@ -3,7 +3,6 @@ package core.target
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.BodyBuilder
-import core.body.BodyManager
 import core.body.NONE
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
@@ -20,7 +19,7 @@ class TargetBuilder(internal val name: String) {
     private val itemNames = mutableListOf<String>()
     internal var baseName: String? = null
 
-    fun extends(other: String){
+    fun extends(other: String) {
         baseName = other
     }
 
@@ -56,19 +55,23 @@ class TargetBuilder(internal val name: String) {
         bodyBuilder = BodyBuilder(name).apply(initializer)
     }
 
-    fun item(vararg itemName: String){
+    fun item(vararg itemName: String) {
         itemNames.addAll(itemName)
     }
 
     fun build(base: TargetBuilder? = null): Target {
-        val props = propsBuilder.build()
-        val body = this.body ?: bodyBuilder.build()
+        val props = propsBuilder.build(base?.propsBuilder)
+        val params = params.build(base?.params)
+        val desc = description ?: base?.description ?: ConditionalStringPointer(name)
+        val body = this.body ?: if (bodyBuilder.isConfigured()) bodyBuilder.build() else null ?: base?.body
+        ?: base?.bodyBuilder?.build() ?: bodyBuilder.build()
+        val allBehaviors = behaviors + (base?.behaviors ?: emptyList())
 
         return Target(
             name,
-            params = params.build(),
-            dynamicDescription = description ?: ConditionalStringPointer(name),
-            behaviorRecipes = behaviors,
+            params = params,
+            dynamicDescription = desc,
+            behaviorRecipes = allBehaviors,
             body = body,
             properties = props,
         )

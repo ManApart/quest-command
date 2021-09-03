@@ -18,6 +18,12 @@ class MapBuilder {
     internal fun build(): Map<String, String> {
         return values.toMap()
     }
+
+    internal fun build(base: MapBuilder?): Map<String, String> {
+        return (base?.build()?.toMutableMap() ?: mutableMapOf()).also {
+            values.forEach { (key, value) -> it[key] = value }
+        }
+    }
 }
 
 fun props(initializer: MapBuilder.() -> Unit): Map<String, String> {

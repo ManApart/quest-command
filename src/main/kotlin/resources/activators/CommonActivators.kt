@@ -19,7 +19,7 @@ class CommonActivators : ActivatorResource {
 
         target("Apple Tree") {
             description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
-            body("tree") { part { } }
+            body("tree")
             props {
                 value("chopHealth", 5)
                 value("fireHealth", 5)
@@ -136,6 +136,7 @@ class CommonActivators : ActivatorResource {
 
         target("Grain Bin") {
             description("Place grain in the chute above to pick up the milled contents here.")
+            body("Grain Bin")
             props {
                 value("size", 3)
                 tag("Open", "Container")
@@ -144,16 +145,20 @@ class CommonActivators : ActivatorResource {
 
         target("Stairs") {
             description("The stairs lead to another floor.")
-            body("Stairs") { part { } }
+            body("Stairs")
+            props {
+                tag("Climbable")
+            }
             behavior("Climbable", "climbable" to "Stairs")
         }
 
         target("City Wall") {
             description("The squared stones rise high above you.")
-            body("City Wall") { part { } }
+            body("City Wall")
             props {
                 tag("Climbable")
             }
+                //TODO - do we need to pass these params for climbable?
             behavior("Climbable", "climbable" to "City Wall")
         }
 

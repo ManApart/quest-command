@@ -17,6 +17,12 @@ class PropsBuilder() {
     internal fun build(): Properties {
         return Properties(Values(values.build()), Tags(tags))
     }
+
+    internal fun build(base: PropsBuilder?): Properties {
+        val ourProps = build()
+        val inheritedProps = base?.build()?.also { it.overrideWith(ourProps) }
+        return inheritedProps ?: ourProps
+    }
 }
 
 fun props(initializer: PropsBuilder.() -> Unit): Properties {
