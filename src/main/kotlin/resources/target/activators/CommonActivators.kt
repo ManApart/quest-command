@@ -8,8 +8,6 @@ import resources.target.burnable
 class CommonActivators : ActivatorResource {
 
     override val values = targets {
-        target(burnable)
-
         target("Apple Tree") {
             description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
             body("tree")
@@ -25,7 +23,7 @@ class CommonActivators : ActivatorResource {
         }
 
         target("Apple Tree Branches") {
-            extends("Burnable")
+            extends(burnable)
             description("The branches are too thin to sit on comfortably, but their leaves rustle contentedly.")
             param("fireHealth" to 5, "itemName" to "Apple Tree Branches")
             props {
@@ -34,7 +32,7 @@ class CommonActivators : ActivatorResource {
         }
 
         target("Wheat Field") {
-            extends("Burnable")
+            extends(burnable)
             description("The golden shafts of wheat whisper as they brush against each other.")
             param("fireHealth" to 2, "itemName" to "Wheat Field")
             behavior(
@@ -46,7 +44,7 @@ class CommonActivators : ActivatorResource {
         }
 
         target("Logs") {
-            extends("Burnable")
+            extends(burnable)
             description("A pile of logs.")
             param("fireHealth" to 5, "itemName" to "Ash")
             props {

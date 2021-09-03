@@ -17,10 +17,14 @@ class TargetBuilder(internal val name: String) {
     private val params: MapBuilder = MapBuilder()
     private val behaviors = mutableListOf<BehaviorRecipe>()
     private val itemNames = mutableListOf<String>()
-    internal var baseName: String? = null
+    private var baseName: String? = null
+    private var base: TargetBuilder? = null
 
     fun extends(other: String) {
         baseName = other
+    }
+    fun extends(other: TargetBuilder) {
+        base = other
     }
 
     fun props(initializer: PropsBuilder.() -> Unit) {
@@ -78,7 +82,7 @@ class TargetBuilder(internal val name: String) {
     }
 
     fun buildWithBase(builders: Map<String, TargetBuilder>): Target {
-        val base = baseName?.let { builders[baseName] }
+        val base = this.base ?: baseName?.let { builders[baseName] }
         return build(base)
     }
 
