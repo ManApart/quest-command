@@ -149,7 +149,7 @@ class CommonActivators : ActivatorResource {
             props {
                 tag("Climbable")
             }
-            behavior("Climbable", "climbable" to "Stairs")
+            behavior("Climbable")
         }
 
         target("City Wall") {
@@ -158,8 +158,7 @@ class CommonActivators : ActivatorResource {
             props {
                 tag("Climbable")
             }
-                //TODO - do we need to pass these params for climbable?
-            behavior("Climbable", "climbable" to "City Wall")
+            behavior("Climbable")
         }
 
     }
