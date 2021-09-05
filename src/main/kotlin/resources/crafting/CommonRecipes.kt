@@ -1,7 +1,6 @@
 package resources.crafting
 
 import crafting.RecipeResource
-import crafting.recipe
 import crafting.recipes
 
 class CommonRecipes : RecipeResource {

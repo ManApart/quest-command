@@ -1,18 +1,16 @@
 package crafting
 
-import core.target.TargetBuilder
-import core.target.TargetsBuilder
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 
 class RecipesBuilder {
     internal val children = mutableListOf<RecipeBuilder>()
 
-    fun target(item: RecipeBuilder) {
+    fun recipe(item: RecipeBuilder) {
         children.add(item)
     }
 
-    fun target(name: String, initializer: RecipeBuilder.() -> Unit) {
+    fun recipe(name: String, initializer: RecipeBuilder.() -> Unit) {
         children.add(RecipeBuilder(name).apply(initializer))
     }
 }
