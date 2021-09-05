@@ -61,6 +61,20 @@ class TargetBuilder(internal val name: String) {
 
     fun item(vararg itemName: String) = itemNames.addAll(itemName)
 
+    /**
+     * Each string is a single attach point for a given slot. 5 strings = 5 slots
+     */
+    fun equipSlotOptions(vararg equipSlots: String) = equipSlots.forEach { slots.add(listOf(it)) }
+
+    /**
+     * Each list of strings creates a single equip slot. 5 lists = 5 slots
+     */
+    fun equipSlotOptions(vararg equipSlots: List<String>) = slots.addAll(equipSlots.map { it.toList() })
+
+    /**
+     * Add a single equip slot, with each string being an attach point in that slot.
+     * This means that an equip slot with 5 attachment points will require all 5 points to be empty in order to equip the item
+     */
     fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
 
     fun build(base: TargetBuilder? = null): Target {

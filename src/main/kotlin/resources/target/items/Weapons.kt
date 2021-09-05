@@ -2,7 +2,6 @@ package resources.target.items
 
 import core.target.item.ItemResource
 import core.target.targets
-import resources.target.burnToAsh
 import resources.target.burnable
 
 class Weapons : ItemResource {
@@ -12,8 +11,8 @@ class Weapons : ItemResource {
 
         target("Rusty Dagger") {
             description("It once held a cutting edge, but those days are little remembered.")
-            equipSlot("Right Hand Grip")
-            equipSlot("Left Hand Grip")
+            equipSlotOptions("Right Hand Grip")
+            equipSlotOptions("Left Hand Grip")
             props {
                 value("weight", 1)
                 value("slashDamage", 1)
@@ -25,8 +24,8 @@ class Weapons : ItemResource {
 
         target("Dulled Hatchet") {
             description("The handle has been polished through much use.")
-            equipSlot("Right Hand Grip")
-            equipSlot("Left Hand Grip")
+            equipSlotOptions("Right Hand Grip")
+            equipSlotOptions("Left Hand Grip")
             props {
                 value("weight", 4)
                 value("chopDamage", 4)
