@@ -15,6 +15,8 @@ import core.target.Target
 import core.target.TargetBuilder
 import core.target.activator.dsl.ActivatorResource
 import core.target.item.ItemResource
+import crafting.RecipeBuilder
+import crafting.RecipeResource
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -46,6 +48,7 @@ object ReflectionTools {
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
+        generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
         generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
     }
@@ -160,6 +163,7 @@ object ReflectionTools {
         val packageName = resourceInterface.packageName.replace(".", "/")
         val file = File("./src/test/kotlin/$packageName/${newClassName}sMock.kt")
         file.parentFile.mkdirs()
+        //Only generate an initial sketch, but let the user update it and keep their changes
         if (!file.exists()) {
             file.printWriter().use {
                 it.print(

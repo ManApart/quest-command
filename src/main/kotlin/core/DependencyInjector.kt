@@ -23,6 +23,8 @@ import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
 import crafting.RecipeParser
+import crafting.RecipesCollection
+import crafting.RecipesGenerated
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsGenerated
 import quests.StoryEventsCollection
@@ -91,6 +93,7 @@ object DependencyInjector {
             LocationParser::class.java to LocationJsonParser(),
             LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
             RecipeParser::class.java to RecipeJsonParser(),
+            RecipesCollection::class.java to RecipesGenerated(),
             ResourceHelper::class.java to KotlinResourceHelper(),
             SpellCommandsCollection::class.java to SpellCommandsGenerated(),
             StoryEventsCollection::class.java to StoryEventsGenerated(),
