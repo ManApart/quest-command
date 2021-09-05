@@ -14,16 +14,11 @@ const val ACTIVATOR_TAG = "Activator"
 object ActivatorManager {
     private var activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
 
-    private var activators = activatorsCollection.values.build()
-
-    init {
-        activators.forEach { it.properties.tags.add(ACTIVATOR_TAG) }
-    }
+    private var activators = activatorsCollection.values.build(ACTIVATOR_TAG)
 
     fun reset() {
         activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
-        activators = activatorsCollection.values.build()
-        activators.forEach { it.properties.tags.add(ACTIVATOR_TAG) }
+        activators = activatorsCollection.values.build(ACTIVATOR_TAG)
     }
 
     fun getActivator(name: String): Target {
