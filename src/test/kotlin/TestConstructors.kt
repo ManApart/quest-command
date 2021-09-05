@@ -28,9 +28,9 @@ import core.target.activator.dsl.ActivatorsMock
 import core.target.creature.CREATURE_TAG
 import core.target.item.*
 import core.target.target
-import crafting.RecipeFakeParser
 import crafting.RecipeManager
-import crafting.RecipeParser
+import crafting.RecipesCollection
+import crafting.RecipesMock
 import inventory.createInventoryBody
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
@@ -129,8 +129,6 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser.parserWithFakePlayer())
     BodyManager.reset()
 
-//    DependencyInjector.setImplementation(CreatureParser::class.java, Creature())
-
     DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
 
     DependencyInjector.setImplementation(ConditionParser::class.java, ConditionFakeParser())
@@ -150,17 +148,13 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
     LocationManager.reset()
 
-    DependencyInjector.setImplementation(RecipeParser::class.java, RecipeFakeParser())
+    DependencyInjector.setImplementation(RecipesCollection::class.java, RecipesMock())
     RecipeManager.reset()
 
     DependencyInjector.setImplementation(StoryEventsCollection::class.java, StoryEventsMock())
     QuestManager.reset()
 
     DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
-
-//    DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
-
-//    DependencyInjector.setImplementation(ResourceHelper::class.java, FakeR())
 
     DependencyInjector.setImplementation(WeatherParser::class.java, WeatherFakeParser())
     WeatherManager.reset()

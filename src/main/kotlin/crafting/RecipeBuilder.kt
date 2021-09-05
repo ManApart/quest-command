@@ -42,7 +42,11 @@ class RecipeBuilder(internal val name: String) {
         toolProps.apply(initializer)
     }
 
-    fun result(initializer: RecipeResultBuilder.() -> Unit){
+    fun result(name: String) {
+        results.add(RecipeResultBuilder().apply { name(name) })
+    }
+
+    fun result(initializer: RecipeResultBuilder.() -> Unit) {
         results.add(RecipeResultBuilder().apply(initializer))
     }
 
