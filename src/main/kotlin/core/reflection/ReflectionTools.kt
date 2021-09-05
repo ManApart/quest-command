@@ -160,15 +160,17 @@ object ReflectionTools {
         val packageName = resourceInterface.packageName.replace(".", "/")
         val file = File("./src/test/kotlin/$packageName/${newClassName}sMock.kt")
         file.parentFile.mkdirs()
-        file.printWriter().use {
-            it.print(
-                """
+        if (!file.exists()) {
+            file.printWriter().use {
+                it.print(
+                    """
                 package ${resourceInterface.packageName}
                 import ${collectedClass.name}
 
                 class ${newClassName}sMock(override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
             """.trimIndent()
-            )
+                )
+            }
         }
     }
 

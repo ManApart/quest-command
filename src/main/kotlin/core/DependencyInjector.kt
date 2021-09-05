@@ -17,8 +17,8 @@ import core.target.activator.dsl.ActivatorsCollection
 import core.target.activator.dsl.ActivatorsGenerated
 import core.target.creature.CreatureJsonParser
 import core.target.creature.CreatureParser
-import core.target.item.ItemJsonParser
-import core.target.item.ItemParser
+import core.target.item.ItemsCollection
+import core.target.item.ItemsGenerated
 import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipeJsonParser
@@ -87,7 +87,7 @@ object DependencyInjector {
             DialoguesCollection::class.java to DialoguesGenerated(),
             EffectParser::class.java to EffectJsonParser(),
             EventListenersCollection::class.java to EventListenersGenerated(),
-            ItemParser::class.java to ItemJsonParser(),
+            ItemsCollection::class.java to ItemsGenerated(),
             LocationParser::class.java to LocationJsonParser(),
             LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
             RecipeParser::class.java to RecipeJsonParser(),

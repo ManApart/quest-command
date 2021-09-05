@@ -6,16 +6,17 @@ import core.events.EventManager
 import core.properties.Tags
 import core.target.Target
 import core.target.item.ItemManager
-import core.target.item.ItemParser
+import core.target.item.ItemsCollection
+import core.target.item.ItemsMock
 import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
+import createItemBuilder
 import createPouch
 import createMockedGame
 import inventory.pickupItem.TakeItem
 import org.junit.Before
 import org.junit.Test
-import system.ItemFakeParser
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -37,8 +38,8 @@ class CraftTest {
 
         val resultItemName1 = "Silver"
         val resultItemName2 = "Gold"
-        val fakeParser = ItemFakeParser(listOf(createItem(resultItemName1), createItem(resultItemName2)))
-        DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
+        val fakeParser = ItemsMock(listOf(createItemBuilder(resultItemName1), createItemBuilder(resultItemName2)))
+        DependencyInjector.setImplementation(ItemsCollection::class.java, fakeParser)
         ItemManager.reset()
 
         EventManager.registerListener(TakeItem())
@@ -55,11 +56,11 @@ class CraftTest {
     @Test
     fun recipeReturnsFirstItemWithDifferentTags() {
         val baker = createBaker()
-        val ingredient = createItem("Apple")
-        baker.inventory.add(ingredient)
+        val ingredient = createItemBuilder("Apple")
+        baker.inventory.add(ingredient.build())
 
-        val fakeParser = ItemFakeParser(listOf(ingredient))
-        DependencyInjector.setImplementation(ItemParser::class.java, fakeParser)
+        val fakeParser = ItemsMock(listOf(ingredient))
+        DependencyInjector.setImplementation(ItemsCollection::class.java, fakeParser)
         ItemManager.reset()
 
         EventManager.registerListener(TakeItem())

@@ -21,6 +21,13 @@ class Items : ItemResource {
             description("The result of a fire's unconstrained hunger.")
         }
 
+        target("Pie Tin") {
+            description("The tin ring is slightly bronzed from repeated trips through fire.")
+            props {
+                value("weight", 1)
+            }
+        }
+
         target("Bucket") {
             description("Any empty bucket that can be filled with liquids. Avoid kicking it.")
             props {

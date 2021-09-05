@@ -2,18 +2,18 @@ package core.target.item
 
 import core.DependencyInjector
 import core.target.Target
+import core.target.build
 import traveling.location.location.LocationTarget
 
 const val ITEM_TAG = "Item"
 
 object ItemManager {
-    private var parser = DependencyInjector.getImplementation(ItemParser::class.java)
-    private var items = parser.loadItems()
+    private var itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class.java)
+    private var items = itemsCollection.values.build(ITEM_TAG)
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(ItemParser::class.java)
-        items = parser.loadItems()
-        items.map { it.properties.tags.add(ITEM_TAG) }
+        itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class.java)
+        items = itemsCollection.values.build(ITEM_TAG)
     }
 
     fun itemExists(name: String): Boolean {

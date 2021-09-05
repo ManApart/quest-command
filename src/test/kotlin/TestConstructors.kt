@@ -20,14 +20,14 @@ import core.events.EventListenersMock
 import core.events.EventManager
 import core.properties.*
 import core.target.Target
+import core.target.TargetBuilder
 import core.target.activator.ACTIVATOR_TAG
 import core.target.activator.ActivatorManager
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.activator.dsl.ActivatorsMock
 import core.target.creature.CREATURE_TAG
-import core.target.item.ITEM_TAG
-import core.target.item.ItemManager
-import core.target.item.ItemParser
+import core.target.item.*
+import core.target.target
 import crafting.RecipeFakeParser
 import crafting.RecipeManager
 import crafting.RecipeParser
@@ -45,7 +45,6 @@ import status.effects.EffectManager
 import status.effects.EffectParser
 import status.stat.STRENGTH
 import system.BodyFakeParser
-import system.ItemFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
@@ -54,12 +53,16 @@ import traveling.location.weather.WeatherManager
 import traveling.location.weather.WeatherParser
 
 fun createItem(name: String = "Apple", weight: Int = 1): Target {
-    return Target(
-        name, properties = Properties(
-            Values(mapOf("weight" to weight.toString())),
-            Tags(listOf(ITEM_TAG))
-        )
-    )
+    return createItemBuilder(name, weight).build()
+}
+
+fun createItemBuilder(name: String = "Apple", weight: Int = 1): TargetBuilder {
+    return target(name) {
+        props {
+            value("weight" to weight)
+            tag(ITEM_TAG)
+        }
+    }
 }
 
 //Pouch is a container that is also an item
@@ -141,7 +144,7 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())
     EventManager.reset()
 
-    DependencyInjector.setImplementation(ItemParser::class.java, ItemFakeParser())
+    DependencyInjector.setImplementation(ItemsCollection::class.java, ItemsMock())
     ItemManager.reset()
 
     DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
