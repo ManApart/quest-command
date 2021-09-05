@@ -114,5 +114,17 @@
         "CanHold": "Grounded"
       }
     }
+  },
+  {
+    "name": "Sack",
+    "properties": {
+      "tags": [
+        "Container"
+      ],
+      "values": {
+        "weight": "1",
+        "defense": "1"
+      }
+    }
   }
 ]

@@ -6,5 +6,9 @@
   {
     "parent": "Grain Bin",
     "name": "Grain Bin"
+  },
+  {
+    "name": "Sack",
+    "parent": "Sack"
   }
 ]
