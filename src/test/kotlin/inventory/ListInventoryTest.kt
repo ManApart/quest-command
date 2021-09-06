@@ -1,7 +1,7 @@
 package inventory
 
 import core.DependencyInjector
-import core.body.BodyManager
+import core.body.*
 import core.history.ChatHistory
 import core.properties.Properties
 import core.properties.Tags
@@ -9,13 +9,18 @@ import core.target.Target
 import core.target.item.ITEM_TAG
 import createClosedChest
 import createItem
+import createMockedGame
+import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import traveling.location.location.LocationRecipe
-import traveling.location.location.LocationParser
+import traveling.location.location.locationRecipe
 import kotlin.test.assertEquals
 
 class ListInventoryTest {
+
+    @Before
+    fun setup(){
+        createMockedGame()
+    }
 
     @Test
     fun listInventory() {
@@ -36,10 +41,10 @@ class ListInventoryTest {
 
     @Test
     fun listInventoryEquipped() {
-        val chest = LocationRecipe("Chest", slots = listOf("Chest"))
+        val chest = locationRecipe("chest") { slot("chest") }
 
-        val bodyParser = BodyFakeParser.parserFromPart(chest)
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.fromPart(chest))
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
@@ -57,10 +62,10 @@ class ListInventoryTest {
         val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")), properties = Properties(tags = Tags(ITEM_TAG)))
         pouch.inventory.add(item)
 
-        val chest = LocationRecipe("Chest", slots = listOf("Chest"))
+        val chest = locationRecipe("Chest") { slot("Chest") }
 
-        val bodyParser = BodyFakeParser.parserFromPart(chest)
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.fromPart(chest))
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))

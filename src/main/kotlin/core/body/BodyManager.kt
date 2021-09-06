@@ -6,7 +6,6 @@ import core.DependencyInjector
 import traveling.location.location.*
 
 object BodyManager {
-    private const val bodyPartPath = "/data/generated/content/bodies/parts"
     private val locationHelper = LocationHelper()
     private var bodies = createBodies()
 
@@ -15,11 +14,10 @@ object BodyManager {
     }
 
     private fun createBodies(): NameSearchableList<Body> {
-        val parser = DependencyInjector.getImplementation(LocationParser::class.java)
         val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class.java)
-//        val nodes: List<LocationNode> = parser.loadLocationNodes(bodiesPath)
+        val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class.java)
         val nodes = bodyCollection.values.build()
-        val bodyParts = parser.loadLocations(bodyPartPath)
+        val bodyParts = bodyPartCollection.values.build()
 
         val nodeMap = locationHelper.buildInitialMap(nodes)
         locationHelper.createNeighborsAndNeighborLinks(nodeMap)

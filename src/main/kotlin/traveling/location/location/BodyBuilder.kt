@@ -3,11 +3,11 @@ package traveling.location.location
 class BodyBuilder(private val bodyName: String) {
     private val children = mutableListOf<LocationNodeBuilder>()
 
-    fun location(item: LocationNodeBuilder) {
+    fun locationNode(item: LocationNodeBuilder) {
         children.add(item)
     }
 
-    fun location(name: String? = null, initializer: LocationNodeBuilder.() -> Unit = {}) {
+    fun locationNode(name: String? = null, initializer: LocationNodeBuilder.() -> Unit = {}) {
         val nameToUse = name ?: bodyName
         children.add(LocationNodeBuilder(nameToUse).apply(initializer))
     }

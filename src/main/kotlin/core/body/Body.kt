@@ -105,7 +105,7 @@ data class Body(override val name: String = "None", val layout: Network = Networ
     fun getDefaultSlot(item: Target): Slot {
         return getEmptyEquipSlot(item)
                 ?: item.equipSlots.firstOrNull { canEquip(it) }
-                ?: throw IllegalArgumentException("Found no Slot for $item for body $name. This should not happen!")
+                ?: throw IllegalArgumentException("Found no slot for $item for body $name. This should not happen!")
     }
 
     fun getEmptyEquipSlot(item: Target): Slot? {

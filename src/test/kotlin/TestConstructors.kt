@@ -11,9 +11,7 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
-import core.body.BodyManager
-import core.body.BodysCollection
-import core.body.BodysMock
+import core.body.*
 import core.commands.CommandParser
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
@@ -128,8 +126,8 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
     BehaviorManager.reset()
 
-    DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser.parserWithFakePlayer())
     DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.withFakePlayer())
+    DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
     BodyManager.reset()
 
     DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())

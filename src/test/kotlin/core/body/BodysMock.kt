@@ -4,31 +4,30 @@ import traveling.location.location.*
 import traveling.location.location.BodyBuilder
 
 class BodysMock(
-    override val values: List<BodyBuilder> = listOf(body("Human"){location("Body Part")}, body("None"){location("Part")})
+    override val values: List<BodyBuilder> = listOf(body("Human"){locationNode("Body Part")}, body("None"){locationNode("Part")})
 ) : BodysCollection {
     companion object {
         fun withFakePlayer(): BodysMock {
             return BodysMock(bodies {
                 body("Human") {
-                    location("right hand")
-                    location("left hand")
+                    locationNode("right hand")
+                    locationNode("left hand")
                 }
             })
         }
 
-        fun fromPart(part: LocationNodeBuilder, name: String = "body"): BodysMock {
+        fun fromPart(part: LocationRecipeBuilder, name: String = "body"): BodysMock {
             return fromParts(listOf(part), name)
         }
 
-        fun fromParts(parts: List<LocationNodeBuilder>, name: String = "body"): BodysMock {
+        fun fromParts(parts: List<LocationRecipeBuilder>, name: String = "body"): BodysMock {
             return BodysMock(bodies {
                 body(name) {
                     parts.forEach { part ->
-                        location(part)
+                        locationNode(part.name)
                     }
                 }
             })
         }
-
     }
 }
