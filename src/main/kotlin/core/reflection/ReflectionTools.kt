@@ -22,6 +22,8 @@ import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import quests.StoryEvent
 import quests.StoryEventResource
+import status.effects.EffectBase
+import status.effects.EffectResource
 import traveling.location.location.LocationDescriptionResource
 import traveling.location.weather.WeatherStringResource
 import java.io.File
@@ -47,6 +49,7 @@ object ReflectionTools {
         generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
+        generateResourcesFile(EffectResource::class.java, EffectBase::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
         generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
