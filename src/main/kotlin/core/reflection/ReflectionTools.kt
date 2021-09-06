@@ -22,6 +22,8 @@ import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import quests.StoryEvent
 import quests.StoryEventResource
+import status.conditions.ConditionRecipe
+import status.conditions.ConditionResource
 import status.effects.EffectBase
 import status.effects.EffectResource
 import traveling.location.location.LocationDescriptionResource
@@ -46,6 +48,7 @@ object ReflectionTools {
         generateResourcesFile(AIResource::class.java, AIBase::class.java)
         generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
         generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
+        generateResourcesFile(ConditionResource::class.java, ConditionRecipe::class.java)
         generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)

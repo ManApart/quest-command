@@ -37,9 +37,9 @@ import magic.spellCommands.SpellCommandsMock
 import quests.QuestManager
 import quests.StoryEventsCollection
 import quests.StoryEventsMock
-import status.conditions.ConditionFakeParser
 import status.conditions.ConditionManager
-import status.conditions.ConditionParser
+import status.conditions.ConditionsCollection
+import status.conditions.ConditionsGenerated
 import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
@@ -131,7 +131,7 @@ fun createMockedGame() {
 
     DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
 
-    DependencyInjector.setImplementation(ConditionParser::class.java, ConditionFakeParser())
+    DependencyInjector.setImplementation(ConditionsCollection::class.java, ConditionsGenerated())
     ConditionManager.reset()
 
     DependencyInjector.setImplementation(DialoguesCollection::class.java, DialoguesMock())

@@ -27,8 +27,8 @@ import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsGenerated
 import quests.StoryEventsCollection
 import quests.StoryEventsGenerated
-import status.conditions.ConditionJsonParser
-import status.conditions.ConditionParser
+import status.conditions.ConditionsCollection
+import status.conditions.ConditionsGenerated
 import status.effects.EffectsCollection
 import status.effects.EffectsGenerated
 import traveling.location.location.LocationDescriptionsCollection
@@ -82,7 +82,7 @@ object DependencyInjector {
             AIActionsCollection::class.java to AIActionsGenerated(),
             BehaviorsCollection::class.java to BehaviorsGenerated(),
             CreatureParser::class.java to CreatureJsonParser(),
-            ConditionParser::class.java to ConditionJsonParser(),
+            ConditionsCollection::class.java to ConditionsGenerated(),
             CommandsCollection::class.java to CommandsGenerated(),
             DialoguesCollection::class.java to DialoguesGenerated(),
             EffectsCollection::class.java to EffectsGenerated(),

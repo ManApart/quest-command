@@ -2,6 +2,7 @@ package status.conditions
 
 import core.DependencyInjector
 import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 import status.effects.Effect
 import status.effects.EffectManager
 import status.effects.EffectRecipe
@@ -15,8 +16,8 @@ object ConditionManager {
     }
 
     private fun loadConditions(): NameSearchableList<ConditionRecipe> {
-        val parser = DependencyInjector.getImplementation(ConditionParser::class.java)
-        return parser.loadConditions()
+        val parser = DependencyInjector.getImplementation(ConditionsCollection::class.java)
+        return parser.values.toNameSearchableList()
     }
 
     fun getCondition(name: String, bodyParts: List<Location>): Condition {
