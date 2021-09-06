@@ -7,8 +7,9 @@ class BodyBuilder(private val bodyName: String) {
         children.add(item)
     }
 
-    fun location(name: String, initializer: LocationNodeBuilder.() -> Unit = {}) {
-        children.add(LocationNodeBuilder(name).apply(initializer))
+    fun location(name: String? = null, initializer: LocationNodeBuilder.() -> Unit = {}) {
+        val nameToUse = name ?: bodyName
+        children.add(LocationNodeBuilder(nameToUse).apply(initializer))
     }
 
     fun build(): List<LocationNode> {

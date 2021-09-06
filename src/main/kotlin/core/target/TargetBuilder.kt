@@ -3,7 +3,6 @@ package core.target
 import core.ai.AI
 import core.ai.behavior.BehaviorRecipe
 import core.body.Body
-import core.body.BodyBuilder
 import core.body.NONE
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
@@ -13,7 +12,6 @@ import status.ProtoSoul
 
 class TargetBuilder(internal val name: String) {
     private var propsBuilder = PropsBuilder()
-    private var bodyBuilder = BodyBuilder()
     private var description: ConditionalStringPointer? = null
     private val paramsBuilder = MapBuilder()
     private val soulBuilder = MapBuilder()
@@ -24,6 +22,7 @@ class TargetBuilder(internal val name: String) {
     private val slots = mutableListOf<List<String>>()
     private var aiName: String? = null
     private var ai: AI? = null
+    private var bodyName: String? = null
 
     /**
      * Note that each time this function is used, the latter extends object will win any extension conflicts.
@@ -68,12 +67,8 @@ class TargetBuilder(internal val name: String) {
         this.ai = ai
     }
 
-    fun body(body: Body) {
-        bodyBuilder.body(body)
-    }
-
-    fun body(name: String = NONE.name, initializer: BodyBuilder.() -> Unit = {}) {
-        bodyBuilder = BodyBuilder(name).apply(initializer)
+    fun body(body: String) {
+        this.bodyName = body
     }
 
     fun item(vararg itemName: String) = itemNames.addAll(itemName)
@@ -99,7 +94,7 @@ class TargetBuilder(internal val name: String) {
         val params = paramsBuilder.build(base?.paramsBuilder)
         val soul = soulBuilder.build(base?.soulBuilder).mapValues { it.value.toInt() }
         val desc = description ?: base?.description ?: ConditionalStringPointer(name)
-        val body = bodyBuilder.build(base?.bodyBuilder)
+        val body = bodyName ?: base?.bodyName
         val allBehaviors = behaviors + (base?.behaviors ?: emptyList())
 
         return Target(
@@ -110,7 +105,7 @@ class TargetBuilder(internal val name: String) {
             soulStats = ProtoSoul(soul),
             dynamicDescription = desc,
             behaviorRecipes = allBehaviors,
-            body = body,
+            bodyName = body,
             equipSlots = this.slots,
             items = itemNames,
             properties = props,
@@ -124,7 +119,7 @@ class TargetBuilder(internal val name: String) {
         val soul = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
         val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
 
-        val body = bodyBuilder.build(bases.map { it.bodyBuilder })
+        val body = bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName }
         val allBehaviors = behaviors + bases.flatMap { it.behaviors }
 
         return Target(
@@ -135,7 +130,7 @@ class TargetBuilder(internal val name: String) {
             soulStats = ProtoSoul(soul),
             dynamicDescription = desc,
             behaviorRecipes = allBehaviors,
-            body = body,
+            bodyName = body,
             equipSlots = this.slots,
             items = itemNames,
             properties = props,

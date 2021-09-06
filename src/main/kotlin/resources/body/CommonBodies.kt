@@ -75,5 +75,25 @@ class CommonBodies : BodyResource {
         body("Stairs")
         body("Grain Bin")
         body("Sack")
+        body("Grain Chute") {
+            location {
+                isRoot(true)
+                //TODO - go to where we build locations
+//                props {
+//                    value("size", 3)
+//                    tag("Container")
+//                }
+            }
+        }
+        body("Sack") {
+            location {
+                isRoot(true)
+//                props {
+//                    tag("Container")
+//                    value("weight", 1)
+//                    value("defense", 1)
+//                }
+            }
+        }
     }
 }

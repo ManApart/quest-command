@@ -104,14 +104,7 @@ class CommonActivators : ActivatorResource {
 
         target("Grain Chute") {
             description("Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below.")
-            body("Grain Chute") {
-                part {
-                    props {
-                        value("size", 3)
-                        tag("Container")
-                    }
-                }
-            }
+            body("Grain Chute")
             props {
                 value("size", 3)
                 tag("Open", "Container")

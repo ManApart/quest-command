@@ -40,15 +40,7 @@ class Apparel : ItemResource {
                 value("weight", 1)
                 value("defense", 1)
             }
-            body("Sack"){
-                part {
-                    props {
-                        tag("Container")
-                        value("weight", 1)
-                        value("defense", 1)
-                    }
-                }
-            }
+            body("Sack")
             equipSlotOptions("Belt Front", "Belt Left", "Belt Right", "Belt Back")
         }
     }
