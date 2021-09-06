@@ -10,9 +10,9 @@ class LocationNodeBuilder(private val name: String) {
     private var isRoot = false
     private val connectionBuilders = mutableListOf<ProtoConnectionBuilder>()
 
-    internal fun build(): LocationNode {
+    internal fun build(inheritedParent: String? = null): LocationNode {
         val locName = locationName ?: name
-        val parent = parentName ?: DEFAULT_NETWORK.name
+        val parent = inheritedParent ?: parentName ?: DEFAULT_NETWORK.name
         val network = this.network ?: DEFAULT_NETWORK
         val connections = connectionBuilders.map { it.build() }
         return LocationNode(name, locName, parent, network, isRoot, connections)
