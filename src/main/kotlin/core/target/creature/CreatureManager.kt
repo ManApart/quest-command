@@ -2,7 +2,9 @@ package core.target.creature
 
 import core.DependencyInjector
 import core.target.Target
+import core.target.build
 import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 import traveling.location.location.LocationTarget
 
 const val CREATURE_TAG = "Creature"
@@ -15,10 +17,8 @@ object CreatureManager {
     }
 
     private fun loadCreatures(): NameSearchableList<Target> {
-        val parser = DependencyInjector.getImplementation(CreatureParser::class.java)
-        val creatures = parser.loadCreatures()
-        creatures.forEach { it.properties.tags.add(CREATURE_TAG) }
-        return NameSearchableList(creatures)
+        val parser = DependencyInjector.getImplementation(CreaturesCollection::class.java)
+        return parser.values.build(CREATURE_TAG).toNameSearchableList()
     }
 
     private fun getCreature(name: String): Target {

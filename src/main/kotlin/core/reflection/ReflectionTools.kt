@@ -14,6 +14,7 @@ import core.events.EventListener
 import core.target.Target
 import core.target.TargetBuilder
 import core.target.activator.dsl.ActivatorResource
+import core.target.creature.CreatureResource
 import core.target.item.ItemResource
 import crafting.RecipeBuilder
 import crafting.RecipeResource
@@ -49,6 +50,7 @@ object ReflectionTools {
         generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
         generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(ConditionResource::class.java, ConditionRecipe::class.java)
+        generateResourcesFile(CreatureResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)

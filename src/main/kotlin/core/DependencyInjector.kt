@@ -2,12 +2,12 @@ package core
 
 import conversation.dsl.DialoguesCollection
 import conversation.dsl.DialoguesGenerated
-import core.ai.dsl.AIsCollection
-import core.ai.dsl.AIsGenerated
 import core.ai.action.dsl.AIActionsCollection
 import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
+import core.ai.dsl.AIsCollection
+import core.ai.dsl.AIsGenerated
 import core.commands.CommandsCollection
 import core.commands.CommandsGenerated
 import core.events.EventListener
@@ -15,8 +15,8 @@ import core.events.EventListenersCollection
 import core.events.EventListenersGenerated
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.activator.dsl.ActivatorsGenerated
-import core.target.creature.CreatureJsonParser
-import core.target.creature.CreatureParser
+import core.target.creature.CreaturesCollection
+import core.target.creature.CreaturesGenerated
 import core.target.item.ItemsCollection
 import core.target.item.ItemsGenerated
 import core.utility.KotlinResourceHelper
@@ -81,7 +81,7 @@ object DependencyInjector {
             AIsCollection::class.java to AIsGenerated(),
             AIActionsCollection::class.java to AIActionsGenerated(),
             BehaviorsCollection::class.java to BehaviorsGenerated(),
-            CreatureParser::class.java to CreatureJsonParser(),
+            CreaturesCollection::class.java to CreaturesGenerated(),
             ConditionsCollection::class.java to ConditionsGenerated(),
             CommandsCollection::class.java to CommandsGenerated(),
             DialoguesCollection::class.java to DialoguesGenerated(),
