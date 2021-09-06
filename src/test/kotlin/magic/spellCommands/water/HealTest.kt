@@ -16,9 +16,9 @@ import magic.spells.Spell
 import org.junit.Before
 import org.junit.Test
 import status.effects.EffectBase
-import status.effects.EffectFakeParser
 import status.effects.EffectManager
-import status.effects.EffectParser
+import status.effects.EffectsCollection
+import status.effects.EffectsMock
 import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
@@ -31,7 +31,7 @@ class HealTest {
         init {
             createMockedGame()
 
-            DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser(listOf(
+            DependencyInjector.setImplementation(EffectsCollection::class.java, EffectsMock(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
                     EffectBase("Wet", "", statTarget = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
             )))

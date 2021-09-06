@@ -40,9 +40,9 @@ import quests.StoryEventsMock
 import status.conditions.ConditionFakeParser
 import status.conditions.ConditionManager
 import status.conditions.ConditionParser
-import status.effects.EffectFakeParser
 import status.effects.EffectManager
-import status.effects.EffectParser
+import status.effects.EffectsCollection
+import status.effects.EffectsMock
 import status.stat.STRENGTH
 import system.BodyFakeParser
 import system.location.LocationFakeParser
@@ -136,7 +136,7 @@ fun createMockedGame() {
 
     DependencyInjector.setImplementation(DialoguesCollection::class.java, DialoguesMock())
 
-    DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser())
+    DependencyInjector.setImplementation(EffectsCollection::class.java, EffectsMock())
     EffectManager.reset()
 
     DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())

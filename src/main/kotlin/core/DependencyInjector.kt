@@ -29,8 +29,8 @@ import quests.StoryEventsCollection
 import quests.StoryEventsGenerated
 import status.conditions.ConditionJsonParser
 import status.conditions.ConditionParser
-import status.effects.EffectJsonParser
-import status.effects.EffectParser
+import status.effects.EffectsCollection
+import status.effects.EffectsGenerated
 import traveling.location.location.LocationDescriptionsCollection
 import traveling.location.location.LocationDescriptionsGenerated
 import traveling.location.location.LocationJsonParser
@@ -85,7 +85,7 @@ object DependencyInjector {
             ConditionParser::class.java to ConditionJsonParser(),
             CommandsCollection::class.java to CommandsGenerated(),
             DialoguesCollection::class.java to DialoguesGenerated(),
-            EffectParser::class.java to EffectJsonParser(),
+            EffectsCollection::class.java to EffectsGenerated(),
             EventListenersCollection::class.java to EventListenersGenerated(),
             ItemsCollection::class.java to ItemsGenerated(),
             LocationParser::class.java to LocationJsonParser(),
