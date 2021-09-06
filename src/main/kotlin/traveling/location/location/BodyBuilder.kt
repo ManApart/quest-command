@@ -13,7 +13,12 @@ class BodyBuilder(private val bodyName: String) {
     }
 
     fun build(): List<LocationNode> {
-        return children.map { it.build(bodyName) }
+        return if (children.isEmpty()){
+            listOf(LocationNodeBuilder(bodyName).apply { isRoot(true) }.build(bodyName))
+        } else {
+            children.map { it.build(bodyName) }
+        }
+
     }
 }
 
