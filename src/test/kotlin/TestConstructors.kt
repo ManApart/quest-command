@@ -48,9 +48,9 @@ import system.BodyFakeParser
 import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationParser
-import traveling.location.weather.WeatherFakeParser
 import traveling.location.weather.WeatherManager
-import traveling.location.weather.WeatherParser
+import traveling.location.weather.WeathersCollection
+import traveling.location.weather.WeathersMock
 
 fun createItem(name: String = "Apple", weight: Int = 1): Target {
     return createItemBuilder(name, weight).build()
@@ -156,7 +156,7 @@ fun createMockedGame() {
 
     DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
 
-    DependencyInjector.setImplementation(WeatherParser::class.java, WeatherFakeParser())
+    DependencyInjector.setImplementation(WeathersCollection::class.java, WeathersMock())
     WeatherManager.reset()
 
     EventManager.clear()

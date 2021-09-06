@@ -35,10 +35,7 @@ import traveling.location.location.LocationDescriptionsCollection
 import traveling.location.location.LocationDescriptionsGenerated
 import traveling.location.location.LocationJsonParser
 import traveling.location.location.LocationParser
-import traveling.location.weather.WeatherJsonParser
-import traveling.location.weather.WeatherParser
-import traveling.location.weather.WeatherStringsCollection
-import traveling.location.weather.WeatherStringsGenerated
+import traveling.location.weather.*
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -94,7 +91,7 @@ object DependencyInjector {
             ResourceHelper::class.java to KotlinResourceHelper(),
             SpellCommandsCollection::class.java to SpellCommandsGenerated(),
             StoryEventsCollection::class.java to StoryEventsGenerated(),
-            WeatherParser::class.java to WeatherJsonParser(),
+            WeathersCollection::class.java to WeathersGenerated(),
             WeatherStringsCollection::class.java to WeatherStringsGenerated(),
         )
     }

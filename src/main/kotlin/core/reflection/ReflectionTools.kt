@@ -28,6 +28,8 @@ import status.conditions.ConditionResource
 import status.effects.EffectBase
 import status.effects.EffectResource
 import traveling.location.location.LocationDescriptionResource
+import traveling.location.weather.Weather
+import traveling.location.weather.WeatherResource
 import traveling.location.weather.WeatherStringResource
 import java.io.File
 import java.lang.reflect.Modifier
@@ -58,6 +60,7 @@ object ReflectionTools {
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
         generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
+        generateResourcesFile(WeatherResource::class.java, Weather::class.java)
         generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
     }
 
