@@ -8,6 +8,8 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsGenerated
+import core.body.BodysCollection
+import core.body.BodysGenerated
 import core.commands.CommandsCollection
 import core.commands.CommandsGenerated
 import core.events.EventListener
@@ -78,6 +80,7 @@ object DependencyInjector {
             AIsCollection::class.java to AIsGenerated(),
             AIActionsCollection::class.java to AIActionsGenerated(),
             BehaviorsCollection::class.java to BehaviorsGenerated(),
+            BodysCollection::class.java to BodysGenerated(),
             CreaturesCollection::class.java to CreaturesGenerated(),
             ConditionsCollection::class.java to ConditionsGenerated(),
             CommandsCollection::class.java to CommandsGenerated(),

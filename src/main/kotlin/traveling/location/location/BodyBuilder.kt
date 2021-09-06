@@ -15,3 +15,7 @@ class BodyBuilder(private val bodyName: String) {
         return children.map { it.build(bodyName) }
     }
 }
+
+fun body(name: String, initializer: BodyBuilder.() -> Unit = {}): BodyBuilder {
+    return BodyBuilder(name).apply(initializer)
+}
