@@ -18,28 +18,35 @@ class LocationNodeBuilder(private val name: String) {
         return LocationNode(name, locName, parent, network, isRoot, connections)
     }
 
-    fun location(name: String){
+    fun location(name: String) {
         this.locationName = name
     }
 
-    fun parent(parent: String){
+    fun parent(parent: String) {
         this.parentName = parent
     }
 
-    fun network(network: Network){
+    fun network(network: Network) {
         this.network = network
     }
 
-    fun isRoot(yes: Boolean){
+    fun isRoot(yes: Boolean) {
         isRoot = yes
     }
 
-    fun connection(name: String){
-        connectionBuilders.add(ProtoConnectionBuilder().apply{name(name)})
+    fun connection(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
+        connectionBuilders.add(ProtoConnectionBuilder().apply {
+            name(name)
+            vector(x, y, z)
+        })
     }
 
     fun connection(initializer: ProtoConnectionBuilder.() -> Unit) {
         connectionBuilders.add(ProtoConnectionBuilder().apply(initializer))
+    }
+
+    fun connection(name: String, initializer: ProtoConnectionBuilder.() -> Unit) {
+        connectionBuilders.add(ProtoConnectionBuilder().apply { name(name) }.apply(initializer))
     }
 
 }

@@ -3,17 +3,21 @@ package core.target.item
 import core.DependencyInjector
 import core.target.Target
 import core.target.build
+import core.utility.NameSearchableList
 import traveling.location.location.LocationTarget
 
 const val ITEM_TAG = "Item"
 
 object ItemManager {
-    private var itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class.java)
-    private var items = itemsCollection.values.build(ITEM_TAG)
+    private var items = loadItems()
+
+    private fun loadItems() : NameSearchableList<Target>{
+        val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class.java)
+        return itemsCollection.values.build(ITEM_TAG)
+    }
 
     fun reset() {
-        itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class.java)
-        items = itemsCollection.values.build(ITEM_TAG)
+        items = loadItems()
     }
 
     fun itemExists(name: String): Boolean {

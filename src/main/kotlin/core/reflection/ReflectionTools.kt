@@ -8,6 +8,7 @@ import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.ai.dsl.AIResource
+import core.body.BodyResource
 import core.commands.Command
 import core.conditional.ConditionalString
 import core.events.EventListener
@@ -27,7 +28,9 @@ import status.conditions.ConditionRecipe
 import status.conditions.ConditionResource
 import status.effects.EffectBase
 import status.effects.EffectResource
+import traveling.location.location.BodyBuilder
 import traveling.location.location.LocationDescriptionResource
+import traveling.location.location.LocationNodeBuilder
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherResource
 import traveling.location.weather.WeatherStringResource
@@ -52,6 +55,7 @@ object ReflectionTools {
         generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
         generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(ConditionResource::class.java, ConditionRecipe::class.java)
+        generateResourcesFile(BodyResource::class.java, BodyBuilder::class.java)
         generateResourcesFile(CreatureResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)

@@ -12,15 +12,14 @@ object BodyManager {
     private const val bodiesPath = "/data/generated/content/bodies/bodies"
     private const val bodyPartPath = "/data/generated/content/bodies/parts"
     private val locationHelper = LocationHelper()
-    private var parser = DependencyInjector.getImplementation(LocationParser::class.java)
     private var bodies = createBodies()
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(LocationParser::class.java)
         bodies = createBodies()
     }
 
     private fun createBodies(): NameSearchableList<Body> {
+        val parser = DependencyInjector.getImplementation(LocationParser::class.java)
         val nodes: List<LocationNode> = parser.loadLocationNodes(bodiesPath)
         val bodyParts = parser.loadLocations(bodyPartPath)
 

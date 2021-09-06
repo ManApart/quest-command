@@ -12,13 +12,15 @@ import traveling.location.location.LocationTarget
 const val ACTIVATOR_TAG = "Activator"
 
 object ActivatorManager {
-    private var activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
+    private var activators = loadActivators()
 
-    private var activators = activatorsCollection.values.build(ACTIVATOR_TAG)
+    private fun loadActivators(): NameSearchableList<Target>{
+        val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
+        return activatorsCollection.values.build(ACTIVATOR_TAG)
+    }
 
     fun reset() {
-        activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
-        activators = activatorsCollection.values.build(ACTIVATOR_TAG)
+        activators = loadActivators()
     }
 
     fun getActivator(name: String): Target {
