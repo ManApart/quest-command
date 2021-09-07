@@ -10,6 +10,7 @@ class ProtoConnectionBuilder {
     private var restricted = false
     private var oneWay = false
     private var vector = NO_VECTOR
+    private var connectsTo: ProtoTarget? = null
 
     fun build(): ProtoConnection {
         return ProtoConnection(target, part, vector, name, restricted = restricted, oneWay = oneWay)
@@ -53,6 +54,14 @@ class ProtoConnectionBuilder {
 
     fun z(z: Int) {
         vector = vector.plus(Vector(z = z))
+    }
+
+    fun connectsTo(protoTarget: ProtoTarget) {
+        this.connectsTo = protoTarget
+    }
+
+    fun connectsTo(location: String, network: String? = null, target: String? = null, part: String? = null) {
+        this.connectsTo = ProtoTarget(location, network, target, part)
     }
 
 }

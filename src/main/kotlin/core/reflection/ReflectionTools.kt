@@ -62,6 +62,7 @@ object ReflectionTools {
         generateResourcesFile(EffectResource::class.java, EffectBase::class.java)
         generateResourcesFile(LocationResource::class.java, LocationRecipeBuilder::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
+        generateResourcesFile(NetworkResource::class.java, NetworkBuilder::class.java)
         generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
         generateResourcesFile(WeatherResource::class.java, Weather::class.java)

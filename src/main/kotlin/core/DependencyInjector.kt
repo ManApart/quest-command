@@ -35,11 +35,11 @@ import status.conditions.ConditionsCollection
 import status.conditions.ConditionsGenerated
 import status.effects.EffectsCollection
 import status.effects.EffectsGenerated
-import traveling.location.location.LocationDescriptionsCollection
-import traveling.location.location.LocationDescriptionsGenerated
-import traveling.location.location.LocationJsonParser
-import traveling.location.location.LocationParser
-import traveling.location.weather.*
+import traveling.location.location.*
+import traveling.location.weather.WeatherStringsCollection
+import traveling.location.weather.WeatherStringsGenerated
+import traveling.location.weather.WeathersCollection
+import traveling.location.weather.WeathersGenerated
 
 object DependencyInjector {
     private val interfaces = mutableMapOf<Class<*>, Any>()
@@ -93,6 +93,8 @@ object DependencyInjector {
             ItemsCollection::class.java to ItemsGenerated(),
             LocationParser::class.java to LocationJsonParser(),
             LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
+            LocationsCollection::class.java to LocationsGenerated(),
+            NetworksCollection::class.java to NetworksGenerated(),
             RecipesCollection::class.java to RecipesGenerated(),
             ResourceHelper::class.java to KotlinResourceHelper(),
             SpellCommandsCollection::class.java to SpellCommandsGenerated(),
