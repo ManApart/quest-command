@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
+import core.body.*
 import core.target.Target
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
@@ -20,8 +20,8 @@ class PlaceItemTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock()

@@ -6,8 +6,7 @@ import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
-import core.body.createBody
+import core.body.*
 import createItem
 import createPouch
 import inventory.Inventory
@@ -26,8 +25,8 @@ class InventoryTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock()

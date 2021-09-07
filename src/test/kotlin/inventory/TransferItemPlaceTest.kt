@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
+import core.body.*
 import core.properties.CAN_HOLD
 import core.properties.COUNT
 import core.properties.Properties
@@ -31,8 +31,8 @@ class TransferItemPlaceTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock()
@@ -86,7 +86,8 @@ class TransferItemPlaceTest {
         val bodyParser = BodyFakeParser(
                 listOf(LocationNode(name = "Hand", parent = "body"), LocationNode(name = "part", parent = "none")),
                 listOf(hand, part))
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val creature = createChest()

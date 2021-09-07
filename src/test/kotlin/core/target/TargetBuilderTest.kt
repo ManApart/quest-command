@@ -2,7 +2,7 @@ package core.target
 
 import core.DependencyInjector
 import core.ai.behavior.*
-import core.body.BodyManager
+import core.body.*
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
 import core.properties.Properties
@@ -18,11 +18,11 @@ import kotlin.test.assertEquals
 //TODO - test extends
 
 class TargetBuilderTest {
-    private val bodyParser = BodyFakeParser()
 
     @Before
     fun setup() {
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock(listOf(Behavior("Burnable", ConditionalEvents(LookEvent::class.java))))

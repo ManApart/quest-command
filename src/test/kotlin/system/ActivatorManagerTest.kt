@@ -3,7 +3,7 @@ package system
 import core.DependencyInjector
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
-import core.body.BodyManager
+import core.body.*
 import core.conditional.ConditionalStringPointer
 import core.target.Target
 import core.target.activator.ActivatorManager
@@ -30,8 +30,8 @@ class ActivatorManagerTest {
         DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
         LocationManager.reset()
 
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
     }
 

@@ -1,7 +1,7 @@
 package inventory
 
 import core.DependencyInjector
-import core.body.BodyManager
+import core.body.*
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
@@ -24,8 +24,8 @@ class TransferItemTakeTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val locationParser = LocationFakeParser()
