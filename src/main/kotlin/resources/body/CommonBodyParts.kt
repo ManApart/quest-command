@@ -66,9 +66,16 @@ class CommonBodyParts : BodyPartResource {
             slot("Small Claws")
         }
 
+        location("Grain Chute") {
+            props {
+                tag("Open", "Container")
+                value("size", 3)
+            }
+        }
+
         location("Grain Bin") {
             props {
-                tag("container")
+                tag("Open","Container")
                 value("size", 3)
                 value("CanHold", "Grounded")
             }
@@ -76,7 +83,7 @@ class CommonBodyParts : BodyPartResource {
 
         location("Sack") {
             props {
-                tag("container")
+                tag("Container")
                 value("weight", 1)
                 value("defense", 1)
             }
