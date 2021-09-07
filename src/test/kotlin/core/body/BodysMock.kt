@@ -1,15 +1,15 @@
 package core.body
 
 import traveling.location.location.*
-import traveling.location.location.BodyBuilder
+import traveling.location.location.NetworkBuilder
 
 class BodysMock(
-    override val values: List<BodyBuilder> = listOf(body("Human"){locationNode("Body Part")}, body("None"){locationNode("Part")})
+    override val values: List<NetworkBuilder> = listOf(network("Human"){locationNode("Body Part")}, network("None"){locationNode("Part")})
 ) : BodysCollection {
     companion object {
         fun withFakePlayer(): BodysMock {
-            return BodysMock(bodies {
-                body("Human") {
+            return BodysMock(networks {
+                network("Human") {
                     locationNode("right hand")
                     locationNode("left hand")
                 }
@@ -21,8 +21,8 @@ class BodysMock(
         }
 
         fun fromParts(parts: List<LocationRecipeBuilder>, name: String = "body"): BodysMock {
-            return BodysMock(bodies {
-                body(name) {
+            return BodysMock(networks {
+                network(name) {
                     parts.forEach { part ->
                         locationNode(part.name)
                     }

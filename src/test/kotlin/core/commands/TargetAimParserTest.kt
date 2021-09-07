@@ -8,7 +8,6 @@ import core.body.*
 import core.target.Target
 import createMockedGame
 import org.junit.Test
-import system.BodyFakeParser
 import traveling.location.location.*
 import kotlin.test.assertEquals
 
@@ -27,11 +26,11 @@ class TargetAimParserTest {
             createMockedGame()
 
             val bodyCollection = BodysMock(
-                bodies {
-                    body("Human") {
+                networks {
+                    network("Human") {
                         locationNode("bodyPartA")
                     }
-                    body("testBody") {
+                    network("testBody") {
                         locationNode("bodyPartA")
                         locationNode("bodyPartB")
                         locationNode("bodyPartC")

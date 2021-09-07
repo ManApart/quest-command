@@ -1,11 +1,11 @@
 package resources.body
 
 import core.body.BodyResource
-import traveling.location.location.bodies
+import traveling.location.location.networks
 
 class CommonBodies : BodyResource {
-    override val values = bodies {
-        body("Human") {
+    override val values = networks {
+        network("Human") {
             locationNode("Head")
             locationNode("Chest") {
                 isRoot(true)
@@ -36,7 +36,7 @@ class CommonBodies : BodyResource {
             locationNode("Left Foot")
         }
 
-        body("Rat") {
+        network("Rat") {
             locationNode("Canine Head")
             locationNode("Canine Body") {
                 isRoot(true)
@@ -46,7 +46,7 @@ class CommonBodies : BodyResource {
             locationNode("Small Claws")
         }
 
-        body("Tree") {
+        network("Tree") {
             locationNode("Branches")
             locationNode("Trunk") {
                 isRoot(true)
@@ -54,7 +54,7 @@ class CommonBodies : BodyResource {
             }
         }
 
-        body("City Wall") {
+        network("City Wall") {
             locationNode("Foundation") {
                 isRoot(true)
                 connection("Lower Shelf", z = 1)
@@ -72,15 +72,15 @@ class CommonBodies : BodyResource {
             locationNode("Wall Top")
         }
 
-        body("Stairs")
-        body("Grain Bin")
-        body("Sack")
-        body("Grain Chute") {
+        network("Stairs")
+        network("Grain Bin")
+        network("Sack")
+        network("Grain Chute") {
             locationNode {
                 isRoot(true)
             }
         }
-        body("Sack") {
+        network("Sack") {
             locationNode {
                 isRoot(true)
             }

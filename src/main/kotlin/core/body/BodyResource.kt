@@ -1,7 +1,7 @@
 package core.body
 
-import traveling.location.location.BodyBuilder
+import traveling.location.location.NetworkBuilder
 
 interface BodyResource {
-    val values: List<BodyBuilder>
+    val values: List<NetworkBuilder>
 }

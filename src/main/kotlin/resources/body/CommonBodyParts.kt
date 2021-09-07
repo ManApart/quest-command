@@ -1,8 +1,6 @@
 package resources.body
 
 import core.body.BodyPartResource
-import core.body.BodyResource
-import traveling.location.location.bodies
 import traveling.location.location.locations
 
 class CommonBodyParts : BodyPartResource {

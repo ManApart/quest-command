@@ -13,7 +13,6 @@ import core.body.BodyResource
 import core.commands.Command
 import core.conditional.ConditionalString
 import core.events.EventListener
-import core.target.Target
 import core.target.TargetBuilder
 import core.target.activator.dsl.ActivatorResource
 import core.target.creature.CreatureResource
@@ -29,10 +28,7 @@ import status.conditions.ConditionRecipe
 import status.conditions.ConditionResource
 import status.effects.EffectBase
 import status.effects.EffectResource
-import traveling.location.location.BodyBuilder
-import traveling.location.location.LocationDescriptionResource
-import traveling.location.location.LocationNodeBuilder
-import traveling.location.location.LocationRecipeBuilder
+import traveling.location.location.*
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherResource
 import traveling.location.weather.WeatherStringResource
@@ -57,13 +53,14 @@ object ReflectionTools {
         generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
         generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(ConditionResource::class.java, ConditionRecipe::class.java)
-        generateResourcesFile(BodyResource::class.java, BodyBuilder::class.java)
+        generateResourcesFile(BodyResource::class.java, NetworkBuilder::class.java)
         generateResourcesFile(BodyPartResource::class.java, LocationRecipeBuilder::class.java)
         generateResourcesFile(CreatureResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
         generateResourcesFile(EffectResource::class.java, EffectBase::class.java)
+        generateResourcesFile(LocationResource::class.java, LocationRecipeBuilder::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
         generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
