@@ -49,15 +49,55 @@ class CommonNetworks : NetworkResource {
             }
         }
 
-        network("Kanbara Countryside"){
+        network("Kanbara Countryside") {
             locationNode("Farmer's Hut") {
-                connection("Farmer's Hut Interior", y= -500)
-                connection{
+                connection("Farmer's Hut Interior", y = -500)
+                connection {
                     x(-1000)
                     connectsTo("Kanabara Gate", "Kanbara")
                 }
                 connection("An Open Field", x = 100)
             }
+
+            locationNode("An Open Field") {
+                location("Field")
+                connection("Apple Tree", y = 100)
+                connection("Barren Patch", y = -100)
+                connection("Training Circle", x = 100)
+                connection("Windmill", x = 150, y = 100)
+            }
+
+            locationNode("Windmill") {
+                connection("Stairs"){
+                    target("Stairs")
+                    part("Stairs")
+                    z(20)
+                    restricted(true)
+                    connectsTo("Windmill - Second Floor", "Kanbara Countryside")
+                }
+            }
+
+            locationNode("Windmill - Second Floor") {
+                connection("Stairs"){
+                    target("Stairs")
+                    part("Stairs")
+                    z(20)
+                    restricted(true)
+                    connectsTo("Windmill - Third Floor", "Kanbara Countryside")
+                }
+            }
+
+            locationNode("Apple Tree") {
+                connection("Stairs"){
+                    target("Apple Tree")
+                    part("Branches")
+                    z(15)
+                    restricted(true)
+                    connectsTo("Apple Tree Branches", "Kanbara Countryside")
+                }
+            }
+
+            locationNode("Apple Tree Branches")
         }
     }
 }
