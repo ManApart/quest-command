@@ -1,15 +1,14 @@
 package traveling.location
 
-import traveling.position.NO_VECTOR
-import traveling.position.Vector
+import traveling.position.VectorParent
+import traveling.position.VectorParentI
 
-class ProtoConnectionBuilder {
+class ProtoConnectionBuilder : VectorParent by VectorParentI() {
     private var name: String? = null
     private var target: String? = null
     private var part: String? = null
     private var restricted = false
     private var oneWay = false
-    private var vector = NO_VECTOR
     private var connectsTo: ProtoTarget? = null
 
     fun build(): ProtoConnection {
@@ -34,26 +33,6 @@ class ProtoConnectionBuilder {
 
     fun oneWay(yes: Boolean) {
         this.oneWay = yes
-    }
-
-    fun vector(v: Vector) {
-        this.vector = v
-    }
-
-    fun vector(x: Int = 0, y: Int = 0, z: Int = 0) {
-        this.vector = Vector(x, y, z)
-    }
-
-    fun x(x: Int) {
-        vector = vector.plus(Vector(x = x))
-    }
-
-    fun y(y: Int) {
-        vector = vector.plus(Vector(y = y))
-    }
-
-    fun z(z: Int) {
-        vector = vector.plus(Vector(z = z))
     }
 
     fun connectsTo(protoTarget: ProtoTarget) {
