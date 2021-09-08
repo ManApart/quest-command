@@ -12,11 +12,7 @@ import createPouch
 import inventory.Inventory
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
-import traveling.location.location.LocationRecipe
+import traveling.location.location.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -33,8 +29,8 @@ class InventoryTest {
         DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         GameState.player = GameManager.newPlayer()

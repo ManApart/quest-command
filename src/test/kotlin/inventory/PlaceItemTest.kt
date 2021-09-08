@@ -10,8 +10,6 @@ import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
 import traveling.location.location.*
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -28,8 +26,8 @@ class PlaceItemTest {
         DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         NOWHERE_NODE.getLocation().clear()

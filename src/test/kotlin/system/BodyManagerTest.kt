@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.body.*
 import org.junit.Assert
 import org.junit.Test
-import traveling.location.location.LocationParser
+
 import kotlin.test.assertNotNull
 
 class BodyManagerTest {

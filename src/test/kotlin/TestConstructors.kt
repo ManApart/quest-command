@@ -44,10 +44,9 @@ import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
 import status.stat.STRENGTH
-import system.BodyFakeParser
-import system.location.LocationFakeParser
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
+import traveling.location.location.LocationsCollection
+import traveling.location.location.LocationsMock
 import traveling.location.weather.WeatherManager
 import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersMock
@@ -146,7 +145,7 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(ItemsCollection::class.java, ItemsMock())
     ItemManager.reset()
 
-    DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
+    DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
     LocationManager.reset()
 
     DependencyInjector.setImplementation(RecipesCollection::class.java, RecipesMock())

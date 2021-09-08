@@ -8,7 +8,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import core.DependencyInjector
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
+
 
 class LocationRecipeManagerTest {
 

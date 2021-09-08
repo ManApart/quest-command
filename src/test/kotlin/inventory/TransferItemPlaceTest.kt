@@ -20,8 +20,6 @@ import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
 import traveling.location.location.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -39,8 +37,8 @@ class TransferItemPlaceTest {
         DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         NOWHERE_NODE.getLocation().clear()

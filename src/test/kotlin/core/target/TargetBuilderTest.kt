@@ -11,8 +11,6 @@ import explore.look.LookEvent
 import org.junit.Before
 import org.junit.Test
 import quests.ConditionalEvents
-import system.BodyFakeParser
-import traveling.location.location.LocationParser
 import kotlin.test.assertEquals
 
 //TODO - test extends

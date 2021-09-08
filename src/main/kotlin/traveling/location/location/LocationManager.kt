@@ -2,13 +2,13 @@ package traveling.location.location
 
 import core.DependencyInjector
 import core.GameState
+import core.body.BodyPartsCollection
+import core.body.BodysCollection
 import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 import traveling.location.Network
 
 object LocationManager {
-    private const val locationNodePath = "/data/generated/content/location/location-nodes"
-    private const val locationPath = "/data/generated/content/location/locations"
-
     private val locationHelper = LocationHelper()
     private var networks = loadNetworks()
 
@@ -17,9 +17,10 @@ object LocationManager {
     }
 
     private fun loadNetworks(): NameSearchableList<Network> {
-        val parser = DependencyInjector.getImplementation(LocationParser::class.java)
-        val locations = parser.loadLocations(locationPath)
-        val nodes: List<LocationNode> = parser.loadLocationNodes(locationNodePath)
+        val nodeCollection = DependencyInjector.getImplementation(BodysCollection::class.java)
+        val locationCollection = DependencyInjector.getImplementation(BodyPartsCollection::class.java)
+        val locations = locationCollection.values.build().toNameSearchableList()
+        val nodes = nodeCollection.values.build()
 
 
         val nodeMap = locationHelper.buildInitialMap(nodes)

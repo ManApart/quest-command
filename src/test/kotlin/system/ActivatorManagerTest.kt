@@ -27,7 +27,8 @@ class ActivatorManagerTest {
                 LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK.name))
         ))
 
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())

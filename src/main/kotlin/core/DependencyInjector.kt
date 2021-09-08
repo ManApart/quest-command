@@ -91,7 +91,6 @@ object DependencyInjector {
             EffectsCollection::class.java to EffectsGenerated(),
             EventListenersCollection::class.java to EventListenersGenerated(),
             ItemsCollection::class.java to ItemsGenerated(),
-            LocationParser::class.java to LocationJsonParser(),
             LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
             LocationsCollection::class.java to LocationsGenerated(),
             NetworksCollection::class.java to NetworksGenerated(),
