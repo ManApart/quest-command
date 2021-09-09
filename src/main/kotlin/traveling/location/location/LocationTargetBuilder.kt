@@ -24,3 +24,7 @@ class LocationTargetBuilder(
 fun locTarget(name: String, initializer: LocationTargetBuilder.() -> Unit): LocationTargetBuilder {
     return LocationTargetBuilder(name).apply(initializer)
 }
+
+fun List<LocationTargetBuilder>.build() : List<LocationTarget>{
+    return map { it.build() }
+}

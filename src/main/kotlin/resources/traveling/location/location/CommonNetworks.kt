@@ -68,7 +68,7 @@ class CommonNetworks : NetworkResource {
             }
 
             locationNode("Windmill") {
-                connection("Stairs"){
+                connection("Stairs") {
                     target("Stairs")
                     part("Stairs")
                     z(20)
@@ -78,7 +78,7 @@ class CommonNetworks : NetworkResource {
             }
 
             locationNode("Windmill - Second Floor") {
-                connection("Stairs"){
+                connection("Stairs") {
                     target("Stairs")
                     part("Stairs")
                     z(20)
@@ -88,7 +88,7 @@ class CommonNetworks : NetworkResource {
             }
 
             locationNode("Apple Tree") {
-                connection("Stairs"){
+                connection {
                     target("Apple Tree")
                     part("Branches")
                     z(15)

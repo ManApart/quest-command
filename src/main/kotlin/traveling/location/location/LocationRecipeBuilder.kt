@@ -15,16 +15,26 @@ class LocationRecipeBuilder(val name: String) {
 
     internal fun build(): LocationRecipe {
         val props = propsBuilder.build()
+        val desc = description ?: ConditionalStringPointer("")
+        val weatherChoice = weather ?: ConditionalStringPointer("Still")
+        val activators = activatorBuilders.build()
+        val creatures = creatureBuilders.build()
+        val items = itemBuilders.build()
 
         return LocationRecipe(
             name,
+            desc,
+            activators,
+            creatures,
+            items,
+            weather = weatherChoice,
             slots = slots,
             properties = props,
         )
     }
 
     fun extends(other: String){
-
+        //TODO
     }
 
     fun props(initializer: PropsBuilder.() -> Unit) {
