@@ -63,6 +63,10 @@ class CommonLocations : LocationResource {
             extends("Inside")
             description("The thatched roof hangs close to the ground; the single room is empty but for a small cooking range.")
             activator("Well")
+            activator("Range") {
+                location("by the door")
+                vector(y = 10)
+            }
             creature("Farmer")
             item("Tinder Box") {
                 location("on the range")
@@ -75,10 +79,6 @@ class CommonLocations : LocationResource {
             item("Apple Pie Recipe") {
                 location("on the range")
                 vector(y = 10, z = 5)
-            }
-            item("Range") {
-                location("by the door")
-                vector(y = 10)
             }
             props {
                 tag("Home")

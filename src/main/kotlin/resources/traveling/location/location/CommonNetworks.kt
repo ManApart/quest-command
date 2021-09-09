@@ -54,7 +54,7 @@ class CommonNetworks : NetworkResource {
                 connection("Farmer's Hut Interior", y = -500)
                 connection {
                     x(-1000)
-                    connectsTo("Kanabara Gate", "Kanbara")
+                    connectsTo("Kanbara Gate", "Kanbara")
                 }
                 connection("An Open Field", x = 100)
             }
