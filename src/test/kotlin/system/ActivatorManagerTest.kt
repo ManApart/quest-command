@@ -4,30 +4,30 @@ import core.DependencyInjector
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
 import core.body.*
-import core.conditional.ConditionalStringPointer
-import core.target.Target
 import core.target.activator.ActivatorManager
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.activator.dsl.ActivatorsMock
 import core.target.target
-import core.utility.NameSearchableList
 import org.junit.Before
 import org.junit.Test
-import system.location.LocationFakeParser
-import traveling.position.NO_VECTOR
 import traveling.location.location.*
+import traveling.position.NO_VECTOR
 import kotlin.test.assertEquals
 
 class ActivatorManagerTest {
 
     @Before
     fun setup() {
-        val locationParser = LocationFakeParser(locationNodes = NameSearchableList(listOf(
-                LocationNode(PLAYER_START_LOCATION, parent = PLAYER_START_NETWORK),
-                LocationNode(PLAYER_START_LOCATION, parent = DEFAULT_NETWORK.name))
-        ))
+        val networksMock = NetworksMock(networks {
+            network(DEFAULT_NETWORK.name){
+                locationNode(PLAYER_START_LOCATION)
+            }
+            network(PLAYER_START_NETWORK){
+                locationNode(PLAYER_START_LOCATION)
+            }
+        })
 
-        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
         DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
@@ -41,8 +41,8 @@ class ActivatorManagerTest {
         val activator = target("Target"){
             description("This is a \$key")
         }
-        val fakeParser = ActivatorsMock(listOf(activator))
-        DependencyInjector.setImplementation(ActivatorsCollection::class.java, fakeParser)
+        val mock = ActivatorsMock(listOf(activator))
+        DependencyInjector.setImplementation(ActivatorsCollection::class.java, mock)
         ActivatorManager.reset()
 
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("key" to "value"))
@@ -56,8 +56,8 @@ class ActivatorManagerTest {
         val activator = target("Target"){
             description("\$destination")
         }
-        val fakeParser = ActivatorsMock(listOf(activator))
-        DependencyInjector.setImplementation(ActivatorsCollection::class.java, fakeParser)
+        val mock = ActivatorsMock(listOf(activator))
+        DependencyInjector.setImplementation(ActivatorsCollection::class.java, mock)
         ActivatorManager.reset()
 
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("destination" to "resort"))

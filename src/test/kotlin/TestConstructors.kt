@@ -26,7 +26,10 @@ import core.target.activator.ActivatorManager
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.activator.dsl.ActivatorsMock
 import core.target.creature.CREATURE_TAG
-import core.target.item.*
+import core.target.item.ITEM_TAG
+import core.target.item.ItemManager
+import core.target.item.ItemsCollection
+import core.target.item.ItemsMock
 import core.target.target
 import crafting.RecipeManager
 import crafting.RecipesCollection
@@ -44,9 +47,7 @@ import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
 import status.stat.STRENGTH
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationsCollection
-import traveling.location.location.LocationsMock
+import traveling.location.location.*
 import traveling.location.weather.WeatherManager
 import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersMock
@@ -145,6 +146,7 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(ItemsCollection::class.java, ItemsMock())
     ItemManager.reset()
 
+    DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
     DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
     LocationManager.reset()
 

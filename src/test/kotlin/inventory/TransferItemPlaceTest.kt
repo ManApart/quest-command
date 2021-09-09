@@ -78,14 +78,23 @@ class TransferItemPlaceTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val hand = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
-        val part = LocationRecipe("part")
+        val bodyMock = BodysMock(networks{
+            network("body"){
+                locationNode("Hand")
+            }
+            network("none"){
+                locationNode("part")
+            }
+        })
+        val bodyPartMock = BodyPartsMock(locations {
+            location("Hand") {
+                slot("Grip", "Glove")
+            }
+            location("part")
+        })
 
-        val bodyParser = BodyFakeParser(
-                listOf(LocationNode(name = "Hand", parent = "body"), LocationNode(name = "part", parent = "none")),
-                listOf(hand, part))
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+        DependencyInjector.setImplementation(BodysCollection::class.java, bodyMock)
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, bodyPartMock)
         BodyManager.reset()
 
         val creature = createChest()
@@ -179,8 +188,6 @@ class TransferItemPlaceTest {
         val creature = Target("Creature")
         val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
-
-//        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator"))))
 
         val chest = createChest(size = 0)
 

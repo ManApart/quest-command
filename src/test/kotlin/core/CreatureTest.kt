@@ -2,15 +2,21 @@ package core
 
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
 import core.properties.Values
+import core.target.Target
 import core.target.item.ITEM_TAG
+import createMockedGame
 import inventory.createInventoryBody
-import status.stat.STRENGTH
+import org.junit.Before
 import org.junit.Test
+import status.stat.STRENGTH
 import kotlin.test.assertEquals
 
 class CreatureTest {
+    @Before
+    fun setup() {
+        createMockedGame()
+    }
 
     @Test
     fun encumbrance0() {

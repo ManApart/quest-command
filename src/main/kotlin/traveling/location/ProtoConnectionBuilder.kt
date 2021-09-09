@@ -12,7 +12,7 @@ class ProtoConnectionBuilder : VectorParent by VectorParentI() {
     private var connectsTo: ProtoTarget? = null
 
     fun build(): ProtoConnection {
-        return ProtoConnection(target, part, vector, name, restricted = restricted, oneWay = oneWay)
+        return ProtoConnection(target, part, vector, name, connectsTo, restricted, oneWay)
     }
 
     fun name(name: String) {
