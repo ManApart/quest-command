@@ -62,12 +62,10 @@ class CommonLocations : LocationResource {
         location("Farmer's Hut Interior") {
             extends("Inside")
             description("The thatched roof hangs close to the ground; the single room is empty but for a small cooking range.")
-            activator("Well")
             activator("Range") {
                 location("by the door")
                 vector(y = 10)
             }
-            creature("Farmer")
             item("Tinder Box") {
                 location("on the range")
                 vector(y = 10, z = 5)

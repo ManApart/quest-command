@@ -125,7 +125,7 @@ ChatHistory.getLastInput()
     fun enterKanbaraThroughGate() {
         val input = "w && w && rs 10 && use gate && w"
         CommandParser.parseCommand(input)
-        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Mapmaker Manor, Kanbara City South, Kanbara Wall North (SOUTH).", ChatHistory.getLastOutput())
+        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH).", ChatHistory.getLastOutput())
     }
 
     @Test

@@ -16,7 +16,7 @@ class CommonNetworks : NetworkResource {
             }
 
             locationNode("Kanbara City") {
-                connection("Kanbara Pub", x = -10, y = -10)
+                connection("Kanbara Pub")
                 connection("Kanbara Manor", x = -10, y = 10)
                 connection("Kanbara City South") {
                     restricted(true)
@@ -24,7 +24,9 @@ class CommonNetworks : NetworkResource {
                 }
             }
 
-            locationNode("Kanbara City South")
+            locationNode("Kanbara City South") {
+                location("Kanbara City")
+            }
 
             locationNode("Kanbara Wall North") {
                 location("City Wall")
