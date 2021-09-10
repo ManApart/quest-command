@@ -17,5 +17,13 @@ fun locations(initializer: LocationRecipesBuilder.() -> Unit): List<LocationReci
 }
 
 fun List<LocationRecipeBuilder>.build(): List<LocationRecipe> {
-    return map { it.build() }
+    val builders = associateBy { it.name }
+    return builders.values.map {
+        try {
+            it.buildWithBase(builders)
+        } catch (e: Exception) {
+            println("Failed to build ${it.name}: ${e.message ?: e.cause ?: e.toString()}")
+            throw  e
+        }
+    }
 }

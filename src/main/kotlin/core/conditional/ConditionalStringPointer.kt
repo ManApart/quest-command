@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class ConditionalStringPointer(val name: String, val type: ConditionalStringType) {
+data class ConditionalStringPointer(val name: String, val type: ConditionalStringType) {
     constructor(name: String) : this(name, ConditionalStringType.DEFAULT)
 
     @JsonIgnore

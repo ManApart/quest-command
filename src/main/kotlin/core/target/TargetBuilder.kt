@@ -96,6 +96,7 @@ class TargetBuilder(internal val name: String) {
         val desc = description ?: base?.description ?: ConditionalStringPointer(name)
         val body = bodyName ?: base?.bodyName
         val allBehaviors = behaviors + (base?.behaviors ?: emptyList())
+        val allItems = itemNames + (base?.itemNames ?: listOf())
 
         return Target(
             name,
@@ -107,7 +108,7 @@ class TargetBuilder(internal val name: String) {
             behaviorRecipes = allBehaviors,
             bodyName = body,
             equipSlots = this.slots,
-            items = itemNames,
+            items = allItems,
             properties = props,
         )
     }
@@ -121,6 +122,7 @@ class TargetBuilder(internal val name: String) {
 
         val body = bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName }
         val allBehaviors = behaviors + bases.flatMap { it.behaviors }
+        val allItems = itemNames + bases.flatMap { it.itemNames }
 
         return Target(
             name,
@@ -132,7 +134,7 @@ class TargetBuilder(internal val name: String) {
             behaviorRecipes = allBehaviors,
             bodyName = body,
             equipSlots = this.slots,
-            items = itemNames,
+            items = allItems,
             properties = props,
         )
     }

@@ -3,6 +3,7 @@ package traveling.location.location
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder
+import core.target.TargetBuilder
 
 class LocationRecipeBuilder(val name: String) {
     private var propsBuilder = PropsBuilder()
@@ -12,8 +13,16 @@ class LocationRecipeBuilder(val name: String) {
     private val activatorBuilders = mutableListOf<LocationTargetBuilder>()
     private val creatureBuilders = mutableListOf<LocationTargetBuilder>()
     private val itemBuilders = mutableListOf<LocationTargetBuilder>()
+    private var baseNames = mutableListOf<String>()
+    private var bases = mutableListOf<LocationRecipeBuilder>()
 
-    internal fun build(): LocationRecipe {
+
+    fun buildWithBase(builders: Map<String, LocationRecipeBuilder>): LocationRecipe {
+        val bases = this.bases + baseNames.map { builders[it]!! }
+        return build(bases)
+    }
+
+    fun build(): LocationRecipe {
         val props = propsBuilder.build()
         val desc = description ?: ConditionalStringPointer("")
         val weatherChoice = weather ?: ConditionalStringPointer("Still")
@@ -33,9 +42,36 @@ class LocationRecipeBuilder(val name: String) {
         )
     }
 
-    fun extends(other: String){
-        //TODO
+    fun build(bases: List<LocationRecipeBuilder>): LocationRecipe {
+        val basesR = bases.reversed()
+        val props = propsBuilder.build(bases.map { it.propsBuilder })
+
+        val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
+        val weatherChoice = weather ?: basesR.firstNotNullOfOrNull { it.weather } ?: ConditionalStringPointer(name)
+        val allActivators = activatorBuilders.build() + bases.flatMap { it.activatorBuilders.build() }
+        val allCreatures = creatureBuilders.build() + bases.flatMap { it.creatureBuilders.build() }
+        val allItems = itemBuilders.build() + bases.flatMap { it.itemBuilders.build() }
+
+        return LocationRecipe(
+            name,
+            desc,
+            allActivators,
+            allCreatures,
+            allItems,
+            weather = weatherChoice,
+            slots = slots,
+            properties = props,
+        )
     }
+
+    /**
+     * Note that each time this function is used, the latter extends object will win any extension conflicts.
+     * extends(tree) - fire health 2
+     * extends(burnable) - fire health 1
+     * The end target will have fire health 1
+     */
+    fun extends(other: String) = baseNames.add(other)
+    fun extends(other: LocationRecipeBuilder) = bases.add(other)
 
     fun props(initializer: PropsBuilder.() -> Unit) {
         propsBuilder.apply(initializer)

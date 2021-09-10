@@ -18,7 +18,7 @@ data class LocationRecipe(
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
         val weatherChangeFrequency: Int = 5,
-        private val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
+        val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
         val properties: Properties = Properties(),
         val slots: List<String> = listOf()
 ) : Named {
