@@ -16,6 +16,7 @@ import org.junit.Test
 import traveling.location.location.*
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
+import traveling.location.network.NetworksMock
 
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull

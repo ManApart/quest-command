@@ -73,7 +73,7 @@ object ReflectionTools {
     }
 
     fun getClasses(superClass: KClass<*>): List<KClass<*>> {
-        return reflections.getSubTypesOf(superClass.java).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }.map { it::class }
+        return reflections.getSubTypesOf(superClass.java).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }.map { it.kotlin }
     }
 
     /**
@@ -89,7 +89,7 @@ object ReflectionTools {
             ""
         }
 
-        val classes = allClasses.joinToString(", ") { "${it.simpleName}()".replace("$", ".") }
+        val classes = allClasses.joinToString(", ") { "${it.qualifiedName}()".replace("$", ".") }
         val newClassName = collectedClass.simpleName!!
 
         writeInterfaceFile(collectedClass, collectedClass, typeSuffix, newClassName)
@@ -105,7 +105,7 @@ object ReflectionTools {
      */
     private fun generateResourcesFile(resourceInterface: KClass<*>, collectedClass: KClass<*>) {
         val allClasses = reflections.getSubTypesOf(resourceInterface.java).filter { !Modifier.isAbstract(it.modifiers) }
-            .sortedBy { it.name }
+            .sortedBy { it.name }.map { it.kotlin }
         println("Saving ${allClasses.size} classes for ${resourceInterface.simpleName}")
         val isTyped = collectedClass.typeParameters.isNotEmpty()
         val typeSuffix = if (isTyped) {
@@ -113,7 +113,7 @@ object ReflectionTools {
         } else {
             ""
         }
-        val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
+        val classes = allClasses.joinToString(", ") { "${it.qualifiedName}()".replace("$", ".") }
         val newClassName = resourceInterface.simpleName!!.replace("Resource", "")
 
         writeInterfaceFile(resourceInterface, collectedClass, typeSuffix, newClassName)
@@ -134,7 +134,7 @@ object ReflectionTools {
             it.print(
                 """
                 package ${resourceInterface.java.packageName}
-                import ${collectedClass.simpleName}
+                import ${collectedClass.qualifiedName}
 
                 interface ${newClassName}sCollection {
                     val values: List<${collectedClass.simpleName}$typeSuffix>
@@ -152,7 +152,7 @@ object ReflectionTools {
                 package ${collectedClass.java.packageName}
 
                 class ${collectedClass.simpleName}sGenerated : ${collectedClass.simpleName}sCollection {
-                    override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf($classes)
+                    override val values: List<${collectedClass.qualifiedName}$typeSuffix> = listOf($classes)
                 }
             """.trimIndent()
             )

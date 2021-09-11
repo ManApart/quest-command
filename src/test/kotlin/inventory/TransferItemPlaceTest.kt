@@ -23,6 +23,7 @@ import org.junit.Test
 import traveling.location.location.*
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
+import traveling.location.network.NetworksMock
 import traveling.location.network.networks
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

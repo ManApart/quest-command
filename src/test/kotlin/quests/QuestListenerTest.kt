@@ -10,6 +10,7 @@ import org.junit.Test
 
 import traveling.location.location.*
 import traveling.location.network.NetworksCollection
+import traveling.location.network.NetworksMock
 
 import use.interaction.InteractEvent
 import kotlin.test.assertEquals

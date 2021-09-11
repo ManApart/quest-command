@@ -1,4 +1,4 @@
-package traveling.location.location
+package traveling.location.network
 
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
