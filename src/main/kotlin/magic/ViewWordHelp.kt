@@ -11,7 +11,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
     private val wordsOfPower by lazy { loadSpellCommands() }
 
     private fun loadSpellCommands(): NameSearchableList<SpellCommand> {
-        return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values)
+        return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class).values)
     }
 
     override fun execute(event: ViewWordHelpEvent) {

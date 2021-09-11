@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.utility.NameSearchableList
 
 object QuestManager {
-    var storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class.java).values.map { it.copy() }
+    var storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class).values.map { it.copy() }
     var quests = parseQuests(storyEvents)
 
     fun getActiveQuests() : NameSearchableList<Quest> {
@@ -16,7 +16,7 @@ object QuestManager {
     }
 
     fun reset(){
-        storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class.java).values.map { it.copy() }
+        storyEvents = DependencyInjector.getImplementation(StoryEventsCollection::class).values.map { it.copy() }
         quests = parseQuests(storyEvents)
     }
 

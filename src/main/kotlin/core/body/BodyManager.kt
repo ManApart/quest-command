@@ -18,8 +18,8 @@ object BodyManager {
     }
 
     private fun createBodies(): NameSearchableList<Body> {
-        val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class.java)
-        val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class.java)
+        val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class)
+        val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class)
         val nodes = bodyCollection.values.build()
         val bodyParts = bodyPartCollection.values.build()
 

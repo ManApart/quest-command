@@ -31,7 +31,7 @@ private fun generateTable(): String {
 
 private fun getGroupedSpellCommands(): Map<String, List<SpellCommand>> {
     val groups = HashMap<String, MutableList<SpellCommand>>()
-    DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values.forEach { command ->
+    DependencyInjector.getImplementation(SpellCommandsCollection::class).values.forEach { command ->
         run {
             if (!groups.containsKey(command.getCategory()[0])) {
                 groups[command.getCategory()[0]] = ArrayList()

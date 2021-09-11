@@ -13,7 +13,7 @@ object EffectManager {
     }
 
     private fun loadEffects(): NameSearchableList<EffectBase> {
-        val parser = DependencyInjector.getImplementation(EffectsCollection::class.java)
+        val parser = DependencyInjector.getImplementation(EffectsCollection::class)
         return parser.values.toNameSearchableList()
     }
 

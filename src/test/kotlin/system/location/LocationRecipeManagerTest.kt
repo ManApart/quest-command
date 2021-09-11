@@ -19,8 +19,8 @@ class LocationRecipeManagerTest {
         //Run before other tests so object is initialized and we're testing a fresh clear each time
 //            val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf()))
         val networksMock = NetworksMock(networks {  })
-        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, networksMock)
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.getNetworks()
         createMockedGame()
     }
@@ -36,8 +36,8 @@ class LocationRecipeManagerTest {
                 }
             }
         })
-        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, networksMock)
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
         assertEquals(source, LocationManager.getNetwork("Wilderness").getLocationNode(source).name)
@@ -59,8 +59,8 @@ class LocationRecipeManagerTest {
                 locationNode(neighborExistsName)
             }
         })
-        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, networksMock)
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
         val network = LocationManager.getNetwork("Wilderness")
@@ -95,8 +95,8 @@ class LocationRecipeManagerTest {
                 locationNode("neighbor")
             }
         })
-        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, networksMock)
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
         val network = LocationManager.getNetwork("Wilderness")
@@ -119,8 +119,8 @@ class LocationRecipeManagerTest {
                 locationNode("source")
             }
         })
-        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, networksMock)
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
         assertEquals(source.name, source.getLocationRecipe().name)

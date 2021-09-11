@@ -15,7 +15,7 @@ object SessionHistory {
     private val eventCounts = mutableListOf<EventCount>()
 
     fun incEventCount(event: Event) {
-        val name = event.javaClass.simpleName
+        val name = event::class.simpleName!!
         val last = eventCounts.lastOrNull()
         if (last != null && last.name == name){
             last.count++

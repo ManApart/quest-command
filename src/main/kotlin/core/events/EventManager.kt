@@ -1,13 +1,15 @@
 package core.events
 
 import core.DependencyInjector
-import java.lang.reflect.ParameterizedType
+import kotlin.reflect.KClass
+
+//import java.lang.reflect.ParameterizedType
 
 
 object EventManager {
-    private val listenerMap = HashMap<Class<*>, ArrayList<EventListener<*>>>()
+    private val listenerMap = HashMap<KClass<*>, ArrayList<EventListener<*>>>()
     private val eventQueue = mutableListOf<Event>()
-    private var eventListenersCollection = DependencyInjector.getImplementation(EventListenersCollection::class.java)
+    private var eventListenersCollection = DependencyInjector.getImplementation(EventListenersCollection::class)
 
     fun registerListeners() {
         eventListenersCollection.values.forEach { registerListener(it) }
@@ -62,7 +64,7 @@ object EventManager {
     @Suppress("UNCHECKED_CAST")
     fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
         val listeners = mutableListOf<EventListener<*>>()
-        listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }
+        listenerMap[event::class]?.filter { (it as EventListener<E>).shouldExecute(event) }
                 ?.forEach {
                     listeners.add(it)
                 }
@@ -76,12 +78,12 @@ object EventManager {
     @Suppress("UNCHECKED_CAST")
     private fun <E : Event> executeEvent(event: E) {
         val listeners = mutableListOf<EventListener<*>>()
-        listenerMap[event.javaClass]?.filter { (it as EventListener<E>).shouldExecute(event) }
+        listenerMap[event::class]?.filter { (it as EventListener<E>).shouldExecute(event) }
                 ?.forEach {
                     (it as EventListener<E>).event = event
                     listeners.add(it)
                 }
-        listenerMap[Event::class.java]?.filter { (it as EventListener<Event>).shouldExecute(event) }
+        listenerMap[Event::class]?.filter { (it as EventListener<Event>).shouldExecute(event) }
                 ?.forEach {
                     (it as EventListener<Event>).event = event
                     listeners.add(it)
@@ -90,12 +92,12 @@ object EventManager {
         listeners.forEach { it.execute() }
     }
 
-    private fun getListenedForClass(listener: EventListener<*>): Class<*> {
-        val parametrizedType = findParametrizedType(listener.javaClass)
-        return parametrizedType.actualTypeArguments[0] as Class<*>
+    private fun getListenedForClass(listener: EventListener<*>): KClass<*> {
+        val parametrizedType = findParametrizedType(listenerClass)
+        return parametrizedType.actualTypeArguments[0] as KClass<*>
     }
 
-    private fun findParametrizedType(clazz: Class<*>): ParameterizedType {
+    private fun findParametrizedType(clazz: KClass<*>): ParameterizedType {
         return if (clazz.genericSuperclass is ParameterizedType) {
             (clazz.genericSuperclass as ParameterizedType)
         } else {

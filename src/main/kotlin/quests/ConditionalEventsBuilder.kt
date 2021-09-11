@@ -2,8 +2,9 @@ package quests
 
 import core.events.Event
 import core.utility.MapBuilder
+import kotlin.reflect.KClass
 
-class ConditionalEventsBuilder<E: Event>(private val trigger: Class<E>) {
+class ConditionalEventsBuilder<E: Event>(private val trigger: KClass<E>) {
     private val paramsBuilder = MapBuilder()
     private var condition: (E, Map<String, String>) -> Boolean = { _, _ -> true }
     private var createEvents: (E, Map<String, String>) -> List<Event> = { _, _ -> listOf() }
@@ -26,6 +27,6 @@ class ConditionalEventsBuilder<E: Event>(private val trigger: Class<E>) {
     
 }
 
-fun <E: Event> condition(trigger: Class<E>, initializer: ConditionalEventsBuilder<E>.() -> Unit): ConditionalEvents<*> {
+fun <E: Event> condition(trigger: KClass<E>, initializer: ConditionalEventsBuilder<E>.() -> Unit): ConditionalEvents<*> {
     return ConditionalEventsBuilder(trigger).apply(initializer).build()
 }

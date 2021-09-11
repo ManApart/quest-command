@@ -117,49 +117,49 @@ fun createPackMule(strength: Int = 1): Target {
 
 fun createMockedGame() {
     DependencyInjector.clearAllImplementations()
-    DependencyInjector.setImplementation(ActivatorsCollection::class.java, ActivatorsMock())
+    DependencyInjector.setImplementation(ActivatorsCollection::class, ActivatorsMock())
     ActivatorManager.reset()
 
-    DependencyInjector.setImplementation(AIActionsCollection::class.java, AIActionsMock())
-    DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
+    DependencyInjector.setImplementation(AIActionsCollection::class, AIActionsMock())
+    DependencyInjector.setImplementation(AIsCollection::class, AIsMock())
     AIManager.reset()
 
-    DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
+    DependencyInjector.setImplementation(BehaviorsCollection::class, BehaviorsMock())
     BehaviorManager.reset()
 
-    DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.withFakePlayer())
-    DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+    DependencyInjector.setImplementation(BodysCollection::class, BodysMock.withFakePlayer())
+    DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
     BodyManager.reset()
 
-    DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
+    DependencyInjector.setImplementation(CommandsCollection::class, CommandsMock())
 
-    DependencyInjector.setImplementation(ConditionsCollection::class.java, ConditionsGenerated())
+    DependencyInjector.setImplementation(ConditionsCollection::class, ConditionsGenerated())
     ConditionManager.reset()
 
-    DependencyInjector.setImplementation(DialoguesCollection::class.java, DialoguesMock())
+    DependencyInjector.setImplementation(DialoguesCollection::class, DialoguesMock())
 
-    DependencyInjector.setImplementation(EffectsCollection::class.java, EffectsMock())
+    DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock())
     EffectManager.reset()
 
-    DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())
+    DependencyInjector.setImplementation(EventListenersCollection::class, EventListenersMock())
     EventManager.reset()
 
-    DependencyInjector.setImplementation(ItemsCollection::class.java, ItemsMock())
+    DependencyInjector.setImplementation(ItemsCollection::class, ItemsMock())
     ItemManager.reset()
 
-    DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
-    DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+    DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+    DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
     LocationManager.reset()
 
-    DependencyInjector.setImplementation(RecipesCollection::class.java, RecipesMock())
+    DependencyInjector.setImplementation(RecipesCollection::class, RecipesMock())
     RecipeManager.reset()
 
-    DependencyInjector.setImplementation(StoryEventsCollection::class.java, StoryEventsMock())
+    DependencyInjector.setImplementation(StoryEventsCollection::class, StoryEventsMock())
     QuestManager.reset()
 
-    DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
+    DependencyInjector.setImplementation(SpellCommandsCollection::class, SpellCommandsMock())
 
-    DependencyInjector.setImplementation(WeathersCollection::class.java, WeathersMock())
+    DependencyInjector.setImplementation(WeathersCollection::class, WeathersMock())
     WeatherManager.reset()
 
     EventManager.clear()

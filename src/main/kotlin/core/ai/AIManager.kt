@@ -8,8 +8,8 @@ import core.target.Target
 import core.utility.toNameSearchableList
 
 object AIManager {
-    private var aIsCollection = DependencyInjector.getImplementation(AIsCollection::class.java)
-    private var actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class.java)
+    private var aIsCollection = DependencyInjector.getImplementation(AIsCollection::class)
+    private var actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class)
 
     private var AIs = aIsCollection.values.toNameSearchableList()
     private var actions = actionsCollection.values.toNameSearchableList()
@@ -17,8 +17,8 @@ object AIManager {
     private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
 
     fun reset() {
-        aIsCollection = DependencyInjector.getImplementation(AIsCollection::class.java)
-        actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class.java)
+        aIsCollection = DependencyInjector.getImplementation(AIsCollection::class)
+        actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class)
 
         AIs = aIsCollection.values.toNameSearchableList()
         actions = actionsCollection.values.toNameSearchableList()

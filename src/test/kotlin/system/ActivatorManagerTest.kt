@@ -30,12 +30,12 @@ class ActivatorManagerTest {
             }
         })
 
-        DependencyInjector.setImplementation(NetworksCollection::class.java, networksMock)
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, networksMock)
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
     }
 
@@ -45,7 +45,7 @@ class ActivatorManagerTest {
             description("This is a \$key")
         }
         val mock = ActivatorsMock(listOf(activator))
-        DependencyInjector.setImplementation(ActivatorsCollection::class.java, mock)
+        DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
         ActivatorManager.reset()
 
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("key" to "value"))
@@ -60,7 +60,7 @@ class ActivatorManagerTest {
             description("\$destination")
         }
         val mock = ActivatorsMock(listOf(activator))
-        DependencyInjector.setImplementation(ActivatorsCollection::class.java, mock)
+        DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
         ActivatorManager.reset()
 
         val target = LocationTarget("Target", null, NO_VECTOR, mapOf("destination" to "resort"))

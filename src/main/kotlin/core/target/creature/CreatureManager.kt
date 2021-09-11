@@ -17,7 +17,7 @@ object CreatureManager {
     }
 
     private fun loadCreatures(): NameSearchableList<Target> {
-        val collection = DependencyInjector.getImplementation(CreaturesCollection::class.java)
+        val collection = DependencyInjector.getImplementation(CreaturesCollection::class)
         return collection.values.build(CREATURE_TAG).toNameSearchableList()
     }
 

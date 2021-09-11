@@ -16,7 +16,7 @@ class QuestTest {
     @Test
     fun questAddsDefaultEventToEvents() {
         val quest = Quest("quest")
-        quest.addEvent(StoryEvent("quest", 10, "journal", ConditionalEvents(InteractEvent::class.java)))
+        quest.addEvent(StoryEvent("quest", 10, "journal", ConditionalEvents(InteractEvent::class)))
         Assert.assertEquals(1, quest.getAllEvents().size)
     }
 
@@ -58,7 +58,7 @@ class QuestTest {
 
     private fun createEvents(questName: String, number: Int): List<StoryEvent> {
         return (1..number).map {
-            StoryEvent(questName, it, "journal$it", ConditionalEvents(InteractEvent::class.java))
+            StoryEvent(questName, it, "journal$it", ConditionalEvents(InteractEvent::class))
         }
     }
 

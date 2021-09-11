@@ -2,6 +2,7 @@ package core.ai.behavior
 
 import core.events.Event
 import quests.ConditionalEventsBuilder
+import kotlin.reflect.KClass
 
 class BehaviorsBuilder {
     internal val children = mutableMapOf<String, ConditionalEventsBuilder<*>>()
@@ -10,7 +11,7 @@ class BehaviorsBuilder {
         children[name] = item
     }
 
-    fun <E: Event> behavior(name: String, trigger: Class<E>, initializer: ConditionalEventsBuilder<E>.() -> Unit) {
+    fun <E: Event> behavior(name: String, trigger: KClass<E>, initializer: ConditionalEventsBuilder<E>.() -> Unit) {
         children[name] = ConditionalEventsBuilder(trigger).apply(initializer)
     }
 }

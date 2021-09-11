@@ -46,8 +46,8 @@ class TargetAimParserTest {
                 }
             )
 
-            DependencyInjector.setImplementation(BodysCollection::class.java, bodyCollection)
-            DependencyInjector.setImplementation(BodyPartsCollection::class.java, bodyPartCollection)
+            DependencyInjector.setImplementation(BodysCollection::class, bodyCollection)
+            DependencyInjector.setImplementation(BodyPartsCollection::class, bodyPartCollection)
             BodyManager.reset()
         }
 

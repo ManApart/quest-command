@@ -20,8 +20,8 @@ class CommandValidator {
 
         commands.forEach { command ->
             command.getAliases().map { it.lowercase() }.forEach {
-                if (cleanedCategories.contains(it) && command.javaClass.simpleName != UnknownCommand::class.java.simpleName) {
-                    println("WARN: Alias '$it' from ${command.javaClass.simpleName} is a category")
+                if (cleanedCategories.contains(it) && commandClass.simpleName != UnknownCommand::class.simpleName) {
+                    println("WARN: Alias '$it' from ${commandClass.simpleName} is a category")
                     suspectCategories.add(it)
                     warnings++
                 }
@@ -31,7 +31,7 @@ class CommandValidator {
         suspectCategories.forEach { suspect ->
             commands.forEach { command ->
                 if (command.getCategory().contains(suspect)) {
-                    println("${command.javaClass.simpleName} is in category $suspect")
+                    println("${commandClass.simpleName} is in category $suspect")
                 }
             }
         }
@@ -44,7 +44,7 @@ class CommandValidator {
         commands.forEach { command ->
             command.getAliases().forEach {
                 if (aliases.containsKey(it)) {
-                    println("WARN: Alias '$it' exists for both ${command.javaClass.simpleName} and ${aliases[it]?.javaClass?.simpleName}")
+                    println("WARN: Alias '$it' exists for both ${commandClass.simpleName} and ${aliases[it]?Class?.simpleName}")
                     warnings++
                 } else {
                     aliases[it] = command

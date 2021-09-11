@@ -36,6 +36,7 @@ import traveling.location.weather.WeatherResource
 import traveling.location.weather.WeatherStringResource
 import java.io.File
 import java.lang.reflect.Modifier
+import kotlin.reflect.KClass
 
 
 object ReflectionTools {
@@ -47,38 +48,38 @@ object ReflectionTools {
     }
 
     fun generateFiles() {
-        generateCollectionsFile(Command::class.java)
-        generateCollectionsFile(SpellCommand::class.java)
-        generateCollectionsFile(EventListener::class.java)
+        generateCollectionsFile(Command::class)
+        generateCollectionsFile(SpellCommand::class)
+        generateCollectionsFile(EventListener::class)
 
-        generateResourcesFile(AIResource::class.java, AIBase::class.java)
-        generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
-        generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
-        generateResourcesFile(ConditionResource::class.java, ConditionRecipe::class.java)
-        generateResourcesFile(BodyResource::class.java, NetworkBuilder::class.java)
-        generateResourcesFile(BodyPartResource::class.java, LocationRecipeBuilder::class.java)
-        generateResourcesFile(CreatureResource::class.java, TargetBuilder::class.java)
-        generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
-        generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
-        generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
-        generateResourcesFile(EffectResource::class.java, EffectBase::class.java)
-        generateResourcesFile(LocationResource::class.java, LocationRecipeBuilder::class.java)
-        generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
-        generateResourcesFile(NetworkResource::class.java, NetworkBuilder::class.java)
-        generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
-        generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
-        generateResourcesFile(WeatherResource::class.java, Weather::class.java)
-        generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
+        generateResourcesFile(AIResource::class, AIBase::class)
+        generateResourcesFile(AIActionResource::class, AIAction::class)
+        generateResourcesFile(ActivatorResource::class, TargetBuilder::class)
+        generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
+        generateResourcesFile(BodyResource::class, NetworkBuilder::class)
+        generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
+        generateResourcesFile(CreatureResource::class, TargetBuilder::class)
+        generateResourcesFile(ItemResource::class, TargetBuilder::class)
+        generateResourcesFile(BehaviorResource::class, Behavior::class)
+        generateResourcesFile(DialogueResource::class, Dialogue::class)
+        generateResourcesFile(EffectResource::class, EffectBase::class)
+        generateResourcesFile(LocationResource::class, LocationRecipeBuilder::class)
+        generateResourcesFile(LocationDescriptionResource::class, ConditionalString::class)
+        generateResourcesFile(NetworkResource::class, NetworkBuilder::class)
+        generateResourcesFile(RecipeResource::class, RecipeBuilder::class)
+        generateResourcesFile(StoryEventResource::class, StoryEvent::class)
+        generateResourcesFile(WeatherResource::class, Weather::class)
+        generateResourcesFile(WeatherStringResource::class, ConditionalString::class)
     }
 
-    fun getClasses(superClass: Class<*>): List<Class<*>> {
+    fun getClasses(superClass: KClass<*>): List<KClass<*>> {
         return reflections.getSubTypesOf(superClass).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
     }
 
     /**
      * Find all classes that extend the collected class interface (Command) and dump them into a list in the generated class (CommandsGenerated)
      */
-    private fun generateCollectionsFile(collectedClass: Class<*>) {
+    private fun generateCollectionsFile(collectedClass: KClass<*>) {
         val allClasses = getClasses(collectedClass)
         println("Saving ${allClasses.size} classes for ${collectedClass.name}")
         val isTyped = collectedClass.typeParameters.isNotEmpty()
@@ -102,7 +103,7 @@ object ReflectionTools {
      * 2) The implementation or collected class
      * Find all classes that extend the resource interface (WeatherStringResource) and combines their values into a list in the generated class (WeatherStringsGenerated)
      */
-    private fun generateResourcesFile(resourceInterface: Class<*>, collectedClass: Class<*>) {
+    private fun generateResourcesFile(resourceInterface: KClass<*>, collectedClass: KClass<*>) {
         val allClasses = reflections.getSubTypesOf(resourceInterface).filter { !Modifier.isAbstract(it.modifiers) }
             .sortedBy { it.name }
         println("Saving ${allClasses.size} classes for ${resourceInterface.name}")
@@ -121,8 +122,8 @@ object ReflectionTools {
     }
 
     private fun writeInterfaceFile(
-        resourceInterface: Class<*>,
-        collectedClass: Class<*>,
+        resourceInterface: KClass<*>,
+        collectedClass: KClass<*>,
         typeSuffix: String,
         newClassName: String
     ) {
@@ -141,7 +142,7 @@ object ReflectionTools {
         }
     }
 
-    private fun writeGeneratedFile(collectedClass: Class<*>, typeSuffix: String, classes: String) {
+    private fun writeGeneratedFile(collectedClass: KClass<*>, typeSuffix: String, classes: String) {
         val packageName = collectedClass.packageName.replace(".", "/")
         File("./src/main/kotlin/$packageName/${collectedClass.simpleName}sGenerated.kt").printWriter().use {
             it.print(
@@ -156,7 +157,7 @@ object ReflectionTools {
         }
     }
 
-    private fun writeGeneratedResourceFile(resourceInterface: Class<*>, classes: String, newClassName: String) {
+    private fun writeGeneratedResourceFile(resourceInterface: KClass<*>, classes: String, newClassName: String) {
         val packageName = resourceInterface.packageName.replace(".", "/")
 
         File("./src/main/kotlin/$packageName/${newClassName}sGenerated.kt").printWriter().use {
@@ -173,8 +174,8 @@ object ReflectionTools {
     }
 
     private fun writeMockedFile(
-        resourceInterface: Class<*>,
-        collectedClass: Class<*>,
+        resourceInterface: KClass<*>,
+        collectedClass: KClass<*>,
         typeSuffix: String,
         newClassName: String
     ) {

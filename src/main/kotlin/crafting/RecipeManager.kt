@@ -5,11 +5,11 @@ import core.target.Target
 import status.Soul
 
 object RecipeManager {
-    private var parser = DependencyInjector.getImplementation(RecipesCollection::class.java)
+    private var parser = DependencyInjector.getImplementation(RecipesCollection::class)
     private var recipes = parser.values.build()
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(RecipesCollection::class.java)
+        parser = DependencyInjector.getImplementation(RecipesCollection::class)
         recipes = parser.values.build()
     }
 

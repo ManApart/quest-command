@@ -13,7 +13,7 @@ object ActivatorManager {
     private var activators = loadActivators()
 
     private fun loadActivators(): NameSearchableList<Target>{
-        val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class.java)
+        val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class)
         return activatorsCollection.values.build(ACTIVATOR_TAG)
     }
 

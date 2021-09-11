@@ -30,7 +30,7 @@ class PullTest {
     companion object {
         init {
             createMockedGame()
-            DependencyInjector.setImplementation(EffectsCollection::class.java, EffectsMock(listOf(
+            DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock(listOf(
                     EffectBase("Air Blasted", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.AIR)
             )))
             EffectManager.reset()

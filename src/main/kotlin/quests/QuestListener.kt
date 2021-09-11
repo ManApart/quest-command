@@ -2,10 +2,12 @@ package quests
 
 import core.events.Event
 import core.events.EventListener
-class QuestListener : EventListener<Event>() {
-    private val listeners = mutableMapOf<Class<*>, MutableList<Quest>>()
+import kotlin.reflect.KClass
 
-    fun getListeners(): Map<Class<*>, List<Quest>> {
+class QuestListener : EventListener<Event>() {
+    private val listeners = mutableMapOf<KClass<*>, MutableList<Quest>>()
+
+    fun getListeners(): Map<KClass<*>, List<Quest>> {
         return listeners
     }
 
@@ -17,7 +19,7 @@ class QuestListener : EventListener<Event>() {
         if (listeners.isEmpty()) {
             buildListeners()
         }
-        val clazz = event.javaClass
+        val clazz = event::class
         if (listeners.containsKey(clazz)) {
             val quests = listeners[clazz]?.toList()
             quests?.forEach { quest ->

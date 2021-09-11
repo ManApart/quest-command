@@ -4,11 +4,11 @@ import core.DependencyInjector
 
 
 object BehaviorManager {
-    private var parser = DependencyInjector.getImplementation(BehaviorsCollection::class.java)
+    private var parser = DependencyInjector.getImplementation(BehaviorsCollection::class)
     private var behaviors = parser.values
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(BehaviorsCollection::class.java)
+        parser = DependencyInjector.getImplementation(BehaviorsCollection::class)
         behaviors = parser.values
     }
 

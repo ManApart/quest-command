@@ -25,7 +25,7 @@ class CastCommandWordTest {
             val reflections = SpellCommandsMock(listOf(
                     spellA, spellB, spellC
             ))
-            DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
+            DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
         }
 
     }

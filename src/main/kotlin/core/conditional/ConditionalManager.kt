@@ -11,8 +11,8 @@ object ConditionalManager {
     private fun buildTypeMap() : Map<ConditionalStringType, List<ConditionalString>>{
         return mapOf(
                 DEFAULT to listOf(),
-                LOCATION_DESCRIPTION to DependencyInjector.getImplementation(LocationDescriptionsCollection::class.java).values,
-                WEATHER to DependencyInjector.getImplementation(WeatherStringsCollection::class.java).values
+                LOCATION_DESCRIPTION to DependencyInjector.getImplementation(LocationDescriptionsCollection::class).values,
+                WEATHER to DependencyInjector.getImplementation(WeatherStringsCollection::class).values
         )
     }
 

@@ -32,16 +32,16 @@ class TransferItemPlaceTest {
 
     @Before
     fun setup() {
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock()
-        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
+        DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
         BehaviorManager.reset()
 
-        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
-        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+        DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
         NOWHERE_NODE.getLocation().clear()
@@ -96,8 +96,8 @@ class TransferItemPlaceTest {
             location("part")
         })
 
-        DependencyInjector.setImplementation(BodysCollection::class.java, bodyMock)
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, bodyPartMock)
+        DependencyInjector.setImplementation(BodysCollection::class, bodyMock)
+        DependencyInjector.setImplementation(BodyPartsCollection::class, bodyPartMock)
         BodyManager.reset()
 
         val creature = createChest()

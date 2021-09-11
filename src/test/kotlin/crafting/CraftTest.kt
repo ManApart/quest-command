@@ -39,7 +39,7 @@ class CraftTest {
         val resultItemName1 = "Silver"
         val resultItemName2 = "Gold"
         val fakeParser = ItemsMock(listOf(createItemBuilder(resultItemName1), createItemBuilder(resultItemName2)))
-        DependencyInjector.setImplementation(ItemsCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(ItemsCollection::class, fakeParser)
         ItemManager.reset()
 
         EventManager.registerListener(TakeItem())
@@ -60,7 +60,7 @@ class CraftTest {
         baker.inventory.add(ingredient.build())
 
         val fakeParser = ItemsMock(listOf(ingredient))
-        DependencyInjector.setImplementation(ItemsCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(ItemsCollection::class, fakeParser)
         ItemManager.reset()
 
         EventManager.registerListener(TakeItem())

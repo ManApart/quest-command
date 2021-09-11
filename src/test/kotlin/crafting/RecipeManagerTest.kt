@@ -32,7 +32,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)
@@ -51,7 +51,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)
@@ -69,7 +69,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)
@@ -89,7 +89,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)
@@ -109,7 +109,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)
@@ -129,7 +129,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)
@@ -149,7 +149,7 @@ class RecipeManagerTest {
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
-        DependencyInjector.setImplementation(RecipesCollection::class.java, fakeParser)
+        DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.soul)

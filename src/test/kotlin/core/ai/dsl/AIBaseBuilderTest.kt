@@ -14,9 +14,9 @@ import kotlin.test.assertTrue
 class AIBaseBuilderTest {
     @Before
     fun setup() {
-        DependencyInjector.setImplementation(AIsCollection::class.java, AIsMock())
+        DependencyInjector.setImplementation(AIsCollection::class, AIsMock())
         val actions = AIActionsMock(listOf(AIAction("run"), AIAction("jump"), AIAction("swim")))
-        DependencyInjector.setImplementation(AIActionsCollection::class.java, actions)
+        DependencyInjector.setImplementation(AIActionsCollection::class, actions)
         AIManager.reset()
     }
 

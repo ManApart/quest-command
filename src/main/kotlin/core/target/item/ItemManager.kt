@@ -12,7 +12,7 @@ object ItemManager {
     private var items = loadItems()
 
     private fun loadItems() : NameSearchableList<Target>{
-        val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class.java)
+        val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
         return itemsCollection.values.build(ITEM_TAG)
     }
 

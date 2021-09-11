@@ -10,7 +10,7 @@ object WeatherManager {
     private var weather = loadWeather()
 
     private fun loadWeather(): NameSearchableList<Weather> {
-        val collection = DependencyInjector.getImplementation(WeathersCollection::class.java)
+        val collection = DependencyInjector.getImplementation(WeathersCollection::class)
         return collection.values.toNameSearchableList()
     }
 

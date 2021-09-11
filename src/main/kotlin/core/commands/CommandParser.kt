@@ -11,7 +11,7 @@ import core.utility.removeFirstItem
 import magic.castSpell.CastCommand
 
 object CommandParser {
-    private var commandsCollection = DependencyInjector.getImplementation(CommandsCollection::class.java)
+    private var commandsCollection = DependencyInjector.getImplementation(CommandsCollection::class)
     var commands = loadCommands()
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }

@@ -17,7 +17,7 @@ class CastCommand : Command() {
     private val spellCommands by lazy { loadSpellCommands() }
 
     private fun loadSpellCommands(): NameSearchableList<SpellCommand> {
-        return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class.java).values)
+        return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class).values)
     }
 
     override fun getAliases(): List<String> {

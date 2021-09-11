@@ -16,7 +16,7 @@ object ConditionManager {
     }
 
     private fun loadConditions(): NameSearchableList<ConditionRecipe> {
-        val parser = DependencyInjector.getImplementation(ConditionsCollection::class.java)
+        val parser = DependencyInjector.getImplementation(ConditionsCollection::class)
         return parser.values.toNameSearchableList()
     }
 

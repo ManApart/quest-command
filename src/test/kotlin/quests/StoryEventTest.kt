@@ -52,7 +52,7 @@ class StoryEventTest {
     }
 
     private fun createEvent(previousStage: Int, availableBefore: Int = -1, availableAfter: Int = -1, repeatable: Boolean = false): StoryEvent {
-        val event = StoryEvent("quest", 100, "journal", ConditionalEvents(InteractEvent::class.java), repeatable, availableAfter, availableBefore)
+        val event = StoryEvent("quest", 100, "journal", ConditionalEvents(InteractEvent::class), repeatable, availableAfter, availableBefore)
         event.setDefaultAvailability(previousStage)
         return event
     }

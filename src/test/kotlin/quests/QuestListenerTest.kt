@@ -20,12 +20,12 @@ class QuestListenerTest {
         @JvmStatic
         @BeforeClass
         fun setup() {
-            DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
-            DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+            DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
             BodyManager.reset()
 
-            DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
-            DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
+            DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+            DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
             LocationManager.reset()
 
             GameState.player = GameManager.newPlayer()
@@ -34,11 +34,11 @@ class QuestListenerTest {
 
     @Test
     fun oneQuestListenerIsRemovedOnExecute() {
-        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class.java, { event, _ -> event.target.name == "Pie" }))
-        val event2 = StoryEvent("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class.java, { event, _ -> event.target.name == "Apple" }))
+        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class, { event, _ -> event.target.name == "Pie" }))
+        val event2 = StoryEvent("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class, { event, _ -> event.target.name == "Apple" }))
 
         val questList = StoryEventsMock(listOf(event1, event2))
-        DependencyInjector.setImplementation(StoryEventsCollection::class.java, questList)
+        DependencyInjector.setImplementation(StoryEventsCollection::class, questList)
         QuestManager.reset()
 
         //Only the apple event is executed
@@ -48,16 +48,16 @@ class QuestListenerTest {
 
         val results = listener.getListeners()
         assertEquals(1, results.size)
-        assertEquals(1, results[InteractEvent::class.java]?.size)
+        assertEquals(1, results[InteractEvent::class]?.size)
     }
 
     @Test
     fun bothQuestListenersAreRemovedOnExecute() {
-        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class.java))
-        val event2 = StoryEvent("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class.java))
+        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class))
+        val event2 = StoryEvent("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class))
 
         val questList = StoryEventsMock(listOf(event1, event2))
-        DependencyInjector.setImplementation(StoryEventsCollection::class.java, questList)
+        DependencyInjector.setImplementation(StoryEventsCollection::class, questList)
         QuestManager.reset()
 
         //Both events are executed
@@ -68,15 +68,15 @@ class QuestListenerTest {
 
         val results = listener.getListeners()
         assertEquals(0, results.size)
-        assertEquals(null, results[InteractEvent::class.java])
+        assertEquals(null, results[InteractEvent::class])
     }
 
     @Test
     fun eventListIsRemovedIfEmpty() {
-        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class.java))
+        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class))
 
         val questList = StoryEventsMock(listOf(event1))
-        DependencyInjector.setImplementation(StoryEventsCollection::class.java, questList)
+        DependencyInjector.setImplementation(StoryEventsCollection::class, questList)
         QuestManager.reset()
 
         val testEvent = InteractEvent(GameState.player, Target("Apple"))

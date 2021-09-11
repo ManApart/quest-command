@@ -7,8 +7,8 @@ import java.io.File
 
 
 fun main() {
-    val classes = ReflectionTools.getClasses(Command::class.java)
-    val spellClasses = ReflectionTools.getClasses(SpellCommand::class.java)
+    val classes = ReflectionTools.getClasses(Command::class)
+    val spellClasses = ReflectionTools.getClasses(SpellCommand::class)
 
     classes.forEach { clean(it, it.declaredConstructors.first().newInstance() as Command) }
     spellClasses.forEach { clean(it, it.declaredConstructors.first().newInstance() as SpellCommand) }
@@ -18,14 +18,14 @@ fun main() {
 
 }
 
-fun clean(clazz: Class<*>, command: Command) {
+fun clean(clazz: KClass<*>, command: Command) {
     val description = command.getDescription()
     val name = clazz.simpleName.replace("Command", "")
     val aliases = listOf(name) + command.getAliases()
     clean(clazz, description, aliases)
 }
 
-fun clean(clazz: Class<*>, command: SpellCommand) {
+fun clean(clazz: KClass<*>, command: SpellCommand) {
     val description = command.getDescription()
     val name = "Cast " + clazz.simpleName
     val aliases = listOf(name)
@@ -40,7 +40,7 @@ private fun cleanDescription(line: String, description: String, aliases: List<St
     }
 }
 
-private fun clean(clazz: Class<*>, description: String, aliases: List<String>) {
+private fun clean(clazz: KClass<*>, description: String, aliases: List<String>) {
     val classFile = File("./src/main/kotlin/" + clazz.name.replace(".", "/") + ".kt")
     val classText = classFile.readText().split("\n").toMutableList()
 

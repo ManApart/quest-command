@@ -24,13 +24,13 @@ import use.interaction.InteractEvent
 
 class CommonBehaviors : BehaviorResource {
     override val values = behaviors {
-        behavior("Add on Eat", EatFoodEvent::class.java) {
+        behavior("Add on Eat", EatFoodEvent::class) {
             events { _, params ->
                 listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, GameState.player))
             }
         }
 
-        behavior("Chop Tree", PropertyStatMinnedEvent::class.java) {
+        behavior("Chop Tree", PropertyStatMinnedEvent::class) {
             condition { event, _ ->
                 event.stat == "chopHealth"
             }
@@ -45,13 +45,13 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
-        behavior("Climbable", InteractEvent::class.java) {
+        behavior("Climbable", InteractEvent::class) {
             events { event, _ ->
                 listOf(CommandEvent("climb ${event.target.name}"))
             }
         }
 
-        behavior("Burn to Ash", PropertyStatMinnedEvent::class.java) {
+        behavior("Burn to Ash", PropertyStatMinnedEvent::class) {
             condition { event, _ ->
                 event.stat == "fireHealth"
             }
@@ -65,7 +65,7 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
-        behavior("Burn Out", PropertyStatMinnedEvent::class.java) {
+        behavior("Burn Out", PropertyStatMinnedEvent::class) {
             condition { event, _ ->
                 event.stat == "fireHealth" && event.target.soul.hasEffect("On Fire")
             }
@@ -78,7 +78,7 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
-        behavior("Slash Harvest", UseEvent::class.java) {
+        behavior("Slash Harvest", UseEvent::class) {
             condition { event, _ ->
                 event.used.properties.tags.has("Sharp")
             }
@@ -90,7 +90,7 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
-        behavior("Restrict Destination", InteractEvent::class.java) {
+        behavior("Restrict Destination", InteractEvent::class) {
             events { event, params ->
                 val sourceLocation = parseLocation(params, event.source, "sourceNetwork", "sourceLocation")
                 val destinationLocation = parseLocation(params, event.source, "destinationNetwork", "destinationLocation")
@@ -105,7 +105,7 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
-        behavior("Mill", ItemPickedUpEvent::class.java) {
+        behavior("Mill", ItemPickedUpEvent::class) {
             condition { event, params ->
                 event.item.name == params["sourceItem"]
             }
@@ -127,7 +127,7 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
-        behavior("Learn Recipe", InteractEvent::class.java) {
+        behavior("Learn Recipe", InteractEvent::class) {
             events { event, params ->
                 val sourceItem = event.source.inventory.getItem(params["sourceItem"])
                 val recipe = RecipeManager.getRecipeOrNull(params["recipe"] ?: "")

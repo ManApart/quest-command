@@ -33,10 +33,10 @@ data class StoryEvent(
     }
 
     fun execute(triggeringEvent: Event) {
-        if (triggeringEvent.javaClass == triggeredEvent.triggerEvent) {
+        if (triggeringEvent::class == triggeredEvent.triggerEvent) {
             triggeredEvent.execute(triggeringEvent)
         } else {
-            println("${questName}'s event at stage $stage matched but had the wrong event type (${triggeringEvent.javaClass.simpleName}. This should not happen!")
+            println("${questName}'s event at stage $stage matched but had the wrong event type (${triggeringEvent::class.simpleName}. This should not happen!")
         }
     }
 

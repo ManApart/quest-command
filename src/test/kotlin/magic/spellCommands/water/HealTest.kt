@@ -31,7 +31,7 @@ class HealTest {
         init {
             createMockedGame()
 
-            DependencyInjector.setImplementation(EffectsCollection::class.java, EffectsMock(listOf(
+            DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
                     EffectBase("Wet", "", statTarget = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
             )))
@@ -58,7 +58,7 @@ class HealTest {
     fun defaultArgs() {
         val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
         val reflections = SpellCommandsMock(listOf(spellCommand))
-        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
+        DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
         val spell = castHeal("")
 
@@ -74,7 +74,7 @@ class HealTest {
     fun amountAndDuration() {
         val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
         val reflections = SpellCommandsMock(listOf(spellCommand))
-        DependencyInjector.setImplementation(SpellCommandsCollection::class.java, reflections)
+        DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
         val spell = castHeal("5 for 10")
 

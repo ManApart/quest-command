@@ -5,11 +5,11 @@ import conversation.dsl.DialoguesCollection
 import core.DependencyInjector
 
 object ConversationManager {
-    private var parser = DependencyInjector.getImplementation(DialoguesCollection::class.java)
+    private var parser = DependencyInjector.getImplementation(DialoguesCollection::class)
     private var dialogues = parser.values
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(DialoguesCollection::class.java)
+        parser = DependencyInjector.getImplementation(DialoguesCollection::class)
         dialogues = parser.values
     }
 

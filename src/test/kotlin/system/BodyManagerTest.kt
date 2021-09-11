@@ -16,8 +16,8 @@ class BodyManagerTest {
 
     @Test
     fun bodyManagerLoadsBodies(){
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
 
         Assert.assertTrue(BodyManager.bodyExists("Human"))

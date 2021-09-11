@@ -19,12 +19,12 @@ class TargetBuilderTest {
 
     @Before
     fun setup() {
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
 
-        val behaviorParser = BehaviorsMock(listOf(Behavior("Burnable", ConditionalEvents(LookEvent::class.java))))
-        DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
+        val behaviorParser = BehaviorsMock(listOf(Behavior("Burnable", ConditionalEvents(LookEvent::class))))
+        DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
         BehaviorManager.reset()
     }
 

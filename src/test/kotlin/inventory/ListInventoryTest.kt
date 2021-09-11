@@ -43,8 +43,8 @@ class ListInventoryTest {
     fun listInventoryEquipped() {
         val chest = locationRecipe("chest") { slot("chest") }
 
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.fromPart(chest))
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock.fromPart(chest))
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock.fromPart(chest))
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
@@ -64,8 +64,8 @@ class ListInventoryTest {
 
         val chest = locationRecipe("Chest") { slot("Chest") }
 
-        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.fromPart(chest))
-        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock.fromPart(chest))
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock.fromPart(chest))
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
         val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))

@@ -16,8 +16,8 @@ object LocationManager {
     }
 
     private fun loadNetworks(): NameSearchableList<Network> {
-        val nodeCollection = DependencyInjector.getImplementation(NetworksCollection::class.java)
-        val locationCollection = DependencyInjector.getImplementation(LocationsCollection::class.java)
+        val nodeCollection = DependencyInjector.getImplementation(NetworksCollection::class)
+        val locationCollection = DependencyInjector.getImplementation(LocationsCollection::class)
         val locations = locationCollection.values.build().toNameSearchableList()
         val nodes = nodeCollection.values.build()
 

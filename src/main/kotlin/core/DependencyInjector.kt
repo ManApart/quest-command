@@ -42,17 +42,18 @@ import traveling.location.weather.WeatherStringsCollection
 import traveling.location.weather.WeatherStringsGenerated
 import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersGenerated
+import kotlin.reflect.KClass
 
 object DependencyInjector {
-    private val interfaces = mutableMapOf<Class<*>, Any>()
+    private val interfaces = mutableMapOf<KClass<*>, Any>()
     private val defaultImplementations by lazy { createDefaultImplementations() }
 
 
-    fun <T : E, E : Any> setImplementation(targetInterface: Class<E>, implementation: T) {
+    fun <T : E, E : Any> setImplementation(targetInterface: KClass<E>, implementation: T) {
         interfaces[targetInterface] = implementation
     }
 
-    fun <E : Any> clearImplementation(targetInterface: Class<E>) {
+    fun <E : Any> clearImplementation(targetInterface: KClass<E>) {
         interfaces.remove(targetInterface)
     }
 
@@ -60,7 +61,7 @@ object DependencyInjector {
         interfaces.clear()
     }
 
-    fun <T : E, E : Any> getImplementation(targetInterface: Class<E>): T {
+    fun <T : E, E : Any> getImplementation(targetInterface: KClass<E>): T {
         return when {
             interfaces.containsKey(targetInterface) -> {
                 @Suppress("UNCHECKED_CAST")
@@ -75,33 +76,33 @@ object DependencyInjector {
     }
 
     inline fun <reified T : EventListener<*>> getListener(): T {
-        return getImplementation(EventListenersCollection::class.java).values.first { it::class == T::class } as T
+        return getImplementation(EventListenersCollection::class).values.first { it::class == T::class } as T
     }
 
-    private fun createDefaultImplementations(): Map<Class<*>, Any> {
+    private fun createDefaultImplementations(): Map<KClass<*>, Any> {
         return mapOf(
-            ActivatorsCollection::class.java to ActivatorsGenerated(),
-            AIsCollection::class.java to AIsGenerated(),
-            AIActionsCollection::class.java to AIActionsGenerated(),
-            BehaviorsCollection::class.java to BehaviorsGenerated(),
-            BodysCollection::class.java to BodysGenerated(),
-            BodyPartsCollection::class.java to BodyPartsGenerated(),
-            CreaturesCollection::class.java to CreaturesGenerated(),
-            ConditionsCollection::class.java to ConditionsGenerated(),
-            CommandsCollection::class.java to CommandsGenerated(),
-            DialoguesCollection::class.java to DialoguesGenerated(),
-            EffectsCollection::class.java to EffectsGenerated(),
-            EventListenersCollection::class.java to EventListenersGenerated(),
-            ItemsCollection::class.java to ItemsGenerated(),
-            LocationDescriptionsCollection::class.java to LocationDescriptionsGenerated(),
-            LocationsCollection::class.java to LocationsGenerated(),
-            NetworksCollection::class.java to NetworksGenerated(),
-            RecipesCollection::class.java to RecipesGenerated(),
-            ResourceHelper::class.java to KotlinResourceHelper(),
-            SpellCommandsCollection::class.java to SpellCommandsGenerated(),
-            StoryEventsCollection::class.java to StoryEventsGenerated(),
-            WeathersCollection::class.java to WeathersGenerated(),
-            WeatherStringsCollection::class.java to WeatherStringsGenerated(),
+            ActivatorsCollection::class to ActivatorsGenerated(),
+            AIsCollection::class to AIsGenerated(),
+            AIActionsCollection::class to AIActionsGenerated(),
+            BehaviorsCollection::class to BehaviorsGenerated(),
+            BodysCollection::class to BodysGenerated(),
+            BodyPartsCollection::class to BodyPartsGenerated(),
+            CreaturesCollection::class to CreaturesGenerated(),
+            ConditionsCollection::class to ConditionsGenerated(),
+            CommandsCollection::class to CommandsGenerated(),
+            DialoguesCollection::class to DialoguesGenerated(),
+            EffectsCollection::class to EffectsGenerated(),
+            EventListenersCollection::class to EventListenersGenerated(),
+            ItemsCollection::class to ItemsGenerated(),
+            LocationDescriptionsCollection::class to LocationDescriptionsGenerated(),
+            LocationsCollection::class to LocationsGenerated(),
+            NetworksCollection::class to NetworksGenerated(),
+            RecipesCollection::class to RecipesGenerated(),
+            ResourceHelper::class to KotlinResourceHelper(),
+            SpellCommandsCollection::class to SpellCommandsGenerated(),
+            StoryEventsCollection::class to StoryEventsGenerated(),
+            WeathersCollection::class to WeathersGenerated(),
+            WeatherStringsCollection::class to WeatherStringsGenerated(),
         )
     }
 
