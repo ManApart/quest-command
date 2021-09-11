@@ -1,9 +1,9 @@
 package magic.castSpell
 
-import core.events.EventListener
 import core.GameState
-import status.stat.FOCUS
+import core.events.EventListener
 import core.history.display
+import status.stat.FOCUS
 import status.stat.HEALTH
 import system.debug.DebugType
 

@@ -1,11 +1,11 @@
 package traveling.routes
 
-import core.events.EventListener
 import core.GameState
+import core.events.EventListener
+import core.events.EventManager
+import core.history.display
 import traveling.location.Route
 import traveling.location.RouteFinder
-import core.history.display
-import core.events.EventManager
 import traveling.travel.TravelStartEvent
 
 class FindRoute : EventListener<FindRouteEvent>() {

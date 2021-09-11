@@ -1,7 +1,7 @@
 package status.statChanged
 
-import core.events.EventListener
 import core.GameState
+import core.events.EventListener
 import core.history.display
 import core.utility.StringFormatter
 import system.debug.DebugType

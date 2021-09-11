@@ -1,9 +1,9 @@
 package use
 
+import core.GameState
 import core.commands.*
 import core.events.EventManager
 import core.history.display
-import core.GameState
 import use.interaction.InteractEvent
 
 class UseCommand : Command() {

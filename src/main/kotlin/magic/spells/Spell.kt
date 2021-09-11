@@ -1,12 +1,12 @@
 package magic.spells
 
-import traveling.position.Distances
-import status.stat.FOCUS
+import core.events.EventManager
 import magic.castSpell.CastSpellEvent
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
+import status.stat.FOCUS
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
+import traveling.position.Distances
 
 open class Spell(
         val name: String,

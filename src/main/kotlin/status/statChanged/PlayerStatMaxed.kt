@@ -1,10 +1,10 @@
 package status.statChanged
 
-import core.events.EventListener
 import core.GameState
+import core.events.EventListener
+import core.history.display
 import status.stat.HEALTH
 import status.stat.STAMINA
-import core.history.display
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override fun shouldExecute(event: StatMaxedEvent): Boolean {

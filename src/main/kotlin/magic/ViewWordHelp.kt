@@ -1,10 +1,10 @@
 package magic
 
+import core.DependencyInjector
 import core.events.EventListener
 import core.history.display
 import core.utility.NameSearchableList
 import magic.spellCommands.SpellCommand
-import core.DependencyInjector
 import magic.spellCommands.SpellCommandsCollection
 
 class ViewWordHelp : EventListener<ViewWordHelpEvent>() {

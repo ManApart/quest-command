@@ -1,7 +1,6 @@
 package core.ai.dsl
 
 import core.ai.AIBase
-import java.lang.IllegalArgumentException
 
 class AIBaseBuilder(val name: String) {
     var inherits: List<String> = listOf()

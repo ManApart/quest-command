@@ -2,8 +2,6 @@ package traveling.location.location
 
 import core.DependencyInjector
 import core.GameState
-import core.body.BodyPartsCollection
-import core.body.BodysCollection
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.Network

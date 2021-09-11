@@ -1,13 +1,13 @@
 package magic.spellCommands
 
-import traveling.position.TargetAim
-import core.commands.Args
 import core.GameState
-import core.target.Target
-import status.stat.FOCUS
+import core.commands.Args
 import core.history.display
+import core.target.Target
 import core.utility.Named
+import status.stat.FOCUS
 import system.debug.DebugType
+import traveling.position.TargetAim
 
 abstract class SpellCommand : Named {
     abstract fun getDescription(): String

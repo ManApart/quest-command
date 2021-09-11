@@ -1,13 +1,13 @@
 package traveling.move
 
 import core.commands.*
-import traveling.direction.Direction
-import traveling.position.NO_VECTOR
-import core.target.Target
+import core.events.EventManager
 import core.history.display
+import core.target.Target
 import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
-import core.events.EventManager
+import traveling.direction.Direction
+import traveling.position.NO_VECTOR
 
 //TODO - take optional ignore z
 class MoveCommand : Command() {

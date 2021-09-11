@@ -2,8 +2,6 @@ package core.target
 
 import core.ai.AI
 import core.ai.behavior.BehaviorRecipe
-import core.body.Body
-import core.body.NONE
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder

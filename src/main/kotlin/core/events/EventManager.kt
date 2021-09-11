@@ -2,7 +2,6 @@ package core.events
 
 import core.DependencyInjector
 import java.lang.reflect.ParameterizedType
-import java.util.*
 
 
 object EventManager {

@@ -1,18 +1,18 @@
 package magic.spellCommands.water
 
-import traveling.position.Distances
-import traveling.position.TargetAim
 import core.commands.Args
+import core.events.EventManager
 import core.target.Target
-import status.stat.WATER_MAGIC
+import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getTargetedPartsOrAll
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
-import magic.Element
-import core.events.EventManager
+import status.stat.WATER_MAGIC
+import traveling.position.Distances
+import traveling.position.TargetAim
 
 class Jet : SpellCommand() {
     override val name = "Jet"

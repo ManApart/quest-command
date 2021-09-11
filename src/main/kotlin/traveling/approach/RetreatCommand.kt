@@ -1,12 +1,12 @@
 package traveling.approach
 
-import traveling.position.Distances.HUMAN_LENGTH
 import core.GameState
 import core.commands.*
-import core.history.display
 import core.events.EventManager
+import core.history.display
 import core.target.Target
 import traveling.move.StartMoveEvent
+import traveling.position.Distances.HUMAN_LENGTH
 
 class RetreatCommand : Command() {
     override fun getAliases(): List<String> {

@@ -1,9 +1,9 @@
 package resources.weatherOptions
 
-import core.utility.RandomManager
 import core.conditional.ConditionalString
-import traveling.location.weather.WeatherStringResource
 import core.conditional.StringOption
+import core.utility.RandomManager
+import traveling.location.weather.WeatherStringResource
 
 class WeatherOptions : WeatherStringResource {
     override val values: List<ConditionalString> = listOf(

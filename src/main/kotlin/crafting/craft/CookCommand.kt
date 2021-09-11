@@ -1,12 +1,12 @@
 package crafting.craft
 
+import core.GameState
 import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.Command
-import core.GameState
-import core.target.Target
-import core.history.display
 import core.events.EventManager
+import core.history.display
+import core.target.Target
 import core.target.item.ItemManager
 import crafting.RecipeManager
 

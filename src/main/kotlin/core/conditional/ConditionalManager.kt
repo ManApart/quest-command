@@ -1,9 +1,9 @@
 package core.conditional
 
 import core.DependencyInjector
+import core.conditional.ConditionalStringType.*
 import traveling.location.location.LocationDescriptionsCollection
 import traveling.location.weather.WeatherStringsCollection
-import core.conditional.ConditionalStringType.*
 
 object ConditionalManager {
     private var types = buildTypeMap()

@@ -1,10 +1,10 @@
 package combat.attack
 
 import combat.DamageType
-import traveling.position.TargetAim
 import core.events.Event
 import core.target.Target
 import traveling.location.location.Location
+import traveling.position.TargetAim
 
 
 class AttackEvent(val source: Target, val sourcePart: Location, val target: TargetAim, val type: DamageType) : Event {

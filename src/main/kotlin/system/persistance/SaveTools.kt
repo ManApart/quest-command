@@ -7,8 +7,8 @@ import core.*
 import core.history.SessionHistory
 import core.properties.Properties
 import core.target.Target
-import core.target.persist
 import core.target.load
+import core.target.persist
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import java.io.File

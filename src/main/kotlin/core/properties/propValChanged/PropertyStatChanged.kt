@@ -1,9 +1,9 @@
 package core.properties.propValChanged
 
 import core.events.EventListener
+import core.events.EventManager
 import core.history.display
 import core.utility.StringFormatter
-import core.events.EventManager
 
 class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
 

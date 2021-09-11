@@ -1,7 +1,7 @@
 package core.ai.action.dsl
-import core.target.Target
 import core.ai.action.AIAction
 import core.events.Event
+import core.target.Target
 
 class AIActionBuilder(val condition: (Target) -> Boolean) {
     var priority: Int? = null

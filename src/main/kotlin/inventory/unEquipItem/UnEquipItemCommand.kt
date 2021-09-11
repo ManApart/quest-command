@@ -1,14 +1,14 @@
 package inventory.unEquipItem
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.GameState
-import core.target.Target
-import core.history.display
-import core.utility.NameSearchableList
 import core.events.EventManager
+import core.history.display
+import core.target.Target
+import core.utility.NameSearchableList
 
 class UnEquipItemCommand : Command() {
     private val delimiters = listOf("from")

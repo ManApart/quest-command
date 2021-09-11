@@ -1,12 +1,12 @@
 package core.target.item
 
 import core.events.EventListener
-import traveling.position.NO_VECTOR
+import core.events.EventManager
 import core.history.display
+import core.properties.COUNT
+import traveling.position.NO_VECTOR
 import traveling.scope.spawn.ItemSpawnedEvent
 import traveling.scope.spawn.SpawnItemEvent
-import core.events.EventManager
-import core.properties.COUNT
 
 class ItemSpawner : EventListener<SpawnItemEvent>() {
     override fun execute(event: SpawnItemEvent) {

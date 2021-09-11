@@ -1,11 +1,11 @@
 package use.actions
 
+import core.events.EventManager
 import core.history.display
-import crafting.craft.CraftRecipeEvent
 import crafting.RecipeManager
+import crafting.craft.CraftRecipeEvent
 import use.UseEvent
 import use.UseListener
-import core.events.EventManager
 
 class UseItemOnIngredientRecipe : UseListener() {
 

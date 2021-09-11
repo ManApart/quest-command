@@ -1,8 +1,8 @@
 package combat.dodge
 
+import core.GameState
 import core.commands.Command
 import core.commands.parseDirection
-import core.GameState
 import core.events.EventManager
 import traveling.move.StartMoveEvent
 

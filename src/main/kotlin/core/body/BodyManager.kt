@@ -1,9 +1,12 @@
 package core.body
 
-import traveling.location.Network
-import core.utility.NameSearchableList
 import core.DependencyInjector
-import traveling.location.location.*
+import core.utility.NameSearchableList
+import traveling.location.Network
+import traveling.location.location.LocationHelper
+import traveling.location.location.LocationNode
+import traveling.location.location.LocationRecipe
+import traveling.location.location.build
 
 object BodyManager {
     private val locationHelper = LocationHelper()

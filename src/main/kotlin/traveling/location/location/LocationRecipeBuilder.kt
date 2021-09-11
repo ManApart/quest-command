@@ -3,7 +3,6 @@ package traveling.location.location
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder
-import core.target.TargetBuilder
 
 class LocationRecipeBuilder(val name: String) {
     private var propsBuilder = PropsBuilder()

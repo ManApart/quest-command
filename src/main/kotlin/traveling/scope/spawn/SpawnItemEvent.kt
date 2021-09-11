@@ -1,10 +1,10 @@
 package traveling.scope.spawn
 
 import core.events.Event
-import traveling.position.NO_VECTOR
 import core.target.Target
-import traveling.position.Vector
 import traveling.location.location.LocationNode
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 
 class SpawnItemEvent(
         val itemName: String,

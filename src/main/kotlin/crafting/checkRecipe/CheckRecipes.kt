@@ -1,7 +1,7 @@
 package crafting.checkRecipe
 
-import core.events.EventListener
 import core.GameState
+import core.events.EventListener
 import core.history.display
 
 class CheckRecipes : EventListener<CheckRecipeEvent>() {

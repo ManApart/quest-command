@@ -1,14 +1,14 @@
 package explore.look
 
-import traveling.direction.Direction
 import core.GameState
-import core.target.Target
-import traveling.location.location.LocationNode
-import traveling.location.Route
-import traveling.location.RouteNeighborFinder
 import core.history.StringTable
 import core.history.display
+import core.target.Target
 import core.utility.wrapNonEmpty
+import traveling.direction.Direction
+import traveling.location.Route
+import traveling.location.RouteNeighborFinder
+import traveling.location.location.LocationNode
 
 fun describeClimbJourney() {
     val location = GameState.player.location

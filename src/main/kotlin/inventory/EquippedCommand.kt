@@ -1,7 +1,7 @@
 package inventory
 
-import core.commands.Command
 import core.GameState
+import core.commands.Command
 import core.history.display
 
 class EquippedCommand : Command() {

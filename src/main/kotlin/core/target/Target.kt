@@ -21,12 +21,12 @@ import crafting.Recipe
 import inventory.Inventory
 import status.ProtoSoul
 import status.Soul
-import traveling.position.NO_VECTOR
-import traveling.position.Vector
 import traveling.location.Route
 import traveling.location.location.Location
 import traveling.location.location.LocationNode
 import traveling.location.location.NOWHERE_NODE
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 import kotlin.math.max
 import kotlin.math.min
 

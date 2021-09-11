@@ -5,8 +5,6 @@ import core.target.Target
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.build
 import core.utility.NameSearchableList
-import core.utility.Named
-import core.utility.toNameSearchableList
 import traveling.location.location.LocationTarget
 
 const val ACTIVATOR_TAG = "Activator"

@@ -1,11 +1,11 @@
 package explore.map
 
-import core.events.EventListener
 import core.GameState
-import traveling.location.Route
-import traveling.location.RouteNeighborFinder
+import core.events.EventListener
 import core.history.StringTable
 import core.history.display
+import traveling.location.Route
+import traveling.location.RouteNeighborFinder
 
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {

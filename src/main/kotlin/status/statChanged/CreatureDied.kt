@@ -1,12 +1,12 @@
 package status.statChanged
 
 import core.events.EventListener
-import status.stat.HEALTH
-import core.history.display
-import traveling.scope.remove.RemoveScopeEvent
-import status.CreatureDiedEvent
 import core.events.EventManager
+import core.history.display
 import inventory.dropItem.PlaceItemEvent
+import status.CreatureDiedEvent
+import status.stat.HEALTH
+import traveling.scope.remove.RemoveScopeEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {

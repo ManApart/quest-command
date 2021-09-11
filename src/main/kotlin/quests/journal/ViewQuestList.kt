@@ -1,10 +1,10 @@
 package quests.journal
 
 import core.events.EventListener
-import quests.Quest
-import quests.QuestManager
 import core.history.display
 import core.utility.NameSearchableList
+import quests.Quest
+import quests.QuestManager
 
 class ViewQuestList : EventListener<ViewQuestListEvent>() {
 

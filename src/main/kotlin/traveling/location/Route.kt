@@ -1,8 +1,8 @@
 package traveling.location
 
+import traveling.location.location.LocationNode
 import traveling.position.Vector
 import traveling.position.sum
-import traveling.location.location.LocationNode
 
 
 class Route(val source: LocationNode, private val connections: MutableList<Connection> = mutableListOf()) {

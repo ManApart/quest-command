@@ -1,7 +1,7 @@
 package traveling.move
 
-import core.events.Event
 import core.GameState
+import core.events.Event
 import core.target.Target
 import traveling.position.Vector
 

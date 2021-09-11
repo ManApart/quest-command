@@ -1,7 +1,7 @@
 package use.interaction
 
-import core.events.Event
 import core.GameState
+import core.events.Event
 import core.target.Target
 
 /**

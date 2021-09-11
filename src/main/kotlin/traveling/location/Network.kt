@@ -3,8 +3,8 @@ package traveling.location
 import core.utility.NameSearchableList
 import core.utility.Named
 import traveling.direction.Direction
-import traveling.position.Vector
 import traveling.location.location.*
+import traveling.position.Vector
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
 

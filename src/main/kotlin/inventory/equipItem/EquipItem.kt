@@ -1,9 +1,9 @@
 package inventory.equipItem
 
 import core.events.EventListener
+import core.events.EventManager
 import core.history.display
 import core.utility.StringFormatter
-import core.events.EventManager
 
 class EquipItem : EventListener<EquipItemEvent>() {
     override fun execute(event: EquipItemEvent) {

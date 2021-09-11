@@ -1,13 +1,13 @@
 package use.actions
 
+import core.events.EventManager
 import core.history.display
-import use.UseEvent
-import use.UseListener
+import magic.Element
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
 import status.effects.EffectManager
-import magic.Element
-import core.events.EventManager
+import use.UseEvent
+import use.UseListener
 
 class UseOnFire : UseListener() {
 

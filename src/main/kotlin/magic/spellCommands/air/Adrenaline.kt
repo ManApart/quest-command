@@ -1,23 +1,23 @@
 package magic.spellCommands.air
 
-import traveling.position.Distances
-import traveling.position.TargetAim
-import traveling.position.toCommandString
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
+import core.events.EventManager
 import core.target.Target
-import status.stat.AGILITY
-import status.stat.AIR_MAGIC
+import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getTargetedPartsOrRootPart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
-import magic.Element
-import core.events.EventManager
+import status.stat.AGILITY
+import status.stat.AIR_MAGIC
+import traveling.position.Distances
+import traveling.position.TargetAim
+import traveling.position.toCommandString
 
 class Adrenaline : SpellCommand() {
     override val name = "Adrenaline"

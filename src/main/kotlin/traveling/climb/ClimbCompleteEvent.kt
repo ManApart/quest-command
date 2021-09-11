@@ -1,7 +1,7 @@
 package traveling.climb
 
-import core.events.Event
 import core.GameState
+import core.events.Event
 import core.target.Target
 import traveling.location.location.LocationPoint
 

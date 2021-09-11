@@ -1,9 +1,9 @@
 package traveling.climb
 
-import core.events.EventListener
 import core.GameState
-import core.history.display
+import core.events.EventListener
 import core.events.EventManager
+import core.history.display
 import traveling.arrive.ArriveEvent
 
 class ClimbComplete : EventListener<ClimbCompleteEvent>() {

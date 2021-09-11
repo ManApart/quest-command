@@ -4,9 +4,9 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import core.target.Target
-import core.history.display
 import core.events.EventManager
+import core.history.display
+import core.target.Target
 
 class NothingCommand : Command() {
     override fun getAliases(): List<String> {

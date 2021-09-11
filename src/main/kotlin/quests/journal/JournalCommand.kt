@@ -3,9 +3,9 @@ package quests.journal
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
-import quests.QuestManager
-import core.history.display
 import core.events.EventManager
+import core.history.display
+import quests.QuestManager
 
 class JournalCommand : Command() {
     override fun getAliases(): List<String> {

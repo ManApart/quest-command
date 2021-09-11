@@ -1,12 +1,12 @@
 package combat.block
 
 import combat.HandHelper
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseBodyParts
-import core.GameState
-import core.target.Target
 import core.events.EventManager
+import core.target.Target
 
 class BlockCommand : Command() {
     override fun getAliases(): List<String> {

@@ -1,8 +1,8 @@
 package traveling.location
 
+import traveling.location.location.LocationPoint
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
-import traveling.location.location.LocationPoint
 
 class Connection(val source: LocationPoint, val destination: LocationPoint, val vector: Vector = NO_VECTOR, var restricted: Boolean = false) {
 

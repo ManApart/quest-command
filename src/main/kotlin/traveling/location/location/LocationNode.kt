@@ -3,11 +3,11 @@ package traveling.location.location
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.utility.Named
 import traveling.direction.Direction
-import traveling.position.Vector
 import traveling.location.Connection
 import traveling.location.Network
 import traveling.location.ProtoConnection
 import traveling.location.RouteFinder
+import traveling.position.Vector
 import kotlin.math.abs
 
 val DEFAULT_NETWORK = Network("Wilderness")

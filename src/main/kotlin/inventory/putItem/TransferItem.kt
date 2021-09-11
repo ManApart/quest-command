@@ -1,11 +1,11 @@
 package inventory.putItem
 
 import core.events.EventListener
-import core.target.Target
+import core.events.EventManager
 import core.history.display
+import core.target.Target
 import core.utility.StringFormatter
 import inventory.pickupItem.ItemPickedUpEvent
-import core.events.EventManager
 
 class TransferItem : EventListener<TransferItemEvent>() {
 

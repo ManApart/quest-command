@@ -1,9 +1,9 @@
 package resources.storyEvents
 
 import core.GameState
+import quests.ConditionalEvents
 import quests.StoryEvent
 import quests.StoryEventResource
-import quests.ConditionalEvents
 import status.LevelUpEvent
 import system.message.MessageEvent
 

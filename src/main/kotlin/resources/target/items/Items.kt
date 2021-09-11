@@ -2,8 +2,6 @@ package resources.target.items
 
 import core.target.item.ItemResource
 import core.target.targets
-import resources.target.burnToAsh
-import resources.target.burnable
 
 class Items : ItemResource {
 

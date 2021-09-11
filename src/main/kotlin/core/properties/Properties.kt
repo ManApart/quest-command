@@ -1,14 +1,14 @@
 package core.properties
 
+import core.target.activator.ACTIVATOR_TAG
+import core.target.creature.CREATURE_TAG
+import core.target.item.ITEM_TAG
+import core.utility.wrapNonEmpty
 import traveling.position.Distances.BOW_RANGE
 import traveling.position.Distances.DAGGER_RANGE
 import traveling.position.Distances.MIN_RANGE
 import traveling.position.Distances.SPEAR_RANGE
 import traveling.position.Distances.SWORD_RANGE
-import core.target.activator.ACTIVATOR_TAG
-import core.target.creature.CREATURE_TAG
-import core.target.item.ITEM_TAG
-import core.utility.wrapNonEmpty
 
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(tags: Tags) : this(Values(), tags)

@@ -6,8 +6,8 @@ import status.conditions.AddConditionEvent
 import status.conditions.Condition
 import status.stat.FOCUS
 import status.statChanged.StatChangeEvent
-import traveling.position.Vector
 import traveling.move.MoveEvent
+import traveling.position.Vector
 
 class MoveTargetSpell(
         name: String,

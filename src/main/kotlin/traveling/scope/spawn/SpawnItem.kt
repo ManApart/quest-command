@@ -1,11 +1,11 @@
 package traveling.scope.spawn
 
-import core.events.EventListener
 import core.GameState
+import core.events.EventListener
+import core.events.EventManager
 import core.history.display
 import core.utility.StringFormatter
 import inventory.pickupItem.ItemPickedUpEvent
-import core.events.EventManager
 
 class SpawnItem : EventListener<ItemSpawnedEvent>() {
     override fun execute(event: ItemSpawnedEvent) {

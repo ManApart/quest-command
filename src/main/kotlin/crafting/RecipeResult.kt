@@ -2,8 +2,8 @@ package crafting
 
 import core.properties.Tags
 import core.target.Target
-import core.utility.wrapNonEmpty
 import core.target.item.ItemManager
+import core.utility.wrapNonEmpty
 
 data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsAdded: Tags = Tags(), val tagsRemoved: Tags = Tags()) {
     constructor(name: String) : this(name, null, Tags(), Tags())

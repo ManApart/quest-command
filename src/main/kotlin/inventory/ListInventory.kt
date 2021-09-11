@@ -1,9 +1,9 @@
 package inventory
 
-import core.events.EventListener
-import core.target.Target
 import core.body.Body
+import core.events.EventListener
 import core.history.display
+import core.target.Target
 import core.utility.StringFormatter
 
 class ListInventory : EventListener<ListInventoryEvent>() {

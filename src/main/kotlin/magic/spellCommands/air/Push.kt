@@ -1,21 +1,21 @@
 package magic.spellCommands.air
 
-import traveling.position.TargetAim
-import traveling.position.toCommandString
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.commands.parseDirection
-import traveling.direction.Direction
+import core.events.EventManager
 import core.target.Target
-import status.stat.AIR_MAGIC
+import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommand
 import magic.spells.MoveTargetSpell
 import status.conditions.Condition
 import status.effects.EffectManager
-import magic.Element
-import core.events.EventManager
+import status.stat.AIR_MAGIC
+import traveling.direction.Direction
+import traveling.position.TargetAim
+import traveling.position.toCommandString
 
 class Push : SpellCommand() {
     override val name = "Push"

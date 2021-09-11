@@ -1,7 +1,6 @@
 package traveling.location.location
 
 import core.GameState
-import core.body.NONE
 import core.events.EventManager
 import core.history.display
 import core.properties.CONTAINER

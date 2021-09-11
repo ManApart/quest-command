@@ -1,8 +1,6 @@
 package combat.attack
 
 import combat.DamageType
-import traveling.position.Distances
-import traveling.position.TargetAim
 import combat.takeDamage.TakeDamageEvent
 import core.GameState
 import core.events.EventListener
@@ -13,6 +11,8 @@ import core.utility.StringFormatter
 import status.stat.BARE_HANDED
 import status.stat.HEALTH
 import traveling.location.location.Location
+import traveling.position.Distances
+import traveling.position.TargetAim
 import use.UseEvent
 
 class Attack : EventListener<AttackEvent>() {

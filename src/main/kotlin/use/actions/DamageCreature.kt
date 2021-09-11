@@ -1,10 +1,10 @@
 package use.actions
 
 import core.events.EventListener
-import status.stat.HEALTH
-import use.UseEvent
-import status.statChanged.StatChangeEvent
 import core.events.EventManager
+import status.stat.HEALTH
+import status.statChanged.StatChangeEvent
+import use.UseEvent
 
 class DamageCreature : EventListener<UseEvent>() {
     override fun shouldExecute(event: UseEvent): Boolean {

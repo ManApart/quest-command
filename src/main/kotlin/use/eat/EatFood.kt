@@ -2,12 +2,11 @@ package use.eat
 
 import core.GameState
 import core.events.EventListener
-import core.target.Target
-
+import core.events.EventManager
 import core.history.display
+import core.target.Target
 import core.utility.StringFormatter
 import status.statChanged.StatChangeEvent
-import core.events.EventManager
 
 class EatFood : EventListener<EatFoodEvent>() {
 
