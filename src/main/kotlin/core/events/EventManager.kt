@@ -1,7 +1,10 @@
 package core.events
 
 import core.DependencyInjector
+import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
+import kotlin.reflect.full.allSupertypes
+import kotlin.reflect.full.superclasses
 
 //import java.lang.reflect.ParameterizedType
 
@@ -93,16 +96,7 @@ object EventManager {
     }
 
     private fun getListenedForClass(listener: EventListener<*>): KClass<*> {
-        val parametrizedType = findParametrizedType(listenerClass)
-        return parametrizedType.actualTypeArguments[0] as KClass<*>
-    }
-
-    private fun findParametrizedType(clazz: KClass<*>): ParameterizedType {
-        return if (clazz.genericSuperclass is ParameterizedType) {
-            (clazz.genericSuperclass as ParameterizedType)
-        } else {
-            findParametrizedType(clazz.superclass)
-        }
+        return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
     }
 
 }

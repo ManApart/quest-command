@@ -73,7 +73,7 @@ object ReflectionTools {
     }
 
     fun getClasses(superClass: KClass<*>): List<KClass<*>> {
-        return reflections.getSubTypesOf(superClass).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }
+        return reflections.getSubTypesOf(superClass.java).filter { !Modifier.isAbstract(it.modifiers) }.sortedBy { it.name }.map { it::class }
     }
 
     /**
@@ -81,7 +81,7 @@ object ReflectionTools {
      */
     private fun generateCollectionsFile(collectedClass: KClass<*>) {
         val allClasses = getClasses(collectedClass)
-        println("Saving ${allClasses.size} classes for ${collectedClass.name}")
+        println("Saving ${allClasses.size} classes for ${collectedClass.simpleName}")
         val isTyped = collectedClass.typeParameters.isNotEmpty()
         val typeSuffix = if (isTyped) {
             "<*>"
@@ -89,8 +89,8 @@ object ReflectionTools {
             ""
         }
 
-        val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
-        val newClassName = collectedClass.simpleName
+        val classes = allClasses.joinToString(", ") { "${it.simpleName}()".replace("$", ".") }
+        val newClassName = collectedClass.simpleName!!
 
         writeInterfaceFile(collectedClass, collectedClass, typeSuffix, newClassName)
         writeGeneratedFile(collectedClass, typeSuffix, classes)
@@ -104,9 +104,9 @@ object ReflectionTools {
      * Find all classes that extend the resource interface (WeatherStringResource) and combines their values into a list in the generated class (WeatherStringsGenerated)
      */
     private fun generateResourcesFile(resourceInterface: KClass<*>, collectedClass: KClass<*>) {
-        val allClasses = reflections.getSubTypesOf(resourceInterface).filter { !Modifier.isAbstract(it.modifiers) }
+        val allClasses = reflections.getSubTypesOf(resourceInterface.java).filter { !Modifier.isAbstract(it.modifiers) }
             .sortedBy { it.name }
-        println("Saving ${allClasses.size} classes for ${resourceInterface.name}")
+        println("Saving ${allClasses.size} classes for ${resourceInterface.simpleName}")
         val isTyped = collectedClass.typeParameters.isNotEmpty()
         val typeSuffix = if (isTyped) {
             "<*>"
@@ -114,7 +114,7 @@ object ReflectionTools {
             ""
         }
         val classes = allClasses.joinToString(", ") { "${it.name}()".replace("$", ".") }
-        val newClassName = resourceInterface.simpleName.replace("Resource", "")
+        val newClassName = resourceInterface.simpleName!!.replace("Resource", "")
 
         writeInterfaceFile(resourceInterface, collectedClass, typeSuffix, newClassName)
         writeGeneratedResourceFile(resourceInterface, classes, newClassName)
@@ -127,12 +127,14 @@ object ReflectionTools {
         typeSuffix: String,
         newClassName: String
     ) {
-        val packageName = resourceInterface.packageName.replace(".", "/")
+        //TODO - use qualified name instead of package name?
+        //resourceInterface.qualifiedName
+        val packageName = resourceInterface.java.packageName.replace(".", "/")
         File("./src/main/kotlin/$packageName/${newClassName}sCollection.kt").printWriter().use {
             it.print(
                 """
-                package ${resourceInterface.packageName}
-                import ${collectedClass.name}
+                package ${resourceInterface.java.packageName}
+                import ${collectedClass.simpleName}
 
                 interface ${newClassName}sCollection {
                     val values: List<${collectedClass.simpleName}$typeSuffix>
@@ -143,14 +145,14 @@ object ReflectionTools {
     }
 
     private fun writeGeneratedFile(collectedClass: KClass<*>, typeSuffix: String, classes: String) {
-        val packageName = collectedClass.packageName.replace(".", "/")
+        val packageName = collectedClass.java.packageName.replace(".", "/")
         File("./src/main/kotlin/$packageName/${collectedClass.simpleName}sGenerated.kt").printWriter().use {
             it.print(
                 """
-                package ${collectedClass.packageName}
+                package ${collectedClass.java.packageName}
 
                 class ${collectedClass.simpleName}sGenerated : ${collectedClass.simpleName}sCollection {
-                    override val values: List<${collectedClass.name}$typeSuffix> = listOf($classes)
+                    override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf($classes)
                 }
             """.trimIndent()
             )
@@ -158,12 +160,12 @@ object ReflectionTools {
     }
 
     private fun writeGeneratedResourceFile(resourceInterface: KClass<*>, classes: String, newClassName: String) {
-        val packageName = resourceInterface.packageName.replace(".", "/")
+        val packageName = resourceInterface.java.packageName.replace(".", "/")
 
         File("./src/main/kotlin/$packageName/${newClassName}sGenerated.kt").printWriter().use {
             it.print(
                 """
-                package ${resourceInterface.packageName}
+                package ${resourceInterface.java.packageName}
 
                 class ${newClassName}sGenerated : ${newClassName}sCollection {
                     override val values = listOf<${resourceInterface.simpleName}>($classes).flatMap { it.values }
@@ -179,7 +181,7 @@ object ReflectionTools {
         typeSuffix: String,
         newClassName: String
     ) {
-        val packageName = resourceInterface.packageName.replace(".", "/")
+        val packageName = resourceInterface.java.packageName.replace(".", "/")
         val file = File("./src/test/kotlin/$packageName/${newClassName}sMock.kt")
         file.parentFile.mkdirs()
         //Only generate an initial sketch, but let the user update it and keep their changes
@@ -187,8 +189,8 @@ object ReflectionTools {
             file.printWriter().use {
                 it.print(
                     """
-                package ${resourceInterface.packageName}
-                import ${collectedClass.name}
+                package ${resourceInterface.java.packageName}
+                import ${collectedClass.simpleName}
 
                 class ${newClassName}sMock(override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
             """.trimIndent()

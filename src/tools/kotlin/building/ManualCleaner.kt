@@ -4,6 +4,7 @@ import core.commands.Command
 import core.reflection.ReflectionTools
 import magic.spellCommands.SpellCommand
 import java.io.File
+import kotlin.reflect.KClass
 
 
 fun main() {
