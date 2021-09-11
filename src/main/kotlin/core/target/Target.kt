@@ -23,8 +23,8 @@ import status.ProtoSoul
 import status.Soul
 import traveling.location.Route
 import traveling.location.location.Location
-import traveling.location.location.LocationNode
-import traveling.location.location.NOWHERE_NODE
+import traveling.location.network.LocationNode
+import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.max
@@ -33,22 +33,22 @@ import kotlin.math.min
 //TODO - can we get rid of optional constructor params once we're using DSL to handle them?
 //Extract out json parsing logic to another class to make this guy more sane
 class Target(
-        name: String,
-        base: Target? = null,
-        private val params: Map<String, String> = mapOf(),
-        ai: AI? = null,
-        aiName: String? = base?.ai?.name,
-        @JsonProperty("behaviors") val behaviorRecipes: List<BehaviorRecipe> = base?.behaviorRecipes ?: listOf(),
-        body: Body? = null,
-        bodyName: String? = base?.body?.name,
-        equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
-        @JsonProperty("description") private val dynamicDescription: ConditionalStringPointer = base?.dynamicDescription
+    name: String,
+    base: Target? = null,
+    private val params: Map<String, String> = mapOf(),
+    ai: AI? = null,
+    aiName: String? = base?.ai?.name,
+    @JsonProperty("behaviors") val behaviorRecipes: List<BehaviorRecipe> = base?.behaviorRecipes ?: listOf(),
+    body: Body? = null,
+    bodyName: String? = base?.body?.name,
+    equipSlots: List<List<String>> = base?.equipSlots?.map { it.attachPoints } ?: listOf(),
+    @JsonProperty("description") private val dynamicDescription: ConditionalStringPointer = base?.dynamicDescription
                 ?: ConditionalStringPointer(name),
-        items: List<String> = base?.inventory?.getItems()?.map { it.name } ?: listOf(),
-        var location: LocationNode = base?.location ?: NOWHERE_NODE,
-        val parent: Target? = null,
-        @JsonProperty("soul") soulStats: ProtoSoul = ProtoSoul(),
-        properties: Properties = base?.properties ?: Properties()
+    items: List<String> = base?.inventory?.getItems()?.map { it.name } ?: listOf(),
+    var location: LocationNode = base?.location ?: NOWHERE_NODE,
+    val parent: Target? = null,
+    @JsonProperty("soul") soulStats: ProtoSoul = ProtoSoul(),
+    properties: Properties = base?.properties ?: Properties()
 ) : Named {
 
     override val name = name.apply(params)
@@ -215,7 +215,8 @@ class Target(
     fun isWithinRangeOf(creature: Target?): Boolean {
         if (creature == null
                 || creature.inventory.exists(this)
-                || getTopParent().location == NOWHERE_NODE) {
+                || getTopParent().location == NOWHERE_NODE
+        ) {
             return true
         }
 

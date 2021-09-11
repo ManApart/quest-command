@@ -9,6 +9,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 import traveling.location.location.*
+import traveling.location.network.NetworksCollection
 
 import use.interaction.InteractEvent
 import kotlin.test.assertEquals

@@ -7,7 +7,7 @@ import conversation.parsing.Verb
 import core.events.Event
 import core.target.Target
 import core.utility.Named
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 class DialogueBuilder(val condition: (Conversation) -> Boolean) {
     var priority: Int? = null

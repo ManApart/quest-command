@@ -11,6 +11,8 @@ import inventory.dropItem.PlaceItemEvent
 import org.junit.Before
 import org.junit.Test
 import traveling.location.location.*
+import traveling.location.network.NOWHERE_NODE
+import traveling.location.network.NetworksCollection
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 

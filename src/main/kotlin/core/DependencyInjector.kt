@@ -36,6 +36,8 @@ import status.conditions.ConditionsGenerated
 import status.effects.EffectsCollection
 import status.effects.EffectsGenerated
 import traveling.location.location.*
+import traveling.location.network.NetworksCollection
+import traveling.location.network.NetworksGenerated
 import traveling.location.weather.WeatherStringsCollection
 import traveling.location.weather.WeatherStringsGenerated
 import traveling.location.weather.WeathersCollection

@@ -5,6 +5,7 @@ import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import system.persistance.*
+import traveling.location.network.LocationNode
 
 fun persist(dataObject: Location, path: String, ignoredTargets: List<Target> = listOf()) {
     val prefix = clean(path, dataObject.name)

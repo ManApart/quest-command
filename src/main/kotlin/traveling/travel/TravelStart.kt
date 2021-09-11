@@ -8,7 +8,7 @@ import core.target.Target
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
 
 class TravelStart : EventListener<TravelStartEvent>() {

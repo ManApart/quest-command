@@ -48,6 +48,7 @@ import status.effects.EffectsCollection
 import status.effects.EffectsMock
 import status.stat.STRENGTH
 import traveling.location.location.*
+import traveling.location.network.NetworksCollection
 import traveling.location.weather.WeatherManager
 import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersMock

@@ -10,7 +10,7 @@ import core.properties.Values
 import status.stat.AGILITY
 import status.stat.STRENGTH
 import traveling.location.location.Location
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.location.location.LocationRecipe
 
 

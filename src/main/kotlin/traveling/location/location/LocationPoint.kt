@@ -1,6 +1,7 @@
 package traveling.location.location
 
 import core.target.Target
+import traveling.location.network.LocationNode
 
 class LocationPoint(val location: LocationNode, val targetName: String? = null, val partName: String? = null) {
 

@@ -9,6 +9,7 @@ import core.target.Target
 import createMockedGame
 import org.junit.Test
 import traveling.location.location.*
+import traveling.location.network.networks
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)

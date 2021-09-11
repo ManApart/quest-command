@@ -1,6 +1,6 @@
 package traveling.location
 
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 class RouteNeighborFinder(private val source: LocationNode, private val depth: Int) {
     private val neighbors: MutableList<Route> = mutableListOf()

@@ -1,7 +1,7 @@
 package resources.traveling.location.location
 
-import traveling.location.location.NetworkResource
-import traveling.location.location.networks
+import traveling.location.network.NetworkResource
+import traveling.location.network.networks
 
 class CommonNetworks : NetworkResource {
     override val values = networks {

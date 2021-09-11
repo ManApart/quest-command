@@ -8,7 +8,7 @@ import core.utility.wrapNonEmpty
 import traveling.direction.Direction
 import traveling.location.Route
 import traveling.location.RouteNeighborFinder
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 fun describeClimbJourney() {
     val location = GameState.player.location

@@ -2,7 +2,7 @@ package traveling.direction
 
 import core.GameState
 import core.target.Target
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 fun getDirection(desiredDirection: Direction, target: Target, part: LocationNode): Direction {
     return if (desiredDirection != Direction.NONE) {

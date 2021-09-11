@@ -1,4 +1,4 @@
-package traveling.location.location
+package traveling.location.network
 
 class NetworksBuilder {
     internal val children = mutableListOf<NetworkBuilder>()

@@ -10,10 +10,10 @@ import system.persistance.cleanPathToFile
 import system.persistance.loadMap
 import system.persistance.writeSave
 import traveling.location.Network
-import traveling.location.location.DEFAULT_NETWORK
+import traveling.location.network.DEFAULT_NETWORK
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationNode
-import traveling.location.location.NOWHERE_NODE
+import traveling.location.network.LocationNode
+import traveling.location.network.NOWHERE_NODE
 
 
 fun persist(dataObject: Target, path: String) {

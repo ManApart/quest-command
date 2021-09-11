@@ -1,7 +1,9 @@
 package core.body
 
 import traveling.location.location.*
-import traveling.location.location.NetworkBuilder
+import traveling.location.network.NetworkBuilder
+import traveling.location.network.network
+import traveling.location.network.networks
 
 class BodysMock(
     override val values: List<NetworkBuilder> = listOf(network("Human"){locationNode("Body Part")}, network("None"){locationNode("Part")})

@@ -1,6 +1,6 @@
 package traveling.location
 
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.position.Vector
 import traveling.position.sum
 

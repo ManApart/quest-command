@@ -4,9 +4,10 @@ import core.DependencyInjector
 import core.utility.NameSearchableList
 import traveling.location.Network
 import traveling.location.location.LocationHelper
-import traveling.location.location.LocationNode
 import traveling.location.location.LocationRecipe
 import traveling.location.location.build
+import traveling.location.network.LocationNode
+import traveling.location.network.build
 
 object BodyManager {
     private val locationHelper = LocationHelper()

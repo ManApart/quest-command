@@ -1,7 +1,7 @@
 package resources.body
 
 import core.body.BodyResource
-import traveling.location.location.networks
+import traveling.location.network.networks
 
 class CommonBodies : BodyResource {
     override val values = networks {

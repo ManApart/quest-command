@@ -1,4 +1,4 @@
-package traveling.location.location
+package traveling.location.network
 
 import traveling.location.Network
 import traveling.location.ProtoConnectionBuilder

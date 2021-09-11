@@ -1,4 +1,4 @@
-package traveling.location.location
+package traveling.location.network
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import core.utility.Named
@@ -7,6 +7,9 @@ import traveling.location.Connection
 import traveling.location.Network
 import traveling.location.ProtoConnection
 import traveling.location.RouteFinder
+import traveling.location.location.Location
+import traveling.location.location.LocationRecipe
+import traveling.location.location.load
 import traveling.position.Vector
 import kotlin.math.abs
 
@@ -14,13 +17,13 @@ val DEFAULT_NETWORK = Network("Wilderness")
 val NOWHERE_NODE = LocationNode("Nowhere")
 
 data class LocationNode(
-        override val name: String,
-        val locationName: String = name,
-        val parent: String = DEFAULT_NETWORK.name,
-        var network: Network = DEFAULT_NETWORK,
-        val isRoot: Boolean = false,
-        @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
-        private val connections: MutableList<Connection> = mutableListOf()
+    override val name: String,
+    val locationName: String = name,
+    val parent: String = DEFAULT_NETWORK.name,
+    var network: Network = DEFAULT_NETWORK,
+    val isRoot: Boolean = false,
+    @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
+    private val connections: MutableList<Connection> = mutableListOf()
 ) : Named {
     constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.protoConnections)
 

@@ -9,7 +9,7 @@ import core.target.Target
 import core.utility.NameSearchableList
 import traveling.direction.Direction
 import traveling.direction.getDirection
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 class ClimbCommand : Command() {
 

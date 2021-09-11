@@ -8,7 +8,7 @@ import core.utility.StringFormatter.getIsAre
 import core.utility.StringFormatter.getSubject
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
 import traveling.position.Distances
 import traveling.position.Distances.LOCATION_SIZE

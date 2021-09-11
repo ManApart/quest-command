@@ -1,6 +1,7 @@
 package traveling.location.location
 
 import traveling.location.Connection
+import traveling.location.network.LocationNode
 
 class LocationHelper {
 

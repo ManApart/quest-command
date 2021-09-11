@@ -5,6 +5,7 @@ import core.GameState
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.Network
+import traveling.location.network.*
 
 object LocationManager {
     private val locationHelper = LocationHelper()

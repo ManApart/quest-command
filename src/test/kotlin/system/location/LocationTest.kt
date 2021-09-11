@@ -5,7 +5,7 @@ import core.properties.Values
 import core.target.Target
 import org.junit.Test
 import traveling.location.location.Location
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

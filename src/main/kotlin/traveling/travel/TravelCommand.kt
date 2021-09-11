@@ -7,8 +7,8 @@ import core.commands.CommandParser
 import core.events.EventManager
 import core.history.display
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationNode
-import traveling.location.location.NOWHERE_NODE
+import traveling.location.network.LocationNode
+import traveling.location.network.NOWHERE_NODE
 import traveling.routes.FindRouteEvent
 
 class TravelCommand : Command() {

@@ -9,7 +9,7 @@ import core.events.EventManager
 import core.history.display
 import core.properties.IS_CLIMBING
 import traveling.direction.Direction
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 class TravelInDirectionCommand : Command() {
     override fun getAliases(): List<String> {

@@ -1,11 +1,14 @@
 package system.location
 
-import traveling.location.ProtoConnection
 import org.junit.Test
 import core.DependencyInjector
 import createMockedGame
 import org.junit.Before
 import traveling.location.location.*
+import traveling.location.network.DEFAULT_NETWORK
+import traveling.location.network.LocationNode
+import traveling.location.network.NetworksCollection
+import traveling.location.network.networks
 import kotlin.test.assertEquals
 
 

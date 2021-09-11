@@ -12,7 +12,7 @@ import magic.spellCommands.SpellCommandsMock
 import org.junit.Before
 import org.junit.Test
 import traveling.location.location.Location
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.position.TargetAim
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

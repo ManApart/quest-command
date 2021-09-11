@@ -4,6 +4,8 @@ import core.utility.NameSearchableList
 import core.utility.Named
 import traveling.direction.Direction
 import traveling.location.location.*
+import traveling.location.network.LocationNode
+import traveling.location.network.NOWHERE_NODE
 import traveling.position.Vector
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {

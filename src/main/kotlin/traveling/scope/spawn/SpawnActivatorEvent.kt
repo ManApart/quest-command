@@ -3,7 +3,7 @@ package traveling.scope.spawn
 import core.GameState
 import core.events.Event
 import core.target.Target
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 

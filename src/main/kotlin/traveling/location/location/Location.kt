@@ -17,6 +17,7 @@ import inventory.Inventory
 import status.Soul
 import status.conditions.AddConditionEvent
 import status.conditions.ConditionManager
+import traveling.location.network.LocationNode
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherManager

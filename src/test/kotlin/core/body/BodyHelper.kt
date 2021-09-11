@@ -1,7 +1,7 @@
 package core.body
 
 import traveling.location.location.LocationRecipe
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.location.Network
 
 fun createBody(part: LocationRecipe) : Body {

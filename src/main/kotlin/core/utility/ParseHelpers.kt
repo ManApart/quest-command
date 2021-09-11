@@ -2,7 +2,7 @@ package core.utility
 
 import core.target.Target
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 
 //TODO - move all helper functions somewhere else
 fun parseLocation(params: Map<String, String>, parent: Target, networkNameKey: String, locationNameKey: String): LocationNode {

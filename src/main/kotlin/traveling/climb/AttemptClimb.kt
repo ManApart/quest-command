@@ -16,7 +16,7 @@ import traveling.arrive.ArriveEvent
 import traveling.direction.Direction
 import traveling.jump.FallEvent
 import traveling.location.RouteFinder
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
 import kotlin.math.max
 

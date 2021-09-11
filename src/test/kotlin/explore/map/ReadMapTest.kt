@@ -2,7 +2,7 @@ package explore.map
 
 import traveling.position.Vector
 import traveling.location.Connection
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
 import core.history.ChatHistory
 import org.junit.Assert

@@ -29,6 +29,8 @@ import status.conditions.ConditionResource
 import status.effects.EffectBase
 import status.effects.EffectResource
 import traveling.location.location.*
+import traveling.location.network.NetworkBuilder
+import traveling.location.network.NetworkResource
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherResource
 import traveling.location.weather.WeatherStringResource

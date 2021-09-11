@@ -2,7 +2,7 @@ package gameState.location
 
 import traveling.direction.Direction
 import org.junit.Test
-import traveling.location.location.LocationNode
+import traveling.location.network.LocationNode
 import kotlin.test.assertEquals
 
 class LocationNodeTest {
