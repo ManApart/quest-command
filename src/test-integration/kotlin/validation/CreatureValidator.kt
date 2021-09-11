@@ -7,7 +7,7 @@ import core.utility.JsonDirectoryParser
 class CreatureValidator {
     private val creatureMap by lazy { JsonDirectoryParser.parseDirectory("/data/generated/content/creatures", ::parseFile) }
     private val itemMap by lazy { JsonDirectoryParser.parseDirectory("/data/generated/content/items", ::parseFile) }
-    private fun parseFile(path: String): List<MutableMap<String, Any>> = jacksonObjectMapper().readValue(this::class.getResourceAsStream(path))
+    private fun parseFile(path: String): List<MutableMap<String, Any>> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 
     fun validate(): Int {
         return noDuplicateNames() +

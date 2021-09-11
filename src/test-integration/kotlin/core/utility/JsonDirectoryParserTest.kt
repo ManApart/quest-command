@@ -30,5 +30,5 @@ class JsonDirectoryParserTest {
 
     }
 
-    private fun parseFile(path: String): List<LocationRecipe> = jacksonObjectMapper().readValue(this::class.getResourceAsStream(path))
+    private fun parseFile(path: String): List<LocationRecipe> = jacksonObjectMapper().readValue(this::class.java.getResourceAsStream(path))
 }

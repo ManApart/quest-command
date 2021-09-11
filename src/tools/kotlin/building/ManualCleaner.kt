@@ -5,14 +5,15 @@ import core.reflection.ReflectionTools
 import magic.spellCommands.SpellCommand
 import java.io.File
 import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 
 
 fun main() {
     val classes = ReflectionTools.getClasses(Command::class)
     val spellClasses = ReflectionTools.getClasses(SpellCommand::class)
 
-    classes.forEach { clean(it, it.declaredConstructors.first().newInstance() as Command) }
-    spellClasses.forEach { clean(it, it.declaredConstructors.first().newInstance() as SpellCommand) }
+    classes.forEach { clean(it, it.primaryConstructor!!.call() as Command) }
+    spellClasses.forEach { clean(it, it.primaryConstructor!!.call() as SpellCommand) }
 //    spellClasses.filter { it.simpleName == "Adrenaline" }.forEach { clean(it, it.declaredConstructors.first().newInstance() as SpellCommand) }
 //    classes.filter { it.simpleName == "SpeakCommand"}.forEach { clean(it, it.declaredConstructors.first().newInstance() as Command) }
 //    clean(classes.first(), classes.first().declaredConstructors.first().newInstance() as Command)
@@ -21,7 +22,7 @@ fun main() {
 
 fun clean(clazz: KClass<*>, command: Command) {
     val description = command.getDescription()
-    val name = clazz.simpleName.replace("Command", "")
+    val name = clazz.simpleName!!.replace("Command", "")
     val aliases = listOf(name) + command.getAliases()
     clean(clazz, description, aliases)
 }
@@ -42,7 +43,7 @@ private fun cleanDescription(line: String, description: String, aliases: List<St
 }
 
 private fun clean(clazz: KClass<*>, description: String, aliases: List<String>) {
-    val classFile = File("./src/main/kotlin/" + clazz.name.replace(".", "/") + ".kt")
+    val classFile = File("./src/main/kotlin/" + clazz.simpleName!!.replace(".", "/") + ".kt")
     val classText = classFile.readText().split("\n").toMutableList()
 
     val descriptionSignature = classText.lineOf("override fun getDescription(): String {")
