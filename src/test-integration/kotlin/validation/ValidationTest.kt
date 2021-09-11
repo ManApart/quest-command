@@ -9,6 +9,7 @@ This tool should validate things the compiler doesn't know to check, like unique
 class ValidationTest {
 
     //TODO - once no json, update this to validate per dsl
+    //TODO - validate no duplicate names
     @Test
     fun allValidationsPass() {
 //        val warnings =
