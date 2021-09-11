@@ -1,7 +1,7 @@
 package inventory
 
 import core.DependencyInjector
-import core.body.BodyManager
+import core.body.*
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
@@ -12,11 +12,9 @@ import inventory.putItem.TransferItemEvent
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
-import traveling.location.location.NOWHERE_NODE
+
+import traveling.location.location.*
+
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -24,12 +22,12 @@ class TransferItemTakeTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         NOWHERE_NODE.getLocation().clear()

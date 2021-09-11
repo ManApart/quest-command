@@ -11,7 +11,7 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
-import core.body.BodyManager
+import core.body.*
 import core.commands.CommandParser
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
@@ -20,47 +20,49 @@ import core.events.EventListenersMock
 import core.events.EventManager
 import core.properties.*
 import core.target.Target
+import core.target.TargetBuilder
 import core.target.activator.ACTIVATOR_TAG
 import core.target.activator.ActivatorManager
-import core.target.activator.ActivatorParser
+import core.target.activator.dsl.ActivatorsCollection
+import core.target.activator.dsl.ActivatorsMock
 import core.target.creature.CREATURE_TAG
-import core.target.creature.CreatureParser
 import core.target.item.ITEM_TAG
 import core.target.item.ItemManager
-import core.target.item.ItemParser
-import crafting.RecipeFakeParser
+import core.target.item.ItemsCollection
+import core.target.item.ItemsMock
+import core.target.target
 import crafting.RecipeManager
-import crafting.RecipeParser
+import crafting.RecipesCollection
+import crafting.RecipesMock
 import inventory.createInventoryBody
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
 import quests.QuestManager
 import quests.StoryEventsCollection
 import quests.StoryEventsMock
-import status.conditions.ConditionFakeParser
 import status.conditions.ConditionManager
-import status.conditions.ConditionParser
-import status.effects.EffectFakeParser
+import status.conditions.ConditionsCollection
+import status.conditions.ConditionsGenerated
 import status.effects.EffectManager
-import status.effects.EffectParser
+import status.effects.EffectsCollection
+import status.effects.EffectsMock
 import status.stat.STRENGTH
-import system.ActivatorFakeParser
-import system.BodyFakeParser
-import system.ItemFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
-import traveling.location.weather.WeatherFakeParser
+import traveling.location.location.*
 import traveling.location.weather.WeatherManager
-import traveling.location.weather.WeatherParser
+import traveling.location.weather.WeathersCollection
+import traveling.location.weather.WeathersMock
 
 fun createItem(name: String = "Apple", weight: Int = 1): Target {
-    return Target(
-        name, properties = Properties(
-            Values(mapOf("weight" to weight.toString())),
-            Tags(listOf(ITEM_TAG))
-        )
-    )
+    return createItemBuilder(name, weight).build()
+}
+
+fun createItemBuilder(name: String = "Apple", weight: Int = 1): TargetBuilder {
+    return target(name) {
+        props {
+            value("weight" to weight)
+            tag(ITEM_TAG)
+        }
+    }
 }
 
 //Pouch is a container that is also an item
@@ -114,7 +116,7 @@ fun createPackMule(strength: Int = 1): Target {
 
 fun createMockedGame() {
     DependencyInjector.clearAllImplementations()
-    DependencyInjector.setImplementation(ActivatorParser::class.java, ActivatorFakeParser())
+    DependencyInjector.setImplementation(ActivatorsCollection::class.java, ActivatorsMock())
     ActivatorManager.reset()
 
     DependencyInjector.setImplementation(AIActionsCollection::class.java, AIActionsMock())
@@ -124,31 +126,31 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(BehaviorsCollection::class.java, BehaviorsMock())
     BehaviorManager.reset()
 
-    DependencyInjector.setImplementation(LocationParser::class.java, BodyFakeParser.parserWithFakePlayer())
+    DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock.withFakePlayer())
+    DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
     BodyManager.reset()
-
-//    DependencyInjector.setImplementation(CreatureParser::class.java, Creature())
 
     DependencyInjector.setImplementation(CommandsCollection::class.java, CommandsMock())
 
-    DependencyInjector.setImplementation(ConditionParser::class.java, ConditionFakeParser())
+    DependencyInjector.setImplementation(ConditionsCollection::class.java, ConditionsGenerated())
     ConditionManager.reset()
 
     DependencyInjector.setImplementation(DialoguesCollection::class.java, DialoguesMock())
 
-    DependencyInjector.setImplementation(EffectParser::class.java, EffectFakeParser())
+    DependencyInjector.setImplementation(EffectsCollection::class.java, EffectsMock())
     EffectManager.reset()
 
     DependencyInjector.setImplementation(EventListenersCollection::class.java, EventListenersMock())
     EventManager.reset()
 
-    DependencyInjector.setImplementation(ItemParser::class.java, ItemFakeParser())
+    DependencyInjector.setImplementation(ItemsCollection::class.java, ItemsMock())
     ItemManager.reset()
 
-    DependencyInjector.setImplementation(LocationParser::class.java, LocationFakeParser())
+    DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+    DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
     LocationManager.reset()
 
-    DependencyInjector.setImplementation(RecipeParser::class.java, RecipeFakeParser())
+    DependencyInjector.setImplementation(RecipesCollection::class.java, RecipesMock())
     RecipeManager.reset()
 
     DependencyInjector.setImplementation(StoryEventsCollection::class.java, StoryEventsMock())
@@ -156,11 +158,7 @@ fun createMockedGame() {
 
     DependencyInjector.setImplementation(SpellCommandsCollection::class.java, SpellCommandsMock())
 
-//    DependencyInjector.setImplementation(Reflections::class.java, MockReflections())
-
-//    DependencyInjector.setImplementation(ResourceHelper::class.java, FakeR())
-
-    DependencyInjector.setImplementation(WeatherParser::class.java, WeatherFakeParser())
+    DependencyInjector.setImplementation(WeathersCollection::class.java, WeathersMock())
     WeatherManager.reset()
 
     EventManager.clear()

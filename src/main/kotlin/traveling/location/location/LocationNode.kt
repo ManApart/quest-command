@@ -13,7 +13,7 @@ import kotlin.math.abs
 val DEFAULT_NETWORK = Network("Wilderness")
 val NOWHERE_NODE = LocationNode("Nowhere")
 
-class LocationNode(
+data class LocationNode(
         override val name: String,
         val locationName: String = name,
         val parent: String = DEFAULT_NETWORK.name,

@@ -8,15 +8,29 @@ import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.ai.dsl.AIResource
+import core.body.BodyPartResource
+import core.body.BodyResource
 import core.commands.Command
 import core.conditional.ConditionalString
 import core.events.EventListener
+import core.target.TargetBuilder
+import core.target.activator.dsl.ActivatorResource
+import core.target.creature.CreatureResource
+import core.target.item.ItemResource
+import crafting.RecipeBuilder
+import crafting.RecipeResource
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import quests.StoryEvent
 import quests.StoryEventResource
-import traveling.location.location.LocationDescriptionResource
+import status.conditions.ConditionRecipe
+import status.conditions.ConditionResource
+import status.effects.EffectBase
+import status.effects.EffectResource
+import traveling.location.location.*
+import traveling.location.weather.Weather
+import traveling.location.weather.WeatherResource
 import traveling.location.weather.WeatherStringResource
 import java.io.File
 import java.lang.reflect.Modifier
@@ -37,10 +51,21 @@ object ReflectionTools {
 
         generateResourcesFile(AIResource::class.java, AIBase::class.java)
         generateResourcesFile(AIActionResource::class.java, AIAction::class.java)
+        generateResourcesFile(ActivatorResource::class.java, TargetBuilder::class.java)
+        generateResourcesFile(ConditionResource::class.java, ConditionRecipe::class.java)
+        generateResourcesFile(BodyResource::class.java, NetworkBuilder::class.java)
+        generateResourcesFile(BodyPartResource::class.java, LocationRecipeBuilder::class.java)
+        generateResourcesFile(CreatureResource::class.java, TargetBuilder::class.java)
+        generateResourcesFile(ItemResource::class.java, TargetBuilder::class.java)
         generateResourcesFile(BehaviorResource::class.java, Behavior::class.java)
         generateResourcesFile(DialogueResource::class.java, Dialogue::class.java)
+        generateResourcesFile(EffectResource::class.java, EffectBase::class.java)
+        generateResourcesFile(LocationResource::class.java, LocationRecipeBuilder::class.java)
         generateResourcesFile(LocationDescriptionResource::class.java, ConditionalString::class.java)
+        generateResourcesFile(NetworkResource::class.java, NetworkBuilder::class.java)
+        generateResourcesFile(RecipeResource::class.java, RecipeBuilder::class.java)
         generateResourcesFile(StoryEventResource::class.java, StoryEvent::class.java)
+        generateResourcesFile(WeatherResource::class.java, Weather::class.java)
         generateResourcesFile(WeatherStringResource::class.java, ConditionalString::class.java)
     }
 
@@ -154,15 +179,18 @@ object ReflectionTools {
         val packageName = resourceInterface.packageName.replace(".", "/")
         val file = File("./src/test/kotlin/$packageName/${newClassName}sMock.kt")
         file.parentFile.mkdirs()
-        file.printWriter().use {
-            it.print(
-                """
+        //Only generate an initial sketch, but let the user update it and keep their changes
+        if (!file.exists()) {
+            file.printWriter().use {
+                it.print(
+                    """
                 package ${resourceInterface.packageName}
                 import ${collectedClass.name}
 
                 class ${newClassName}sMock(override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
             """.trimIndent()
-            )
+                )
+            }
         }
     }
 

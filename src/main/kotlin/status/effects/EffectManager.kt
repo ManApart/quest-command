@@ -2,6 +2,7 @@ package status.effects
 
 import core.DependencyInjector
 import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 import traveling.location.location.Location
 
 object EffectManager {
@@ -12,8 +13,8 @@ object EffectManager {
     }
 
     private fun loadEffects(): NameSearchableList<EffectBase> {
-        val parser = DependencyInjector.getImplementation(EffectParser::class.java)
-        return parser.loadEffects()
+        val parser = DependencyInjector.getImplementation(EffectsCollection::class.java)
+        return parser.values.toNameSearchableList()
     }
 
     // should effects be parsable from json as well as effect bases?

@@ -7,7 +7,9 @@ import traveling.position.Vector
 import traveling.location.location.*
 
 class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
+
     constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes), base.locationRecipes.map { LocationRecipe(it) })
+
     constructor(name: String, locationRecipe: LocationRecipe) : this(name, listOf(LocationNode(name, locationName = locationRecipe.name)), listOf(locationRecipe))
 
     private val locationNodes = NameSearchableList(locationNodes, LocationNode(name, isRoot = true, network = this, parent = this.name))
@@ -19,6 +21,11 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         locationNodes.forEach {
             it.network = this
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        //This isn't as precise as I'd like because we need to avoid recursive equals
+        return other is Network && name == other.name && rootNode.name == other.rootNode.name && locationNodes.size == other.locationNodes.size
     }
 
     private fun findRootNode(): LocationNode {

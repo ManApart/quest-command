@@ -1,16 +1,21 @@
 package traveling.location.weather
 
 import core.DependencyInjector
+import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 
 val DEFAULT_WEATHER = Weather("Still", "The air is completely still.")
 
 object WeatherManager {
-    private var parser = DependencyInjector.getImplementation(WeatherParser::class.java)
-    private var weather = parser.loadWeather()
+    private var weather = loadWeather()
+
+    private fun loadWeather(): NameSearchableList<Weather> {
+        val collection = DependencyInjector.getImplementation(WeathersCollection::class.java)
+        return collection.values.toNameSearchableList()
+    }
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(WeatherParser::class.java)
-        weather = parser.loadWeather()
+        weather = loadWeather()
     }
 
     fun weatherExists(name: String): Boolean {

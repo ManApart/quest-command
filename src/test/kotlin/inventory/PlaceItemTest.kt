@@ -4,14 +4,12 @@ import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
+import core.body.*
 import core.target.Target
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
 import traveling.location.location.*
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -20,16 +18,16 @@ class PlaceItemTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock()
         DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         NOWHERE_NODE.getLocation().clear()

@@ -11,14 +11,14 @@ const val LIGHT = "Light"
 
 //TODO - combine items and equipped items
 //only do equip check if slots exist
-class LocationRecipe(
+data class LocationRecipe(
         override val name: String,
         private val description: ConditionalStringPointer = ConditionalStringPointer(""),
         val activators: List<LocationTarget> = listOf(),
         val creatures: List<LocationTarget> = listOf(),
         val items: List<LocationTarget> = listOf(),
         val weatherChangeFrequency: Int = 5,
-        private val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
+        val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
         val properties: Properties = Properties(),
         val slots: List<String> = listOf()
 ) : Named {

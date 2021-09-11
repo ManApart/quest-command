@@ -3,14 +3,13 @@ package quests
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
-import core.body.BodyManager
+import core.body.*
 import core.target.Target
 import org.junit.BeforeClass
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationParser
+
+import traveling.location.location.*
+
 import use.interaction.InteractEvent
 import kotlin.test.assertEquals
 
@@ -20,12 +19,12 @@ class QuestListenerTest {
         @JvmStatic
         @BeforeClass
         fun setup() {
-            val bodyParser = BodyFakeParser()
-            DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+            DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+            DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
             BodyManager.reset()
 
-            val locationParser = LocationFakeParser()
-            DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+            DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+            DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
             LocationManager.reset()
 
             GameState.player = GameManager.newPlayer()

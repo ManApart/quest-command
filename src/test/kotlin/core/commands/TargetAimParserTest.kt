@@ -4,14 +4,11 @@ import assertContainsByName
 import assertEqualsByName
 import core.DependencyInjector
 import core.GameState
-import core.body.BodyManager
+import core.body.*
 import core.target.Target
 import createMockedGame
 import org.junit.Test
-import system.BodyFakeParser
-import traveling.location.location.LocationNode
-import traveling.location.location.LocationParser
-import traveling.location.location.LocationRecipe
+import traveling.location.location.*
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)
@@ -28,21 +25,28 @@ class TargetAimParserTest {
         init {
             createMockedGame()
 
-            val bodyParser = BodyFakeParser(
-                    listOf(
-                            LocationNode(name = "bodyPartA", parent = "Human"),
-                            LocationNode(name = "bodyPartA", parent = "testBody"),
-                            LocationNode(name = "bodyPartB", parent = "testBody"),
-                            LocationNode(name = "bodyPartC", parent = "testBody")
-                    ),
-                    listOf(
-                            bodyPartA,
-                            bodyPartB,
-                            bodyPartC
-                    )
+            val bodyCollection = BodysMock(
+                networks {
+                    network("Human") {
+                        locationNode("bodyPartA")
+                    }
+                    network("testBody") {
+                        locationNode("bodyPartA")
+                        locationNode("bodyPartB")
+                        locationNode("bodyPartC")
+                    }
+                }
+            )
+            val bodyPartCollection = BodyPartsMock(
+                locations {
+                    location("bodyPartA")
+                    location("bodyPartB")
+                    location("bodyPartC")
+                }
             )
 
-            DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+            DependencyInjector.setImplementation(BodysCollection::class.java, bodyCollection)
+            DependencyInjector.setImplementation(BodyPartsCollection::class.java, bodyPartCollection)
             BodyManager.reset()
         }
 
@@ -57,7 +61,6 @@ class TargetAimParserTest {
         }
 
     }
-
 
 
     @Test

@@ -10,13 +10,11 @@ import core.utility.max
 import traveling.direction.Direction
 import traveling.position.Vector
 import traveling.location.Network
-import traveling.location.location.Location
-import traveling.location.location.LocationRecipe
-import traveling.location.location.LocationNode
+import traveling.location.location.*
 
 val NONE = Body("None")
 
-class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
+data class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
 
     constructor(base: Body) : this(base.name, Network(base.layout))
 
@@ -105,7 +103,7 @@ class Body(override val name: String = "None", val layout: Network = Network(nam
     fun getDefaultSlot(item: Target): Slot {
         return getEmptyEquipSlot(item)
                 ?: item.equipSlots.firstOrNull { canEquip(it) }
-                ?: throw IllegalArgumentException("Found no Slot for $item for body $name. This should not happen!")
+                ?: throw IllegalArgumentException("Found no slot for $item for body $name. This should not happen!")
     }
 
     fun getEmptyEquipSlot(item: Target): Slot? {

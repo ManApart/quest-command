@@ -30,7 +30,9 @@ import traveling.location.location.NOWHERE_NODE
 import kotlin.math.max
 import kotlin.math.min
 
-open class Target(
+//TODO - can we get rid of optional constructor params once we're using DSL to handle them?
+//Extract out json parsing logic to another class to make this guy more sane
+class Target(
         name: String,
         base: Target? = null,
         private val params: Map<String, String> = mapOf(),
@@ -50,6 +52,12 @@ open class Target(
 ) : Named {
 
     override val name = name.apply(params)
+
+    //TODO - replace this with data class equals once constructor is cleaned up
+    override fun equals(other: Any?): Boolean {
+        return other is Target && other.name == name && ai.name == other.ai.name && body == other.body && location == other.location && parent == other.parent && inventory == other.inventory && soul == other.soul && properties == other.properties
+    }
+
     val ai = discernAI(ai, aiName)
 
     val body: Body = getBody(body, base?.body, bodyName)

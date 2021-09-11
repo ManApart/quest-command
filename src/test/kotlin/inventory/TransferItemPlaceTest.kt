@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
+import core.body.*
 import core.properties.CAN_HOLD
 import core.properties.COUNT
 import core.properties.Properties
@@ -20,8 +20,6 @@ import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
 import org.junit.Before
 import org.junit.Test
-import system.BodyFakeParser
-import system.location.LocationFakeParser
 import traveling.location.location.*
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -31,16 +29,16 @@ class TransferItemPlaceTest {
 
     @Before
     fun setup() {
-        val bodyParser = BodyFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, BodysMock())
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock()
         DependencyInjector.setImplementation(BehaviorsCollection::class.java, behaviorParser)
         BehaviorManager.reset()
 
-        val locationParser = LocationFakeParser()
-        DependencyInjector.setImplementation(LocationParser::class.java, locationParser)
+        DependencyInjector.setImplementation(NetworksCollection::class.java, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class.java, LocationsMock())
         LocationManager.reset()
 
         NOWHERE_NODE.getLocation().clear()
@@ -80,13 +78,23 @@ class TransferItemPlaceTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val hand = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
-        val part = LocationRecipe("part")
+        val bodyMock = BodysMock(networks{
+            network("body"){
+                locationNode("Hand")
+            }
+            network("none"){
+                locationNode("part")
+            }
+        })
+        val bodyPartMock = BodyPartsMock(locations {
+            location("Hand") {
+                slot("Grip", "Glove")
+            }
+            location("part")
+        })
 
-        val bodyParser = BodyFakeParser(
-                listOf(LocationNode(name = "Hand", parent = "body"), LocationNode(name = "part", parent = "none")),
-                listOf(hand, part))
-        DependencyInjector.setImplementation(LocationParser::class.java, bodyParser)
+        DependencyInjector.setImplementation(BodysCollection::class.java, bodyMock)
+        DependencyInjector.setImplementation(BodyPartsCollection::class.java, bodyPartMock)
         BodyManager.reset()
 
         val creature = createChest()
@@ -180,8 +188,6 @@ class TransferItemPlaceTest {
         val creature = Target("Creature")
         val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
-
-//        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator"))))
 
         val chest = createChest(size = 0)
 

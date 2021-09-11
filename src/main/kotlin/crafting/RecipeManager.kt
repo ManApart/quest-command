@@ -5,12 +5,12 @@ import core.target.Target
 import core.DependencyInjector
 
 object RecipeManager {
-    private var parser = DependencyInjector.getImplementation(RecipeParser::class.java)
-    private var recipes = parser.loadRecipes()
+    private var parser = DependencyInjector.getImplementation(RecipesCollection::class.java)
+    private var recipes = parser.values.build()
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(RecipeParser::class.java)
-        recipes = parser.loadRecipes()
+        parser = DependencyInjector.getImplementation(RecipesCollection::class.java)
+        recipes = parser.values.build()
     }
 
     fun getRecipe(name: String): Recipe {

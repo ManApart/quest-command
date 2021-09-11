@@ -18,6 +18,10 @@ class Values(properties: Map<String, String> = mapOf()) {
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is Values && properties.toSortedMap() == other.properties.toSortedMap()
+    }
+
     private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
         val parsed = mutableMapOf<String, String>()
         properties.entries.forEach {

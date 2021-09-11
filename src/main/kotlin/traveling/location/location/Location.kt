@@ -1,6 +1,7 @@
 package traveling.location.location
 
 import core.GameState
+import core.body.NONE
 import core.events.EventManager
 import core.history.display
 import core.properties.CONTAINER
@@ -22,17 +23,25 @@ import traveling.location.weather.Weather
 import traveling.location.weather.WeatherManager
 
 class Location(
-        val locationNode: LocationNode,
-        private val activators: NameSearchableList<Target> = NameSearchableList(),
-        private val creatures: NameSearchableList<Target> = NameSearchableList(),
-        private val items: NameSearchableList<Target> = NameSearchableList(),
-        private val other: NameSearchableList<Target> = NameSearchableList(),
-        val properties: Properties = Properties(),
-        initialize: Boolean = false,
-        recipe: LocationRecipe? = null
+    val locationNode: LocationNode,
+    private val activators: NameSearchableList<Target> = NameSearchableList(),
+    private val creatures: NameSearchableList<Target> = NameSearchableList(),
+    private val items: NameSearchableList<Target> = NameSearchableList(),
+    private val other: NameSearchableList<Target> = NameSearchableList(),
+    val properties: Properties = Properties(),
+    initialize: Boolean = false,
+    recipe: LocationRecipe? = null
 
 ) : Named {
-    constructor(locationNode: LocationNode) : this(locationNode, NameSearchableList<Target>(), NameSearchableList<Target>(), NameSearchableList<Target>(), NameSearchableList<Target>(), Properties(), true)
+    constructor(locationNode: LocationNode) : this(
+        locationNode,
+        NameSearchableList<Target>(),
+        NameSearchableList<Target>(),
+        NameSearchableList<Target>(),
+        NameSearchableList<Target>(),
+        Properties(),
+        true
+    )
 
     private val locationRecipe = recipe ?: locationNode.getLocationRecipe()
     var weather: Weather = DEFAULT_WEATHER

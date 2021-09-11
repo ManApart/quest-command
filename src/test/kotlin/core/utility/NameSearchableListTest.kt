@@ -3,6 +3,7 @@ package core.utility
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import kotlin.test.assertFalse
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -299,6 +300,41 @@ class NameSearchableListTest {
 
         val actual = list.get("ATarget")
         assertEquals(target, actual)
+    }
+
+    @Test
+    fun equalsMethod() {
+        val target = NamedString("A Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(target)
+
+        val actual = NameSearchableList(target)
+        assertEquals(list, actual)
+    }
+
+    @Test
+    fun differentProxiesStillEqual() {
+        val target = NamedString("A Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(target)
+
+        val actual = NameSearchableList(target)
+        actual.addProxy(target, "Bob")
+        assertEquals(list, actual)
+    }
+
+    @Test
+    fun notEquals() {
+        val target = NamedString("A Target")
+        val target2 = NamedString("Not A Target")
+
+        val list = NameSearchableList<NamedString>()
+        list.add(target)
+
+        val actual = NameSearchableList(target2)
+        assertNotEquals(list, actual)
     }
 
 }
