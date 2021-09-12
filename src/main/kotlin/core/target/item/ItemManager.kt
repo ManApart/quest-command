@@ -32,6 +32,10 @@ object ItemManager {
         return names.map { getItem(it) }
     }
 
+    fun getAllItems(): List<Target> {
+        return items.toList()
+    }
+
     fun getItemsFromLocationTargets(targets: List<LocationTarget>): List<Target> {
         return targets.map {
             val item = Target(it.name, items.get(it.name), it.params)

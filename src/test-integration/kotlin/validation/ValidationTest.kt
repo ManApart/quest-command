@@ -8,19 +8,15 @@ This tool should validate things the compiler doesn't know to check, like unique
  */
 class ValidationTest {
 
-    //TODO - once no json, update this to validate per dsl
-    //TODO - validate no duplicate names
     @Test
     fun allValidationsPass() {
-//        val warnings =
-//                ActivatorValidator().validate() +
-//                        CommandValidator().validate() +
-//                        ConditionalStringValidator().validate() +
-//                        CreatureValidator().validate() +
-//                        LocationValidator().validate() +
-//                        QuestValidator().validate()
-//
-//        assertEquals(0, warnings)
+        val warnings =
+                ActivatorValidator().validate() +
+                        CommandValidator().validate() +
+                        ConditionalStringValidator().validate() +
+                        QuestValidator().validate()
+
+        assertEquals(0, warnings)
     }
 
 }

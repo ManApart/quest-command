@@ -29,6 +29,10 @@ object CreatureManager {
         return names.map { getCreature(it) }
     }
 
+    fun getAllCreatures(): List<Target> {
+        return creatures.toList()
+    }
+
     fun getCreaturesFromLocationTargets(targets: List<LocationTarget>): List<Target> {
         return targets.map {
             val creature = Target(it.name, creatures.get(it.name), it.params)
