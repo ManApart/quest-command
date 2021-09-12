@@ -87,31 +87,7 @@ class TargetBuilder(internal val name: String) {
      */
     fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
 
-    fun build(base: TargetBuilder? = null): Target {
-        val props = propsBuilder.build(base?.propsBuilder)
-        val params = paramsBuilder.build(base?.paramsBuilder)
-        val soul = soulBuilder.build(base?.soulBuilder).mapValues { it.value.toInt() }
-        val desc = description ?: base?.description ?: ConditionalStringPointer(name)
-        val body = bodyName ?: base?.bodyName
-        val allBehaviors = behaviors + (base?.behaviors ?: emptyList())
-        val allItems = itemNames + (base?.itemNames ?: listOf())
-
-        return Target(
-            name,
-            params = params,
-            ai = ai ?: base?.ai,
-            aiName = aiName ?: base?.aiName,
-            soulStats = ProtoSoul(soul),
-            dynamicDescription = desc,
-            behaviorRecipes = allBehaviors,
-            bodyName = body,
-            equipSlots = this.slots,
-            items = allItems,
-            properties = props,
-        )
-    }
-
-    fun build(bases: List<TargetBuilder>): Target {
+    fun build(bases: List<TargetBuilder> = listOf()): Target {
         val basesR = bases.reversed()
         val props = propsBuilder.build(bases.map { it.propsBuilder })
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })

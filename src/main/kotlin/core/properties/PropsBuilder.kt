@@ -18,13 +18,7 @@ class PropsBuilder {
         return Properties(Values(values.build()), Tags(tags))
     }
 
-    internal fun build(base: PropsBuilder?): Properties {
-        val ourProps = build()
-        val inheritedProps = base?.build()?.also { it.overrideWith(ourProps) }
-        return inheritedProps ?: ourProps
-    }
-
-    fun build(bases: List<PropsBuilder>): Properties {
+    fun build(bases: List<PropsBuilder> = listOf()): Properties {
         val built = (bases + listOf(this)).map { it.build() }
         return built.reduce { acc, props ->
             acc.overrideWith(props)

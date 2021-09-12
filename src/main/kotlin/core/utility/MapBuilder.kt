@@ -23,17 +23,7 @@ class MapBuilder {
         values[key] = value.toString()
     }
 
-    internal fun build(): Map<String, String> {
-        return values.toMap()
-    }
-
-    internal fun build(base: MapBuilder?): Map<String, String> {
-        return (base?.build()?.toMutableMap() ?: mutableMapOf()).also {
-            values.forEach { (key, value) -> it[key] = value }
-        }
-    }
-
-    fun build(bases: List<MapBuilder>): Map<String, String> {
+    fun build(bases: List<MapBuilder> = listOf()): Map<String, String> {
         val all = bases + listOf(this)
         val result = all.first().values.toMutableMap()
         all.subList(1, all.size).forEach { next ->
