@@ -23,7 +23,8 @@ data class LocationNode(
     var network: Network = DEFAULT_NETWORK,
     val isRoot: Boolean = false,
     @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
-    private val connections: MutableList<Connection> = mutableListOf()
+    private val connections: MutableList<Connection> = mutableListOf(),
+    var discovered: Boolean = true
 ) : Named {
     constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.protoConnections)
 

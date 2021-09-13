@@ -17,7 +17,7 @@ class ReadMap : EventListener<ReadMapEvent>() {
     }
 
     private fun getRoutesString(event: ReadMapEvent): String {
-        val routes = RouteNeighborFinder(event.target, event.depth).getNeighbors()
+        val routes = RouteNeighborFinder(event.target, event.depth, true, true).getNeighbors()
 
         return if (routes.isNotEmpty()) {
             val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))

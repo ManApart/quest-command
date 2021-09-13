@@ -55,6 +55,15 @@ class Items : ItemResource {
             behavior("Learn Recipe", "recipe" to "Apple Pie")
         }
 
+        target("Lantern") {
+            description("The metal cage is battered, and the glass seems to seep down towards the base.")
+            props {
+                value("fireHealth", 2)
+                value("litLight", 2)
+                tag("Metal", "Flammable", "Light")
+            }
+            behavior("Burn Out", "fireHealth" to 5)
+        }
 
     }
 

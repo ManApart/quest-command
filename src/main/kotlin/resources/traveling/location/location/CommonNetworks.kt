@@ -100,6 +100,22 @@ class CommonNetworks : NetworkResource {
             }
 
             locationNode("Apple Tree Branches")
+
+            locationNode("Barren Patch") {
+                connection("Cave Entrance", y = -100)
+            }
+            locationNode("Cave Entrance") {
+                connection("Cave Mouth")
+            }
+            locationNode("Cave Mouth") {
+                connection("Wall Crack") {
+                    target("Wall Crack")
+                    restricted(true)
+                    hidden(true)
+                    connectsTo("Cave Tunnel", "Kanbara Countryside")
+                }
+            }
+            locationNode("Cave Tunnel")
         }
     }
 }

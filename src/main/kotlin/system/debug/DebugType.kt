@@ -7,5 +7,6 @@ enum class DebugType(val propertyName: String) {
     RANDOM_SUCCEED("Ignore Random"),
     RANDOM_FAIL("Random Always Fails"),
     RANDOM_RESPONSE("Random Returns Number"),
-    DISPLAY_UPDATES("Display Updates")
+    DISPLAY_UPDATES("Display Updates"),
+    MAP_SHOW_ALL_LOCATIONS("Show All Map Locations")
 }

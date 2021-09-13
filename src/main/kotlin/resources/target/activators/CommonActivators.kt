@@ -145,6 +145,11 @@ class CommonActivators : ActivatorResource {
             behavior("Climbable")
         }
 
+        target("Wall Crack") {
+            description("This crack is large enough to squeeze through.")
+
+        }
+
     }
 
 }

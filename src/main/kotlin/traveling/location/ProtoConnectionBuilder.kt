@@ -9,10 +9,11 @@ class ProtoConnectionBuilder : VectorParent by VectorParentI() {
     private var part: String? = null
     private var restricted = false
     private var oneWay = false
+    private var hidden = false
     private var connectsTo: ProtoTarget? = null
 
     fun build(): ProtoConnection {
-        return ProtoConnection(target, part, vector, name, connectsTo, restricted, oneWay)
+        return ProtoConnection(target, part, vector, name, connectsTo, restricted, oneWay, hidden)
     }
 
     fun name(name: String) {
@@ -33,6 +34,10 @@ class ProtoConnectionBuilder : VectorParent by VectorParentI() {
 
     fun oneWay(yes: Boolean) {
         this.oneWay = yes
+    }
+
+    fun hidden(yes: Boolean) {
+        this.hidden = yes
     }
 
     fun connectsTo(protoTarget: ProtoTarget) {

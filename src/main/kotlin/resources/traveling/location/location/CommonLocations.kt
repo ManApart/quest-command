@@ -141,5 +141,19 @@ class CommonLocations : LocationResource {
             extends("Inside")
             activator("Grain Chute")
         }
+
+        location("Cave Entrance") {
+            extends("Outside")
+            item("Lantern")
+        }
+
+        location("Cave Mouth") {
+            extends("Inside")
+            activator("Wall Crack")
+        }
+
+        location("Cave Tunnel") {
+            extends("Inside")
+        }
     }
 }
