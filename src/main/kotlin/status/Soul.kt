@@ -6,18 +6,19 @@ import magic.ElementInteraction
 import status.conditions.Condition
 import status.stat.LeveledStat
 
-class Soul(val parent: Target, leveledStats: List<LeveledStat> = listOf(), stats: Map<String, Int> = mapOf()) {
-    private val leveledStats = leveledStats.map { LeveledStat(parent, it) }.toMutableList()
+fun soul(leveledStats: List<LeveledStat>, stats: Map<String, Int>): Soul {
+    return Soul(leveledStats.toMutableList()).also { it.addStats(stats) }
+}
+
+data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableListOf()) {
+//    private val leveledStats = leveledStats.map { LeveledStat(parent, it) }.toMutableList()
+    lateinit var parent: Target
     private val conditions = NameSearchableList<Condition>()
 
-    init {
-        addStats(stats)
-    }
-
     //TODO - make more precise, possibly use data class
-    override fun equals(other: Any?): Boolean {
-        return other is Soul && leveledStats.size == other.leveledStats.size && conditions.size == other.conditions.size
-    }
+//    override fun equals(other: Any?): Boolean {
+//        return other is Soul && leveledStats.size == other.leveledStats.size && conditions.size == other.conditions.size
+//    }
 
     fun incStat(name: String, amount: Int) {
         if (amount != 0) {
