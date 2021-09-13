@@ -30,7 +30,7 @@ class ReadMapTest {
     @Test
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
-        target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Vector(0, 10, 0)))
+        target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination", discovered = true)), Vector(0, 10, 0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()
@@ -45,10 +45,10 @@ class ReadMapTest {
     fun neighborsAreProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         val targetPoint = LocationPoint(target)
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("north")), Vector(0, 10, 0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south")), Vector(0, -10, 0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east")), Vector(10, 0, 0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west")), Vector(-10, 0, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("north", discovered = true)), Vector(0, 10, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south", discovered = true)), Vector(0, -10, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east", discovered = true)), Vector(10, 0, 0)))
+        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west", discovered = true)), Vector(-10, 0, 0)))
         val event = ReadMapEvent(target)
 
         val listener = ReadMap()

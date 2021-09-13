@@ -6,6 +6,7 @@ import system.persistance.clean
 import system.persistance.getFiles
 import traveling.location.location.LocationManager
 
+//TODO - save discovered
 fun persist(dataObject: Network, path: String, ignoredTargets: List<Target>) {
     val cleanedPath = clean(path, dataObject.name)
 
