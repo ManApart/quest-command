@@ -43,6 +43,10 @@ class LeveledStat(val name: String, private val parent: Target, level: Int = 1, 
         return "$name: lvl $level, $current/$max"
     }
 
+    fun copy(): LeveledStat {
+        return LeveledStat(name, parent, level, maxMultiplier, expExponential, max, current, xp)
+    }
+
     fun addEXP(amount: Int) {
         if (amount > 0) {
             xp += amount

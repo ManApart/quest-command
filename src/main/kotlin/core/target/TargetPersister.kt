@@ -1,5 +1,6 @@
 package core.target
 
+import core.ai.behavior.BehaviorRecipe
 import core.ai.behavior.getPersisted
 import core.conditional.getPersisted
 import core.conditional.readFromData
@@ -22,7 +23,7 @@ fun persist(dataObject: Target, path: String) {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.name
     data["aiName"] = dataObject.ai.name
-    data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
+//    data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
     data["description"] = getPersisted(dataObject.getDescriptionWithOptions())
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
@@ -44,7 +45,7 @@ fun load(path: String, parentLocation: Network? = null): Target {
     val data = loadMap(path)
     val name = data["name"] as String
     val aiName = data["aiName"] as String
-    val behaviors = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }.toMutableList()
+    val behaviors = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }
     val equipSlots = (data["equipSlots"] as List<List<String>>)
     val dynamicDescription = readFromData(data["description"] as Map<String, Any>)
     val location = getLocation(parentLocation, data)
@@ -52,11 +53,26 @@ fun load(path: String, parentLocation: Network? = null): Target {
 
     val bodyName = data["body"] as String
     val body = core.body.load(folderPath, bodyName)
+//    val soul = status.readFromData(data["soul"] as Map<String, Any>, target.soul)
 
-    val target = Target(name, null, params, null, aiName, behaviors, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
-    status.readFromData(data["soul"] as Map<String, Any>, target.soul)
+    return target(name) {
+//        param(params)
+        ai(aiName)
+        behavior(behaviors)
+//        body(body)
+        description(dynamicDescription)
+//        equipSlots(equipSlots)
+//        props(props)
 
-    return target
+
+    }.build().also {
+        it.location = location
+    }
+
+//    val target = Target(name, null, params, null, aiName, behaviors, body, null, equipSlots, dynamicDescription, listOf(), location, null, ProtoSoul(), props)
+//    status.readFromData(data["soul"] as Map<String, Any>, target.soul)
+//
+//    return target
 }
 
 @Suppress("UNCHECKED_CAST")

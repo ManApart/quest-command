@@ -8,10 +8,7 @@ import core.body.Slot
 import core.conditional.ConditionalStringPointer
 import core.events.Event
 import core.properties.*
-import core.utility.NameSearchableList
-import core.utility.Named
-import core.utility.apply
-import core.utility.max
+import core.utility.*
 import crafting.Recipe
 import inventory.Inventory
 import status.Soul
@@ -24,7 +21,7 @@ import traveling.position.Vector
 import kotlin.math.max
 import kotlin.math.min
 
-data class Target2(
+data class Target(
     override val name: String,
     private val dynamicDescription: ConditionalStringPointer,
     var location: LocationNode = NOWHERE_NODE,
@@ -44,7 +41,8 @@ data class Target2(
     var route: Route? = null
 
     init {
-//        soul.parent = this
+        ai.creature = this
+        soul.parent = this
     }
 
 
@@ -76,13 +74,11 @@ data class Target2(
     }
 
     fun isPlayer(): Boolean {
-        return false
-//        return this == GameState.player
+        return this == GameState.player
     }
 
     fun getTopParent(): Target {
-        return Target("Nope!")
-//        return parent?.getTopParent() ?: this
+        return parent?.getTopParent() ?: this
     }
 
     fun canConsume(event: Event): Boolean {
@@ -132,9 +128,9 @@ data class Target2(
         }
     }
 
-//    fun getEquippedSlot(body: Body): Slot {
-//        return equipSlots.first { it.itemIsEquipped(this, body) }
-//    }
+    fun getEquippedSlot(body: Body): Slot {
+        return equipSlots.first { it.itemIsEquipped(this, body) }
+    }
 
     fun findSlot(body: Body, attachPoint: String): Slot? {
         return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
@@ -155,29 +151,33 @@ data class Target2(
         return properties.values.getInt(WEIGHT, 1) + inventory.getWeight()
     }
 
-//    fun copy(count: Int): Target {
-//        val props = Properties(properties)
-//        props.values.put(COUNT, count)
-//        return Target(name, base = this, properties = props)
-//    }
+    fun copy(count: Int): Target {
+        val props = Properties(properties)
+        props.values.put(COUNT, count)
+        val body = body.copy()
+        val inventory = Inventory(inventory.name, body)
+        val soul = soul.copy()
+
+        return Target(name, dynamicDescription, location, parent, ai, body, equipSlots, inventory, props, soul, behaviors, knownRecipes.toNameSearchableList(), params)
+    }
 
     fun getPositionInLocation(part: Location): Vector {
         return body.getPositionInLocation(part, position)
     }
 
-//    fun isWithinRangeOf(creature: Target?): Boolean {
-//        if (creature == null
-//            || creature.inventory.exists(this)
-//            || getTopParent().location == NOWHERE_NODE
-//        ) {
-//            return true
-//        }
-//
-//        val range = creature.body.getRange()
-//        val centerOfCreature = creature.position + Vector(z = creature.body.getSize().z / 2)
-//        val distance = centerOfCreature.getDistance(position)
-//        return getTopParent().location == creature.getTopParent().location && range >= distance
-//    }
+    fun isWithinRangeOf(creature: Target?): Boolean {
+        if (creature == null
+            || creature.inventory.exists(this)
+            || getTopParent().location == NOWHERE_NODE
+        ) {
+            return true
+        }
+
+        val range = creature.body.getRange()
+        val centerOfCreature = creature.position + Vector(z = creature.body.getSize().z / 2)
+        val distance = centerOfCreature.getDistance(position)
+        return getTopParent().location == creature.getTopParent().location && range >= distance
+    }
 
     fun canReach(position: Vector): Boolean {
         val range = body.getRange()
@@ -204,9 +204,9 @@ data class Target2(
         return dynamicDescription
     }
 
-//    fun isSafe(): Boolean {
-//        return location.getLocation().isSafeFor(this) && !properties.values.getBoolean(IS_CLIMBING)
-//    }
+    fun isSafe(): Boolean {
+        return location.getLocation().isSafeFor(this) && !properties.values.getBoolean(IS_CLIMBING)
+    }
 
     fun canInteract(): Boolean {
         return !properties.values.getBoolean(IS_CLIMBING)

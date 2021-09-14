@@ -32,7 +32,7 @@ import kotlin.math.min
 
 //TODO - can we get rid of optional constructor params once we're using DSL to handle them?
 //Extract out json parsing logic to another class to make this guy more sane
-class Target(
+class TargetOld(
     name: String,
     base: Target? = null,
     private val params: Map<String, String> = mapOf(),

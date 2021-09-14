@@ -6,12 +6,13 @@ import core.properties.OPEN
 import core.properties.Properties
 import core.properties.SIZE
 import core.target.Target
+import core.target.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.location.Location
 
 
-data class Inventory(private val name: String = "Inventory", private val body: Body = createInventoryBody(name)) {
+data class Inventory(val name: String = "Inventory", private val body: Body = createInventoryBody(name)) {
     constructor(name: String, items: List<Target>) : this(name, Body().also { it.layout.rootNode.getLocation().addTargets(items) })
 
     override fun toString(): String {
@@ -48,6 +49,12 @@ data class Inventory(private val name: String = "Inventory", private val body: B
 
     private fun getItemsNameSearchable(): NameSearchableList<Target> {
         return getItems().toNameSearchableList()
+    }
+
+    fun addAllByName(items: List<String>) {
+        if (items.isNotEmpty()) {
+            addAll(ItemManager.getItems(items))
+        }
     }
 
     fun addAll(items: List<Target>) {

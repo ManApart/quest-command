@@ -4,7 +4,6 @@ import core.DependencyInjector
 import core.ai.action.AIAction
 import core.ai.action.dsl.AIActionsCollection
 import core.ai.dsl.AIsCollection
-import core.target.Target
 import core.utility.toNameSearchableList
 
 object AIManager {
@@ -24,11 +23,11 @@ object AIManager {
         actions = actionsCollection.values.toNameSearchableList()
     }
 
-    fun getAI(name: String?, creature: Target): AI {
+    fun getAI(name: String?): AI {
         return when {
-            name == PLAYER_CONTROLLED_ID -> playerControlledAI.createPlayerControlled(creature)
-            name != null && AIs.exists(name) -> AIs.get(name).createConditional(creature)
-            else -> defaultAI.createConditional(creature)
+            name == PLAYER_CONTROLLED_ID -> playerControlledAI.createPlayerControlled()
+            name != null && AIs.exists(name) -> AIs.get(name).createConditional()
+            else -> defaultAI.createConditional()
         }
     }
 
