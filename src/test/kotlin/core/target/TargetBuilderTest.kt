@@ -59,7 +59,7 @@ class TargetBuilderTest {
             "Jim",
             params = mapOf("another" to "thing"),
             body = BodyManager.getBody("Human"),
-            dynamicDescription = ConditionalStringPointer("A fine fellow"),
+            dynamicDescription = ConditionalStringPointer("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION),
             properties = Properties(Tags(listOf("Warrior")))
         )
 

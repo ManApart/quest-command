@@ -13,6 +13,7 @@ import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder
 import core.utility.MapBuilder
 import core.utility.applyNested
+import crafting.recipe
 import inventory.Inventory
 import status.Soul
 import traveling.location.network.LocationNode
@@ -32,6 +33,7 @@ class TargetBuilder(internal val name: String) {
     private var ai: AI? = null
     private var bodyName: String? = null
     private var location: LocationNode? = null
+    private var parent: Target? = null
 
     fun build(bases: List<TargetBuilder> = listOf()): Target {
         val basesR = bases.reversed()
@@ -56,6 +58,7 @@ class TargetBuilder(internal val name: String) {
             name,
             desc,
             loc,
+            parent,
             ai = discernAI(possibleAI, possibleAIName),
             params = params,
             soul = actualSoul,
@@ -87,10 +90,12 @@ class TargetBuilder(internal val name: String) {
     }
 
     fun param(vararg values: Pair<String, Any>) = this.paramsBuilder.entry(values.toList())
+    fun param(values: Map<String, Any>) = this.paramsBuilder.entry(values.toList())
     fun param(key: String, value: String) = paramsBuilder.entry(key, value)
     fun param(key: String, value: Int) = paramsBuilder.entry(key, value)
 
     fun soul(vararg values: Pair<String, Any>) = this.soulBuilder.entry(values.toList())
+    fun soul(values: List<Pair<String, Any>>) = this.soulBuilder.entry(values.toList())
     fun soul(key: String, value: String) = soulBuilder.entry(key, value)
     fun soul(key: String, value: Int) = soulBuilder.entry(key, value)
 
@@ -130,6 +135,11 @@ class TargetBuilder(internal val name: String) {
     }
 
     fun item(vararg itemName: String) = itemNames.addAll(itemName)
+    fun item(itemNames: List<String>) = this.itemNames.addAll(itemNames)
+
+    fun parent(parent: Target) {
+        this.parent = parent
+    }
 
     /**
      * Each string is a single attach point for a given slot. 5 strings = 5 slots
@@ -141,15 +151,27 @@ class TargetBuilder(internal val name: String) {
      */
     fun equipSlotOptions(vararg equipSlots: List<String>) = slots.addAll(equipSlots.map { it.toList() })
 
+    fun equipSlotOptions(equipSlots: List<Slot>) = slots.addAll(equipSlots.map { it.attachPoints })
+
     /**
      * Add a single equip slot, with each string being an attach point in that slot.
      * This means that an equip slot with 5 attachment points will require all 5 points to be empty in order to equip the item
      */
     fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
 
-    private fun unBuild(target: Target) : TargetBuilder {
-        return target(target.name){
-
+    private fun unBuild(t: Target): TargetBuilder {
+        return target(t.name) {
+            description(t.dynamicDescription)
+            location(t.location)
+            t.parent?.let { parent(t.parent) }
+            ai(t.ai)
+//            body(t.body)
+            equipSlotOptions(t.equipSlots)
+            item(t.inventory.getAllItems().map { it.name })
+//            props
+            soul(t.soul.getStats().map { it.name to it.level })
+//            behaviors
+            param(t.params)
         }
     }
 

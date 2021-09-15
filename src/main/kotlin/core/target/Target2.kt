@@ -25,7 +25,7 @@ import kotlin.math.min
 
 data class Target(
     override val name: String,
-    private val dynamicDescription: ConditionalStringPointer = ConditionalStringPointer(name),
+    val dynamicDescription: ConditionalStringPointer = ConditionalStringPointer(name),
     var location: LocationNode = NOWHERE_NODE,
     val parent: Target? = null,
     val ai: AI = DumbAI(),
@@ -36,7 +36,7 @@ data class Target(
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
     val knownRecipes: NameSearchableList<Recipe> = NameSearchableList(),
-    private val params: Map<String, String> = mapOf()
+    val params: Map<String, String> = mapOf()
 ) : Named {
     var position = Vector()
     var climbTarget: Target? = null
@@ -45,10 +45,6 @@ data class Target(
     init {
         ai.creature = this
         soul.parent = this
-    }
-
-    override fun toString(): String {
-        return getDisplayName()
     }
 
     fun getDisplayName(): String {

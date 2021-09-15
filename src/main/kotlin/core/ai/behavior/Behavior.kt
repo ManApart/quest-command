@@ -3,7 +3,7 @@ package core.ai.behavior
 import core.events.Event
 import quests.ConditionalEvents
 
-class Behavior<E : Event>(
+data class Behavior<E : Event>(
         val name: String,
         private val triggeredEvent: ConditionalEvents<E>
 ) {
