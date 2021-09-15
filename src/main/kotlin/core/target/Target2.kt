@@ -2,8 +2,10 @@ package core.target
 
 import core.GameState
 import core.ai.AI
+import core.ai.DumbAI
 import core.ai.behavior.Behavior
 import core.body.Body
+import core.body.NONE
 import core.body.Slot
 import core.conditional.ConditionalStringPointer
 import core.events.Event
@@ -23,15 +25,15 @@ import kotlin.math.min
 
 data class Target(
     override val name: String,
-    private val dynamicDescription: ConditionalStringPointer,
+    private val dynamicDescription: ConditionalStringPointer = ConditionalStringPointer(name),
     var location: LocationNode = NOWHERE_NODE,
     val parent: Target? = null,
-    val ai: AI,
-    val body: Body,
+    val ai: AI = DumbAI(),
+    val body: Body = Body("None"),
     val equipSlots: List<Slot> = listOf(),
     val inventory: Inventory = Inventory(name, body),
-    val properties: Properties,
-    val soul: Soul,
+    val properties: Properties = Properties(),
+    val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
     val knownRecipes: NameSearchableList<Recipe> = NameSearchableList(),
     private val params: Map<String, String> = mapOf()
@@ -44,7 +46,6 @@ data class Target(
         ai.creature = this
         soul.parent = this
     }
-
 
     override fun toString(): String {
         return getDisplayName()

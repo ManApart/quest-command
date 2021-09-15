@@ -6,6 +6,7 @@ import core.DependencyInjector
 import core.GameState
 import core.body.*
 import core.target.Target
+import core.target.target
 import createMockedGame
 import org.junit.Test
 import traveling.location.location.*
@@ -51,8 +52,8 @@ class TargetAimParserTest {
             BodyManager.reset()
         }
 
-        private val targetA = Target("targetA", bodyName = "testBody")
-        private val targetB = Target("targetB", bodyName = "testBody")
+        private val targetA = target("targetA") { body("testBody") }.build()
+        private val targetB = target("targetB") { body("testBody") }.build()
 
         private val scope = GameState.currentLocation()
 

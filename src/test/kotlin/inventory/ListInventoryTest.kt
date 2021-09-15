@@ -7,6 +7,7 @@ import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
 import core.target.item.ITEM_TAG
+import core.target.target
 import createClosedChest
 import createItem
 import createMockedGame
@@ -18,7 +19,7 @@ import kotlin.test.assertEquals
 class ListInventoryTest {
 
     @Before
-    fun setup(){
+    fun setup() {
         createMockedGame()
     }
 
@@ -47,8 +48,11 @@ class ListInventoryTest {
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
-        val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
-        val item = Target("Chestplate", equipSlots = listOf(listOf("Chest")), properties = Properties(tags = Tags(ITEM_TAG)))
+        val creature = target("Soldier") {
+            body("body")
+            props { tag("Container")}
+        }.build()
+        val item = Target("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
         creature.body.equip(item)
         val event = ListInventoryEvent(creature)
@@ -59,7 +63,7 @@ class ListInventoryTest {
     @Test
     fun listInventoryEquippedNested() {
         val item = createItem("Apple")
-        val pouch = Target("Pouch", equipSlots = listOf(listOf("Chest")), properties = Properties(tags = Tags(ITEM_TAG)))
+        val pouch = Target("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         pouch.inventory.add(item)
 
         val chest = locationRecipe("Chest") { slot("Chest") }
@@ -68,7 +72,10 @@ class ListInventoryTest {
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
-        val creature = Target("Soldier", bodyName = "body", properties = Properties(tags = Tags(listOf("Container"))))
+        val creature = target("Soldier") {
+            body("body")
+            props { tag("Container")}
+        }.build()
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 

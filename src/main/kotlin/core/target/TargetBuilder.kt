@@ -15,6 +15,8 @@ import core.utility.MapBuilder
 import core.utility.applyNested
 import inventory.Inventory
 import status.Soul
+import traveling.location.network.LocationNode
+import traveling.location.network.NOWHERE_NODE
 
 class TargetBuilder(internal val name: String) {
     private var propsBuilder = PropsBuilder()
@@ -29,6 +31,46 @@ class TargetBuilder(internal val name: String) {
     private var aiName: String? = null
     private var ai: AI? = null
     private var bodyName: String? = null
+    private var location: LocationNode? = null
+
+    fun build(bases: List<TargetBuilder> = listOf()): Target {
+        val basesR = bases.reversed()
+        val props = propsBuilder.build(bases.map { it.propsBuilder })
+        val params = paramsBuilder.build(bases.map { it.paramsBuilder })
+        val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
+        val actualSoul = Soul(soulStats)
+        val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
+
+        val body = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
+            ?.let { BodyManager.getBody(it) } ?: Body()
+        val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
+        val allItems = itemNames + bases.flatMap { it.itemNames }
+        val inventory = Inventory(name, body)
+        inventory.addAllByName(allItems)
+        val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
+        val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
+        val equipSlots = slots.applyNested(params).map { Slot(it) }
+        val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
+
+        return Target(
+            name,
+            desc,
+            loc,
+            ai = discernAI(possibleAI, possibleAIName),
+            params = params,
+            soul = actualSoul,
+            behaviors = allBehaviors,
+            body = body,
+            equipSlots = equipSlots,
+            inventory = inventory,
+            properties = props,
+        )
+    }
+
+    fun buildWithBase(builders: Map<String, TargetBuilder>): Target {
+        val bases = this.bases + baseNames.map { builders[it]!! }
+        return build(bases)
+    }
 
     /**
      * Note that each time this function is used, the latter extends object will win any extension conflicts.
@@ -38,6 +80,7 @@ class TargetBuilder(internal val name: String) {
      */
     fun extends(other: String) = baseNames.add(other)
     fun extends(other: TargetBuilder) = bases.add(other)
+    fun extends(other: Target) = bases.add(unBuild(other))
 
     fun props(initializer: PropsBuilder.() -> Unit) {
         propsBuilder.apply(initializer)
@@ -82,6 +125,10 @@ class TargetBuilder(internal val name: String) {
         this.bodyName = body
     }
 
+    fun location(location: LocationNode) {
+        this.location = location
+    }
+
     fun item(vararg itemName: String) = itemNames.addAll(itemName)
 
     /**
@@ -100,41 +147,10 @@ class TargetBuilder(internal val name: String) {
      */
     fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
 
-    fun build(bases: List<TargetBuilder> = listOf()): Target {
-        val basesR = bases.reversed()
-        val props = propsBuilder.build(bases.map { it.propsBuilder })
-        val params = paramsBuilder.build(bases.map { it.paramsBuilder })
-        val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
-        val actualSoul = Soul(soulStats)
-        val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
+    private fun unBuild(target: Target) : TargetBuilder {
+        return target(target.name){
 
-        val body = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
-            ?.let { BodyManager.getBody(it) } ?: Body()
-        val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
-        val allItems = itemNames + bases.flatMap { it.itemNames }
-        val inventory = Inventory(name, body)
-        inventory.addAllByName(allItems)
-        val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
-        val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
-        val equipSlots = slots.applyNested(params).map { Slot(it) }
-
-        return Target(
-            name,
-            desc,
-            ai = discernAI(possibleAI, possibleAIName),
-            params = params,
-            soul = actualSoul,
-            behaviors = allBehaviors,
-            body = body,
-            equipSlots = equipSlots,
-            inventory = inventory,
-            properties = props,
-        )
-    }
-
-    fun buildWithBase(builders: Map<String, TargetBuilder>): Target {
-        val bases = this.bases + baseNames.map { builders[it]!! }
-        return build(bases)
+        }
     }
 
     private fun discernAI(ai: AI?, aiName: String?): AI {

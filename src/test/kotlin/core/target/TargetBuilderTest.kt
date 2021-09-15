@@ -30,15 +30,15 @@ class TargetBuilderTest {
 
     @Test
     fun basicBuild() {
+        val behaviors = listOf(BehaviorRecipe("Burnable", mapOf("fireHealth" to "1"))).map { BehaviorManager.getBehavior(it) }
         val expected = Target(
             "Bob",
             params = mapOf("this" to "that"),
             body = BodyManager.getBody("Human"),
             dynamicDescription = ConditionalStringPointer("A normal dude"),
-            behaviorRecipes = listOf(BehaviorRecipe("Burnable", mapOf("fireHealth" to "1"))),
+            behaviors = behaviors,
             properties = Properties(Tags(listOf("Person")))
         )
-
 
         val actual = target("Bob") {
             description("A normal dude")

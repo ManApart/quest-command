@@ -102,7 +102,7 @@ class TransferItemPlaceTest {
         BodyManager.reset()
 
         val creature = createChest()
-        val item = Target("Dagger", equipSlots = listOf(listOf("Grip")), properties = Properties(tags = Tags(ITEM_TAG)))
+        val item = Target("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
 
 

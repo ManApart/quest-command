@@ -3,6 +3,8 @@ package core.target.creature
 import core.DependencyInjector
 import core.target.Target
 import core.target.build
+import core.target.item.ItemManager
+import core.target.target
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.location.LocationTarget
@@ -22,7 +24,9 @@ object CreatureManager {
     }
 
     private fun getCreature(name: String): Target {
-        return Target(name, creatures.get(name))
+        return target(name){
+            extends(creatures.get(name))
+        }.build()
     }
 
     fun getCreatures(names: List<String>): List<Target> {
@@ -35,7 +39,9 @@ object CreatureManager {
 
     fun getCreaturesFromLocationTargets(targets: List<LocationTarget>): List<Target> {
         return targets.map {
-            val creature = Target(it.name, creatures.get(it.name), it.params)
+            val creature = target(it.name){
+                extends(creatures.get(it.name))
+            }.build()
 
             if (!it.location.isNullOrBlank()) {
                 creature.properties.values.put("locationDescription", it.location)

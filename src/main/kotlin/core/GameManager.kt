@@ -1,11 +1,13 @@
 package core
 
+import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParser
 import core.conditional.ConditionalStringPointer
 import core.events.EventManager
 import core.history.ChatHistory
 import core.target.Target
 import core.target.item.ItemManager
+import core.target.target
 import quests.QuestManager
 import status.stat.*
 import system.persistance.getGameNames
@@ -65,7 +67,12 @@ object GameManager {
             body: String = "Human",
             location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
     ): Target {
-        val player = Target(name = name, dynamicDescription = dynamicDescription, aiName = core.ai.PLAYER_CONTROLLED_ID, bodyName = body, location = location)
+        val player = target(name){
+            description(dynamicDescription)
+            ai(PLAYER_CONTROLLED_ID)
+            body(body)
+            location(location)
+        }.build()
 
         with(player.soul) {
             addStat(HEALTH, 1, 10, 1)

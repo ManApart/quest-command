@@ -3,6 +3,7 @@ package core.target.item
 import core.DependencyInjector
 import core.target.Target
 import core.target.build
+import core.target.target
 import core.utility.NameSearchableList
 import traveling.location.location.LocationTarget
 
@@ -25,7 +26,9 @@ object ItemManager {
     }
 
     fun getItem(name: String): Target {
-        return Target(name, items.get(name))
+        return target(name){
+            extends(items.get(name))
+        }.build()
     }
 
     fun getItems(names: List<String>): List<Target> {
@@ -38,7 +41,9 @@ object ItemManager {
 
     fun getItemsFromLocationTargets(targets: List<LocationTarget>): List<Target> {
         return targets.map {
-            val item = Target(it.name, items.get(it.name), it.params)
+            val item = target(it.name){
+                extends(items.get(it.name))
+            }.build()
             if (!it.location.isNullOrBlank()) {
                 item.properties.values.put("locationDescription", it.location)
             }

@@ -6,6 +6,8 @@ import core.GameManager
 import core.GameState
 import core.events.EventManager
 import core.target.Target
+import core.target.activator.ActivatorManager
+import core.target.target
 import createMockedGame
 import org.junit.Before
 import org.junit.Test
@@ -24,7 +26,9 @@ class AttackCommandTest {
 
     @Test
     fun attackCreatureWithoutDirection() {
-        val rat = Target("Rat", bodyName = "human")
+        val rat = target("Rat"){
+            body("human")
+        }.build()
         GameState.currentLocation().addTarget(rat)
 
         command.execute("sl", "rat".split(" "))

@@ -4,6 +4,8 @@ import core.DependencyInjector
 import core.target.Target
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.build
+import core.target.creature.CreatureManager
+import core.target.target
 import core.utility.NameSearchableList
 import traveling.location.location.LocationTarget
 
@@ -22,7 +24,9 @@ object ActivatorManager {
     }
 
     fun getActivator(name: String): Target {
-        return Target(name, activators.get(name))
+        return target(name){
+            extends(activators.get(name))
+        }.build()
     }
 
     fun getActivators(names: List<String>): List<Target> {
@@ -31,7 +35,9 @@ object ActivatorManager {
 
     fun getActivatorsFromLocationTargets(targets: List<LocationTarget>): List<Target> {
         return targets.map {
-            val activator = Target(it.name, activators.get(it.name), it.params)
+            val activator = target(it.name){
+                extends(activators.get(it.name))
+            }.build()
             if (!it.location.isNullOrBlank()) {
                 activator.properties.values.put("locationDescription", it.location)
             }
