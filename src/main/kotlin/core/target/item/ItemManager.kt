@@ -43,6 +43,7 @@ object ItemManager {
         return targets.map {
             val item = target(it.name){
                 extends(items.get(it.name))
+                param(it.params)
             }.build()
             if (!it.location.isNullOrBlank()) {
                 item.properties.values.put("locationDescription", it.location)

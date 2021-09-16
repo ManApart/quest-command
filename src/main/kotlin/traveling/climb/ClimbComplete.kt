@@ -19,7 +19,10 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
             display("You climb back off ${event.climbTarget.name}.")
         }
 
-        EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, "Climb", silent = climbBackOff))
+        val position = event.origin.location.getPositionRelativeTo(event.destination.location)
+        val method = if (position != null && position.z > 0) "descend" else "climb"
+
+        EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, method, silent = climbBackOff))
         GameState.player.finishClimbing()
     }
 }

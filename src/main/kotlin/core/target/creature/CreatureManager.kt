@@ -41,6 +41,7 @@ object CreatureManager {
         return targets.map {
             val creature = target(it.name){
                 extends(creatures.get(it.name))
+                param(it.params)
             }.build()
 
             if (!it.location.isNullOrBlank()) {

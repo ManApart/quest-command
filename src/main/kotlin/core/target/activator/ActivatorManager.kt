@@ -37,6 +37,7 @@ object ActivatorManager {
         return targets.map {
             val activator = target(it.name){
                 extends(activators.get(it.name))
+                param(it.params)
             }.build()
             if (!it.location.isNullOrBlank()) {
                 activator.properties.values.put("locationDescription", it.location)

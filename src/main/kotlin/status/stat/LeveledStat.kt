@@ -1,10 +1,6 @@
 package status.stat
 
-import core.events.EventManager
 import core.target.Target
-import status.LevelUpEvent
-import status.statChanged.StatMaxedEvent
-import status.statChanged.StatMinnedEvent
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -31,8 +27,19 @@ const val FIRE_MAGIC = "FireMagic"
 const val WATER_MAGIC = "WaterMagic"
 
 
-class LeveledStat(val name: String, private val parent: Target, level: Int = 1, private var maxMultiplier: Int = 1, val expExponential: Int = 2, max: Int? = null, current: Int? = null, xp: Double? = null) {
-    constructor(parent: Target, base: LeveledStat) : this(base.name, parent, base.level, base.maxMultiplier, base.expExponential)
+class LeveledStat(
+    val name: String,
+    level: Int = 1,
+    private var maxMultiplier: Int = 1,
+    val expExponential: Int = 2,
+    max: Int? = null,
+    current: Int? = null,
+    xp: Double? = null,
+    private val levelUp: (LeveledStat, Int) -> Unit = { _, _ -> },
+    private val statMinned: (String) -> Unit = { },
+    private val statMaxed: (String) -> Unit = { },
+) {
+    constructor(parent: Target, base: LeveledStat) : this(base.name, base.level, base.maxMultiplier, base.expExponential)
 
     var level: Int = level; private set
     var max: Int = max ?: getBaseMaxAtCurrentLevel(); private set
@@ -44,7 +51,7 @@ class LeveledStat(val name: String, private val parent: Target, level: Int = 1, 
     }
 
     fun copy(): LeveledStat {
-        return LeveledStat(name, parent, level, maxMultiplier, expExponential, max, current, xp)
+        return LeveledStat(name, level, maxMultiplier, expExponential, max, current, xp)
     }
 
     fun addEXP(amount: Int) {
@@ -55,7 +62,7 @@ class LeveledStat(val name: String, private val parent: Target, level: Int = 1, 
             determineLevel()
             if (level > oldLevel) {
                 max++
-                EventManager.postEvent(LevelUpEvent(parent, this, level))
+                levelUp(this, level)
             }
         }
     }
@@ -72,9 +79,9 @@ class LeveledStat(val name: String, private val parent: Target, level: Int = 1, 
 
             if (current != oldVal) {
                 if (current == 0) {
-                    EventManager.postEvent(StatMinnedEvent(parent, name))
+                    statMinned(name)
                 } else if (current == max) {
-                    EventManager.postEvent(StatMaxedEvent(parent, name))
+                    statMaxed(name)
                 }
             }
         }
@@ -86,7 +93,7 @@ class LeveledStat(val name: String, private val parent: Target, level: Int = 1, 
             current = min(max, current)
 
             if (current == 0) {
-                EventManager.postEvent(StatMinnedEvent(parent, name))
+                statMinned(name)
             }
         }
     }

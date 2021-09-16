@@ -12,6 +12,6 @@ class StartConversation : EventListener<StartConversationEvent>() {
     override fun execute(event: StartConversationEvent) {
         GameState.conversation = Conversation(event.speaker, event.listener)
         CommandParser.commandInterceptor = ConversationCommandInterceptor()
-        display("${event.speaker} starts talking with ${event.listener}. You can end conversation by saying 'goodbye'.")
+        display("${event.speaker.name} starts talking with ${event.listener.name}. You can end conversation by saying 'goodbye'.")
     }
 }

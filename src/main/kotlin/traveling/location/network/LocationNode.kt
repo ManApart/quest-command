@@ -57,16 +57,16 @@ data class LocationNode(
 
     fun getNeighbors(direction: Direction): List<LocationNode> {
         return connections.asSequence()
-                .filter { it.vector.direction == direction }
-                .map { it.destination.location }
-                .toList()
+            .filter { it.vector.direction == direction }
+            .map { it.destination.location }
+            .toList()
     }
 
     fun getNeighborsInGeneralDirection(direction: Direction): List<LocationNode> {
         return connections.asSequence()
-                .filter { it.vector.isInGeneralDirection(direction) }
-                .map { it.destination.location }
-                .toList()
+            .filter { it.vector.isInGeneralDirection(direction) }
+            .map { it.destination.location }
+            .toList()
     }
 
     fun getLocationRecipe(): LocationRecipe {
@@ -172,11 +172,15 @@ data class LocationNode(
         return direction != Direction.NONE && (furthestNodes.isEmpty() || furthestNodes.contains(this))
     }
 
-    fun discoverSelfAndNeighbors(){
+    fun discoverSelfAndNeighbors() {
         this.discovered = true
         connections.filter { !it.hidden }.map { it.destination.location }.forEach { neighbor ->
             neighbor.discovered = true
         }
+    }
+
+    fun getPositionRelativeTo(neighbor: LocationNode): Vector? {
+        return connections.firstOrNull { it.destination.location == neighbor }?.vector?.invert()
     }
 
 }

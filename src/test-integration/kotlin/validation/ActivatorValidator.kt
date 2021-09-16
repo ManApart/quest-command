@@ -10,8 +10,7 @@ class ActivatorValidator {
     private val activators = ActivatorManager.getAll()
 
     fun validate(): Int {
-        return noDuplicateNames() +
-                behaviorsExist()
+        return noDuplicateNames()
 
     }
 
@@ -29,17 +28,5 @@ class ActivatorValidator {
         return warnings
     }
 
-    private fun behaviorsExist(): Int {
-        var warnings = 0
-        activators.forEach { activator ->
-            activator.behaviorRecipes.forEach { name ->
-                if (!BehaviorManager.behaviorExists(name)) {
-                    println("WARN: Activator '${activator.name}' references nonexistent behavior: ${name}.")
-                    warnings++
-                }
-            }
-        }
-        return warnings
-    }
 
 }

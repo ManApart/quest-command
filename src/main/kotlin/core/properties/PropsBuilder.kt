@@ -10,9 +10,15 @@ class PropsBuilder {
         this.tags.addAll(tags)
     }
 
+    fun value(values: Map<String, Any>) = this.values.entry(values)
     fun value(vararg values: Pair<String, Any>) = this.values.entry(values.toList())
     fun value(key: String, value: String) = values.entry(key, value)
     fun value(key: String, value: Int) = values.entry(key, value)
+
+    fun props(properties: Properties){
+        tags.addAll(properties.tags.getAll())
+        value(properties.values.getAll())
+    }
 
     internal fun build(): Properties {
         return Properties(Values(values.build()), Tags(tags))

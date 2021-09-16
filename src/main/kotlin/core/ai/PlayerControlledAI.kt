@@ -10,7 +10,7 @@ const val PLAYER_CONTROLLED_ID = "Player Controlled"
 
 class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
     override fun hear(event: DialogueEvent) {
-        display("" + event.speaker + ": " + event.line)
+        display("" + event.speaker.name + ": " + event.line)
     }
 
     override fun takeAction() {

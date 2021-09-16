@@ -13,7 +13,7 @@ fun getPersisted(dataObject: Soul): Map<String, Any> {
 
 @Suppress("UNCHECKED_CAST")
 fun readFromData(data: Map<String, Any>, soul: Soul) {
-    val stats = (data["stats"] as List<Map<String, Any>>).map { status.stat.readFromData(it, soul.parent) }
+    val stats = (data["stats"] as List<Map<String, Any>>).map { status.stat.readFromData(it) }
     val conditions = (data["conditions"] as List<Map<String, Any>>).map { status.conditions.readFromData(it, soul.parent) }
 
     soul.overrideStats(stats)

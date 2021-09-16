@@ -10,6 +10,7 @@ import core.body.BodyManager
 import core.body.Slot
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
+import core.properties.Properties
 import core.properties.PropsBuilder
 import core.utility.MapBuilder
 import core.utility.applyNested
@@ -31,11 +32,13 @@ class TargetBuilder(internal val name: String) {
     private val slots = mutableListOf<List<String>>()
     private var aiName: String? = null
     private var ai: AI? = null
+    private var body: Body? = null
     private var bodyName: String? = null
     private var location: LocationNode? = null
     private var parent: Target? = null
 
-    fun build(bases: List<TargetBuilder> = listOf()): Target {
+    fun build(additionalBases: List<TargetBuilder> = listOf()): Target {
+        val bases = bases + additionalBases
         val basesR = bases.reversed()
         val props = propsBuilder.build(bases.map { it.propsBuilder })
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })
@@ -43,15 +46,18 @@ class TargetBuilder(internal val name: String) {
         val actualSoul = Soul(soulStats)
         val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
 
-        val body = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
-            ?.let { BodyManager.getBody(it) } ?: Body()
+        val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
+        val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
+        val body = discernBody(possibleBody, possibleBodyName)
+
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
         val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
         val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
-        val equipSlots = slots.applyNested(params).map { Slot(it) }
+        val ai = discernAI(possibleAI, possibleAIName)
+        val equipSlots = (slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) }
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
 
         return Target(
@@ -59,7 +65,7 @@ class TargetBuilder(internal val name: String) {
             desc,
             loc,
             parent,
-            ai = discernAI(possibleAI, possibleAIName),
+            ai = ai,
             params = params,
             soul = actualSoul,
             behaviors = allBehaviors,
@@ -71,7 +77,7 @@ class TargetBuilder(internal val name: String) {
     }
 
     fun buildWithBase(builders: Map<String, TargetBuilder>): Target {
-        val bases = this.bases + baseNames.map { builders[it]!! }
+        val bases = baseNames.map { builders[it]!! }
         return build(bases)
     }
 
@@ -87,6 +93,10 @@ class TargetBuilder(internal val name: String) {
 
     fun props(initializer: PropsBuilder.() -> Unit) {
         propsBuilder.apply(initializer)
+    }
+
+    fun props(properties: Properties) {
+        propsBuilder.props(properties)
     }
 
     fun param(vararg values: Pair<String, Any>) = this.paramsBuilder.entry(values.toList())
@@ -129,6 +139,9 @@ class TargetBuilder(internal val name: String) {
     fun body(body: String) {
         this.bodyName = body
     }
+    fun body(body: Body) {
+        this.body = body
+    }
 
     fun location(location: LocationNode) {
         this.location = location
@@ -165,10 +178,10 @@ class TargetBuilder(internal val name: String) {
             location(t.location)
             t.parent?.let { parent(t.parent) }
             ai(t.ai)
-//            body(t.body)
+            body(Body(t.body))
             equipSlotOptions(t.equipSlots)
             item(t.inventory.getAllItems().map { it.name })
-//            props
+            props(t.properties)
             soul(t.soul.getStats().map { it.name to it.level })
 //            behaviors
             param(t.params)
@@ -180,6 +193,14 @@ class TargetBuilder(internal val name: String) {
             ai != null -> ai
             aiName != null -> AIManager.getAI(aiName)
             else -> DumbAI()
+        }
+    }
+
+    private fun discernBody(possibleBody: Body?, possibleBodyName: String?): Body {
+        return when {
+            possibleBody != null -> possibleBody
+            possibleBodyName != null ->  BodyManager.getBody(possibleBodyName)
+            else -> Body()
         }
     }
 

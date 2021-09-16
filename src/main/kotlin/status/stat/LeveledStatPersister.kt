@@ -12,9 +12,8 @@ fun getPersisted(dataObject: LeveledStat): Map<String, Any> {
     return data
 }
 
-fun readFromData(data: Map<String, Any>, parent: Target): LeveledStat {
+fun readFromData(data: Map<String, Any>): LeveledStat {
     return LeveledStat(data["name"] as String,
-            parent,
             data["level"] as Int,
             data["maxMultiplier"] as Int,
             data["expExponential"] as Int,

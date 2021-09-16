@@ -1,22 +1,16 @@
 package status
 
+import core.events.EventManager
 import core.target.Target
 import core.utility.NameSearchableList
 import magic.ElementInteraction
 import status.conditions.Condition
 import status.stat.LeveledStat
-
-//fun soul(leveledStats: List<LeveledStat>, stats: Map<String, Int>): Soul {
-//    return Soul(leveledStats.toMutableList()).also { it.addStats(stats) }
-//}
-//
-//fun soul(stats: Map<String, Int>): Soul {
-//    return Soul().also { it.addStats(stats) }
-//}
+import status.statChanged.StatMaxedEvent
+import status.statChanged.StatMinnedEvent
 
 data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableListOf()) {
-//    private val leveledStats = leveledStats.map { LeveledStat(parent, it) }.toMutableList()
-    constructor(stats: Map<String, Int>) : this(){
+    constructor(stats: Map<String, Int>) : this() {
         addStats(stats)
     }
 
@@ -31,6 +25,18 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
     fun copy(): Soul {
         val newStats = leveledStats.map { it.copy() }.toMutableList()
         return Soul(newStats)
+    }
+
+    private fun levelUp(stat: LeveledStat, newLevel: Int) {
+        EventManager.postEvent(LevelUpEvent(parent, stat, newLevel))
+    }
+
+    private fun statMinned(stat: String) {
+        EventManager.postEvent(StatMinnedEvent(parent, stat))
+    }
+
+    private fun statMaxed(stat: String) {
+        EventManager.postEvent(StatMaxedEvent(parent, stat))
     }
 
     fun incStat(name: String, amount: Int) {
@@ -63,7 +69,7 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
     }
 
     fun addStat(name: String, level: Int = 1, maxMultiplier: Int = 1, expExponential: Int = 2) {
-        leveledStats.add(LeveledStat(name, parent, level, maxMultiplier, expExponential))
+        leveledStats.add(LeveledStat(name, level, maxMultiplier, expExponential, levelUp = ::levelUp, statMinned = ::statMinned, statMaxed = ::statMaxed))
     }
 
     fun hasStat(name: String): Boolean {

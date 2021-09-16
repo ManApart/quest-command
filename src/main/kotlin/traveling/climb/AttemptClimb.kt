@@ -70,10 +70,10 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
         val directionString = getDirectionString(event.desiredDirection)
-        if (distance == 0) {
-            display("You climb ${event.targetPart.name}.")
-        } else {
-            display("You climb $distance ft$directionString towards ${event.targetPart.name}.")
+        when {
+            distance == 0 && event.desiredDirection == Direction.BELOW -> display("You descend ${event.targetPart.name}.")
+            distance == 0 -> display("You climb ${event.targetPart.name}.")
+            else ->display("You climb $distance ft$directionString towards ${event.targetPart.name}.")
         }
 
         GameState.player.setClimbing(event.target)

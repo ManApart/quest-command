@@ -104,7 +104,7 @@ class AttackCommand : Command() {
 
     private fun clarifyTarget(keyword: String, weaponName: String) {
         val options = GameState.currentLocation().getTargets()
-        val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ")}"
+        val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message, options.associate { it.name to "$keyword ${it.name}" })
         CommandParser.setResponseRequest(response)
     }
