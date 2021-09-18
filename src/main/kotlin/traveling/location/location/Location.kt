@@ -22,15 +22,14 @@ import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherManager
 
-class Location(
+data class Location(
     val locationNode: LocationNode,
     private val activators: NameSearchableList<Target> = NameSearchableList(),
     private val creatures: NameSearchableList<Target> = NameSearchableList(),
     private val items: NameSearchableList<Target> = NameSearchableList(),
     private val other: NameSearchableList<Target> = NameSearchableList(),
     val properties: Properties = Properties(),
-    initialize: Boolean = false,
-    recipe: LocationRecipe? = null
+    private val recipe: LocationRecipe = locationNode.getLocationRecipe()
 ) : Named {
     constructor(locationNode: LocationNode) : this(
         locationNode,
@@ -38,41 +37,33 @@ class Location(
         NameSearchableList<Target>(),
         NameSearchableList<Target>(),
         NameSearchableList<Target>(),
-        Properties(),
-        true
-    )
-
-    private val locationRecipe = recipe ?: locationNode.getLocationRecipe()
-    var weather: Weather = DEFAULT_WEATHER
-
-    //    var needsSaved = false
-    private var lastWeatherChange: Long = GameState.timeManager.getTicks()
-    private var equippedItems: MutableMap<String, Target?> = locationRecipe.slots.associate { it.lowercase() to null }.toMutableMap()
-
-    init {
-        if (initialize) {
-            populateFromProtoLocation()
-        }
+        Properties()
+    ){
+        populateFromProtoLocation()
     }
+
+    var weather: Weather = DEFAULT_WEATHER
+    private var lastWeatherChange: Long = GameState.timeManager.getTicks()
+    private var equippedItems: MutableMap<String, Target?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
 
     override val name: String
         get() = locationNode.name
 
     override fun toString(): String {
-        return locationRecipe.name
+        return recipe.name
     }
 
     private fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.getLocationRecipe().properties)
 
-        if (locationRecipe.activators.isNotEmpty()) {
-            addTargets(ActivatorManager.getActivatorsFromLocationTargets(locationRecipe.activators))
+        if (recipe.activators.isNotEmpty()) {
+            addTargets(ActivatorManager.getActivatorsFromLocationTargets(recipe.activators))
         }
-        if (locationRecipe.creatures.isNotEmpty()) {
-            addTargets(CreatureManager.getCreaturesFromLocationTargets(locationRecipe.creatures))
+        if (recipe.creatures.isNotEmpty()) {
+            addTargets(CreatureManager.getCreaturesFromLocationTargets(recipe.creatures))
         }
-        if (locationRecipe.items.isNotEmpty()) {
-            addTargets(ItemManager.getItemsFromLocationTargets(locationRecipe.items))
+        if (recipe.items.isNotEmpty()) {
+            addTargets(ItemManager.getItemsFromLocationTargets(recipe.items))
         }
 
         changeWeatherIfEnoughTimeHasPassed()
@@ -100,7 +91,7 @@ class Location(
 
     fun equipItem(attachPoint: String, item: Target) {
         if (!equippedItems.containsKey(attachPoint.lowercase())) {
-            display("Couldn't equip $item to $attachPoint of body part ${locationRecipe.name}. This should never happen!")
+            display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
         } else {
             equippedItems[attachPoint.lowercase()] = item
             addTarget(item)
@@ -262,8 +253,8 @@ class Location(
     }
 
     fun changeWeatherIfEnoughTimeHasPassed() {
-        if (lastWeatherChange == 0L || GameState.timeManager.getHoursPassed(lastWeatherChange) >= locationRecipe.weatherChangeFrequency) {
-            updateWeather(WeatherManager.getWeather(locationRecipe.getWeatherName()))
+        if (lastWeatherChange == 0L || GameState.timeManager.getHoursPassed(lastWeatherChange) >= recipe.weatherChangeFrequency) {
+            updateWeather(WeatherManager.getWeather(recipe.getWeatherName()))
         }
     }
 

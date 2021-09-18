@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.Test
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -40,7 +39,7 @@ class LocationTest {
         val items = listOf(createItem("Apple", 5),
         createItem("Dagger", 5),
         createItem("Sword", 5))
-        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Size" to "3"))), items = items.toNameSearchableList())
+        val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values(mapOf("Size" to "3"))))
         val souls = location.getAllSouls()
         assertEquals(4, souls.size)
         assertTrue(souls.contains(GameState.player.soul))
