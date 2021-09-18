@@ -23,7 +23,7 @@ class PropsBuilder {
 
     internal fun build(params: Map<String, String> = mapOf()): Properties {
         val appliedTags = tags.apply(params).toMutableList()
-        val appliedValues = values.build().toMutableMap().apply(params)
+        val appliedValues = values.build().toMutableMap().apply(params).toMutableMap()
         return Properties(Values(appliedValues), Tags(appliedTags))
     }
 

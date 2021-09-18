@@ -23,14 +23,14 @@ class LocationTest {
     @Test
     fun hasRoomForItem(){
         val item = createItem("Apple", weight = 2)
-        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Size" to "3"))))
+        val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
         assertTrue(location.hasRoomFor(item))
     }
 
     @Test
     fun doesNotHaveRoomForItem(){
         val item = createItem("Apple", weight = 5)
-        val location = Location(LocationNode("Loc"), properties = Properties(Values(mapOf("Size" to "3"))))
+        val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
         assertFalse(location.hasRoomFor(item))
     }
 
@@ -39,14 +39,14 @@ class LocationTest {
         val items = listOf(createItem("Apple", 5),
         createItem("Dagger", 5),
         createItem("Sword", 5))
-        val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values(mapOf("Size" to "3"))))
+        val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values("Size" to "3")))
         val souls = location.getAllSouls()
         assertEquals(4, souls.size)
         assertTrue(souls.contains(GameState.player.soul))
     }
 
     private fun createItem(name: String, weight: Int) : Target {
-        return Target(name, properties = Properties(Values(mapOf("weight" to weight.toString()))))
+        return Target(name, properties = Properties(Values("weight" to weight.toString())))
     }
 
 }

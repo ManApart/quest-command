@@ -79,7 +79,7 @@ class CreatureTest {
 
     private fun createItem(weight: Int): Target {
         val properties = Properties(
-                Values(mapOf("weight" to weight.toString())),
+                Values("weight" to weight.toString()),
                 Tags(ITEM_TAG)
         )
         return Target("Target", properties = properties)

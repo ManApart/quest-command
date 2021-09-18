@@ -5,10 +5,13 @@ import core.utility.apply
 import core.utility.hasAllOf
 import core.utility.matches
 
-class Values(properties: Map<String, String> = mapOf()) {
-    constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params))
+data class Values(private val properties: MutableMap<String, String> = mutableMapOf()) {
+    constructor(vararg props: Pair<String, String>): this(props.toMap().toMutableMap())
+    constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params).toMutableMap())
 
-    private val properties = parseProperties(properties)
+    init {
+        parseProperties()
+    }
 
     override fun toString(): String {
         return if (properties.isEmpty()) {
@@ -22,12 +25,16 @@ class Values(properties: Map<String, String> = mapOf()) {
         return other is Values && properties.toSortedMap() == other.properties.toSortedMap()
     }
 
-    private fun parseProperties(properties: Map<String, String>): MutableMap<String, String> {
-        val parsed = mutableMapOf<String, String>()
-        properties.entries.forEach {
-            parsed[it.key.lowercase()] = it.value.lowercase()
+    override fun hashCode(): Int {
+        return properties.hashCode()
+    }
+
+    private fun parseProperties(){
+        val base = properties.toMap()
+        properties.clear()
+        base.entries.forEach {
+            properties[it.key.lowercase()] = it.value.lowercase()
         }
-        return parsed
     }
 
     fun getInt(key: String, default: Int = 0): Int {

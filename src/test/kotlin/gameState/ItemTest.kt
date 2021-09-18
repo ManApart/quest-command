@@ -13,7 +13,7 @@ class ItemTest {
     @Test
     fun canBeHeldByContainerWithProperties() {
         val item = Target("Apple", properties = Properties(tags = Tags("Raw")))
-        val properties = Properties(values = Values(mapOf("CanHold" to "Raw,Food")))
+        val properties = Properties(values = Values("CanHold" to "Raw,Food"))
         assertTrue(item.properties.canBeHeldByContainerWithProperties(properties))
     }
 
@@ -27,7 +27,7 @@ class ItemTest {
     @Test
     fun canBeHeldByContainerWithPropertiesNegative() {
         val item = Target("Apple", properties = Properties(tags = Tags("Small")))
-        val properties = Properties(values = Values(mapOf("CanHold" to "Raw,Food")))
+        val properties = Properties(values = Values("CanHold" to "Raw,Food"))
         assertFalse(item.properties.canBeHeldByContainerWithProperties(properties))
     }
 }

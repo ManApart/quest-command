@@ -68,7 +68,7 @@ class TakeItemTest {
     fun pickupSingleItemLeavesRestOfStack() {
         val creature = getCreatureWithCapacity()
         val location = creature.location.getLocation()
-        val item = Target("Apple",  properties = Properties(Values(mapOf(COUNT to "3")), Tags(ITEM_TAG)))
+        val item = Target("Apple",  properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
         location.addTarget(item)
 
         TakeItem().execute(TakeItemEvent(creature, item))

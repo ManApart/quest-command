@@ -47,7 +47,9 @@ import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
 import status.stat.STRENGTH
-import traveling.location.location.*
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationsCollection
+import traveling.location.location.LocationsMock
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
 import traveling.location.weather.WeatherManager
@@ -74,10 +76,8 @@ fun createPouch(size: Int = 5, weight: Int = 1): Target {
         body = createInventoryBody("Pouch", size),
         properties = Properties(
             Values(
-                mapOf(
-                    SIZE to size.toString(),
-                    WEIGHT to weight.toString()
-                )
+                SIZE to size.toString(),
+                WEIGHT to weight.toString()
             ),
             Tags(ITEM_TAG, CONTAINER, OPEN, ITEM_TAG)
         )
@@ -89,7 +89,7 @@ fun createChest(size: Int = 10): Target {
     return Target(
         "Chest", body = createInventoryBody("Chest", size),
         properties = Properties(
-            Values(mapOf(SIZE to size.toString())),
+            Values(SIZE to size.toString()),
             Tags(CONTAINER, OPEN, ACTIVATOR_TAG)
         )
     )
@@ -100,7 +100,7 @@ fun createClosedChest(size: Int = 10): Target {
         "Closed Chest",
         body = createInventoryBody("Closed Chest", size),
         properties = Properties(
-            Values(mapOf(SIZE to size.toString())),
+            Values(SIZE to size.toString()),
             Tags(CONTAINER, ACTIVATOR_TAG)
         )
     )
@@ -110,7 +110,7 @@ fun createPackMule(strength: Int = 1): Target {
     return Target(
         "Pack Mule", body = createInventoryBody("Pack Mule"),
         properties = Properties(
-            Values(mapOf(STRENGTH to strength.toString())),
+            Values(STRENGTH to strength.toString()),
             Tags(CONTAINER, OPEN, CREATURE_TAG)
         )
     )
