@@ -54,7 +54,7 @@ private fun testAttackTime(agility: Int, strength: Int, weaponSize: String, weap
     val recipe = LocationRecipe("hand", slots = listOf("hand"))
     val node = LocationNode("hand")
     val part = Location(node, recipe = recipe)
-    val weapon = Target("Weapon", properties = Properties(Values(mapOf("weight" to weaponWeight.toString())), Tags(listOf("Weapon", weaponSize))))
+    val weapon = Target("Weapon", properties = Properties(Values(mapOf("weight" to weaponWeight.toString())), Tags("Weapon", weaponSize)))
     creature.inventory.add(weapon)
     creature.inventory.add(Target("Dead weight", properties = Properties(Values(mapOf("weight" to otherWeight.toString())))))
     part.equipItem("hand", weapon)

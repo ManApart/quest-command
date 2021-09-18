@@ -2,11 +2,9 @@ package core.properties
 
 import core.utility.apply
 
-class Tags(tags: List<String> = listOf()) {
-    constructor(tag: String) : this(listOf(tag))
-    constructor(base: Tags, params: Map<String, String> = mapOf()) : this(base.tags.apply(params))
-
-    private val tags = tags.toMutableList()
+data class Tags(private val tags: MutableList<String> = mutableListOf()) {
+    constructor(vararg tags: String) : this(tags.toMutableList())
+    constructor(base: Tags, params: Map<String, String> = mapOf()) : this(base.tags.apply(params).toMutableList())
 
     override fun toString(): String {
         return tags.joinToString(", ")
@@ -14,6 +12,10 @@ class Tags(tags: List<String> = listOf()) {
 
     override fun equals(other: Any?): Boolean {
         return other is Tags && tags.sorted() == other.tags.sorted()
+    }
+
+    override fun hashCode(): Int {
+        return tags.hashCode()
     }
 
     fun has(tag: String): Boolean {

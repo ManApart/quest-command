@@ -2,10 +2,7 @@ package inventory
 
 import core.DependencyInjector
 import core.body.*
-import core.properties.COUNT
-import core.properties.Properties
-import core.properties.Tags
-import core.properties.Values
+import core.properties.*
 import core.target.Target
 import core.target.item.ITEM_TAG
 import createPouch
@@ -89,7 +86,7 @@ class TakeItemTest {
     }
 
     private fun getCreatureWithCapacity(): Target {
-        val creature = Target("Target", properties = Properties(tags = Tags(listOf("Container", "Open", "Creature"))))
+        val creature = Target("Target", properties = Properties(tags = Tags("Container", "Open", "Creature")))
 //        val pouch = Target("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)
         creature.inventory.add(pouch)

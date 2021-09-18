@@ -31,11 +31,11 @@ class RecipeBuilder(internal val name: String) {
     }
 
     fun ingredient(vararg tags: String) {
-        ingredients.add(RecipeIngredient(tags = Tags(tags.toList())))
+        ingredients.add(RecipeIngredient(tags = Tags(tags.toMutableList())))
     }
 
     fun ingredient(name: String, tags: List<String>) {
-        ingredients.add(RecipeIngredient(name, Tags(tags.toList())))
+        ingredients.add(RecipeIngredient(name, Tags(tags.toMutableList())))
     }
 
     fun toolProps(initializer: PropsBuilder.() -> Unit) {

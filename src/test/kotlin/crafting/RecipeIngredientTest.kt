@@ -31,7 +31,7 @@ class RecipeIngredientTest {
 
     @Test
     fun noErrorWithTags() {
-        val recipe = RecipeIngredient(tags = Tags(listOf("Tag")))
+        val recipe = RecipeIngredient(tags = Tags("Tag"))
         assertTrue(recipe.tags.has("Tag"))
     }
 }

@@ -9,7 +9,6 @@ import createMockedGame
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class RecipeManagerTest {
 
@@ -28,7 +27,7 @@ class RecipeManagerTest {
         }
         val recipe = recipeBuilder.build()
         val ingredients = listOf(Target("Apple"))
-        val tool = Target("Range", properties = Properties(tags = Tags(listOf("Range"))))
+        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
@@ -46,8 +45,8 @@ class RecipeManagerTest {
         }
         val recipe = recipeBuilder.build()
 
-        val ingredients = listOf(Target("Pear", properties = Properties(tags = Tags(listOf("Raw", "Fruit")))))
-        val tool = Target("Range", properties = Properties(tags = Tags(listOf("Range"))))
+        val ingredients = listOf(Target("Pear", properties = Properties(tags = Tags("Raw", "Fruit"))))
+        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
@@ -64,8 +63,8 @@ class RecipeManagerTest {
             ingredient("Apple", listOf("Raw", "fruit"))
         }
         val recipe = recipeBuilder.build()
-        val ingredients = listOf(Target("Apple", properties = Properties(tags = Tags(listOf("Raw", "Fruit")))))
-        val tool = Target("Range", properties = Properties(tags = Tags(listOf("Range"))))
+        val ingredients = listOf(Target("Apple", properties = Properties(tags = Tags("Raw", "Fruit"))))
+        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
@@ -145,7 +144,7 @@ class RecipeManagerTest {
             result("Baked Apple")
         }
         val ingredients = listOf(Target("Apple"))
-        val tool = Target("Range", properties = Properties(tags = Tags(listOf("Range"))))
+        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))

@@ -71,7 +71,7 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     }
 
     fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {
-        val acceptedTypes = containerProperties.values.getList(CAN_HOLD)
+        val acceptedTypes = containerProperties.values.getList(CAN_HOLD).toMutableList()
         return if (acceptedTypes.isEmpty()) {
             true
         } else {
@@ -81,9 +81,9 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
 
     fun getRange(): Int {
         return when {
-            tags.hasAny(Tags(listOf(SMALL, SHORT))) -> DAGGER_RANGE
+            tags.hasAny(Tags(SMALL, SHORT)) -> DAGGER_RANGE
             tags.has(MEDIUM) -> SWORD_RANGE
-            tags.hasAny(Tags(listOf(LARGE, LONG))) -> SPEAR_RANGE
+            tags.hasAny(Tags(LARGE, LONG)) -> SPEAR_RANGE
             tags.has(RANGED) -> BOW_RANGE
             else -> MIN_RANGE
         }

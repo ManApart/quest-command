@@ -45,7 +45,7 @@ class TransferItemTakeTest {
     fun pickupItemFromContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Container", "Open"))))
+        val chest = Target("Chest", properties = Properties(tags = Tags("Container", "Open")))
         val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
@@ -59,7 +59,7 @@ class TransferItemTakeTest {
     fun doNotPickupFromNonContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Open"))))
+        val chest = Target("Chest", properties = Properties(tags = Tags("Open")))
         val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
@@ -73,7 +73,7 @@ class TransferItemTakeTest {
     fun doNotPickupFromClosedContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Target("Chest", properties = Properties(tags = Tags(listOf("Container"))))
+        val chest = Target("Chest", properties = Properties(tags = Tags("Container")))
         val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
@@ -84,7 +84,7 @@ class TransferItemTakeTest {
     }
 
     private fun getCreatureWithCapacity(): Target {
-        val creature = Target("Target", properties = Properties(tags = Tags(listOf("Container", "Open", "Creature"))))
+        val creature = Target("Target", properties = Properties(tags = Tags("Container", "Open", "Creature")))
 //        val pouch = Target("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)
         creature.inventory.add(pouch)

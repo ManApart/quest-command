@@ -10,77 +10,77 @@ class TagsTest {
 
     @Test
     fun hasTag() {
-        val tag = Tags(listOf("Apple"))
+        val tag = Tags("Apple")
         assertTrue(tag.has("Apple"))
     }
 
     @Test
     fun doesNotHaveTag() {
-        val tag = Tags(listOf("Apple"))
+        val tag = Tags("Apple")
         assertFalse(tag.has("Pear"))
     }
 
     @Test
     fun hasTagRegardlessOfCapitalization() {
-        val tag = Tags(listOf("Apple"))
+        val tag = Tags("Apple")
         assertTrue(tag.has("aPpLE"))
     }
 
     @Test
     fun hasAll() {
-        val tag = Tags(listOf("Apple", "Pear", "Orange"))
-        val desired = Tags(listOf("Apple", "Pear"))
+        val tag = Tags("Apple", "Pear", "Orange")
+        val desired = Tags("Apple", "Pear")
         assertTrue(tag.hasAll(desired))
     }
 
     @Test
     fun doesNotHaveAll() {
-        val tag = Tags(listOf("Apple", "Pear"))
-        val desired = Tags(listOf("Apple", "Pear", "Orange"))
+        val tag = Tags("Apple", "Pear")
+        val desired = Tags("Apple", "Pear", "Orange")
         assertFalse(tag.hasAll(desired))
     }
 
     @Test
     fun hasNone() {
-        val tag = Tags(listOf("Apple", "Pear"))
-        val desired = Tags(listOf("Orange", "Banana"))
+        val tag = Tags("Apple", "Pear")
+        val desired = Tags("Orange", "Banana")
         assertTrue(tag.hasNone(desired))
     }
 
     @Test
     fun doesNotHaveNone() {
-        val tag = Tags(listOf("Apple", "Pear"))
-        val desired = Tags(listOf("Orange", "Pear"))
+        val tag = Tags("Apple", "Pear")
+        val desired = Tags("Orange", "Pear")
         assertFalse(tag.hasNone(desired))
     }
 
     @Test
     fun matches() {
-        val tagA = Tags(listOf("Apple", "Pear"))
-        val tagB = Tags(listOf("Pear", "ApPLe"))
+        val tagA = Tags("Apple", "Pear")
+        val tagB = Tags("Pear", "ApPLe")
         assertTrue(tagA.matches(tagB))
         assertTrue(tagB.matches(tagA))
     }
 
     @Test
     fun noMatchIfALarger() {
-        val tagA = Tags(listOf("Apple", "Pear", "Orange"))
-        val tagB = Tags(listOf("Pear", "ApPLe"))
+        val tagA = Tags("Apple", "Pear", "Orange")
+        val tagB = Tags("Pear", "ApPLe")
         assertFalse(tagA.matches(tagB))
         assertFalse(tagB.matches(tagA))
     }
 
     @Test
     fun noMatchIfBLarger() {
-        val tagA = Tags(listOf("Pear", "ApPLe"))
-        val tagB = Tags(listOf("Apple", "Pear", "Orange"))
+        val tagA = Tags("Pear", "ApPLe")
+        val tagB = Tags("Apple", "Pear", "Orange")
         assertFalse(tagA.matches(tagB))
         assertFalse(tagB.matches(tagA))
     }
 
     @Test
     fun doNotAddDuplicateTags() {
-        val tag = Tags(listOf("Apple"))
+        val tag = Tags("Apple")
         tag.add(("aPPlE"))
         assertEquals(1, tag.getAll().size)
         assertEquals("Apple", tag.getAll()[0])
@@ -88,8 +88,8 @@ class TagsTest {
 
     @Test
     fun setFrom() {
-        val tag = Tags(listOf("Apple"))
-        val other = Tags(listOf("Pear"))
+        val tag = Tags("Apple")
+        val other = Tags("Pear")
         tag.addAll(other)
         assertEquals(2, tag.getAll().size)
         assertEquals("Apple", tag.getAll()[0])

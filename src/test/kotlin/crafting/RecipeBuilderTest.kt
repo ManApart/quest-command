@@ -12,10 +12,10 @@ class RecipeBuilderTest {
     fun basicBuild() {
         val expected = Recipe(
             "Sliced Food",
-            listOf(RecipeIngredient(tags = Tags(listOf("Food", "Slicable")))),
+            listOf(RecipeIngredient(tags = Tags("Food", "Slicable"))),
             mapOf("Cooking" to 1),
             Properties(tags = Tags("Sharp")),
-            listOf(RecipeResult(id = 0, tagsAdded = Tags(listOf("Sliced")), tagsRemoved = Tags(listOf("Slicable")))),
+            listOf(RecipeResult(id = 0, tagsAdded = Tags("Sliced"), tagsRemoved = Tags("Slicable"))),
             "slice"
         )
 

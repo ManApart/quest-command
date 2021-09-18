@@ -79,7 +79,7 @@ fun createPouch(size: Int = 5, weight: Int = 1): Target {
                     WEIGHT to weight.toString()
                 )
             ),
-            Tags(listOf(ITEM_TAG, CONTAINER, OPEN, ITEM_TAG))
+            Tags(ITEM_TAG, CONTAINER, OPEN, ITEM_TAG)
         )
     )
 }
@@ -90,7 +90,7 @@ fun createChest(size: Int = 10): Target {
         "Chest", body = createInventoryBody("Chest", size),
         properties = Properties(
             Values(mapOf(SIZE to size.toString())),
-            Tags(listOf(CONTAINER, OPEN, ACTIVATOR_TAG))
+            Tags(CONTAINER, OPEN, ACTIVATOR_TAG)
         )
     )
 }
@@ -101,7 +101,7 @@ fun createClosedChest(size: Int = 10): Target {
         body = createInventoryBody("Closed Chest", size),
         properties = Properties(
             Values(mapOf(SIZE to size.toString())),
-            Tags(listOf(CONTAINER, ACTIVATOR_TAG))
+            Tags(CONTAINER, ACTIVATOR_TAG)
         )
     )
 }
@@ -111,7 +111,7 @@ fun createPackMule(strength: Int = 1): Target {
         "Pack Mule", body = createInventoryBody("Pack Mule"),
         properties = Properties(
             Values(mapOf(STRENGTH to strength.toString())),
-            Tags(listOf(CONTAINER, OPEN, CREATURE_TAG))
+            Tags(CONTAINER, OPEN, CREATURE_TAG)
         )
     )
 }

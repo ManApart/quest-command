@@ -37,7 +37,7 @@ class TargetBuilderTest {
             body = BodyManager.getBody("Human"),
             dynamicDescription = ConditionalStringPointer("A normal dude"),
             behaviors = behaviors,
-            properties = Properties(Tags(listOf("Person")))
+            properties = Properties(Tags("Person"))
         )
 
         val actual = target("Bob") {
@@ -60,7 +60,7 @@ class TargetBuilderTest {
             params = mapOf("another" to "thing"),
             body = BodyManager.getBody("Human"),
             dynamicDescription = ConditionalStringPointer("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION),
-            properties = Properties(Tags(listOf("Warrior")))
+            properties = Properties(Tags("Warrior"))
         )
 
         val actual = target("Jim") {

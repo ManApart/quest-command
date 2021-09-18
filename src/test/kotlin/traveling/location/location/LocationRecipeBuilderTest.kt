@@ -12,7 +12,7 @@ class LocationRecipeBuilderTest{
 
     @Test
     fun basicExtends(){
-        val expected = LocationRecipe("Place", weather = ConditionalStringPointer("Inside Weather", ConditionalStringType.WEATHER), properties = Properties(tags = Tags(listOf("Inside", "Small"))))
+        val expected = LocationRecipe("Place", weather = ConditionalStringPointer("Inside Weather", ConditionalStringType.WEATHER), properties = Properties(tags = Tags("Inside", "Small")))
 
         val base = locationRecipe("Inside"){
             props { tag("Inside") }

@@ -7,8 +7,8 @@ class PropsBuilderTest {
 
     @Test
     fun basicEquality() {
-        val a = Properties(Values(mapOf("Thing" to "1", "Other" to "two")), Tags(listOf("Bob", "Jim")))
-        val b = Properties(Values(mapOf("Other" to "two", "Thing" to "1")), Tags(listOf("Jim", "Bob")))
+        val a = Properties(Values(mapOf("Thing" to "1", "Other" to "two")), Tags("Bob", "Jim"))
+        val b = Properties(Values(mapOf("Other" to "two", "Thing" to "1")), Tags("Jim", "Bob"))
         assertEquals(a,b)
     }
 
@@ -16,7 +16,7 @@ class PropsBuilderTest {
     fun basicBuild() {
         val expected = Properties(
             Values(mapOf("one" to "1", "two" to "two")),
-            Tags(listOf("Tag1", "Tag2"))
+            Tags("Tag1", "Tag2")
         )
         val actual = props {
             tag("Tag1", "Tag2")
@@ -30,7 +30,7 @@ class PropsBuilderTest {
     fun extends() {
         val expected = Properties(
             Values(mapOf("one" to "1", "two" to "two", "three" to "four")),
-            Tags(listOf("Tag", "Tagz"))
+            Tags("Tag", "Tagz")
         )
         val actual = propsUnbuilt {
             tag("Tag")

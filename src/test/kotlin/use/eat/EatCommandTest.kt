@@ -31,7 +31,7 @@ class EatCommandTest {
     @Test
     fun eatFood() {
         val timer = PoorMansInstrumenter(10000)
-        val item = Target("Pear", properties = Properties(tags = Tags(listOf("Food", ITEM_TAG))))
+        val item = Target("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         timer.printElapsed("new item")
         GameState.player.inventory.add(item)
         timer.printElapsed("add item")
@@ -48,8 +48,8 @@ class EatCommandTest {
 
     @Test
     fun eatMultipleFoodGivesChoice() {
-        val fruit = Target("Pear", properties = Properties(tags = Tags(listOf("Food", ITEM_TAG))))
-        val pie = Target("Pear Pie", properties = Properties(tags = Tags(listOf("Food", ITEM_TAG))))
+        val fruit = Target("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
+        val pie = Target("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         GameState.player.inventory.add(fruit)
         GameState.player.inventory.add(pie)
         EatCommand().execute("eat", listOf("Pear"))

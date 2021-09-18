@@ -207,7 +207,7 @@ class TransferItemPlaceTest {
 //        val item = createItem("Apple", weight = 1)
 //        creature.inventory.add(item)
 //
-////        val chest = Target("Chest", properties = Properties(Tags(listOf("Container", "Open", "Activator"))))
+////        val chest = Target("Chest", properties = Properties(Tags("Container", "Open", "Activator"))))
 //
 //        val chest = createChest(size = 0)
 //

@@ -30,7 +30,7 @@ class ResponseRequestIntegrationTest {
 
     @Test
     fun takeSecondObject() {
-        val props = Properties(tags = Tags(listOf("Item")))
+        val props = Properties(tags = Tags("Item"))
         GameState.currentLocation().addTarget(Target("Wheat Bundle", properties = props))
         GameState.currentLocation().addTarget(Target("Wheat Flour", properties = props))
 
