@@ -1,5 +1,6 @@
 package status.effects
 
+import core.body.Body
 import core.target.Target
 
 
@@ -14,8 +15,8 @@ fun getPersisted(dataObject: Effect): Map<String, Any> {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>, target: Target): Effect {
-    val bodyParts = (data["bodyParts"] as List<String>).map { target.body.getPart(it) }
+fun readFromData(data: Map<String, Any>, body: Body): Effect {
+    val bodyParts = (data["bodyParts"] as List<String>).map { body.getPart(it) }
     return EffectManager.getEffect(
             data["name"] as String,
             data["amount"] as Int,

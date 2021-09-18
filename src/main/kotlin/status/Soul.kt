@@ -163,11 +163,6 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
         conditions.remove(condition)
     }
 
-    fun overrideStats(newStats: List<LeveledStat>) {
-        leveledStats.clear()
-        leveledStats.addAll(newStats)
-    }
-
     fun overrideConditions(newConditions: List<Condition>) {
         conditions.clear()
         conditions.addAll(newConditions)

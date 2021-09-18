@@ -25,6 +25,7 @@ class TargetBuilder(internal val name: String) {
     private var description: ConditionalStringPointer? = null
     private val paramsBuilder = MapBuilder()
     private val soulBuilder = MapBuilder()
+    private var soulBuilt: Soul? = null
     private val behaviors = mutableListOf<BehaviorRecipe>()
     private val itemNames = mutableListOf<String>()
     private var baseNames = mutableListOf<String>()
@@ -43,7 +44,7 @@ class TargetBuilder(internal val name: String) {
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })
         val props = propsBuilder.build(bases.map { it.propsBuilder }, params)
         val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
-        val actualSoul = Soul(soulStats)
+        val actualSoul = soulBuilt ?: Soul(soulStats)
         val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
 
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
@@ -108,6 +109,9 @@ class TargetBuilder(internal val name: String) {
     fun soul(values: List<Pair<String, Any>>) = this.soulBuilder.entry(values.toList())
     fun soul(key: String, value: String) = soulBuilder.entry(key, value)
     fun soul(key: String, value: Int) = soulBuilder.entry(key, value)
+    fun soul(soul: Soul) {
+        this.soulBuilt = soul
+    }
 
     fun description(desc: String) {
         description = ConditionalStringPointer(desc)
@@ -182,6 +186,7 @@ class TargetBuilder(internal val name: String) {
             equipSlotOptions(t.equipSlots)
             item(t.inventory.getAllItems().map { it.name })
             props(t.properties)
+            //This isn't including conditions etc
             soul(t.soul.getStats().map { it.name to it.level })
             behavior(t.behaviors.map { BehaviorRecipe(it.name, it.params) })
             param(t.params)

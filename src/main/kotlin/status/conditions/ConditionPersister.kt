@@ -1,5 +1,6 @@
 package status.conditions
 
+import core.body.Body
 import core.target.Target
 import magic.Element
 import status.effects.getPersisted
@@ -19,10 +20,10 @@ fun getPersisted(dataObject: Condition): Map<String, Any> {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>, target: Target): Condition {
+fun readFromData(data: Map<String, Any>, body: Body): Condition {
 
-    val effects = (data["effects"] as List<Map<String, Any>>).map { status.effects.readFromData(it, target) }
-    val criticalEffects = (data["criticalEffects"] as List<Map<String, Any>>).map { status.effects.readFromData(it, target) }
+    val effects = (data["effects"] as List<Map<String, Any>>).map { status.effects.readFromData(it, body) }
+    val criticalEffects = (data["criticalEffects"] as List<Map<String, Any>>).map { status.effects.readFromData(it, body) }
     return Condition(
             data["name"] as String,
             Element.valueOf(data["element"] as String),
