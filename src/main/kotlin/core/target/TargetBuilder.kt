@@ -41,8 +41,7 @@ class TargetBuilder(internal val name: String) {
         val bases = bases + additionalBases
         val basesR = bases.reversed()
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })
-        propsBuilder.param(params)
-        val props = propsBuilder.build(bases.map { it.propsBuilder })
+        val props = propsBuilder.build(bases.map { it.propsBuilder }, params)
         val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
         val actualSoul = Soul(soulStats)
         val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)

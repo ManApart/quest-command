@@ -6,7 +6,6 @@ import core.utility.apply
 class PropsBuilder {
     private val tags = mutableListOf<String>()
     private val values: MapBuilder = MapBuilder()
-    private val paramsBuilder = MapBuilder()
 
     fun tag(vararg tags: String) {
         this.tags.addAll(tags)
@@ -17,25 +16,19 @@ class PropsBuilder {
     fun value(key: String, value: String) = values.entry(key, value)
     fun value(key: String, value: Int) = values.entry(key, value)
 
-    fun param(vararg values: Pair<String, Any>) = this.paramsBuilder.entry(values.toList())
-    fun param(values: Map<String, Any>) = this.paramsBuilder.entry(values.toList())
-    fun param(key: String, value: String) = paramsBuilder.entry(key, value)
-    fun param(key: String, value: Int) = paramsBuilder.entry(key, value)
-
     fun props(properties: Properties){
         tags.addAll(properties.tags.getAll())
         value(properties.values.getAll())
     }
 
-    internal fun build(): Properties {
-        val params = paramsBuilder.build()
+    internal fun build(params: Map<String, String> = mapOf()): Properties {
         val appliedTags = tags.apply(params)
         val appliedValues = values.build().toMutableMap().apply(params)
         return Properties(Values(appliedValues), Tags(appliedTags))
     }
 
-    fun build(bases: List<PropsBuilder> = listOf()): Properties {
-        val built = (bases + listOf(this)).map { it.build() }
+    fun build(bases: List<PropsBuilder> = listOf(), params: Map<String, String> = mapOf()): Properties {
+        val built = (bases + listOf(this)).map { it.build(params) }
         return built.reduce { acc, props ->
             acc.overrideWith(props)
             acc
@@ -43,8 +36,8 @@ class PropsBuilder {
     }
 }
 
-fun props(initializer: PropsBuilder.() -> Unit): Properties {
-    return PropsBuilder().apply(initializer).build()
+fun props(params: Map<String, String> =  mapOf(), initializer: PropsBuilder.() -> Unit): Properties {
+    return PropsBuilder().apply(initializer).build(params)
 }
 
 fun propsUnbuilt(initializer: PropsBuilder.() -> Unit): PropsBuilder {
