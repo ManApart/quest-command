@@ -11,7 +11,7 @@ class RemoveCondition : EventListener<RemoveConditionEvent>() {
     override fun execute(event: RemoveConditionEvent) {
         if (event.target.soul.hasCondition(event.condition)) {
             event.target.soul.removeCondition(event.condition)
-            display("${event.target} is no longer ${event.condition.name}.")
+            display("${event.target.name} is no longer ${event.condition.name}.")
         }
     }
 }

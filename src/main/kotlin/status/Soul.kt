@@ -17,11 +17,6 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
     lateinit var parent: Target
     private val conditions = NameSearchableList<Condition>()
 
-    //TODO - make more precise, possibly use data class
-//    override fun equals(other: Any?): Boolean {
-//        return other is Soul && leveledStats.size == other.leveledStats.size && conditions.size == other.conditions.size
-//    }
-
     fun copy(): Soul {
         val newStats = leveledStats.map { it.copy() }.toMutableList()
         return Soul(newStats)

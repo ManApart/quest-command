@@ -17,7 +17,7 @@ class ChopWood : EventListener<UseEvent>() {
     }
 
     override fun execute(event: UseEvent) {
-        display("The ${event.used} hacks at ${event.target.name}.")
+        display("The ${event.used.name} hacks at ${event.target.name}.")
         val damageDone = -event.used.properties.values.getInt(DamageType.CHOP.damage, 0)
         EventManager.postEvent(PropertyStatChangeEvent(event.target, event.used.name, DamageType.CHOP.health, damageDone))
     }

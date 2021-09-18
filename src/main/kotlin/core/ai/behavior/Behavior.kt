@@ -5,7 +5,8 @@ import quests.ConditionalEvents
 
 data class Behavior<E : Event>(
         val name: String,
-        private val triggeredEvent: ConditionalEvents<E>
+        private val triggeredEvent: ConditionalEvents<E>,
+        val params: Map<String, String> = mapOf()
 ) {
     fun matches(event: Event): Boolean {
         return triggeredEvent.matches(event)
@@ -16,7 +17,7 @@ data class Behavior<E : Event>(
     }
 
     fun copy(params: Map<String, String>) : Behavior<E> {
-        return Behavior(name, triggeredEvent.copy(params = params))
+        return Behavior(name, triggeredEvent.copy(params = params), params)
     }
 
 }

@@ -23,7 +23,8 @@ fun persist(dataObject: Target, path: String) {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["name"] = dataObject.name
     data["aiName"] = dataObject.ai.name
-//    data["behaviorRecipes"] = dataObject.behaviorRecipes.map { getPersisted(it) }
+    val behaviorRecipes = dataObject.behaviors.map { BehaviorRecipe(it.name, it.params) }
+    data["behaviorRecipes"] = behaviorRecipes.map { getPersisted(it) }
     data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
     data["description"] = getPersisted(dataObject.getDescriptionWithOptions())
     data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)

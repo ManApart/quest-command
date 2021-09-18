@@ -31,7 +31,6 @@ class Location(
     val properties: Properties = Properties(),
     initialize: Boolean = false,
     recipe: LocationRecipe? = null
-
 ) : Named {
     constructor(locationNode: LocationNode) : this(
         locationNode,
@@ -248,18 +247,14 @@ class Location(
     }
 
     fun getAllSouls(): List<Soul> {
-        val souls = mutableSetOf<Soul>()
-        souls.addAll(GameState.player.inventory.getAllItems().map { it.soul })
+        val targets = mutableSetOf(GameState.player)
+        targets.addAll(GameState.player.inventory.getAllItems())
 
         getAllTargets().forEach {
-            souls.add(it.soul)
-            it.inventory.getAllItems().forEach { item -> souls.add(item.soul) }
+            targets.add(it)
+            it.inventory.getAllItems().forEach { item -> targets.add(item) }
         }
-
-        if (!souls.contains(GameState.player.soul)) {
-            souls.add(GameState.player.soul)
-        }
-        return souls.toList()
+        return targets.map { it.soul }.toList()
     }
 
     fun getAllInventories(): List<Inventory> {

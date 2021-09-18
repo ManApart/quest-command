@@ -10,6 +10,6 @@ class AddCondition: EventListener<AddConditionEvent>() {
 
     override fun execute(event: AddConditionEvent) {
         event.target.soul.addNewCondition(event.condition)
-        display("${event.target} is now ${event.condition.name}")
+        display("${event.target.name} is now ${event.condition.name}")
     }
 }

@@ -119,7 +119,7 @@ class CommonBehaviors : BehaviorResource {
                     listOf(MessageEvent("Unable to Mill."))
                 } else {
                     listOf(
-                        MessageEvent("The ${event.item} slides down the chute and is milled into $resultItem as it collects in the $depositTarget."),
+                        MessageEvent("The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the $depositTarget."),
                         RemoveItemEvent(event.source, sourceItem),
                         SpawnItemEvent(resultItem, 1, depositTarget)
                     )

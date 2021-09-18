@@ -40,8 +40,9 @@ class TargetBuilder(internal val name: String) {
     fun build(additionalBases: List<TargetBuilder> = listOf()): Target {
         val bases = bases + additionalBases
         val basesR = bases.reversed()
-        val props = propsBuilder.build(bases.map { it.propsBuilder })
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })
+        propsBuilder.param(params)
+        val props = propsBuilder.build(bases.map { it.propsBuilder })
         val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
         val actualSoul = Soul(soulStats)
         val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
@@ -183,7 +184,7 @@ class TargetBuilder(internal val name: String) {
             item(t.inventory.getAllItems().map { it.name })
             props(t.properties)
             soul(t.soul.getStats().map { it.name to it.level })
-//            behaviors
+            behavior(t.behaviors.map { BehaviorRecipe(it.name, it.params) })
             param(t.params)
         }
     }
