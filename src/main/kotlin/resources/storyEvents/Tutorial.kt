@@ -2,6 +2,7 @@ package resources.storyEvents
 
 import core.GameState
 import explore.look.LookEvent
+import explore.map.ReadMapCommand
 import explore.map.ReadMapEvent
 import quests.*
 import quests.journal.ViewQuestListEvent
@@ -33,7 +34,8 @@ class Tutorial : StoryEventResource {
             ),
 
             StoryEvent("Tutorial", 40, "I should travel to Farmer's Hut.",
-                    ConditionalEvents(ReadMapEvent::class,
+                    ConditionalEvents(
+                        ReadMapEvent::class,
                             createEvents = { _, _ -> listOf(MessageEvent("I should travel to the Farmer's Hut. I can do so by typing 'travel farmer's hut'.")) }
                     )
             ),

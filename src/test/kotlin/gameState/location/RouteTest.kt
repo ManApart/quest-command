@@ -7,6 +7,8 @@ import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
 import traveling.location.Route
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class RouteTest {
 
@@ -40,6 +42,53 @@ class RouteTest {
         }
 
         assertEquals("N, NE, NW, E, W, S, SW, SE", route.getDirectionString())
+    }
+
+    @Test
+    fun trimRoute() {
+        val route = Route(LocationNode("source"))
+        val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
+
+        directions.forEach {
+            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+        }
+
+        val newStart = route.getConnections().first { it.vector.direction.shortcut == "e" }.source.location
+        val trimmed = route.trim(newStart)
+
+        assertEquals("E, W, S, SW, SE", trimmed?.getDirectionString())
+        assertEquals(newStart, trimmed?.source)
+        assertEquals(directions.last().name, trimmed?.destination?.name)
+    }
+
+    @Test
+    fun trimRouteIdempotent() {
+        val route = Route(LocationNode("source"))
+        val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
+
+        directions.forEach {
+            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+        }
+
+        val newStart = route.getConnections().first { it.vector.direction.shortcut == "e" }.source.location
+        val trimmed = route.trim(newStart)?.trim(newStart)
+
+        assertEquals("E, W, S, SW, SE", trimmed?.getDirectionString())
+    }
+
+    @Test
+    fun trimRouteEdgeCase() {
+        val route = Route(LocationNode("source"))
+        val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
+
+        directions.forEach {
+            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+        }
+
+        val newStart = route.destination
+        val trimmed = route.trim(newStart)
+
+        assertNull(trimmed)
     }
 
 }

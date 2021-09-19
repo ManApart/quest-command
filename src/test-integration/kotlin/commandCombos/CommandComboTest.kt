@@ -136,6 +136,25 @@ ChatHistory.getLastInput()
     }
 
     @Test
+    fun compassToPub() {
+        CommandParser.parseCommand("co pub && w && co pub")
+        assertEquals("Farmer's Hut", GameState.player.location.name)
+        assertEquals("Kanbara Pub is WEST of you.", ChatHistory.getLastOutput())
+
+        CommandParser.parseCommand("co pub && w && rest 10 && co pub")
+        assertEquals("Kanbara Gate", GameState.player.location.name)
+        assertEquals("Kanbara Pub is WEST of you.", ChatHistory.getLastOutput())
+
+        CommandParser.parseCommand("use gate && w && co pub")
+        assertEquals("Kanbara City", GameState.player.location.name)
+        assertEquals("Kanbara Pub is near you.", ChatHistory.getLastOutput())
+
+        CommandParser.parseCommand("t pub && co pub")
+        assertEquals("Kanbara Pub", GameState.player.location.name)
+        assertEquals("You are at Kanbara Pub.", ChatHistory.getLastOutput())
+    }
+
+    @Test
     fun millFlour() {
         val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
         CommandParser.parseCommand(input)

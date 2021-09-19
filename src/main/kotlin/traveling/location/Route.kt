@@ -42,23 +42,23 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
 
     fun getDirectionString(): String {
         return connections.asSequence()
-                .map { it.vector.direction.shortcut }
-                .joinToString(", ")
-                .uppercase()
+            .map { it.vector.direction.shortcut }
+            .joinToString(", ")
+            .uppercase()
     }
 
     fun isOnRoute(location: LocationNode): Boolean {
         return location == source || connections.any { location == it.destination.location }
     }
 
-    fun getNextStep(location: LocationNode) : Connection {
+    fun getNextStep(location: LocationNode): Connection {
         return connections.first { it.source.location == location }
     }
 
     fun getRouteProgressString(currentLocation: LocationNode): String {
         val names = connections.asSequence()
-                .map { it.source.location.name }
-                .toMutableList()
+            .map { it.source.location.name }
+            .toMutableList()
 
         names.add(destination.name)
         return names.joinToString(", ") {
@@ -68,7 +68,19 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
                 it
             }
         }
+    }
 
+    fun trim(newStart: LocationNode): Route? {
+        val connection = connections.firstOrNull { newStart == it.source.location }
+        return if (connection == null) null
+        else {
+            val newConnections = connections.subList(connections.indexOf(connection), connections.size)
+            Route(newStart).also { route ->
+                newConnections.forEach {
+                    route.addLink(it)
+                }
+            }
+        }
     }
 
 }
