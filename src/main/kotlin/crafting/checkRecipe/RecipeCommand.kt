@@ -6,6 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class RecipeCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,14 +27,14 @@ class RecipeCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             args.isEmpty() && keyword == "recipe" -> clarifyRecipe()
-            args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(GameState.player))
-            args.size == 1 && args[0] == "all" -> EventManager.postEvent(CheckRecipeEvent(GameState.player))
-            args.size == 1 && args[0] == "recipe" -> clarifyWhichRecipe()
-            GameState.player.knownRecipes.exists(argString) -> EventManager.postEvent(CheckRecipeEvent(GameState.player, GameState.player.knownRecipes.get(argString)))
+            args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(source))
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(CheckRecipeEvent(source))
+            args.size == 1 && args[0] == "recipe" -> clarifyWhichRecipe(source)
+            source.knownRecipes.exists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, source.knownRecipes.get(argString)))
             else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
@@ -44,8 +45,8 @@ class RecipeCommand : Command() {
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "recipe $it" }))
     }
 
-    private fun clarifyWhichRecipe() {
-        val targets = GameState.player.knownRecipes.map { it.name }
+    private fun clarifyWhichRecipe(source: Target) {
+        val targets = source.knownRecipes.map { it.name }
         val message = "Read what recipe?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "recipe $it" }))
     }

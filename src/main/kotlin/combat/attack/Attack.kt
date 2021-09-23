@@ -27,7 +27,7 @@ class Attack : EventListener<AttackEvent>() {
             when {
                 weaponRange < targetDistance -> display("${event.target} is too far away to be hit by $damageSource.")
                 offensiveDamage > 0 -> processAttack(event, damageSource, offensiveDamage)
-                event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(GameState.player, event.sourcePart.getEquippedWeapon()!!, event.target.target))
+                event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(event.source, event.sourcePart.getEquippedWeapon()!!, event.target.target))
                 else -> display("Nothing happens.")
             }
         }

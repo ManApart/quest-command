@@ -4,6 +4,7 @@ import core.GameState
 import core.commands.Command
 import core.commands.parseDirection
 import core.events.EventManager
+import core.target.Target
 import traveling.move.StartMoveEvent
 
 class DodgeCommand : Command() {
@@ -24,9 +25,9 @@ class DodgeCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val direction = parseDirection(args).vector * 10
-        EventManager.postEvent(StartMoveEvent(GameState.player, direction, 2f, 1.5f))
+        EventManager.postEvent(StartMoveEvent(source, direction, 2f, 1.5f))
     }
 
 

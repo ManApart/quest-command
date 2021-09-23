@@ -6,6 +6,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
+import core.target.Target
 import traveling.location.location.LocationManager
 
 class ReadMapCommand : Command() {
@@ -27,14 +28,14 @@ class ReadMapCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val depth = arguments.getNumber() ?: 1
         val otherArgs = args.minus(depth.toString())
 
         when{
             arguments.isEmpty() && keyword == "map" -> clarifyDepth()
-            otherArgs.isEmpty() -> currentLocation(depth)
+            otherArgs.isEmpty() -> currentLocation(source, depth)
             else -> targetLocation(otherArgs, depth)
         }
     }
@@ -45,8 +46,8 @@ class ReadMapCommand : Command() {
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "map $it" }))
     }
 
-    private fun currentLocation(depth: Int){
-        EventManager.postEvent(ReadMapEvent(GameState.player.location, depth))
+    private fun currentLocation(source: Target, depth: Int){
+        EventManager.postEvent(ReadMapEvent(source.location, depth))
     }
 
     private fun targetLocation(args: List<String>, depth: Int){

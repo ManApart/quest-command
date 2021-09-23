@@ -6,6 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import crafting.Recipe
 
 class CraftRecipeCommand : Command() {
@@ -26,16 +27,16 @@ class CraftRecipeCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
-        val knownRecipes = GameState.player.knownRecipes
-        val pickedRecipes = GameState.player.knownRecipes.getAll(argString)
+        val knownRecipes = source.knownRecipes
+        val pickedRecipes = source.knownRecipes.getAll(argString)
 
         when {
             args.isEmpty() && knownRecipes.isEmpty() -> display("You don't know any recipes.")
             args.isEmpty() -> chooseRecipe(knownRecipes)
             pickedRecipes.isEmpty() -> chooseRecipe(knownRecipes)
-            pickedRecipes.size == 1 -> processRecipe(GameState.player.knownRecipes.get(argString))
+            pickedRecipes.size == 1 -> processRecipe(source, source.knownRecipes.get(argString))
             pickedRecipes.size > 1 -> chooseRecipe(pickedRecipes)
             else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
@@ -47,15 +48,15 @@ class CraftRecipeCommand : Command() {
          CommandParser.setResponseRequest(response)
     }
 
-    private fun processRecipe(recipe: Recipe) {
-        val tool = GameState.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
-                ?: GameState.player.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
+    private fun processRecipe(source: Target, recipe: Recipe) {
+        val tool = source.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
+                ?: source.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {
             display("Couldn't find the necessary tools to create ${recipe.name}")
-        } else if (!recipe.matches(GameState.player.inventory.getAllItems(), tool)) {
+        } else if (!recipe.matches(source.inventory.getAllItems(), tool)) {
             display("Couldn't find all the needed ingredients to create ${recipe.name}.")
         } else {
-            EventManager.postEvent(CraftRecipeEvent(GameState.player, recipe, tool))
+            EventManager.postEvent(CraftRecipeEvent(source, recipe, tool))
         }
     }
 

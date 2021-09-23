@@ -6,6 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class ExamineCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,7 +27,7 @@ class ExamineCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             keyword == "examine" && args.isEmpty() -> clarifyTarget()

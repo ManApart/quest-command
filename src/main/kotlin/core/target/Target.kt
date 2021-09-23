@@ -209,6 +209,10 @@ data class Target(
     fun canInteract(): Boolean {
         return !properties.values.getBoolean(IS_CLIMBING)
     }
+
+    fun currentLocation(): Location {
+        return location.getLocation()
+    }
 }
 
 fun targetsToString(targets: List<Target>): String {

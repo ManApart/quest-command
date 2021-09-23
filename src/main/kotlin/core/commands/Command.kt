@@ -11,12 +11,12 @@ abstract class Command : Named {
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>
 
-    open fun execute(keyword: String, args: List<String>) {
-        execute(GameState.player, keyword, args)
-    }
+//    open fun execute(keyword: String, args: List<String>) {
+//        execute(GameState.player, keyword, args)
+//    }
 
     open fun execute(source: Target, keyword: String, args: List<String>) {
-        execute(keyword, args)
+//        execute(keyword, args)
     }
 
     override val name = getAliases()[0]

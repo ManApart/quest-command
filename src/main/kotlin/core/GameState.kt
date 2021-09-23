@@ -2,6 +2,7 @@ package core
 
 import conversation.Conversation
 import core.properties.Properties
+import core.target.Target
 import time.TimeManager
 import traveling.location.location.Location
 

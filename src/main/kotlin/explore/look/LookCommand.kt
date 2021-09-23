@@ -6,6 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class LookCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,13 +27,13 @@ class LookCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             keyword == "look" && args.isEmpty() -> clarifyTarget()
             args.isEmpty() -> EventManager.postEvent(LookEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent())
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(LookEvent(GameState.player, GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
+            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
