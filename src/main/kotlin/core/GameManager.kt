@@ -37,7 +37,6 @@ object GameManager {
     }
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
-        CommandParser.reset()
         ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()
@@ -49,6 +48,8 @@ object GameManager {
 
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
+        CommandParser.reset()
+
         giveStartingItems(GameState.player)
         EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))
         playing = true

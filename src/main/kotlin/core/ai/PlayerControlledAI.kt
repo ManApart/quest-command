@@ -14,7 +14,7 @@ class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
     }
 
     override fun takeAction() {
-        val oldCreature = CommandParser.commandSource ?: GameState.player
+        val oldCreature = CommandParser.commandSource
         CommandParser.commandSource = creature
 
         if (creature != oldCreature) {

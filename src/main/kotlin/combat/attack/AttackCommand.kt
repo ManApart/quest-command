@@ -69,7 +69,7 @@ class AttackCommand : Command() {
     }
 
     private fun getTarget(keyword: String, arguments: Args, weaponName: String, source: Target): TargetAim? {
-        val targets = parseTargets(arguments.getBaseGroup()) + parseTargetsFromInventory(arguments.getBaseGroup())
+        val targets = parseTargets(arguments.getBaseGroup()) + parseTargetsFromInventory(arguments.getBaseGroup(), source)
         return if (targets.isEmpty() && !isAlias(keyword)) {
             clarifyTarget(keyword, weaponName)
             null

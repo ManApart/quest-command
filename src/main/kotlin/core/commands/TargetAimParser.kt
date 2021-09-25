@@ -8,7 +8,7 @@ import traveling.location.location.Location
 import traveling.position.TargetAim
 
 //TODO - allow for response requests?
-fun parseTargetsFromInventory(arguments: List<String>, target: Target = GameState.player): List<TargetAim> {
+fun parseTargetsFromInventory(arguments: List<String>, target: Target): List<TargetAim> {
     val args = Args(arguments, delimiters = listOf("and"))
     val targets = NameSearchableList(target.inventory.getAllItems())
     return args.getBaseAndGroups("and").mapNotNull { getTarget(it, targets) }
