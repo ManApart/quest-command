@@ -33,8 +33,7 @@ jobs:
       - name: Publish package
         run: gradle publish
         env:
-          GITHUB_USERNAME: ${{ GITHUB_ACTOR }}
-          GITHUB_TOKEN: ${{ GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Build
         run: docker build . -t manapart/quest-command:dev
       - name: Login to DockerHub

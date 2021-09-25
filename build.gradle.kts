@@ -5,9 +5,6 @@ plugins {
     `maven-publish`
 }
 
-group = "org.rak.manapart"
-version = "dev"
-
 repositories {
     mavenCentral()
 }
@@ -97,7 +94,7 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ManApart/quest-command")
             credentials {
-                username = System.getenv("GITHUB_USERNAME")
+                username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
