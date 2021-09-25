@@ -8,6 +8,9 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -27,7 +30,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build jar
       - name: Publish package
-        run: gradle publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
+          echo "New version: ${NEW_VERSION}"
+          ./gradlew -Pversion=${NEW_VERSION} publish
       - name: Docker Build
         run: docker build . -t manapart/quest-command:${GITHUB_REF#refs/*/}
       - name: Release

@@ -31,9 +31,9 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build jar
       - name: Publish package
-        run: gradle publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew -Pversion=dev publish
       - name: Docker Build
         run: docker build . -t manapart/quest-command:dev
       - name: Login to DockerHub
