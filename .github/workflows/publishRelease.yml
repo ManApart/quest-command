@@ -39,7 +39,7 @@ jobs:
       - name: Docker Build
         run: docker build . -t manapart/quest-command:${GITHUB_REF#refs/*/}
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.12
         with:
           files: ./build/libs/quest-command-dev.jar
         env:
