@@ -6,7 +6,7 @@ on:
       - '*.*.*'
 
 jobs:
-  docker:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +26,8 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
         run: ./gradlew build jar
+      - name: Publish package
+        run: gradle publish
       - name: Docker Build
         run: docker build . -t manapart/quest-command:${GITHUB_REF#refs/*/}
       - name: Release
