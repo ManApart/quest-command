@@ -9,7 +9,7 @@ import status.stat.HEALTH
 
 fun describeBattle() {
     val source = CommandParser.commandSource!!
-    val creatures = source.location.getLocation().getCreatures()
+    val creatures = source.location.getLocation().getCreatures(source)
     creatures.filter { it != source }.forEach {
         display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
     }

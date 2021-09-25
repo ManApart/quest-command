@@ -29,7 +29,7 @@ class RetreatCommand : Command() {
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from", "by"))
-        val creatures = source.location.getLocation().getCreaturesExcludingPlayer()
+        val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source)
         val target = determineTarget(source, arguments, creatures)
         val distance = arguments.getNumber()
         when {

@@ -33,7 +33,10 @@ class ExamineCommand : Command() {
             keyword == "examine" && args.isEmpty() -> clarifyTarget()
             args.isEmpty() -> EventManager.postEvent(ExamineEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent())
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(GameState.player, GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
+            GameState.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(GameState.player, GameState.currentLocation().getTargetsIncludingPlayerInventory(
+                source,
+                argString
+            ).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

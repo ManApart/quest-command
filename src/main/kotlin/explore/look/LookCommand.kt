@@ -33,7 +33,10 @@ class LookCommand : Command() {
             keyword == "look" && args.isEmpty() -> clarifyTarget()
             args.isEmpty() -> EventManager.postEvent(LookEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent())
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
+            GameState.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(
+                source,
+                argString
+            ).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }

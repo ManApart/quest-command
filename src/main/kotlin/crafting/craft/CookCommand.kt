@@ -36,7 +36,7 @@ class CookCommand : Command() {
             display("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(arguments)
-            val tool = getTool(arguments)
+            val tool = getTool(source, arguments)
             val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.soul)
 
             when {
@@ -63,10 +63,10 @@ class CookCommand : Command() {
         return ingredients
     }
 
-    private fun getTool(args: Args): Target? {
+    private fun getTool(source: Target, args: Args): Target? {
         val group = args.getGroup("on")
         val location = GameState.currentLocation()
-        return (location.getActivators(group.joinToString(" ")) + location.findActivatorsByTag("Range")).firstOrNull()
+        return (location.getActivators(group.joinToString(" "), source) + location.findActivatorsByTag("Range")).firstOrNull()
     }
 
 }

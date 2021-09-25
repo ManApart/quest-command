@@ -9,7 +9,7 @@ import explore.look.printUpdatingStatusEnd
 class AITurnDirector : EventListener<AIUpdateTick>() {
 
     override fun execute(event: AIUpdateTick) {
-        val creatures = GameState.player.location.getLocation().getCreatures()
+        val creatures = GameState.player.location.getLocation().getCreatures(GameState.player)
 
         //If only one creature, instantly fill their action points to avoid all the looping
         if (creatures.size == 1) {

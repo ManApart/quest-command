@@ -29,7 +29,7 @@ class EatCommand : Command() {
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
-        val allFood = GameState.currentLocation().getItemsIncludingPlayerInventory().filter { it.properties.tags.has("food") }
+        val allFood = GameState.currentLocation().getItemsIncludingPlayerInventory(source).filter { it.properties.tags.has("food") }
         val pickedFood = GameState.currentLocation().getItemsIncludingPlayerInventory(argsString, source)
         val topChoice = pickedFood.firstOrNull { it.name.lowercase() == argsString }
 
