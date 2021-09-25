@@ -33,7 +33,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: ./build/libs/quest-command-dev.jar
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_TOKEN }}
       - name: Publish package
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
