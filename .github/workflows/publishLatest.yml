@@ -2,9 +2,8 @@ name: Publish Latest
 
 on:
   push:
-#    Disabling master only to test this branch
-#    branches:
-#      - 'master'
+    branches:
+      - 'master'
 
 jobs:
   publish:
@@ -30,10 +29,6 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
         run: ./gradlew build jar
-      - name: Publish package
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew -Pversion=dev publish
       - name: Docker Build
         run: docker build . -t manapart/quest-command:dev
       - name: Login to DockerHub
