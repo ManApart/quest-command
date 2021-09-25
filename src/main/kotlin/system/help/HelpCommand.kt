@@ -4,6 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
+import core.target.Target
 
 class HelpCommand : Command() {
 
@@ -31,7 +32,7 @@ class HelpCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argsArray = args.toTypedArray()
         when {
             args.isEmpty() && keyword == "help" -> clarifyHelp()

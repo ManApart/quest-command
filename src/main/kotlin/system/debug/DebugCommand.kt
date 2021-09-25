@@ -6,6 +6,7 @@ import core.commands.Command
 import core.commands.parseTargets
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import status.stat.StatKind
 
 class DebugCommand : Command() {
@@ -37,7 +38,7 @@ class DebugCommand : Command() {
         return listOf("Debugging")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("on"))
 
         if (args.isEmpty()) {
@@ -51,7 +52,7 @@ class DebugCommand : Command() {
                 "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
                 "stat" -> sendDebugStatEvent(StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(StatKind.PROP_VAL, arguments)
-                "tag" -> sendDebugTagEvent(arguments)
+                "tag" -> sendDebugTagEvent(source, arguments)
                 "weather" -> sendDebugWeatherEvent(arguments)
                 else -> display("Did not understand debug command.")
             }
@@ -82,8 +83,8 @@ class DebugCommand : Command() {
         }
     }
 
-    private fun sendDebugTagEvent(args: Args) {
-        val target = parseTargets(args.getGroup("on")).firstOrNull()?.target ?: GameState.player
+    private fun sendDebugTagEvent(source: Target, args: Args) {
+        val target = parseTargets(args.getGroup("on")).firstOrNull()?.target ?: source
         val tagName = args.argsWithout(listOf("remove", args.args.first())).joinToString(" ")
         val isAdding = !args.contains("remove")
 

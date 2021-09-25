@@ -5,6 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class AliasCommand : Command() {
     override fun getAliases(): List<String> {
@@ -29,7 +30,7 @@ class AliasCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             EventManager.postEvent(ListAliasesEvent())
         } else {

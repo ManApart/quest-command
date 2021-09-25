@@ -3,6 +3,7 @@ package system.persistance.newGame
 import core.commands.Command
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class CreateNewGameCommand : Command() {
     override fun getAliases(): List<String> {
@@ -23,7 +24,7 @@ class CreateNewGameCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val saveName = args.joinToString(" ")
         if (saveName.isBlank()) {
             display("You must give a name for the new game.")

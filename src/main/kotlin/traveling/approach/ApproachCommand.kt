@@ -27,21 +27,21 @@ class ApproachCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("to"))
-        val creatures = GameState.player.location.getLocation().getCreaturesExcludingPlayer()
-        val target = determineTarget(arguments, creatures)
+        val creatures = source.location.getLocation().getCreaturesExcludingPlayer()
+        val target = determineTarget(source, arguments, creatures)
         val distance = arguments.getNumber()
         when {
-            target != null && distance != null -> approachByAmount(target, distance)
+            target != null && distance != null -> approachByAmount(source, target, distance)
             target != null && keyword.lowercase() == "approach" -> clarifyAmount(target)
-            target != null -> EventManager.postEvent(StartMoveEvent(GameState.player, target.position))
+            target != null -> EventManager.postEvent(StartMoveEvent(source, target.position))
             else -> clarifyTarget(creatures)
         }
     }
 
-    private fun determineTarget(args: Args, creatures: List<Target>) : Target? {
-        val parsedTarget = parseTargets(args.getBaseGroup()).firstOrNull()?.target ?: GameState.player.ai.aggroTarget
+    private fun determineTarget(source: Target, args: Args, creatures: List<Target>) : Target? {
+        val parsedTarget = parseTargets(args.getBaseGroup()).firstOrNull()?.target ?: source.ai.aggroTarget
         return when {
             parsedTarget != null -> parsedTarget
             creatures.size == 1 -> creatures.first()
@@ -49,9 +49,9 @@ class ApproachCommand : Command() {
         }
     }
 
-    private fun approachByAmount(target: Target, distance: Int) {
-        val goal = GameState.player.position.closer(target.position, distance)
-        EventManager.postEvent(StartMoveEvent(GameState.player, goal))
+    private fun approachByAmount(source: Target, target: Target, distance: Int) {
+        val goal = source.position.closer(target.position, distance)
+        EventManager.postEvent(StartMoveEvent(source, goal))
     }
 
     private fun clarifyAmount(target: Target) {

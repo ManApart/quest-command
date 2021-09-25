@@ -6,6 +6,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
+import core.target.Target
 
 class ViewCompassCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,18 +27,18 @@ class ViewCompassCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val isAlias = keyword != "compass"
         val specifiedDepth = arguments.getNumber() != null
         val depth = arguments.getNumber() ?: 50
         val locationName = args.minus(depth.toString()).joinToString(" ")
-        val existingDestination = GameState.player.compassRoute?.destination
+        val existingDestination = source.compassRoute?.destination
 
         when {
-            locationName.isBlank() && existingDestination != null -> EventManager.postEvent(ViewCompassEvent(GameState.player))
-            locationName.isNotBlank() && specifiedDepth -> EventManager.postEvent(SetCompassEvent(GameState.player, locationName, depth))
-            locationName.isNotBlank() && isAlias -> EventManager.postEvent(SetCompassEvent(GameState.player, locationName, depth))
+            locationName.isBlank() && existingDestination != null -> EventManager.postEvent(ViewCompassEvent(source))
+            locationName.isNotBlank() && specifiedDepth -> EventManager.postEvent(SetCompassEvent(source, locationName, depth))
+            locationName.isNotBlank() && isAlias -> EventManager.postEvent(SetCompassEvent(source, locationName, depth))
             locationName.isNotBlank() -> clarifyDepth(locationName)
             else -> println("Point compass to what goal?")
         }

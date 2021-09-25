@@ -101,7 +101,7 @@ object CommandParser {
         if (commandSource != null) {
             command.execute(commandSource!!, args[0], trimmedArgs)
         } else {
-            command.execute(args[0], trimmedArgs)
+            command.execute(GameState.player, args[0], trimmedArgs)
         }
     }
 

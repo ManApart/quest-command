@@ -3,6 +3,7 @@ package system.history
 import core.commands.Args
 import core.commands.Command
 import core.events.EventManager
+import core.target.Target
 
 class HistoryCommand : Command() {
 
@@ -10,7 +11,7 @@ class HistoryCommand : Command() {
         return listOf("History")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val showResponses = arguments.contains("responses")
         val numberOfLinesToShow = arguments.getNumber() ?: 10

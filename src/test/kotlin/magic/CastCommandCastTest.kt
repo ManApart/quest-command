@@ -1,6 +1,7 @@
 package magic
 
 import core.DependencyInjector
+import core.GameManager
 import core.GameState
 import core.events.EventManager
 import core.target.Target
@@ -27,6 +28,7 @@ class CastCommandCastTest {
         private val targetA = Target("targetA")
         private val targetB = Target("targetB")
         private val scope = GameState.currentLocation()
+        private val player = GameManager.newPlayer()
 
         init {
             scope.addTarget(targetA)
@@ -46,7 +48,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute("cast", "testspellA".split(" "))
+        CastCommand().execute(player,"cast", "testspellA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
         assertTrue(spellCommand.targets.isEmpty())
@@ -58,7 +60,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute("cast", "testspellA 1 2".split(" "))
+        CastCommand().execute(player,"cast", "testspellA 1 2".split(" "))
 
         assertEquals("1 2", spellCommand.args.fullString)
         assertTrue(spellCommand.targets.isEmpty())
@@ -70,7 +72,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute("cast", "testspellA on targetA".split(" "))
+        CastCommand().execute(player,"cast", "testspellA on targetA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
         assertTrue(targetsContainByName(spellCommand.targets, targetA))
@@ -82,7 +84,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute("cast", "testspellA 1 2 on targetA and targetB".split(" "))
+        CastCommand().execute(player,"cast", "testspellA 1 2 on targetA and targetB".split(" "))
 
         assertEquals("1 2", spellCommand.args.fullString)
         assertTrue(targetsContainByName(spellCommand.targets, targetA))

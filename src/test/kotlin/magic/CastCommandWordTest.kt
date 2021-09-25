@@ -4,6 +4,7 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import core.DependencyInjector
+import core.GameManager
 import core.events.EventManager
 import createMockedGame
 import magic.castSpell.CastCommand
@@ -17,6 +18,7 @@ class CastCommandWordTest {
         private val spellA = SpellCommandMock("testSpellA", listOf("catA"))
         private val spellB = SpellCommandMock("testSpellB", listOf("catA"))
         private val spellC = SpellCommandMock("testSpellC")
+        private val player = GameManager.newPlayer()
 
         @BeforeClass
         @JvmStatic
@@ -37,7 +39,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWords() {
-        CastCommand().execute("word", listOf("list"))
+        CastCommand().execute(player,"word", listOf("list"))
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -49,7 +51,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWordsWithoutArgs() {
-        CastCommand().execute("word", listOf())
+        CastCommand().execute(player,"word", listOf())
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -61,7 +63,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWordsInCategory() {
-        CastCommand().execute("word", listOf("catA"))
+        CastCommand().execute(player,"word", listOf("catA"))
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -73,7 +75,7 @@ class CastCommandWordTest {
 
     @Test
     fun helpSpecificWord() {
-        CastCommand().execute("word", listOf("spellB"))
+        CastCommand().execute(player,"word", listOf("spellB"))
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)

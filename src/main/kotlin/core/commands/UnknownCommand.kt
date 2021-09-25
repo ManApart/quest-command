@@ -25,7 +25,7 @@ class UnknownCommand : Command() {
     }
 
     fun execute(args: List<String>) {
-        execute("", args)
+        execute(GameState.player, "", args)
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {

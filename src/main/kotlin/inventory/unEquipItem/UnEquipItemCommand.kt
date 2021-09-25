@@ -30,7 +30,7 @@ class UnEquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {
@@ -38,7 +38,7 @@ class UnEquipItemCommand : Command() {
         } else {
             val item = getItem(arguments)
             if (item != null) {
-                EventManager.postEvent(UnEquipItemEvent(GameState.player, item))
+                EventManager.postEvent(UnEquipItemEvent(source, item))
             } else {
                 val unEquippedItem = getUnequippedItem(arguments)
                 if (unEquippedItem != null) {

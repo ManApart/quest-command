@@ -3,6 +3,7 @@ package inventory
 import core.GameState
 import core.commands.Command
 import core.history.display
+import core.target.Target
 
 class EquippedCommand : Command() {
     override fun getAliases(): List<String> {
@@ -22,16 +23,16 @@ class EquippedCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
-            listEquipped()
+            listEquipped(source)
         } else {
             display("Unknown command: equip ${args.joinToString(" ")}")
         }
     }
 
-    private fun listEquipped() {
-        val body = GameState.player.body
+    private fun listEquipped(source: Target) {
+        val body = source.body
         val items = body.getEquippedItems()
         if (items.isEmpty()) {
             display("You don't have anything equipped!")

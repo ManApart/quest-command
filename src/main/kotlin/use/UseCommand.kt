@@ -4,6 +4,7 @@ import core.GameState
 import core.commands.*
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import use.interaction.InteractEvent
 
 class UseCommand : Command() {
@@ -25,7 +26,7 @@ class UseCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "with", "on")))
         val arguments = Args(args, delimiters)
         val used = GameState.currentLocation().getTargetsIncludingPlayerInventory(arguments.getBaseString()).firstOrNull()
@@ -42,12 +43,12 @@ class UseCommand : Command() {
             used == null -> display("Couldn't find $arguments")
 
             !arguments.hasGroup("on") && args.contains("on") -> clarifyTarget(used.name)
-            !used.isWithinRangeOf(GameState.player) ->  display("You are too far away to use $used.")
-            !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(GameState.player, used))
+            !used.isWithinRangeOf(source) ->  display("You are too far away to use $used.")
+            !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(source, used))
             target == null -> display("Couldn't find ${arguments.getString("on")}")
-            !target.isWithinRangeOf(GameState.player) ->  display("You are too far away to use $used on $target.")
+            !target.isWithinRangeOf(source) ->  display("You are too far away to use $used on $target.")
 
-            else -> EventManager.postEvent(StartUseEvent(GameState.player, used, target))
+            else -> EventManager.postEvent(StartUseEvent(source, used, target))
         }
     }
 

@@ -35,17 +35,17 @@ class ClimbCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)
         when {
-            GameState.player.getEncumbrance() >= 1 -> display("You are too encumbered to climb.")
-            GameState.player.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(keyword, arguments, GameState.player.climbTarget!!)
-            else -> processNewClimb(arguments)
+            source.getEncumbrance() >= 1 -> display("You are too encumbered to climb.")
+            source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(keyword, arguments, source.climbTarget!!)
+            else -> processNewClimb(source, arguments)
         }
     }
 
-    private fun processNewClimb(arguments: Args) {
+    private fun processNewClimb(source: Target, arguments: Args) {
         val targetName = if (arguments.getString("to") != "") {
             arguments.getString("to")
         } else {
@@ -65,8 +65,8 @@ class ClimbCommand : Command() {
                 val parts = getEntryPoints(confidentMatch)
                 when {
                     parts.isEmpty() -> display("${confidentMatch.name} does not have any parts to climb.")
-                    parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(GameState.player, confidentMatch, parts.first(), getDirection(desiredDirection, confidentMatch, parts.first()), quiet))
-                    parts.size > 1 -> clarifyClimbPart(GameState.player.location, confidentMatch)
+                    parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(source, confidentMatch, parts.first(), getDirection(desiredDirection, confidentMatch, parts.first()), quiet))
+                    parts.size > 1 -> clarifyClimbPart(source.location, confidentMatch)
                 }
             }
         } else {
