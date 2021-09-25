@@ -31,8 +31,8 @@ class ResponseRequestIntegrationTest {
     @Test
     fun takeSecondObject() {
         val props = Properties(tags = Tags("Item"))
-        GameState.currentLocation().addTarget(Target("Wheat Bundle", properties = props))
-        GameState.currentLocation().addTarget(Target("Wheat Flour", properties = props))
+        GameState.player.currentLocation().addTarget(Target("Wheat Bundle", properties = props))
+        GameState.player.currentLocation().addTarget(Target("Wheat Flour", properties = props))
 
         val input = "pickup wheat && 2"
         CommandParser.parseCommand(input)

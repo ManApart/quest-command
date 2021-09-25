@@ -55,7 +55,7 @@ class TargetAimParserTest {
         private val targetA = target("targetA") { body("testBody") }.build()
         private val targetB = target("targetB") { body("testBody") }.build()
 
-        private val scope = GameState.currentLocation()
+        private val scope = GameState.player.currentLocation()
 
         init {
             scope.addTarget(targetA)
@@ -67,13 +67,13 @@ class TargetAimParserTest {
 
     @Test
     fun noTarget() {
-        val results = parseTargets("".split(" "))
+        val results = parseTargets(GameState.player, "".split(" "))
         assertEquals(0, results.size)
     }
 
     @Test
     fun singleTarget() {
-        val results = parseTargets("targetA".split(" "))
+        val results = parseTargets(GameState.player, "targetA".split(" "))
 
         assertEquals(1, results.size)
         assertEquals(targetA, results.first().target)
@@ -81,7 +81,7 @@ class TargetAimParserTest {
 
     @Test
     fun singleTargetOneBodyPart() {
-        val results = parseTargets("bodyPartB of targetA".split(" "))
+        val results = parseTargets(GameState.player, "bodyPartB of targetA".split(" "))
 
         assertEquals(1, results.size)
         assertEquals(1, results.first().bodyPartTargets.size)
@@ -92,7 +92,7 @@ class TargetAimParserTest {
 
     @Test
     fun singleTargetAllBodyParts() {
-        val results = parseTargets("all of targetA".split(" "))
+        val results = parseTargets(GameState.player, "all of targetA".split(" "))
 
         assertEquals(1, results.size)
         assertEquals(3, results.first().bodyPartTargets.size)
@@ -106,7 +106,7 @@ class TargetAimParserTest {
 
     @Test
     fun singleTargetTwoBodyParts() {
-        val results = parseTargets("bodyPartA bodyPartB of targetA".split(" "))
+        val results = parseTargets(GameState.player, "bodyPartA bodyPartB of targetA".split(" "))
 
         assertEquals(1, results.size)
 
@@ -119,7 +119,7 @@ class TargetAimParserTest {
 
     @Test
     fun multiTarget() {
-        val results = parseTargets("targetA and targetB".split(" "))
+        val results = parseTargets(GameState.player, "targetA and targetB".split(" "))
 
         assertEquals(2, results.size)
         assertEquals(targetA, results.first().target)
@@ -128,7 +128,7 @@ class TargetAimParserTest {
 
     @Test
     fun multiTargetReverseOrder() {
-        val results = parseTargets("targetB and targetA".split(" "))
+        val results = parseTargets(GameState.player, "targetB and targetA".split(" "))
 
         assertEquals(2, results.size)
         assertEquals(targetA, results.last().target)
@@ -137,7 +137,7 @@ class TargetAimParserTest {
 
     @Test
     fun multiTargetOnBodyPart() {
-        val results = parseTargets("bodyPartC of targetA and targetB".split(" "))
+        val results = parseTargets(GameState.player, "bodyPartC of targetA and targetB".split(" "))
 
         assertEquals(2, results.size)
         assertEquals(targetA, results.first().target)
@@ -150,7 +150,7 @@ class TargetAimParserTest {
 
     @Test
     fun multiTargetTwoBodyParts() {
-        val results = parseTargets("bodyPartA bodyPartB of targetA and bodyPartB bodyPartC of targetB".split(" "))
+        val results = parseTargets(GameState.player, "bodyPartA bodyPartB of targetA and bodyPartB bodyPartC of targetB".split(" "))
 
         assertEquals(2, results.size)
 

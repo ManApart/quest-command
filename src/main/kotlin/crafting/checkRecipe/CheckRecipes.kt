@@ -1,24 +1,24 @@
 package crafting.checkRecipe
 
-import core.GameState
 import core.events.EventListener
 import core.history.display
+import core.target.Target
 
 class CheckRecipes : EventListener<CheckRecipeEvent>() {
     override fun shouldExecute(event: CheckRecipeEvent): Boolean {
-        return event.source == GameState.player
+        return event.source.isPlayer()
     }
 
     override fun execute(event: CheckRecipeEvent) {
         when {
-            GameState.player.knownRecipes.isEmpty() -> display("You don't know any recipes yet.")
-            event.recipe == null -> printRecipes()
+            event.source.knownRecipes.isEmpty() -> display("You don't know any recipes yet.")
+            event.recipe == null -> printRecipes(event.source)
             else -> display(event.recipe.read())
         }
     }
 
-    private fun printRecipes() {
-        val recipes = GameState.player.knownRecipes.joinToString { "\n\t${it.name}" }
+    private fun printRecipes(source: Target) {
+        val recipes = source.knownRecipes.joinToString { "\n\t${it.name}" }
         display("Recipes:$recipes")
     }
 

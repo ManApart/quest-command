@@ -28,7 +28,7 @@ class InventoryCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
-        val location = GameState.currentLocation()
+        val location = source.currentLocation()
         val allInventories = location.findTargetsByTag("Container")
         val argString = args.joinToString(" ")
         val target = location.getTargets(argString).firstOrNull()

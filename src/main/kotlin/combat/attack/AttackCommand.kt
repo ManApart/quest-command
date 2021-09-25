@@ -50,7 +50,7 @@ class AttackCommand : Command() {
             val target = getTarget(keyword, arguments, weaponName, source)
 
             if (target == null) {
-                clarifyTarget(keyword, weaponName)
+                clarifyTarget(source, keyword, weaponName)
             } else {
                 //Go ahead and process a target that has aimed for body parts or no body parts at all
                 if (target.bodyPartTargets.isNotEmpty()) {
@@ -69,9 +69,9 @@ class AttackCommand : Command() {
     }
 
     private fun getTarget(keyword: String, arguments: Args, weaponName: String, source: Target): TargetAim? {
-        val targets = parseTargets(arguments.getBaseGroup()) + parseTargetsFromInventory(arguments.getBaseGroup(), source)
+        val targets = parseTargets(source, arguments.getBaseGroup()) + parseTargetsFromInventory(arguments.getBaseGroup(), source)
         return if (targets.isEmpty() && !isAlias(keyword)) {
-            clarifyTarget(keyword, weaponName)
+            clarifyTarget(source, keyword, weaponName)
             null
         } else if (targets.isEmpty()) {
             val target = source.ai.aggroTarget
@@ -86,7 +86,7 @@ class AttackCommand : Command() {
         } else if (targets.size == 1) {
             targets.first()
         } else {
-            clarifyTarget(keyword, weaponName)
+            clarifyTarget(source, keyword, weaponName)
             null
         }
     }
@@ -102,8 +102,8 @@ class AttackCommand : Command() {
         CommandParser.setResponseRequest(response)
     }
 
-    private fun clarifyTarget(keyword: String, weaponName: String) {
-        val options = GameState.currentLocation().getTargets()
+    private fun clarifyTarget(source: Target, keyword: String, weaponName: String) {
+        val options = source.currentLocation().getTargets()
         val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message, options.associate { it.name to "$keyword ${it.name}" })
         CommandParser.setResponseRequest(response)

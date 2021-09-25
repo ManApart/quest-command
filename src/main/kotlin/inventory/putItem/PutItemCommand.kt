@@ -49,7 +49,7 @@ class PutItemCommand : core.commands.Command() {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             val targetString = args.getFirstString("in", "to")
-            val destinations = GameState.currentLocation().getTargets(targetString).filterUniqueByName()
+            val destinations = source.currentLocation().getTargets(targetString).filterUniqueByName()
             when {
                 targetString.isNotBlank() && destinations.isEmpty() -> display("Couldn't find $targetString")
                 destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source, item, source, destinations.first(), true))

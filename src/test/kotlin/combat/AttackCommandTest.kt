@@ -28,7 +28,7 @@ class AttackCommandTest {
         val rat = target("Rat"){
             body("human")
         }.build()
-        GameState.currentLocation().addTarget(rat)
+        player.currentLocation().addTarget(rat)
 
         command.execute(player, "sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent

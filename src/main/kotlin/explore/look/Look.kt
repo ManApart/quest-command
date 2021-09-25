@@ -11,7 +11,7 @@ class Look : EventListener<LookEvent>() {
             GameState.player.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney()
             event.target != null -> describeTarget(event.target)
             event.source.ai.aggroTarget != null -> describeBattle()
-            else -> describeLocation()
+            else -> describeLocation(event.source)
         }
     }
 

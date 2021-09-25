@@ -65,7 +65,7 @@ class CookCommand : Command() {
 
     private fun getTool(source: Target, args: Args): Target? {
         val group = args.getGroup("on")
-        val location = GameState.currentLocation()
+        val location = source.currentLocation()
         return (location.getActivators(group.joinToString(" "), source) + location.findActivatorsByTag("Range")).firstOrNull()
     }
 

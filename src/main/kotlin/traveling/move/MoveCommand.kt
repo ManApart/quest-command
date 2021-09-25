@@ -38,7 +38,7 @@ class MoveCommand : Command() {
         } else {
             val arguments = Args(args, delimiters = listOf("to", "towards"))
             val vector = parseVector(args)
-            val target = parseTargets(arguments.getBaseAndStrings("to")).firstOrNull()
+            val target = parseTargets(source, arguments.getBaseAndStrings("to")).firstOrNull()
             val direction = parseNullableDirection(arguments.getBaseAndStrings("towards"))
             val distance = arguments.getNumber()
             val useDefault = keyword != "move"

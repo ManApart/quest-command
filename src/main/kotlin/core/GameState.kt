@@ -19,10 +19,6 @@ object GameState {
         properties = Properties()
     }
 
-    fun currentLocation() : Location {
-        return player.location.getLocation()
-    }
-
 }
 
 

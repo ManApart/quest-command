@@ -50,8 +50,8 @@ class DebugCommand : Command() {
                 "statchanges" -> sendDebugToggleEvent(DebugType.STAT_CHANGES, arguments)
                 "random" -> sendDebugToggleEvent(DebugType.RANDOM_SUCCEED, arguments)
                 "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
-                "stat" -> sendDebugStatEvent(StatKind.LEVELED, arguments)
-                "prop" -> sendDebugStatEvent(StatKind.PROP_VAL, arguments)
+                "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
+                "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(source, arguments)
                 "weather" -> sendDebugWeatherEvent(arguments)
                 else -> display("Did not understand debug command.")
@@ -70,8 +70,8 @@ class DebugCommand : Command() {
         EventManager.postEvent(DebugToggleEvent(type, toggledOn))
     }
 
-    private fun sendDebugStatEvent(type: StatKind, args: Args) {
-        val target = parseTargets(args.getGroup("on")).firstOrNull()?.target ?: GameState.player
+    private fun sendDebugStatEvent(source: Target, type: StatKind, args: Args) {
+        val target = parseTargets(source, args.getGroup("on")).firstOrNull()?.target ?: GameState.player
         val level = args.getNumber()
 
         if (level == null) {
@@ -84,7 +84,7 @@ class DebugCommand : Command() {
     }
 
     private fun sendDebugTagEvent(source: Target, args: Args) {
-        val target = parseTargets(args.getGroup("on")).firstOrNull()?.target ?: source
+        val target = parseTargets(source, args.getGroup("on")).firstOrNull()?.target ?: source
         val tagName = args.argsWithout(listOf("remove", args.args.first())).joinToString(" ")
         val isAdding = !args.contains("remove")
 

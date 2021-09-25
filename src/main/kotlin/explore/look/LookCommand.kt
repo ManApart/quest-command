@@ -30,10 +30,10 @@ class LookCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            keyword == "look" && args.isEmpty() -> clarifyTarget()
+            keyword == "look" && args.isEmpty() -> clarifyTarget(source)
             args.isEmpty() -> EventManager.postEvent(LookEvent())
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent())
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(
+            source.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(
                 source,
                 argString
             ).first()))
@@ -41,8 +41,8 @@ class LookCommand : Command() {
         }
     }
 
-    private fun clarifyTarget() {
-        val targets  = (listOf("all") + GameState.currentLocation().getTargets().map { it.name })
+    private fun clarifyTarget(source: Target) {
+        val targets  = (listOf("all") + source.currentLocation().getTargets().map { it.name })
         val message = "Look at what?\n\t${targets.joinToString(", ")}"
         val response = ResponseRequest(message, targets.associateWith { "look $it" })
         CommandParser.setResponseRequest(response)

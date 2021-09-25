@@ -31,15 +31,15 @@ class StatusCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         when {
-            args.isEmpty() && keyword == "status" -> clarifyStatus()
+            args.isEmpty() && keyword == "status" -> clarifyStatus(source)
             args.isEmpty() -> EventManager.postEvent(StatusEvent(source))
-            GameState.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(GameState.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
+            source.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 
-    private fun clarifyStatus() {
-        val targets = GameState.currentLocation().getCreatures().map { it.name }
+    private fun clarifyStatus(source: Target) {
+        val targets = source.currentLocation().getCreatures().map { it.name }
         val message = "Status of what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "status $it" }))
     }

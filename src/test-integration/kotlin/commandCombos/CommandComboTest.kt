@@ -72,13 +72,13 @@ class CommandComboTest {
     fun makeFire() {
         val input = "n && pickup hatchet && ch tree && ch tree"
         CommandParser.parseCommand(input)
-        assertEquals(0, GameState.currentLocation().getActivators("tree").size)
-        assertEquals(1, GameState.currentLocation().getActivators("logs").size)
+        assertEquals(0, GameState.player.currentLocation().getActivators("tree").size)
+        assertEquals(1, GameState.player.currentLocation().getActivators("logs").size)
         CommandParser.parseCommand("cast flame 1 on logs")
-        assertTrue(GameState.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
+        assertTrue(GameState.player.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
         CommandParser.parseCommand("eat apple && eat apple && cast flame 1 on logs && rest 3")
-        assertEquals(0, GameState.currentLocation().getActivators("logs").size)
-        assertEquals(1, GameState.currentLocation().getItems("ash").size)
+        assertEquals(0, GameState.player.currentLocation().getActivators("logs").size)
+        assertEquals(1, GameState.player.currentLocation().getItems("ash").size)
     }
 
     @Test

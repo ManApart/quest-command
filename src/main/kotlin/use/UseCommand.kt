@@ -29,9 +29,9 @@ class UseCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "with", "on")))
         val arguments = Args(args, delimiters)
-        val used = GameState.currentLocation().getTargetsIncludingPlayerInventory(source, arguments.getBaseString()).firstOrNull()
+        val used = source.currentLocation().getTargetsIncludingPlayerInventory(source, arguments.getBaseString()).firstOrNull()
         val target = if (arguments.hasGroup("on")) {
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(source, arguments.getString("on")).firstOrNull()
+            source.currentLocation().getTargetsIncludingPlayerInventory(source, arguments.getString("on")).firstOrNull()
         } else {
             null
         }
@@ -59,19 +59,19 @@ class UseCommand : Command() {
     }
 
     private fun clarifyItem(source: Target) {
-        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
+        val targets = source.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $it" }))
     }
 
     private fun clarifyItemForTarget(source: Target) {
-        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
+        val targets = source.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $it on" }))
     }
 
     private fun clarifyTarget(source: Target, used: String) {
-        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
+        val targets = source.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
         val message = "Use $used on what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $used on $it" }))
     }

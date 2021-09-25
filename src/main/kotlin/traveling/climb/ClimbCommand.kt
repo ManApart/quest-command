@@ -51,7 +51,7 @@ class ClimbCommand : Command() {
         } else {
             arguments.getBaseString()
         }
-        val targets = findAllTargets()
+        val targets = findAllTargets(source)
         val desiredDirection = arguments.getDirection()
         val matchByName = targets.getOrNull(targetName)
         val matchByDirection = getDirectionMatches(targets, desiredDirection)
@@ -82,8 +82,8 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun findAllTargets(): NameSearchableList<Target> {
-        val localClimbableTargets = GameState.currentLocation().findTargetsByTag("Climbable")
+    private fun findAllTargets(source: Target): NameSearchableList<Target> {
+        val localClimbableTargets = source.currentLocation().findTargetsByTag("Climbable")
         val connections = GameState.player.location.getNeighborConnections().filter { connection ->
             localClimbableTargets.none { it.name == connection.source.targetName }
                     && connection.destination.hasTargetAndPart()

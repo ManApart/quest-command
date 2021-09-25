@@ -1,6 +1,5 @@
 package core.commands
 
-import core.GameState
 import core.history.display
 import core.target.Target
 import core.utility.NameSearchableList
@@ -15,9 +14,9 @@ fun parseTargetsFromInventory(arguments: List<String>, target: Target): List<Tar
 }
 
 //TODO - make location paramatized
-fun parseTargets(arguments: List<String>): List<TargetAim> {
+fun parseTargets(source: Target, arguments: List<String>): List<TargetAim> {
     val args = Args(arguments, delimiters = listOf("and"))
-    val targets = GameState.currentLocation().getTargets()
+    val targets = source.currentLocation().getTargets()
     return args.getBaseAndGroups("and").mapNotNull { getTarget(it, targets) }
 }
 
