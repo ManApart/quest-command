@@ -33,11 +33,11 @@ class JumpCommand : Command() {
         if (source.properties.values.getBoolean(IS_CLIMBING)) {
             val playerLocation = source.location
             val targetLocation= source.climbTarget!!.location
-            EventManager.postEvent(JumpEvent(source = playerLocation, destination = targetLocation, fallDistance = playerLocation.getDistanceToLowestNodeInNetwork()))
+            EventManager.postEvent(JumpEvent(source, source = playerLocation, destination = targetLocation, fallDistance = playerLocation.getDistanceToLowestNodeInNetwork()))
         } else {
             val found = source.location.getNeighbors(Direction.BELOW).firstOrNull()
             if (found != null) {
-                EventManager.postEvent(JumpEvent(source = source.location, destination = found))
+                EventManager.postEvent(JumpEvent(source, source = source.location, destination = found))
             } else {
                 display("Couldn't find anything below to jump down to.")
             }

@@ -5,6 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventListener
 import core.history.display
+import core.target.Target
 import system.persistance.clean
 import system.persistance.getGameNames
 
@@ -20,13 +21,13 @@ class Load : EventListener<LoadEvent>() {
         when {
             saves.isEmpty() -> CommandParser.setResponseRequest(noMatchResponse)
             saves.size > 1 -> CommandParser.setResponseRequest(tooManyMatchesResponse)
-            else -> loadGameAndPlayer(gameName)
+            else -> loadGameAndPlayer(event.source, gameName)
         }
     }
 
-    private fun loadGameAndPlayer(gameName: String) {
+    private fun loadGameAndPlayer(source: Target, gameName: String) {
         system.persistance.loadGame(gameName)
-        display("Now playing ${GameState.player.name} in ${GameState.gameName}.")
+        display("Now playing ${source.name} in ${GameState.gameName}.")
     }
 
 }

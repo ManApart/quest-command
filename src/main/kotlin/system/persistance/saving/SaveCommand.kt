@@ -25,6 +25,6 @@ class SaveCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
-        EventManager.postEvent(SaveEvent())
+        EventManager.postEvent(SaveEvent(source))
     }
 }

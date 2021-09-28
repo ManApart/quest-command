@@ -1,6 +1,5 @@
 package status.rest
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -13,7 +12,7 @@ import status.statChanged.StatChangeEvent
 class Rest : EventListener<RestEvent>() {
 
     override fun execute(event: RestEvent) {
-        if (!GameState.player.isSafe()) {
+        if (!event.creature.isSafe()) {
             display("You can't rest right now!")
         } else {
             rest(event)

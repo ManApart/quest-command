@@ -30,7 +30,7 @@ class LoadCommand : Command() {
         when {
             argString == "ls" -> EventManager.postEvent(ListSavesEvent())
             args.isEmpty() -> display("Please specify a save to load or use ls to list current saves.")
-            else -> EventManager.postEvent(LoadEvent(args.joinToString(" ")))
+            else -> EventManager.postEvent(LoadEvent(source, args.joinToString(" ")))
         }
     }
 }

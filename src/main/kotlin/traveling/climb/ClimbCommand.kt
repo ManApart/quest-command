@@ -84,7 +84,7 @@ class ClimbCommand : Command() {
 
     private fun findAllTargets(source: Target): NameSearchableList<Target> {
         val localClimbableTargets = source.currentLocation().findTargetsByTag("Climbable")
-        val connections = GameState.player.location.getNeighborConnections().filter { connection ->
+        val connections = source.location.getNeighborConnections().filter { connection ->
             localClimbableTargets.none { it.name == connection.source.targetName }
                     && connection.destination.hasTargetAndPart()
         }
@@ -180,9 +180,9 @@ class ClimbCommand : Command() {
     }
 
     private fun climbInDirection(player: Target, direction: Direction, target: Target) {
-        val location = GameState.player.location.getNeighbors(direction).firstOrNull()
+        val location = player.location.getNeighbors(direction).firstOrNull()
         if (location != null) {
-            EventManager.postEvent(AttemptClimbEvent(GameState.player, target, location, direction))
+            EventManager.postEvent(AttemptClimbEvent(player, target, location, direction))
         } else {
             clarifyClimbPart(player, player.location, target)
         }

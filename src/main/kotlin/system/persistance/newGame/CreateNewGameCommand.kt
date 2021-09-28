@@ -29,7 +29,7 @@ class CreateNewGameCommand : Command() {
         if (saveName.isBlank()) {
             display("You must give a name for the new game.")
         } else {
-            EventManager.postEvent(CreateNewGameEvent(saveName))
+            EventManager.postEvent(CreateNewGameEvent(source, saveName))
         }
     }
 }

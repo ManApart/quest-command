@@ -133,7 +133,7 @@ data class Location(
     }
 
     private fun addTargetTo(target: Target, listToAddTo: NameSearchableList<Target>, proxies: List<String>) {
-        if (!getTargets().contains(target)) {
+        if (!getAllTargets().contains(target)) {
             listToAddTo.add(target)
         }
         if (proxies.isNotEmpty()) {
@@ -149,9 +149,9 @@ data class Location(
         target.properties.values.clear("locationDescription")
     }
 
-    fun removeTargetIncludingPlayerInventory(target: Target) {
-        if (GameState.player.inventory.exists(target)) {
-            GameState.player.inventory.remove(target)
+    fun removeTargetIncludingPlayerInventory(source: Target, target: Target) {
+        if (source.inventory.exists(target)) {
+            source.inventory.remove(target)
         } else {
             removeTarget(target)
         }
@@ -161,12 +161,21 @@ data class Location(
         return (creatures + items + activators + other)
     }
 
-    fun getTargets(source: Target = GameState.player): NameSearchableList<Target> {
+    //TODO - rename get all targets and just use that
+    fun getTargets(): NameSearchableList<Target> {
+        return getAllTargets()
+    }
+
+    fun getTargets(source: Target): NameSearchableList<Target> {
         return getAllTargets().sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getTargets(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+    fun getTargets(name: String, source: Target): NameSearchableList<Target> {
         return getTargetsByName(getAllTargets(), name, source)
+    }
+
+    fun getTargets(name: String): NameSearchableList<Target> {
+        return getTargetsByName(getAllTargets(), name)
     }
 
     private fun getTargetsByName(targets: NameSearchableList<Target>, name: String, source: Target): NameSearchableList<Target> {
@@ -273,9 +282,9 @@ data class Location(
         return activators.filter { it.properties.hasAll(properties) }
     }
 
-    fun getAllSouls(): List<Soul> {
-        val targets = mutableSetOf(GameState.player)
-        targets.addAll(GameState.player.inventory.getAllItems())
+    fun getAllSouls(source: Target): List<Soul> {
+        val targets = mutableSetOf(source)
+        targets.addAll(source.inventory.getAllItems())
 
         getAllTargets().forEach {
             targets.add(it)

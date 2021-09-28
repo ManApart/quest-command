@@ -27,9 +27,9 @@ class PlayAsCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            argString == "ls" -> EventManager.postEvent(ListCharactersEvent())
+            argString == "ls" -> EventManager.postEvent(ListCharactersEvent(source))
             args.isEmpty() -> display("Please specify a character to play or use ls to list current characters.")
-            else -> EventManager.postEvent(PlayAsEvent(args.joinToString(" ")))
+            else -> EventManager.postEvent(PlayAsEvent(source, args.joinToString(" ")))
         }
     }
 }

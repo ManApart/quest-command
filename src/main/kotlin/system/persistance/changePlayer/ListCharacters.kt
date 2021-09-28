@@ -12,7 +12,7 @@ class ListCharacters : EventListener<ListCharactersEvent>() {
         if (saveNames.isEmpty()) {
             display("No characters to play as.")
         } else {
-            display("Characters in ${GameState.gameName}:\n\t" + saveNames.joinToString("\n\t") { highlightCurrent(it, GameState.player.name) })
+            display("Characters in ${GameState.gameName}:\n\t" + saveNames.joinToString("\n\t") { highlightCurrent(it, event.source.name) })
         }
     }
 

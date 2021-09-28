@@ -1,5 +1,6 @@
 package system.persistance.saving
 
 import core.events.Event
+import core.target.Target
 
-class SaveEvent : Event
+class SaveEvent(val source: Target) : Event

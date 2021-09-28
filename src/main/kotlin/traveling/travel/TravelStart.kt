@@ -36,5 +36,5 @@ fun getDistanceToNeighbor(source: LocationNode, destination: LocationNode): Int 
 
 fun postArriveEvent(source: Target, destination: LocationPoint, distance: Int, quiet: Boolean) {
     EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -distance / 10, silent = quiet))
-    EventManager.postEvent(ArriveEvent(destination = destination, method = "travel", quiet = quiet))
+    EventManager.postEvent(ArriveEvent(source, destination = destination, method = "travel", quiet = quiet))
 }

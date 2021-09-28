@@ -34,7 +34,7 @@ class ApproachCommand : Command() {
         val distance = arguments.getNumber()
         when {
             target != null && distance != null -> approachByAmount(source, target, distance)
-            target != null && keyword.lowercase() == "approach" -> clarifyAmount(target)
+            target != null && keyword.lowercase() == "approach" -> clarifyAmount(source, target)
             target != null -> EventManager.postEvent(StartMoveEvent(source, target.position))
             else -> clarifyTarget(creatures)
         }
@@ -54,8 +54,8 @@ class ApproachCommand : Command() {
         EventManager.postEvent(StartMoveEvent(source, goal))
     }
 
-    private fun clarifyAmount(target: Target) {
-        val targetRange = GameState.player.position.getDistance(target.position)
+    private fun clarifyAmount(source: Target, target: Target) {
+        val targetRange = source.position.getDistance(target.position)
         val targets = mapOf("minimum" to Distances.MIN_RANGE, "halfway" to targetRange / 2, "all the way" to targetRange)
         CommandParser.setResponseRequest(ResponseRequest("Move how much?\n\t${targets.keys.joinToString(", ")}",
             targets.entries.associate { it.key to "approach ${target.name} by ${it.value}" }))

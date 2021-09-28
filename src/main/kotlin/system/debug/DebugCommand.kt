@@ -53,7 +53,7 @@ class DebugCommand : Command() {
                 "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(source, arguments)
-                "weather" -> sendDebugWeatherEvent(arguments)
+                "weather" -> sendDebugWeatherEvent(source, arguments)
                 else -> display("Did not understand debug command.")
             }
         }
@@ -71,7 +71,7 @@ class DebugCommand : Command() {
     }
 
     private fun sendDebugStatEvent(source: Target, type: StatKind, args: Args) {
-        val target = parseTargets(source, args.getGroup("on")).firstOrNull()?.target ?: GameState.player
+        val target = parseTargets(source, args.getGroup("on")).firstOrNull()?.target ?: source
         val level = args.getNumber()
 
         if (level == null) {
@@ -91,9 +91,9 @@ class DebugCommand : Command() {
         EventManager.postEvent(DebugTagEvent(target, tagName, isAdding))
     }
 
-    private fun sendDebugWeatherEvent(arguments: Args) {
+    private fun sendDebugWeatherEvent(source: Target, arguments: Args) {
         val weather = arguments.argsWithout(listOf("weather")).joinToString(" ")
-        EventManager.postEvent(DebugWeatherEvent(weather))
+        EventManager.postEvent(DebugWeatherEvent(source, weather))
     }
 
 }
