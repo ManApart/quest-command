@@ -51,7 +51,7 @@ class ReadMapCommand : Command() {
     }
 
     private fun targetLocation(source: Target, args: List<String>, depth: Int){
-        val target = LocationManager.findLocationInAnyNetwork(args.joinToString(" "))
+        val target = LocationManager.findLocationInAnyNetwork(source, args.joinToString(" "))
         if (target != null) {
             EventManager.postEvent(ReadMapEvent(source, target, depth))
         } else {

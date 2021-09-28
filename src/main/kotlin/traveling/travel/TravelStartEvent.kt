@@ -5,4 +5,4 @@ import core.events.Event
 import core.target.Target
 import traveling.location.network.LocationNode
 
-class TravelStartEvent(val creature: Target = GameState.player, val currentLocation: LocationNode = GameState.player.location, val destination: LocationNode, val quiet: Boolean = false) : Event
+class TravelStartEvent(val creature: Target, val currentLocation: LocationNode = creature.location, val destination: LocationNode, val quiet: Boolean = false) : Event

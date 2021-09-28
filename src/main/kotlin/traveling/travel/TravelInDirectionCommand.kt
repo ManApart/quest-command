@@ -51,7 +51,7 @@ class TravelInDirectionCommand : Command() {
                     val quietFlag = if (quiet){"s"} else {""}
 
                     when {
-                        openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(destination = openNeighbors.first(), quiet = quiet))
+                        openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(source, destination = openNeighbors.first(), quiet = quiet))
                         openNeighbors.size > 1 -> requestLocation(openNeighbors)
                         openNeighbors.isEmpty() && neighbors.isNotEmpty() -> CommandParser.parseCommand("climb $direction $quietFlag")
                         else -> display("Could not find a location to the $direction.")

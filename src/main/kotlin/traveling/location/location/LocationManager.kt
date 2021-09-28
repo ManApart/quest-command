@@ -2,6 +2,7 @@ package traveling.location.location
 
 import core.DependencyInjector
 import core.GameState
+import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.Network
@@ -49,11 +50,11 @@ object LocationManager {
         }
     }
 
-    fun networkExists(name: String = GameState.player.location.parent): Boolean {
+    fun networkExists(name: String): Boolean {
         return networks.getOrNull(name) != null
     }
 
-    fun getNetwork(name: String = GameState.player.location.parent): Network {
+    fun getNetwork(name: String): Network {
         return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
     }
 
@@ -61,8 +62,8 @@ object LocationManager {
         return networks.toList()
     }
 
-    fun findLocationInAnyNetwork(name: String): LocationNode? {
-        val network = getNetwork()
+    fun findLocationInAnyNetwork(source: Target, name: String): LocationNode? {
+        val network = getNetwork(source.location.parent)
         var target = findTarget(name, network)
         var i = 0
         while (target == null && i < getNetworks().size) {

@@ -1,6 +1,5 @@
 package traveling.travel
 
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
@@ -42,7 +41,7 @@ class TravelCommand : Command() {
             when {
                 route == null -> display("No route to travel to.")
                 route.destination == sourceLocation -> display("You're already at the end of the route.")
-                route.isOnRoute(sourceLocation) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(sourceLocation).destination.location))
+                route.isOnRoute(sourceLocation) -> EventManager.postEvent(TravelStartEvent(source, destination = route.getNextStep(sourceLocation).destination.location))
                 else -> display("You're not on a route right now.")
             }
         } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.lowercase() }.contains(args[0].lowercase())) {
@@ -51,11 +50,11 @@ class TravelCommand : Command() {
             val arguments = Args(args, excludedWords = listOf("to"), flags = listOf("s"))
             val foundName = arguments.getBaseString()
 
-            if (LocationManager.networkExists()) {
-                val found = LocationManager.getNetwork().findLocation(foundName)
+            if (LocationManager.networkExists(source.location.parent)) {
+                val found = LocationManager.getNetwork(source.location.parent).findLocation(foundName)
 
                 if (foundMatch(arguments.getBaseGroup(), found)) {
-                    EventManager.postEvent(FindRouteEvent(source.location, found, 4, true, arguments.hasFlag("s")))
+                    EventManager.postEvent(FindRouteEvent(source, source.location, found, 4, true, arguments.hasFlag("s")))
                 } else {
                     display("Could not find $arguments")
                 }
