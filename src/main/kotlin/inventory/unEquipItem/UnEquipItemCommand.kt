@@ -34,13 +34,13 @@ class UnEquipItemCommand : Command() {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {
-            clarifyItem()
+            clarifyItem(source)
         } else {
-            val item = getItem(arguments)
+            val item = getItem(source, arguments)
             if (item != null) {
                 EventManager.postEvent(UnEquipItemEvent(source, item))
             } else {
-                val unEquippedItem = getUnequippedItem(arguments)
+                val unEquippedItem = getUnequippedItem(source, arguments)
                 if (unEquippedItem != null) {
                     display("${unEquippedItem.name} is already unequipped.")
                 } else {
@@ -50,9 +50,9 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun getItem(args: Args): Target? {
+    private fun getItem(source: Target, args: Args): Target? {
         val itemName = args.getBaseString()
-        val items = GameState.player.body.getEquippedItems()
+        val items = source.body.getEquippedItems()
         return if (items.exists(itemName)) {
             items.get(itemName)
         } else {
@@ -60,10 +60,10 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun getUnequippedItem(args: Args): Target? {
+    private fun getUnequippedItem(source: Target, args: Args): Target? {
         val itemName = args.getBaseString()
-        val equippedItems = GameState.player.body.getEquippedItems()
-        val items = NameSearchableList(GameState.player.inventory.getItems().filter { !equippedItems.contains(it) })
+        val equippedItems = source.body.getEquippedItems()
+        val items = NameSearchableList(source.inventory.getItems().filter { !equippedItems.contains(it) })
         return if (items.exists(itemName)) {
             items.get(itemName)
         } else {
@@ -71,8 +71,8 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun clarifyItem() {
-        val targets = GameState.player.body.getEquippedItems()
+    private fun clarifyItem(source: Target) {
+        val targets = source.body.getEquippedItems()
         val message = "What do you want to un-equip?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest( ResponseRequest(message, targets.associate { "$it" to "unequip $it" }))
     }

@@ -36,7 +36,7 @@ class ReadMapCommand : Command() {
         when{
             arguments.isEmpty() && keyword == "map" -> clarifyDepth()
             otherArgs.isEmpty() -> currentLocation(source, depth)
-            else -> targetLocation(otherArgs, depth)
+            else -> targetLocation(source, otherArgs, depth)
         }
     }
 
@@ -47,13 +47,13 @@ class ReadMapCommand : Command() {
     }
 
     private fun currentLocation(source: Target, depth: Int){
-        EventManager.postEvent(ReadMapEvent(source.location, depth))
+        EventManager.postEvent(ReadMapEvent(source, source.location, depth))
     }
 
-    private fun targetLocation(args: List<String>, depth: Int){
+    private fun targetLocation(source: Target, args: List<String>, depth: Int){
         val target = LocationManager.findLocationInAnyNetwork(args.joinToString(" "))
         if (target != null) {
-            EventManager.postEvent(ReadMapEvent(target, depth))
+            EventManager.postEvent(ReadMapEvent(source, target, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }

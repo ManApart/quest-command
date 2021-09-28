@@ -22,7 +22,7 @@ import kotlin.math.max
 
 class AttemptClimb : EventListener<AttemptClimbEvent>() {
     override fun shouldExecute(event: AttemptClimbEvent): Boolean {
-        return event.creature == GameState.player && event.target.properties.tags.has("Climbable")
+        return event.creature.isPlayer() && event.target.properties.tags.has("Climbable")
     }
 
     override fun execute(event: AttemptClimbEvent) {

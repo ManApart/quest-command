@@ -8,7 +8,7 @@ import status.stat.STAMINA
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override fun shouldExecute(event: StatMaxedEvent): Boolean {
-        return event.target == GameState.player
+        return event.target.isPlayer()
     }
 
     override fun execute(event: StatMaxedEvent) {

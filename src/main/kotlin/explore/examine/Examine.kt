@@ -11,9 +11,9 @@ class Examine : EventListener<ExamineEvent>() {
 
     override fun execute(event: ExamineEvent) {
         when {
-            event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney()
+            event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(event.source)
             event.target != null -> describeTarget(event.target)
-            event.source.ai.aggroTarget != null -> describeBattle()
+            event.source.ai.aggroTarget != null -> describeBattle(event.source)
             else -> describeLocationDetailed(event.source)
         }
     }

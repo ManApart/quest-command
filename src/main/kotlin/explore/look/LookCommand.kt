@@ -31,8 +31,8 @@ class LookCommand : Command() {
         val argString = args.joinToString(" ")
         when {
             keyword == "look" && args.isEmpty() -> clarifyTarget(source)
-            args.isEmpty() -> EventManager.postEvent(LookEvent())
-            args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent())
+            args.isEmpty() -> EventManager.postEvent(LookEvent(source))
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent(source))
             source.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(
                 source,
                 argString

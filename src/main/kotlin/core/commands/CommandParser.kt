@@ -144,7 +144,7 @@ object CommandParser {
     }
 
     fun isPlayersTurn(): Boolean {
-        return commandSource == GameState.player
+        return commandSource.isPlayer()
     }
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {

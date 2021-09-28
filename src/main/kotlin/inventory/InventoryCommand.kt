@@ -36,7 +36,7 @@ class InventoryCommand : Command() {
         when {
             args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(allInventories.first()))
             args.isEmpty() && keyword == "bag" -> clarifyTarget(allInventories)
-            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent())
+            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source))
             target != null -> EventManager.postEvent(ListInventoryEvent(target))
             else -> display("Could not find $argString")
         }

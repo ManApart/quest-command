@@ -15,7 +15,7 @@ import kotlin.math.max
 
 class PlayerJump : EventListener<JumpEvent>() {
     override fun shouldExecute(event: JumpEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
     override fun execute(event: JumpEvent) {
         display("You jump from ${event.source}")

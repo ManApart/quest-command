@@ -13,7 +13,7 @@ import kotlin.math.max
 
 class PlayerFall : EventListener<FallEvent>() {
     override fun shouldExecute(event: FallEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
 
     override fun execute(event: FallEvent) {

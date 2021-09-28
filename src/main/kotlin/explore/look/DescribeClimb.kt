@@ -1,6 +1,5 @@
 package explore.look
 
-import core.GameState
 import core.history.StringTable
 import core.history.display
 import core.target.Target
@@ -10,10 +9,10 @@ import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 import traveling.location.network.LocationNode
 
-fun describeClimbJourney() {
-    val location = GameState.player.location
+fun describeClimbJourney(source: Target) {
+    val location = source.location
     val distance = getDistance(location).wrapNonEmpty("", " ")
-    val exits = getExits(location, GameState.player.climbTarget!!)
+    val exits = getExits(location, source.climbTarget!!)
     val exitString = if (exits.isEmpty()) {
         ""
     } else {
@@ -21,7 +20,7 @@ fun describeClimbJourney() {
     }
 
     display("You are on ${location.name}, ${distance}above the ground.$exitString")
-    display(getRoutesString(location))
+    display(getRoutesString(source, location))
 }
 
 private fun getDistance(location: LocationNode): String {
@@ -33,12 +32,12 @@ private fun getDistance(location: LocationNode): String {
     }
 }
 
-private fun getRoutesString(location: LocationNode): String {
+private fun getRoutesString(source: Target, location: LocationNode): String {
     val routes = RouteNeighborFinder(location, 1).getNeighbors()
 
     return if (routes.isNotEmpty()) {
         val input = mutableListOf(listOf("Name", "Distance", "Direction", "Difficulty", "Exits"))
-        input.addAll(routes.map { getRouteString(it) })
+        input.addAll(routes.map { getRouteString(source, it) })
         val table = StringTable(input, 2, rightPadding = 2)
 
         "Options:\n${table.getString()}"
@@ -47,8 +46,8 @@ private fun getRoutesString(location: LocationNode): String {
     }
 }
 
-private fun getRouteString(route: Route): List<String> {
-    val exits = getExits(route.destination, GameState.player.climbTarget!!)
+private fun getRouteString(source: Target, route: Route): List<String> {
+    val exits = getExits(route.destination, source.climbTarget!!)
     return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString(), "1", exits.joinToString(", "))
 }
 

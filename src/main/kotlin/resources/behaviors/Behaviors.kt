@@ -25,8 +25,8 @@ import use.interaction.InteractEvent
 class CommonBehaviors : BehaviorResource {
     override val values = behaviors {
         behavior("Add on Eat", EatFoodEvent::class) {
-            events { _, params ->
-                listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, GameState.player))
+            events { event, params ->
+                listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, event.creature))
             }
         }
 

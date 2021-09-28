@@ -8,7 +8,7 @@ import traveling.arrive.ArriveEvent
 
 class ClimbComplete : EventListener<ClimbCompleteEvent>() {
     override fun shouldExecute(event: ClimbCompleteEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
 
     override fun execute(event: ClimbCompleteEvent) {
