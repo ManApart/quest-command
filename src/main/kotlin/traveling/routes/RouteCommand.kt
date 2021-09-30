@@ -36,7 +36,7 @@ class RouteCommand : Command() {
         val otherArgs = args.minus(depth.toString())
 
         when {
-            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent())
+            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source))
             else -> targetLocation(source, otherArgs, depth)
         }
     }

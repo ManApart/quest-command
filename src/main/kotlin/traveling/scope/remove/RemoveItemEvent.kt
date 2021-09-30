@@ -4,4 +4,4 @@ import core.GameState
 import core.events.Event
 import core.target.Target
 
-class RemoveItemEvent(val source: Target = GameState.player, val item: Target) : Event
+class RemoveItemEvent(val source: Target, val item: Target) : Event
