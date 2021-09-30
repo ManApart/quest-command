@@ -48,7 +48,7 @@ class PersistenceTest {
         assertEquals(equippedItemCount, GameState.player.body.getEquippedItems().size)
 
         CommandParser.parseCommand("travel to open field && r")
-        assertEquals(2, GameState.player.location.getLocation().getItems(name = "bundle").first().properties.getCount())
+        assertEquals(2, GameState.player.location.getLocation().getItems("bundle").first().properties.getCount())
     }
 
 }
