@@ -16,7 +16,7 @@ class ItemSpawner : EventListener<SpawnItemEvent>() {
             if (event.position != NO_VECTOR) {
                 item.position = event.position
             }
-            EventManager.postEvent(ItemSpawnedEvent(item, event.target))
+            EventManager.postEvent(ItemSpawnedEvent(item, event.target, event.targetLocation ?: event.target!!.location))
         } else {
             display("Could not spawn ${event.itemName} because it could not be found.")
         }
