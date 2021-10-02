@@ -16,9 +16,9 @@ class TravelStart : EventListener<TravelStartEvent>() {
         when {
             event.destination == event.currentLocation -> display("You realize that you're already at ${event.currentLocation}")
             event.currentLocation.isMovingToRestricted(event.destination) -> display("You're not able to get to ${event.destination.name}")
-            GameState.player.soul.getCurrent(STAMINA) == 0 -> display("You're too tired to do any traveling.")
-            !GameState.player.isSafe() -> display("You can't travel right now.")
-            GameState.player.getEncumbrance() >= 1 -> display("You are too encumbered to travel.")
+            event.creature.soul.getCurrent(STAMINA) == 0 -> display("You're too tired to do any traveling.")
+            !event.creature.isSafe() -> display("You can't travel right now.")
+            event.creature.getEncumbrance() >= 1 -> display("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
                     display("You leave ${event.currentLocation} travelling towards ${event.destination}.")
@@ -36,5 +36,5 @@ fun getDistanceToNeighbor(source: LocationNode, destination: LocationNode): Int 
 
 fun postArriveEvent(source: Target, destination: LocationPoint, distance: Int, quiet: Boolean) {
     EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -distance / 10, silent = quiet))
-    EventManager.postEvent(ArriveEvent(destination = destination, method = "travel", quiet = quiet))
+    EventManager.postEvent(ArriveEvent(source, destination = destination, method = "travel", quiet = quiet))
 }

@@ -42,14 +42,14 @@ class Tutorial : StoryEventResource {
 
             StoryEvent("Tutorial", 50, "I should continue traveling to the interior of Farmer's Hut.",
                     ConditionalEvents(ArriveEvent::class,
-                            { event, _ -> event.creature == GameState.player && event.destination.location.name == "Farmer's Hut" },
+                            { event, _ -> event.creature.isPlayer() && event.destination.location.name == "Farmer's Hut" },
                             { _, _ -> listOf(MessageEvent("Now I should travel to the Farmer's Hut Interior.")) }
                     )
             ),
 
             StoryEvent("Tutorial", 60, "I should look for the Apple Pie Recipe.",
                     ConditionalEvents(ArriveEvent::class,
-                            { event, _ -> event.creature == GameState.player && event.destination.location.name == "Farmer's Hut Interior" },
+                            { event, _ -> event.creature.isPlayer() && event.destination.location.name == "Farmer's Hut Interior" },
                             { _, _ -> listOf(MessageEvent("I should use the 'look' command to see what surrounds me.")) }
                     )
             ),
@@ -77,7 +77,7 @@ class Tutorial : StoryEventResource {
 
             StoryEvent("Tutorial", 90, "I should travel to Barren Field.",
                     ConditionalEvents(InteractEvent::class,
-                            { event, _ -> event.source == GameState.player && event.target.name == "Apple Pie Recipe" },
+                            { event, _ -> event.source.isPlayer() && event.target.name == "Apple Pie Recipe" },
                             { _, _ -> listOf(MessageEvent("Once I'm done here I should travel to Barren Field.")) }
                     )
             ),

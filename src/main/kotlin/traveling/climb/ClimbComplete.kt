@@ -8,7 +8,7 @@ import traveling.arrive.ArriveEvent
 
 class ClimbComplete : EventListener<ClimbCompleteEvent>() {
     override fun shouldExecute(event: ClimbCompleteEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
 
     override fun execute(event: ClimbCompleteEvent) {
@@ -23,6 +23,6 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
         val method = if (position != null && position.z > 0) "descend" else "climb"
 
         EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, method, silent = climbBackOff))
-        GameState.player.finishClimbing()
+        event.creature.finishClimbing()
     }
 }

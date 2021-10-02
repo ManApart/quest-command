@@ -2,34 +2,35 @@ package explore.look
 
 import core.GameState
 import core.history.display
+import core.target.Target
 import core.target.targetsToString
 import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
 
-fun describeLocation() {
-    val pos = GameState.player.position
+fun describeLocation(source: Target) {
+    val pos = source.position
     if (pos == NO_VECTOR) {
-        display("You are at ${GameState.player.location.name}")
+        display("You are at ${source.location.name}")
     } else {
-        display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
+        display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
-    if (GameState.currentLocation().getTargets().size > 1) {
-        val targetList = targetsToString(GameState.currentLocation().getTargets().filterNot { it == GameState.player })
+    if (source.currentLocation().getTargets().size > 1) {
+        val targetList = targetsToString(source.currentLocation().getTargets().filterNot { it.isPlayer() })
         display("You find yourself surrounded by $targetList.")
     } else {
         display("You don't see anything of use.")
     }
 }
 
-fun describeLocationDetailed() {
-    val pos = GameState.player.position
-    val locationRecipe = GameState.player.location.getLocationRecipe()
-    val location = GameState.currentLocation()
+fun describeLocationDetailed(source: Target) {
+    val pos = source.position
+    val locationRecipe = source.location.getLocationRecipe()
+    val location = source.currentLocation()
     if (pos == NO_VECTOR) {
-        display("You are at ${GameState.player.location.name}")
+        display("You are at ${source.location.name}")
     } else {
-        display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${GameState.player.location.name}")
+        display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
     display(locationRecipe.getDescription())
     display(location.weather.description)
@@ -37,7 +38,7 @@ fun describeLocationDetailed() {
     val heat = getHeatLevel(location)
     display("It is $light light and $heat hot.")
     if (location.getTargets().size > 1) {
-        val targetList = targetsToString(location.getTargets().filterNot { it == GameState.player })
+        val targetList = targetsToString(location.getTargets().filterNot { it.isPlayer() })
         display("You find yourself surrounded by $targetList.")
     } else {
         display("You don't see anything of use.")

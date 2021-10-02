@@ -7,6 +7,7 @@ import core.commands.ResponseRequest
 import core.commands.parseVector
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import traveling.position.Vector
 
 class DropItemCommand : core.commands.Command() {
@@ -29,26 +30,26 @@ class DropItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("at"))
-        val vector = parseVector(args, GameState.player.position)
+        val vector = parseVector(args, source.position)
         when {
-            arguments.isEmpty() -> clarifyItemToDrop()
-            arguments.hasBase() -> dropItem(arguments, vector)
+            arguments.isEmpty() -> clarifyItemToDrop(source)
+            arguments.hasBase() -> dropItem(source, arguments, vector)
             else -> display("Drop what? Try 'drop <item>'.")
         }
     }
 
-    private fun clarifyItemToDrop() {
-        val targets = GameState.player.inventory.getItems().map { it.name }
+    private fun clarifyItemToDrop(source: Target) {
+        val targets = source.inventory.getItems().map { it.name }
         val message = "Drop what item?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "drop $it" }))
     }
 
-    private fun dropItem(args: Args, position: Vector) {
-        val item = GameState.player.inventory.getItem(args.getBaseString())
+    private fun dropItem(source: Target, args: Args, position: Vector) {
+        val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
-            EventManager.postEvent(PlaceItemEvent(GameState.player, item, position))
+            EventManager.postEvent(PlaceItemEvent(source, item, position))
         } else {
             display("Couldn't find ${args.getBaseString()}")
         }

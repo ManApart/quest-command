@@ -1,6 +1,5 @@
 package resources.behaviors
 
-import core.GameState
 import core.ai.behavior.BehaviorResource
 import core.ai.behavior.behaviors
 import core.commands.commandEvent.CommandEvent
@@ -25,8 +24,8 @@ import use.interaction.InteractEvent
 class CommonBehaviors : BehaviorResource {
     override val values = behaviors {
         behavior("Add on Eat", EatFoodEvent::class) {
-            events { _, params ->
-                listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, GameState.player))
+            events { event, params ->
+                listOf(SpawnItemEvent( params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, event.creature))
             }
         }
 
@@ -39,8 +38,8 @@ class CommonBehaviors : BehaviorResource {
                 listOf(
                     MessageEvent("The $treeName cracks and falls to the ground."),
                     RemoveScopeEvent(event.target),
-                    SpawnActivatorEvent(ActivatorManager.getActivator("Logs")),
-                    SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1)
+                    SpawnActivatorEvent(ActivatorManager.getActivator("Logs"), targetLocation = event.target.location),
+                    SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, targetLocation = event.target.location)
                 )
             }
         }
@@ -60,7 +59,7 @@ class CommonBehaviors : BehaviorResource {
                 listOf(
                     MessageEvent("The $name smolders until it is nothing more than ash."),
                     RemoveScopeEvent(event.target),
-                    SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, positionParent = event.target)
+                    SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, targetLocation = event.target.location, positionParent = event.target)
                 )
             }
         }
@@ -85,7 +84,7 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 listOf(
                     MessageEvent(params["message"] ?: "You harvest ${event.target} with ${event.used}."),
-                    SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, positionParent = event.target)
+                    SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, targetLocation = event.target.location, positionParent = event.target)
                 )
             }
         }
@@ -100,7 +99,7 @@ class CommonBehaviors : BehaviorResource {
                     MessageEvent(params["message"] ?: ""),
                     RestrictLocationEvent(sourceLocation, destinationLocation, makeRestricted),
                     RemoveScopeEvent(event.target),
-                    SpawnActivatorEvent(replacement, true)
+                    SpawnActivatorEvent(replacement, true, event.target.location)
                 )
             }
         }

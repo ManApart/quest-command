@@ -9,8 +9,8 @@ import traveling.location.RouteNeighborFinder
 
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {
-        if (GameState.player.location == event.target) {
-            display("You are in at ${GameState.player.position} in ${event.target.name}.")
+        if (event.source.location == event.target) {
+            display("You are in at ${event.source.position} in ${event.target.name}.")
         }
         val name = "${event.target.name} is a part of ${event.target.parent}. It"
         display("$name ${getRoutesString(event)}")

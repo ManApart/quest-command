@@ -54,7 +54,7 @@ class DebugWeatherListener : EventListener<DebugWeatherEvent>() {
     override fun execute(event: DebugWeatherEvent) {
         if (WeatherManager.weatherExists(event.weather)) {
             val weather = WeatherManager.getWeather(event.weather)
-            GameState.currentLocation().updateWeather(weather)
+            event.source.currentLocation().updateWeather(weather)
             display("Updated weather to ${weather.name}.")
         } else {
             display("Could not find weather ${event.weather}.")

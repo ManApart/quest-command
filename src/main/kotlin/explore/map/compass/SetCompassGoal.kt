@@ -11,7 +11,7 @@ import traveling.location.network.LocationNode
 
 class SetCompassGoal : EventListener<SetCompassEvent>() {
     override fun execute(event: SetCompassEvent) {
-        val destination = LocationManager.findLocationInAnyNetwork(event.locationName)
+        val destination = LocationManager.findLocationInAnyNetwork(event.source, event.locationName)
         if (destination == null) {
             display("Could not find ${event.locationName} on the map.")
         } else if (destination == event.source.location){

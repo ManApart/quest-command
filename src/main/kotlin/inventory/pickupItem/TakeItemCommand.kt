@@ -29,20 +29,20 @@ class TakeItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from"))
         when {
-            args.isEmpty() -> pickupWhat(GameState.currentLocation().getItems().filterUniqueByName())
-            arguments.hasGroup("from") -> pickupItemFromContainer(arguments)
-            else -> pickupItemFromScope(arguments)
+            args.isEmpty() -> pickupWhat(source.currentLocation().getItems().filterUniqueByName())
+            arguments.hasGroup("from") -> pickupItemFromContainer(source, arguments)
+            else -> pickupItemFromScope(source, arguments)
         }
     }
 
-    private fun pickupItemFromScope(args: Args) {
-        val items = GameState.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
+    private fun pickupItemFromScope(source: Target, args: Args) {
+        val items = source.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> display("Couldn't find ${args.getBaseString()}")
-            items.size == 1 -> EventManager.postEvent(TakeItemEvent(GameState.player, items.first()))
+            items.size == 1 -> EventManager.postEvent(TakeItemEvent(source, items.first()))
             else -> pickupWhat(items)
         }
     }
@@ -57,11 +57,11 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupItemFromContainer(args: Args) {
-        val from = GameState.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
+    private fun pickupItemFromContainer(source: Target, args: Args) {
+        val from = source.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
         when {
             from.isEmpty() -> display("Couldn't find ${args.getString("from")}.")
-            from.size == 1 -> takeItemFromContainer(from.first(), args.getBaseString())
+            from.size == 1 -> takeItemFromContainer(source, from.first(), args.getBaseString())
             else -> takeFromWhat(from, args.getBaseString())
         }
     }
@@ -72,10 +72,10 @@ class TakeItemCommand : core.commands.Command() {
         CommandParser.setResponseRequest(response)
     }
 
-    private fun takeItemFromContainer(from: Target, itemName: String) {
+    private fun takeItemFromContainer(source: Target, from: Target, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
-            EventManager.postEvent(TransferItemEvent(GameState.player, item, from, GameState.player))
+            EventManager.postEvent(TransferItemEvent(source, item, from, source))
         } else {
             display("Couldn't find $itemName.")
         }

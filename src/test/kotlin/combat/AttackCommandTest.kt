@@ -20,18 +20,17 @@ class AttackCommandTest {
     fun setup() {
         createMockedGame()
         EventManager.clear()
-
-        GameState.player = GameManager.newPlayer()
     }
 
     @Test
     fun attackCreatureWithoutDirection() {
+        val player = GameManager.newPlayer()
         val rat = target("Rat"){
             body("human")
         }.build()
-        GameState.currentLocation().addTarget(rat)
+        player.currentLocation().addTarget(rat)
 
-        command.execute("sl", "rat".split(" "))
+        command.execute(player, "sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
         assertEquals(rat, event.target.target)
     }

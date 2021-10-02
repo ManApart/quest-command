@@ -5,6 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import quests.QuestManager
 
 class JournalCommand : Command() {
@@ -27,7 +28,7 @@ class JournalCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         when {
             args.isEmpty() && keyword == "Quest" -> clarifyQuest()
 

@@ -2,6 +2,7 @@ package system.persistance.saving
 
 import core.commands.Command
 import core.events.EventManager
+import core.target.Target
 
 class SaveCommand : Command() {
     override fun getAliases(): List<String> {
@@ -23,7 +24,7 @@ class SaveCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        EventManager.postEvent(SaveEvent())
+    override fun execute(source: Target, keyword: String, args: List<String>) {
+        EventManager.postEvent(SaveEvent(source))
     }
 }

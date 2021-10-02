@@ -16,7 +16,7 @@ object CommandParser {
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private var responseRequest: ResponseRequest? = null
-    var commandSource: Target? = null
+    var commandSource: Target = GameState.player
     var commandInterceptor: CommandInterceptor? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
@@ -31,7 +31,7 @@ object CommandParser {
 
     fun reset() {
         responseRequest = null
-        commandSource = null
+        commandSource = GameState.player
         commandInterceptor = null
         commands = loadCommands()
     }
@@ -52,7 +52,7 @@ object CommandParser {
         if (commandInterceptor == null) {
             splitAndParseCommand(line)
         } else {
-            commandInterceptor!!.parseCommand(line)
+            commandInterceptor!!.parseCommand(commandSource, line)
         }
 
         val time = System.currentTimeMillis() - startTime
@@ -98,11 +98,7 @@ object CommandParser {
 
     private fun executeCommand(command: Command, args: List<String>) {
         val trimmedArgs = args.removeFirstItem()
-        if (commandSource != null) {
-            command.execute(commandSource!!, args[0], trimmedArgs)
-        } else {
-            command.execute(args[0], trimmedArgs)
-        }
+        command.execute(commandSource, args[0], trimmedArgs)
     }
 
     fun cleanLine(line: String): List<String> {
@@ -148,7 +144,7 @@ object CommandParser {
     }
 
     fun isPlayersTurn(): Boolean {
-        return commandSource == null || commandSource == GameState.player
+        return commandSource.isPlayer()
     }
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {

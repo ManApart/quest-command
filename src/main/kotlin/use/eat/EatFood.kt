@@ -1,6 +1,5 @@
 package use.eat
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -15,7 +14,7 @@ class EatFood : EventListener<EatFoodEvent>() {
         display("$target ${event.food.name}")
         val healAmount = getHealAmount(event.food)
         EventManager.postEvent(StatChangeEvent(event.creature, event.food.name, "Health", healAmount))
-        GameState.currentLocation().removeTargetIncludingPlayerInventory(event.food)
+        event.creature.currentLocation().removeTargetIncludingPlayerInventory(event.creature, event.food)
 
         if (event.food.canConsume(event)){
             event.food.consume(event)

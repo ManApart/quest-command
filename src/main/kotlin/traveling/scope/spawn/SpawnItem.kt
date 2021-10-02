@@ -1,6 +1,5 @@
 package traveling.scope.spawn
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -12,7 +11,7 @@ class SpawnItem : EventListener<ItemSpawnedEvent>() {
         if (event.target == null) {
             val name = StringFormatter.format(event.item.properties.getCount() > 1, "${event.item.properties.getCount()}x ${event.item.name}s", event.item.name)
             display("$name appeared.")
-            event.item.location = event.targetLocation ?: GameState.player.location
+            event.item.location = event.targetLocation
             event.item.location.getLocation().addTarget(event.item)
         } else {
             event.target.inventory.add(event.item)

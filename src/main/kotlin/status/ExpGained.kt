@@ -6,7 +6,7 @@ import core.history.display
 
 class ExpGained : EventListener<ExpGainedEvent>() {
     override fun shouldExecute(event: ExpGainedEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
 
     override fun execute(event: ExpGainedEvent) {

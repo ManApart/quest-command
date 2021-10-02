@@ -4,6 +4,7 @@ import core.GameState
 import core.commands.*
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import use.interaction.InteractEvent
 
 class UseCommand : Command() {
@@ -25,29 +26,29 @@ class UseCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "with", "on")))
         val arguments = Args(args, delimiters)
-        val used = GameState.currentLocation().getTargetsIncludingPlayerInventory(arguments.getBaseString()).firstOrNull()
+        val used = source.currentLocation().getTargetsIncludingPlayerInventory(source, arguments.getBaseString()).firstOrNull()
         val target = if (arguments.hasGroup("on")) {
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(arguments.getString("on")).firstOrNull()
+            source.currentLocation().getTargetsIncludingPlayerInventory(source, arguments.getString("on")).firstOrNull()
         } else {
             null
         }
 
         when {
             arguments.isEmpty() -> clarifyAction()
-            arguments.fullString == "item on target" -> clarifyItemForTarget()
-            arguments.getBaseString() == "item" && !arguments.hasGroup("on") -> clarifyItem()
+            arguments.fullString == "item on target" -> clarifyItemForTarget(source)
+            arguments.getBaseString() == "item" && !arguments.hasGroup("on") -> clarifyItem(source)
             used == null -> display("Couldn't find $arguments")
 
-            !arguments.hasGroup("on") && args.contains("on") -> clarifyTarget(used.name)
-            !used.isWithinRangeOf(GameState.player) ->  display("You are too far away to use $used.")
-            !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(GameState.player, used))
+            !arguments.hasGroup("on") && args.contains("on") -> clarifyTarget(source, used.name)
+            !used.isWithinRangeOf(source) ->  display("You are too far away to use $used.")
+            !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(source, used))
             target == null -> display("Couldn't find ${arguments.getString("on")}")
-            !target.isWithinRangeOf(GameState.player) ->  display("You are too far away to use $used on $target.")
+            !target.isWithinRangeOf(source) ->  display("You are too far away to use $used on $target.")
 
-            else -> EventManager.postEvent(StartUseEvent(GameState.player, used, target))
+            else -> EventManager.postEvent(StartUseEvent(source, used, target))
         }
     }
 
@@ -57,20 +58,20 @@ class UseCommand : Command() {
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { it }))
     }
 
-    private fun clarifyItem() {
-        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
+    private fun clarifyItem(source: Target) {
+        val targets = source.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $it" }))
     }
 
-    private fun clarifyItemForTarget() {
-        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
+    private fun clarifyItemForTarget(source: Target) {
+        val targets = source.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
         val message = "Use what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $it on" }))
     }
 
-    private fun clarifyTarget(used: String) {
-        val targets = GameState.currentLocation().getTargetsIncludingPlayerInventory().map { it.name }
+    private fun clarifyTarget(source: Target, used: String) {
+        val targets = source.currentLocation().getTargetsIncludingPlayerInventory(source).map { it.name }
         val message = "Use $used on what?\n\t${targets.joinToString(", ")}"
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "use $used on $it" }))
     }

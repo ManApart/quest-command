@@ -30,14 +30,13 @@ object GameManager {
         val gameMetaData = getGamesMetaData()
         if (gameMetaData.values.getBoolean(AUTO_LOAD) && getGameNames().isNotEmpty()) {
             val saveName = gameMetaData.values.getString(LAST_SAVE_GAME_NAME, getGameNames().first())
-            EventManager.postEvent(LoadEvent(saveName))
+            EventManager.postEvent(LoadEvent(GameState.player, saveName))
         } else {
             newGame()
         }
     }
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
-        CommandParser.reset()
         ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()
@@ -49,8 +48,10 @@ object GameManager {
 
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
+        CommandParser.reset()
+
         giveStartingItems(GameState.player)
-        EventManager.postEvent(ArriveEvent(destination = LocationPoint(GameState.player.location), method = "wake"))
+        EventManager.postEvent(ArriveEvent(GameState.player, destination = LocationPoint(GameState.player.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }

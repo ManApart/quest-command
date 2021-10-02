@@ -22,7 +22,7 @@ import kotlin.math.max
 
 class AttemptClimb : EventListener<AttemptClimbEvent>() {
     override fun shouldExecute(event: AttemptClimbEvent): Boolean {
-        return event.creature == GameState.player && event.target.properties.tags.has("Climbable")
+        return event.creature.isPlayer() && event.target.properties.tags.has("Climbable")
     }
 
     override fun execute(event: AttemptClimbEvent) {
@@ -32,8 +32,8 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
             val distance = getDistance(event.creature.location, event.targetPart)
             val chance = getChance(event.creature, distance)
 
-            EventManager.postEvent(StatChangeEvent(GameState.player, "Climbing", STAMINA, -distance, event.quiet))
-            if (GameState.player.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
+            EventManager.postEvent(StatChangeEvent(event.creature, "Climbing", STAMINA, -distance, event.quiet))
+            if (event.creature.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
                 advance(event, distance, chance)
             } else {
                 fall(event)
@@ -43,7 +43,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private fun isWithinRange(event: AttemptClimbEvent): Boolean {
-        return GameState.player.climbTarget != null || event.target.isWithinRangeOf(event.creature)
+        return event.creature.climbTarget != null || event.target.isWithinRangeOf(event.creature)
                 || event.target.location != event.creature.location
     }
 
@@ -76,8 +76,8 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
             else ->display("You climb $distance ft$directionString towards ${event.targetPart.name}.")
         }
 
-        GameState.player.setClimbing(event.target)
-        awardEXP(GameState.player, chance)
+        event.creature.setClimbing(event.target)
+        awardEXP(event.creature, chance)
 
         if (isDemountableEdgeNode(event)) {
             val connectedLocation = getConnectedLocation(event.target.location, event.target, event.targetPart)

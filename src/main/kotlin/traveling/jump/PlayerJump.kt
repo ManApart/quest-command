@@ -15,21 +15,21 @@ import kotlin.math.max
 
 class PlayerJump : EventListener<JumpEvent>() {
     override fun shouldExecute(event: JumpEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
     override fun execute(event: JumpEvent) {
         display("You jump from ${event.source}")
         val damage = calculateJumpDamage(event)
 
-        GameState.player.finishClimbing()
+        event.creature.finishClimbing()
 
         if (damage != 0) {
-            EventManager.postEvent(StatChangeEvent(GameState.player, "Falling", HEALTH, damage))
+            EventManager.postEvent(StatChangeEvent(event.creature, "Falling", HEALTH, damage))
         } else {
             display("You land without taking damage.")
         }
 
-        EventManager.postEvent(ArriveEvent(destination = LocationPoint(event.destination), method = "fall"))
+        EventManager.postEvent(ArriveEvent(event.creature, destination = LocationPoint(event.destination), method = "fall"))
     }
 
     private fun calculateJumpDamage(event: JumpEvent): Int {

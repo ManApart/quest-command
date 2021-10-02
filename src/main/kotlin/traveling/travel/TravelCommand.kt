@@ -1,11 +1,11 @@
 package traveling.travel
 
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
@@ -32,16 +32,16 @@ class TravelCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        if (GameState.player.getEncumbrance() >=1){
+    override fun execute(source: Target, keyword: String, args: List<String>) {
+        if (source.getEncumbrance() >=1){
             display("You are too encumbered to travel.")
         } else if (args.isEmpty()) {
-            val route = GameState.player.route
-            val source = GameState.player.location
+            val route = source.route
+            val sourceLocation = source.location
             when {
                 route == null -> display("No route to travel to.")
-                route.destination == source -> display("You're already at the end of the route.")
-                route.isOnRoute(source) -> EventManager.postEvent(TravelStartEvent(destination = route.getNextStep(source).destination.location))
+                route.destination == sourceLocation -> display("You're already at the end of the route.")
+                route.isOnRoute(sourceLocation) -> EventManager.postEvent(TravelStartEvent(source, destination = route.getNextStep(sourceLocation).destination.location))
                 else -> display("You're not on a route right now.")
             }
         } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.lowercase() }.contains(args[0].lowercase())) {
@@ -50,11 +50,11 @@ class TravelCommand : Command() {
             val arguments = Args(args, excludedWords = listOf("to"), flags = listOf("s"))
             val foundName = arguments.getBaseString()
 
-            if (LocationManager.networkExists()) {
-                val found = LocationManager.getNetwork().findLocation(foundName)
+            if (LocationManager.networkExists(source.location.parent)) {
+                val found = LocationManager.getNetwork(source.location.parent).findLocation(foundName)
 
                 if (foundMatch(arguments.getBaseGroup(), found)) {
-                    EventManager.postEvent(FindRouteEvent(GameState.player.location, found, 4, true, arguments.hasFlag("s")))
+                    EventManager.postEvent(FindRouteEvent(source, source.location, found, 4, true, arguments.hasFlag("s")))
                 } else {
                     display("Could not find $arguments")
                 }

@@ -2,6 +2,7 @@ package core
 
 import conversation.Conversation
 import core.properties.Properties
+import core.target.Target
 import time.TimeManager
 import traveling.location.location.Location
 
@@ -16,10 +17,6 @@ object GameState {
     fun reset() {
         player = GameManager.newPlayer()
         properties = Properties()
-    }
-
-    fun currentLocation() : Location {
-        return player.location.getLocation()
     }
 
 }

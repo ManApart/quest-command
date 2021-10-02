@@ -1,5 +1,7 @@
 package core.commands
 
+import core.target.Target
+
 interface CommandInterceptor {
-    fun parseCommand(line: String)
+    fun parseCommand(source: Target, line: String)
 }

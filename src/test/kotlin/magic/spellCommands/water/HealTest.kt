@@ -39,7 +39,7 @@ class HealTest {
         }
 
         private val targetA = Target("targetA")
-        private val scope = GameState.currentLocation()
+        private val scope = GameState.player.currentLocation()
 
         init {
             scope.addTarget(targetA)

@@ -29,22 +29,22 @@ class CookCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(","), ArgDelimiter(listOf("with", "on")))
         val arguments = Args(args, delimiters)
         if (!isValidInput(arguments)) {
             display("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(arguments)
-            val tool = getTool(arguments)
-            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, GameState.player.soul)
+            val tool = getTool(source, arguments)
+            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.soul)
 
             when {
                 tool == null -> display("Couldn't find something to cook on")
                 ingredients.size != arguments.getBaseAndStrings(",").size -> display("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
                 recipes.isEmpty() -> display("Couldn't find a recipe for those ingredients")
                 recipes.size > 1 -> display("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
-                else -> EventManager.postEvent(CraftRecipeEvent(GameState.player, recipes.first(), tool))
+                else -> EventManager.postEvent(CraftRecipeEvent(source, recipes.first(), tool))
             }
         }
     }
@@ -63,10 +63,10 @@ class CookCommand : Command() {
         return ingredients
     }
 
-    private fun getTool(args: Args): Target? {
+    private fun getTool(source: Target, args: Args): Target? {
         val group = args.getGroup("on")
-        val location = GameState.currentLocation()
-        return (location.getActivators(group.joinToString(" ")) + location.findActivatorsByTag("Range")).firstOrNull()
+        val location = source.currentLocation()
+        return (location.getActivators(group.joinToString(" "), source) + location.findActivatorsByTag("Range")).firstOrNull()
     }
 
 }

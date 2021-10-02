@@ -7,9 +7,8 @@ import core.history.displayUpdateEnd
 import core.target.Target
 import status.stat.HEALTH
 
-fun describeBattle() {
-    val source = CommandParser.commandSource!!
-    val creatures = source.location.getLocation().getCreatures()
+fun describeBattle(source: Target) {
+    val creatures = source.location.getLocation().getCreatures(source)
     creatures.filter { it != source }.forEach {
         display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
     }

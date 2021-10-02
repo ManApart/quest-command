@@ -6,6 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class ExamineCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,19 +27,22 @@ class ExamineCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            keyword == "examine" && args.isEmpty() -> clarifyTarget()
-            args.isEmpty() -> EventManager.postEvent(ExamineEvent())
-            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent())
-            GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(GameState.player, GameState.currentLocation().getTargetsIncludingPlayerInventory(argString).first()))
+            keyword == "examine" && args.isEmpty() -> clarifyTarget(source)
+            args.isEmpty() -> EventManager.postEvent(ExamineEvent(source))
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent(source))
+            source.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(
+                source,
+                argString
+            ).first()))
             else -> display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 
-    private fun clarifyTarget() {
-        val targets  = (listOf("all") + GameState.currentLocation().getTargets().map { it.name })
+    private fun clarifyTarget(source: Target) {
+        val targets  = (listOf("all") + source.currentLocation().getTargets().map { it.name })
         val message = "Examine what?\n\t${targets.joinToString(", ")}"
         val response = ResponseRequest(message, targets.associateWith { "examine $it" })
         CommandParser.setResponseRequest(response)

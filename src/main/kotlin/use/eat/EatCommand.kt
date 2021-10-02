@@ -27,18 +27,18 @@ class EatCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
-        val allFood = GameState.currentLocation().getItemsIncludingPlayerInventory().filter { it.properties.tags.has("food") }
-        val pickedFood = GameState.currentLocation().getItemsIncludingPlayerInventory(argsString, GameState.player)
+        val allFood = source.currentLocation().getItemsIncludingPlayerInventory(source).filter { it.properties.tags.has("food") }
+        val pickedFood = source.currentLocation().getItemsIncludingPlayerInventory(argsString, source)
         val topChoice = pickedFood.firstOrNull { it.name.lowercase() == argsString }
 
         when {
             args.isEmpty() -> eatWhat(allFood)
             pickedFood.isEmpty() -> display("Couldn't find $argsString")
-            topChoice != null -> eatFood(topChoice)
+            topChoice != null -> eatFood(source, topChoice)
             pickedFood.size > 1 -> eatWhat(pickedFood)
-            else -> eatFood(pickedFood.first())
+            else -> eatFood(source, pickedFood.first())
         }
     }
 
@@ -48,9 +48,9 @@ class EatCommand : Command() {
          CommandParser.setResponseRequest(response)
     }
 
-    private fun eatFood(food: Target) {
+    private fun eatFood(source: Target, food: Target) {
         if (food.properties.tags.has("food")) {
-            EventManager.postEvent(StartUseEvent(GameState.player, food, GameState.player))
+            EventManager.postEvent(StartUseEvent(source, food, source))
         } else {
             display("${food.name} is inedible.")
         }

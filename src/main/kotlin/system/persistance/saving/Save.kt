@@ -6,9 +6,9 @@ import system.persistance.save
 
 class Save : EventListener<SaveEvent>() {
     override fun execute(event: SaveEvent) {
-        save(GameState.gameName, GameState.player)
+        save(GameState.gameName, event.source)
 
-        println("Saved ${GameState.player.name} in ${GameState.gameName}.")
+        println("Saved ${event.source.name} in ${GameState.gameName}.")
     }
 
 

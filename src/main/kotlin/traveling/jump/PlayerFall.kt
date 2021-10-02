@@ -13,17 +13,17 @@ import kotlin.math.max
 
 class PlayerFall : EventListener<FallEvent>() {
     override fun shouldExecute(event: FallEvent): Boolean {
-        return event.creature == GameState.player
+        return event.creature.isPlayer()
     }
 
     override fun execute(event: FallEvent) {
         if (event.reason != null) display(event.reason)
         display("You fall ${event.fallHeight}ft.")
         takeDamage(event)
-        if (GameState.player.location != event.destination){
-            EventManager.postEvent(ArriveEvent(destination = LocationPoint(event.destination), method = "fall"))
+        if (event.creature.location != event.destination){
+            EventManager.postEvent(ArriveEvent(event.creature, destination = LocationPoint(event.destination), method = "fall"))
         }
-        GameState.player.finishClimbing()
+        event.creature.finishClimbing()
     }
 
     private fun takeDamage(event: FallEvent) {

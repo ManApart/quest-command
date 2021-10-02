@@ -3,6 +3,7 @@ package system.help
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
+import core.target.Target
 
 class CommandsCommand : Command() {
 
@@ -22,7 +23,7 @@ class CommandsCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> clarifyCommandGroup()
             args.size == 1 && isCommand(args) -> CommandParser.parseCommand(args[1])

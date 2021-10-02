@@ -133,7 +133,7 @@ data class Location(
     }
 
     private fun addTargetTo(target: Target, listToAddTo: NameSearchableList<Target>, proxies: List<String>) {
-        if (!getTargets().contains(target)) {
+        if (!getAllTargets().contains(target)) {
             listToAddTo.add(target)
         }
         if (proxies.isNotEmpty()) {
@@ -149,9 +149,9 @@ data class Location(
         target.properties.values.clear("locationDescription")
     }
 
-    fun removeTargetIncludingPlayerInventory(target: Target) {
-        if (GameState.player.inventory.exists(target)) {
-            GameState.player.inventory.remove(target)
+    fun removeTargetIncludingPlayerInventory(source: Target, target: Target) {
+        if (source.inventory.exists(target)) {
+            source.inventory.remove(target)
         } else {
             removeTarget(target)
         }
@@ -161,15 +161,24 @@ data class Location(
         return (creatures + items + activators + other)
     }
 
-    fun getTargets(source: Target = GameState.player): NameSearchableList<Target> {
+    //TODO - rename get all targets and just use that
+    fun getTargets(): NameSearchableList<Target> {
+        return getAllTargets()
+    }
+
+    fun getTargets(source: Target): NameSearchableList<Target> {
         return getAllTargets().sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getTargets(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+    fun getTargets(name: String, source: Target): NameSearchableList<Target> {
         return getTargetsByName(getAllTargets(), name, source)
     }
 
-    private fun getTargetsByName(targets: NameSearchableList<Target>, name: String, source: Target = GameState.player): NameSearchableList<Target> {
+    fun getTargets(name: String): NameSearchableList<Target> {
+        return getTargetsByName(getAllTargets(), name)
+    }
+
+    private fun getTargetsByName(targets: NameSearchableList<Target>, name: String, source: Target): NameSearchableList<Target> {
         return when {
             targets.existsExact(name) && targets.countExact(name) == 1 -> NameSearchableList(targets.get(name))
             targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> targets.getAll(name)
@@ -177,52 +186,88 @@ data class Location(
         }
     }
 
-    fun getTargetsIncludingPlayerInventory(source: Target = GameState.player): List<Target> {
-        return GameState.player.inventory.getItems() + getTargets(source)
+    private fun getTargetsByName(targets: NameSearchableList<Target>, name: String): NameSearchableList<Target> {
+        return when {
+            targets.existsExact(name) && targets.countExact(name) == 1 -> NameSearchableList(targets.get(name))
+            targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> targets.getAll(name)
+            else -> targets.getAll(name)
+        }
     }
 
-    fun getTargetsIncludingPlayerInventory(name: String, source: Target = GameState.player): NameSearchableList<Target> {
-        return GameState.player.inventory.getItems(name) + getTargets(name, source)
+    fun getTargetsIncludingPlayerInventory(source: Target): List<Target> {
+        return source.inventory.getItems() + getTargets(source)
     }
 
-    fun getCreaturesExcludingPlayer(source: Target = GameState.player): NameSearchableList<Target> {
-        return getCreatures(source).also { it.remove(GameState.player) }
+    fun getTargetsIncludingPlayerInventory(source: Target, name: String): NameSearchableList<Target> {
+        return source.inventory.getItems(name) + getTargets(name, source)
     }
 
-    fun getCreatures(source: Target = GameState.player): NameSearchableList<Target> {
+    fun getCreaturesExcludingPlayer(source: Target): NameSearchableList<Target> {
+        return getCreatures(source).also { it.remove(source) }
+    }
+
+    fun getCreatures(source: Target): NameSearchableList<Target> {
         return creatures.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getCreatures(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+    fun getCreatures(): NameSearchableList<Target> {
+        return creatures
+    }
+
+    fun getCreatures(name: String, source: Target): NameSearchableList<Target> {
         return getTargetsByName(creatures, name, source)
     }
 
-    fun getActivators(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+    fun getCreatures(name: String): NameSearchableList<Target> {
+        return getTargetsByName(creatures, name)
+    }
+
+    fun getActivators(name: String, source: Target): NameSearchableList<Target> {
         return getTargetsByName(activators, name, source)
     }
 
-    fun getActivators(source: Target = GameState.player): NameSearchableList<Target> {
+    fun getActivators(name: String): NameSearchableList<Target> {
+        return getTargetsByName(activators, name)
+    }
+
+    fun getActivators(source: Target): NameSearchableList<Target> {
         return activators.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getItems(source: Target = GameState.player): NameSearchableList<Target> {
+    fun getActivators(): NameSearchableList<Target> {
+        return activators
+    }
+
+    fun getItems(): NameSearchableList<Target> {
+        return items
+    }
+
+    fun getItems(source: Target): NameSearchableList<Target> {
         return items.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getItems(name: String, source: Target = GameState.player): NameSearchableList<Target> {
+    fun getItems(source: Target, name: String): NameSearchableList<Target> {
         return getTargetsByName(items, name, source)
     }
 
-    fun getItemsIncludingPlayerInventory(source: Target = GameState.player): NameSearchableList<Target> {
-        return GameState.player.inventory.getItems() + getItems(source)
+    fun getItems(name: String): NameSearchableList<Target> {
+        return getTargetsByName(items, name)
     }
 
-    fun getItemsIncludingPlayerInventory(name: String, source: Target = GameState.player): NameSearchableList<Target> {
-        return GameState.player.inventory.getItems(name) + getItems(name, source)
+    fun getItemsIncludingPlayerInventory(source: Target): NameSearchableList<Target> {
+        return source.inventory.getItems() + getItems(source)
     }
 
-    fun getOther(source: Target = GameState.player): NameSearchableList<Target> {
+    fun getItemsIncludingPlayerInventory(name: String, source: Target): NameSearchableList<Target> {
+        return source.inventory.getItems(name) + getItems(source, name)
+    }
+
+    fun getOther(source: Target): NameSearchableList<Target> {
         return other.sortedBy { source.position.getDistance(it.position) }
+    }
+
+    fun getOther(): NameSearchableList<Target> {
+        return other
     }
 
     fun findTargetsByTag(tag: String): NameSearchableList<Target> {
@@ -237,9 +282,9 @@ data class Location(
         return activators.filter { it.properties.hasAll(properties) }
     }
 
-    fun getAllSouls(): List<Soul> {
-        val targets = mutableSetOf(GameState.player)
-        targets.addAll(GameState.player.inventory.getAllItems())
+    fun getAllSouls(source: Target): List<Soul> {
+        val targets = mutableSetOf(source)
+        targets.addAll(source.inventory.getAllItems())
 
         getAllTargets().forEach {
             targets.add(it)
@@ -282,14 +327,14 @@ data class Location(
     /**
      * How much do all of the items in this location weigh?
      */
-    private fun getWeight(): Int {
-        return getItems().sumOf { it.getWeight() }
+    private fun getWeight(source: Target): Int {
+        return getItems(source).sumOf { it.getWeight() }
     }
 
     fun hasRoomFor(target: Target): Boolean {
         if (properties.values.has(SIZE)) {
             val room = properties.values.getInt(SIZE)
-            return room - getWeight() >= target.getWeight()
+            return room - getWeight(target) >= target.getWeight()
         }
         return true
     }

@@ -30,8 +30,8 @@ class BlockCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
         val handHelper = HandHelper(source, arguments.getString("with"), "block")
-        val shieldedPart = parseBodyParts(GameState.player, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
-        EventManager.postEvent(StartBlockEvent(GameState.player, handHelper.hand, shieldedPart))
+        val shieldedPart = parseBodyParts(source, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
+        EventManager.postEvent(StartBlockEvent(source, handHelper.hand, shieldedPart))
     }
 
 }

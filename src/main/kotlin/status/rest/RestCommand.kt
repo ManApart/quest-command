@@ -1,12 +1,12 @@
 package status.rest
 
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class RestCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,12 +27,12 @@ class RestCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args)
         when {
             args.isEmpty() && keyword == "rest" -> clarifyHours()
-            args.isEmpty() -> rest(1)
-            args.size == 1 && arguments.getNumber() != null -> rest(arguments.getNumber()!!)
+            args.isEmpty() -> rest(source, 1)
+            args.size == 1 && arguments.getNumber() != null -> rest(source, arguments.getNumber()!!)
             else -> display("Unknown params for rest: ${args.joinToString(" ")}")
         }
     }
@@ -43,8 +43,8 @@ class RestCommand : Command() {
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "rest $it" }))
     }
 
-    private fun rest(hours: Int) {
-        EventManager.postEvent(RestEvent(GameState.player, hours))
+    private fun rest(source: Target, hours: Int) {
+        EventManager.postEvent(RestEvent(source, hours))
     }
 }
 

@@ -3,6 +3,7 @@ package system.persistance.loading
 import core.commands.Command
 import core.events.EventManager
 import core.history.display
+import core.target.Target
 
 class LoadCommand : Command() {
     override fun getAliases(): List<String> {
@@ -24,12 +25,12 @@ class LoadCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
+    override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListSavesEvent())
             args.isEmpty() -> display("Please specify a save to load or use ls to list current saves.")
-            else -> EventManager.postEvent(LoadEvent(args.joinToString(" ")))
+            else -> EventManager.postEvent(LoadEvent(source, args.joinToString(" ")))
         }
     }
 }

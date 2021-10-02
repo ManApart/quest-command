@@ -27,8 +27,8 @@ class InventoryCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(keyword: String, args: List<String>) {
-        val location = GameState.currentLocation()
+    override fun execute(source: Target, keyword: String, args: List<String>) {
+        val location = source.currentLocation()
         val allInventories = location.findTargetsByTag("Container")
         val argString = args.joinToString(" ")
         val target = location.getTargets(argString).firstOrNull()
@@ -36,7 +36,7 @@ class InventoryCommand : Command() {
         when {
             args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(allInventories.first()))
             args.isEmpty() && keyword == "bag" -> clarifyTarget(allInventories)
-            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent())
+            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source))
             target != null -> EventManager.postEvent(ListInventoryEvent(target))
             else -> display("Could not find $argString")
         }

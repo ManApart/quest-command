@@ -36,7 +36,7 @@ class RouteCommand : Command() {
         val otherArgs = args.minus(depth.toString())
 
         when {
-            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent())
+            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source))
             else -> targetLocation(source, otherArgs, depth)
         }
     }
@@ -45,15 +45,15 @@ class RouteCommand : Command() {
         val locationName = args.joinToString(" ")
         val target = findTarget(source.location, locationName, depth)
         if (target != null) {
-            EventManager.postEvent(FindRouteEvent(source.location, target, depth))
+            EventManager.postEvent(FindRouteEvent(source, source.location, target, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }
     }
 
     private fun findTarget(source: LocationNode, locationName: String, depth: Int): LocationNode? {
-        if (LocationManager.getNetwork().hasLocation(locationName)) {
-            val target = LocationManager.getNetwork().findLocation(locationName)
+        if (LocationManager.getNetwork(source.parent).hasLocation(locationName)) {
+            val target = LocationManager.getNetwork(source.parent).findLocation(locationName)
             if (target != NOWHERE_NODE) {
                 return target
             }

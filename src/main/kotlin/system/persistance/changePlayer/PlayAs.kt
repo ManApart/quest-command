@@ -11,9 +11,9 @@ import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
-        save(GameState.gameName, GameState.player)
+        save(GameState.gameName, event.source)
         loadCharacter(GameState.gameName, event.saveName)
-        display("Now playing ${GameState.player.name} in ${GameState.gameName}.")
+        display("Now playing ${event.source.name} in ${GameState.gameName}.")
     }
 
     private fun loadCharacter(gameName: String, characterName: String) {
