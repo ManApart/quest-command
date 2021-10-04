@@ -19,6 +19,7 @@ const val CLIMBING = "Climbing"
 const val BARE_FOOT = "Barefoot"
 const val BARE_HANDED = "Bare Handed"
 const val COOKING = "Cooking"
+const val SNEAK = "Sneak"
 
 //Magic Skills
 const val AIR_MAGIC = "AirMagic"

@@ -344,4 +344,8 @@ data class Location(
         return creatures.none { it.ai.aggroTarget == creature }
     }
 
+    fun getLightLevel(): Int {
+        return 0
+    }
+
 }
