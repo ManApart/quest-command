@@ -15,6 +15,7 @@ class CommonLocations : LocationResource {
         location("Outside") {
             props { tag("Outside") }
             weather("Outside Weather")
+            lightLevel(8)
         }
 
         location("Kanbara") {

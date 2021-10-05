@@ -109,8 +109,8 @@ data class LocationNode(
         return connections.firstOrNull { it.destination.location == destination }
     }
 
-    fun getSiblings(): String {
-        val locations = getNeighborConnections()
+    fun getSiblings(includeHidden: Boolean = true): String {
+        val locations = getNeighborConnections().filter { includeHidden || !it.hidden }
         return if (locations.isNotEmpty()) {
             val siblings = locations.joinToString(", ") { getLocationWithDirection(it, false) }
             "is neighbored by $siblings"

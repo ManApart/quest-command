@@ -14,12 +14,15 @@ import core.utility.*
 import crafting.Recipe
 import inventory.Inventory
 import status.Soul
+import status.stat.PERCEPTION
+import status.stat.SNEAK
 import traveling.location.Route
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
+import traveling.scope.getLightLevel
 import kotlin.math.max
 import kotlin.math.min
 
@@ -213,6 +216,27 @@ data class Target(
     fun currentLocation(): Location {
         return location.getLocation()
     }
+
+    private fun getClarity(): Int {
+        val base = soul.getCurrent(PERCEPTION)
+        return max(0, base)
+    }
+
+    private fun getStealthLevel(): Int {
+        val size = min(body.getSize().getDistance(), 50)
+        val sneak = soul.getCurrent(SNEAK)
+        val darkLevel = (10 - location.getLocation().getLightLevel()) * 10
+        return max(100, min(0, sneak + darkLevel - size))
+    }
+
+    fun perceives(other: Target): Boolean {
+        return getClarity() > other.getStealthLevel()
+    }
+
+    fun List<Target>.perceived() : List<Target>{
+        return this
+    }
+
 }
 
 fun targetsToString(targets: List<Target>): String {

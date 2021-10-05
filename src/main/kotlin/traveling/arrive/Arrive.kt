@@ -28,7 +28,7 @@ class Arrive : EventListener<ArriveEvent>() {
                     if (event.quiet) {
                         display("You ${event.method} to ${event.destination}.")
                     } else {
-                        display("You ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings()}.")
+                        display("You ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings(false)}.")
                     }
                 }
             }
