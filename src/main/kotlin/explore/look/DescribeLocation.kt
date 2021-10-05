@@ -33,7 +33,7 @@ fun describeLocationDetailed(source: Target) {
     }
     display(locationRecipe.getDescription())
     display(location.weather.description)
-    val light = getLightLevel(location)
+    val light = location.getLightLevel()
     val heat = getHeatLevel(location)
     display("It is $light light and $heat hot.")
     if (location.getTargets().size > 1) {

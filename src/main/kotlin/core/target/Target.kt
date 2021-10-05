@@ -22,6 +22,7 @@ import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
+import traveling.scope.getLightLevel
 import kotlin.math.max
 import kotlin.math.min
 

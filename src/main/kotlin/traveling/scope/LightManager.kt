@@ -8,17 +8,17 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-fun getLightLevel(location: Location): Int {
-    val light = location.properties.values.getInt(LIGHT) +
-            location.weather.properties.values.getInt(LIGHT) +
-            getDayBonus(location)
+fun Location.getLightLevel(): Int {
+    val light = properties.values.getInt(LIGHT) +
+            weather.properties.values.getInt(LIGHT) +
+            getDayBonus()
     return max(0, min(10, light))
 }
 
-private fun getDayBonus(location: Location): Int {
+private fun Location.getDayBonus(): Int {
     val percentDayComplete = GameState.timeManager.getPercentDayComplete()
     return when {
-        !location.properties.tags.has("Outside") -> 0
+        !properties.tags.has("Outside") -> 0
         percentDayComplete < 20 || percentDayComplete > 80 -> -5
         percentDayComplete == 20 || percentDayComplete == 80 -> -3
         percentDayComplete == 30 || percentDayComplete == 70 -> -2
@@ -26,6 +26,6 @@ private fun getDayBonus(location: Location): Int {
     }
 }
 
-fun getLightLevel(location: Location, target: Target): Int {
-    return getLightLevel(location) + target.properties.values.getInt(LIGHT)
+fun Location.getLightLevel(target: Target): Int {
+    return getLightLevel() + target.properties.values.getInt(LIGHT)
 }
