@@ -18,13 +18,13 @@ fun describeBattle(source: Target) {
     }
 
     creatures.forEach {
-        println("\t${status(it)}")
+        display("\t${status(it)}")
     }
     printTurnStatus(creatures)
 }
 
 private fun status(target: Target): String {
-    return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} hp, ${target.ai.getActionPoints()}/100 ap, ${target.ai.action?.javaClass?.simpleName ?: "None"}."
+    return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} HP, ${target.ai.getActionPoints()}/100 AP, ${target.ai.action?.javaClass?.simpleName ?: "None"}."
 }
 
 private fun printTurnStatus(creatures: List<Target>) {
