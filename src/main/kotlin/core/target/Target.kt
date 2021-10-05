@@ -231,6 +231,11 @@ data class Target(
     fun perceives(other: Target): Boolean {
         return getClarity() > other.getStealthLevel()
     }
+
+    fun List<Target>.perceived() : List<Target>{
+        return this
+    }
+
 }
 
 fun targetsToString(targets: List<Target>): String {

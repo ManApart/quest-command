@@ -4,12 +4,15 @@ import core.GameState
 import core.target.Target
 import traveling.location.location.LIGHT
 import traveling.location.location.Location
+import kotlin.math.max
+import kotlin.math.min
 
 
 fun getLightLevel(location: Location): Int {
-    return location.properties.values.getInt(LIGHT) +
+    val light = location.properties.values.getInt(LIGHT) +
             location.weather.properties.values.getInt(LIGHT) +
             getDayBonus(location)
+    return max(0, min(10, light))
 }
 
 private fun getDayBonus(location: Location): Int {

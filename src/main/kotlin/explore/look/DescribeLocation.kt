@@ -1,6 +1,5 @@
 package explore.look
 
-import core.GameState
 import core.history.display
 import core.target.Target
 import core.target.targetsToString

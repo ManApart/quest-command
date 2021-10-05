@@ -114,6 +114,10 @@ class LocationRecipeBuilder(val name: String) {
         this.weather = ConditionalStringPointer(weather, ConditionalStringType.WEATHER)
     }
 
+    fun lightLevel(level: Int){
+        this.propsBuilder.value(LIGHT, level)
+    }
+
 }
 
 fun locationRecipe(name: String, initializer: LocationRecipeBuilder.() -> Unit): LocationRecipeBuilder {
