@@ -17,12 +17,18 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         display("${event.target.name} has died.")
         val creature = event.target
 
+        creature.location.getLocation().getCreatures().forEach {
+            if (it.ai.aggroTarget == creature) {
+                it.ai.aggroTarget = null
+            }
+        }
+
         creature.inventory.getItems().forEach {
 //            EventManager.postEvent(TransferItemEvent(creature, it, creature, silent = true))
             EventManager.postEvent(PlaceItemEvent(creature, it, silent = true))
         }
-        EventManager.postEvent(RemoveScopeEvent(event.target))
-        EventManager.postEvent(CreatureDiedEvent(event.target))
+        EventManager.postEvent(RemoveScopeEvent(creature))
+        EventManager.postEvent(CreatureDiedEvent(creature))
     }
 
 }

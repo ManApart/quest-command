@@ -10,10 +10,7 @@ import org.junit.Test
 import quests.QuestManager
 import status.stat.HEALTH
 import system.debug.DebugType
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class CommandComboTest {
 
@@ -95,6 +92,8 @@ class CommandComboTest {
         val input = "slash body of rat && r && r"
         CommandParser.parseCommand(input)
         assertEquals("Rat has died.", ChatHistory.getLastOutput())
+        CommandParser.parseCommand("ex")
+        assertEquals("You find yourself surrounded by Poor Quality Meat.", ChatHistory.getLastOutput())
     }
 
     @Test
