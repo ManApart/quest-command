@@ -16,6 +16,7 @@ import inventory.Inventory
 import status.Soul
 import status.stat.PERCEPTION
 import status.stat.SNEAK
+import system.debug.DebugType
 import traveling.location.Route
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
@@ -230,10 +231,13 @@ data class Target(
     }
 
     fun perceives(other: Target): Boolean {
+        if (GameState.getDebugBoolean(DebugType.CLARITY)) return true
         return getClarity() > other.getStealthLevel()
     }
 
     fun List<Target>.perceived(): List<Target> {
+        if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
+
         val clarity = getClarity()
         return filter { other -> clarity > other.getStealthLevel() }
     }

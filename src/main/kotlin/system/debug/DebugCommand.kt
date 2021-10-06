@@ -52,7 +52,7 @@ class DebugCommand : Command() {
                 "statchanges" -> sendDebugToggleEvent(DebugType.STAT_CHANGES, arguments)
                 "random" -> sendDebugToggleEvent(DebugType.RANDOM_SUCCEED, arguments)
                 "map" -> sendDebugToggleEvent(DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
-                "clarity" -> sendDebugToggleEvent(DebugType.RANDOM_SUCCEED, arguments)
+                "clarity" -> sendDebugToggleEvent(DebugType.CLARITY, arguments)
                 "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
                 "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
