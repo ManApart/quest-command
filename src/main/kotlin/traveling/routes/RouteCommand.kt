@@ -1,10 +1,12 @@
 package traveling.routes
 
+import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.events.EventManager
 import core.target.Target
 import core.utility.NameSearchableList
+import system.debug.DebugType
 import traveling.location.RouteNeighborFinder
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
@@ -58,7 +60,8 @@ class RouteCommand : Command() {
                 return target
             }
         }
-        return NameSearchableList(RouteNeighborFinder(source, depth).getDestinations()).getOrNull(locationName)
+        val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
+        return NameSearchableList(RouteNeighborFinder(source, depth, ignoreHidden, ignoreHidden).getDestinations()).getOrNull(locationName)
     }
 
 }

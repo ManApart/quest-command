@@ -1,9 +1,11 @@
 package explore.look
 
+import core.GameState
 import core.history.StringTable
 import core.history.display
 import core.target.Target
 import core.utility.wrapNonEmpty
+import system.debug.DebugType
 import traveling.direction.Direction
 import traveling.location.Route
 import traveling.location.RouteNeighborFinder
@@ -33,7 +35,8 @@ private fun getDistance(location: LocationNode): String {
 }
 
 private fun getRoutesString(source: Target, location: LocationNode): String {
-    val routes = RouteNeighborFinder(location, 1).getNeighbors()
+    val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
+    val routes = RouteNeighborFinder(location, 1, ignoreHidden, ignoreHidden).getNeighbors()
 
     return if (routes.isNotEmpty()) {
         val input = mutableListOf(listOf("Name", "Distance", "Direction", "Difficulty", "Exits"))
