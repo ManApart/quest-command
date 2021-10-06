@@ -15,13 +15,13 @@ class DebugListListener : EventListener<DebugListEvent>() {
 class DebugToggleListener : EventListener<DebugToggleEvent>() {
     override fun execute(event: DebugToggleEvent) {
         if (event.debugType == DebugType.DEBUG_GROUP) {
-            GameState.properties.values.put(DebugType.LEVEL_REQ.propertyName, event.toggledOn)
-            GameState.properties.values.put(DebugType.STAT_CHANGES.propertyName, event.toggledOn)
-            GameState.properties.values.put(DebugType.RANDOM_SUCCEED.propertyName, event.toggledOn)
+            GameState.putDebug(DebugType.LEVEL_REQ, event.toggledOn)
+            GameState.putDebug(DebugType.STAT_CHANGES, event.toggledOn)
+            GameState.putDebug(DebugType.RANDOM_SUCCEED, event.toggledOn)
             display("Gamestate properties are: " + GameState.properties.toString())
         } else {
-            GameState.properties.values.put(event.debugType.propertyName, event.toggledOn)
-            display("Set ${event.debugType.propertyName} to ${GameState.properties.values.getBoolean(event.debugType.propertyName)}")
+            GameState.putDebug(event.debugType, event.toggledOn)
+            display("Set ${event.debugType.propertyName} to ${GameState.getDebugBoolean(event.debugType)}")
         }
     }
 }

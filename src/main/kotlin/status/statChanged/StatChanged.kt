@@ -19,7 +19,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
 
         val oldVal = soul.getCurrent(event.statName)
 
-        if (!GameState.properties.values.getBoolean(DebugType.STAT_CHANGES.propertyName)) {
+        if (!GameState.getDebugBoolean(DebugType.STAT_CHANGES)) {
             soul.incStat(event.statName, event.amount)
         }
 

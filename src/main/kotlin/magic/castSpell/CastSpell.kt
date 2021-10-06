@@ -24,11 +24,11 @@ class CastSpell : EventListener<CastSpellEvent>() {
         val level = event.source.soul.getCurrent(event.spell.statRequired)
         val focus = event.source.soul.getCurrent(FOCUS)
         return when {
-            level < event.spell.levelRequired && !GameState.properties.values.getBoolean(DebugType.LEVEL_REQ.propertyName) -> {
+            level < event.spell.levelRequired && !GameState.getDebugBoolean(DebugType.LEVEL_REQ) -> {
                 display("You are too low level to speak this word with this amount of force. ($level/$event.spell.levelRequired)")
                 false
             }
-            focus < event.spell.cost && !GameState.properties.values.getBoolean(DebugType.STAT_CHANGES.propertyName) -> {
+            focus < event.spell.cost && !GameState.getDebugBoolean(DebugType.STAT_CHANGES) -> {
                 display("You do not have enough focus to speak this word with this amount of force. ($focus/${event.spell.cost})")
                 false
             }

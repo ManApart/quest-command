@@ -64,7 +64,7 @@ class DebugCommand : Command() {
         val toggledOn = if (toggleWords.isNotEmpty()) {
             toggleWords.contains("on") || toggleWords.contains("true")
         } else {
-            !GameState.properties.values.getBoolean(type.propertyName)
+            !GameState.getDebugBoolean(type)
         }
 
         EventManager.postEvent(DebugToggleEvent(type, toggledOn))
