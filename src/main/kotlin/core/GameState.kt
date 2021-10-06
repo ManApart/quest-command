@@ -3,6 +3,7 @@ package core
 import conversation.Conversation
 import core.properties.Properties
 import core.target.Target
+import system.debug.DebugType
 import time.TimeManager
 import traveling.location.location.Location
 
@@ -17,6 +18,18 @@ object GameState {
     fun reset() {
         player = GameManager.newPlayer()
         properties = Properties()
+    }
+
+    fun getDebugBoolean(key: DebugType): Boolean {
+        return properties.values.getBoolean(key.propertyName)
+    }
+
+    fun putDebug(key: DebugType, value: Boolean){
+        return properties.values.put(key.propertyName, value)
+    }
+
+    fun putDebug(key: DebugType, value: Int){
+        return properties.values.put(key.propertyName, value)
     }
 
 }

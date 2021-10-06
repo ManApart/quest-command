@@ -18,8 +18,8 @@ object RandomManager {
      */
     fun isSuccess(chance: Double): Boolean {
         return when {
-            GameState.properties.values.getBoolean(DebugType.RANDOM_SUCCEED.propertyName) -> true
-            GameState.properties.values.getBoolean(DebugType.RANDOM_FAIL.propertyName) -> false
+            GameState.getDebugBoolean(DebugType.RANDOM_SUCCEED) -> true
+            GameState.getDebugBoolean(DebugType.RANDOM_FAIL) -> false
             chance <= 0 -> false
             else -> chance >= Math.random()
         }

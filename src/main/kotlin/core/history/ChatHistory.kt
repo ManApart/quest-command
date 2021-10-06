@@ -8,7 +8,7 @@ fun display(message: String) {
 }
 
 fun displayUpdate(message: String, sleep: Long = 50) {
-    if (GameState.properties.values.getBoolean(DebugType.DISPLAY_UPDATES.propertyName)) {
+    if (GameState.getDebugBoolean(DebugType.DISPLAY_UPDATES)) {
         print("\r$message                                ")
         System.out.flush()
         Thread.sleep(sleep)

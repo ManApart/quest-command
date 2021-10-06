@@ -4,6 +4,7 @@ import core.GameState
 import core.events.EventListener
 import core.history.StringTable
 import core.history.display
+import system.debug.DebugType
 import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 
@@ -17,7 +18,8 @@ class ReadMap : EventListener<ReadMapEvent>() {
     }
 
     private fun getRoutesString(event: ReadMapEvent): String {
-        val routes = RouteNeighborFinder(event.target, event.depth, true, true).getNeighbors()
+        val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
+        val routes = RouteNeighborFinder(event.target, event.depth, ignoreHidden, ignoreHidden).getNeighbors()
 
         return if (routes.isNotEmpty()) {
             val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))

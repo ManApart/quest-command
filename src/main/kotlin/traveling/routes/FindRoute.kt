@@ -5,6 +5,7 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
+import system.debug.DebugType
 import traveling.location.Route
 import traveling.location.RouteFinder
 import traveling.travel.TravelStartEvent
@@ -16,7 +17,8 @@ class FindRoute : EventListener<FindRouteEvent>() {
             return
         }
 
-        val finder = RouteFinder(event.sourceLocation, event.destination, event.depth)
+        val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
+        val finder = RouteFinder(event.sourceLocation, event.destination, event.depth, ignoreHidden, ignoreHidden)
 
         if (finder.hasRoute()){
             val route = finder.getRoute()

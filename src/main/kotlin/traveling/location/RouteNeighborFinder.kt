@@ -25,7 +25,7 @@ class RouteNeighborFinder(
     }
 
     private fun findNeighbors() {
-        getFilteredNeighborConnections(source).forEach {
+        source.getFilteredNeighborConnections().forEach {
             val route = Route(source)
             route.addLink(it)
             neighbors.add(route)
@@ -44,7 +44,7 @@ class RouteNeighborFinder(
                 if (!examined.contains(route.destination)) {
                     examined.add(route.destination)
 
-                    getFilteredNeighborConnections(route.destination).forEach { connection ->
+                    route.destination.getFilteredNeighborConnections().forEach { connection ->
                         if (!examined.contains(connection.destination.location)) {
                             val newRoute = Route(route)
                             newRoute.addLink(connection)
@@ -58,8 +58,8 @@ class RouteNeighborFinder(
         }
     }
 
-    private fun getFilteredNeighborConnections(source: LocationNode) : List<Connection>{
-        return source.getNeighborConnections().let { connections ->
+    private fun LocationNode.getFilteredNeighborConnections() : List<Connection>{
+        return getNeighborConnections().let { connections ->
             if (ignoreHiddenConnections){
                 connections.filter { !it.hidden }
             } else connections

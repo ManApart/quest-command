@@ -22,7 +22,7 @@ class ConversationsTest {
 
     @Test
     fun noCriteriaMet() {
-        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 0)
+        GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("why is the sky blue?")
         assertEquals("Farmer", GameState.conversation.getLatestSpeaker().name)
@@ -30,7 +30,7 @@ class ConversationsTest {
 
     @Test
     fun whereListener() {
-        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 0)
+        GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
         assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
@@ -38,7 +38,7 @@ class ConversationsTest {
 
     @Test
     fun multipleMatchesPicksAtRandom() {
-        GameState.properties.values.put(DebugType.RANDOM_RESPONSE.propertyName, 1)
+        GameState.putDebug(DebugType.RANDOM_RESPONSE, 1)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
         assertEquals("Farmer: I be with you.", ChatHistory.getLastOutput())
