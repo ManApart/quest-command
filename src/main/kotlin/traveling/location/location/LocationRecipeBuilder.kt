@@ -3,6 +3,9 @@ package traveling.location.location
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder
+import explore.listen.SOUND_DESCRIPTION
+import explore.listen.SOUND_LEVEL
+import explore.listen.SOUND_LEVEL_DEFAULT
 
 class LocationRecipeBuilder(val name: String) {
     private var propsBuilder = PropsBuilder()
@@ -116,6 +119,15 @@ class LocationRecipeBuilder(val name: String) {
 
     fun lightLevel(level: Int){
         this.propsBuilder.value(LIGHT, level)
+    }
+
+    fun sound(description: String){
+        sound(SOUND_LEVEL_DEFAULT, description)
+    }
+
+    fun sound(level: Int, description: String){
+        propsBuilder.value(SOUND_DESCRIPTION, description)
+        propsBuilder.value(SOUND_LEVEL, level)
     }
 
 }
