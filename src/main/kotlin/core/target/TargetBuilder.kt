@@ -15,6 +15,9 @@ import core.properties.PropsBuilder
 import core.utility.MapBuilder
 import core.utility.applyNested
 import crafting.recipe
+import explore.listen.SOUND_DESCRIPTION
+import explore.listen.SOUND_LEVEL
+import explore.listen.SOUND_LEVEL_DEFAULT
 import inventory.Inventory
 import status.Soul
 import traveling.location.network.LocationNode
@@ -175,6 +178,15 @@ class TargetBuilder(internal val name: String) {
      * This means that an equip slot with 5 attachment points will require all 5 points to be empty in order to equip the item
      */
     fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
+
+    fun sound(description: String){
+        sound(SOUND_LEVEL_DEFAULT, description)
+    }
+
+    fun sound(level: Int, description: String){
+        propsBuilder.value(SOUND_DESCRIPTION, description)
+        propsBuilder.value(SOUND_LEVEL, level)
+    }
 
     private fun unBuild(t: Target): TargetBuilder {
         return target(t.name) {
