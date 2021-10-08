@@ -10,8 +10,7 @@ class ConditionalStringValidator {
     fun validate(): Int {
         return allEnumTypesPresent() +
                 allConditionsHaveAtLeastOneOption() +
-                noDuplicateKeys() +
-                allWeathersExist()
+                noDuplicateKeys()
     }
 
     private fun allEnumTypesPresent(): Int {
@@ -70,17 +69,4 @@ class ConditionalStringValidator {
         }.sum()
     }
 
-    private fun allWeathersExist(): Int {
-        val weathers = ConditionalManager.getTypeMap()[ConditionalStringType.WEATHER]!!
-        return weathers.flatMap { weather ->
-            weather.options.map { option ->
-                if (WeatherManager.weatherExists(option.option)) {
-                    0
-                } else {
-                    println("WARN: Weather Option ${weather.name} references weather ${option.option} that does not exist.")
-                    1
-                }
-            }
-        }.sum()
-    }
 }

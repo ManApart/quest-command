@@ -1,6 +1,8 @@
 package resources.traveling.location.location
 
 import core.GameState
+import core.conditional.StringOption
+import core.utility.RandomManager
 import traveling.location.location.LocationResource
 import traveling.location.location.locations
 
@@ -10,12 +12,26 @@ class CommonLocations : LocationResource {
 
         location("Inside") {
             props { tag("Inside") }
-            weather("Inside Weather")
+            weather {
+                option("Distant Rain") { RandomManager.isSuccess(40) }
+                option("Distant Storm") { RandomManager.isSuccess(10) }
+                option("Calm")
+            }
         }
 
         location("Outside") {
             props { tag("Outside") }
-            weather("Outside Weather")
+            weather {
+                option("Windy") { RandomManager.isSuccess(20) }
+                option("Strong Wind") { RandomManager.isSuccess(10) }
+                option("Gale") { RandomManager.isSuccess(5) }
+                option("Light Fog") { RandomManager.isSuccess(20) }
+                option("Fog") { RandomManager.isSuccess(5) }
+                option("Rain") { RandomManager.isSuccess(20) }
+                option("Heavy Rain") { RandomManager.isSuccess(30) }
+                option("Thunderstorm") { RandomManager.isSuccess(5) }
+                option("Soft Wind")
+            }
             lightLevel(8)
         }
 
@@ -88,7 +104,7 @@ class CommonLocations : LocationResource {
         location("Field") {
             extends("Outside")
             description {
-                option("The red sun fills the waving grasses, making them glow. They sway like licks of flame."){
+                option("The red sun fills the waving grasses, making them glow. They sway like licks of flame.") {
                     GameState.timeManager.getHour() in 20..30 || GameState.timeManager.getHour() in 70..80
                 }
                 option("You feel the waist high grasses brush against you. You can hear their rustle expand into the distance.") {
@@ -105,14 +121,14 @@ class CommonLocations : LocationResource {
             description("The tree's leaves rustle in the wind, dusting it with the smell of apples.")
             sound(1, "the soft rustle of many leaves")
             activator("Apple Tree")
-            item("Apple"){
+            item("Apple") {
                 location("high in the branches")
                 z(15)
             }
-            item("Apple"){
+            item("Apple") {
                 location("at the base of the tree")
             }
-            item("Dulled Hatchet"){
+            item("Dulled Hatchet") {
                 location("leaning against the tree")
             }
         }

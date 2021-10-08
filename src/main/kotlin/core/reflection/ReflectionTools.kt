@@ -33,7 +33,6 @@ import traveling.location.network.NetworkBuilder
 import traveling.location.network.NetworkResource
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherResource
-import traveling.location.weather.WeatherStringResource
 import java.io.File
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
@@ -68,7 +67,6 @@ object ReflectionTools {
         generateResourcesFile(RecipeResource::class, RecipeBuilder::class)
         generateResourcesFile(StoryEventResource::class, StoryEvent::class)
         generateResourcesFile(WeatherResource::class, Weather::class)
-        generateResourcesFile(WeatherStringResource::class, ConditionalString::class)
     }
 
     fun getClasses(superClass: KClass<*>): List<KClass<*>> {

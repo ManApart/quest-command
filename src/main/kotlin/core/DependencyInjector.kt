@@ -38,8 +38,6 @@ import status.effects.EffectsGenerated
 import traveling.location.location.*
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksGenerated
-import traveling.location.weather.WeatherStringsCollection
-import traveling.location.weather.WeatherStringsGenerated
 import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersGenerated
 import kotlin.reflect.KClass
@@ -101,7 +99,6 @@ object DependencyInjector {
             SpellCommandsCollection::class to SpellCommandsGenerated(),
             StoryEventsCollection::class to StoryEventsGenerated(),
             WeathersCollection::class to WeathersGenerated(),
-            WeatherStringsCollection::class to WeatherStringsGenerated(),
         )
     }
 

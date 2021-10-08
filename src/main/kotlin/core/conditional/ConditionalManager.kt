@@ -1,9 +1,6 @@
 package core.conditional
 
-import core.DependencyInjector
 import core.conditional.ConditionalStringType.DEFAULT
-import core.conditional.ConditionalStringType.WEATHER
-import traveling.location.weather.WeatherStringsCollection
 
 object ConditionalManager {
     private var types = buildTypeMap()
@@ -11,7 +8,6 @@ object ConditionalManager {
     private fun buildTypeMap() : Map<ConditionalStringType, List<ConditionalString>>{
         return mapOf(
                 DEFAULT to listOf(),
-                WEATHER to DependencyInjector.getImplementation(WeatherStringsCollection::class).values
         )
     }
 
