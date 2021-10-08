@@ -1,12 +1,15 @@
 package core.conditional
 
 
-class ConditionalStringBuilder {
+class ConditionalStringBuilder(private val defaultOption: String? = null) {
     private var name: String = ""
     private val options = mutableListOf<StringOption>()
 
-    fun build(): ConditionalString {
-        return ConditionalString(name, options.toList())
+    fun build(bases: List<ConditionalStringBuilder> = listOf()): ConditionalString {
+        val allOptions = options + bases.reversed().flatMap { it.options }
+        return if (defaultOption != null && allOptions.isEmpty()) {
+            ConditionalString(name, listOf(StringOption(defaultOption)))
+        } else ConditionalString(name, allOptions)
     }
 
     /**
@@ -18,6 +21,6 @@ class ConditionalStringBuilder {
 
 }
 
-fun conditionalString(initializer: ConditionalStringBuilder.() -> Unit): ConditionalStringBuilder {
+fun conditionalString(initializer: ConditionalStringBuilder.() -> Unit = {}): ConditionalStringBuilder {
     return ConditionalStringBuilder().apply(initializer)
 }

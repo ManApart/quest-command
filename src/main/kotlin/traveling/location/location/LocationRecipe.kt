@@ -1,7 +1,6 @@
 package traveling.location.location
 
 import core.conditional.ConditionalString
-import core.conditional.ConditionalStringPointer
 import core.properties.Properties
 import core.utility.Named
 
@@ -19,7 +18,7 @@ data class LocationRecipe(
     val creatures: List<LocationTarget> = listOf(),
     val items: List<LocationTarget> = listOf(),
     val weatherChangeFrequency: Int = 5,
-    val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
+    val weather: ConditionalString = ConditionalString("Still"),
     val properties: Properties = Properties(),
     val slots: List<String> = listOf()
 ) : Named {

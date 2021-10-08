@@ -10,9 +10,9 @@ import explore.listen.SOUND_LEVEL_DEFAULT
 
 class LocationRecipeBuilder(val name: String) {
     private val propsBuilder = PropsBuilder()
-    private val descriptionBuilder = ConditionalStringBuilder()
+    private val descriptionBuilder = ConditionalStringBuilder("")
+    private val weatherBuilder = ConditionalStringBuilder("Still")
     private val slots = mutableListOf<String>()
-    private var weather: ConditionalStringPointer? = null
     private val activatorBuilders = mutableListOf<LocationTargetBuilder>()
     private val creatureBuilders = mutableListOf<LocationTargetBuilder>()
     private val itemBuilders = mutableListOf<LocationTargetBuilder>()
@@ -28,7 +28,7 @@ class LocationRecipeBuilder(val name: String) {
     fun build(): LocationRecipe {
         val props = propsBuilder.build()
         val desc = descriptionBuilder.build()
-        val weatherChoice = weather ?: ConditionalStringPointer("Still")
+        val weatherChoice = weatherBuilder.build()
         val activators = activatorBuilders.build()
         val creatures = creatureBuilders.build()
         val items = itemBuilders.build()
@@ -46,10 +46,9 @@ class LocationRecipeBuilder(val name: String) {
     }
 
     fun build(bases: List<LocationRecipeBuilder>): LocationRecipe {
-        val basesR = bases.reversed()
         val props = propsBuilder.build(bases.map { it.propsBuilder })
-        val desc = descriptionBuilder.build()
-        val weatherChoice = weather ?: basesR.firstNotNullOfOrNull { it.weather } ?: ConditionalStringPointer(name)
+        val desc = descriptionBuilder.build(bases.map { it.descriptionBuilder })
+        val weatherChoice = weatherBuilder.build(bases.map { it.weatherBuilder })
         val allActivators = activatorBuilders.build() + bases.flatMap { it.activatorBuilders.build() }
         val allCreatures = creatureBuilders.build() + bases.flatMap { it.creatureBuilders.build() }
         val allItems = itemBuilders.build() + bases.flatMap { it.itemBuilders.build() }
@@ -114,7 +113,11 @@ class LocationRecipeBuilder(val name: String) {
     }
 
     fun weather(weather: String){
-        this.weather = ConditionalStringPointer(weather, ConditionalStringType.WEATHER)
+        this.weatherBuilder.option(weather)
+    }
+
+    fun weather(initializer: ConditionalStringBuilder.() -> Unit): ConditionalStringBuilder {
+        return weatherBuilder.apply(initializer)
     }
 
     fun lightLevel(level: Int){
