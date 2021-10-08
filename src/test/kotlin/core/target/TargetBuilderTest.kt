@@ -3,8 +3,6 @@ package core.target
 import core.DependencyInjector
 import core.ai.behavior.*
 import core.body.*
-import core.conditional.ConditionalStringPointer
-import core.conditional.ConditionalStringType
 import core.properties.Properties
 import core.properties.Tags
 import explore.look.LookEvent
@@ -35,7 +33,7 @@ class TargetBuilderTest {
             "Bob",
             params = mapOf("this" to "that"),
             body = BodyManager.getBody("Human"),
-            dynamicDescription = ConditionalStringPointer("A normal dude"),
+            description = "A normal dude",
             behaviors = behaviors,
             properties = Properties(Tags("Person"))
         )
@@ -59,12 +57,12 @@ class TargetBuilderTest {
             "Jim",
             params = mapOf("another" to "thing"),
             body = BodyManager.getBody("Human"),
-            dynamicDescription = ConditionalStringPointer("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION),
+            description = "A fine fellow",
             properties = Properties(Tags("Warrior"))
         )
 
         val actual = target("Jim") {
-            description("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION)
+            description("A fine fellow")
             param("another" to "thing")
             body("Human")
             props {

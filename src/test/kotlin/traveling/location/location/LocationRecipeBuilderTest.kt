@@ -1,7 +1,6 @@
 package traveling.location.location
 
-import core.conditional.ConditionalStringPointer
-import core.conditional.ConditionalStringType
+import core.conditional.ConditionalString
 import core.properties.Properties
 import core.properties.Tags
 import org.junit.Test
@@ -12,7 +11,7 @@ class LocationRecipeBuilderTest{
 
     @Test
     fun basicExtends(){
-        val expected = LocationRecipe("Place", weather = ConditionalStringPointer("Inside Weather", ConditionalStringType.WEATHER), properties = Properties(tags = Tags("Inside", "Small")))
+        val expected = LocationRecipe("Place", weather = ConditionalString("Inside Weather"), properties = Properties(tags = Tags("Inside", "Small")))
 
         val base = locationRecipe("Inside"){
             props { tag("Inside") }
@@ -27,6 +26,6 @@ class LocationRecipeBuilderTest{
         val actual = listOf(base, location).build().last()
 
         assertEquals(expected.properties, actual.properties)
-        assertEquals(expected.weather, actual.weather)
+        assertEquals(expected.weather.getOption(), actual.weather.getOption())
     }
 }

@@ -5,7 +5,7 @@ import core.target.Target
 
 fun describeTarget(target: Target) {
     var message = target.getDisplayName()
-    message += "\n\t${target.getDescription()}"
+    message += "\n\t${target.description}"
     message += describeStatusEffects(target)
     message += describeWeight(target)
     message += describeProperties(target)
