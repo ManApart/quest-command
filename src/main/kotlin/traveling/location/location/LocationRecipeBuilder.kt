@@ -1,5 +1,6 @@
 package traveling.location.location
 
+import core.conditional.ConditionalStringBuilder
 import core.conditional.ConditionalStringPointer
 import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder
@@ -8,9 +9,9 @@ import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
 
 class LocationRecipeBuilder(val name: String) {
-    private var propsBuilder = PropsBuilder()
+    private val propsBuilder = PropsBuilder()
+    private val descriptionBuilder = ConditionalStringBuilder()
     private val slots = mutableListOf<String>()
-    private var description: ConditionalStringPointer? = null
     private var weather: ConditionalStringPointer? = null
     private val activatorBuilders = mutableListOf<LocationTargetBuilder>()
     private val creatureBuilders = mutableListOf<LocationTargetBuilder>()
@@ -26,7 +27,7 @@ class LocationRecipeBuilder(val name: String) {
 
     fun build(): LocationRecipe {
         val props = propsBuilder.build()
-        val desc = description ?: ConditionalStringPointer("")
+        val desc = descriptionBuilder.build()
         val weatherChoice = weather ?: ConditionalStringPointer("Still")
         val activators = activatorBuilders.build()
         val creatures = creatureBuilders.build()
@@ -47,8 +48,7 @@ class LocationRecipeBuilder(val name: String) {
     fun build(bases: List<LocationRecipeBuilder>): LocationRecipe {
         val basesR = bases.reversed()
         val props = propsBuilder.build(bases.map { it.propsBuilder })
-
-        val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
+        val desc = descriptionBuilder.build()
         val weatherChoice = weather ?: basesR.firstNotNullOfOrNull { it.weather } ?: ConditionalStringPointer(name)
         val allActivators = activatorBuilders.build() + bases.flatMap { it.activatorBuilders.build() }
         val allCreatures = creatureBuilders.build() + bases.flatMap { it.creatureBuilders.build() }
@@ -81,12 +81,12 @@ class LocationRecipeBuilder(val name: String) {
 
     fun slot(vararg slot: String) = this.slots.addAll(slot.toList())
 
-    fun descriptionPointer(description: String){
-        this.description = ConditionalStringPointer(description, ConditionalStringType.LOCATION_DESCRIPTION)
+    fun description(description: String){
+        this.descriptionBuilder.option(description)
     }
 
-    fun description(description: String){
-        this.description = ConditionalStringPointer(description)
+    fun description(initializer: ConditionalStringBuilder.() -> Unit): ConditionalStringBuilder {
+        return descriptionBuilder.apply(initializer)
     }
 
     fun activator(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {

@@ -5,6 +5,7 @@ import core.conditional.ConditionalString
 import core.conditional.StringOption
 import traveling.location.location.LocationDescriptionResource
 
+//TODO - can we inline?
 class LocationDescriptions : LocationDescriptionResource {
     override val values: List<ConditionalString> = listOf(
             ConditionalString("Field", listOf(

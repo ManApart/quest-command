@@ -1,5 +1,6 @@
 package traveling.location.location
 
+import core.conditional.ConditionalString
 import core.conditional.ConditionalStringPointer
 import core.properties.Properties
 import core.utility.Named
@@ -12,15 +13,15 @@ const val LIGHT = "Light"
 //TODO - combine items and equipped items
 //only do equip check if slots exist
 data class LocationRecipe(
-        override val name: String,
-        private val description: ConditionalStringPointer = ConditionalStringPointer(""),
-        val activators: List<LocationTarget> = listOf(),
-        val creatures: List<LocationTarget> = listOf(),
-        val items: List<LocationTarget> = listOf(),
-        val weatherChangeFrequency: Int = 5,
-        val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
-        val properties: Properties = Properties(),
-        val slots: List<String> = listOf()
+    override val name: String,
+    private val description: ConditionalString = ConditionalString(""),
+    val activators: List<LocationTarget> = listOf(),
+    val creatures: List<LocationTarget> = listOf(),
+    val items: List<LocationTarget> = listOf(),
+    val weatherChangeFrequency: Int = 5,
+    val weather: ConditionalStringPointer = ConditionalStringPointer("Still"),
+    val properties: Properties = Properties(),
+    val slots: List<String> = listOf()
 ) : Named {
     constructor(base: LocationRecipe) : this(
             base.name,
