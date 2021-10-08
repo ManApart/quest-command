@@ -1,7 +1,7 @@
 package system.history
 
 import core.events.EventListener
-import core.history.ChatHistory
+import core.history.ChatHistoryManager
 import core.history.InputOutput
 import core.history.display
 
@@ -9,7 +9,7 @@ class ViewChatHistory : EventListener<ViewChatHistoryEvent>() {
 
 
     override fun execute(event: ViewChatHistoryEvent) {
-        val historyList = ChatHistory.history.takeLast(event.numberOfLinesToShow)
+        val historyList = ChatHistoryManager.getHistory(event.source).history.takeLast(event.numberOfLinesToShow)
         val message = createMessage(historyList, event.viewResponses)
         display(message)
     }

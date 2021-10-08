@@ -3,7 +3,7 @@ package core
 import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParser
 import core.events.EventManager
-import core.history.ChatHistory
+import core.history.ChatHistoryManager
 import core.target.Target
 import core.target.item.ItemManager
 import core.target.target
@@ -36,7 +36,7 @@ object GameManager {
     }
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
-        ChatHistory.reset()
+        ChatHistoryManager.reset()
         GameState.reset()
         QuestManager.reset()
         LocationManager.reset()

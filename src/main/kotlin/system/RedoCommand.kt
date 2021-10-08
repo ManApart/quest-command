@@ -2,7 +2,7 @@ package system
 
 import core.commands.Command
 import core.commands.CommandParser
-import core.history.ChatHistory
+import core.history.ChatHistoryManager
 import core.history.display
 import core.target.Target
 
@@ -24,7 +24,7 @@ class RedoCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
-        val lastCommand = findLastCommand()
+        val lastCommand = findLastCommand(source)
         if (lastCommand == null) {
             display("Could not find a command to repeat.")
         } else {
@@ -32,8 +32,9 @@ class RedoCommand : Command() {
         }
     }
 
-    private fun findLastCommand(): String? {
-        val history = ChatHistory.history + ChatHistory.getCurrent()
+    private fun findLastCommand(source: Target): String? {
+        val chatHistory = ChatHistoryManager.getHistory(source)
+        val history = chatHistory.history + chatHistory.getCurrent()
         for (i in history.size - 1 downTo 0) {
             val commands = history[i].input
                     .split("&&")
