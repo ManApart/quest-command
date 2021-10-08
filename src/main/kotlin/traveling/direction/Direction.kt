@@ -1,6 +1,5 @@
 package traveling.direction
 
-import core.utility.capitalize2
 import traveling.position.Vector
 
 enum class Direction(val shortcut: String, val vector: Vector) {
