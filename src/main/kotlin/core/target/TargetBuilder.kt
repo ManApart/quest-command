@@ -14,7 +14,6 @@ import core.properties.Properties
 import core.properties.PropsBuilder
 import core.utility.MapBuilder
 import core.utility.applyNested
-import crafting.recipe
 import explore.listen.SOUND_DESCRIPTION
 import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
