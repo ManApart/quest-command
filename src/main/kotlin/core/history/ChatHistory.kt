@@ -1,6 +1,7 @@
 package core.history
 
 import core.GameState
+import core.target.Target
 import system.debug.DebugType
 
 fun display(message: String) {
@@ -68,4 +69,43 @@ object ChatHistory {
         return current
     }
 
+}
+
+
+/**
+ * Only displayed to this target (you)
+ */
+fun Target.displayYou(message: String) {
+    ChatHistoryManager.histories[this]?.print(message)
+}
+
+/**
+ * The message is evaluated for each listener
+ */
+//Maybe don't use this guy in favor of the one below with a source
+fun display(message: (Target) -> String) {
+    ChatHistoryManager.histories.values.forEach { history ->
+        val messageText = message(history.listener)
+        history.print(messageText)
+    }
+}
+
+/**
+ * The message is evaluated for each listener that perceives this target
+ */
+fun Target.display(message: (Target) -> String) {
+    ChatHistoryManager.histories.values
+        .filter { it.listener.perceives(this)}
+        .forEach { history ->
+            val messageText = message(history.listener)
+            history.print(messageText)
+        }
+}
+
+object ChatHistoryManager {
+    val histories = mutableMapOf<Target, ChatHistoryThing>()
+
+    init {
+        histories[GameState.player] = ChatHistoryThing(GameState.player)
+    }
 }
