@@ -88,11 +88,13 @@ class CommonLocations : LocationResource {
             extends("Outside")
             descriptionPointer("Field")
             activator("Wheat Field", x = 10)
+            sound(1, "the occasional chirping of a bird")
         }
 
         location("Apple Tree") {
             extends("Outside")
             descriptionPointer("The tree's leaves rustle in the wind, dusting it with the smell of apples.")
+            sound(1, "the soft rustle of many leaves")
             activator("Apple Tree")
             item("Apple"){
                 location("high in the branches")

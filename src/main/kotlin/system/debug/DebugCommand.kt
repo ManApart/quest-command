@@ -27,6 +27,7 @@ class DebugCommand : Command() {
     Debug statchanges <on/off> - Toggle whether stats (stamina, focus, health, etc) can be depleted.
     Debug random <on/off> - Toggle random chances always succeeding. 
     Debug map <on/off> - Toggle showing all or just discovered map locations. 
+    Debug clarity <on/off> - Toggle total clarity on or off. Total clarity skips perception checks 
     Debug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). 
     Debug stat <stat name> <desired level> on *<target> - Set a stat to the desired level.
     Debug prop <prop name> <desired level> on *<target> - Set a property to the desired level.
@@ -51,6 +52,7 @@ class DebugCommand : Command() {
                 "statchanges" -> sendDebugToggleEvent(DebugType.STAT_CHANGES, arguments)
                 "random" -> sendDebugToggleEvent(DebugType.RANDOM_SUCCEED, arguments)
                 "map" -> sendDebugToggleEvent(DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
+                "clarity" -> sendDebugToggleEvent(DebugType.CLARITY, arguments)
                 "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
                 "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)

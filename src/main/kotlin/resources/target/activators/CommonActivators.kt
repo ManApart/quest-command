@@ -34,6 +34,7 @@ class CommonActivators : ActivatorResource {
         target("Wheat Field") {
             extends(burnable)
             description("The golden shafts of wheat whisper as they brush against each other.")
+            sound(5, "a faint rustling sound")
             param("fireHealth" to 2, "itemName" to "Wheat Field")
             behavior(
                 "Slash Harvest",

@@ -1,29 +1,95 @@
 package resources.weatherOptions
 
-import core.properties.Properties
-import core.properties.Values
-import traveling.location.location.LIGHT
-import traveling.location.weather.Weather
 import traveling.location.weather.WeatherResource
+import traveling.location.weather.build
+import traveling.location.weather.weathers
 
 class OutsideWeather : WeatherResource {
-    override val values = listOf(
-        Weather("Soft Wind", "A soft wind blows gently against you."),
-        Weather("Windy", "Wind tugs and pulls at you."),
-        Weather("Strong Wind", "Wind whips and push, almost as if it is angry with you."),
-        Weather("Gale", "Mighty blasts of air assail you."),
-        Weather("Dry Air", "The air feels feels empty and harsh; it lacks all moisture."),
-        Weather("Damp Air", "The air feels damp and wet."),
-        Weather("Humid Air", "The air feels thick and it's harder to catch your breath."),
-        Weather("Light Fog", "The light fog gives everything a grey hue.", properties = Properties(Values(Pair(LIGHT, "-1")))),
-        Weather("Fog", "Fog obscures the distance.", properties = Properties(Values(Pair(LIGHT, "-2")))),
-        Weather("Heavy Fog", "The heavy fog hems you in, obscuring all but a small area around you.", properties = Properties(Values(Pair(LIGHT, "-3")))),
-        Weather("Gentle Rain", "Fat drops of water lazily splash against everything around you.", listOf("Rain Wet"), properties = Properties(Values(Pair(LIGHT, "-2")))),
-        Weather("Rain", "Rain falls at a steady, measured clip.", properties = Properties(Values(Pair(LIGHT, "-2")))),
-        Weather("Heavy Rain", "Rain pelts like an army of small soldiers, charging, flanking, rushing down.", properties = Properties(Values(Pair(LIGHT, "-4")))),
-        Weather("Thunderstorm", "Rain falls angrily down. Occasionally everything flashes brilliant white as the sky breaks and roars.", properties = Properties(Values(Pair(LIGHT, "-4")))),
-        Weather("Ankle Deep Water", "Your feet are covered in water."),
-        Weather("Waist Deep Water", "You are in water up to your waist."),
-        Weather("Submerged", "You are completely under water.", properties = Properties(Values(Pair(LIGHT, "-2")))),
-    )
+    override val values = weathers {
+
+        weather("Soft Wind", "A soft wind blows gently against you.")
+
+        weather("Windy") {
+            description("Wind tugs and pulls at you.")
+            sound(2, "gusts of wind")
+        }
+
+        weather("Strong Wind") {
+            description("Wind whips and push, almost as if it is angry with you.")
+            sound(5, "the heavy slap of air")
+        }
+
+        weather("Gale") {
+            description("Mighty blasts of air assail you.")
+            sound(9, "the roar of wind")
+        }
+
+        weather("Dry Air") {
+            description("The air feels feels empty and harsh; it lacks all moisture.")
+        }
+
+        weather("Damp Air") {
+            description("The air feels damp and wet.")
+        }
+
+        weather("Humid Air") {
+            description("The air feels thick and it's harder to catch your breath.")
+        }
+
+        weather("Light Fog") {
+            description("The light fog gives everything a grey hue.")
+            light(-1)
+        }
+
+        weather("Fog") {
+            description("Fog obscures the distance.")
+            light(-2)
+        }
+
+        weather("Heavy Fog") {
+            description("The heavy fog hems you in, obscuring all but a small area around you.")
+            light(-3)
+        }
+
+        weather("Gentle Rain") {
+            description("Fat drops of water lazily splash against everything around you.")
+            light(-2)
+            sound(2, "the gentle patter of small splashes")
+            condition("Rain Wet")
+        }
+
+        weather("Rain") {
+            description("Rain falls at a steady, measured clip.")
+            sound(4, "the rhythmic splatter of rain")
+            light(-2)
+        }
+
+        weather("Heavy Rain") {
+            description("Rain pelts like an army of small soldiers, charging, flanking, rushing down.")
+            sound(6, "the percussion of rain mixed with sloshing, streaming and splashing")
+            light(-4)
+        }
+
+        weather("Thunderstorm") {
+            description("Rain falls angrily down. Occasionally everything flashes brilliant white as the sky breaks and roars.")
+            sound(8, "the heavy slap of rain deepened by rolling rumbles and loud claps")
+            light(-4)
+        }
+
+        weather("Ankle Deep Water" ){
+            description("Your feet are covered in water.")
+            sound(4, "splashes and gurgles")
+        }
+
+        weather("Waist Deep Water" ){
+            description("You are in water up to your waist.")
+            sound("sloshing and gurgling")
+        }
+
+        weather("Submerged") {
+            description("You are completely under water.")
+            sound(7,"muffled swirling and bubbling")
+            light(-2)
+        }
+    }.build()
 }

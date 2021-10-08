@@ -30,3 +30,18 @@ fun String.repeat(times: Int) : String {
 fun String.capitalize2() : String {
     return replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
 }
+
+fun <T> List<T>.joinToStringAnd(transform: ((T) -> CharSequence)? = null) : String {
+    val stringList = if (transform == null) this else {
+        this.map { transform(it) }
+    }
+    return if (size > 1){
+        val subList = stringList.subList(0, size-1)
+        val last = if (transform == null) last().toString() else {
+            transform(last())
+        }
+        subList.joinToString(", ") + " and " + last
+    } else {
+        stringList.joinToString(", ")
+    }
+}

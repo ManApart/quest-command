@@ -20,6 +20,18 @@ enum class Direction(val shortcut: String, val vector: Vector) {
         return vector.invert().direction
     }
 
+    /**
+     * EX: to the north west
+     */
+    fun directionString(): String {
+        return when (this){
+            ABOVE -> this.name.lowercase()
+            BELOW -> this.name.lowercase()
+            NONE -> ""
+            else -> "to the " + this.name.lowercase().replace("_", " ")
+        }
+    }
+
     companion object {
         fun getDirection(value: String) : Direction {
             val cleaned = value.lowercase().trim()

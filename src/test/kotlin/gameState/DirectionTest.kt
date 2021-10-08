@@ -15,4 +15,13 @@ class DirectionTest {
         assertEquals(Direction.NONE, Direction.NONE.invert())
     }
 
+    @Test
+    fun directionString() {
+        assertEquals("above", Direction.ABOVE.directionString())
+        assertEquals("below", Direction.BELOW.directionString())
+        assertEquals("to the south", Direction.SOUTH.directionString())
+        assertEquals("to the north east", Direction.NORTH_EAST.directionString())
+        assertEquals("", Direction.NONE.directionString())
+    }
+
 }

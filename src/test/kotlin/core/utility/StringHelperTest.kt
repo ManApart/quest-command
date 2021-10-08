@@ -40,7 +40,8 @@ class StringHelperTest {
     @Test
     fun onlyTheCorrectVariableIsReplaced() {
         val base = "\$sourceItem"
-        val params = mapOf("sourceItem" to "Wheat Bundle", "resultItem" to "Wheat Flour", "resultItemLocation" to "Windmill")
+        val params =
+            mapOf("sourceItem" to "Wheat Bundle", "resultItem" to "Wheat Flour", "resultItemLocation" to "Windmill")
 
         assertEquals("Wheat Bundle", base.apply(params))
     }
@@ -49,9 +50,50 @@ class StringHelperTest {
     fun repeat0TimesIsBlank() {
         assertEquals("", "test".repeat(0))
     }
+
     @Test
     fun repeat() {
         assertEquals("testtest", "test".repeat(2))
+    }
+
+    @Test
+    fun joinToStringAndEmpty() {
+        val list = emptyList<String>()
+        assertEquals("", list.joinToStringAnd())
+    }
+
+    @Test
+    fun joinToStringAndOne() {
+        val list = listOf("a")
+        assertEquals("a", list.joinToStringAnd())
+    }
+
+    @Test
+    fun joinToStringAndTwo() {
+        val list = listOf("a", "b")
+        assertEquals("a and b", list.joinToStringAnd())
+    }
+
+    @Test
+    fun joinToStringAndThree() {
+        val list = listOf("a", "b", "c")
+        assertEquals("a, b and c", list.joinToStringAnd())
+    }
+
+    @Test
+    fun joinUsingClassShort() {
+        class Thing(val stuff: String)
+
+        val list = listOf(Thing("x"), Thing("y"))
+        assertEquals("x and y", list.joinToStringAnd { it.stuff })
+    }
+
+    @Test
+    fun joinUsingClass() {
+        class Thing(val stuff: String)
+
+        val list = listOf(Thing("z"), Thing("x"), Thing("y"))
+        assertEquals("z, x and y", list.joinToStringAnd { it.stuff })
     }
 
 }
