@@ -1,5 +1,6 @@
 package traveling.direction
 
+import core.utility.capitalize2
 import traveling.position.Vector
 
 enum class Direction(val shortcut: String, val vector: Vector) {
@@ -18,6 +19,18 @@ enum class Direction(val shortcut: String, val vector: Vector) {
 
     fun invert(): Direction {
         return vector.invert().direction
+    }
+
+    /**
+     * EX: to the north west
+     */
+    fun directionString(): String {
+        return when (this){
+            ABOVE -> this.name.lowercase()
+            BELOW -> this.name.lowercase()
+            NONE -> ""
+            else -> "to the " + this.name.lowercase().replace("_", " ")
+        }
     }
 
     companion object {

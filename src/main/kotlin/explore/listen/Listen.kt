@@ -24,23 +24,18 @@ class Listen : EventListener<ListenEvent>() {
             location.getTargetSounds(event.source) + listOfNotNull(location.getSound(), location.weather.getSound())
         val threshold = (sounds.maxOfOrNull { it.strength } ?: 0) - 50
 
-        val filteredSounds = sounds.filter { it.strength > threshold }
+        val filteredSounds = sounds.filter { it.strength > threshold }.sortedBy { it.strength }
 
-        if (filteredSounds.isEmpty()){
+        if (filteredSounds.isEmpty()) {
             display("It is silent.")
         } else {
-            /*
-         * TODO
-         *  Filter out sounds too far away
-         *  Give each sound a general direction (hear x to your west)
-         *  Include sounds from weather
-         *  Include sounds from location
-         */
-            val soundText = filteredSounds.joinToStringAnd { it.description }
+            val soundText = filteredSounds.joinToStringAnd {
+                if (it.distance == NO_VECTOR) it.description else {
+                    "${it.description} ${it.distance.direction.directionString()}"
+                }
+            }
             display("You hear $soundText.")
         }
-
-
     }
 
 }
@@ -55,7 +50,12 @@ private fun Location.getSound(): Sound? {
 }
 
 private fun Weather.getSound(): Sound? {
-    return null
+    if (!properties.values.has(SOUND_DESCRIPTION)) return null
+    val description = properties.values.getString(SOUND_DESCRIPTION)
+    val level = properties.values.getInt(SOUND_LEVEL, SOUND_LEVEL_DEFAULT)
+    val strength = level * 10
+
+    return Sound(description, level, NO_VECTOR, strength)
 }
 
 private fun Location.getTargetSounds(source: Target): List<Sound> {
