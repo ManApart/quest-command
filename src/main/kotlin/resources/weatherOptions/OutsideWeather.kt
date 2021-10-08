@@ -8,8 +8,12 @@ class OutsideWeather : WeatherResource {
     override val values = weathers {
 
         weather("Soft Wind", "A soft wind blows gently against you.")
-        weather("Windy", "Wind tugs and pulls at you.")
-        weather("Strong Wind", "Wind whips and push, almost as if it is angry with you.")
+        weather("Windy", "Wind tugs and pulls at you."){
+            sound(2, "gusts of wind")
+        }
+        weather("Strong Wind", "Wind whips and push, almost as if it is angry with you."){
+            sound(5, "the heavy slap of air")
+        }
         weather("Gale", "Mighty blasts of air assail you.")
         weather("Dry Air", "The air feels feels empty and harsh; it lacks all moisture.")
         weather("Damp Air", "The air feels damp and wet.")
