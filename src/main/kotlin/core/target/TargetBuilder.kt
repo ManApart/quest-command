@@ -8,11 +8,10 @@ import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.BodyManager
 import core.body.Slot
-import core.conditional.ConditionalStringPointer
-import core.conditional.ConditionalStringType
 import core.properties.Properties
 import core.properties.PropsBuilder
 import core.utility.MapBuilder
+import core.utility.apply
 import core.utility.applyNested
 import explore.listen.SOUND_DESCRIPTION
 import explore.listen.SOUND_LEVEL
@@ -24,7 +23,7 @@ import traveling.location.network.NOWHERE_NODE
 
 class TargetBuilder(internal val name: String) {
     private var propsBuilder = PropsBuilder()
-    private var description: ConditionalStringPointer? = null
+    private var description: String? = null
     private val paramsBuilder = MapBuilder()
     private val soulBuilder = MapBuilder()
     private var soulBuilt: Soul? = null
@@ -47,7 +46,7 @@ class TargetBuilder(internal val name: String) {
         val props = propsBuilder.build(bases.map { it.propsBuilder }, params)
         val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
         val actualSoul = soulBuilt ?: Soul(soulStats)
-        val desc = description ?: basesR.firstNotNullOfOrNull { it.description } ?: ConditionalStringPointer(name)
+        val desc = (description ?: basesR.firstNotNullOfOrNull { it.description } ?: "").apply(params)
 
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
         val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
@@ -116,15 +115,7 @@ class TargetBuilder(internal val name: String) {
     }
 
     fun description(desc: String) {
-        description = ConditionalStringPointer(desc)
-    }
-
-    fun description(desc: ConditionalStringPointer) {
         description = desc
-    }
-
-    fun description(desc: String, type: ConditionalStringType) {
-        description = ConditionalStringPointer(desc, type)
     }
 
     fun behavior(name: String, vararg params: Pair<String, Any>) {
@@ -189,7 +180,7 @@ class TargetBuilder(internal val name: String) {
 
     private fun unBuild(t: Target): TargetBuilder {
         return target(t.name) {
-            description(t.dynamicDescription)
+            description(t.description)
             location(t.location)
             t.parent?.let { parent(t.parent) }
             ai(t.ai)

@@ -5,9 +5,7 @@ import core.ai.AI
 import core.ai.DumbAI
 import core.ai.behavior.Behavior
 import core.body.Body
-import core.body.NONE
 import core.body.Slot
-import core.conditional.ConditionalStringPointer
 import core.events.Event
 import core.properties.*
 import core.utility.*
@@ -29,7 +27,7 @@ import kotlin.math.min
 
 data class Target(
     override val name: String,
-    val dynamicDescription: ConditionalStringPointer = ConditionalStringPointer(name),
+    val description: String = name,
     var location: LocationNode = NOWHERE_NODE,
     val parent: Target? = null,
     val ai: AI = DumbAI(),
@@ -160,7 +158,7 @@ data class Target(
         val inventory = Inventory(inventory.name, body)
         val soul = soul.copy()
 
-        return Target(name, dynamicDescription, location, parent, ai, body, equipSlots, inventory, props, soul, behaviors, knownRecipes.toNameSearchableList(), params)
+        return Target(name, description, location, parent, ai, body, equipSlots, inventory, props, soul, behaviors, knownRecipes.toNameSearchableList(), params)
     }
 
     fun getPositionInLocation(part: Location): Vector {
@@ -196,14 +194,6 @@ data class Target(
     fun finishClimbing() {
         properties.values.put(IS_CLIMBING, false)
         climbTarget = null
-    }
-
-    fun getDescription(): String {
-        return dynamicDescription.getOption().apply(params)
-    }
-
-    fun getDescriptionWithOptions(): ConditionalStringPointer {
-        return dynamicDescription
     }
 
     fun isSafe(): Boolean {

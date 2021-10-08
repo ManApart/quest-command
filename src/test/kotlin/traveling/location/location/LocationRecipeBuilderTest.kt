@@ -1,8 +1,6 @@
 package traveling.location.location
 
 import core.conditional.ConditionalString
-import core.conditional.ConditionalStringPointer
-import core.conditional.ConditionalStringType
 import core.properties.Properties
 import core.properties.Tags
 import org.junit.Test
