@@ -94,7 +94,6 @@ object DependencyInjector {
             EffectsCollection::class to EffectsGenerated(),
             EventListenersCollection::class to EventListenersGenerated(),
             ItemsCollection::class to ItemsGenerated(),
-            LocationDescriptionsCollection::class to LocationDescriptionsGenerated(),
             LocationsCollection::class to LocationsGenerated(),
             NetworksCollection::class to NetworksGenerated(),
             RecipesCollection::class to RecipesGenerated(),

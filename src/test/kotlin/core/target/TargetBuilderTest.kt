@@ -59,12 +59,12 @@ class TargetBuilderTest {
             "Jim",
             params = mapOf("another" to "thing"),
             body = BodyManager.getBody("Human"),
-            dynamicDescription = ConditionalStringPointer("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION),
+            dynamicDescription = ConditionalStringPointer("A fine fellow", ConditionalStringType.DEFAULT),
             properties = Properties(Tags("Warrior"))
         )
 
         val actual = target("Jim") {
-            description("A fine fellow", ConditionalStringType.LOCATION_DESCRIPTION)
+            description("A fine fellow", ConditionalStringType.DEFAULT)
             param("another" to "thing")
             body("Human")
             props {

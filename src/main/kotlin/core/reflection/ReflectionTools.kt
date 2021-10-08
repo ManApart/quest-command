@@ -64,7 +64,6 @@ object ReflectionTools {
         generateResourcesFile(DialogueResource::class, Dialogue::class)
         generateResourcesFile(EffectResource::class, EffectBase::class)
         generateResourcesFile(LocationResource::class, LocationRecipeBuilder::class)
-        generateResourcesFile(LocationDescriptionResource::class, ConditionalString::class)
         generateResourcesFile(NetworkResource::class, NetworkBuilder::class)
         generateResourcesFile(RecipeResource::class, RecipeBuilder::class)
         generateResourcesFile(StoryEventResource::class, StoryEvent::class)
