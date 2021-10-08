@@ -3,8 +3,6 @@ package core.target
 import core.DependencyInjector
 import core.ai.behavior.*
 import core.body.*
-import core.conditional.ConditionalStringPointer
-import core.conditional.ConditionalStringType
 import core.properties.Properties
 import core.properties.Tags
 import explore.look.LookEvent

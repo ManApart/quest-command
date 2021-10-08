@@ -2,7 +2,6 @@ package core
 
 import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParser
-import core.conditional.ConditionalStringPointer
 import core.events.EventManager
 import core.history.ChatHistory
 import core.target.Target

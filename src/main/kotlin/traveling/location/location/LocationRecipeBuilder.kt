@@ -1,8 +1,6 @@
 package traveling.location.location
 
 import core.conditional.ConditionalStringBuilder
-import core.conditional.ConditionalStringPointer
-import core.conditional.ConditionalStringType
 import core.properties.PropsBuilder
 import explore.listen.SOUND_DESCRIPTION
 import explore.listen.SOUND_LEVEL
