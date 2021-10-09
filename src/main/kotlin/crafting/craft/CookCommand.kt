@@ -1,6 +1,5 @@
 package crafting.craft
 
-import core.GameState
 import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.Command

@@ -1,7 +1,6 @@
 package status.effects
 
 import core.body.Body
-import core.target.Target
 
 
 fun getPersisted(dataObject: Effect): Map<String, Any> {

@@ -1,7 +1,6 @@
 package traveling.location.location
 
 import core.DependencyInjector
-import core.GameState
 import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList

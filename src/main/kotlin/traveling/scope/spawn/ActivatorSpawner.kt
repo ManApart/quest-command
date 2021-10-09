@@ -1,6 +1,5 @@
 package traveling.scope.spawn
 
-import core.GameState
 import core.events.EventListener
 import core.history.display
 import traveling.position.NO_VECTOR

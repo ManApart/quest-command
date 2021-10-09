@@ -7,8 +7,8 @@ import core.utility.joinToStringAnd
 import traveling.location.location.Location
 import traveling.location.weather.Weather
 import traveling.position.NO_VECTOR
-import kotlin.math.max
 import traveling.position.Vector
+import kotlin.math.max
 
 const val SOUND_DESCRIPTION = "Sound Description"
 const val SOUND_LEVEL = "Sound Level"

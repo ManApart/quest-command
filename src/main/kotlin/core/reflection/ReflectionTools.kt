@@ -11,7 +11,6 @@ import core.ai.dsl.AIResource
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command
-import core.conditional.ConditionalString
 import core.events.EventListener
 import core.target.TargetBuilder
 import core.target.activator.dsl.ActivatorResource
@@ -28,7 +27,8 @@ import status.conditions.ConditionRecipe
 import status.conditions.ConditionResource
 import status.effects.EffectBase
 import status.effects.EffectResource
-import traveling.location.location.*
+import traveling.location.location.LocationRecipeBuilder
+import traveling.location.location.LocationResource
 import traveling.location.network.NetworkBuilder
 import traveling.location.network.NetworkResource
 import traveling.location.weather.Weather

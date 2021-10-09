@@ -2,10 +2,8 @@ package core
 
 import conversation.Conversation
 import core.properties.Properties
-import core.target.Target
 import system.debug.DebugType
 import time.TimeManager
-import traveling.location.location.Location
 
 object GameState {
     var gameName = "Kanbara"

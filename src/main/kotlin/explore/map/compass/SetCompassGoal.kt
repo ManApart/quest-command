@@ -4,7 +4,6 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import traveling.location.Route
 import traveling.location.RouteFinder
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode

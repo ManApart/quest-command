@@ -10,8 +10,8 @@ import core.utility.max
 import traveling.direction.Direction
 import traveling.location.Network
 import traveling.location.location.Location
-import traveling.location.network.LocationNode
 import traveling.location.location.LocationRecipe
+import traveling.location.network.LocationNode
 import traveling.position.Vector
 
 val NONE = Body("None")

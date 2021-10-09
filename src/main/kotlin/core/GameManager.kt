@@ -15,8 +15,8 @@ import system.persistance.loading.LoadEvent
 import system.startup.GameStartEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
-import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
+import traveling.location.network.LocationNode
 
 const val PLAYER_START_NETWORK = "Kanbara Countryside"
 const val PLAYER_START_LOCATION = "An Open Field"

@@ -1,6 +1,5 @@
 package use.eat
 
-import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest

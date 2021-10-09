@@ -1,8 +1,8 @@
 package core.history
 
 import core.GameState
-import system.debug.DebugType
 import core.target.Target
+import system.debug.DebugType
 
 
 /**

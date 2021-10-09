@@ -1,6 +1,5 @@
 package explore.map
 
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser

@@ -1,7 +1,6 @@
 package core.ai
 
 import core.ai.action.AIAction
-import core.target.Target
 import core.utility.Named
 
 class AIBase(override val name: String, private val actionNames: List<String> = listOf()) : Named {

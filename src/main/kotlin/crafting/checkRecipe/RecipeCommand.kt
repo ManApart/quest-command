@@ -1,6 +1,5 @@
 package crafting.checkRecipe
 
-import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest

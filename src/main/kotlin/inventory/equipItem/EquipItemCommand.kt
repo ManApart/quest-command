@@ -1,6 +1,5 @@
 package inventory.equipItem
 
-import core.GameState
 import core.body.Body
 import core.body.Slot
 import core.commands.*

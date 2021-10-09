@@ -3,7 +3,7 @@ package status.rest
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.utility.StringFormatter.format
+import core.utility.then
 import status.stat.HEALTH
 import status.stat.LeveledStat
 import status.stat.STAMINA
@@ -23,7 +23,7 @@ class Rest : EventListener<RestEvent>() {
         val recoverableStats = event.creature.soul.getStats().filter { isRecoverable(it) }
 
         if (recoverableStats.isEmpty()) {
-            val hours = format(event.hoursRested != 1, "${event.hoursRested} hours", "1 hour")
+            val hours = (event.hoursRested != 1).then("${event.hoursRested} hours", "1 hour")
             display("You rest for $hours but feel the same.")
         }
 

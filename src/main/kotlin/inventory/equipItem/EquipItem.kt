@@ -3,12 +3,13 @@ package inventory.equipItem
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.utility.StringFormatter
+import core.utility.isAre
+import core.utility.asSubject
 
 class EquipItem : EventListener<EquipItemEvent>() {
     override fun execute(event: EquipItemEvent) {
         if (!event.item.isWithinRangeOf(event.creature)) {
-            display(StringFormatter.getSubject(event.creature) + " " + StringFormatter.getIsAre(event.creature) + " too far away to equip ${event.item}.")
+            display(event.creature.asSubject() + " " + event.creature.isAre() + " too far away to equip ${event.item}.")
         } else {
             if (event.slot != null) {
                 event.creature.body.equip(event.item, event.slot)

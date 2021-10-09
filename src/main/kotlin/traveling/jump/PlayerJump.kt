@@ -1,6 +1,5 @@
 package traveling.jump
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display

@@ -8,7 +8,10 @@ import core.body.Body
 import core.body.Slot
 import core.events.Event
 import core.properties.*
-import core.utility.*
+import core.utility.NameSearchableList
+import core.utility.Named
+import core.utility.max
+import core.utility.toNameSearchableList
 import crafting.Recipe
 import inventory.Inventory
 import status.Soul

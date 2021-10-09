@@ -1,6 +1,5 @@
 package traveling.travel
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -8,8 +7,8 @@ import core.target.Target
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
-import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
+import traveling.location.network.LocationNode
 
 class TravelStart : EventListener<TravelStartEvent>() {
     override fun execute(event: TravelStartEvent) {

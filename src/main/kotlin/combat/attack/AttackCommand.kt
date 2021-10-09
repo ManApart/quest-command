@@ -1,7 +1,6 @@
 package combat.attack
 
 import combat.HandHelper
-import core.GameState
 import core.commands.*
 import core.events.EventManager
 import core.history.display

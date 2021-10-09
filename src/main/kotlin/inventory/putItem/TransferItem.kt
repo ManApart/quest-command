@@ -4,7 +4,8 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import core.utility.StringFormatter
+import core.utility.isAre
+import core.utility.asSubject
 import inventory.pickupItem.ItemPickedUpEvent
 
 class TransferItem : EventListener<TransferItemEvent>() {
@@ -13,8 +14,8 @@ class TransferItem : EventListener<TransferItemEvent>() {
         val isTaking = event.mover == event.destination
         val isPlacing = event.mover == event.source
         when {
-            isPlacing && !event.destination.isWithinRangeOf(event.mover) -> display(StringFormatter.getSubject(event.mover) + " " + StringFormatter.getIsAre(event.mover) + " too far away to place in ${event.destination}.")
-            isTaking && !event.source.isWithinRangeOf(event.mover) -> display(StringFormatter.getSubject(event.mover) + " " + StringFormatter.getIsAre(event.mover) + " too far away to take from ${event.source}.")
+            isPlacing && !event.destination.isWithinRangeOf(event.mover) -> display(event.mover.asSubject() + " " + event.mover.isAre() + " too far away to place in ${event.destination}.")
+            isTaking && !event.source.isWithinRangeOf(event.mover) -> display(event.mover.asSubject() + " " + event.mover.isAre() + " too far away to take from ${event.source}.")
             !isOpen(event.source) -> display("Can't take ${event.item.name} from ${event.source.name} because it's not an open container.")
             !isOpen(event.destination) -> display("Can't place ${event.item.name} in ${event.destination.name} because it's not an open container.")
             else -> moveItemFromSourceToDest(event.source, event.item, event.destination, event.silent)

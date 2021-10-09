@@ -1,6 +1,5 @@
 package inventory
 
-import core.GameState
 import core.commands.Command
 import core.history.display
 import core.target.Target

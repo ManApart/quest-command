@@ -4,14 +4,15 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import core.utility.StringFormatter
+import core.utility.isAre
+import core.utility.asSubject
 
 class TakeItem : EventListener<TakeItemEvent>() {
     override fun execute(event: TakeItemEvent) {
         if (event.taker.canReach(event.item.position)) {
             takeItem(event.taker, event.item, event.silent)
         } else {
-            display(StringFormatter.getSubject(event.taker) + " " + StringFormatter.getIsAre(event.taker) + " too far away to take ${event.item}.")
+            display(event.taker.asSubject() + " " + event.taker.isAre() + " too far away to take ${event.item}.")
         }
     }
 

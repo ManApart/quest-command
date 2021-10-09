@@ -3,7 +3,8 @@ package status.statChanged
 import core.GameState
 import core.events.EventListener
 import core.history.display
-import core.utility.StringFormatter
+import core.utility.then
+import core.utility.asSubjectPossessive
 import system.debug.DebugType
 import kotlin.math.abs
 
@@ -14,7 +15,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
     }
 
     override fun execute(event: StatChangeEvent) {
-        val change = StringFormatter.format(event.amount > 0, "increases", "decreases")
+        val change = (event.amount > 0).then("increases", "decreases")
         val soul = event.target.soul
 
         val oldVal = soul.getCurrent(event.statName)
@@ -23,7 +24,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
             soul.incStat(event.statName, event.amount)
         }
 
-        val subject = StringFormatter.getSubjectPossessive(event.target)
+        val subject = event.target.asSubjectPossessive()
         val current = soul.getCurrent(event.statName)
         val max = soul.getTotal(event.statName)
 

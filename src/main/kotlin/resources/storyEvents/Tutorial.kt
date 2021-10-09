@@ -1,8 +1,6 @@
 package resources.storyEvents
 
-import core.GameState
 import explore.look.LookEvent
-import explore.map.ReadMapCommand
 import explore.map.ReadMapEvent
 import quests.*
 import quests.journal.ViewQuestListEvent

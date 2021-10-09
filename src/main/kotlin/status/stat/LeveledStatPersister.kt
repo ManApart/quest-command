@@ -2,7 +2,6 @@ package status.stat
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import core.target.Target
 
 fun getPersisted(dataObject: LeveledStat): Map<String, Any> {
     val string = jacksonObjectMapper().writeValueAsString(dataObject)

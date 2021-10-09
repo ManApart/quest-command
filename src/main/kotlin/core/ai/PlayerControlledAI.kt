@@ -1,10 +1,8 @@
 package core.ai
 
 import conversation.dialogue.DialogueEvent
-import core.GameState
 import core.commands.CommandParser
 import core.history.display
-import core.target.Target
 
 const val PLAYER_CONTROLLED_ID = "Player Controlled"
 

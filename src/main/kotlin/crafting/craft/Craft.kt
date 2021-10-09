@@ -5,7 +5,8 @@ import core.events.EventManager
 import core.history.display
 import core.target.Target
 import core.target.item.ItemManager
-import core.utility.StringFormatter
+import core.utility.isAre
+import core.utility.asSubject
 import crafting.DiscoverRecipeEvent
 import inventory.Inventory
 import inventory.pickupItem.TakeItemEvent
@@ -14,7 +15,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
 
     override fun execute(event: CraftRecipeEvent) {
         when {
-            event.tool?.isWithinRangeOf(event.source) == false -> display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to use ${event.tool}.")
+            event.tool?.isWithinRangeOf(event.source) == false -> display(event.source.asSubject() + " " + event.source.isAre() + " too far away to use ${event.tool}.")
             event.recipe.canBeCraftedBy(event.source, event.tool) -> {
                 val ingredients = event.recipe.getUsedIngredients(event.source.inventory.getAllItems())
                 val results = event.recipe.getResults(ingredients)

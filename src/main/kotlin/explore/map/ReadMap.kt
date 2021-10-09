@@ -3,7 +3,6 @@ package explore.map
 import core.GameState
 import core.events.EventListener
 import core.history.StringTable
-import core.history.display
 import core.history.displayYou
 import system.debug.DebugType
 import traveling.location.Route

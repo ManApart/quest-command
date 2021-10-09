@@ -1,6 +1,5 @@
 package inventory.dropItem
 
-import core.GameState
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest

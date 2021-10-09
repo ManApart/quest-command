@@ -4,8 +4,8 @@ import core.commands.*
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import core.utility.StringFormatter.getIsAre
-import core.utility.StringFormatter.getSubject
+import core.utility.isAre
+import core.utility.asSubject
 import traveling.direction.Direction
 import traveling.position.NO_VECTOR
 
@@ -34,7 +34,7 @@ class MoveCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         //Move this check to the listener
         if (source.getEncumbrance() >= 1) {
-            display("${getSubject(source)} ${getIsAre(source)} too encumbered to move.")
+            display("${source.asSubject()} ${source.isAre()} too encumbered to move.")
         } else {
             val arguments = Args(args, delimiters = listOf("to", "towards"))
             val vector = parseVector(args)

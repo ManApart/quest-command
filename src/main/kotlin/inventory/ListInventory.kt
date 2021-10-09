@@ -4,7 +4,7 @@ import core.body.Body
 import core.events.EventListener
 import core.history.display
 import core.target.Target
-import core.utility.StringFormatter
+import core.utility.then
 
 class ListInventory : EventListener<ListInventoryEvent>() {
 
@@ -33,7 +33,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
     }
 
     private fun printItem(item: Target, body: Body, tabCount: Int): String {
-        val asterisk = StringFormatter.format(body.isEquipped(item), "* ", "")
+        val asterisk = body.isEquipped(item).then("* ", "")
         val tabs = "\t".repeat(tabCount)
         return "\n" + tabs + asterisk + item.name
     }

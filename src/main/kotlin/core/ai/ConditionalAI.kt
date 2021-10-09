@@ -5,7 +5,6 @@ import conversation.dialogue.DialogueEvent
 import core.ai.action.AIAction
 import core.events.EventManager
 import core.history.display
-import core.target.Target
 import core.utility.RandomManager
 import use.interaction.nothing.NothingEvent
 
