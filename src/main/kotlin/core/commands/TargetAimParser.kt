@@ -7,26 +7,26 @@ import traveling.location.location.Location
 import traveling.position.TargetAim
 
 //TODO - allow for response requests?
-fun parseTargetsFromInventory(arguments: List<String>, target: Target): List<TargetAim> {
+fun parseTargetsFromInventory(source: Target, arguments: List<String>, target: Target): List<TargetAim> {
     val args = Args(arguments, delimiters = listOf("and"))
     val targets = NameSearchableList(target.inventory.getAllItems())
-    return args.getBaseAndGroups("and").mapNotNull { getTarget(it, targets) }
+    return args.getBaseAndGroups("and").mapNotNull { getTarget(source, it, targets) }
 }
 
 //TODO - make location paramatized
 fun parseTargets(source: Target, arguments: List<String>): List<TargetAim> {
     val args = Args(arguments, delimiters = listOf("and"))
     val targets = source.currentLocation().getTargets()
-    return args.getBaseAndGroups("and").mapNotNull { getTarget(it, targets) }
+    return args.getBaseAndGroups("and").mapNotNull { getTarget(source, it, targets) }
 }
 
-private fun getTarget(arguments: List<String>, targets: NameSearchableList<Target>): TargetAim? {
+private fun getTarget(source: Target, arguments: List<String>, targets: NameSearchableList<Target>): TargetAim? {
     val args = Args(arguments, delimiters = listOf("of"))
     return when {
         args.hasBase() && args.hasGroup("of") -> parseTargetAndParts(args, targets)
         args.hasBase() -> parseTargetOnly(args.fullString, targets)
         else -> {
-            display("Could not parse targets for: ${arguments.joinToString(" ")}")
+            source.display("Could not parse targets for: ${arguments.joinToString(" ")}")
             null
         }
     }

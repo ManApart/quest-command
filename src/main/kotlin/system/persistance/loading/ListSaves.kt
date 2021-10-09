@@ -3,6 +3,7 @@ package system.persistance.loading
 import core.GameState
 import core.events.EventListener
 import core.history.display
+import core.history.displayYou
 import system.persistance.clean
 import system.persistance.getGameNames
 
@@ -10,9 +11,9 @@ class ListSaves : EventListener<ListSavesEvent>() {
     override fun execute(event: ListSavesEvent) {
         val gameNames = getGameNames()
         if (gameNames.isEmpty()) {
-            display("No game saves to load")
+            event.source.displayYou("No game saves to load")
         } else {
-            display("Game Saves:\n\t" + gameNames.joinToString("\n\t") { highlightCurrent(it, GameState.gameName) })
+            event.source.displayYou("Game Saves:\n\t" + gameNames.joinToString("\n\t") { highlightCurrent(it, GameState.gameName) })
         }
     }
 

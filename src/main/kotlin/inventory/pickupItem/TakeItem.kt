@@ -3,6 +3,7 @@ package inventory.pickupItem
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 import core.utility.isAre
 import core.utility.asSubject
@@ -12,7 +13,7 @@ class TakeItem : EventListener<TakeItemEvent>() {
         if (event.taker.canReach(event.item.position)) {
             takeItem(event.taker, event.item, event.silent)
         } else {
-            display(event.taker.asSubject() + " " + event.taker.isAre() + " too far away to take ${event.item}.")
+            event.taker.display(event.taker.asSubject() + " " + event.taker.isAre() + " too far away to take ${event.item}.")
         }
     }
 
@@ -26,7 +27,7 @@ class TakeItem : EventListener<TakeItemEvent>() {
             }
             EventManager.postEvent(ItemPickedUpEvent(taker, newStack, silent))
         } else {
-            display("Could not find a place for $item.")
+            taker.displayYou("Could not find a place for $item.")
         }
     }
 }

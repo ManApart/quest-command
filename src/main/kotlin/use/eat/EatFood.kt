@@ -11,7 +11,7 @@ class EatFood : EventListener<EatFoodEvent>() {
 
     override fun execute(event: EatFoodEvent) {
         val target = event.creature.isPlayer().then("You eat", event.creature.name +" eats")
-        display("$target ${event.food.name}")
+        event.creature.display("$target ${event.food.name}")
         val healAmount = getHealAmount(event.food)
         EventManager.postEvent(StatChangeEvent(event.creature, event.food.name, "Health", healAmount))
         event.creature.currentLocation().removeTargetIncludingPlayerInventory(event.creature, event.food)

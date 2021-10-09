@@ -8,7 +8,7 @@ const val PLAYER_CONTROLLED_ID = "Player Controlled"
 
 class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
     override fun hear(event: DialogueEvent) {
-        display("" + event.speaker.name + ": " + event.line)
+        event.speaker.display("" + event.speaker.name + ": " + event.line)
     }
 
     override fun takeAction() {
@@ -17,9 +17,9 @@ class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
 
         if (creature != oldCreature) {
             if (creature.isPlayer()) {
-                display("What do you do?")
+                creature.display("What do you do?")
             } else {
-                display("${creature.name} does what?")
+                creature.display("${creature.name} does what?")
             }
         }
     }

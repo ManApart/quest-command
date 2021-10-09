@@ -10,7 +10,7 @@ class SpawnItem : EventListener<ItemSpawnedEvent>() {
     override fun execute(event: ItemSpawnedEvent) {
         if (event.target == null) {
             val name = (event.item.properties.getCount() > 1).then("${event.item.properties.getCount()}x ${event.item.name}s", event.item.name)
-            display("$name appeared.")
+            event.item.display("$name appeared.")
             event.item.location = event.targetLocation
             event.item.location.getLocation().addTarget(event.item)
         } else {

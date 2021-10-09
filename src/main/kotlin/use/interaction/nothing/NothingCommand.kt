@@ -5,7 +5,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayYou
 import core.target.Target
 
 class NothingCommand : Command() {
@@ -33,7 +33,7 @@ class NothingCommand : Command() {
             args.isEmpty() && keyword == "Nothing" -> clarifyHours()
             args.isEmpty() -> wait(source, 1)
             args.size == 1 && arguments.getNumber() != null -> wait(source, arguments.getNumber()!!)
-            else -> display("Unknown params for rest: ${args.joinToString(" ")}")
+            else -> source.displayYou("Unknown params for rest: ${args.joinToString(" ")}")
         }
     }
 

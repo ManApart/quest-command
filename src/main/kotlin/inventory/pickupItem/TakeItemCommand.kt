@@ -5,6 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 import core.utility.filterUniqueByName
 import inventory.putItem.TransferItemEvent
@@ -31,7 +32,7 @@ class TakeItemCommand : core.commands.Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from"))
         when {
-            args.isEmpty() -> pickupWhat(source.currentLocation().getItems().filterUniqueByName())
+            args.isEmpty() -> pickupWhat(source, source.currentLocation().getItems().filterUniqueByName())
             arguments.hasGroup("from") -> pickupItemFromContainer(source, arguments)
             else -> pickupItemFromScope(source, arguments)
         }
@@ -40,15 +41,15 @@ class TakeItemCommand : core.commands.Command() {
     private fun pickupItemFromScope(source: Target, args: Args) {
         val items = source.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
-            items.isEmpty() -> display("Couldn't find ${args.getBaseString()}")
+            items.isEmpty() -> source.displayYou("Couldn't find ${args.getBaseString()}")
             items.size == 1 -> EventManager.postEvent(TakeItemEvent(source, items.first()))
-            else -> pickupWhat(items)
+            else -> pickupWhat(source, items)
         }
     }
 
-    private fun pickupWhat(items: List<Target>) {
+    private fun pickupWhat(source: Target, items: List<Target>) {
         if (items.isEmpty()) {
-            display("Nothing to pickup!")
+            source.displayYou("Nothing to pickup!")
         } else {
             val message = "Take which item?\n\t${items.joinToString(", ")}"
             val response = ResponseRequest(message, items.associate { it.name to "take ${it.name}" })
@@ -59,7 +60,7 @@ class TakeItemCommand : core.commands.Command() {
     private fun pickupItemFromContainer(source: Target, args: Args) {
         val from = source.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
         when {
-            from.isEmpty() -> display("Couldn't find ${args.getString("from")}.")
+            from.isEmpty() -> source.displayYou("Couldn't find ${args.getString("from")}.")
             from.size == 1 -> takeItemFromContainer(source, from.first(), args.getBaseString())
             else -> takeFromWhat(from, args.getBaseString())
         }
@@ -76,7 +77,7 @@ class TakeItemCommand : core.commands.Command() {
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(source, item, from, source))
         } else {
-            display("Couldn't find $itemName.")
+            source.displayYou("Couldn't find $itemName.")
         }
     }
 

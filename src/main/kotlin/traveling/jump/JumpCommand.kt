@@ -3,6 +3,7 @@ package traveling.jump
 import core.commands.Command
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.properties.IS_CLIMBING
 import core.target.Target
 import traveling.direction.Direction
@@ -38,7 +39,7 @@ class JumpCommand : Command() {
             if (found != null) {
                 EventManager.postEvent(JumpEvent(source, source = source.location, destination = found))
             } else {
-                display("Couldn't find anything below to jump down to.")
+                source.displayYou("Couldn't find anything below to jump down to.")
             }
         }
     }

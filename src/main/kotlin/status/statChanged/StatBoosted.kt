@@ -20,6 +20,6 @@ class StatBoosted : EventListener<StatBoostEvent>() {
 
         val current = soul.getCurrent(event.type)
         val max = soul.getTotal(event.type)
-        display("${event.source} $change $subject max ${event.type} by ${abs(event.amount)} ($current/$max).")
+        event.target.display("${event.source} $change $subject max ${event.type} by ${abs(event.amount)} ($current/$max).")
     }
 }

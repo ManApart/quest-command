@@ -4,6 +4,7 @@ import combat.HandHelper
 import core.commands.*
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 import status.stat.HEALTH
 import traveling.position.TargetAim
@@ -68,7 +69,7 @@ class AttackCommand : Command() {
     }
 
     private fun getTarget(keyword: String, arguments: Args, weaponName: String, source: Target): TargetAim? {
-        val targets = parseTargets(source, arguments.getBaseGroup()) + parseTargetsFromInventory(arguments.getBaseGroup(), source)
+        val targets = parseTargets(source, arguments.getBaseGroup()) + parseTargetsFromInventory(source, arguments.getBaseGroup(), source)
         return if (targets.isEmpty() && !isAlias(keyword)) {
             clarifyTarget(source, keyword, weaponName)
             null
@@ -129,7 +130,7 @@ class AttackCommand : Command() {
             target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, target.target))
             target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
             source.ai.aggroTarget != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(source.ai.aggroTarget!!), attackType.damageType))
-            else -> display("Couldn't find ${arguments.getBaseString()}.")
+            else -> source.displayYou("Couldn't find ${arguments.getBaseString()}.")
         }
     }
 

@@ -5,6 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 
 class ExamineCommand : Command() {
@@ -36,7 +37,7 @@ class ExamineCommand : Command() {
                 source,
                 argString
             ).first()))
-            else -> display("Couldn't find ${args.joinToString(" ")}.")
+            else -> source.displayYou("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 

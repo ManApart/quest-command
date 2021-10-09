@@ -2,6 +2,7 @@ package traveling.arrive
 
 import core.events.EventListener
 import core.history.display
+import core.utility.asSubject
 import traveling.position.Vector
 
 class Arrive : EventListener<ArriveEvent>() {
@@ -20,15 +21,15 @@ class Arrive : EventListener<ArriveEvent>() {
                 player.location = part
                 player.setClimbing(climbTarget)
                 if (!event.silent) {
-                    display("You ${event.method} to ${event.destination}.")
+                    event.creature.display("${event.creature.asSubject()} ${event.method} to ${event.destination}.")
                 }
             } else {
                 player.location = event.destination.location
                 if (!event.silent) {
                     if (event.quiet) {
-                        display("You ${event.method} to ${event.destination}.")
+                        event.creature.display("${event.creature.asSubject()} ${event.method} to ${event.destination}.")
                     } else {
-                        display("You ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings(false)}.")
+                        event.creature.display("${event.creature.asSubject()} ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings(false)}.")
                     }
                 }
             }

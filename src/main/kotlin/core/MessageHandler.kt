@@ -6,7 +6,7 @@ import system.message.MessageEvent
 
 class MessageHandler : EventListener<MessageEvent>() {
     override fun execute(event: MessageEvent) {
-        display(event.message)
+        event.source.display(event.message)
     }
 
 }

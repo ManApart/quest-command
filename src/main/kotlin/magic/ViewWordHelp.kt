@@ -3,6 +3,8 @@ package magic
 import core.DependencyInjector
 import core.events.EventListener
 import core.history.display
+import core.history.displayYou
+import core.target.Target
 import core.utility.NameSearchableList
 import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
@@ -16,13 +18,13 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
 
     override fun execute(event: ViewWordHelpEvent) {
         when {
-            event.word == null -> listWords()
-            event.groups -> printWordGroup(event.word.lowercase())
-            else -> helpWord(event.word.lowercase())
+            event.word == null -> listWords(event.source)
+            event.groups -> printWordGroup(event.source, event.word.lowercase())
+            else -> helpWord(event.source, event.word.lowercase())
         }
     }
 
-    private fun listWords() {
+    private fun listWords(source: Target) {
         val groups = HashMap<String, MutableList<String>>()
         wordsOfPower.forEach { word ->
             run {
@@ -37,24 +39,24 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
         }
-        display("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayYou("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printWordGroup(group: String) {
+    private fun printWordGroup(source: Target, group: String) {
         var description = "Help <Word> to learn more about on of the following topics:\n"
         wordsOfPower.forEach { word ->
             if (word.getCategory().map { it.lowercase() }.contains(group)) {
                 description += word.getDescription() + "\n"
             }
         }
-        display(description)
+        source.displayYou(description)
     }
 
-    private fun helpWord(word: String) {
+    private fun helpWord(source: Target, word: String) {
         if (wordsOfPower.exists(word)) {
-            display(wordsOfPower.get(word).getManual())
+            source.displayYou(wordsOfPower.get(word).getManual())
         } else {
-            display("Unknown word of power: $word")
+            source.displayYou("Unknown word of power: $word")
         }
     }
 

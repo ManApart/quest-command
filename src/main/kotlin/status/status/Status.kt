@@ -26,7 +26,7 @@ class Status : EventListener<StatusEvent>() {
             val encumbrancePercent = (event.creature.getEncumbrance() * 100).toInt()
             val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0)
             val encumberedStats = "${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
-            display("$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${soul.getCurrent(FOCUS)}/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre $encumbrancePercent% encumbered ($encumberedStats).")
+            event.creature.display("$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${soul.getCurrent(FOCUS)}/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre $encumbrancePercent% encumbered ($encumberedStats).")
         }
     }
 
@@ -38,7 +38,7 @@ class Status : EventListener<StatusEvent>() {
                 .joinToString("\n\t") {
                     "${it.name.capitalize2()}: ${it.current}/${it.max} (${it.xp.toInt()}/${it.getNextLevelXP().toInt()}xp)"
                 }
-        display("$subject stats:\n\t$statString")
+        event.creature.display("$subject stats:\n\t$statString")
     }
 
     private fun printOtherConditions(event: StatusEvent) {
@@ -49,7 +49,7 @@ class Status : EventListener<StatusEvent>() {
         }
 
         if (soul.getConditions().isNotEmpty()) {
-            display("$subject current conditions:\n\t$conditionString")
+            event.creature.display("$subject current conditions:\n\t$conditionString")
         }
     }
 

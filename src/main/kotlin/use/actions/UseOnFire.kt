@@ -2,6 +2,7 @@ package use.actions
 
 import core.events.EventManager
 import core.history.display
+import core.utility.asSubject
 import magic.Element
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
@@ -16,7 +17,7 @@ class UseOnFire : UseListener() {
     }
 
     override fun executeUseEvent(event: UseEvent) {
-        display("You place ${event.used.name} in the fire burning the ${event.target.name}.")
+        event.source.display("${event.source.asSubject()} place ${event.used.name} in the fire burning the ${event.target.name}.")
         val condition = Condition("Burning", Element.FIRE, 1, effects = listOf(EffectManager.getEffect("Burning", 1, 1)))
         EventManager.postEvent(AddConditionEvent(event.used, condition))
     }

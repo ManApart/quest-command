@@ -3,6 +3,7 @@ package status.statChanged
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
 import status.stat.HEALTH
@@ -14,7 +15,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
     }
 
     override fun execute(event: StatMinnedEvent) {
-        display("${event.target.name} has died.")
+        event.target.display("${event.target.name} has died.")
         val creature = event.target
 
         creature.location.getLocation().getCreatures().forEach {

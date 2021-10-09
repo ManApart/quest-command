@@ -8,6 +8,7 @@ import system.debug.DebugType
 /**
  * Only displayed to this target (you)
  */
+//TODO - rename displayToMe
 fun Target.displayYou(message: String) {
     ChatHistoryManager.getHistory(this).print(message)
 }
@@ -15,19 +16,33 @@ fun Target.displayYou(message: String) {
 /**
  * Displayed to everyone but you (the calling target)
  */
+//TODO - rename displayToOthers
 fun Target.displayOthers(message: String) {
     ChatHistoryManager.getHistory(this).print(message)
 }
 
 /**
- * The message is evaluated for each listener
+ * The message is evaluated for each listener, regardless of perception
  */
-//Maybe don't use this guy in favor of the one below with a source
+fun display(message: String) {
+    display { message }
+}
+
+/**
+ * The message is evaluated for each listener, regardless of perception
+ */
 fun display(message: (Target) -> String) {
     ChatHistoryManager.histories.forEach { history ->
         val messageText = message(history.listener)
         history.print(messageText)
     }
+}
+
+/**
+ * The message is evaluated for each listener that perceives this target
+ */
+fun Target.display(message: String) {
+    this.display { message }
 }
 
 /**
@@ -42,10 +57,7 @@ fun Target.display(message: (Target) -> String) {
         }
 }
 
-fun display(message: String) {
-    ChatHistoryManager.histories.forEach { it.print(message) }
-}
-
+//TODO - how does this work with chat history? Is this valueable?
 fun displayUpdate(message: String, sleep: Long = 50) {
     if (GameState.getDebugBoolean(DebugType.DISPLAY_UPDATES)) {
         print("\r$message                                ")

@@ -18,8 +18,8 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
         parseVerbOptions(sentence)
 
         when {
-            !sentence.hasMapped(PartOfSpeech.QUESTION_TYPE) -> display("Could not parse type of question from '${sentence.sentence}'.")
-            !sentence.hasMapped(PartOfSpeech.VERB) -> display("Could not parse verb from '${sentence.sentence}'.")
+            !sentence.hasMapped(PartOfSpeech.QUESTION_TYPE) -> speaker.display("Could not parse type of question from '${sentence.sentence}'.")
+            !sentence.hasMapped(PartOfSpeech.VERB) -> speaker.display("Could not parse verb from '${sentence.sentence}'.")
             else -> return ParsedDialogue(speaker, listener, sentence.subjects, sentence.verb, sentence.verbOptions, sentence.questionType)
         }
         return null

@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.history.ChatHistoryManager
 import core.history.InputOutput
 import core.history.display
+import core.history.displayYou
 
 class ViewChatHistory : EventListener<ViewChatHistoryEvent>() {
 
@@ -11,7 +12,7 @@ class ViewChatHistory : EventListener<ViewChatHistoryEvent>() {
     override fun execute(event: ViewChatHistoryEvent) {
         val historyList = ChatHistoryManager.getHistory(event.source).history.takeLast(event.numberOfLinesToShow)
         val message = createMessage(historyList, event.viewResponses)
-        display(message)
+        event.source.displayYou(message)
     }
 
     private fun createMessage(historyList: List<InputOutput>, viewResponses: Boolean): String {

@@ -3,6 +3,7 @@ package use.actions
 import core.events.Event
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.utility.isAre
 import core.utility.asSubject
 import use.UseEvent
@@ -22,14 +23,14 @@ class NoUseFound : UseListener() {
     override fun executeUseEvent(event: UseEvent) {
         if (event.source.canInteract()) {
             if (!event.target.isWithinRangeOf(event.source)) {
-                display(event.source.asSubject() + " " + event.source.isAre() + " too far away to interact with ${event.target}.")
+                event.source.display(event.source.asSubject() + " " + event.source.isAre() + " too far away to interact with ${event.target}.")
             } else if (event.target.canConsume(event)) {
                 event.target.consume(event)
             } else {
-                display("You use ${event.used.name} on ${event.target.name} but nothing happens.")
+                event.source.display("${event.source.asSubject()} use ${event.used.name} on ${event.target.name} but nothing happens.")
             }
         } else {
-            display("You can't interact with that right now.")
+            event.source.displayYou("You can't interact with that right now.")
         }
     }
 }

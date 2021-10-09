@@ -12,6 +12,6 @@ class ScratchSurface : UseListener() {
     }
 
     override fun executeUseEvent(event: UseEvent) {
-        display("The ${event.used} scratches ${event.target.name} but does no discernible harm.")
+        event.source.display("The ${event.used} scratches ${event.target.name} but does no discernible harm.")
     }
 }

@@ -1,6 +1,6 @@
 package explore.look
 
-import core.history.display
+import core.history.displayYou
 import core.target.Target
 import core.target.targetsToString
 import traveling.position.NO_VECTOR
@@ -10,15 +10,15 @@ import traveling.scope.getLightLevel
 fun describeLocation(source: Target) {
     val pos = source.position
     if (pos == NO_VECTOR) {
-        display("You are at ${source.location.name}")
+        source.displayYou("You are at ${source.location.name}")
     } else {
-        display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
+        source.displayYou("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
     if (source.currentLocation().getTargets().size > 1) {
         val targetList = targetsToString(source.currentLocation().getTargets().filterNot { it.isPlayer() })
-        display("You find yourself surrounded by $targetList.")
+        source.displayYou("You find yourself surrounded by $targetList.")
     } else {
-        display("You don't see anything of use.")
+        source.displayYou("You don't see anything of use.")
     }
 }
 
@@ -27,19 +27,19 @@ fun describeLocationDetailed(source: Target) {
     val locationRecipe = source.location.getLocationRecipe()
     val location = source.currentLocation()
     if (pos == NO_VECTOR) {
-        display("You are at ${source.location.name}")
+        source.displayYou("You are at ${source.location.name}")
     } else {
-        display("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
+        source.displayYou("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
-    display(locationRecipe.getDescription())
-    display(location.weather.description)
+    source.displayYou(locationRecipe.getDescription())
+    source.displayYou(location.weather.description)
     val light = location.getLightLevel()
     val heat = getHeatLevel(location)
-    display("It is $light light and $heat hot.")
+    source.displayYou("It is $light light and $heat hot.")
     if (location.getTargets().size > 1) {
         val targetList = targetsToString(location.getTargets().filterNot { it.isPlayer() })
-        display("You find yourself surrounded by $targetList.")
+        source.displayYou("You find yourself surrounded by $targetList.")
     } else {
-        display("You don't see anything of use.")
+        source.displayYou("You don't see anything of use.")
     }
 }

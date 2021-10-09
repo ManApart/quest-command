@@ -3,6 +3,7 @@ package traveling.move
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.utility.then
 import core.utility.isAre
 import core.utility.asSubject
@@ -32,9 +33,9 @@ class Move : EventListener<MoveEvent>() {
         val movedToNeighbor = getMovedToNeighbor(event.creature.location, actualDestination)
 
         when {
-            actualDestination.z > 0 -> display("${event.creature.asSubject()} ${event.creature.isAre()} unable to move into the air.")
+            actualDestination.z > 0 -> event.creature.display("${event.creature.asSubject()} ${event.creature.isAre()} unable to move into the air.")
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, getDistanceToNeighbor(event.creature.location, movedToNeighbor.location), event.silent)
-            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> display("You cannot move that far in that direction.")
+            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> event.creature.displayYou("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, actualDestination)
         }
     }
@@ -72,9 +73,9 @@ class Move : EventListener<MoveEvent>() {
             val isAre = event.creature.isAre()
 
             if (desiredDistance == actualDistance) {
-                display("$youMove from ${event.source} to $destinationString.")
+                event.creature.display("$youMove from ${event.source} to $destinationString.")
             } else {
-                display("$youMove $actualDistance towards ${event.destination} and $isAre now at ${destinationString}.")
+                event.creature.display("$youMove $actualDistance towards ${event.destination} and $isAre now at ${destinationString}.")
             }
         }
     }

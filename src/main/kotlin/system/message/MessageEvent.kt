@@ -1,5 +1,6 @@
 package system.message
 
 import core.events.Event
+import core.target.Target
 
-class MessageEvent(val message: String) : Event
+class MessageEvent(val source: Target, val message: String) : Event

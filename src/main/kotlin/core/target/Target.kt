@@ -28,7 +28,7 @@ import traveling.scope.getLightLevel
 import kotlin.math.max
 import kotlin.math.min
 
-//TODO - == includes things like inventory, which can break using this as a key in a map
+//TODO `==` includes things like inventory, which can break using this as a key in a map
 data class Target(
     override val name: String,
     val description: String = name,

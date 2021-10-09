@@ -11,12 +11,12 @@ class ListInventory : EventListener<ListInventoryEvent>() {
     override fun execute(event: ListInventoryEvent) {
         if (event.target.properties.tags.has("Container")) {
             if (event.target.inventory.getItems().isNotEmpty()) {
-                display("${event.target.name} has:${inventoryToString(event.target.inventory, event.target.body)}")
+                event.target.display("${event.target.name} has:${inventoryToString(event.target.inventory, event.target.body)}")
             } else {
-                display("${event.target.name} has no items.")
+                event.target.display("${event.target.name} has no items.")
             }
         } else {
-            display("Cannot view inventory of ${event.target.name}")
+            event.target.display("Cannot view inventory of ${event.target.name}")
         }
     }
 

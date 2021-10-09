@@ -149,7 +149,7 @@ object CommandParser {
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {
         if (responseRequest != null && responseRequest.message != "") {
-            display(responseRequest.message)
+            commandSource.display(responseRequest.message)
         }
         this.responseRequest = responseRequest
     }

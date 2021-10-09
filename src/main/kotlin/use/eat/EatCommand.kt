@@ -4,7 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayYou
 import core.target.Target
 import use.StartUseEvent
 
@@ -34,7 +34,7 @@ class EatCommand : Command() {
 
         when {
             args.isEmpty() -> eatWhat(allFood)
-            pickedFood.isEmpty() -> display("Couldn't find $argsString")
+            pickedFood.isEmpty() -> source.displayYou("Couldn't find $argsString")
             topChoice != null -> eatFood(source, topChoice)
             pickedFood.size > 1 -> eatWhat(pickedFood)
             else -> eatFood(source, pickedFood.first())
@@ -51,7 +51,7 @@ class EatCommand : Command() {
         if (food.properties.tags.has("food")) {
             EventManager.postEvent(StartUseEvent(source, food, source))
         } else {
-            display("${food.name} is inedible.")
+            source.displayYou("${food.name} is inedible.")
         }
     }
 

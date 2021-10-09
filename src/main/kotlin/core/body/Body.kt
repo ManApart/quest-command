@@ -135,7 +135,7 @@ data class Body(override val name: String = "None", val layout: Network = Networ
                 }
             }
         } else {
-            display("Can't equip ${item.name} to ${slot.description}")
+            item.display("Can't equip ${item.name} to ${slot.description}")
         }
     }
 

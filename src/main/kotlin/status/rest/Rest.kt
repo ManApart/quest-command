@@ -3,6 +3,7 @@ package status.rest
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.utility.then
 import status.stat.HEALTH
 import status.stat.LeveledStat
@@ -13,7 +14,7 @@ class Rest : EventListener<RestEvent>() {
 
     override fun execute(event: RestEvent) {
         if (!event.creature.isSafe()) {
-            display("You can't rest right now!")
+            event.creature.displayYou("You can't rest right now!")
         } else {
             rest(event)
         }
@@ -24,7 +25,7 @@ class Rest : EventListener<RestEvent>() {
 
         if (recoverableStats.isEmpty()) {
             val hours = (event.hoursRested != 1).then("${event.hoursRested} hours", "1 hour")
-            display("You rest for $hours but feel the same.")
+            event.creature.displayYou("You rest for $hours but feel the same.")
         }
 
         recoverableStats.forEach {

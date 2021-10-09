@@ -34,7 +34,7 @@ class MoveCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         //Move this check to the listener
         if (source.getEncumbrance() >= 1) {
-            display("${source.asSubject()} ${source.isAre()} too encumbered to move.")
+            source.display("${source.asSubject()} ${source.isAre()} too encumbered to move.")
         } else {
             val arguments = Args(args, delimiters = listOf("to", "towards"))
             val vector = parseVector(args)
@@ -49,7 +49,7 @@ class MoveCommand : Command() {
                 distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source, source.position.getVectorInDirection(direction.vector, distance)))
                 direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance, useDefault)
                 //TODO - response request
-                else -> display("Could not understand: move ${args.joinToString(" ")}")
+                else -> source.display("Could not understand: move ${args.joinToString(" ")}")
             }
         }
     }

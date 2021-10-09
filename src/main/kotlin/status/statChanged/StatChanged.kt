@@ -29,7 +29,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
         val max = soul.getTotal(event.statName)
 
         if (current != oldVal && !event.silent) {
-            display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
+            event.target.display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
         }
     }
 

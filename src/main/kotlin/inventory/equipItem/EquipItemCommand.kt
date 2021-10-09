@@ -5,6 +5,7 @@ import core.body.Slot
 import core.commands.*
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 
 class EquipItemCommand : Command() {
@@ -40,10 +41,10 @@ class EquipItemCommand : Command() {
             val force = arguments.has("f")
 
             if (item == null) {
-                display("Could not find ${arguments.getBaseString()}. (Did you mean 'equip <item> to <body part>?")
+                source.displayYou("Could not find ${arguments.getBaseString()}. (Did you mean 'equip <item> to <body part>?")
             } else {
                 if (!item.canEquipTo(body)) {
-                    display("You can't equip ${item.name}.")
+                    source.displayYou("You can't equip ${item.name}.")
                 } else {
                     val slot = findSlot(attachPointGuess, body, item)
                     if (slot == null) {

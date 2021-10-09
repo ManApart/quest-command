@@ -34,7 +34,7 @@ class RecipeCommand : Command() {
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(CheckRecipeEvent(source))
             args.size == 1 && args[0] == "recipe" -> clarifyWhichRecipe(source)
             source.knownRecipes.exists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, source.knownRecipes.get(argString)))
-            else -> display("Couldn't find recipe ${args.joinToString(" ")}.")
+            else -> source.display("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
 

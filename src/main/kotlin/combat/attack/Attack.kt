@@ -26,10 +26,10 @@ class Attack : EventListener<AttackEvent>() {
             val weaponRange = getRange(event.source, event.sourcePart)
 
             when {
-                weaponRange < targetDistance -> display("${event.target} is too far away to be hit by $damageSource.")
+                weaponRange < targetDistance -> event.source.display("${event.target} is too far away to be hit by $damageSource.")
                 offensiveDamage > 0 -> processAttack(event, damageSource, offensiveDamage)
                 event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(event.source, event.sourcePart.getEquippedWeapon()!!, event.target.target))
-                else -> display("Nothing happens.")
+                else -> event.source.display("Nothing happens.")
             }
         }
         event.target.target.consume(event)
@@ -45,7 +45,7 @@ class Attack : EventListener<AttackEvent>() {
 
         if (attackedParts.isEmpty()) {
             val missedParts = event.target.bodyPartTargets.joinToString(", ") { it.name }
-            display("$subject ${event.source.isPlayer().then("miss", "misses")} $missedParts!")
+            event.source.display { "$subject ${event.source.isPlayer().then("miss", "misses")} $missedParts!" }
         } else {
             val verb = event.source.isPlayer().then(event.type.verbPlural, event.type.verb)
 //            display("$subject $verb at $defenderName.")
@@ -73,7 +73,7 @@ class Attack : EventListener<AttackEvent>() {
 
     private fun processAttackHit(event: AttackEvent, attackedPart: Location, subject: String, verb: String, defenderName: String, damageSource: String, defender: TargetAim, offensiveDamage: Int) {
         val possessive = event.source.asSubjectPossessive()
-        display("$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource.")
+        event.source.display { "$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource." }
         EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, event.type, damageSource))
     }
 

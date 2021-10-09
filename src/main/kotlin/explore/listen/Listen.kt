@@ -2,6 +2,7 @@ package explore.listen
 
 import core.events.EventListener
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 import core.utility.joinToStringAnd
 import traveling.location.location.Location
@@ -27,14 +28,14 @@ class Listen : EventListener<ListenEvent>() {
         val filteredSounds = sounds.filter { it.strength > threshold }.sortedBy { it.strength }
 
         if (filteredSounds.isEmpty()) {
-            display("It is silent.")
+            event.source.displayYou("It is silent.")
         } else {
             val soundText = filteredSounds.joinToStringAnd {
                 if (it.distance == NO_VECTOR) it.description else {
                     "${it.description} ${it.distance.direction.directionString()}"
                 }
             }
-            display("You hear $soundText.")
+            event.source.displayYou("You hear $soundText.")
         }
     }
 

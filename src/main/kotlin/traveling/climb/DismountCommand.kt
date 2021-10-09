@@ -4,6 +4,7 @@ import core.GameState
 import core.commands.Command
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.properties.IS_CLIMBING
 import core.target.Target
 import traveling.location.location.LocationPoint
@@ -38,10 +39,10 @@ class DismountCommand : Command() {
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbTarget!!, origin, exit))
                 source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, origin, targetLocation))
-                else -> display("You can't safely dismount from here, but you may be able to jump down.")
+                else -> source.displayYou("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {
-            display("You're not climbing.")
+            source.displayYou("You're not climbing.")
         }
     }
 

@@ -2,7 +2,7 @@ package traveling.travel
 
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
+import core.history.displayYou
 import core.target.Target
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
@@ -13,14 +13,14 @@ import traveling.location.network.LocationNode
 class TravelStart : EventListener<TravelStartEvent>() {
     override fun execute(event: TravelStartEvent) {
         when {
-            event.destination == event.currentLocation -> display("You realize that you're already at ${event.currentLocation}")
-            event.currentLocation.isMovingToRestricted(event.destination) -> display("You're not able to get to ${event.destination.name}")
-            event.creature.soul.getCurrent(STAMINA) == 0 -> display("You're too tired to do any traveling.")
-            !event.creature.isSafe() -> display("You can't travel right now.")
-            event.creature.getEncumbrance() >= 1 -> display("You are too encumbered to travel.")
+            event.destination == event.currentLocation -> event.creature.displayYou("You realize that you're already at ${event.currentLocation}")
+            event.currentLocation.isMovingToRestricted(event.destination) -> event.creature.displayYou("You're not able to get to ${event.destination.name}")
+            event.creature.soul.getCurrent(STAMINA) == 0 -> event.creature.displayYou("You're too tired to do any traveling.")
+            !event.creature.isSafe() -> event.creature.displayYou("You can't travel right now.")
+            event.creature.getEncumbrance() >= 1 -> event.creature.displayYou("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
-                    display("You leave ${event.currentLocation} travelling towards ${event.destination}.")
+                    event.creature.displayYou("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 }
                 val distance = getDistanceToNeighbor(event.currentLocation, event.destination)
                 postArriveEvent(event.creature, LocationPoint(event.destination), distance, event.quiet)

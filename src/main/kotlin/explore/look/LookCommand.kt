@@ -36,7 +36,7 @@ class LookCommand : Command() {
                 source,
                 argString
             ).first()))
-            else -> display("Couldn't find ${args.joinToString(" ")}.")
+            else -> source.display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 

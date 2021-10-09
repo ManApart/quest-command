@@ -4,6 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.history.ChatHistoryManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 
 class RedoCommand : Command() {
@@ -26,7 +27,7 @@ class RedoCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val lastCommand = findLastCommand(source)
         if (lastCommand == null) {
-            display("Could not find a command to repeat.")
+            source.displayYou("Could not find a command to repeat.")
         } else {
             CommandParser.parseCommand(lastCommand)
         }

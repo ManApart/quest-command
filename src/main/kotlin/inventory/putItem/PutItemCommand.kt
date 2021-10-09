@@ -6,6 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 import core.utility.filterUniqueByName
 
@@ -34,7 +35,7 @@ class PutItemCommand : core.commands.Command() {
         when {
             arguments.isEmpty() && keyword == "put" -> clarifyItemToPlace(source)
             arguments.hasBase() && (arguments.hasGroup("in") || arguments.hasGroup("to")) -> placeItemInContainer(source, arguments)
-            else -> display("Place what where? Try 'place <item> in <target>'.")
+            else -> source.displayYou("Place what where? Try 'place <item> in <target>'.")
         }
     }
 
@@ -50,12 +51,12 @@ class PutItemCommand : core.commands.Command() {
             val targetString = args.getFirstString("in", "to")
             val destinations = source.currentLocation().getTargets(targetString).filterUniqueByName()
             when {
-                targetString.isNotBlank() && destinations.isEmpty() -> display("Couldn't find $targetString")
+                targetString.isNotBlank() && destinations.isEmpty() -> source.displayYou("Couldn't find $targetString")
                 destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source, item, source, destinations.first(), true))
                 else -> giveToWhat(destinations, args.getBaseString())
             }
         } else {
-            display("Couldn't find ${args.getBaseString()}")
+            source.displayYou("Couldn't find ${args.getBaseString()}")
         }
     }
 

@@ -27,7 +27,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     override fun execute(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
-            display(event.creature.asSubject() + " " + event.creature.isAre() + " too far away to climb ${event.target}.")
+            event.creature.display(event.creature.asSubject() + " " + event.creature.isAre() + " too far away to climb ${event.target}.")
         } else {
             val distance = getDistance(event.creature.location, event.targetPart)
             val chance = getChance(event.creature, distance)
@@ -71,9 +71,9 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     private fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
         val directionString = getDirectionString(event.desiredDirection)
         when {
-            distance == 0 && event.desiredDirection == Direction.BELOW -> display("You descend ${event.targetPart.name}.")
-            distance == 0 -> display("You climb ${event.targetPart.name}.")
-            else ->display("You climb $distance ft$directionString towards ${event.targetPart.name}.")
+            distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.targetPart.name}.")
+            distance == 0 -> event.creature.display("You climb ${event.targetPart.name}.")
+            else -> event.creature.display("You climb $distance ft$directionString towards ${event.targetPart.name}.")
         }
 
         event.creature.setClimbing(event.target)
@@ -120,8 +120,8 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun getConnectedLocation(targetLocation: LocationNode, climbTarget: Target, part: LocationNode): LocationPoint? {
         return targetLocation.getNeighborConnections()
-                .firstOrNull { it.source.equals(targetLocation, climbTarget, climbTarget.body.getPart(part.name)) }
-                ?.destination
+            .firstOrNull { it.source.equals(targetLocation, climbTarget, climbTarget.body.getPart(part.name)) }
+            ?.destination
     }
 
     private fun creatureIsComingFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?): Boolean {
@@ -131,7 +131,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun continueClimbing(event: AttemptClimbEvent) {
         EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.targetPart), "Climb", silent = true))
-        EventManager.postEvent(ViewTimeEvent())
+        EventManager.postEvent(ViewTimeEvent(event.creature))
     }
 
     private fun fall(event: AttemptClimbEvent) {

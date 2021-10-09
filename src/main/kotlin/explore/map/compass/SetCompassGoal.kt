@@ -12,10 +12,10 @@ class SetCompassGoal : EventListener<SetCompassEvent>() {
     override fun execute(event: SetCompassEvent) {
         val destination = LocationManager.findLocationInAnyNetwork(event.source, event.locationName)
         if (destination == null) {
-            display("Could not find ${event.locationName} on the map.")
+            event.source.display("Could not find ${event.locationName} on the map.")
         } else if (destination == event.source.location){
             event.source.findRoute(destination, event.depth)
-            display("You are at ${destination.name}.")
+            event.source.display("You are at ${destination.name}.")
         } else {
             event.source.findRoute(destination, event.depth)
             if (event.source.compassRoute != null) {

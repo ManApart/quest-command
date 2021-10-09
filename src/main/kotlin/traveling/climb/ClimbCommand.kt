@@ -3,6 +3,7 @@ package traveling.climb
 import core.commands.*
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.properties.IS_CLIMBING
 import core.target.Target
 import core.utility.NameSearchableList
@@ -38,7 +39,7 @@ class ClimbCommand : Command() {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)
         when {
-            source.getEncumbrance() >= 1 -> display("You are too encumbered to climb.")
+            source.getEncumbrance() >= 1 -> source.displayYou("You are too encumbered to climb.")
             source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(source, keyword, arguments, source.climbTarget!!)
             else -> processNewClimb(source, arguments)
         }
@@ -59,11 +60,11 @@ class ClimbCommand : Command() {
 
         if (confidentMatch != null) {
             if (!confidentMatch.properties.tags.has("Climbable")) {
-                display("${confidentMatch.name} cannot be climbed.")
+                source.displayYou("${confidentMatch.name} cannot be climbed.")
             } else {
                 val parts = getEntryPoints(source, confidentMatch)
                 when {
-                    parts.isEmpty() -> display("${confidentMatch.name} does not have any parts to climb.")
+                    parts.isEmpty() -> source.displayYou("${confidentMatch.name} does not have any parts to climb.")
                     parts.size == 1 -> EventManager.postEvent(AttemptClimbEvent(source, confidentMatch, parts.first(), getDirection(source, desiredDirection, confidentMatch, parts.first()), quiet))
                     parts.size > 1 -> clarifyClimbPart(source, source.location, confidentMatch)
                 }
@@ -107,7 +108,7 @@ class ClimbCommand : Command() {
                 .toList()
 
         when {
-            climbOptions.isEmpty() -> display("There doesn't seem to be anything to climb.")
+            climbOptions.isEmpty() -> player.displayYou("There doesn't seem to be anything to climb.")
             climbOptions.size == 1 && desiredDirection != Direction.NONE -> CommandParser.parseCommand("climb $desiredDirection ${options[0]}")
             climbOptions.size == 1 -> CommandParser.parseCommand("climb ${options[0]}")
             desiredDirection != Direction.NONE -> {
@@ -129,7 +130,7 @@ class ClimbCommand : Command() {
         val options = getAvailableOptions(player, currentLocation, target)
 
         if (options.isEmpty()) {
-            display("${target.name} doesn't seem to have anything to climb.")
+            player.displayYou("${target.name} doesn't seem to have anything to climb.")
         } else {
             val message = "Climb what part of ${target.name}?\n\t${options.joinToString(", ")}"
             val response = ResponseRequest(message,

@@ -2,6 +2,7 @@ package use.interaction
 
 import core.events.EventListener
 import core.history.display
+import core.history.displayYou
 import core.utility.isAre
 import core.utility.asSubject
 
@@ -15,9 +16,9 @@ class Interact : EventListener<InteractEvent>() {
         //TODO - should check if event.source can interact
 
         when {
-            !event.target.isWithinRangeOf(event.source) -> display(event.source.asSubject() + " " + event.source.isAre() + " too far away to interact with ${event.target}.")
+            !event.target.isWithinRangeOf(event.source) -> event.source.display(event.source.asSubject() + " " + event.source.isAre() + " too far away to interact with ${event.target}.")
             event.source.canInteract() -> event.target.consume(event)
-            else -> display("You can't interact with ${event.target.name} right now.")
+            else -> event.source.displayYou("You can't interact with ${event.target.name} right now.")
         }
     }
 }

@@ -2,6 +2,7 @@ package status
 
 import core.events.EventListener
 import core.history.display
+import core.history.displayYou
 
 class ExpGained : EventListener<ExpGainedEvent>() {
     override fun shouldExecute(event: ExpGainedEvent): Boolean {
@@ -12,7 +13,7 @@ class ExpGained : EventListener<ExpGainedEvent>() {
         val stat = event.creature.soul.getStatOrNull(event.stat)
         if (stat != null && event.amount > 0) {
             if (stat.expExponential > 1) {
-                display("You gained ${event.amount} exp in ${stat.name}")
+                event.creature.displayYou("You gained ${event.amount} exp in ${stat.name}")
             }
             stat.addEXP(event.amount)
         }

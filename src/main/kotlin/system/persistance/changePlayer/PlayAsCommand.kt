@@ -3,6 +3,7 @@ package system.persistance.changePlayer
 import core.commands.Command
 import core.events.EventManager
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 
 class PlayAsCommand : Command() {
@@ -28,7 +29,7 @@ class PlayAsCommand : Command() {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListCharactersEvent(source))
-            args.isEmpty() -> display("Please specify a character to play or use ls to list current characters.")
+            args.isEmpty() -> source.displayYou("Please specify a character to play or use ls to list current characters.")
             else -> EventManager.postEvent(PlayAsEvent(source, args.joinToString(" ")))
         }
     }

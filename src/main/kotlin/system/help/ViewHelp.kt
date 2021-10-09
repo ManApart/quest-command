@@ -3,7 +3,8 @@ package system.help
 import core.commands.Command
 import core.commands.CommandParser
 import core.events.EventListener
-import core.history.display
+import core.history.displayYou
+import core.target.Target
 import core.utility.removeFirstItem
 
 //TODO - can this and ViewWordHelp share code?
@@ -12,19 +13,19 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
 
     override fun execute(event: ViewHelpEvent) {
         when {
-            event.commandManual != null -> printManual(event.commandManual)
-            event.commandGroups && event.args.isEmpty() -> printCommandGroupsSummary()
-            event.commandGroups && event.args.isNotEmpty() && event.args[0] == "all" -> printCommandGroupsDetail()
-            event.commandGroups && event.args.isNotEmpty() -> printCommandGroup(event.args)
-            else -> display(description)
+            event.commandManual != null -> printManual(event.source, event.commandManual)
+            event.commandGroups && event.args.isEmpty() -> printCommandGroupsSummary(event.source)
+            event.commandGroups && event.args.isNotEmpty() && event.args[0] == "all" -> printCommandGroupsDetail(event.source)
+            event.commandGroups && event.args.isNotEmpty() -> printCommandGroup(event.source, event.args)
+            else -> event.source.displayYou(description)
         }
     }
 
-    private fun printManual(command: Command) {
-        display(getTitle(command) + command.getManual())
+    private fun printManual(source: Target, command: Command) {
+        source.displayYou(getTitle(command) + command.getManual())
     }
 
-    private fun printCommandGroupsSummary() {
+    private fun printCommandGroupsSummary(source: Target) {
         val groups = CommandParser.getGroupedCommands()
 
         var groupList = ""
@@ -32,10 +33,10 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
             val commandNames = entry.value.joinToString(", ") { it.name }
             groupList += "${entry.key}:\n\t${commandNames}\n"
         }
-        display("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayYou("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printCommandGroupsDetail() {
+    private fun printCommandGroupsDetail(source: Target) {
         val groups = HashMap<String, MutableList<String>>()
         CommandParser.commands.forEach { command ->
             run {
@@ -51,10 +52,10 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString("\n\t")}\n"
         }
-        display("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayYou("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printCommandGroup(args: List<String>) {
+    private fun printCommandGroup(source: Target, args: List<String>) {
         var description = "Help <Command> to learn more about on of the following topics:\n"
         //TODO - handle sub-categories
         //TODO - sort alphabetically
@@ -63,7 +64,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
                 description += command.name + ":\n\t" + command.getDescription() + "\n"
             }
         }
-        display(description)
+        source.displayYou(description)
     }
 
     private fun getTitle(command: Command): String {

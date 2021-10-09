@@ -2,6 +2,7 @@ package inventory
 
 import core.commands.Command
 import core.history.display
+import core.history.displayYou
 import core.target.Target
 
 class EquippedCommand : Command() {
@@ -26,7 +27,7 @@ class EquippedCommand : Command() {
         if (args.isEmpty()) {
             listEquipped(source)
         } else {
-            display("Unknown command: equip ${args.joinToString(" ")}")
+            source.displayYou("Unknown command: equip ${args.joinToString(" ")}")
         }
     }
 
@@ -34,10 +35,10 @@ class EquippedCommand : Command() {
         val body = source.body
         val items = body.getEquippedItems()
         if (items.isEmpty()) {
-            display("You don't have anything equipped!")
+            source.displayYou("You don't have anything equipped!")
         } else {
             val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
-            display("You have following items equipped:\n\t$itemList")
+            source.displayYou("You have following items equipped:\n\t$itemList")
         }
     }
 

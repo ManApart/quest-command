@@ -18,7 +18,7 @@ class StartFire : UseListener() {
     }
 
     override fun executeUseEvent(event: UseEvent) {
-        display("${event.target.name} catches on fire.")
+        event.source.display("${event.target.name} catches on fire.")
         val condition = Condition("Burning", Element.FIRE, 1, listOf(
                 EffectManager.getEffect("Burning", 1, 5),
                 EffectManager.getEffect("On Fire", 1, 5)

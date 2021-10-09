@@ -4,30 +4,31 @@ import core.commands.CommandParser
 import core.history.display
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
+import core.history.displayYou
 import core.target.Target
 import status.stat.HEALTH
 
 fun describeBattle(source: Target) {
     val creatures = source.location.getLocation().getCreatures(source)
     creatures.filter { it != source }.forEach {
-        display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
+        it.display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
     }
 
     if (!CommandParser.isPlayersTurn()) {
-        display("It is ${CommandParser.commandSource}'s turn.")
+        source.display("It is ${CommandParser.commandSource}'s turn.")
     }
 
     creatures.forEach {
-        display("\t${status(it)}")
+        it.display("\t${status(it)}")
     }
-    printTurnStatus(creatures)
+    printTurnStatus(source, creatures)
 }
 
 private fun status(target: Target): String {
     return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} HP, ${target.ai.getActionPoints()}/100 AP, ${target.ai.action?.javaClass?.simpleName ?: "None"}."
 }
 
-private fun printTurnStatus(creatures: List<Target>) {
+private fun printTurnStatus(source: Target, creatures: List<Target>) {
     val combatantString = creatures.map {
         when {
             it.ai.isActionReady() -> ""
@@ -39,7 +40,7 @@ private fun printTurnStatus(creatures: List<Target>) {
     }.filter { it.isNotBlank() }.joinToString("\n")
 
     if (combatantString.isNotBlank()) {
-        display(combatantString)
+        source.displayYou(combatantString)
     }
 }
 
