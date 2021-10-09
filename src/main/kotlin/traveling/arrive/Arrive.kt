@@ -21,15 +21,15 @@ class Arrive : EventListener<ArriveEvent>() {
                 player.location = part
                 player.setClimbing(climbTarget)
                 if (!event.silent) {
-                    event.creature.display("${event.creature.asSubject()} ${event.method} to ${event.destination}.")
+                    event.creature.display{"${event.creature.asSubject(it)} ${event.method} to ${event.destination}."}
                 }
             } else {
                 player.location = event.destination.location
                 if (!event.silent) {
                     if (event.quiet) {
-                        event.creature.display("${event.creature.asSubject()} ${event.method} to ${event.destination}.")
+                        event.creature.display{"${event.creature.asSubject(it)} ${event.method} to ${event.destination}."}
                     } else {
-                        event.creature.display("${event.creature.asSubject()} ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings(false)}.")
+                        event.creature.display{"${event.creature.asSubject(it)} ${event.method} to ${event.destination}. It ${event.destination.location.getSiblings(false)}."}
                     }
                 }
             }

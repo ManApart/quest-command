@@ -16,7 +16,7 @@ class Interact : EventListener<InteractEvent>() {
         //TODO - should check if event.source can interact
 
         when {
-            !event.target.isWithinRangeOf(event.source) -> event.source.display(event.source.asSubject() + " " + event.source.isAre() + " too far away to interact with ${event.target}.")
+            !event.target.isWithinRangeOf(event.source) -> event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to interact with ${event.target}."}
             event.source.canInteract() -> event.target.consume(event)
             else -> event.source.displayToMe("You can't interact with ${event.target.name} right now.")
         }

@@ -19,10 +19,12 @@ class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
 
         values.inc(event.statName, event.amount)
 
-        val subject = event.target.asSubjectPossessive()
         val current = values.getInt(event.statName)
         if (!event.silent && beforeVal != current) {
-            event.target.display("${event.sourceOfChange} $change $subject ${event.statName} from $beforeVal to $current.")
+            event.target.display { listener ->
+                val subject = event.target.asSubjectPossessive(listener)
+                "${event.sourceOfChange} $change $subject ${event.statName} from $beforeVal to $current."
+            }
         }
 
         if (beforeVal > 0 && current <= 0) {

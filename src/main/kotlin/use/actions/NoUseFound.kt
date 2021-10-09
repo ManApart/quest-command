@@ -23,11 +23,11 @@ class NoUseFound : UseListener() {
     override fun executeUseEvent(event: UseEvent) {
         if (event.source.canInteract()) {
             if (!event.target.isWithinRangeOf(event.source)) {
-                event.source.display(event.source.asSubject() + " " + event.source.isAre() + " too far away to interact with ${event.target}.")
+                event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to interact with ${event.target}."}
             } else if (event.target.canConsume(event)) {
                 event.target.consume(event)
             } else {
-                event.source.display("${event.source.asSubject()} use ${event.used.name} on ${event.target.name} but nothing happens.")
+                event.source.display{"${event.source.asSubject(it)} use ${event.used.name} on ${event.target.name} but nothing happens."}
             }
         } else {
             event.source.displayToMe("You can't interact with that right now.")

@@ -24,13 +24,14 @@ class StatChanged : EventListener<StatChangeEvent>() {
             soul.incStat(event.statName, event.amount)
         }
 
-        val subject = event.target.asSubjectPossessive()
         val current = soul.getCurrent(event.statName)
         val max = soul.getTotal(event.statName)
 
         if (current != oldVal && !event.silent) {
-            event.target.display("${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max).")
+            event.target.display {
+                val subject = event.target.asSubjectPossessive(it)
+                "${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max)."
+            }
         }
     }
-
 }

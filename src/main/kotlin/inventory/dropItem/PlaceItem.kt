@@ -13,7 +13,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         if (event.source.canReach(event.position)) {
             placeItem(event.source, event.item, event.position, event.silent)
         } else {
-            event.source.display(event.source.asSubject() + " " + event.source.isAre() + " too far away to place at ${event.position}.")
+            event.source.display { event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to place at ${event.position}." }
         }
     }
 

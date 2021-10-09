@@ -16,7 +16,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
 
     override fun execute(event: CraftRecipeEvent) {
         when {
-            event.tool?.isWithinRangeOf(event.source) == false -> event.source.display(event.source.asSubject() + " " + event.source.isAre() + " too far away to use ${event.tool}.")
+            event.tool?.isWithinRangeOf(event.source) == false -> event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.tool}."}
             event.recipe.canBeCraftedBy(event.source, event.tool) -> {
                 val ingredients = event.recipe.getUsedIngredients(event.source.inventory.getAllItems())
                 val results = event.recipe.getResults(ingredients)

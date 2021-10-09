@@ -34,7 +34,7 @@ class MoveCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         //Move this check to the listener
         if (source.getEncumbrance() >= 1) {
-            source.display("${source.asSubject()} ${source.isAre()} too encumbered to move.")
+            source.display{"${source.asSubject(it)} ${source.isAre(it)} too encumbered to move."}
         } else {
             val arguments = Args(args, delimiters = listOf("to", "towards"))
             val vector = parseVector(args)

@@ -13,7 +13,7 @@ class TakeItem : EventListener<TakeItemEvent>() {
         if (event.taker.canReach(event.item.position)) {
             takeItem(event.taker, event.item, event.silent)
         } else {
-            event.taker.display(event.taker.asSubject() + " " + event.taker.isAre() + " too far away to take ${event.item}.")
+            event.taker.display{event.taker.asSubject(it) + " " + event.taker.isAre(it) + " too far away to take ${event.item}."}
         }
     }
 

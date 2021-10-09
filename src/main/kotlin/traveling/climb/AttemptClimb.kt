@@ -27,7 +27,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     override fun execute(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
-            event.creature.display(event.creature.asSubject() + " " + event.creature.isAre() + " too far away to climb ${event.target}.")
+            event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.target}."}
         } else {
             val distance = getDistance(event.creature.location, event.targetPart)
             val chance = getChance(event.creature, distance)
