@@ -43,7 +43,7 @@ class CommandComboTest {
         val input = "sl head of self && eat apple && n && eat apple"
         CommandParser.parseCommand(input)
         assertNull(GameState.player.inventory.getItem("Apple"))
-        assertEquals("You feel the fullness of life beating in your bosom.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("You feel the fullness of life beating in your bosom.", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
@@ -82,8 +82,8 @@ class CommandComboTest {
     fun climbTree() {
         val input = "db random && n && climb tree && climb && d && d"
         CommandParser.parseCommand(input)
-        assertTrue(ChatHistoryManager.first.history[1].outPut.contains("You climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
-        assertTrue(ChatHistoryManager.first.getLastOutputs().contains("You climb back off Apple Tree."))
+        assertTrue(ChatHistoryManager.main.history[1].outPut.contains("You climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
+        assertTrue(ChatHistoryManager.main.getLastOutputs().contains("You climb back off Apple Tree."))
     }
 
     @Test
@@ -91,9 +91,9 @@ class CommandComboTest {
         CommandParser.parseCommand("s")
         val input = "slash body of rat && r && r"
         CommandParser.parseCommand(input)
-        assertEquals("Rat has died.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Rat has died.", ChatHistoryManager.main.getLastOutput())
         CommandParser.parseCommand("ex")
-        assertEquals("You find yourself surrounded by Poor Quality Meat.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("You find yourself surrounded by Poor Quality Meat.", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
@@ -101,8 +101,8 @@ class CommandComboTest {
         GameState.putDebug(DebugType.RANDOM_SUCCEED, true)
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParser.parseCommand("s && nothing && nothing && nothing && nothing && nothing")
-ChatHistoryManager.first.getLastInput()
-        assertEquals("Oh dear, you have died!", ChatHistoryManager.first.getLastOutput())
+ChatHistoryManager.main.getLastInput()
+        assertEquals("Oh dear, you have died!", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
@@ -110,54 +110,54 @@ ChatHistoryManager.first.getLastInput()
         val input = "s && slash body of rat && sl rat && sl && slash rat"
         CommandParser.parseCommand(input)
         val expected = "slash what with Rusty Dagger?\n\tPlayer, Poor Quality Meat"
-        assertEquals(expected, ChatHistoryManager.first.getLastOutput())
+        assertEquals(expected, ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
     fun useGate() {
         val input = "w && w && use gate"
         CommandParser.parseCommand(input)
-        assertEquals("You can now access Kanbara City from Kanbara Gate.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("You can now access Kanbara City from Kanbara Gate.", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughGate() {
         val input = "w && w && rs 10 && use gate && w"
         CommandParser.parseCommand(input)
-        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH).", ChatHistoryManager.first.getLastOutput())
+        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH).", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughWall() {
         val input = "w && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
         CommandParser.parseCommand(input)
-        assertEquals("You are at Kanbara City South", ChatHistoryManager.first.getCurrent().outPut[3])
+        assertEquals("You are at Kanbara City South", ChatHistoryManager.main.getCurrent().outPut[3])
     }
 
     @Test
     fun compassToPub() {
         CommandParser.parseCommand("co pub && w && co pub")
         assertEquals("Farmer's Hut", GameState.player.location.name)
-        assertEquals("Kanbara Pub is WEST of you.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Kanbara Pub is WEST of you.", ChatHistoryManager.main.getLastOutput())
 
         CommandParser.parseCommand("co pub && w && rest 10 && co pub")
         assertEquals("Kanbara Gate", GameState.player.location.name)
-        assertEquals("Kanbara Pub is WEST of you.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Kanbara Pub is WEST of you.", ChatHistoryManager.main.getLastOutput())
 
         CommandParser.parseCommand("use gate && w && co pub")
         assertEquals("Kanbara City", GameState.player.location.name)
-        assertEquals("Kanbara Pub is near you.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Kanbara Pub is near you.", ChatHistoryManager.main.getLastOutput())
 
         CommandParser.parseCommand("t pub && co pub")
         assertEquals("Kanbara Pub", GameState.player.location.name)
-        assertEquals("You are at Kanbara Pub.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("You are at Kanbara Pub.", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
     fun millFlour() {
         val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
         CommandParser.parseCommand(input)
-        assertEquals("Player picked up Wheat Flour.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Player picked up Wheat Flour.", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test
@@ -197,20 +197,20 @@ ChatHistoryManager.first.getLastInput()
               Windmill         180       NE
               """.trimIndent().trim()
 
-        assertEquals(expected, ChatHistoryManager.first.getLastOutput().trimIndent().trim())
+        assertEquals(expected, ChatHistoryManager.main.getLastOutput().trimIndent().trim())
     }
 
     @Test
     fun poisonSelf() {
         CommandParser.parseCommand("poison 1 for 5 on head of self")
         assertEquals(1, GameState.player.soul.getConditions().size)
-        assertEquals("Poison decreases Your Health by 1 (9/10).", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Poison decreases Your Health by 1 (9/10).", ChatHistoryManager.main.getLastOutput())
 
         CommandParser.parseCommand("wait 5")
         CommandParser.parseCommand("wait 1")
         assertEquals(0, GameState.player.soul.getConditions().size)
         assertEquals(5, GameState.player.soul.getCurrent(HEALTH))
-        assertEquals("Player is no longer Poisoned.", ChatHistoryManager.first.getLastOutput())
+        assertEquals("Player is no longer Poisoned.", ChatHistoryManager.main.getLastOutput())
     }
 
     @Test

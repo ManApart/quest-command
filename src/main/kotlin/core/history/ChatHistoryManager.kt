@@ -59,12 +59,6 @@ fun displayUpdateEnd(message: String) {
     System.out.flush()
 }
 
-fun displayIf(message: String, shouldDisplay: Boolean) {
-    if (shouldDisplay) {
-        display(message)
-    }
-}
-
 object ChatHistoryManager {
     //Target hashcode changes and breaks == as a key lookup
     //Instead use a list and filter for referential equality
@@ -74,7 +68,7 @@ object ChatHistoryManager {
         track(GameState.player)
     }
 
-    var first = histories.first()
+    var main = getHistory(GameState.player)
 
     fun track(player: Target) {
         histories.add(ChatHistory(player))
@@ -83,7 +77,7 @@ object ChatHistoryManager {
     fun reset() {
         histories.clear()
         track(GameState.player)
-        first = histories.first()
+        main = getHistory(GameState.player)
     }
 
     fun addInput(input: String) {
@@ -101,9 +95,11 @@ object ChatHistoryManager {
             candidate = ChatHistory(source)
             histories.add(candidate)
         }
-        return candidate!!
-//        histories.putIfAbsent(source, ChatHistory(source))
-//        return histories[source]!!
+        return candidate
+    }
+
+    fun flushHistories() {
+        histories.forEach { it.flush() }
     }
 
 }
