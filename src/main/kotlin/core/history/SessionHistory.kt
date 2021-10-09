@@ -43,7 +43,7 @@ object SessionHistory {
             out.println("\n## Input History" +
                     "\n\nTime in seconds | Command" +
                     "\n---|---")
-            ChatHistoryManager.bridge.history.forEach { inOut ->
+            ChatHistoryManager.first.history.forEach { inOut ->
                 out.println("${inOut.timeTaken / 1000f} | ${inOut.input}")
             }
 

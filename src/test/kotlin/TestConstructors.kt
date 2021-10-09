@@ -18,6 +18,7 @@ import core.commands.CommandsMock
 import core.events.EventListenersCollection
 import core.events.EventListenersMock
 import core.events.EventManager
+import core.history.ChatHistoryManager
 import core.properties.*
 import core.target.Target
 import core.target.TargetBuilder
@@ -166,6 +167,8 @@ fun createMockedGame() {
     EventManager.clear()
     CommandParser.setResponseRequest(null)
     GameState.player = GameManager.newPlayer()
+
+    ChatHistoryManager.reset()
 
 }
 

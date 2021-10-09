@@ -11,16 +11,18 @@ import org.junit.Before
 import org.junit.Test
 
 class ReadMapTest {
+    val player = Target("Bob")
 
     @Before
     fun setup(){
         ChatHistoryManager.reset()
+        ChatHistoryManager.track(player)
     }
 
     @Test
     fun noNeighbors(){
         val target = LocationNode("My Place")
-        val player = Target("Bob")
+
         val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
@@ -33,7 +35,6 @@ class ReadMapTest {
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination", discovered = true)), Vector(0, 10, 0)))
-        val player = Target("Bob")
         val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
@@ -52,7 +53,6 @@ class ReadMapTest {
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south", discovered = true)), Vector(0, -10, 0)))
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east", discovered = true)), Vector(10, 0, 0)))
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west", discovered = true)), Vector(-10, 0, 0)))
-        val player = Target("Bob")
         val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()

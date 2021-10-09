@@ -1,6 +1,7 @@
 package inventory
 
 import core.DependencyInjector
+import core.GameState
 import core.body.*
 import core.history.ChatHistoryManager
 import core.properties.Properties
@@ -29,7 +30,7 @@ class ListInventoryTest {
         creature.inventory.add(createItem())
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Closed Chest has:\n\tApple", ChatHistoryManager.getHistory(creature).getLastOutput())
+        assertEquals("Closed Chest has:\n\tApple", ChatHistoryManager.first.getLastOutput())
     }
 
     @Test
@@ -37,7 +38,7 @@ class ListInventoryTest {
         val creature = createClosedChest()
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Closed Chest has no items.", ChatHistoryManager.getHistory(creature).getLastOutput())
+        assertEquals("Closed Chest has no items.", ChatHistoryManager.first.getLastOutput())
     }
 
     @Test
@@ -57,7 +58,7 @@ class ListInventoryTest {
         creature.body.equip(item)
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Soldier has:\n\t* Chestplate", ChatHistoryManager.getHistory(creature).getLastOutput())
+        assertEquals("Soldier has:\n\t* Chestplate", ChatHistoryManager.first.getLastOutput())
     }
 
     @Test
@@ -81,7 +82,7 @@ class ListInventoryTest {
 
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", ChatHistoryManager.getHistory(creature).getLastOutput())
+        assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", ChatHistoryManager.first.getLastOutput())
     }
 
     @Test
@@ -90,7 +91,7 @@ class ListInventoryTest {
         creature.inventory.add(Target("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Cannot view inventory of Chest", ChatHistoryManager.getHistory(creature).getLastOutput())
+        assertEquals("Cannot view inventory of Chest", ChatHistoryManager.first.getLastOutput())
     }
 
 

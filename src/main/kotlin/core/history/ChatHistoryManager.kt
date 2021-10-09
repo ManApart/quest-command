@@ -9,7 +9,14 @@ import core.target.Target
  * Only displayed to this target (you)
  */
 fun Target.displayYou(message: String) {
-    ChatHistoryManager.histories[this]?.print(message)
+    ChatHistoryManager.getHistory(this).print(message)
+}
+
+/**
+ * Displayed to everyone but you (the calling target)
+ */
+fun Target.displayOthers(message: String) {
+    ChatHistoryManager.getHistory(this).print(message)
 }
 
 /**
@@ -17,7 +24,7 @@ fun Target.displayYou(message: String) {
  */
 //Maybe don't use this guy in favor of the one below with a source
 fun display(message: (Target) -> String) {
-    ChatHistoryManager.histories.values.forEach { history ->
+    ChatHistoryManager.histories.forEach { history ->
         val messageText = message(history.listener)
         history.print(messageText)
     }
@@ -27,7 +34,7 @@ fun display(message: (Target) -> String) {
  * The message is evaluated for each listener that perceives this target
  */
 fun Target.display(message: (Target) -> String) {
-    ChatHistoryManager.histories.values
+    ChatHistoryManager.histories
         .filter { it.listener.perceives(this) }
         .forEach { history ->
             val messageText = message(history.listener)
@@ -36,7 +43,7 @@ fun Target.display(message: (Target) -> String) {
 }
 
 fun display(message: String) {
-    ChatHistoryManager.bridge.print(message)
+    ChatHistoryManager.histories.forEach { it.print(message) }
 }
 
 fun displayUpdate(message: String, sleep: Long = 50) {
@@ -59,73 +66,44 @@ fun displayIf(message: String, shouldDisplay: Boolean) {
 }
 
 object ChatHistoryManager {
-    val histories = mutableMapOf<Target, ChatHistory>()
+    //Target hashcode changes and breaks == as a key lookup
+    //Instead use a list and filter for referential equality
+    val histories = mutableListOf<ChatHistory>()
 
     init {
-        histories[GameState.player] = ChatHistory(GameState.player)
+        track(GameState.player)
     }
 
-    //Temp object for quick reference, TODO - delete
-    val bridge = histories[GameState.player]!!
+    var first = histories.first()
+
+    fun track(player: Target) {
+        histories.add(ChatHistory(player))
+    }
 
     fun reset() {
         histories.clear()
-        histories[GameState.player] = ChatHistory(GameState.player)
+        track(GameState.player)
+        first = histories.first()
     }
 
     fun addInput(input: String) {
         //Should we only add based on the current actor or add to all?
-        histories.values.forEach { it.addInput(input) }
+        histories.forEach { it.addInput(input) }
     }
 
     fun setTimeTaken(timeTaken: Long) {
-        histories.values.forEach { it.getCurrent().timeTaken = timeTaken }
+        histories.forEach { it.getCurrent().timeTaken = timeTaken }
     }
 
     fun getHistory(source: Target): ChatHistory {
-        histories.putIfAbsent(source, ChatHistory(source))
-        return histories[source]!!
+        var candidate = histories.firstOrNull { it.listener === source }
+        if (candidate == null) {
+            candidate = ChatHistory(source)
+            histories.add(candidate)
+        }
+        return candidate!!
+//        histories.putIfAbsent(source, ChatHistory(source))
+//        return histories[source]!!
     }
-
-//    val history = mutableListOf<InputOutput>()
-//    private var current = InputOutput()
-//    private val ignored = mutableListOf<String>()
-//
-//    fun addInput(input: String) {
-//        history.add(current)
-//        current = InputOutput(input)
-//    }
-//
-//    fun print(id: String, message: String) {
-//        current.outPut.add(message)
-//        if (!ignored.contains(id)) {
-//            println(message)
-//        }
-//    }
-//
-//    fun ignoreMessage(id: String) {
-//        ignored.add(id)
-//    }
-//
-//    fun reset() {
-//        history.clear()
-//        current = InputOutput()
-//    }
-//
-//    fun getLastInput(): String {
-//        return current.input
-//    }
-//
-//    fun getLastOutput(): String {
-//        return current.outPut.lastOrNull() ?: ""
-//    }
-//
-//    fun getLastOutputs(): List<String> {
-//        return current.outPut
-//    }
-//
-//    fun getCurrent(): InputOutput {
-//        return current
-//    }
 
 }

@@ -36,7 +36,7 @@ class ResponseRequestIntegrationTest {
 
         val input = "pickup wheat && 2"
         CommandParser.parseCommand(input)
-        assertEquals("Player picked up Wheat Flour.", ChatHistoryManager.getLastOutput())
+        assertEquals("Player picked up Wheat Flour.", ChatHistoryManager.first.getLastOutput())
     }
 
 }

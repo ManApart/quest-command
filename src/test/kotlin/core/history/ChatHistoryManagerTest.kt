@@ -1,6 +1,7 @@
 package core.history
 
 import core.GameState
+import core.target.Target
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -26,6 +27,28 @@ class ChatHistoryManagerTest {
         display(message)
         val history = ChatHistoryManager.getHistory(GameState.player)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
+        Assert.assertEquals(message, history.getLastOutput())
+    }
+
+    @Test
+    fun trackTarget(){
+        val target = Target("Bob")
+        val message = "Test Message"
+        ChatHistoryManager.track(target)
+        target.displayYou(message)
+        val history = ChatHistoryManager.getHistory(target)
+        Assert.assertEquals(message, history.getLastOutput())
+    }
+
+    @Test
+    fun thing(){
+        val target = Target("Bob")
+        val target2 = Target("Bob")
+        val message = "Test Message"
+        ChatHistoryManager.track(target)
+        ChatHistoryManager.track(target2)
+        target2.displayYou(message)
+        val history = ChatHistoryManager.getHistory(target2)
         Assert.assertEquals(message, history.getLastOutput())
     }
 }

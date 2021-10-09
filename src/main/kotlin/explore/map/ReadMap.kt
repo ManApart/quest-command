@@ -4,6 +4,7 @@ import core.GameState
 import core.events.EventListener
 import core.history.StringTable
 import core.history.display
+import core.history.displayYou
 import system.debug.DebugType
 import traveling.location.Route
 import traveling.location.RouteNeighborFinder
@@ -11,10 +12,10 @@ import traveling.location.RouteNeighborFinder
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {
         if (event.source.location == event.target) {
-            display("You are in at ${event.source.position} in ${event.target.name}.")
+            event.source.displayYou("You are in at ${event.source.position} in ${event.target.name}.")
         }
         val name = "${event.target.name} is a part of ${event.target.parent}. It"
-        display("$name ${getRoutesString(event)}")
+        event.source.displayYou("$name ${getRoutesString(event)}")
     }
 
     private fun getRoutesString(event: ReadMapEvent): String {
