@@ -4,7 +4,7 @@ import traveling.position.Vector
 import traveling.location.Connection
 import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
-import core.history.ChatHistoryManager
+import core.history.GameLogger
 import core.target.Target
 import org.junit.Assert
 import org.junit.Before
@@ -15,8 +15,8 @@ class ReadMapTest {
 
     @Before
     fun setup(){
-        ChatHistoryManager.reset()
-        ChatHistoryManager.track(player)
+        GameLogger.reset()
+        GameLogger.track(player)
     }
 
     @Test
@@ -27,7 +27,7 @@ class ReadMapTest {
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = ChatHistoryManager.getHistory(player).getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
 
@@ -39,7 +39,7 @@ class ReadMapTest {
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = ChatHistoryManager.getHistory(player).getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name         Distance  Direction Path  \n" +
                 "  Destination  10        N               \n", actual)
@@ -57,7 +57,7 @@ class ReadMapTest {
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = ChatHistoryManager.getHistory(player).getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name   Distance  Direction Path  \n" +
                 "  north  10        N               \n" +

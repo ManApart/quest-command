@@ -2,7 +2,7 @@ package system
 
 import core.commands.Command
 import core.commands.CommandParser
-import core.history.ChatHistoryManager
+import core.history.GameLogger
 import core.history.displayToMe
 import core.target.Target
 
@@ -33,7 +33,7 @@ class RedoCommand : Command() {
     }
 
     private fun findLastCommand(source: Target): String? {
-        val chatHistory = ChatHistoryManager.getHistory(source)
+        val chatHistory = GameLogger.getHistory(source)
         val history = chatHistory.history + chatHistory.getCurrent()
         for (i in history.size - 1 downTo 0) {
             val commands = history[i].input

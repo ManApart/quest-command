@@ -9,14 +9,14 @@ import system.debug.DebugType
  * Only displayed to this target (you)
  */
 fun Target.displayToMe(message: String) {
-    ChatHistoryManager.getHistory(this).print(message)
+    GameLogger.getHistory(this).print(message)
 }
 
 /**
  * Displayed to everyone but you (the calling target)
  */
 fun Target.displayToOthers(message: String) {
-    ChatHistoryManager.getHistory(this).print(message)
+    GameLogger.getHistory(this).print(message)
 }
 
 /**
@@ -30,7 +30,7 @@ fun display(message: String) {
  * The message is evaluated for each listener, regardless of perception
  */
 fun display(message: (Target) -> String) {
-    ChatHistoryManager.histories.forEach { history ->
+    GameLogger.histories.forEach { history ->
         val messageText = message(history.listener)
         history.print(messageText)
     }
@@ -47,7 +47,7 @@ fun Target.display(message: String) {
  * The message is evaluated for each listener that perceives this target
  */
 fun Target.display(message: (Target) -> String) {
-    ChatHistoryManager.histories
+    GameLogger.histories
         .filter { it.listener.perceives(this) }
         .forEach { history ->
             val messageText = message(history.listener)
@@ -69,10 +69,10 @@ fun displayUpdateEnd(message: String) {
     System.out.flush()
 }
 
-object ChatHistoryManager {
+object GameLogger {
     //Target hashcode changes and breaks == as a key lookup
     //Instead use a list and filter for referential equality
-    val histories = mutableListOf<ChatHistory>()
+    val histories = mutableListOf<GameLog>()
 
     init {
         track(GameState.player)
@@ -81,7 +81,7 @@ object ChatHistoryManager {
     var main = getHistory(GameState.player)
 
     fun track(player: Target) {
-        histories.add(ChatHistory(player))
+        histories.add(GameLog(player))
     }
 
     fun reset() {
@@ -99,17 +99,13 @@ object ChatHistoryManager {
         histories.forEach { it.getCurrent().timeTaken = timeTaken }
     }
 
-    fun getHistory(source: Target): ChatHistory {
+    fun getHistory(source: Target): GameLog {
         var candidate = histories.firstOrNull { it.listener === source }
         if (candidate == null) {
-            candidate = ChatHistory(source)
+            candidate = GameLog(source)
             histories.add(candidate)
         }
         return candidate
-    }
-
-    fun flushHistories() {
-        histories.forEach { it.flush() }
     }
 
 }

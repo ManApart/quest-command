@@ -2,7 +2,7 @@ package inventory
 
 import core.DependencyInjector
 import core.body.*
-import core.history.ChatHistoryManager
+import core.history.GameLogger
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
@@ -29,7 +29,7 @@ class ListInventoryTest {
         creature.inventory.add(createItem())
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Closed Chest has:\n\tApple", ChatHistoryManager.main.getLastOutput())
+        assertEquals("Closed Chest has:\n\tApple", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -37,7 +37,7 @@ class ListInventoryTest {
         val creature = createClosedChest()
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Closed Chest has no items.", ChatHistoryManager.main.getLastOutput())
+        assertEquals("Closed Chest has no items.", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -57,7 +57,7 @@ class ListInventoryTest {
         creature.body.equip(item)
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Soldier has:\n\t* Chestplate", ChatHistoryManager.main.getLastOutput())
+        assertEquals("Soldier has:\n\t* Chestplate", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -81,7 +81,7 @@ class ListInventoryTest {
 
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", ChatHistoryManager.main.getLastOutput())
+        assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -90,7 +90,7 @@ class ListInventoryTest {
         creature.inventory.add(Target("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
-        assertEquals("Cannot view inventory of Chest", ChatHistoryManager.main.getLastOutput())
+        assertEquals("Cannot view inventory of Chest", GameLogger.main.getLastOutput())
     }
 
 

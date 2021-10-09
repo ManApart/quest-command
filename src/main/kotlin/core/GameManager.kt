@@ -3,7 +3,7 @@ package core
 import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParser
 import core.events.EventManager
-import core.history.ChatHistoryManager
+import core.history.GameLogger
 import core.target.Target
 import core.target.item.ItemManager
 import core.target.target
@@ -47,7 +47,7 @@ object GameManager {
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
         CommandParser.reset()
-        ChatHistoryManager.reset()
+        GameLogger.reset()
 
         giveStartingItems(GameState.player)
         EventManager.postEvent(ArriveEvent(GameState.player, destination = LocationPoint(GameState.player.location), method = "wake"))

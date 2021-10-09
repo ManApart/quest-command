@@ -6,16 +6,16 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
-class ChatHistoryManagerTest {
+class GameLogManagerTest {
 
     @Before
     fun setup(){
-        ChatHistoryManager.reset()
+        GameLogger.reset()
     }
 
     @Test
     fun beforeChatHistoryIsEmpty(){
-        val history = ChatHistoryManager.getHistory(GameState.player)
+        val history = GameLogger.getHistory(GameState.player)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
         Assert.assertEquals("", history.getLastOutput())
         Assert.assertEquals(0, history.history.size)
@@ -25,7 +25,7 @@ class ChatHistoryManagerTest {
     fun displayAddsMessageToHistory(){
         val message = "Test Message"
         display(message)
-        val history = ChatHistoryManager.getHistory(GameState.player)
+        val history = GameLogger.getHistory(GameState.player)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
         Assert.assertEquals(message, history.getLastOutput())
     }
@@ -34,9 +34,9 @@ class ChatHistoryManagerTest {
     fun trackTarget(){
         val target = Target("Bob")
         val message = "Test Message"
-        ChatHistoryManager.track(target)
+        GameLogger.track(target)
         target.displayToMe(message)
-        val history = ChatHistoryManager.getHistory(target)
+        val history = GameLogger.getHistory(target)
         Assert.assertEquals(message, history.getLastOutput())
     }
 
@@ -45,10 +45,10 @@ class ChatHistoryManagerTest {
         val target = Target("Bob")
         val target2 = Target("Bob")
         val message = "Test Message"
-        ChatHistoryManager.track(target)
-        ChatHistoryManager.track(target2)
+        GameLogger.track(target)
+        GameLogger.track(target2)
         target2.displayToMe(message)
-        val history = ChatHistoryManager.getHistory(target2)
+        val history = GameLogger.getHistory(target2)
         Assert.assertEquals(message, history.getLastOutput())
     }
 }

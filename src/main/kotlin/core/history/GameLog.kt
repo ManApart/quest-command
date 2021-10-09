@@ -4,7 +4,7 @@ import core.GameState
 import core.PRINT_WITHOUT_FLUSH
 import core.target.Target
 
-class ChatHistory(val listener: Target) {
+class GameLog(val listener: Target) {
     val history = mutableListOf<InputOutput>()
     private var current: InputOutput? = null
     private var lastFlushed = 0
@@ -12,6 +12,11 @@ class ChatHistory(val listener: Target) {
     fun addInput(input: String) {
         if (current != null) history.add(current!!)
         current = InputOutput(input)
+    }
+
+    fun endCurrent(){
+        if (current != null) history.add(current!!)
+        current = null
     }
 
     fun print(message: String) {
@@ -27,7 +32,7 @@ class ChatHistory(val listener: Target) {
     }
 
     fun getLastInput(): String {
-        return getCurrent().input ?: ""
+        return getCurrent().input
     }
 
     fun getLastOutput(): String {
@@ -40,17 +45,6 @@ class ChatHistory(val listener: Target) {
 
     fun getCurrent(): InputOutput {
         return current ?: history.lastOrNull() ?: InputOutput()
-    }
-
-    fun flush() {
-        if (current != null) history.add(current!!)
-        current = null
-        history.subList(lastFlushed, history.size).forEach { io ->
-            io.outPut.forEach { line ->
-                println(line)
-            }
-        }
-        lastFlushed = history.size
     }
 
 }
