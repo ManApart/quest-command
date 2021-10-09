@@ -11,7 +11,7 @@ class Tips : StoryEventResource {
             StoryEvent("Tips", 1, "When I level up I should rest to restore my stats to their new levels.",
                     ConditionalEvents(LevelUpEvent::class,
                             { event, _ -> event.source.isPlayer()},
-                            { _, _ -> listOf(MessageEvent("When I level up I should rest to restore my stats to their new levels.")) }
+                            { event, _ -> listOf(MessageEvent(event.source,"When I level up I should rest to restore my stats to their new levels.")) }
                     ), availableBefore = 1000, availableAfter = 0
             ),
 

@@ -36,20 +36,20 @@ class HelpCommand : Command() {
         val argsArray = args.toTypedArray()
         when {
             args.isEmpty() && keyword == "help" -> clarifyHelp()
-            args.isEmpty() -> EventManager.postEvent(ViewHelpEvent())
+            args.isEmpty() -> EventManager.postEvent(ViewHelpEvent(source))
 
-            args.size == 1 && args[0] == "commands" -> EventManager.postEvent(ViewHelpEvent(commandGroups = true))
-            args.size == 2 && argsArray.contentEquals(arrayOf("commands", "extended")) -> EventManager.postEvent(ViewHelpEvent(commandGroups = true, args = listOf("all")))
+            args.size == 1 && args[0] == "commands" -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true))
+            args.size == 2 && argsArray.contentEquals(arrayOf("commands", "extended")) -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true, args = listOf("all")))
 
             args.size == 2 && argsArray.contentEquals(arrayOf("command", "group")) -> clarifyCommandGroupHelp()
 
             args.size == 1 && args[0] == "command" -> clarifyCommandFromGroupHelp()
             args.size == 2 && args[0] == "command" -> clarifyCommandHelp(args[1])
 
-            isCommand(args) -> EventManager.postEvent(ViewHelpEvent(commandManual = CommandParser.findCommand(args[0])))
-            isCommandGroup(args) -> EventManager.postEvent(ViewHelpEvent(commandGroups = true, args = args))
+            isCommand(args) -> EventManager.postEvent(ViewHelpEvent(source, commandManual = CommandParser.findCommand(args[0])))
+            isCommandGroup(args) -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true, args = args))
 
-            else -> EventManager.postEvent(ViewHelpEvent())
+            else -> EventManager.postEvent(ViewHelpEvent(source))
         }
     }
 

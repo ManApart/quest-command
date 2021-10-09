@@ -3,14 +3,14 @@ package quests
 import core.events.Event
 
 data class StoryEvent(
-        val questName: String,
-        val stage: Int,
-        val journal: String,
-        val triggeredEvent: ConditionalEvents<*>,
-        private val repeatable: Boolean = false,
-        private var availableAfter: Int = -1,
-        private var availableBefore: Int = -1,
-        val completesQuest: Boolean = false
+    val questName: String,
+    val stage: Int,
+    val journal: String,
+    val triggeredEvent: ConditionalEvents<*>,
+    private val repeatable: Boolean = false,
+    private var availableAfter: Int = -1,
+    private var availableBefore: Int = -1,
+    val completesQuest: Boolean = false
 
 ) {
     var completed = false

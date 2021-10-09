@@ -14,7 +14,7 @@ class ConversationCommandInterceptor : CommandInterceptor {
         val commandLine = CommandParser.cleanLine(line).joinToString(" ")
 
         if (commandLine == "goodbye" || commandLine == "exit") {
-            EventManager.postEvent(EndConversationEvent())
+            EventManager.postEvent(EndConversationEvent(source))
         } else {
             val event = DialogueEvent(source, GameState.conversation, line)
             EventManager.postEvent(event)
