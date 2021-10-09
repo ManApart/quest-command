@@ -7,7 +7,6 @@ import core.target.Target
 class GameLog(val listener: Target) {
     val history = mutableListOf<InputOutput>()
     private var current: InputOutput? = null
-    private var lastFlushed = 0
 
     fun addInput(input: String) {
         if (current != null) history.add(current!!)
@@ -28,7 +27,6 @@ class GameLog(val listener: Target) {
     fun reset() {
         history.clear()
         current = InputOutput()
-        lastFlushed = 0
     }
 
     fun getLastInput(): String {
