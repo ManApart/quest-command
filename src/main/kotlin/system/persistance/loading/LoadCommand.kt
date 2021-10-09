@@ -2,8 +2,7 @@ package system.persistance.loading
 
 import core.commands.Command
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 
 class LoadCommand : Command() {
@@ -30,7 +29,7 @@ class LoadCommand : Command() {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListSavesEvent(source))
-            args.isEmpty() -> source.displayYou("Please specify a save to load or use ls to list current saves.")
+            args.isEmpty() -> source.displayToMe("Please specify a save to load or use ls to list current saves.")
             else -> EventManager.postEvent(LoadEvent(source, args.joinToString(" ")))
         }
     }

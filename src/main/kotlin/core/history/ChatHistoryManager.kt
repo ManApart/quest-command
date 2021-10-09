@@ -8,16 +8,14 @@ import system.debug.DebugType
 /**
  * Only displayed to this target (you)
  */
-//TODO - rename displayToMe
-fun Target.displayYou(message: String) {
+fun Target.displayToMe(message: String) {
     ChatHistoryManager.getHistory(this).print(message)
 }
 
 /**
  * Displayed to everyone but you (the calling target)
  */
-//TODO - rename displayToOthers
-fun Target.displayOthers(message: String) {
+fun Target.displayToOthers(message: String) {
     ChatHistoryManager.getHistory(this).print(message)
 }
 

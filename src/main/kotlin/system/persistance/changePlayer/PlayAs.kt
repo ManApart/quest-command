@@ -4,8 +4,7 @@ import core.GameState
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import system.persistance.clean
 import system.persistance.getCharacterSaves
 import system.persistance.save
@@ -14,7 +13,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
         save(GameState.gameName, event.source)
         loadCharacter(GameState.gameName, event.saveName)
-        event.source.displayYou("Now playing ${event.source.name} in ${GameState.gameName}.")
+        event.source.displayToMe("Now playing ${event.source.name} in ${GameState.gameName}.")
     }
 
     private fun loadCharacter(gameName: String, characterName: String) {

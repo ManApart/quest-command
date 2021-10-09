@@ -2,8 +2,7 @@ package magic
 
 import core.DependencyInjector
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.NameSearchableList
 import magic.spellCommands.SpellCommand
@@ -39,7 +38,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
         }
-        source.displayYou("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
     private fun printWordGroup(source: Target, group: String) {
@@ -49,14 +48,14 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
                 description += word.getDescription() + "\n"
             }
         }
-        source.displayYou(description)
+        source.displayToMe(description)
     }
 
     private fun helpWord(source: Target, word: String) {
         if (wordsOfPower.exists(word)) {
-            source.displayYou(wordsOfPower.get(word).getManual())
+            source.displayToMe(wordsOfPower.get(word).getManual())
         } else {
-            source.displayYou("Unknown word of power: $word")
+            source.displayToMe("Unknown word of power: $word")
         }
     }
 

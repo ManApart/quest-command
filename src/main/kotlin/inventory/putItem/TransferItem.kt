@@ -3,7 +3,7 @@ package inventory.putItem
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.isAre
 import core.utility.asSubject
@@ -33,7 +33,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
             removeFromSource(source, item)
             EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
         } else {
-            source.displayYou("Could not find a place for $item.")
+            source.displayToMe("Could not find a place for $item.")
         }
     }
 

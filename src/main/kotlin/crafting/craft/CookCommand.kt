@@ -4,8 +4,7 @@ import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.Command
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.target.item.ItemManager
 import crafting.RecipeManager
@@ -33,17 +32,17 @@ class CookCommand : Command() {
         val delimiters = listOf(ArgDelimiter(","), ArgDelimiter(listOf("with", "on")))
         val arguments = Args(args, delimiters)
         if (!isValidInput(arguments)) {
-            source.displayYou("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
+            source.displayToMe("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(arguments)
             val tool = getTool(source, arguments)
             val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.soul)
 
             when {
-                tool == null -> source.displayYou("Couldn't find something to cook on")
-                ingredients.size != arguments.getBaseAndStrings(",").size -> source.displayYou("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
-                recipes.isEmpty() -> source.displayYou("Couldn't find a recipe for those ingredients")
-                recipes.size > 1 -> source.displayYou("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
+                tool == null -> source.displayToMe("Couldn't find something to cook on")
+                ingredients.size != arguments.getBaseAndStrings(",").size -> source.displayToMe("Couldn't understand all of the ingredients. Found: ${ingredients.joinToString { it.name + ", " }}")
+                recipes.isEmpty() -> source.displayToMe("Couldn't find a recipe for those ingredients")
+                recipes.size > 1 -> source.displayToMe("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
                 else -> EventManager.postEvent(CraftRecipeEvent(source, recipes.first(), tool))
             }
         }

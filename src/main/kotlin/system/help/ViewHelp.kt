@@ -3,7 +3,7 @@ package system.help
 import core.commands.Command
 import core.commands.CommandParser
 import core.events.EventListener
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.removeFirstItem
 
@@ -17,12 +17,12 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
             event.commandGroups && event.args.isEmpty() -> printCommandGroupsSummary(event.source)
             event.commandGroups && event.args.isNotEmpty() && event.args[0] == "all" -> printCommandGroupsDetail(event.source)
             event.commandGroups && event.args.isNotEmpty() -> printCommandGroup(event.source, event.args)
-            else -> event.source.displayYou(description)
+            else -> event.source.displayToMe(description)
         }
     }
 
     private fun printManual(source: Target, command: Command) {
-        source.displayYou(getTitle(command) + command.getManual())
+        source.displayToMe(getTitle(command) + command.getManual())
     }
 
     private fun printCommandGroupsSummary(source: Target) {
@@ -33,7 +33,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
             val commandNames = entry.value.joinToString(", ") { it.name }
             groupList += "${entry.key}:\n\t${commandNames}\n"
         }
-        source.displayYou("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
     private fun printCommandGroupsDetail(source: Target) {
@@ -52,7 +52,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString("\n\t")}\n"
         }
-        source.displayYou("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
     private fun printCommandGroup(source: Target, args: List<String>) {
@@ -64,7 +64,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
                 description += command.name + ":\n\t" + command.getDescription() + "\n"
             }
         }
-        source.displayYou(description)
+        source.displayToMe(description)
     }
 
     private fun getTitle(command: Command): String {

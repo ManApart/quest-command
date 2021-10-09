@@ -1,11 +1,10 @@
 package system.message
 
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 
 class DisplayMessage : EventListener<DisplayMessageEvent>() {
     override fun execute(event: DisplayMessageEvent) {
-        event.listener.displayYou(event.message)
+        event.listener.displayToMe(event.message)
     }
 }

@@ -4,8 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 
 class InventoryCommand : Command() {
@@ -38,7 +37,7 @@ class InventoryCommand : Command() {
             args.isEmpty() && keyword == "bag" -> clarifyTarget(allInventories)
             args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source))
             target != null -> EventManager.postEvent(ListInventoryEvent(target))
-            else -> source.displayYou("Could not find $argString")
+            else -> source.displayToMe("Could not find $argString")
         }
     }
 

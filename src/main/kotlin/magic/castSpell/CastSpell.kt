@@ -2,8 +2,7 @@ package magic.castSpell
 
 import core.GameState
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import status.stat.FOCUS
 import status.stat.HEALTH
 import system.debug.DebugType
@@ -26,11 +25,11 @@ class CastSpell : EventListener<CastSpellEvent>() {
         val focus = event.source.soul.getCurrent(FOCUS)
         return when {
             level < event.spell.levelRequired && !GameState.getDebugBoolean(DebugType.LEVEL_REQ) -> {
-                event.source.displayYou("You are too low level to speak this word with this amount of force. ($level/$event.spell.levelRequired)")
+                event.source.displayToMe("You are too low level to speak this word with this amount of force. ($level/$event.spell.levelRequired)")
                 false
             }
             focus < event.spell.cost && !GameState.getDebugBoolean(DebugType.STAT_CHANGES) -> {
-                event.source.displayYou("You do not have enough focus to speak this word with this amount of force. ($focus/${event.spell.cost})")
+                event.source.displayToMe("You do not have enough focus to speak this word with this amount of force. ($focus/${event.spell.cost})")
                 false
             }
             else -> true

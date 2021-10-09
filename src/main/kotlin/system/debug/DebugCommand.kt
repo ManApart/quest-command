@@ -5,8 +5,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.parseTargets
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import status.stat.StatKind
 
@@ -59,7 +58,7 @@ class DebugCommand : Command() {
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(source, arguments)
                 "weather" -> sendDebugWeatherEvent(source, arguments)
-                else -> source.displayYou("Did not understand debug command.")
+                else -> source.displayToMe("Did not understand debug command.")
             }
         }
     }
@@ -80,7 +79,7 @@ class DebugCommand : Command() {
         val level = args.getNumber()
 
         if (level == null) {
-            source.displayYou("Could not find what number to set stat to: ${args.fullString}")
+            source.displayToMe("Could not find what number to set stat to: ${args.fullString}")
         } else {
             val statName = args.argsWithout(listOf("remove", args.args.first(), level.toString())).joinToString(" ")
 

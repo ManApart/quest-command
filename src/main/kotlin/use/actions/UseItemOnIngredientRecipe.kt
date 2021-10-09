@@ -1,7 +1,7 @@
 package use.actions
 
 import core.events.EventManager
-import core.history.displayYou
+import core.history.displayToMe
 import crafting.RecipeManager
 import crafting.craft.CraftRecipeEvent
 import use.UseEvent
@@ -26,7 +26,7 @@ class UseItemOnIngredientRecipe : UseListener() {
         val itemOnlyRecipes = RecipeManager.findCraftableRecipes(listOf(event.used, event.target), null, event.source.soul)
 
         when {
-            targetRecipes.size + sourceRecipes.size + itemOnlyRecipes.size > 1 -> event.source.displayYou("What do you want to craft? ${(targetRecipes + sourceRecipes + itemOnlyRecipes).joinToString(" or ") { it.name }}")
+            targetRecipes.size + sourceRecipes.size + itemOnlyRecipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${(targetRecipes + sourceRecipes + itemOnlyRecipes).joinToString(" or ") { it.name }}")
             targetRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(event.source, targetRecipes.first(), event.used))
             sourceRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(event.source, sourceRecipes.first(), event.target))
             itemOnlyRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(event.source, itemOnlyRecipes.first(), null))

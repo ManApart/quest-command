@@ -4,8 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 
 class AliasCommand : Command() {
@@ -41,7 +40,7 @@ class AliasCommand : Command() {
                 "clear" -> deleteAlias(source, args)
                 "list" -> EventManager.postEvent(ListAliasesEvent(source))
                 "ls" -> EventManager.postEvent(ListAliasesEvent(source))
-                else -> source.displayYou("Did not understand " + args.joinToString(" ") +". Did you forget a create or delete?")
+                else -> source.displayToMe("Did not understand " + args.joinToString(" ") +". Did you forget a create or delete?")
             }
         }
     }
@@ -49,7 +48,7 @@ class AliasCommand : Command() {
 
     private fun createAlias(source: Target, args: List<String>) {
         if (args.size <= 2) {
-            source.displayYou("Must give an alias followed by a command.")
+            source.displayToMe("Must give an alias followed by a command.")
         } else {
             val alias = args[1]
             val command = args.subList(2, args.size).joinToString(" ")

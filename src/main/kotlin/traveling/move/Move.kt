@@ -3,7 +3,7 @@ package traveling.move
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.utility.then
 import core.utility.isAre
 import core.utility.asSubject
@@ -35,7 +35,7 @@ class Move : EventListener<MoveEvent>() {
         when {
             actualDestination.z > 0 -> event.creature.display("${event.creature.asSubject()} ${event.creature.isAre()} unable to move into the air.")
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, getDistanceToNeighbor(event.creature.location, movedToNeighbor.location), event.silent)
-            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> event.creature.displayYou("You cannot move that far in that direction.")
+            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> event.creature.displayToMe("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, actualDestination)
         }
     }

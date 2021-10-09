@@ -35,7 +35,7 @@ class ChatHistoryManagerTest {
         val target = Target("Bob")
         val message = "Test Message"
         ChatHistoryManager.track(target)
-        target.displayYou(message)
+        target.displayToMe(message)
         val history = ChatHistoryManager.getHistory(target)
         Assert.assertEquals(message, history.getLastOutput())
     }
@@ -47,7 +47,7 @@ class ChatHistoryManagerTest {
         val message = "Test Message"
         ChatHistoryManager.track(target)
         ChatHistoryManager.track(target2)
-        target2.displayYou(message)
+        target2.displayToMe(message)
         val history = ChatHistoryManager.getHistory(target2)
         Assert.assertEquals(message, history.getLastOutput())
     }

@@ -3,7 +3,7 @@ package use.interaction
 import core.events.Event
 import core.events.EventListener
 import core.events.EventManager
-import core.history.displayYou
+import core.history.displayToMe
 
 class NoInteractionFound : EventListener<InteractEvent>() {
     private var checkedEvent: Event? = null
@@ -18,9 +18,9 @@ class NoInteractionFound : EventListener<InteractEvent>() {
 
     override fun execute(event: InteractEvent) {
         if (event.source.canInteract()) {
-            event.source.displayYou("You don't seem to be able to do anything interesting with ${event.target.name}.")
+            event.source.displayToMe("You don't seem to be able to do anything interesting with ${event.target.name}.")
         } else {
-            event.source.displayYou("You can't interact with ${event.target.name} right now.")
+            event.source.displayToMe("You can't interact with ${event.target.name} right now.")
         }
     }
 }

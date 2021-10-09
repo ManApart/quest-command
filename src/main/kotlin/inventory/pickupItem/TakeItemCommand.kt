@@ -4,8 +4,7 @@ import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.filterUniqueByName
 import inventory.putItem.TransferItemEvent
@@ -41,7 +40,7 @@ class TakeItemCommand : core.commands.Command() {
     private fun pickupItemFromScope(source: Target, args: Args) {
         val items = source.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
-            items.isEmpty() -> source.displayYou("Couldn't find ${args.getBaseString()}")
+            items.isEmpty() -> source.displayToMe("Couldn't find ${args.getBaseString()}")
             items.size == 1 -> EventManager.postEvent(TakeItemEvent(source, items.first()))
             else -> pickupWhat(source, items)
         }
@@ -49,7 +48,7 @@ class TakeItemCommand : core.commands.Command() {
 
     private fun pickupWhat(source: Target, items: List<Target>) {
         if (items.isEmpty()) {
-            source.displayYou("Nothing to pickup!")
+            source.displayToMe("Nothing to pickup!")
         } else {
             val message = "Take which item?\n\t${items.joinToString(", ")}"
             val response = ResponseRequest(message, items.associate { it.name to "take ${it.name}" })
@@ -60,7 +59,7 @@ class TakeItemCommand : core.commands.Command() {
     private fun pickupItemFromContainer(source: Target, args: Args) {
         val from = source.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
         when {
-            from.isEmpty() -> source.displayYou("Couldn't find ${args.getString("from")}.")
+            from.isEmpty() -> source.displayToMe("Couldn't find ${args.getString("from")}.")
             from.size == 1 -> takeItemFromContainer(source, from.first(), args.getBaseString())
             else -> takeFromWhat(from, args.getBaseString())
         }
@@ -77,7 +76,7 @@ class TakeItemCommand : core.commands.Command() {
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(source, item, from, source))
         } else {
-            source.displayYou("Couldn't find $itemName.")
+            source.displayToMe("Couldn't find $itemName.")
         }
     }
 

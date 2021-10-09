@@ -2,8 +2,7 @@ package magic.spellCommands
 
 import core.GameState
 import core.commands.Args
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.Named
 import status.stat.FOCUS
@@ -21,13 +20,13 @@ abstract class SpellCommand : Named {
         val focus = source.soul.getCurrent(FOCUS)
         when {
             targets.size < minTargetCount ->
-                source.displayYou("Not enough targets were selected for this word.")
+                source.displayToMe("Not enough targets were selected for this word.")
             targets.size > maxTargetCount ->
-                source.displayYou("Too many targets were selected for this word.")
+                source.displayToMe("Too many targets were selected for this word.")
             level < levelRequirement && !GameState.getDebugBoolean(DebugType.LEVEL_REQ) ->
-                source.displayYou("You are too low level to speak this word with this amount of force. ($levelStat: $level/$levelRequirement)")
+                source.displayToMe("You are too low level to speak this word with this amount of force. ($levelStat: $level/$levelRequirement)")
             focus < totalCost && !GameState.getDebugBoolean(DebugType.STAT_CHANGES) ->
-                source.displayYou("You do not have enough focus to speak this word with this amount of force. ($focus/$totalCost)")
+                source.displayToMe("You do not have enough focus to speak this word with this amount of force. ($focus/$totalCost)")
             else -> execute()
         }
     }

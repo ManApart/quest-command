@@ -1,8 +1,7 @@
 package status.statChanged
 
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import status.stat.HEALTH
 import status.stat.STAMINA
 
@@ -13,8 +12,8 @@ class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
 
     override fun execute(event: StatMaxedEvent) {
         when (event.stat.lowercase()){
-            HEALTH.lowercase() -> event.target.displayYou("You feel the fullness of life beating in your bosom.")
-            STAMINA.lowercase() -> event.target.displayYou("You feel totally energized.")
+            HEALTH.lowercase() -> event.target.displayToMe("You feel the fullness of life beating in your bosom.")
+            STAMINA.lowercase() -> event.target.displayToMe("You feel totally energized.")
         }
     }
 }

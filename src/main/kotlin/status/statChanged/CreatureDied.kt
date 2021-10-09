@@ -3,7 +3,6 @@ package status.statChanged
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.history.displayYou
 import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
 import status.stat.HEALTH

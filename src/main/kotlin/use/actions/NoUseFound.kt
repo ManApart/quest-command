@@ -3,7 +3,7 @@ package use.actions
 import core.events.Event
 import core.events.EventManager
 import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.utility.isAre
 import core.utility.asSubject
 import use.UseEvent
@@ -30,7 +30,7 @@ class NoUseFound : UseListener() {
                 event.source.display("${event.source.asSubject()} use ${event.used.name} on ${event.target.name} but nothing happens.")
             }
         } else {
-            event.source.displayYou("You can't interact with that right now.")
+            event.source.displayToMe("You can't interact with that right now.")
         }
     }
 }

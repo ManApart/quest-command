@@ -3,8 +3,7 @@ package magic.castSpell
 import core.DependencyInjector
 import core.commands.*
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.NameSearchableList
 import magic.ViewWordHelpEvent
@@ -65,7 +64,7 @@ class CastCommand : Command() {
                 EventManager.postEvent(ViewWordHelpEvent(source, args.first()))
             }
         } else {
-            source.displayYou("Unknown command: ${args.joinToString(" ")}")
+            source.displayToMe("Unknown command: ${args.joinToString(" ")}")
         }
     }
 
@@ -93,7 +92,7 @@ class CastCommand : Command() {
                 }
                 spellCommand.execute(source, spellArgs, targets, useDefaults)
             } else {
-                source.displayYou("Unknown word ${args.first()}")
+                source.displayToMe("Unknown word ${args.first()}")
             }
         }
     }

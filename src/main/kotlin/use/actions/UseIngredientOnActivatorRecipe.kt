@@ -1,7 +1,7 @@
 package use.actions
 
 import core.events.EventManager
-import core.history.displayYou
+import core.history.displayToMe
 import crafting.RecipeManager
 import crafting.craft.CraftRecipeEvent
 import use.UseEvent
@@ -21,7 +21,7 @@ class UseIngredientOnActivatorRecipe : UseListener() {
         val recipes = RecipeManager.findCraftableRecipes(listOf(event.used), event.target, event.source.soul)
 
         when {
-            recipes.size > 1 -> event.source.displayYou("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
+            recipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
             else -> EventManager.postEvent(CraftRecipeEvent(event.source, recipes.first(), event.target))
         }
     }

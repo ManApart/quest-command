@@ -2,14 +2,13 @@ package system.debug
 
 import core.GameState
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import status.stat.StatKind
 import traveling.location.weather.WeatherManager
 
 class DebugListListener : EventListener<DebugListEvent>() {
     override fun execute(event: DebugListEvent) {
-        event.source.displayYou("Gamestate properties are: " + GameState.properties.toString())
+        event.source.displayToMe("Gamestate properties are: " + GameState.properties.toString())
     }
 }
 
@@ -19,10 +18,10 @@ class DebugToggleListener : EventListener<DebugToggleEvent>() {
             GameState.putDebug(DebugType.LEVEL_REQ, event.toggledOn)
             GameState.putDebug(DebugType.STAT_CHANGES, event.toggledOn)
             GameState.putDebug(DebugType.RANDOM_SUCCEED, event.toggledOn)
-            event.source.displayYou("Gamestate properties are: " + GameState.properties.toString())
+            event.source.displayToMe("Gamestate properties are: " + GameState.properties.toString())
         } else {
             GameState.putDebug(event.debugType, event.toggledOn)
-            event.source.displayYou("Set ${event.debugType.propertyName} to ${GameState.getDebugBoolean(event.debugType)}")
+            event.source.displayToMe("Set ${event.debugType.propertyName} to ${GameState.getDebugBoolean(event.debugType)}")
         }
     }
 }
@@ -32,10 +31,10 @@ class DebugStatListener : EventListener<DebugStatEvent>() {
         if (event.statKind == StatKind.LEVELED) {
             event.target.soul.setStat(event.statName, event.level)
             val newStat = event.target.soul.getStatOrNull(event.statName)
-            event.target.displayYou("Set ${event.target}'s ${event.statName} to ${newStat?.current} / ${newStat?.max}")
+            event.target.displayToMe("Set ${event.target}'s ${event.statName} to ${newStat?.current} / ${newStat?.max}")
         } else {
             event.target.properties.values.put(event.statName, event.level)
-            event.target.displayYou("Set ${event.target}'s ${event.statName} to ${event.target.properties.values.getInt(event.statName)}")
+            event.target.displayToMe("Set ${event.target}'s ${event.statName} to ${event.target.properties.values.getInt(event.statName)}")
         }
     }
 }
@@ -47,7 +46,7 @@ class DebugTagListener : EventListener<DebugTagEvent>() {
         } else {
             event.target.properties.tags.remove(event.tag)
         }
-        event.target.displayYou("${event.target}'s tags are now ${event.target.properties.tags}")
+        event.target.displayToMe("${event.target}'s tags are now ${event.target.properties.tags}")
     }
 }
 
@@ -56,9 +55,9 @@ class DebugWeatherListener : EventListener<DebugWeatherEvent>() {
         if (WeatherManager.weatherExists(event.weather)) {
             val weather = WeatherManager.getWeather(event.weather)
             event.source.currentLocation().updateWeather(weather)
-            event.source.displayYou("Updated weather to ${weather.name}.")
+            event.source.displayToMe("Updated weather to ${weather.name}.")
         } else {
-            event.source.displayYou("Could not find weather ${event.weather}.")
+            event.source.displayToMe("Could not find weather ${event.weather}.")
         }
 
     }

@@ -221,19 +221,19 @@ data class Target(
     private fun getStealthLevel(): Int {
         val size = min(body.getSize().getDistance(), 50)
         val sneak = soul.getCurrent(SNEAK)
-        return max(100, min(0, sneak - size))
+        return max(0, min(100, sneak - size))
     }
 
     fun perceives(other: Target): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY)) return true
-        return getClarity() > other.getStealthLevel()
+        return getClarity() >= other.getStealthLevel()
     }
 
     fun List<Target>.perceived(): List<Target> {
         if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
 
         val clarity = getClarity()
-        return filter { other -> clarity > other.getStealthLevel() }
+        return filter { other -> clarity >= other.getStealthLevel() }
     }
 
 }

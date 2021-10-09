@@ -4,8 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import quests.QuestManager
 
@@ -45,7 +44,7 @@ class JournalCommand : Command() {
                 if (quest != null) {
                     EventManager.postEvent(ViewQuestJournalEvent(source, quest))
                 } else {
-                    source.displayYou("Couldn't find quest: ${args.joinToString(" ")}")
+                    source.displayToMe("Couldn't find quest: ${args.joinToString(" ")}")
                 }
             }
         }

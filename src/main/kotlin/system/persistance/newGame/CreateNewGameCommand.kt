@@ -2,8 +2,7 @@ package system.persistance.newGame
 
 import core.commands.Command
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 
 class CreateNewGameCommand : Command() {
@@ -28,7 +27,7 @@ class CreateNewGameCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val saveName = args.joinToString(" ")
         if (saveName.isBlank()) {
-            source.displayYou("You must give a name for the new game.")
+            source.displayToMe("You must give a name for the new game.")
         } else {
             EventManager.postEvent(CreateNewGameEvent(source, saveName))
         }

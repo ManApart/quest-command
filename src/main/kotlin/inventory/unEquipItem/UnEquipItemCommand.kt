@@ -5,8 +5,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.NameSearchableList
 
@@ -42,9 +41,9 @@ class UnEquipItemCommand : Command() {
             } else {
                 val unEquippedItem = getUnequippedItem(source, arguments)
                 if (unEquippedItem != null) {
-                    source.displayYou("${unEquippedItem.name} is already unequipped.")
+                    source.displayToMe("${unEquippedItem.name} is already unequipped.")
                 } else {
-                    source.displayYou("Could not find ${arguments.getBaseString()}")
+                    source.displayToMe("Could not find ${arguments.getBaseString()}")
                 }
             }
         }

@@ -1,8 +1,7 @@
 package quests.journal
 
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.NameSearchableList
 import quests.Quest
@@ -31,12 +30,12 @@ class ViewQuestList : EventListener<ViewQuestListEvent>() {
     private fun displayQuestMessage(source: Target, message: String, event: ViewQuestListEvent) {
         if (message.isBlank()) {
             if (event.justActive) {
-                source.displayYou("I don't have any active quests.")
+                source.displayToMe("I don't have any active quests.")
             } else {
-                source.displayYou("I don't have any quests.")
+                source.displayToMe("I don't have any quests.")
             }
         } else {
-            source.displayYou(message)
+            source.displayToMe(message)
         }
     }
 

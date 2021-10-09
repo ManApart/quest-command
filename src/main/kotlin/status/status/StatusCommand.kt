@@ -4,8 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.filterUniqueByName
 
@@ -34,7 +33,7 @@ class StatusCommand : Command() {
             args.isEmpty() && keyword == "status" -> clarifyStatus(source)
             args.isEmpty() -> EventManager.postEvent(StatusEvent(source))
             source.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
-            else -> source.displayYou("Couldn't find ${args.joinToString(" ")}.")
+            else -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 

@@ -3,7 +3,7 @@ package crafting.craft
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.target.item.ItemManager
 import core.utility.isAre
@@ -24,9 +24,9 @@ class Craft : EventListener<CraftRecipeEvent>() {
                 addResults(results, event)
                 EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))
 //            TODO - Add XP
-                event.source.displayYou("You ${event.recipe.craftVerb} ${ingredients.joinToString(", ") { it.name }} and get ${results.joinToString(", ") { ItemManager.getTaggedItemName(it) }}.")
+                event.source.displayToMe("You ${event.recipe.craftVerb} ${ingredients.joinToString(", ") { it.name }} and get ${results.joinToString(", ") { ItemManager.getTaggedItemName(it) }}.")
             }
-            else -> event.source.displayYou("You aren't able to craft ${event.recipe.name}.")
+            else -> event.source.displayToMe("You aren't able to craft ${event.recipe.name}.")
         }
     }
 

@@ -2,8 +2,7 @@ package explore.look
 
 import core.GameState
 import core.history.StringTable
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.wrapNonEmpty
 import system.debug.DebugType
@@ -22,8 +21,8 @@ fun describeClimbJourney(source: Target) {
         " It is connected to ${exits.joinToString(", ")}."
     }
 
-    source.displayYou("You are on ${location.name}, ${distance}above the ground.$exitString")
-    source.displayYou(getRoutesString(source, location))
+    source.displayToMe("You are on ${location.name}, ${distance}above the ground.$exitString")
+    source.displayToMe(getRoutesString(source, location))
 }
 
 private fun getDistance(location: LocationNode): String {

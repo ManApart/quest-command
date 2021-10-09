@@ -4,7 +4,7 @@ import core.commands.CommandParser
 import core.history.display
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import status.stat.HEALTH
 
@@ -40,7 +40,7 @@ private fun printTurnStatus(source: Target, creatures: List<Target>) {
     }.filter { it.isNotBlank() }.joinToString("\n")
 
     if (combatantString.isNotBlank()) {
-        source.displayYou(combatantString)
+        source.displayToMe(combatantString)
     }
 }
 

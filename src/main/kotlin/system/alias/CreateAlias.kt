@@ -3,8 +3,7 @@ package system.alias
 import core.GameState
 import core.commands.CommandParser
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 
 class CreateAlias : EventListener<CreateAliasEvent>() {
@@ -12,7 +11,7 @@ class CreateAlias : EventListener<CreateAliasEvent>() {
         val alias = event.alias.lowercase()
         val existingCommand = CommandParser.findCommand(alias)
         if (existingCommand != CommandParser.unknownCommand) {
-            event.source.displayYou("Cannot create alias for '$alias' because it exists as a built in command or alias for ${existingCommand.name}.")
+            event.source.displayToMe("Cannot create alias for '$alias' because it exists as a built in command or alias for ${existingCommand.name}.")
         } else {
             updateAlias(event.source, alias, event)
         }
@@ -26,9 +25,9 @@ class CreateAlias : EventListener<CreateAliasEvent>() {
         GameState.aliases[alias] = command
 
         if (replacing) {
-            source.displayYou("Replaced '$alias'. Changed '$oldValue' to '$command'.")
+            source.displayToMe("Replaced '$alias'. Changed '$oldValue' to '$command'.")
         } else {
-            source.displayYou("Created '$alias' mapped to '$command'.")
+            source.displayToMe("Created '$alias' mapped to '$command'.")
         }
     }
 

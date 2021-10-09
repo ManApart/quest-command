@@ -4,8 +4,7 @@ import core.GameState
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventListener
-import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import system.persistance.clean
 import system.persistance.getGameNames
 
@@ -28,7 +27,7 @@ class Load : EventListener<LoadEvent>() {
     private fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
         CommandParser.commandSource = GameState.player
-        GameState.player.displayYou("Now playing ${GameState.player.name} in ${GameState.gameName}.")
+        GameState.player.displayToMe("Now playing ${GameState.player.name} in ${GameState.gameName}.")
     }
 
 }

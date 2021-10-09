@@ -2,7 +2,7 @@ package traveling.approach
 
 import core.commands.*
 import core.events.EventManager
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import traveling.move.StartMoveEvent
 import traveling.position.Distances.HUMAN_LENGTH
@@ -62,7 +62,7 @@ class RetreatCommand : Command() {
 
     private fun clarifyTarget(source: Target, creatures: List<Target>) {
         if (creatures.isEmpty()) {
-            source.displayYou("Couldn't find anything to retreat from. You must be really frightened.")
+            source.displayToMe("Couldn't find anything to retreat from. You must be really frightened.")
         } else {
             val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "retreat from ${it.name}" })

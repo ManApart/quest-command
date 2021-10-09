@@ -3,7 +3,7 @@ package inventory.pickupItem
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.history.displayYou
+import core.history.displayToMe
 import core.target.Target
 import core.utility.isAre
 import core.utility.asSubject
@@ -27,7 +27,7 @@ class TakeItem : EventListener<TakeItemEvent>() {
             }
             EventManager.postEvent(ItemPickedUpEvent(taker, newStack, silent))
         } else {
-            taker.displayYou("Could not find a place for $item.")
+            taker.displayToMe("Could not find a place for $item.")
         }
     }
 }
