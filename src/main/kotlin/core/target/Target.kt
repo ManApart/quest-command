@@ -225,7 +225,7 @@ data class Target(
     }
 
     fun perceives(other: Target): Boolean {
-        if (GameState.getDebugBoolean(DebugType.CLARITY)) return true
+        if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
         return getClarity() >= other.getStealthLevel()
     }
 
@@ -233,7 +233,7 @@ data class Target(
         if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
 
         val clarity = getClarity()
-        return filter { other -> clarity >= other.getStealthLevel() }
+        return filter { other -> this@Target === other || clarity >= other.getStealthLevel() }
     }
 
 }
