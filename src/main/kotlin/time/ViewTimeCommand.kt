@@ -23,7 +23,7 @@ class ViewTimeCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
-        EventManager.postEvent(ViewTimeEvent())
+        EventManager.postEvent(ViewTimeEvent(source))
     }
 
 }

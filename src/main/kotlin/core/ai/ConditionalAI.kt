@@ -5,7 +5,6 @@ import conversation.dialogue.DialogueEvent
 import core.ai.action.AIAction
 import core.events.EventManager
 import core.history.display
-import core.target.Target
 import core.utility.RandomManager
 import use.interaction.nothing.NothingEvent
 
@@ -24,7 +23,7 @@ class ConditionalAI(name: String, private val actions: List<AIAction>) : AI(name
     }
 
     override fun hear(event: DialogueEvent) {
-        display(event.line)
+        event.speaker.display(event.line)
         val matches = ConversationManager.getMatchingDialogue(event.conversation)
         val priority = matches.maxOf { it.priority }
         val topMatches = matches.filter { it.priority == priority }

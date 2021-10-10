@@ -1,7 +1,6 @@
 package core.ai
 
 import conversation.dialogue.DialogueEvent
-import core.target.Target
 
 const val DUMB_AI_ID = "No AI"
 

@@ -5,7 +5,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.parseTargets
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import status.stat.StatKind
 
@@ -44,26 +44,26 @@ class DebugCommand : Command() {
         val arguments = Args(args, delimiters = listOf("on"))
 
         if (args.isEmpty()) {
-            sendDebugToggleEvent(DebugType.DEBUG_GROUP, arguments)
+            sendDebugToggleEvent(source, DebugType.DEBUG_GROUP, arguments)
         } else {
             when (args.first()) {
-                "list" -> EventManager.postEvent(DebugListEvent())
-                "lvlreq" -> sendDebugToggleEvent(DebugType.LEVEL_REQ, arguments)
-                "statchanges" -> sendDebugToggleEvent(DebugType.STAT_CHANGES, arguments)
-                "random" -> sendDebugToggleEvent(DebugType.RANDOM_SUCCEED, arguments)
-                "map" -> sendDebugToggleEvent(DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
-                "clarity" -> sendDebugToggleEvent(DebugType.CLARITY, arguments)
-                "displayupdates" -> sendDebugToggleEvent(DebugType.DISPLAY_UPDATES, arguments)
+                "list" -> EventManager.postEvent(DebugListEvent(source))
+                "lvlreq" -> sendDebugToggleEvent(source, DebugType.LEVEL_REQ, arguments)
+                "statchanges" -> sendDebugToggleEvent(source, DebugType.STAT_CHANGES, arguments)
+                "random" -> sendDebugToggleEvent(source, DebugType.RANDOM_SUCCEED, arguments)
+                "map" -> sendDebugToggleEvent(source, DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
+                "clarity" -> sendDebugToggleEvent(source, DebugType.CLARITY, arguments)
+                "displayupdates" -> sendDebugToggleEvent(source, DebugType.DISPLAY_UPDATES, arguments)
                 "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(source, arguments)
                 "weather" -> sendDebugWeatherEvent(source, arguments)
-                else -> display("Did not understand debug command.")
+                else -> source.displayToMe("Did not understand debug command.")
             }
         }
     }
 
-    private fun sendDebugToggleEvent(type: DebugType, args: Args) {
+    private fun sendDebugToggleEvent(source: Target, type: DebugType, args: Args) {
         val toggleWords = args.hasAny(listOf("on", "off", "true", "false"))
         val toggledOn = if (toggleWords.isNotEmpty()) {
             toggleWords.contains("on") || toggleWords.contains("true")
@@ -71,7 +71,7 @@ class DebugCommand : Command() {
             !GameState.getDebugBoolean(type)
         }
 
-        EventManager.postEvent(DebugToggleEvent(type, toggledOn))
+        EventManager.postEvent(DebugToggleEvent(source, type, toggledOn))
     }
 
     private fun sendDebugStatEvent(source: Target, type: StatKind, args: Args) {
@@ -79,7 +79,7 @@ class DebugCommand : Command() {
         val level = args.getNumber()
 
         if (level == null) {
-            display("Could not find what number to set stat to: ${args.fullString}")
+            source.displayToMe("Could not find what number to set stat to: ${args.fullString}")
         } else {
             val statName = args.argsWithout(listOf("remove", args.args.first(), level.toString())).joinToString(" ")
 

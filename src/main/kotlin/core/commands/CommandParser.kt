@@ -3,7 +3,7 @@ package core.commands
 import core.DependencyInjector
 import core.GameState
 import core.events.EventManager
-import core.history.ChatHistory
+import core.history.GameLogger
 import core.history.display
 import core.target.Target
 import core.utility.NameSearchableList
@@ -47,7 +47,7 @@ object CommandParser {
 
     fun parseCommand(line: String) {
         val startTime = System.currentTimeMillis()
-        ChatHistory.addInput(line)
+        GameLogger.addInput(line)
 
         if (commandInterceptor == null) {
             splitAndParseCommand(line)
@@ -56,7 +56,7 @@ object CommandParser {
         }
 
         val time = System.currentTimeMillis() - startTime
-        ChatHistory.getCurrent().timeTaken = time
+        GameLogger.setTimeTaken(time)
     }
 
     private fun splitAndParseCommand(line: String) {
@@ -149,7 +149,7 @@ object CommandParser {
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {
         if (responseRequest != null && responseRequest.message != "") {
-            display(responseRequest.message)
+            commandSource.display(responseRequest.message)
         }
         this.responseRequest = responseRequest
     }

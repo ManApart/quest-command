@@ -1,12 +1,11 @@
 package inventory.dropItem
 
-import core.GameState
 import core.commands.Args
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.commands.parseVector
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import traveling.position.Vector
 
@@ -36,7 +35,7 @@ class DropItemCommand : core.commands.Command() {
         when {
             arguments.isEmpty() -> clarifyItemToDrop(source)
             arguments.hasBase() -> dropItem(source, arguments, vector)
-            else -> display("Drop what? Try 'drop <item>'.")
+            else -> source.displayToMe("Drop what? Try 'drop <item>'.")
         }
     }
 
@@ -51,7 +50,7 @@ class DropItemCommand : core.commands.Command() {
         if (item != null) {
             EventManager.postEvent(PlaceItemEvent(source, item, position))
         } else {
-            display("Couldn't find ${args.getBaseString()}")
+            source.displayToMe("Couldn't find ${args.getBaseString()}")
         }
     }
 

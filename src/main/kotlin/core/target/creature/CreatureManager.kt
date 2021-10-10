@@ -3,7 +3,6 @@ package core.target.creature
 import core.DependencyInjector
 import core.target.Target
 import core.target.build
-import core.target.item.ItemManager
 import core.target.target
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList

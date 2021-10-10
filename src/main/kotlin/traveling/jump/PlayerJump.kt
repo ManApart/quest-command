@@ -1,9 +1,9 @@
 package traveling.jump
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.utility.asSubject
 import status.stat.AGILITY
 import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
@@ -18,7 +18,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         return event.creature.isPlayer()
     }
     override fun execute(event: JumpEvent) {
-        display("You jump from ${event.source}")
+        event.creature.display{"${event.creature.asSubject(it)} jump from ${event.source}"}
         val damage = calculateJumpDamage(event)
 
         event.creature.finishClimbing()
@@ -26,7 +26,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         if (damage != 0) {
             EventManager.postEvent(StatChangeEvent(event.creature, "Falling", HEALTH, damage))
         } else {
-            display("You land without taking damage.")
+            event.creature.display{"${event.creature.asSubject(it)} land without taking damage."}
         }
 
         EventManager.postEvent(ArriveEvent(event.creature, destination = LocationPoint(event.destination), method = "fall"))

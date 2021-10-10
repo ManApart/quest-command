@@ -1,9 +1,9 @@
 package traveling.climb
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.utility.asSubject
 import traveling.arrive.ArriveEvent
 
 class ClimbComplete : EventListener<ClimbCompleteEvent>() {
@@ -16,7 +16,7 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
         val climbBackOff = event.destination.location == event.origin.location
 
         if (climbBackOff) {
-            display("You climb back off ${event.climbTarget.name}.")
+            event.creature.display{"${event.creature.asSubject(it)} climb back off ${event.climbTarget.name}."}
         }
 
         val position = event.origin.location.getPositionRelativeTo(event.destination.location)

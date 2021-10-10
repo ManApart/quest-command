@@ -1,6 +1,5 @@
 package core.properties.propValChanged
 
-import core.GameState
 import core.events.Event
 import core.target.Target
 

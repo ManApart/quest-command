@@ -2,10 +2,8 @@ package core
 
 import conversation.Conversation
 import core.properties.Properties
-import core.target.Target
 import system.debug.DebugType
 import time.TimeManager
-import traveling.location.location.Location
 
 object GameState {
     var gameName = "Kanbara"
@@ -40,3 +38,4 @@ const val AUTO_LOAD = "autoload"
 const val SKIP_SAVE_STATS = "skip save stats"
 const val LAST_SAVE_CHARACTER_NAME = "last save character name"
 const val LAST_SAVE_GAME_NAME = "last save character name"
+const val PRINT_WITHOUT_FLUSH = "print without needing to flush histories"

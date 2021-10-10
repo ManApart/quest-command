@@ -1,12 +1,11 @@
 package traveling.travel
 
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.target.Target
 import traveling.direction.Direction
@@ -42,7 +41,7 @@ class TravelInDirectionCommand : Command() {
         } else {
             val direction = Direction.getDirection(keyword)
             when {
-                direction == Direction.NONE -> display("Could not find direction $keyword")
+                direction == Direction.NONE -> source.displayToMe("Could not find direction $keyword")
                 source.properties.values.getBoolean(IS_CLIMBING) -> CommandParser.parseCommand("climb $direction")
                 else -> {
                     val neighbors = source.location.getNeighbors(direction)
@@ -54,7 +53,7 @@ class TravelInDirectionCommand : Command() {
                         openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(source, destination = openNeighbors.first(), quiet = quiet))
                         openNeighbors.size > 1 -> requestLocation(openNeighbors)
                         openNeighbors.isEmpty() && neighbors.isNotEmpty() -> CommandParser.parseCommand("climb $direction $quietFlag")
-                        else -> display("Could not find a location to the $direction.")
+                        else -> source.displayToMe("Could not find a location to the $direction.")
                     }
                 }
             }

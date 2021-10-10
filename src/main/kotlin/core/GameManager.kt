@@ -3,7 +3,7 @@ package core
 import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParser
 import core.events.EventManager
-import core.history.ChatHistory
+import core.history.GameLogger
 import core.target.Target
 import core.target.item.ItemManager
 import core.target.target
@@ -15,8 +15,8 @@ import system.persistance.loading.LoadEvent
 import system.startup.GameStartEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
-import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
+import traveling.location.network.LocationNode
 
 const val PLAYER_START_NETWORK = "Kanbara Countryside"
 const val PLAYER_START_LOCATION = "An Open Field"
@@ -36,7 +36,6 @@ object GameManager {
     }
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
-        ChatHistory.reset()
         GameState.reset()
         QuestManager.reset()
         LocationManager.reset()
@@ -48,6 +47,7 @@ object GameManager {
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
         CommandParser.reset()
+        GameLogger.reset()
 
         giveStartingItems(GameState.player)
         EventManager.postEvent(ArriveEvent(GameState.player, destination = LocationPoint(GameState.player.location), method = "wake"))
@@ -59,6 +59,7 @@ object GameManager {
         //        GameState.properties.values.put(AUTO_SAVE, true)
         GameState.properties.values.put(AUTO_LOAD, !testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
+        GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
     }
 
     fun newPlayer(

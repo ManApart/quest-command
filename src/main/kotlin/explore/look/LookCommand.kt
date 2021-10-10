@@ -1,6 +1,5 @@
 package explore.look
 
-import core.GameState
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
@@ -37,7 +36,7 @@ class LookCommand : Command() {
                 source,
                 argString
             ).first()))
-            else -> display("Couldn't find ${args.joinToString(" ")}.")
+            else -> source.display("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 

@@ -91,7 +91,7 @@ data class Location(
 
     fun equipItem(attachPoint: String, item: Target) {
         if (!equippedItems.containsKey(attachPoint.lowercase())) {
-            display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
+            item.display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
         } else {
             equippedItems[attachPoint.lowercase()] = item
             addTarget(item)

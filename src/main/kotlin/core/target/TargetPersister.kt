@@ -9,8 +9,8 @@ import system.persistance.cleanPathToFile
 import system.persistance.loadMap
 import system.persistance.writeSave
 import traveling.location.Network
-import traveling.location.network.DEFAULT_NETWORK
 import traveling.location.location.LocationManager
+import traveling.location.network.DEFAULT_NETWORK
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 

@@ -4,7 +4,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
@@ -34,15 +34,15 @@ class TravelCommand : Command() {
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
         if (source.getEncumbrance() >=1){
-            display("You are too encumbered to travel.")
+            source.displayToMe("You are too encumbered to travel.")
         } else if (args.isEmpty()) {
             val route = source.route
             val sourceLocation = source.location
             when {
-                route == null -> display("No route to travel to.")
-                route.destination == sourceLocation -> display("You're already at the end of the route.")
+                route == null -> source.displayToMe("No route to travel to.")
+                route.destination == sourceLocation -> source.displayToMe("You're already at the end of the route.")
                 route.isOnRoute(sourceLocation) -> EventManager.postEvent(TravelStartEvent(source, destination = route.getNextStep(sourceLocation).destination.location))
-                else -> display("You're not on a route right now.")
+                else -> source.displayToMe("You're not on a route right now.")
             }
         } else if (CommandParser.getCommand<TravelInDirectionCommand>().getAliases().map { it.lowercase() }.contains(args[0].lowercase())) {
             CommandParser.parseCommand(args.joinToString(" "))
@@ -56,10 +56,10 @@ class TravelCommand : Command() {
                 if (foundMatch(arguments.getBaseGroup(), found)) {
                     EventManager.postEvent(FindRouteEvent(source, source.location, found, 4, true, arguments.hasFlag("s")))
                 } else {
-                    display("Could not find $arguments")
+                    source.displayToMe("Could not find $arguments")
                 }
             } else {
-                display("Could not find $arguments")
+                source.displayToMe("Could not find $arguments")
             }
         }
     }

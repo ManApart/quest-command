@@ -1,7 +1,6 @@
 package status.conditions
 
 import core.body.Body
-import core.target.Target
 import magic.Element
 import status.effects.getPersisted
 

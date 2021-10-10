@@ -3,13 +3,14 @@ package traveling.move
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.utility.StringFormatter
-import core.utility.StringFormatter.getIsAre
-import core.utility.StringFormatter.getSubject
+import core.history.displayToMe
+import core.utility.then
+import core.utility.isAre
+import core.utility.asSubject
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
-import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
+import traveling.location.network.LocationNode
 import traveling.position.Distances
 import traveling.position.Distances.LOCATION_SIZE
 import traveling.position.NO_VECTOR
@@ -32,9 +33,9 @@ class Move : EventListener<MoveEvent>() {
         val movedToNeighbor = getMovedToNeighbor(event.creature.location, actualDestination)
 
         when {
-            actualDestination.z > 0 -> display("${getSubject(event.creature)} ${getIsAre(event.creature)} unable to move into the air.")
+            actualDestination.z > 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air."}
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, getDistanceToNeighbor(event.creature.location, movedToNeighbor.location), event.silent)
-            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> display("You cannot move that far in that direction.")
+            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> event.creature.displayToMe("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, actualDestination)
         }
     }
@@ -68,13 +69,12 @@ class Move : EventListener<MoveEvent>() {
             val destinationTarget = event.creature.location.getLocation().getTargets(event.creature).firstOrNull { it.position == actualDestination }
             val destinationString = destinationTarget?.getDisplayName() ?: actualDestination.toString()
 
-            val youMove = StringFormatter.format(event.creature.isPlayer(), "You move", "${event.creature} moves")
-            val isAre = getIsAre(event.creature)
+            val youMove = event.creature.isPlayer().then("You move", "${event.creature} moves")
 
             if (desiredDistance == actualDistance) {
-                display("$youMove from ${event.source} to $destinationString.")
+                event.creature.display{"$youMove from ${event.source} to $destinationString."}
             } else {
-                display("$youMove $actualDistance towards ${event.destination} and $isAre now at ${destinationString}.")
+                event.creature.display{"$youMove $actualDistance towards ${event.destination} and ${event.creature.isAre(it)} now at ${destinationString}."}
             }
         }
     }

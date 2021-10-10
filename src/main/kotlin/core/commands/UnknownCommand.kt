@@ -35,7 +35,7 @@ class UnknownCommand : Command() {
             if (GameState.properties.values.getBoolean(AUTO_SAVE)){
                 SessionHistory.saveSessionStats()
             }
-            display("Unknown command: $line")
+            source.display("Unknown command: $line")
         }
     }
 }

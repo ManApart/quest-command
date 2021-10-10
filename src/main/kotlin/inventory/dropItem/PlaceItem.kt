@@ -4,7 +4,8 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import core.utility.StringFormatter
+import core.utility.isAre
+import core.utility.asSubject
 import traveling.position.Vector
 
 class PlaceItem : EventListener<PlaceItemEvent>() {
@@ -12,7 +13,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         if (event.source.canReach(event.position)) {
             placeItem(event.source, event.item, event.position, event.silent)
         } else {
-            display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to place at ${event.position}.")
+            event.source.display { event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to place at ${event.position}." }
         }
     }
 

@@ -2,7 +2,8 @@ package status.statChanged
 
 import core.events.EventListener
 import core.history.display
-import core.utility.StringFormatter
+import core.utility.then
+import core.utility.asSubjectPossessive
 import kotlin.math.abs
 
 class StatBoosted : EventListener<StatBoostEvent>() {
@@ -12,13 +13,16 @@ class StatBoosted : EventListener<StatBoostEvent>() {
     }
 
     override fun execute(event: StatBoostEvent) {
-        val change = StringFormatter.format(event.amount > 0, "increases", "decreases")
-        val subject = StringFormatter.getSubjectPossessive(event.target)
+        val change = (event.amount > 0).then("increases", "decreases")
+
         val soul = event.target.soul
         soul.incStatMax(event.type, event.amount)
 
         val current = soul.getCurrent(event.type)
         val max = soul.getTotal(event.type)
-        display("${event.source} $change $subject max ${event.type} by ${abs(event.amount)} ($current/$max).")
+        event.target.display{
+            val subject = event.target.asSubjectPossessive(it)
+            "${event.source} $change $subject max ${event.type} by ${abs(event.amount)} ($current/$max)."
+        }
     }
 }

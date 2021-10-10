@@ -3,7 +3,7 @@ package magic.castSpell
 import core.DependencyInjector
 import core.commands.*
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import core.utility.NameSearchableList
 import magic.ViewWordHelpEvent
@@ -49,22 +49,22 @@ class CastCommand : Command() {
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
         when (keyword) {
-            "word" -> executeWord(args)
+            "word" -> executeWord(source, args)
             else -> castWord(source, keyword != "cast", args, keyword == "c")
         }
     }
 
-    private fun executeWord(args: List<String>) {
+    private fun executeWord(source: Target, args: List<String>) {
         if (args.size <= 1) {
             if (args.isEmpty() || args.first() == "list") {
-                EventManager.postEvent(ViewWordHelpEvent())
+                EventManager.postEvent(ViewWordHelpEvent(source))
             } else if (isCategory(args)) {
-                EventManager.postEvent(ViewWordHelpEvent(args.first(), true))
+                EventManager.postEvent(ViewWordHelpEvent(source, args.first(), true))
             } else {
-                EventManager.postEvent(ViewWordHelpEvent(args.first()))
+                EventManager.postEvent(ViewWordHelpEvent(source, args.first()))
             }
         } else {
-            display("Unknown command: ${args.joinToString(" ")}")
+            source.displayToMe("Unknown command: ${args.joinToString(" ")}")
         }
     }
 
@@ -92,7 +92,7 @@ class CastCommand : Command() {
                 }
                 spellCommand.execute(source, spellArgs, targets, useDefaults)
             } else {
-                display("Unknown word ${args.first()}")
+                source.displayToMe("Unknown word ${args.first()}")
             }
         }
     }

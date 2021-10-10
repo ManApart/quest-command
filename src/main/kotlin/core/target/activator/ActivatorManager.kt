@@ -4,7 +4,6 @@ import core.DependencyInjector
 import core.target.Target
 import core.target.activator.dsl.ActivatorsCollection
 import core.target.build
-import core.target.creature.CreatureManager
 import core.target.target
 import core.utility.NameSearchableList
 import traveling.location.location.LocationTarget

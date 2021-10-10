@@ -4,7 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import quests.QuestManager
 
@@ -32,19 +32,19 @@ class JournalCommand : Command() {
         when {
             args.isEmpty() && keyword == "Quest" -> clarifyQuest()
 
-            args.isEmpty() -> EventManager.postEvent(ViewQuestListEvent(justActive = true))
-            args.size == 1 && args[0] == "active" -> EventManager.postEvent(ViewQuestListEvent(justActive = true))
+            args.isEmpty() -> EventManager.postEvent(ViewQuestListEvent(source, justActive = true))
+            args.size == 1 && args[0] == "active" -> EventManager.postEvent(ViewQuestListEvent(source, justActive = true))
 
-            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ViewQuestListEvent(justActive = false))
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ViewQuestListEvent(source, justActive = false))
 
             args.size == 1 && args[0] == "quest" -> clarifyWhichQuest()
 
             else -> {
                 val quest = QuestManager.quests.getOrNull(args.joinToString())
                 if (quest != null) {
-                    EventManager.postEvent(ViewQuestJournalEvent(quest))
+                    EventManager.postEvent(ViewQuestJournalEvent(source, quest))
                 } else {
-                    display("Couldn't find quest: ${args.joinToString(" ")}")
+                    source.displayToMe("Couldn't find quest: ${args.joinToString(" ")}")
                 }
             }
         }

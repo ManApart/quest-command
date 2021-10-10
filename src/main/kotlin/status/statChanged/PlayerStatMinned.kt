@@ -1,8 +1,7 @@
 package status.statChanged
 
-import core.GameState
 import core.events.EventListener
-import core.history.display
+import core.history.displayToMe
 import status.stat.HEALTH
 import status.stat.STAMINA
 
@@ -13,8 +12,8 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
 
     override fun execute(event: StatMinnedEvent) {
         when (event.stat.lowercase()){
-            HEALTH.lowercase() -> display("Oh dear, you have died!")
-            STAMINA.lowercase() -> display("You are completely exhausted.")
+            HEALTH.lowercase() -> event.target.displayToMe("Oh dear, you have died!")
+            STAMINA.lowercase() -> event.target.displayToMe("You are completely exhausted.")
         }
     }
 }

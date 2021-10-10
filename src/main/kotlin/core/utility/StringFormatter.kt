@@ -2,26 +2,28 @@ package core.utility
 
 import core.target.Target
 
-object StringFormatter {
 
-    fun format(value: Boolean, trueChoice: String, falseChoice: String): String {
-        return if (value) trueChoice else falseChoice
-    }
+fun Boolean.then(trueChoice: String, falseChoice: String): String {
+    return if (this) trueChoice else falseChoice
+}
 
-    fun getSubject(target: Target): String {
-        return format(target.isPlayer(), "You", target.name)
-    }
+/**
+ * Returns You if you are the listener, otherwise the target's name
+ */
+fun Target.asSubject(listener: Target): String {
+    return (this === listener).then("You", name)
+}
 
-    fun getSubjectPossessive(target: Target): String {
-        return format(target.isPlayer(), "Your", target.name + "'s")
-    }
+/**
+ * Returns Your if you are the listener, otherwise the target's name as a possessive
+ */
+fun Target.asSubjectPossessive(listener: Target): String {
+    return (this === listener).then("Your", "$name's")
+}
 
-    fun getIsAre(target: Target): String {
-        return format(target.isPlayer(), "are", "is")
-    }
-
-
-//    fun joinWithAnd(targets: List<Target>) : String {
-//        return targets.joinToString(", ") { it.name }
-//    }
+/**
+ * Returns are if you are the listener, otherwise is
+ */
+fun Target.isAre(listener: Target): String {
+    return (this === listener).then("are", "is")
 }

@@ -1,5 +1,6 @@
 package time
 
 import core.events.Event
+import core.target.Target
 
-class ViewTimeEvent : Event
+class ViewTimeEvent(val source: Target) : Event

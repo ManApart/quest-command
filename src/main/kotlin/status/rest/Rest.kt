@@ -2,8 +2,8 @@ package status.rest
 
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
-import core.utility.StringFormatter.format
+import core.history.displayToMe
+import core.utility.then
 import status.stat.HEALTH
 import status.stat.LeveledStat
 import status.stat.STAMINA
@@ -13,7 +13,7 @@ class Rest : EventListener<RestEvent>() {
 
     override fun execute(event: RestEvent) {
         if (!event.creature.isSafe()) {
-            display("You can't rest right now!")
+            event.creature.displayToMe("You can't rest right now!")
         } else {
             rest(event)
         }
@@ -23,8 +23,8 @@ class Rest : EventListener<RestEvent>() {
         val recoverableStats = event.creature.soul.getStats().filter { isRecoverable(it) }
 
         if (recoverableStats.isEmpty()) {
-            val hours = format(event.hoursRested != 1, "${event.hoursRested} hours", "1 hour")
-            display("You rest for $hours but feel the same.")
+            val hours = (event.hoursRested != 1).then("${event.hoursRested} hours", "1 hour")
+            event.creature.displayToMe("You rest for $hours but feel the same.")
         }
 
         recoverableStats.forEach {

@@ -3,7 +3,9 @@ package traveling.location
 import core.utility.NameSearchableList
 import core.utility.Named
 import traveling.direction.Direction
-import traveling.location.location.*
+import traveling.location.location.LocationPoint
+import traveling.location.location.LocationRecipe
+import traveling.location.location.NOWHERE
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.Vector

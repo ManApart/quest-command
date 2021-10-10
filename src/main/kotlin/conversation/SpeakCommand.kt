@@ -8,7 +8,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import core.utility.capitalize2
 
@@ -40,7 +40,7 @@ class SpeakCommand : Command() {
         when {
             arguments.hasGroup("with") -> speakTo(source, arguments.getString("with"))
             arguments.hasGroup("to") -> speakTo(source, arguments.getString("to"))
-            else -> display("Couldn't find someone to speak with.")
+            else -> source.displayToMe("Couldn't find someone to speak with.")
         }
     }
 

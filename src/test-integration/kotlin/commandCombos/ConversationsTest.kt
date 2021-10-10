@@ -4,7 +4,7 @@ import core.GameManager
 import core.GameState
 import core.commands.CommandParser
 import core.events.EventManager
-import core.history.ChatHistory
+import core.history.GameLogger
 import org.junit.Before
 import org.junit.Test
 import system.debug.DebugType
@@ -33,7 +33,7 @@ class ConversationsTest {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
-        assertEquals("Farmer: I be here.", ChatHistory.getLastOutput())
+        assertEquals("Farmer: I be here.", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -41,27 +41,27 @@ class ConversationsTest {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 1)
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where are you?")
-        assertEquals("Farmer: I be with you.", ChatHistory.getLastOutput())
+        assertEquals("Farmer: I be with you.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun whereBeMe() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("where am I?")
-        assertEquals("Farmer: You be in Farmer's Hut.", ChatHistory.getLastOutput())
+        assertEquals("Farmer: You be in Farmer's Hut.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun whatKanbaraCity() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("what is kanbara city?")
-        assertEquals("Farmer: Kanbara City be a city.", ChatHistory.getLastOutput())
+        assertEquals("Farmer: Kanbara City be a city.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun whatLocationWithMultipleMatches() {
         CommandParser.parseCommand("w && speak with farmer")
         CommandParser.parseCommand("what is kanbara?")
-        assertEquals("Farmer: What you mean? You mean Kanbara Gate or Kanbara City?", ChatHistory.getLastOutput())
+        assertEquals("Farmer: What you mean? You mean Kanbara Gate or Kanbara City?", GameLogger.main.getLastOutput())
     }
 }

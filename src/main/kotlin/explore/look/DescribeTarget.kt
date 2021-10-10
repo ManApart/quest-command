@@ -9,7 +9,7 @@ fun describeTarget(target: Target) {
     message += describeStatusEffects(target)
     message += describeWeight(target)
     message += describeProperties(target)
-    display(message)
+    target.display(message)
 }
 
 private fun describeStatusEffects(target: Target): String {

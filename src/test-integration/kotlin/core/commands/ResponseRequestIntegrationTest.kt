@@ -3,7 +3,7 @@ package core.commands
 import core.GameManager
 import core.GameState
 import core.events.EventManager
-import core.history.ChatHistory
+import core.history.GameLogger
 import core.properties.Properties
 import core.properties.Tags
 import core.target.Target
@@ -36,7 +36,7 @@ class ResponseRequestIntegrationTest {
 
         val input = "pickup wheat && 2"
         CommandParser.parseCommand(input)
-        assertEquals("Player picked up Wheat Flour.", ChatHistory.getLastOutput())
+        assertEquals("Player picked up Wheat Flour.", GameLogger.main.getLastOutput())
     }
 
 }

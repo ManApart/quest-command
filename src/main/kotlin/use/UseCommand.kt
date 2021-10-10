@@ -1,9 +1,8 @@
 package use
 
-import core.GameState
 import core.commands.*
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import use.interaction.InteractEvent
 
@@ -40,13 +39,13 @@ class UseCommand : Command() {
             arguments.isEmpty() -> clarifyAction()
             arguments.fullString == "item on target" -> clarifyItemForTarget(source)
             arguments.getBaseString() == "item" && !arguments.hasGroup("on") -> clarifyItem(source)
-            used == null -> display("Couldn't find $arguments")
+            used == null -> source.displayToMe("Couldn't find $arguments")
 
             !arguments.hasGroup("on") && args.contains("on") -> clarifyTarget(source, used.name)
-            !used.isWithinRangeOf(source) ->  display("You are too far away to use $used.")
+            !used.isWithinRangeOf(source) -> source.displayToMe("You are too far away to use $used.")
             !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(source, used))
-            target == null -> display("Couldn't find ${arguments.getString("on")}")
-            !target.isWithinRangeOf(source) ->  display("You are too far away to use $used on $target.")
+            target == null -> source.displayToMe("Couldn't find ${arguments.getString("on")}")
+            !target.isWithinRangeOf(source) -> source.displayToMe("You are too far away to use $used on $target.")
 
             else -> EventManager.postEvent(StartUseEvent(source, used, target))
         }

@@ -25,7 +25,7 @@ class CommonBehaviors : BehaviorResource {
     override val values = behaviors {
         behavior("Add on Eat", EatFoodEvent::class) {
             events { event, params ->
-                listOf(SpawnItemEvent( params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, event.creature))
+                listOf(SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, event.creature))
             }
         }
 
@@ -36,7 +36,7 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val treeName = params["treeName"] ?: "tree"
                 listOf(
-                    MessageEvent("The $treeName cracks and falls to the ground."),
+                    MessageEvent(event.target, "The $treeName cracks and falls to the ground."),
                     RemoveScopeEvent(event.target),
                     SpawnActivatorEvent(ActivatorManager.getActivator("Logs"), targetLocation = event.target.location),
                     SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, targetLocation = event.target.location)
@@ -57,7 +57,7 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val name = params["name"] ?: "object"
                 listOf(
-                    MessageEvent("The $name smolders until it is nothing more than ash."),
+                    MessageEvent(event.target,"The $name smolders until it is nothing more than ash."),
                     RemoveScopeEvent(event.target),
                     SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, targetLocation = event.target.location, positionParent = event.target)
                 )
@@ -70,7 +70,7 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOf(
-                    MessageEvent("The ${event.target} smolders out and needs to be relit."),
+                    MessageEvent(event.target,"The ${event.target} smolders out and needs to be relit."),
                     RemoveConditionEvent(event.target, event.target.soul.getConditionWithEffect("On Fire")),
                     StatChangeEvent(event.target, "lighting", "fireHealth", params["fireHealth"]?.toInt() ?: 1)
                 )
@@ -83,7 +83,7 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOf(
-                    MessageEvent(params["message"] ?: "You harvest ${event.target} with ${event.used}."),
+                    MessageEvent(event.source,params["message"] ?: "You harvest ${event.target} with ${event.used}."),
                     SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, targetLocation = event.target.location, positionParent = event.target)
                 )
             }
@@ -96,8 +96,8 @@ class CommonBehaviors : BehaviorResource {
                 val makeRestricted = false
                 val replacement = ActivatorManager.getActivator(params["replacementActivator"] ?: "Logs")
                 listOf(
-                    MessageEvent(params["message"] ?: ""),
-                    RestrictLocationEvent(sourceLocation, destinationLocation, makeRestricted),
+                    MessageEvent(event.source,params["message"] ?: ""),
+                    RestrictLocationEvent(event.target, sourceLocation, destinationLocation, makeRestricted),
                     RemoveScopeEvent(event.target),
                     SpawnActivatorEvent(replacement, true, event.target.location)
                 )
@@ -115,10 +115,10 @@ class CommonBehaviors : BehaviorResource {
                 val depositLocation = parseLocation(params, event.source, "resultItemNetwork", "resultItemLocation")
                 val depositTarget = depositLocation.getLocation().getTargets(params["resultContainer"] ?: "Grain Bin").firstOrNull()
                 if (sourceItem == null || depositTarget == null) {
-                    listOf(MessageEvent("Unable to Mill."))
+                    listOf(MessageEvent(event.source,"Unable to Mill."))
                 } else {
                     listOf(
-                        MessageEvent("The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the $depositTarget."),
+                        MessageEvent(event.source,"The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the $depositTarget."),
                         RemoveItemEvent(event.source, sourceItem),
                         SpawnItemEvent(resultItem, 1, depositTarget)
                     )

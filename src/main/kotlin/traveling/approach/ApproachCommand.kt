@@ -1,9 +1,8 @@
 package traveling.approach
 
-import core.GameState
 import core.commands.*
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import traveling.move.StartMoveEvent
 import traveling.position.Distances
@@ -36,7 +35,7 @@ class ApproachCommand : Command() {
             target != null && distance != null -> approachByAmount(source, target, distance)
             target != null && keyword.lowercase() == "approach" -> clarifyAmount(source, target)
             target != null -> EventManager.postEvent(StartMoveEvent(source, target.position))
-            else -> clarifyTarget(creatures)
+            else -> clarifyTarget(source, creatures)
         }
     }
 
@@ -61,9 +60,9 @@ class ApproachCommand : Command() {
             targets.entries.associate { it.key to "approach ${target.name} by ${it.value}" }))
     }
 
-    private fun clarifyTarget(creatures: List<Target>) {
+    private fun clarifyTarget(source: Target, creatures: List<Target>) {
         if (creatures.isEmpty()) {
-            display("Couldn't find anything to approach.")
+            source.displayToMe("Couldn't find anything to approach.")
         } else {
             val message = "Approach what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "approach ${it.name}" })

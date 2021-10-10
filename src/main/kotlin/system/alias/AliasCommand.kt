@@ -4,7 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 
 class AliasCommand : Command() {
@@ -32,31 +32,31 @@ class AliasCommand : Command() {
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
-            EventManager.postEvent(ListAliasesEvent())
+            EventManager.postEvent(ListAliasesEvent(source))
         } else {
             when (args.first()) {
-                "create" -> createAlias(args)
-                "delete" -> deleteAlias(args)
-                "clear" -> deleteAlias(args)
-                "list" -> EventManager.postEvent(ListAliasesEvent())
-                "ls" -> EventManager.postEvent(ListAliasesEvent())
-                else -> display("Did not understand " + args.joinToString(" ") +". Did you forget a create or delete?")
+                "create" -> createAlias(source, args)
+                "delete" -> deleteAlias(source, args)
+                "clear" -> deleteAlias(source, args)
+                "list" -> EventManager.postEvent(ListAliasesEvent(source))
+                "ls" -> EventManager.postEvent(ListAliasesEvent(source))
+                else -> source.displayToMe("Did not understand " + args.joinToString(" ") +". Did you forget a create or delete?")
             }
         }
     }
 
 
-    private fun createAlias(args: List<String>) {
+    private fun createAlias(source: Target, args: List<String>) {
         if (args.size <= 2) {
-            display("Must give an alias followed by a command.")
+            source.displayToMe("Must give an alias followed by a command.")
         } else {
             val alias = args[1]
             val command = args.subList(2, args.size).joinToString(" ")
-            EventManager.postEvent(CreateAliasEvent(alias, command))
+            EventManager.postEvent(CreateAliasEvent(source, alias, command))
         }
     }
 
-    private fun deleteAlias(args: List<String>) {
+    private fun deleteAlias(source: Target, args: List<String>) {
         if (args.size != 2) {
             //TODO - get from command parser
             val aliases = listOf("alias1", "alias2")
@@ -64,7 +64,7 @@ class AliasCommand : Command() {
             val response = ResponseRequest(message, aliases.associateWith { "alias delete $it" })
             CommandParser.setResponseRequest(response)
         } else {
-            EventManager.postEvent(DeleteAliasEvent(args[1]))
+            EventManager.postEvent(DeleteAliasEvent(source, args[1]))
         }
     }
 }

@@ -1,5 +1,6 @@
 package system.persistance.loading
 
 import core.events.Event
+import core.target.Target
 
-class ListSavesEvent : Event
+class ListSavesEvent(val source: Target) : Event

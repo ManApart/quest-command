@@ -1,8 +1,5 @@
 package core.events
 
-import core.utility.Named
-import kotlin.reflect.full.memberProperties
-
 interface Event {
     fun gameTicks(): Int = 0
     fun isExecutableByAI(): Boolean = false

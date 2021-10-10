@@ -8,7 +8,10 @@ import core.body.Body
 import core.body.Slot
 import core.events.Event
 import core.properties.*
-import core.utility.*
+import core.utility.NameSearchableList
+import core.utility.Named
+import core.utility.max
+import core.utility.toNameSearchableList
 import crafting.Recipe
 import inventory.Inventory
 import status.Soul
@@ -25,6 +28,7 @@ import traveling.scope.getLightLevel
 import kotlin.math.max
 import kotlin.math.min
 
+//TODO `==` includes things like inventory, which can break using this as a key in a map
 data class Target(
     override val name: String,
     val description: String = name,
@@ -217,19 +221,19 @@ data class Target(
     private fun getStealthLevel(): Int {
         val size = min(body.getSize().getDistance(), 50)
         val sneak = soul.getCurrent(SNEAK)
-        return max(100, min(0, sneak - size))
+        return max(0, min(100, sneak - size))
     }
 
     fun perceives(other: Target): Boolean {
-        if (GameState.getDebugBoolean(DebugType.CLARITY)) return true
-        return getClarity() > other.getStealthLevel()
+        if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
+        return getClarity() >= other.getStealthLevel()
     }
 
     fun List<Target>.perceived(): List<Target> {
         if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
 
         val clarity = getClarity()
-        return filter { other -> clarity > other.getStealthLevel() }
+        return filter { other -> this@Target === other || clarity >= other.getStealthLevel() }
     }
 
 }

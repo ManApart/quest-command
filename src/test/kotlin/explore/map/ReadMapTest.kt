@@ -4,28 +4,30 @@ import traveling.position.Vector
 import traveling.location.Connection
 import traveling.location.network.LocationNode
 import traveling.location.location.LocationPoint
-import core.history.ChatHistory
+import core.history.GameLogger
 import core.target.Target
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
 class ReadMapTest {
+    val player = Target("Bob")
 
     @Before
     fun setup(){
-        ChatHistory.reset()
+        GameLogger.reset()
+        GameLogger.track(player)
     }
 
     @Test
     fun noNeighbors(){
         val target = LocationNode("My Place")
-        val player = Target("Bob")
+
         val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = ChatHistory.getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
 
@@ -33,12 +35,11 @@ class ReadMapTest {
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination", discovered = true)), Vector(0, 10, 0)))
-        val player = Target("Bob")
         val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = ChatHistory.getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name         Distance  Direction Path  \n" +
                 "  Destination  10        N               \n", actual)
@@ -52,12 +53,11 @@ class ReadMapTest {
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south", discovered = true)), Vector(0, -10, 0)))
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east", discovered = true)), Vector(10, 0, 0)))
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west", discovered = true)), Vector(-10, 0, 0)))
-        val player = Target("Bob")
         val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = ChatHistory.getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name   Distance  Direction Path  \n" +
                 "  north  10        N               \n" +

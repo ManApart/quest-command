@@ -2,7 +2,7 @@ package system.persistance.loading
 
 import core.commands.Command
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 
 class LoadCommand : Command() {
@@ -28,8 +28,8 @@ class LoadCommand : Command() {
     override fun execute(source: Target, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            argString == "ls" -> EventManager.postEvent(ListSavesEvent())
-            args.isEmpty() -> display("Please specify a save to load or use ls to list current saves.")
+            argString == "ls" -> EventManager.postEvent(ListSavesEvent(source))
+            args.isEmpty() -> source.displayToMe("Please specify a save to load or use ls to list current saves.")
             else -> EventManager.postEvent(LoadEvent(source, args.joinToString(" ")))
         }
     }

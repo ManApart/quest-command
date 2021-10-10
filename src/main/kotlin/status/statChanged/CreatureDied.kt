@@ -14,7 +14,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
     }
 
     override fun execute(event: StatMinnedEvent) {
-        display("${event.target.name} has died.")
+        event.target.display("${event.target.name} has died.")
         val creature = event.target
 
         creature.location.getLocation().getCreatures().forEach {

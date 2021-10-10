@@ -1,9 +1,8 @@
 package traveling.approach
 
-import core.GameState
 import core.commands.*
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import traveling.move.StartMoveEvent
 import traveling.position.Distances.HUMAN_LENGTH
@@ -36,7 +35,7 @@ class RetreatCommand : Command() {
             target != null && distance != null -> retreatByAmount(source, target, distance)
             target != null && keyword.lowercase() == "retreat" -> clarifyAmount(target)
             target != null -> retreatByAmount(source, target, HUMAN_LENGTH)
-            else -> clarifyTarget(creatures)
+            else -> clarifyTarget(source, creatures)
         }
     }
 
@@ -61,9 +60,9 @@ class RetreatCommand : Command() {
         CommandParser.setResponseRequest(distanceResponse)
     }
 
-    private fun clarifyTarget(creatures: List<Target>) {
+    private fun clarifyTarget(source: Target, creatures: List<Target>) {
         if (creatures.isEmpty()) {
-            display("Couldn't find anything to retreat from. You must be really frightened.")
+            source.displayToMe("Couldn't find anything to retreat from. You must be really frightened.")
         } else {
             val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "retreat from ${it.name}" })

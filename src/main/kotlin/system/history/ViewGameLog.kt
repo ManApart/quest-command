@@ -1,17 +1,17 @@
 package system.history
 
 import core.events.EventListener
-import core.history.ChatHistory
+import core.history.GameLogger
 import core.history.InputOutput
-import core.history.display
+import core.history.displayToMe
 
-class ViewChatHistory : EventListener<ViewChatHistoryEvent>() {
+class ViewGameLog : EventListener<ViewGameLogEvent>() {
 
 
-    override fun execute(event: ViewChatHistoryEvent) {
-        val historyList = ChatHistory.history.takeLast(event.numberOfLinesToShow)
+    override fun execute(event: ViewGameLogEvent) {
+        val historyList = GameLogger.getHistory(event.source).history.takeLast(event.numberOfLinesToShow)
         val message = createMessage(historyList, event.viewResponses)
-        display(message)
+        event.source.displayToMe(message)
     }
 
     private fun createMessage(historyList: List<InputOutput>, viewResponses: Boolean): String {

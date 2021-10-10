@@ -16,7 +16,7 @@ class HistoryCommand : Command() {
         val showResponses = arguments.contains("responses")
         val numberOfLinesToShow = arguments.getNumber() ?: 10
 
-        EventManager.postEvent(ViewChatHistoryEvent(numberOfLinesToShow, showResponses))
+        EventManager.postEvent(ViewGameLogEvent(source, numberOfLinesToShow, showResponses))
     }
 
     override fun getDescription(): String {

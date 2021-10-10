@@ -1,12 +1,11 @@
 package inventory.unEquipItem
 
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import core.target.Target
 import core.utility.NameSearchableList
 
@@ -42,9 +41,9 @@ class UnEquipItemCommand : Command() {
             } else {
                 val unEquippedItem = getUnequippedItem(source, arguments)
                 if (unEquippedItem != null) {
-                    display("${unEquippedItem.name} is already unequipped.")
+                    source.displayToMe("${unEquippedItem.name} is already unequipped.")
                 } else {
-                    display("Could not find ${arguments.getBaseString()}")
+                    source.displayToMe("Could not find ${arguments.getBaseString()}")
                 }
             }
         }

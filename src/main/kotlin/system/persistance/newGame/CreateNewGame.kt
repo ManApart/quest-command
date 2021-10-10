@@ -3,7 +3,7 @@ package system.persistance.newGame
 import core.GameManager
 import core.GameState
 import core.events.EventListener
-import core.history.display
+import core.history.displayToMe
 import system.persistance.clean
 import system.persistance.getGameNames
 import system.persistance.save
@@ -13,7 +13,7 @@ class CreateNewGame : EventListener<CreateNewGameEvent>() {
         val gameNames = getGameNames()
         val gameName = clean(event.saveName)
         if (gameNames.map { it.lowercase() }.contains(gameName.lowercase())) {
-            display("$gameName already exists!")
+            event.source.displayToMe("$gameName already exists!")
         } else {
             GameManager.newGame(event.saveName)
             save(GameState.gameName, event.source)

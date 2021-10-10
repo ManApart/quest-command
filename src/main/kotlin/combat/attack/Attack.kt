@@ -2,12 +2,13 @@ package combat.attack
 
 import combat.DamageType
 import combat.takeDamage.TakeDamageEvent
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import core.utility.StringFormatter
+import core.utility.then
+import core.utility.asSubject
+import core.utility.asSubjectPossessive
 import status.stat.BARE_HANDED
 import status.stat.HEALTH
 import traveling.location.location.Location
@@ -25,18 +26,22 @@ class Attack : EventListener<AttackEvent>() {
             val weaponRange = getRange(event.source, event.sourcePart)
 
             when {
-                weaponRange < targetDistance -> display("${event.target} is too far away to be hit by $damageSource.")
+                weaponRange < targetDistance -> event.source.display("${event.target} is too far away to be hit by $damageSource.")
                 offensiveDamage > 0 -> processAttack(event, damageSource, offensiveDamage)
-                event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(UseEvent(event.source, event.sourcePart.getEquippedWeapon()!!, event.target.target))
-                else -> display("Nothing happens.")
+                event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(
+                    UseEvent(
+                        event.source,
+                        event.sourcePart.getEquippedWeapon()!!,
+                        event.target.target
+                    )
+                )
+                else -> event.source.display("Nothing happens.")
             }
         }
         event.target.target.consume(event)
     }
 
     private fun processAttack(event: AttackEvent, damageSource: String, offensiveDamage: Int) {
-        val subject = StringFormatter.getSubject(event.source)
-        val defenderName = StringFormatter.getSubject(event.target.target)
         val attackedParts = getAttackedParts(event.source, event.sourcePart, event.target)
         if (event.source != event.target.target) {
             event.source.ai.aggroTarget = event.target.target
@@ -44,12 +49,22 @@ class Attack : EventListener<AttackEvent>() {
 
         if (attackedParts.isEmpty()) {
             val missedParts = event.target.bodyPartTargets.joinToString(", ") { it.name }
-            display("$subject ${StringFormatter.format(event.source.isPlayer(), "miss", "misses")} $missedParts!")
+            event.source.display { listener ->
+                val subject = event.source.asSubject(listener)
+                "$subject ${event.source.isPlayer().then("miss", "misses")} $missedParts!"
+            }
         } else {
-            val verb = StringFormatter.format(event.source.isPlayer(), event.type.verbPlural, event.type.verb)
+            val verb = event.source.isPlayer().then(event.type.verbPlural, event.type.verb)
 //            display("$subject $verb at $defenderName.")
             attackedParts.forEach { attackedPart ->
-                processAttackHit(event, attackedPart, subject, verb, defenderName, damageSource, event.target, offensiveDamage)
+                processAttackHit(
+                    event,
+                    attackedPart,
+                    verb,
+                    damageSource,
+                    event.target,
+                    offensiveDamage
+                )
             }
         }
     }
@@ -70,15 +85,37 @@ class Attack : EventListener<AttackEvent>() {
         return weaponRange + bodyRange
     }
 
-    private fun processAttackHit(event: AttackEvent, attackedPart: Location, subject: String, verb: String, defenderName: String, damageSource: String, defender: TargetAim, offensiveDamage: Int) {
-        val possessive = StringFormatter.getSubjectPossessive(event.source)
-        display("$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource.")
-        EventManager.postEvent(TakeDamageEvent(defender.target, attackedPart, offensiveDamage, event.type, damageSource))
+    private fun processAttackHit(
+        event: AttackEvent,
+        attackedPart: Location,
+        verb: String,
+        damageSource: String,
+        defender: TargetAim,
+        offensiveDamage: Int
+    ) {
+        event.source.display { listener ->
+            val subject = event.source.asSubject(listener)
+            val defenderName = event.target.target.asSubject(listener)
+            val possessive = event.source.asSubjectPossessive(listener)
+            "$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource."
+        }
+        EventManager.postEvent(
+            TakeDamageEvent(
+                defender.target,
+                attackedPart,
+                offensiveDamage,
+                event.type,
+                damageSource
+            )
+        )
     }
 
     private fun getOffensiveDamage(sourceCreature: Target, sourcePart: Location, type: DamageType): Int {
         return when {
-            sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(type.damage, 0)
+            sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(
+                type.damage,
+                0
+            )
             else -> sourceCreature.soul.getCurrent(BARE_HANDED)
         }
     }

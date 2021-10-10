@@ -1,10 +1,8 @@
 package core.events
 
 import core.DependencyInjector
-import java.lang.reflect.ParameterizedType
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSupertypes
-import kotlin.reflect.full.superclasses
 
 //import java.lang.reflect.ParameterizedType
 

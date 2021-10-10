@@ -1,9 +1,8 @@
 package crafting
 
-import core.GameState
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import status.ExpGainedEvent
 import status.stat.COOKING
 
@@ -16,8 +15,8 @@ class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
 
                 val amount = event.recipe.skills.values.maxOrNull() ?: 1
                 EventManager.postEvent(ExpGainedEvent(event.source, COOKING, amount))
-                display("You've discovered how to make ${event.recipe.name}!")
-                display("\t${event.recipe.read()}")
+                event.source.displayToMe("You've discovered how to make ${event.recipe.name}!")
+                event.source.displayToMe("\t${event.recipe.read()}")
             }
         }
     }

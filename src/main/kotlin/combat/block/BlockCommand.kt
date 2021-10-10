@@ -1,7 +1,6 @@
 package combat.block
 
 import combat.HandHelper
-import core.GameState
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseBodyParts

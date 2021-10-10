@@ -1,5 +1,6 @@
 package quests
 
+import core.GameState
 import core.events.Event
 import core.events.EventManager
 import core.utility.Named
@@ -12,7 +13,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
     private val listenedForEvents = mutableListOf<StoryEvent>()
 
     fun addEvent(event: StoryEvent) {
-        if (storyEvents.containsKey(event.stage)){
+        if (storyEvents.containsKey(event.stage)) {
             println("WARN: Duplicate stage ${event.stage} being replaced.")
         }
         storyEvents[event.stage] = event
@@ -62,7 +63,8 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         }
 
         stage = event.stage
-        EventManager.postEvent(QuestStageUpdatedEvent(this, stage))
+        //TODO - quests per player?
+        EventManager.postEvent(QuestStageUpdatedEvent(GameState.player, this, stage))
         calculateListenedForEvents()
         if (event.completesQuest || listenedForEvents.isEmpty()) {
             EventManager.postEvent(CompleteQuestEvent(this))
@@ -74,7 +76,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         active = false
     }
 
-    fun hasStarted() :Boolean{
+    fun hasStarted(): Boolean {
         return stage != 0 || active || complete
     }
 

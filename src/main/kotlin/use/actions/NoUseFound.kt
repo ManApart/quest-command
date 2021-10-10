@@ -3,7 +3,9 @@ package use.actions
 import core.events.Event
 import core.events.EventManager
 import core.history.display
-import core.utility.StringFormatter
+import core.history.displayToMe
+import core.utility.isAre
+import core.utility.asSubject
 import use.UseEvent
 import use.UseListener
 
@@ -21,14 +23,14 @@ class NoUseFound : UseListener() {
     override fun executeUseEvent(event: UseEvent) {
         if (event.source.canInteract()) {
             if (!event.target.isWithinRangeOf(event.source)) {
-                display(StringFormatter.getSubject(event.source) + " " + StringFormatter.getIsAre(event.source) + " too far away to interact with ${event.target}.")
+                event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to interact with ${event.target}."}
             } else if (event.target.canConsume(event)) {
                 event.target.consume(event)
             } else {
-                display("You use ${event.used.name} on ${event.target.name} but nothing happens.")
+                event.source.display{"${event.source.asSubject(it)} use ${event.used.name} on ${event.target.name} but nothing happens."}
             }
         } else {
-            display("You can't interact with that right now.")
+            event.source.displayToMe("You can't interact with that right now.")
         }
     }
 }

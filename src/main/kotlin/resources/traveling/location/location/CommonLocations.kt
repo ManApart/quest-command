@@ -1,7 +1,6 @@
 package resources.traveling.location.location
 
 import core.GameState
-import core.conditional.StringOption
 import core.utility.RandomManager
 import traveling.location.location.LocationResource
 import traveling.location.location.locations
