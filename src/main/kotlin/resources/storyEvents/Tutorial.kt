@@ -16,7 +16,7 @@ class Tutorial : StoryEventResource {
     override val values: List<StoryEvent> = listOf(
         StoryEvent("Tutorial", 10, "I can remember what I can do by typing 'help commands'. I should do that now.",
             ConditionalEvents(GameStartEvent::class,
-                createEvents = { event, _ -> listOf(MessageEvent(GameState.player, "To see what I can do I should type 'help commands'")) }
+                createEvents = { event, _ -> listOf(MessageEvent(GameState.player.target, "To see what I can do I should type 'help commands'")) }
             )
         ),
 

@@ -37,7 +37,7 @@ class DismountCommand : Command() {
 
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbTarget!!, origin, exit))
-                source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player, GameState.player.climbTarget!!, origin, targetLocation))
+                source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.target, GameState.player.target.climbTarget!!, origin, targetLocation))
                 else -> source.displayToMe("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {

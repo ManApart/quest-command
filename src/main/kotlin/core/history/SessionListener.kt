@@ -11,7 +11,7 @@ class SessionListener : EventListener<Event>() {
     override fun execute(event: Event) {
         SessionHistory.incEventCount(event)
         if (GameState.properties.values.getBoolean(AUTO_SAVE)){
-            EventManager.postEvent(SaveEvent(GameState.player))
+            EventManager.postEvent(SaveEvent(GameState.player.target))
         }
     }
 }

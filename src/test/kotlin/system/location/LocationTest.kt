@@ -40,9 +40,9 @@ class LocationTest {
         createItem("Dagger", 5),
         createItem("Sword", 5))
         val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values("Size" to "3")))
-        val souls = location.getAllSouls(GameState.player)
+        val souls = location.getAllSouls(GameState.player.target)
         assertEquals(4, souls.size)
-        assertTrue(souls.contains(GameState.player.soul))
+        assertTrue(souls.contains(GameState.player.target.soul))
     }
 
     private fun createItem(name: String, weight: Int) : Target {

@@ -27,8 +27,8 @@ class CastCommandCastTest {
 
         private val targetA = Target("targetA")
         private val targetB = Target("targetB")
-        private val scope = GameState.player.currentLocation()
-        private val player = GameManager.newPlayer()
+        private val scope = GameState.player.target.currentLocation()
+        private val player = GameManager.newPlayer().target
 
         init {
             scope.addTarget(targetA)

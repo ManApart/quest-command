@@ -12,8 +12,8 @@ import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
 import createItemBuilder
-import createPouch
 import createMockedGame
+import createPouch
 import inventory.pickupItem.TakeItem
 import org.junit.Before
 import org.junit.Test
@@ -78,7 +78,7 @@ class CraftTest {
     private fun createBaker(): Target {
         val baker = GameManager.newPlayer()
         val pouch = createPouch(size = 30)
-        baker.inventory.add(pouch)
-        return baker
+        baker.target.inventory.add(pouch)
+        return baker.target
     }
 }

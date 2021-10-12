@@ -1,15 +1,15 @@
 package magic
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import core.DependencyInjector
 import core.GameManager
 import core.events.EventManager
 import createMockedGame
 import magic.castSpell.CastCommand
-import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
+import magic.spellCommands.SpellCommandsMock
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
 import kotlin.test.*
 
 class CastCommandWordTest {
@@ -18,7 +18,7 @@ class CastCommandWordTest {
         private val spellA = SpellCommandMock("testSpellA", listOf("catA"))
         private val spellB = SpellCommandMock("testSpellB", listOf("catA"))
         private val spellC = SpellCommandMock("testSpellC")
-        private val player = GameManager.newPlayer()
+        private val player = GameManager.newPlayer().target
 
         @BeforeClass
         @JvmStatic

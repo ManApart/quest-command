@@ -38,7 +38,7 @@ class PullTest {
 
         private val caster = Target("caster")
         private val victim = Target("victim")
-        private val scope = GameState.player.currentLocation()
+        private val scope = GameState.player.target.currentLocation()
 
         init {
             scope.addTarget(caster)

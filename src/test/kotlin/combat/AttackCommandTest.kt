@@ -3,10 +3,7 @@ package combat
 import combat.attack.AttackCommand
 import combat.attack.StartAttackEvent
 import core.GameManager
-import core.GameState
 import core.events.EventManager
-import core.target.Target
-import core.target.activator.ActivatorManager
 import core.target.target
 import createMockedGame
 import org.junit.Before
@@ -28,9 +25,9 @@ class AttackCommandTest {
         val rat = target("Rat"){
             body("human")
         }.build()
-        player.currentLocation().addTarget(rat)
+        player.target.currentLocation().addTarget(rat)
 
-        command.execute(player, "sl", "rat".split(" "))
+        command.execute(player.target, "sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
         assertEquals(rat, event.target.target)
     }

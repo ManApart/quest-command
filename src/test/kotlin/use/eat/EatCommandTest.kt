@@ -1,7 +1,6 @@
 package use.eat
 
 import core.GameManager
-import core.GameState
 import core.commands.CommandParser
 import core.events.EventManager
 import core.properties.Properties
@@ -29,7 +28,7 @@ class EatCommandTest {
 
     @Test
     fun eatFood() {
-        val player = GameManager.newPlayer(location = NOWHERE_NODE)
+        val player = GameManager.newPlayer(location = NOWHERE_NODE).target
         val timer = PoorMansInstrumenter(10000)
         val item = Target("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         timer.printElapsed("new item")
@@ -48,7 +47,7 @@ class EatCommandTest {
 
     @Test
     fun eatMultipleFoodGivesChoice() {
-        val player = GameManager.newPlayer(location = NOWHERE_NODE)
+        val player = GameManager.newPlayer(location = NOWHERE_NODE).target
         val fruit = Target("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         val pie = Target("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         player.inventory.add(fruit)

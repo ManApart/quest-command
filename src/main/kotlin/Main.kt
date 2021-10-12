@@ -2,7 +2,6 @@
 import core.GameManager
 import core.commands.CommandParser
 import core.events.EventManager
-import core.history.GameLogger
 import core.history.TerminalPrinter
 
 fun main(args: Array<String>) {

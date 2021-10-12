@@ -11,7 +11,7 @@ object GameState {
     val timeManager = TimeManager()
     var player = GameManager.newPlayer()
     val aliases = mutableMapOf<String, String>()
-    var conversation = Conversation(player, player)
+    var conversation = Conversation(player.target, player.target)
 
     fun reset() {
         player = GameManager.newPlayer()

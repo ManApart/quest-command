@@ -21,7 +21,7 @@ class CommonActions : AIActionResource {
 }
 
 private fun ratAttack(owner: Target): Event {
-    val playerBody = GameState.player.body
+    val playerBody = GameState.player.target.body
     val possibleParts = listOf(
         playerBody.getPart("Right Foot"),
         playerBody.getPart("Left Foot")
@@ -32,5 +32,5 @@ private fun ratAttack(owner: Target): Event {
     } else {
         owner.body.getRootPart()
     }
-    return StartAttackEvent(owner, partToAttackWith, TargetAim(GameState.player, targetPart), DamageType.SLASH)
+    return StartAttackEvent(owner, partToAttackWith, TargetAim(GameState.player.target, targetPart), DamageType.SLASH)
 }

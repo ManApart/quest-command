@@ -28,7 +28,7 @@ class FindRoute : EventListener<FindRouteEvent>() {
                 startTravel(event.source, route, event.quiet)
             } else {
                 //TODO - make source instead of gamestate player
-                event.source.displayToMe(route.getRouteProgressString(GameState.player.location))
+                event.source.displayToMe(route.getRouteProgressString(GameState.player.target.location))
             }
 
         } else {

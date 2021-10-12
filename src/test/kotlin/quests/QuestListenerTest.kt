@@ -7,11 +7,11 @@ import core.body.*
 import core.target.Target
 import org.junit.BeforeClass
 import org.junit.Test
-
-import traveling.location.location.*
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationsCollection
+import traveling.location.location.LocationsMock
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
-
 import use.interaction.InteractEvent
 import kotlin.test.assertEquals
 
@@ -43,7 +43,7 @@ class QuestListenerTest {
         QuestManager.reset()
 
         //Only the apple event is executed
-        val testEvent = InteractEvent(GameState.player, Target("Apple"))
+        val testEvent = InteractEvent(GameState.player.target, Target("Apple"))
         val listener = QuestListener()
         listener.execute(testEvent)
 
@@ -62,7 +62,7 @@ class QuestListenerTest {
         QuestManager.reset()
 
         //Both events are executed
-        val testEvent = InteractEvent(GameState.player, Target("Apple"))
+        val testEvent = InteractEvent(GameState.player.target, Target("Apple"))
         val listener = QuestListener()
 
         listener.execute(testEvent)
@@ -80,7 +80,7 @@ class QuestListenerTest {
         DependencyInjector.setImplementation(StoryEventsCollection::class, questList)
         QuestManager.reset()
 
-        val testEvent = InteractEvent(GameState.player, Target("Apple"))
+        val testEvent = InteractEvent(GameState.player.target, Target("Apple"))
         val listener = QuestListener()
         listener.execute(testEvent)
         val results = listener.getListeners()

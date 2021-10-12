@@ -16,7 +16,7 @@ object CommandParser {
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private var responseRequest: ResponseRequest? = null
-    var commandSource: Target = GameState.player
+    var commandSource: Target = GameState.player.target
     var commandInterceptor: CommandInterceptor? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
@@ -31,7 +31,7 @@ object CommandParser {
 
     fun reset() {
         responseRequest = null
-        commandSource = GameState.player
+        commandSource = GameState.player.target
         commandInterceptor = null
         commands = loadCommands()
     }

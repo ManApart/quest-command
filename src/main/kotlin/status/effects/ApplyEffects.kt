@@ -7,7 +7,7 @@ import time.gameTick.GameTickEvent
 class ApplyEffects : EventListener<GameTickEvent>() {
     override fun execute(event: GameTickEvent) {
         //TODO - all scopes
-        GameState.player.currentLocation().getAllSouls(GameState.player).forEach {
+        GameState.player.target.currentLocation().getAllSouls(GameState.player.target).forEach {
             (0 until event.time).forEach { _ ->
                 it.applyConditions()
             }

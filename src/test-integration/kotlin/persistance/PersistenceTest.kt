@@ -33,22 +33,22 @@ class PersistenceTest {
     fun playerSave() {
         CommandParser.parseCommand("move to wheat && slash wheat && pickup wheat && ne")
         EventManager.executeEvents()
-        GameState.player.properties.tags.add("Saved")
+        GameState.player.target.properties.tags.add("Saved")
 
-        EventManager.postEvent(SaveEvent(GameState.player))
+        EventManager.postEvent(SaveEvent(GameState.player.target))
         EventManager.executeEvents()
-        GameState.player.properties.tags.remove("Saved")
-        assertFalse(GameState.player.properties.tags.has("Saved"))
-        val equippedItemCount = GameState.player.body.getEquippedItems().size
+        GameState.player.target.properties.tags.remove("Saved")
+        assertFalse(GameState.player.target.properties.tags.has("Saved"))
+        val equippedItemCount = GameState.player.target.body.getEquippedItems().size
 
-        EventManager.postEvent(LoadEvent(GameState.player, "Kanbara"))
+        EventManager.postEvent(LoadEvent(GameState.player.target, "Kanbara"))
         EventManager.executeEvents()
-        assertEquals("Saved Player", GameState.player.name)
-        assertTrue(GameState.player.properties.tags.has("Saved"))
-        assertEquals(equippedItemCount, GameState.player.body.getEquippedItems().size)
+        assertEquals("Saved Player", GameState.player.target.name)
+        assertTrue(GameState.player.target.properties.tags.has("Saved"))
+        assertEquals(equippedItemCount, GameState.player.target.body.getEquippedItems().size)
 
         CommandParser.parseCommand("travel to open field && r")
-        assertEquals(2, GameState.player.location.getLocation().getItems("bundle").first().properties.getCount())
+        assertEquals(2, GameState.player.target.location.getLocation().getItems("bundle").first().properties.getCount())
     }
 
 }

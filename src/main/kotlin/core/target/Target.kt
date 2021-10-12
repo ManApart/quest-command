@@ -78,7 +78,7 @@ data class Target(
     }
 
     fun isPlayer(): Boolean {
-        return this == GameState.player
+        return this == GameState.player.target
     }
 
     fun getTopParent(): Target {

@@ -75,10 +75,10 @@ object GameLogger {
     val histories = mutableListOf<GameLog>()
 
     init {
-        track(GameState.player)
+        track(GameState.player.target)
     }
 
-    var main = getHistory(GameState.player)
+    var main = getHistory(GameState.player.target)
 
     fun track(player: Target) {
         histories.add(GameLog(player))
@@ -86,8 +86,8 @@ object GameLogger {
 
     fun reset() {
         histories.clear()
-        track(GameState.player)
-        main = getHistory(GameState.player)
+        track(GameState.player.target)
+        main = getHistory(GameState.player.target)
     }
 
     fun addInput(input: String) {

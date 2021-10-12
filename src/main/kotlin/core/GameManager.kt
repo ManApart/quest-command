@@ -29,7 +29,7 @@ object GameManager {
         val gameMetaData = getGamesMetaData()
         if (gameMetaData.values.getBoolean(AUTO_LOAD) && getGameNames().isNotEmpty()) {
             val saveName = gameMetaData.values.getString(LAST_SAVE_GAME_NAME, getGameNames().first())
-            EventManager.postEvent(LoadEvent(GameState.player, saveName))
+            EventManager.postEvent(LoadEvent(GameState.player.target, saveName))
         } else {
             newGame()
         }
@@ -49,8 +49,8 @@ object GameManager {
         CommandParser.reset()
         GameLogger.reset()
 
-        giveStartingItems(GameState.player)
-        EventManager.postEvent(ArriveEvent(GameState.player, destination = LocationPoint(GameState.player.location), method = "wake"))
+        giveStartingItems(GameState.player.target)
+        EventManager.postEvent(ArriveEvent(GameState.player.target, destination = LocationPoint(GameState.player.target.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }
@@ -67,7 +67,7 @@ object GameManager {
         description: String = "Our Hero!",
         body: String = "Human",
         location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
-    ): Target {
+    ): Player {
         val player = target(name){
             description(description)
             ai(PLAYER_CONTROLLED_ID)
@@ -93,7 +93,7 @@ object GameManager {
             add("Creature")
         }
 
-        return player
+        return Player(0, player)
     }
 
     private fun giveStartingItems(player: Target) {

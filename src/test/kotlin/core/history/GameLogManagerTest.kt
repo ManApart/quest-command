@@ -15,7 +15,7 @@ class GameLogManagerTest {
 
     @Test
     fun beforeChatHistoryIsEmpty(){
-        val history = GameLogger.getHistory(GameState.player)
+        val history = GameLogger.getHistory(GameState.player.target)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
         Assert.assertEquals("", history.getLastOutput())
         Assert.assertEquals(0, history.history.size)
@@ -25,7 +25,7 @@ class GameLogManagerTest {
     fun displayAddsMessageToHistory(){
         val message = "Test Message"
         display(message)
-        val history = GameLogger.getHistory(GameState.player)
+        val history = GameLogger.getHistory(GameState.player.target)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
         Assert.assertEquals(message, history.getLastOutput())
     }

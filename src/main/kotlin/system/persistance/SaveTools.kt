@@ -24,10 +24,10 @@ fun getGameNames(): List<String> {
 
 fun getCharacterSaves(gameName: String): List<String> {
     return getFiles(clean(directory, gameName))
-            .map { it.name }
-            .filter { it.endsWith(".json") }
-            .map { it.substring(0, it.length - ".json".length) }
-            .filter { !ignoredNames.contains(it) }
+        .map { it.name }
+        .filter { it.endsWith(".json") }
+        .map { it.substring(0, it.length - ".json".length) }
+        .filter { !ignoredNames.contains(it) }
 }
 
 fun loadMaps(path: String): List<Map<String, Any>> {
@@ -100,13 +100,13 @@ private fun saveTopLevelMetadata(gameName: String) {
 
 fun save(gameName: String, network: Network) {
     network.getLocationNodes()
-            .filter { it.hasLoadedLocation() }
-            .map {
-                val path = clean(gameName, network.name)
-                traveling.location.location.persist(it.getLocation(), path)
-                it.loadPath = cleanPathToFile(".json", path, it.name)
-                it.flushLocation()
-            }
+        .filter { it.hasLoadedLocation() }
+        .map {
+            val path = clean(gameName, network.name)
+            traveling.location.location.persist(it.getLocation(), path)
+            it.loadPath = cleanPathToFile(".json", path, it.name)
+            it.flushLocation()
+        }
 }
 
 //Instead of saving character at top level, save the path to the character's location and load that?
@@ -123,9 +123,9 @@ fun loadGameState(gameName: String) {
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
-//    ScopeManager.getScope().removeTarget(GameState.player)
-    GameState.player = load(cleanPathToFile(".json", directory, gameName, saveName))
-//    ScopeManager.getScope(GameState.player.location).addTarget(GameState.player)
+//    ScopeManager.getScope().removeTarget(GameState.player.target)
+    GameState.player = Player(0, load(cleanPathToFile(".json", directory, gameName, saveName)))
+//    ScopeManager.getScope(GameState.player.target.location).addTarget(GameState.player.target)
 }
 
 fun getGamesMetaData(): Properties {

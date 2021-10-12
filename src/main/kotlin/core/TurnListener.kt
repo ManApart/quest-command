@@ -7,7 +7,7 @@ import core.events.EventListener
 class TurnListener : EventListener<Event>() {
     override fun execute(event: Event) {
         if (event.isExecutableByAI()) {
-            CommandParser.commandSource = GameState.player
+            CommandParser.commandSource = GameState.player.target
         }
     }
 }
