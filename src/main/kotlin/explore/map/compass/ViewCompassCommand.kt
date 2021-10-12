@@ -1,5 +1,6 @@
 package explore.map.compass
 
+import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
@@ -27,17 +28,19 @@ class ViewCompassCommand : Command() {
     }
 
     override fun execute(source: Target, keyword: String, args: List<String>) {
+        //TODO - replace commands with Player instead of target
+        val sourceT = Player(0, source)
         val arguments = Args(args)
         val isAlias = keyword != "compass"
         val specifiedDepth = arguments.getNumber() != null
         val depth = arguments.getNumber() ?: 50
         val locationName = args.minus(depth.toString()).joinToString(" ")
-        val existingDestination = source.compassRoute?.destination
+        val existingDestination = sourceT.compassRoute?.destination
 
         when {
-            locationName.isBlank() && existingDestination != null -> EventManager.postEvent(ViewCompassEvent(source))
-            locationName.isNotBlank() && specifiedDepth -> EventManager.postEvent(SetCompassEvent(source, locationName, depth))
-            locationName.isNotBlank() && isAlias -> EventManager.postEvent(SetCompassEvent(source, locationName, depth))
+            locationName.isBlank() && existingDestination != null -> EventManager.postEvent(ViewCompassEvent(sourceT))
+            locationName.isNotBlank() && specifiedDepth -> EventManager.postEvent(SetCompassEvent(sourceT, locationName, depth))
+            locationName.isNotBlank() && isAlias -> EventManager.postEvent(SetCompassEvent(sourceT, locationName, depth))
             locationName.isNotBlank() -> clarifyDepth(locationName)
             else -> println("Point compass to what goal?")
         }

@@ -1,6 +1,7 @@
 package core.history
 
 import core.GameState
+import core.Player
 import core.target.Target
 import system.debug.DebugType
 
@@ -10,6 +11,10 @@ import system.debug.DebugType
  */
 fun Target.displayToMe(message: String) {
     GameLogger.getHistory(this).print(message)
+}
+
+fun Player.displayToMe(message: String) {
+    GameLogger.getHistory(this.target).print(message)
 }
 
 /**

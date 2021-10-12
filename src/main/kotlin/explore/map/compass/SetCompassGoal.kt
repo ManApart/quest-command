@@ -1,21 +1,22 @@
 package explore.map.compass
 
+import core.Player
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.target.Target
 import traveling.location.RouteFinder
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
 
 class SetCompassGoal : EventListener<SetCompassEvent>() {
     override fun execute(event: SetCompassEvent) {
-        val destination = LocationManager.findLocationInAnyNetwork(event.source, event.locationName)
+        val sourceT = event.source.target
+        val destination = LocationManager.findLocationInAnyNetwork(sourceT, event.locationName)
         if (destination == null) {
-            event.source.display("Could not find ${event.locationName} on the map.")
-        } else if (destination == event.source.location){
+            sourceT.display("Could not find ${event.locationName} on the map.")
+        } else if (destination == sourceT.location){
             event.source.findRoute(destination, event.depth)
-            event.source.display("You are at ${destination.name}.")
+            sourceT.display("You are at ${destination.name}.")
         } else {
             event.source.findRoute(destination, event.depth)
             if (event.source.compassRoute != null) {
@@ -25,14 +26,14 @@ class SetCompassGoal : EventListener<SetCompassEvent>() {
     }
 }
 
-fun Target.findRoute(destination: LocationNode, depth: Int) {
+fun Player.findRoute(destination: LocationNode, depth: Int) {
     val existingRoute = compassRoute
-    if (location == existingRoute?.source && existingRoute.destination == destination) {
+    if (target.location == existingRoute?.source && existingRoute.destination == destination) {
         compassRoute = existingRoute
-    } else if (existingRoute != null && existingRoute.isOnRoute(location)) {
-        compassRoute = existingRoute.trim(location)
+    } else if (existingRoute != null && existingRoute.isOnRoute(target.location)) {
+        compassRoute = existingRoute.trim(target.location)
     } else {
-        val routeFinder = RouteFinder(location, destination, depth)
+        val routeFinder = RouteFinder(target.location, destination, depth)
         if (routeFinder.hasRoute()) {
             compassRoute = routeFinder.getRoute()
         } else {

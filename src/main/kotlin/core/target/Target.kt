@@ -47,7 +47,7 @@ data class Target(
     var position = Vector()
     var climbTarget: Target? = null
     var route: Route? = null
-    var compassRoute: Route? = null
+//    var compassRoute: Route? = null
 
     init {
         ai.creature = this
