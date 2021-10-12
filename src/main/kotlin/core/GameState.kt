@@ -2,6 +2,7 @@ package core
 
 import conversation.Conversation
 import core.properties.Properties
+import core.target.Target
 import system.debug.DebugType
 import time.TimeManager
 
@@ -12,6 +13,11 @@ object GameState {
     var player = GameManager.newPlayer()
     val aliases = mutableMapOf<String, String>()
     var conversation = Conversation(player.target, player.target)
+
+    //TODO - eventually find player that has this creature or create new player
+    fun getPlayer(creature: Target): Player {
+        return Player(1, creature)
+    }
 
     fun reset() {
         player = GameManager.newPlayer()

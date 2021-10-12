@@ -2,10 +2,10 @@ package core.commands
 
 import core.DependencyInjector
 import core.GameState
+import core.Player
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.display
-import core.target.Target
 import core.utility.NameSearchableList
 import core.utility.removeFirstItem
 import magic.castSpell.CastCommand
@@ -16,7 +16,7 @@ object CommandParser {
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private var responseRequest: ResponseRequest? = null
-    var commandSource: Target = GameState.player.target
+    var commandSource: Player = GameState.player
     var commandInterceptor: CommandInterceptor? = null
 
     private fun loadCommands(): NameSearchableList<Command> {
@@ -31,7 +31,7 @@ object CommandParser {
 
     fun reset() {
         responseRequest = null
-        commandSource = GameState.player.target
+        commandSource = GameState.player
         commandInterceptor = null
         commands = loadCommands()
     }
@@ -52,7 +52,7 @@ object CommandParser {
         if (commandInterceptor == null) {
             splitAndParseCommand(line)
         } else {
-            commandInterceptor!!.parseCommand(commandSource, line)
+            commandInterceptor!!.parseCommand(commandSource.target, line)
         }
 
         val time = System.currentTimeMillis() - startTime
@@ -144,7 +144,7 @@ object CommandParser {
     }
 
     fun isPlayersTurn(): Boolean {
-        return commandSource.isPlayer()
+        return commandSource.target.isPlayer()
     }
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {

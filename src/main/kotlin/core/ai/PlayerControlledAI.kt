@@ -1,6 +1,7 @@
 package core.ai
 
 import conversation.dialogue.DialogueEvent
+import core.GameState
 import core.commands.CommandParser
 import core.history.display
 
@@ -13,13 +14,14 @@ class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
 
     override fun takeAction() {
         val oldCreature = CommandParser.commandSource
-        CommandParser.commandSource = creature
+        val newCreature = GameState.getPlayer(creature)
+        CommandParser.commandSource = newCreature
 
-        if (creature != oldCreature) {
-            if (creature.isPlayer()) {
-                creature.display("What do you do?")
+        if (newCreature != oldCreature) {
+            if (newCreature.target.isPlayer()) {
+                newCreature.display("What do you do?")
             } else {
-                creature.display("${creature.name} does what?")
+                newCreature.display("${creature.name} does what?")
             }
         }
     }

@@ -48,6 +48,10 @@ fun Target.display(message: String) {
     this.display { message }
 }
 
+fun Player.display(message: String) {
+    this.target.display { message }
+}
+
 /**
  * The message is evaluated for each listener that perceives this target
  */

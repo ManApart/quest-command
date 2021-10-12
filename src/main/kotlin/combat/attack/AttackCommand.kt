@@ -1,6 +1,7 @@
 package combat.attack
 
 import combat.HandHelper
+import core.Player
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
@@ -37,27 +38,31 @@ class AttackCommand : Command() {
     override fun getCategory(): List<String> {
         return listOf("Combat")
     }
-
     override fun execute(source: Target, keyword: String, args: List<String>) {
+        //Ignored
+    }
+
+    override fun execute(source: Player, keyword: String, args: List<String>) {
+        val sourceT = source.target
         if (keyword.lowercase() == "attack") {
             clarifyAttackType(args)
         } else {
             val arguments = Args(args, listOf("with"))
             val attackType = fromString(keyword)
-            val handHelper = HandHelper(source, arguments.getString("with"), attackType.damageType.damage.lowercase())
+            val handHelper = HandHelper(sourceT, arguments.getString("with"), attackType.damageType.damage.lowercase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
-            val target = getTarget(keyword, arguments, weaponName, source)
+            val target = getTarget(keyword, arguments, weaponName, sourceT)
 
             if (target == null) {
-                clarifyTarget(source, keyword, weaponName)
+                clarifyTarget(sourceT, keyword, weaponName)
             } else {
                 //Go ahead and process a target that has aimed for body parts or no body parts at all
                 if (target.bodyPartTargets.isNotEmpty()) {
-                    processAttack(source, arguments, attackType, handHelper, target)
+                    processAttack(sourceT, arguments, attackType, handHelper, target)
                 } else {
                     //If we got an alias, process with a default value of the body root part
                     if (isAlias(keyword) || target.target.body.getParts().size == 1) {
-                        processAttack(source, arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart())))
+                        processAttack(sourceT, arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart())))
                         //Otherwise clarify body parts.
                     } else {
                         clarifyTargetPart(keyword, target, weaponName)
