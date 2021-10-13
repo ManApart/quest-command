@@ -18,7 +18,8 @@ class FindRoute : EventListener<FindRouteEvent>() {
         }
 
         val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
-        val finder = RouteFinder(event.sourceLocation, event.destination, event.depth, ignoreHidden, ignoreHidden)
+        val player = if (event.source.isPlayer()) GameState.getPlayer(event.source) else null
+        val finder = RouteFinder(event.sourceLocation, event.destination, event.depth, ignoreHidden, ignoreHidden, player)
 
         if (finder.hasRoute()){
             val route = finder.getRoute()

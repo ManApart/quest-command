@@ -14,7 +14,7 @@ class SetCompassGoal : EventListener<SetCompassEvent>() {
         val destination = LocationManager.findLocationInAnyNetwork(sourceT, event.locationName)
         if (destination == null) {
             sourceT.display("Could not find ${event.locationName} on the map.")
-        } else if (destination == sourceT.location){
+        } else if (destination == sourceT.location) {
             event.source.findRoute(destination, event.depth)
             sourceT.display("You are at ${destination.name}.")
         } else {
@@ -33,7 +33,7 @@ fun Player.findRoute(destination: LocationNode, depth: Int) {
     } else if (existingRoute != null && existingRoute.isOnRoute(target.location)) {
         compassRoute = existingRoute.trim(target.location)
     } else {
-        val routeFinder = RouteFinder(target.location, destination, depth)
+        val routeFinder = RouteFinder(target.location, destination, depth, player = this)
         if (routeFinder.hasRoute()) {
             compassRoute = routeFinder.getRoute()
         } else {

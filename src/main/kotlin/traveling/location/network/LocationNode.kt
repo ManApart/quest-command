@@ -1,6 +1,7 @@
 package traveling.location.network
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import core.Player
 import core.utility.Named
 import traveling.direction.Direction
 import traveling.location.Connection
@@ -24,7 +25,6 @@ data class LocationNode(
     val isRoot: Boolean = false,
     @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
     private val connections: MutableList<Connection> = mutableListOf(),
-    var discovered: Boolean = false
 ) : Named {
     constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.protoConnections)
 
@@ -172,10 +172,10 @@ data class LocationNode(
         return direction != Direction.NONE && (furthestNodes.isEmpty() || furthestNodes.contains(this))
     }
 
-    fun discoverSelfAndNeighbors() {
-        this.discovered = true
+    fun discoverSelfAndNeighbors(player: Player) {
+        player.discover(this)
         connections.filter { !it.hidden }.map { it.destination.location }.forEach { neighbor ->
-            neighbor.discovered = true
+            player.discover(neighbor)
         }
     }
 

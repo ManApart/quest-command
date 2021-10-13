@@ -38,7 +38,6 @@ data class Target(
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
-//    val knownRecipes: NameSearchableList<Recipe> = NameSearchableList(),
     val params: Map<String, String> = mapOf()
 ) : Named {
     var position = Vector()

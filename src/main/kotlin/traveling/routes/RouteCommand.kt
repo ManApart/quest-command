@@ -1,6 +1,8 @@
 package traveling.routes
 
 import core.GameState
+import core.GameState.player
+import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.events.EventManager
@@ -32,20 +34,20 @@ class RouteCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val depth = arguments.getNumber() ?: 5
         val otherArgs = args.minus(depth.toString())
 
         when {
-            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source))
-            else -> targetLocation(source, otherArgs, depth)
+            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source.target))
+            else -> targetLocation(source.target, otherArgs, depth, player)
         }
     }
 
-    private fun targetLocation(source: Target, args: List<String>, depth: Int) {
+    private fun targetLocation(source: Target, args: List<String>, depth: Int, player: Player) {
         val locationName = args.joinToString(" ")
-        val target = findTarget(source.location, locationName, depth)
+        val target = findTarget(source.location, locationName, depth, player)
         if (target != null) {
             EventManager.postEvent(FindRouteEvent(source, source.location, target, depth))
         } else {
@@ -53,7 +55,7 @@ class RouteCommand : Command() {
         }
     }
 
-    private fun findTarget(source: LocationNode, locationName: String, depth: Int): LocationNode? {
+    private fun findTarget(source: LocationNode, locationName: String, depth: Int, player: Player): LocationNode? {
         if (LocationManager.getNetwork(source.parent).hasLocation(locationName)) {
             val target = LocationManager.getNetwork(source.parent).findLocation(locationName)
             if (target != NOWHERE_NODE) {
@@ -61,7 +63,7 @@ class RouteCommand : Command() {
             }
         }
         val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
-        return NameSearchableList(RouteNeighborFinder(source, depth, ignoreHidden, ignoreHidden).getDestinations()).getOrNull(locationName)
+        return NameSearchableList(RouteNeighborFinder(source, depth, ignoreHidden, ignoreHidden, player).getDestinations()).getOrNull(locationName)
     }
 
 }

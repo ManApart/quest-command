@@ -1,5 +1,6 @@
 package traveling.location
 
+import core.Player
 import traveling.location.network.LocationNode
 
 class RouteFinder(
@@ -7,7 +8,8 @@ class RouteFinder(
     private val destination: LocationNode,
     private val depth: Int = 10,
     private val ignoreHiddenConnections: Boolean = false,
-    private val ignoreUndiscoveredLocations: Boolean = false
+    private val ignoreUndiscoveredLocations: Boolean = false,
+    private val player: Player? = null
 ) {
     private val potentials: MutableList<Route> = mutableListOf()
     private val examined: MutableList<LocationNode> = mutableListOf()
@@ -75,8 +77,8 @@ class RouteFinder(
                 connections.filter { !it.hidden }
             } else connections
         }.let { connections ->
-            if (ignoreUndiscoveredLocations){
-                connections.filter { it.destination.location.discovered }
+            if (ignoreUndiscoveredLocations && player != null){
+                connections.filter { player.knows(it.destination.location) }
             } else connections
         }
     }

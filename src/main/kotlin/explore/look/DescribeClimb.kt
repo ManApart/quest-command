@@ -1,6 +1,7 @@
 package explore.look
 
 import core.GameState
+import core.Player
 import core.history.StringTable
 import core.history.displayToMe
 import core.target.Target
@@ -11,10 +12,10 @@ import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 import traveling.location.network.LocationNode
 
-fun describeClimbJourney(source: Target) {
-    val location = source.location
+fun describeClimbJourney(source: Player) {
+    val location = source.target.location
     val distance = getDistance(location).wrapNonEmpty("", " ")
-    val exits = getExits(location, source.climbTarget!!)
+    val exits = getExits(location, source.target.climbTarget!!)
     val exitString = if (exits.isEmpty()) {
         ""
     } else {
@@ -34,13 +35,13 @@ private fun getDistance(location: LocationNode): String {
     }
 }
 
-private fun getRoutesString(source: Target, location: LocationNode): String {
+private fun getRoutesString(source: Player, location: LocationNode): String {
     val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)
-    val routes = RouteNeighborFinder(location, 1, ignoreHidden, ignoreHidden).getNeighbors()
+    val routes = RouteNeighborFinder(location, 1, ignoreHidden, ignoreHidden, source).getNeighbors()
 
     return if (routes.isNotEmpty()) {
         val input = mutableListOf(listOf("Name", "Distance", "Direction", "Difficulty", "Exits"))
-        input.addAll(routes.map { getRouteString(source, it) })
+        input.addAll(routes.map { getRouteString(source.target, it) })
         val table = StringTable(input, 2, rightPadding = 2)
 
         "Options:\n${table.getString()}"

@@ -10,7 +10,8 @@ data class Player(
     val id: Int,
     val target: Target
 ) {
-    val knownLocations: NameSearchableList<LocationNode> = NameSearchableList()
+    //Map of Network to Location Node Name. Presence means it's discovered
+    val knownLocations = mutableMapOf<String, MutableSet<String>>()
     val knownRecipes: NameSearchableList<Recipe> = NameSearchableList()
     var compassRoute: Route? = null
 
@@ -23,4 +24,15 @@ data class Player(
     val properties get() = target.properties
     val ai get() = target.ai
     val inventory get() = target.inventory
+
+    fun discover(location: LocationNode){
+        val network = location.network.name
+        knownLocations.putIfAbsent(network, mutableSetOf())
+        knownLocations[network]?.add(location.name)
+    }
+
+    fun knows(location: LocationNode): Boolean{
+        val network = location.network.name
+        return knownLocations[network]?.contains(location.name) ?: false
+    }
 }

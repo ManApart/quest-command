@@ -1,11 +1,14 @@
 package traveling.arrive
 
+import core.GameState
 import core.events.EventListener
 
 class ArrivalHandler : EventListener<ArriveEvent>() {
     override fun execute(event: ArriveEvent) {
         event.origin.location.getLocation().removeTarget(event.creature)
         event.destination.location.getLocation().addTarget(event.creature, listOf("me", "self"))
-        event.destination.location.discoverSelfAndNeighbors()
+        if (event.creature.isPlayer()) {
+            event.destination.location.discoverSelfAndNeighbors(GameState.getPlayer(event.creature))
+        }
     }
 }
