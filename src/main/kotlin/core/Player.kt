@@ -24,6 +24,8 @@ data class Player(
     val properties get() = target.properties
     val ai get() = target.ai
     val inventory get() = target.inventory
+    val location get() = target.location
+    val position get() = target.position
 
     fun discover(location: LocationNode){
         val network = location.network.name

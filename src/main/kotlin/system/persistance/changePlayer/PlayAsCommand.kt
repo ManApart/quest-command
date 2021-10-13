@@ -1,5 +1,6 @@
 package system.persistance.changePlayer
 
+import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
@@ -24,7 +25,7 @@ class PlayAsCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListCharactersEvent(source))

@@ -29,7 +29,7 @@ object GameManager {
         val gameMetaData = getGamesMetaData()
         if (gameMetaData.values.getBoolean(AUTO_LOAD) && getGameNames().isNotEmpty()) {
             val saveName = gameMetaData.values.getString(LAST_SAVE_GAME_NAME, getGameNames().first())
-            EventManager.postEvent(LoadEvent(GameState.player.target, saveName))
+            EventManager.postEvent(LoadEvent(GameState.player, saveName))
         } else {
             newGame()
         }

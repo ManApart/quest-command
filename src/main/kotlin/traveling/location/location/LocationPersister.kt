@@ -15,10 +15,10 @@ fun persist(dataObject: Location, path: String, ignoredTargets: List<Target> = l
     data["properties"] = getPersisted(dataObject.properties)
     writeSave(path, saveName, data)
 
-    data["activators"] = dataObject.getActivators().map { core.target.persist(it, clean(prefix, "activators")) }
-    data["creatures"] = dataObject.getCreatures().filter { !it.isPlayer() }.map { core.target.persist(it, clean(prefix, "creatures")) }
-    data["items"] = dataObject.getItems().filter { !ignoredTargets.contains(it) }.map { core.target.persist(it, clean(prefix, "items")) }
-    data["other"] = dataObject.getOther().map { core.target.persist(it, clean(prefix, "other")) }
+    data["activators"] = dataObject.getActivators().map { core.target.persistToDisk(it, clean(prefix, "activators")) }
+    data["creatures"] = dataObject.getCreatures().filter { !it.isPlayer() }.map { core.target.persistToDisk(it, clean(prefix, "creatures")) }
+    data["items"] = dataObject.getItems().filter { !ignoredTargets.contains(it) }.map { core.target.persistToDisk(it, clean(prefix, "items")) }
+    data["other"] = dataObject.getOther().map { core.target.persistToDisk(it, clean(prefix, "other")) }
     //Persist weather
     //Persist last weather change
 
@@ -39,5 +39,5 @@ fun load(path: String, locationNode: LocationNode): Location {
 }
 
 private fun getTargets(folderPath: String, folderName: String, parent: LocationNode): NameSearchableList<Target> {
-    return getFiles(clean(folderPath, folderName)).map { core.target.load(it.path, parent.network) }.toNameSearchableList()
+    return getFiles(clean(folderPath, folderName)).map { core.target.loadFromDisk(it.path, parent.network) }.toNameSearchableList()
 }

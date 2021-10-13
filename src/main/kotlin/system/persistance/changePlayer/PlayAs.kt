@@ -13,7 +13,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
         save(GameState.gameName, event.source)
         loadCharacter(GameState.gameName, event.saveName)
-        event.source.displayToMe("Now playing ${event.source.name} in ${GameState.gameName}.")
+        event.source.displayToMe("Now playing ${event.source.target.name} in ${GameState.gameName}.")
     }
 
     private fun loadCharacter(gameName: String, characterName: String) {

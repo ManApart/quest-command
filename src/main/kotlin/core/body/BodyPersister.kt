@@ -8,7 +8,7 @@ fun persist(dataObject: Body, path: String) {
     }
     val prefix = clean(path, dataObject.name)
     traveling.location.persist(dataObject.layout, path, dataObject.getEquippedItems())
-    dataObject.getEquippedItems().forEach { core.target.persist(it, path) }
+    dataObject.getEquippedItems().forEach { core.target.persistToDisk(it, path) }
 
     val saveName = cleanPathToFile("json", prefix)
     val data = mutableMapOf<String, Any>("version" to 1)
@@ -29,7 +29,7 @@ fun load(path: String, name: String): Body {
     val data = loadMap(filePath)
     val slotMap = (data["slots"] as Map<String, String>).toMutableMap()
 
-    val equippedItems = getFiles(path, listOf(filePath)).map { core.target.load(it.path, network) }
+    val equippedItems = getFiles(path, listOf(filePath)).map { core.target.loadFromDisk(it.path, network) }
 
     val body = Body(name, network, slotMap)
 

@@ -8,7 +8,7 @@ class Save : EventListener<SaveEvent>() {
     override fun execute(event: SaveEvent) {
         save(GameState.gameName, event.source)
 
-        println("Saved ${event.source.name} in ${GameState.gameName}.")
+        println("Saved ${event.source.target.name} in ${GameState.gameName}.")
     }
 
 

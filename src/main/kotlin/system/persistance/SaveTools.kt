@@ -7,8 +7,7 @@ import core.*
 import core.history.SessionHistory
 import core.properties.Properties
 import core.target.Target
-import core.target.load
-import core.target.persist
+import core.target.loadFromDisk
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import java.io.File
@@ -66,13 +65,13 @@ private fun getFilesAndFolders(path: String, ignoredFileNames: List<String> = li
 }
 
 
-fun save(rawGameName: String, player: Target) {
+fun save(rawGameName: String, player: Player) {
     val gameName = cleanPathPart(rawGameName)
     val gamePath = clean(directory, gameName)
     saveSessionStats()
     persist(player, gamePath)
     LocationManager.getNetworks().forEach { save(gamePath, it) }
-    saveGameState(player, gamePath)
+    saveGameState(player.target, gamePath)
     saveTopLevelMetadata(gameName)
 }
 
@@ -123,9 +122,7 @@ fun loadGameState(gameName: String) {
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
-//    ScopeManager.getScope().removeTarget(GameState.player.target)
-    GameState.player = Player(0, load(cleanPathToFile(".json", directory, gameName, saveName)))
-//    ScopeManager.getScope(GameState.player.target.location).addTarget(GameState.player.target)
+    GameState.player = load(cleanPathToFile(".json", directory, gameName, saveName))
 }
 
 fun getGamesMetaData(): Properties {
