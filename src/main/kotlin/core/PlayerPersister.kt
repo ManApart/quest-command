@@ -14,6 +14,7 @@ fun persist(dataObject: Player, path: String) {
     val data = mutableMapOf<String, Any>("version" to 1)
     data["id"] = dataObject.id
     data["recipes"] = dataObject.knownRecipes.map { it.name }
+    data["knownLocations"] = dataObject.knownLocations
     data["target"] = persist(dataObject.target, path)
 
     writeSave(path, saveName, data)
@@ -25,10 +26,17 @@ fun load(path: String, parentLocation: Network? = null): Player {
     val id = data["id"] as Int
     val recipes = data["recipes"] as List<String>
     val target = core.target.readFromData(data["target"] as Map<String, Any>, path, parentLocation)
+    val knownLocations = data["knownLocations"] as Map<String, List<String>>
 
     val player = Player(id, target)
     recipes.forEach { recipeName ->
         player.knownRecipes.add(RecipeManager.getRecipe(recipeName))
+    }
+    knownLocations.entries.forEach { (network, locations) ->
+        player.knownLocations.putIfAbsent(network, mutableSetOf())
+        locations.forEach { location ->
+            player.knownLocations[network]?.add(location)
+        }
     }
 
     return player
