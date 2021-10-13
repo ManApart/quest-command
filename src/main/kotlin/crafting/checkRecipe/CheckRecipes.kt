@@ -1,12 +1,12 @@
 package crafting.checkRecipe
 
+import core.Player
 import core.events.EventListener
 import core.history.displayToMe
-import core.target.Target
 
 class CheckRecipes : EventListener<CheckRecipeEvent>() {
     override fun shouldExecute(event: CheckRecipeEvent): Boolean {
-        return event.source.isPlayer()
+        return event.source.target.isPlayer()
     }
 
     override fun execute(event: CheckRecipeEvent) {
@@ -17,7 +17,7 @@ class CheckRecipes : EventListener<CheckRecipeEvent>() {
         }
     }
 
-    private fun printRecipes(source: Target) {
+    private fun printRecipes(source: Player) {
         val recipes = source.knownRecipes.joinToString { "\n\t${it.name}" }
         source.displayToMe("Recipes:$recipes")
     }

@@ -1,7 +1,7 @@
 package crafting.checkRecipe
 
+import core.Player
 import core.events.Event
-import core.target.Target
 import crafting.Recipe
 
-class CheckRecipeEvent(val source: Target, val recipe: Recipe? = null) : Event
+class CheckRecipeEvent(val source: Player, val recipe: Recipe? = null) : Event

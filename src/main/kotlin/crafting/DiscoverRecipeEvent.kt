@@ -1,6 +1,6 @@
 package crafting
 
+import core.Player
 import core.events.Event
-import core.target.Target
 
-class DiscoverRecipeEvent(val source: Target, val recipe: Recipe) : Event
+class DiscoverRecipeEvent(val source: Player, val recipe: Recipe) : Event

@@ -1,5 +1,6 @@
 package use.actions
 
+import core.GameState
 import core.events.EventManager
 import core.history.displayToMe
 import crafting.RecipeManager
@@ -24,12 +25,13 @@ class UseItemOnIngredientRecipe : UseListener() {
         val targetRecipes = RecipeManager.findCraftableRecipes(listOf(event.target), event.used, event.source.soul)
         val sourceRecipes = RecipeManager.findCraftableRecipes(listOf(event.used), event.target, event.source.soul)
         val itemOnlyRecipes = RecipeManager.findCraftableRecipes(listOf(event.used, event.target), null, event.source.soul)
+        val player = GameState.getPlayer(event.source)
 
         when {
             targetRecipes.size + sourceRecipes.size + itemOnlyRecipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${(targetRecipes + sourceRecipes + itemOnlyRecipes).joinToString(" or ") { it.name }}")
-            targetRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(event.source, targetRecipes.first(), event.used))
-            sourceRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(event.source, sourceRecipes.first(), event.target))
-            itemOnlyRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(event.source, itemOnlyRecipes.first(), null))
+            targetRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, targetRecipes.first(), event.used))
+            sourceRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, sourceRecipes.first(), event.target))
+            itemOnlyRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, itemOnlyRecipes.first(), null))
         }
     }
 }

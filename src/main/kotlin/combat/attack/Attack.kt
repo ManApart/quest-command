@@ -6,9 +6,9 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.target.Target
-import core.utility.then
 import core.utility.asSubject
 import core.utility.asSubjectPossessive
+import core.utility.then
 import status.stat.BARE_HANDED
 import status.stat.HEALTH
 import traveling.location.location.Location
@@ -19,11 +19,12 @@ import use.UseEvent
 class Attack : EventListener<AttackEvent>() {
 
     override fun execute(event: AttackEvent) {
+        val source = event.source
         if (event.target.target.soul.getCurrent(HEALTH) > 0) {
-            val offensiveDamage = getOffensiveDamage(event.source, event.sourcePart, event.type)
+            val offensiveDamage = getOffensiveDamage(source, event.sourcePart, event.type)
             val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
-            val targetDistance = event.source.position.getDistance(event.target.target.position)
-            val weaponRange = getRange(event.source, event.sourcePart)
+            val targetDistance = source.position.getDistance(event.target.target.position)
+            val weaponRange = getRange(source, event.sourcePart)
 
             when {
                 weaponRange < targetDistance -> event.source.display("${event.target} is too far away to be hit by $damageSource.")
@@ -42,16 +43,17 @@ class Attack : EventListener<AttackEvent>() {
     }
 
     private fun processAttack(event: AttackEvent, damageSource: String, offensiveDamage: Int) {
-        val attackedParts = getAttackedParts(event.source, event.sourcePart, event.target)
-        if (event.source != event.target.target) {
-            event.source.ai.aggroTarget = event.target.target
+        val source = event.source
+        val attackedParts = getAttackedParts(source, event.sourcePart, event.target)
+        if (source != event.target.target) {
+            source.ai.aggroTarget = event.target.target
         }
 
         if (attackedParts.isEmpty()) {
             val missedParts = event.target.bodyPartTargets.joinToString(", ") { it.name }
-            event.source.display { listener ->
-                val subject = event.source.asSubject(listener)
-                "$subject ${event.source.isPlayer().then("miss", "misses")} $missedParts!"
+            source.display { listener ->
+                val subject = source.asSubject(listener)
+                "$subject ${source.isPlayer().then("miss", "misses")} $missedParts!"
             }
         } else {
             val verb = event.source.isPlayer().then(event.type.verbPlural, event.type.verb)

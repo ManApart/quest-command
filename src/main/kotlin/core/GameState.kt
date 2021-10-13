@@ -16,7 +16,7 @@ object GameState {
 
     //TODO - eventually find player that has this creature or create new player
     fun getPlayer(creature: Target): Player {
-        return Player(1, creature)
+        return if (creature === player.target) player else Player(1, creature)
     }
 
     fun reset() {

@@ -49,7 +49,11 @@ fun Target.display(message: String) {
 }
 
 fun Player.display(message: String) {
-    this.target.display { message }
+    this.display { message }
+}
+
+fun Player.display(message: (Target) -> String) {
+    this.target.display(message)
 }
 
 /**

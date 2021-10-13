@@ -27,7 +27,7 @@ class AttackCommandTest {
         }.build()
         player.target.currentLocation().addTarget(rat)
 
-        command.execute(player.target, "sl", "rat".split(" "))
+        command.execute(player, "sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
         assertEquals(rat, event.target.target)
     }

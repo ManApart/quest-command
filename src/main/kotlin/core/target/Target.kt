@@ -8,11 +8,8 @@ import core.body.Body
 import core.body.Slot
 import core.events.Event
 import core.properties.*
-import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
-import core.utility.toNameSearchableList
-import crafting.Recipe
 import inventory.Inventory
 import status.Soul
 import status.stat.PERCEPTION
@@ -41,13 +38,12 @@ data class Target(
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
-    val knownRecipes: NameSearchableList<Recipe> = NameSearchableList(),
+//    val knownRecipes: NameSearchableList<Recipe> = NameSearchableList(),
     val params: Map<String, String> = mapOf()
 ) : Named {
     var position = Vector()
     var climbTarget: Target? = null
     var route: Route? = null
-//    var compassRoute: Route? = null
 
     init {
         ai.creature = this
@@ -162,7 +158,7 @@ data class Target(
         val inventory = Inventory(inventory.name, body)
         val soul = soul.copy()
 
-        return Target(name, description, location, parent, ai, body, equipSlots, inventory, props, soul, behaviors, knownRecipes.toNameSearchableList(), params)
+        return Target(name, description, location, parent, ai, body, equipSlots, inventory, props, soul, behaviors, params)
     }
 
     fun getPositionInLocation(part: Location): Vector {

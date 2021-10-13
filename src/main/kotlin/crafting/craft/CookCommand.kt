@@ -1,5 +1,6 @@
 package crafting.craft
 
+import core.Player
 import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.Command
@@ -28,15 +29,15 @@ class CookCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(","), ArgDelimiter(listOf("with", "on")))
         val arguments = Args(args, delimiters)
         if (!isValidInput(arguments)) {
             source.displayToMe("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(arguments)
-            val tool = getTool(source, arguments)
-            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.soul)
+            val tool = getTool(source.target, arguments)
+            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.target.soul)
 
             when {
                 tool == null -> source.displayToMe("Couldn't find something to cook on")

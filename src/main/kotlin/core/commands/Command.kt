@@ -10,7 +10,9 @@ abstract class Command : Named {
     abstract fun getDescription(): String
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>
-    abstract fun execute(source: Target, keyword: String, args: List<String>)
+
+    //Temporarily make both open until we phase this one out
+    open fun execute(source: Target, keyword: String, args: List<String>){}
 
     open fun execute(source: Player, keyword: String, args: List<String>){
         execute(source.target, keyword, args)

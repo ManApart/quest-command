@@ -1,11 +1,11 @@
 package crafting.craft
 
+import core.Player
 import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
 import crafting.Recipe
 
 class CraftRecipeCommand : Command() {
@@ -26,7 +26,7 @@ class CraftRecipeCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         val knownRecipes = source.knownRecipes
         val pickedRecipes = source.knownRecipes.getAll(argString)
@@ -47,12 +47,12 @@ class CraftRecipeCommand : Command() {
          CommandParser.setResponseRequest(response)
     }
 
-    private fun processRecipe(source: Target, recipe: Recipe) {
-        val tool = source.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
-                ?: source.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
+    private fun processRecipe(source: Player, recipe: Recipe) {
+        val tool = source.target.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
+                ?: source.target.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {
             source.displayToMe("Couldn't find the necessary tools to create ${recipe.name}")
-        } else if (!recipe.matches(source.inventory.getAllItems(), tool)) {
+        } else if (!recipe.matches(source.target.inventory.getAllItems(), tool)) {
             source.displayToMe("Couldn't find all the needed ingredients to create ${recipe.name}.")
         } else {
             EventManager.postEvent(CraftRecipeEvent(source, recipe, tool))

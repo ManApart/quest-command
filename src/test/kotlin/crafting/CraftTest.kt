@@ -2,9 +2,9 @@ package crafting
 
 import core.DependencyInjector
 import core.GameManager
+import core.Player
 import core.events.EventManager
 import core.properties.Tags
-import core.target.Target
 import core.target.item.ItemManager
 import core.target.item.ItemsCollection
 import core.target.item.ItemsMock
@@ -75,10 +75,10 @@ class CraftTest {
         assertTrue(result.properties.tags.has("Cooked"))
     }
 
-    private fun createBaker(): Target {
+    private fun createBaker(): Player {
         val baker = GameManager.newPlayer()
         val pouch = createPouch(size = 30)
         baker.target.inventory.add(pouch)
-        return baker.target
+        return baker
     }
 }

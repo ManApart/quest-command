@@ -1,5 +1,6 @@
 package use.actions
 
+import core.GameState
 import core.events.EventManager
 import core.history.displayToMe
 import crafting.RecipeManager
@@ -22,7 +23,7 @@ class UseIngredientOnActivatorRecipe : UseListener() {
 
         when {
             recipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
-            else -> EventManager.postEvent(CraftRecipeEvent(event.source, recipes.first(), event.target))
+            else -> EventManager.postEvent(CraftRecipeEvent(GameState.getPlayer(event.source), recipes.first(), event.target))
         }
     }
 }

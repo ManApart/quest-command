@@ -1,5 +1,6 @@
 package resources.storyEvents
 
+import core.GameState
 import quests.ConditionalEvents
 import quests.StoryEvent
 import quests.StoryEventResource
@@ -11,7 +12,7 @@ class Tips : StoryEventResource {
             StoryEvent("Tips", 1, "When I level up I should rest to restore my stats to their new levels.",
                     ConditionalEvents(LevelUpEvent::class,
                             { event, _ -> event.source.isPlayer()},
-                            { event, _ -> listOf(MessageEvent(event.source,"When I level up I should rest to restore my stats to their new levels.")) }
+                            { event, _ -> listOf(MessageEvent(GameState.getPlayer(event.source),"When I level up I should rest to restore my stats to their new levels.")) }
                     ), availableBefore = 1000, availableAfter = 0
             ),
 
