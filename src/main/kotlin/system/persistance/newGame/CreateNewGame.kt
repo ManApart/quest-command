@@ -17,7 +17,7 @@ class CreateNewGame : EventListener<CreateNewGameEvent>() {
         } else {
             GameManager.newGame(event.saveName)
             save(GameState.gameName, event.source)
-            println("Saved ${event.source.name} to a new game: ${GameState.gameName}.")
+            println("Saved ${event.source.target.name} to a new game: ${GameState.gameName}.")
         }
 
     }

@@ -1,5 +1,6 @@
 package explore.map
 
+import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParser
@@ -27,7 +28,7 @@ class ReadMapCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val depth = arguments.getNumber() ?: 1
         val otherArgs = args.minus(depth.toString())
@@ -45,12 +46,12 @@ class ReadMapCommand : Command() {
         CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "map $it" }))
     }
 
-    private fun currentLocation(source: Target, depth: Int){
-        EventManager.postEvent(ReadMapEvent(source, source.location, depth))
+    private fun currentLocation(source: Player, depth: Int){
+        EventManager.postEvent(ReadMapEvent(source, source.target.location, depth))
     }
 
-    private fun targetLocation(source: Target, args: List<String>, depth: Int){
-        val target = LocationManager.findLocationInAnyNetwork(source, args.joinToString(" "))
+    private fun targetLocation(source: Player, args: List<String>, depth: Int){
+        val target = LocationManager.findLocationInAnyNetwork(source.target, args.joinToString(" "))
         if (target != null) {
             EventManager.postEvent(ReadMapEvent(source, target, depth))
         } else {

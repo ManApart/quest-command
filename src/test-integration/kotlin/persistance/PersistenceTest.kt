@@ -2,6 +2,7 @@ package persistance
 
 import core.GameManager
 import core.GameState
+import core.PRINT_WITHOUT_FLUSH
 import core.commands.CommandParser
 import core.events.EventManager
 import org.junit.After
@@ -20,6 +21,8 @@ class PersistenceTest {
         EventManager.clear()
         EventManager.registerListeners()
         GameManager.newGame(playerName = "Saved Player")
+        GameState.properties.values.put(PRINT_WITHOUT_FLUSH, true)
+
         EventManager.executeEvents()
         File("./saves/").listFiles()?.forEach { it.deleteRecursively() }
     }
@@ -35,13 +38,13 @@ class PersistenceTest {
         EventManager.executeEvents()
         GameState.player.target.properties.tags.add("Saved")
 
-        EventManager.postEvent(SaveEvent(GameState.player.target))
+        EventManager.postEvent(SaveEvent(GameState.player))
         EventManager.executeEvents()
         GameState.player.target.properties.tags.remove("Saved")
         assertFalse(GameState.player.target.properties.tags.has("Saved"))
         val equippedItemCount = GameState.player.target.body.getEquippedItems().size
 
-        EventManager.postEvent(LoadEvent(GameState.player.target, "Kanbara"))
+        EventManager.postEvent(LoadEvent(GameState.player, "Kanbara"))
         EventManager.executeEvents()
         assertEquals("Saved Player", GameState.player.target.name)
         assertTrue(GameState.player.target.properties.tags.has("Saved"))

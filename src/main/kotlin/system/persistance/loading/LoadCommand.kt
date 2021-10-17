@@ -1,5 +1,6 @@
 package system.persistance.loading
 
+import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
@@ -25,7 +26,7 @@ class LoadCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListSavesEvent(source))

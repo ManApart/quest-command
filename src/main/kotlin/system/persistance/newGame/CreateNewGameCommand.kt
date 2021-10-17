@@ -1,5 +1,6 @@
 package system.persistance.newGame
 
+import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
@@ -24,7 +25,7 @@ class CreateNewGameCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val saveName = args.joinToString(" ")
         if (saveName.isBlank()) {
             source.displayToMe("You must give a name for the new game.")

@@ -20,13 +20,14 @@ class ReadMapTest {
         GameState.player = player
         GameLogger.reset()
         GameLogger.track(player)
+        player.knownLocations.clear()
     }
 
     @Test
     fun noNeighbors(){
         val target = LocationNode("My Place")
 
-        val event = ReadMapEvent(player.target, target)
+        val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
         listener.execute(event)
@@ -38,9 +39,8 @@ class ReadMapTest {
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
         val target = LocationNode("My Place")
         target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Vector(0, 10, 0)))
-        player.knownLocations.clear()
         target.getNeighborConnections().forEach { player.discover(it.destination.location) }
-        val event = ReadMapEvent(player.target, target)
+        val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
         listener.execute(event)
@@ -58,9 +58,8 @@ class ReadMapTest {
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south")), Vector(0, -10, 0)))
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east")), Vector(10, 0, 0)))
         target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west")), Vector(-10, 0, 0)))
-        player.knownLocations.clear()
         target.getNeighborConnections().forEach { player.discover(it.destination.location) }
-        val event = ReadMapEvent(player.target, target)
+        val event = ReadMapEvent(player, target)
 
         val listener = ReadMap()
         listener.execute(event)

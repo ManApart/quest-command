@@ -35,7 +35,7 @@ class Tutorial : StoryEventResource {
         StoryEvent("Tutorial", 40, "I should travel to Farmer's Hut.",
             ConditionalEvents(
                 ReadMapEvent::class,
-                createEvents = { event, _ -> listOf(MessageEvent(GameState.getPlayer(event.source), "I should travel to the Farmer's Hut. I can do so by typing 'travel farmer's hut'.")) }
+                createEvents = { event, _ -> listOf(MessageEvent(event.source, "I should travel to the Farmer's Hut. I can do so by typing 'travel farmer's hut'.")) }
             )
         ),
 
