@@ -3,10 +3,8 @@ package conversation
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
 import conversation.start.StartConversationEvent
-import core.commands.Args
-import core.commands.Command
-import core.commands.CommandParser
-import core.commands.ResponseRequest
+import core.Player
+import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -35,7 +33,7 @@ class SpeakCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("to", "with"))
         when {
             arguments.hasGroup("with") -> speakTo(source, arguments.getString("with"))
@@ -44,15 +42,15 @@ class SpeakCommand : Command() {
         }
     }
 
-    private fun speakTo(speaker: Thing, thingName: String) {
+    private fun speakTo(speaker: Player, thingName: String) {
         val things = speaker.location.getLocation().getThings(thingName)
         if (things.size == 1) {
-            EventManager.postEvent(StartConversationEvent(speaker, things.first()))
+            EventManager.postEvent(StartConversationEvent(speaker.thing, things.first()))
         } else {
-            val creatures = speaker.location.getLocation().getCreatures(speaker)
+            val creatures = speaker.location.getLocation().getCreatures(speaker.thing)
             val message = "Speak to who?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "speak to ${it.name}." })
-            CommandParser.setResponseRequest(response)
+            CommandParsers.setResponseRequest(speaker, response)
         }
     }
 }

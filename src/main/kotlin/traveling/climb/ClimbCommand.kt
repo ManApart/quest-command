@@ -115,12 +115,12 @@ class ClimbCommand : Command() {
                 val response = ResponseRequest(message, (climbOptions.map { it.thing.name to "climb ${it.direction} ${it.thing.name}" } +
                         climbOptions.map { "${it.thing.name} (${it.direction})" to "climb ${it.direction} ${it.thing.name}" }
                         ).toMap())
-                CommandParser.setResponseRequest(response)
+                CommandParsers.setResponseRequest(response)
             }
             else -> {
                 val message = "Climb what?\n\t${options.joinToString(", ")}"
                 val response = ResponseRequest(message, options.associate { it.name to "climb ${it.name}" })
-                CommandParser.setResponseRequest(response)
+                CommandParsers.setResponseRequest(response)
             }
         }
     }
@@ -134,7 +134,7 @@ class ClimbCommand : Command() {
             val message = "Climb what part of ${thing.name}?\n\t${options.joinToString(", ")}"
             val response = ResponseRequest(message,
                 options.associate { it.name to "climb ${it.name} of ${thing.name}" })
-            CommandParser.setResponseRequest(response)
+            CommandParsers.setResponseRequest(response)
         }
     }
 

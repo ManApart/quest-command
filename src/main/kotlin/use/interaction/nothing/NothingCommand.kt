@@ -40,7 +40,7 @@ class NothingCommand : Command() {
     private fun clarifyHours() {
         val things = listOf("1", "3", "5", "10")
         val message = "Wait for how many hours?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "wait $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "wait $it" }))
     }
 
     private fun wait(source: Thing, hours: Int) {

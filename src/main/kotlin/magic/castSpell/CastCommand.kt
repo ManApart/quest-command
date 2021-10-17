@@ -101,7 +101,7 @@ class CastCommand : Command() {
         val options = spellCommands.map { it.name }
         val message = "Cast what?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.associateWith { "cast $it" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(response)
     }
 
     private fun getSpellCommand(args: List<String>): SpellCommand? {

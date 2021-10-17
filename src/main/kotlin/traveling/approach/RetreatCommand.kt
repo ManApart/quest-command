@@ -57,7 +57,7 @@ class RetreatCommand : Command() {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
         val distanceResponse = ResponseRequest("Retreat how much?\n\t${distanceOptions.joinToString(", ")}",
             distanceOptions.associateWith { "retreat from $thing by $it" })
-        CommandParser.setResponseRequest(distanceResponse)
+        CommandParsers.setResponseRequest(distanceResponse)
     }
 
     private fun clarifyThing(source: Thing, creatures: List<Thing>) {
@@ -66,7 +66,7 @@ class RetreatCommand : Command() {
         } else {
             val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "retreat from ${it.name}" })
-            CommandParser.setResponseRequest(response)
+            CommandParsers.setResponseRequest(response)
         }
     }
 

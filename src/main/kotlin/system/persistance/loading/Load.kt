@@ -18,8 +18,8 @@ class Load : EventListener<LoadEvent>() {
         val tooManyMatchesResponse = ResponseRequest("What game would you like to load?\n\t${saves.joinToString(", ")}",
             saves.associateWith { "Load $it" })
         when {
-            saves.isEmpty() -> CommandParser.setResponseRequest(noMatchResponse)
-            saves.size > 1 -> CommandParser.setResponseRequest(tooManyMatchesResponse)
+            saves.isEmpty() -> CommandParsers.setResponseRequest(noMatchResponse)
+            saves.size > 1 -> CommandParsers.setResponseRequest(tooManyMatchesResponse)
             else -> loadGameAndPlayer(gameName)
         }
     }

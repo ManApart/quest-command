@@ -44,7 +44,7 @@ class CraftRecipeCommand : Command() {
     private fun chooseRecipe(recipes: List<Recipe>) {
         val message = "Craft which recipe?${recipes.joinToString { "\n\t${it.name}" }}"
         val response = ResponseRequest(message, recipes.associate { it.name to "craft ${it.name}" })
-         CommandParser.setResponseRequest(response)
+         CommandParsers.setResponseRequest(response)
     }
 
     private fun processRecipe(source: Player, recipe: Recipe) {

@@ -56,7 +56,7 @@ class ApproachCommand : Command() {
     private fun clarifyAmount(source: Thing, thing: Thing) {
         val thingRange = source.position.getDistance(thing.position)
         val things = mapOf("minimum" to Distances.MIN_RANGE, "halfway" to thingRange / 2, "all the way" to thingRange)
-        CommandParser.setResponseRequest(ResponseRequest("Move how much?\n\t${things.keys.joinToString(", ")}",
+        CommandParsers.setResponseRequest(ResponseRequest("Move how much?\n\t${things.keys.joinToString(", ")}",
             things.entries.associate { it.key to "approach ${thing.name} by ${it.value}" }))
     }
 
@@ -66,7 +66,7 @@ class ApproachCommand : Command() {
         } else {
             val message = "Approach what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "approach ${it.name}" })
-            CommandParser.setResponseRequest(response)
+            CommandParsers.setResponseRequest(response)
         }
     }
 

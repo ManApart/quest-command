@@ -43,7 +43,7 @@ class ReadMapCommand : Command() {
     private fun clarifyDepth() {
         val things = listOf("1", "3", "5", "10", "20")
         val message = "View how many hops?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "map $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "map $it" }))
     }
 
     private fun currentLocation(source: Player, depth: Int){

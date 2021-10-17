@@ -44,7 +44,7 @@ class LookCommand : Command() {
         val things  = (listOf("all") + source.currentLocation().getThings().map { it.name })
         val message = "Look at what?\n\t${things.joinToString(", ")}"
         val response = ResponseRequest(message, things.associateWith { "look $it" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(response)
     }
 
 }

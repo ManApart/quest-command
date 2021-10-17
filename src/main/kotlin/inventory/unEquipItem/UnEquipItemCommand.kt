@@ -73,7 +73,7 @@ class UnEquipItemCommand : Command() {
     private fun clarifyItem(source: Thing) {
         val things = source.body.getEquippedItems()
         val message = "What do you want to un-equip?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, things.associate { "$it" to "unequip $it" }))
+        CommandParsers.setResponseRequest( ResponseRequest(message, things.associate { "$it" to "unequip $it" }))
     }
 
 }

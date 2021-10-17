@@ -44,7 +44,7 @@ class ExamineCommand : Command() {
         val things  = (listOf("all") + source.currentLocation().getThings().map { it.name })
         val message = "Examine what?\n\t${things.joinToString(", ")}"
         val response = ResponseRequest(message, things.associateWith { "examine $it" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(response)
     }
 
 }

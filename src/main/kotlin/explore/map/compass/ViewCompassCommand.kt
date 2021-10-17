@@ -49,7 +49,7 @@ class ViewCompassCommand : Command() {
     private fun clarifyDepth(locationArgs: String) {
         val things = listOf("1", "3", "5", "10", "20")
         val message = "Search how far?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "compass $locationArgs $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "compass $locationArgs $it" }))
     }
 
 }

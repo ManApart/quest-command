@@ -45,7 +45,7 @@ class Push : SpellCommand() {
             val options = listOf("1", "3", "5", "10", "50")
             val response = ResponseRequest(message,
                 options.associateWith { "push $it towards ${direction.name} on ${things.toCommandString()}}" })
-             CommandParser.setResponseRequest(response)
+             CommandParsers.setResponseRequest(response)
         } else {
             val hitCount = things.count()
             val perThingCost = power / 10

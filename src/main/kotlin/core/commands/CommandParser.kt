@@ -76,9 +76,7 @@ class CommandParser(private val commandSource: Player) {
         command.execute(commandSource, args[0], trimmedArgs)
     }
 
-    fun cleanLine(line: String): List<String> {
-        return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
-    }
+
 
     private fun findAliasCommand(alias: String): String? {
         return GameState.aliases[alias]

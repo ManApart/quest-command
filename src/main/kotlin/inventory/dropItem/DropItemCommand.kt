@@ -42,7 +42,7 @@ class DropItemCommand : core.commands.Command() {
     private fun clarifyItemToDrop(source: Thing) {
         val things = source.inventory.getItems().map { it.name }
         val message = "Drop what item?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "drop $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "drop $it" }))
     }
 
     private fun dropItem(source: Thing, args: Args, position: Vector) {

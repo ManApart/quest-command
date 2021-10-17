@@ -41,7 +41,7 @@ class PutItemCommand : core.commands.Command() {
     private fun clarifyItemToPlace(source: Thing) {
         val things = source.inventory.getItems().map { it.name }
         val message = "Give what item?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "place $it in" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "place $it in" }))
     }
 
     private fun placeItemInContainer(source: Thing, args: Args) {
@@ -62,7 +62,7 @@ class PutItemCommand : core.commands.Command() {
     private fun giveToWhat(creatures: List<Thing>, itemName: String) {
         val message = "Give $itemName to what?\n\t${creatures.joinToString(", ")}"
         val response = ResponseRequest(message, creatures.associate { it.name to "give $itemName to ${it.name}" })
-         CommandParser.setResponseRequest(response)
+         CommandParsers.setResponseRequest(response)
     }
 
 

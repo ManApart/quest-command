@@ -25,8 +25,8 @@ class PlayAs : EventListener<PlayAsEvent>() {
         val tooManyMatchesResponse = ResponseRequest("What character would you like to play?\n\t${saves.joinToString(", ")}",
             saves.associateWith { "Be $it" })
         when {
-            saves.isEmpty() -> CommandParser.setResponseRequest(noMatchResponse)
-            saves.size > 1 -> CommandParser.setResponseRequest(tooManyMatchesResponse)
+            saves.isEmpty() -> CommandParsers.setResponseRequest(noMatchResponse)
+            saves.size > 1 -> CommandParsers.setResponseRequest(tooManyMatchesResponse)
             else -> system.persistance.loadCharacter(gameName, saves.first())
         }
     }

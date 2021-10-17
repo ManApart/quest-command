@@ -58,25 +58,25 @@ class HelpCommand : Command() {
         val commands = listOf("All", "Commands", "Commands extended", "Command Group", "Command").map { "help $it" }
 
         val message = "Help about what?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest.new(message, things, commands))
+        CommandParsers.setResponseRequest(ResponseRequest.new(message, things, commands))
     }
 
     private fun clarifyCommandGroupHelp() {
         val things = getCommandGroups()
         val message = "Help about which command group?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "help $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "help $it" }))
     }
 
     private fun clarifyCommandFromGroupHelp() {
         val things = getCommandGroups()
         val message = "Help about a command from which command group?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "help command $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "help command $it" }))
     }
 
     private fun clarifyCommandHelp(group: String) {
         val things = getCommands(group).map { it.name }
         val message = "Help about what command?\n\t${things.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "help $it" }))
+        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "help $it" }))
     }
 
 }

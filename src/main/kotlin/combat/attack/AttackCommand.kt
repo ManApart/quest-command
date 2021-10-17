@@ -42,16 +42,16 @@ class AttackCommand : Command() {
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val sourceT = source.thing
         if (keyword.lowercase() == "attack") {
-            clarifyAttackType(args)
+            clarifyAttackType(source, args)
         } else {
             val arguments = Args(args, listOf("with"))
             val attackType = fromString(keyword)
             val handHelper = HandHelper(sourceT, arguments.getString("with"), attackType.damageType.damage.lowercase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
-            val thing = getThing(keyword, arguments, weaponName, sourceT)
+            val thing = getThing(keyword, arguments, weaponName, source)
 
             if (thing == null) {
-                clarifyThing(sourceT, keyword, weaponName)
+                clarifyThing(source, keyword, weaponName)
             } else {
                 //Go ahead and process a thing that has aimed for body parts or no body parts at all
                 if (thing.bodyPartThings.isNotEmpty()) {
@@ -62,15 +62,15 @@ class AttackCommand : Command() {
                         processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body.getRootPart())))
                         //Otherwise clarify body parts.
                     } else {
-                        clarifyThingPart(keyword, thing, weaponName)
+                        clarifyThingPart(source, keyword, thing, weaponName)
                     }
                 }
             }
         }
     }
 
-    private fun getThing(keyword: String, arguments: Args, weaponName: String, source: Thing): ThingAim? {
-        val things = parseThings(source, arguments.getBaseGroup()) + parseThingsFromInventory(source, arguments.getBaseGroup(), source)
+    private fun getThing(keyword: String, arguments: Args, weaponName: String, source: Player): ThingAim? {
+        val things = parseThings(source.thing, arguments.getBaseGroup()) + parseThingsFromInventory(source.thing, arguments.getBaseGroup(), source.thing)
         return if (things.isEmpty() && !isAlias(keyword)) {
             clarifyThing(source, keyword, weaponName)
             null
@@ -82,7 +82,7 @@ class AttackCommand : Command() {
                 null
             }
         } else if (things.size > 1) {
-            clarifyThings(keyword, things, weaponName)
+            clarifyThings(source, keyword, things, weaponName)
             null
         } else if (things.size == 1) {
             things.first()

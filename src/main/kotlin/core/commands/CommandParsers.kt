@@ -92,4 +92,8 @@ object CommandParsers {
         parsers[player.id]?.setResponseRequest(responseRequest)
     }
 
+    fun cleanLine(line: String): List<String> {
+        return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+    }
+
 }
