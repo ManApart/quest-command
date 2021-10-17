@@ -1,7 +1,8 @@
 package inventory
 
+import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
@@ -26,25 +27,25 @@ class InventoryCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
-        val location = source.currentLocation()
+    override fun execute(source: Player, keyword: String, args: List<String>) {
+        val location = source.thing.currentLocation()
         val allInventories = location.findThingsByTag("Container")
         val argString = args.joinToString(" ")
         val thing = location.getThings(argString).firstOrNull()
 
         when {
             args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(allInventories.first()))
-            args.isEmpty() && keyword == "bag" -> clarifyThing(allInventories)
-            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source))
+            args.isEmpty() && keyword == "bag" -> clarifyThing(source, allInventories)
+            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source.thing))
             thing != null -> EventManager.postEvent(ListInventoryEvent(thing))
             else -> source.displayToMe("Could not find $argString")
         }
     }
 
-    private fun clarifyThing(things: List<Thing>) {
+    private fun clarifyThing(source: Player, things: List<Thing>) {
         val names = things.map { it.name }
         val message = "View whose inventory?\n\t${names.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, names.associateWith { "bag $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, names.associateWith { "bag $it" }))
     }
 
 

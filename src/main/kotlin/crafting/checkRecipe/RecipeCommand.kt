@@ -2,7 +2,7 @@ package crafting.checkRecipe
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
@@ -29,7 +29,7 @@ class RecipeCommand : Command() {
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            args.isEmpty() && keyword == "recipe" -> clarifyRecipe()
+            args.isEmpty() && keyword == "recipe" -> clarifyRecipe(source)
             args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(CheckRecipeEvent(source))
             args.size == 1 && args[0] == "recipe" -> clarifyWhichRecipe(source)
@@ -38,16 +38,16 @@ class RecipeCommand : Command() {
         }
     }
 
-    private fun clarifyRecipe() {
+    private fun clarifyRecipe(player: Player) {
         val things = listOf("All", "Recipe")
         val message = "List all or read a specific recipe?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "recipe $it" }))
+        CommandParsers.setResponseRequest(player, ResponseRequest(message, things.associateWith { "recipe $it" }))
     }
 
-    private fun clarifyWhichRecipe(source: Player) {
-        val things = source.knownRecipes.map { it.name }
+    private fun clarifyWhichRecipe(player: Player) {
+        val things = player.knownRecipes.map { it.name }
         val message = "Read what recipe?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "recipe $it" }))
+        CommandParsers.setResponseRequest(player, ResponseRequest(message, things.associateWith { "recipe $it" }))
     }
 
 }

@@ -1,7 +1,8 @@
 package inventory.dropItem
 
+import core.Player
 import core.commands.Args
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.commands.parseVector
 import core.events.EventManager
@@ -29,20 +30,20 @@ class DropItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("at"))
         val vector = parseVector(args, source.position)
         when {
             arguments.isEmpty() -> clarifyItemToDrop(source)
-            arguments.hasBase() -> dropItem(source, arguments, vector)
+            arguments.hasBase() -> dropItem(source.thing, arguments, vector)
             else -> source.displayToMe("Drop what? Try 'drop <item>'.")
         }
     }
 
-    private fun clarifyItemToDrop(source: Thing) {
+    private fun clarifyItemToDrop(source: Player) {
         val things = source.inventory.getItems().map { it.name }
         val message = "Drop what item?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "drop $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "drop $it" }))
     }
 
     private fun dropItem(source: Thing, args: Args, position: Vector) {

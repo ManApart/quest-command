@@ -1,7 +1,6 @@
 package magic.spellCommands.water
 
 import combat.DamageType
-import traveling.position.ThingAim
 import core.DependencyInjector
 import core.GameState
 import core.commands.Args
@@ -10,8 +9,8 @@ import core.thing.Thing
 import createMockedGame
 import magic.SpellCommandMock
 import magic.castSpell.StartCastSpellEvent
-import magic.spellCommands.SpellCommandsMock
 import magic.spellCommands.SpellCommandsCollection
+import magic.spellCommands.SpellCommandsMock
 import magic.spells.Spell
 import org.junit.Before
 import org.junit.Test
@@ -22,6 +21,7 @@ import status.effects.EffectsMock
 import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
+import traveling.position.ThingAim
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue

@@ -17,8 +17,15 @@ object CommandParsers {
         addParser(GameState.player)
     }
 
-    fun addParser(player: Player){
+    fun addParser(player: Player) {
         parsers[player.id] = CommandParser(player)
+    }
+
+    fun getParser(player: Player) : CommandParser {
+        if (!parsers.containsKey(player.id)) {
+            parsers[player.id] = CommandParser(player)
+        }
+        return parsers[player.id]!!
     }
 
     private fun loadCommands(): NameSearchableList<Command> {

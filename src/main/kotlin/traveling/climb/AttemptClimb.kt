@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.display
 import core.thing.Thing
 import core.utility.RandomManager
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 import status.ExpGainedEvent
 import status.stat.CLIMBING
 import status.stat.STAMINA

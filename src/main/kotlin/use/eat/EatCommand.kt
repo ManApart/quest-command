@@ -1,7 +1,6 @@
 package use.eat
 
 import core.commands.Command
-import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe

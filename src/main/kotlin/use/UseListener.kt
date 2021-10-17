@@ -2,8 +2,8 @@ package use
 
 import core.events.EventListener
 import core.history.display
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 
 abstract class UseListener : EventListener<UseEvent>() {
 

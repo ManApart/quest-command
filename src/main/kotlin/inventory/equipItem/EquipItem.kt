@@ -3,8 +3,8 @@ package inventory.equipItem
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 
 class EquipItem : EventListener<EquipItemEvent>() {
     override fun execute(event: EquipItemEvent) {

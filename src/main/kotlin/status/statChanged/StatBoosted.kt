@@ -2,8 +2,8 @@ package status.statChanged
 
 import core.events.EventListener
 import core.history.display
-import core.utility.then
 import core.utility.asSubjectPossessive
+import core.utility.then
 import kotlin.math.abs
 
 class StatBoosted : EventListener<StatBoostEvent>() {

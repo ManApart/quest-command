@@ -2,6 +2,7 @@ package core.commands
 
 import core.GameState
 import core.Player
+import core.commands.CommandParsers.cleanLine
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.display
@@ -9,7 +10,7 @@ import core.utility.removeFirstItem
 
 class CommandParser(private val commandSource: Player) {
     private var responseRequest: ResponseRequest? = null
-    private var commandInterceptor: CommandInterceptor? = null
+    var commandInterceptor: CommandInterceptor? = null
 
     fun parseInitialCommand(args: Array<String>) {
         val initialCommand = if (args.isEmpty()) {

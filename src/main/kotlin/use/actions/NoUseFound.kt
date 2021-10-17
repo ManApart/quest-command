@@ -4,8 +4,8 @@ import core.events.Event
 import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 import use.UseEvent
 import use.UseListener
 

@@ -3,8 +3,8 @@ package use.interaction
 import core.events.EventListener
 import core.history.display
 import core.history.displayToMe
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 
 class Interact : EventListener<InteractEvent>() {
 

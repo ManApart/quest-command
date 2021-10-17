@@ -7,7 +7,6 @@ import core.*
 import core.history.SessionHistory
 import core.properties.Properties
 import core.thing.Thing
-import core.thing.loadFromDisk
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import java.io.File

@@ -4,9 +4,9 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
-import core.utility.then
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
+import core.utility.then
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 import traveling.location.location.LocationPoint

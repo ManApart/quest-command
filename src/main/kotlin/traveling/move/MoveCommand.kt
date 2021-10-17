@@ -4,8 +4,8 @@ import core.commands.*
 import core.events.EventManager
 import core.history.display
 import core.thing.Thing
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 import traveling.direction.Direction
 import traveling.position.NO_VECTOR
 

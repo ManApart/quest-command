@@ -1,11 +1,11 @@
 package performance
 
+import core.GameManager
 import core.commands.CommandParser
+import core.events.EventManager
 import core.utility.PoorMansInstrumenter
 import org.junit.Ignore
 import org.junit.Test
-import core.events.EventManager
-import core.GameManager
 
 class StartupTest {
 

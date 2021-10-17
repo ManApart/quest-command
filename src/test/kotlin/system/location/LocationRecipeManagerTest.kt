@@ -1,10 +1,12 @@
 package system.location
 
-import org.junit.Test
 import core.DependencyInjector
 import createMockedGame
 import org.junit.Before
-import traveling.location.location.*
+import org.junit.Test
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationsCollection
+import traveling.location.location.LocationsMock
 import traveling.location.network.*
 import kotlin.test.assertEquals
 

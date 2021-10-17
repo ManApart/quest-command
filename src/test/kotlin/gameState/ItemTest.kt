@@ -2,8 +2,8 @@ package gameState
 
 import core.properties.Properties
 import core.properties.Tags
-import core.thing.Thing
 import core.properties.Values
+import core.thing.Thing
 import org.junit.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

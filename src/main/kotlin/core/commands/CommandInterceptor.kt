@@ -1,9 +1,7 @@
 package core.commands
 
-import core.thing.Thing
+import core.Player
 
 interface CommandInterceptor {
-    fun parseCommand(source: Thing, line: String)
-    //TODO
-//    fun parseCommand(source: Player, line: String)
+    fun parseCommand(source: Player, line: String)
 }

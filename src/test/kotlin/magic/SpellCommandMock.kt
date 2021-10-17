@@ -1,9 +1,9 @@
 package magic
 
-import traveling.position.ThingAim
 import core.commands.Args
 import core.thing.Thing
 import magic.spellCommands.SpellCommand
+import traveling.position.ThingAim
 
 class SpellCommandMock(override val name: String = "testspell", private val category: List<String> = listOf()) : SpellCommand() {
     var args = Args(listOf())

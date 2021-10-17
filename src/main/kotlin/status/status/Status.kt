@@ -3,9 +3,9 @@ package status.status
 import core.events.EventListener
 import core.history.display
 import core.properties.ENCUMBRANCE
+import core.utility.asSubjectPossessive
 import core.utility.capitalize2
 import core.utility.then
-import core.utility.asSubjectPossessive
 import status.stat.FOCUS
 import status.stat.HEALTH
 import status.stat.STAMINA

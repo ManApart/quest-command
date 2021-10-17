@@ -1,7 +1,6 @@
 package magic.spellCommands.air
 
 import core.commands.Args
-import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.commands.parseDirection
 import core.events.EventManager

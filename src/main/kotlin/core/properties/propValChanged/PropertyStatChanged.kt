@@ -3,8 +3,8 @@ package core.properties.propValChanged
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.utility.then
 import core.utility.asSubjectPossessive
+import core.utility.then
 
 class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
 

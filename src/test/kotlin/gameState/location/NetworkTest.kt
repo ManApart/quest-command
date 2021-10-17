@@ -1,12 +1,12 @@
 package gameState.location
 
-import traveling.direction.Direction
-import traveling.position.Vector
 import org.junit.Test
+import traveling.direction.Direction
 import traveling.location.Connection
-import traveling.location.network.LocationNode
-import traveling.location.location.LocationPoint
 import traveling.location.Network
+import traveling.location.location.LocationPoint
+import traveling.location.network.LocationNode
+import traveling.position.Vector
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 

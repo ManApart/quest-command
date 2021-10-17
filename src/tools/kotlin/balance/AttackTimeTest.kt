@@ -2,16 +2,16 @@ package balance
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
-import traveling.position.ThingAim
 import core.properties.Properties
 import core.properties.Tags
-import core.thing.Thing
 import core.properties.Values
+import core.thing.Thing
 import status.stat.AGILITY
 import status.stat.STRENGTH
 import traveling.location.location.Location
-import traveling.location.network.LocationNode
 import traveling.location.location.LocationRecipe
+import traveling.location.network.LocationNode
+import traveling.position.ThingAim
 
 
 fun main() {

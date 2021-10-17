@@ -2,7 +2,10 @@ package inventory
 
 import core.DependencyInjector
 import core.body.*
-import core.properties.*
+import core.properties.COUNT
+import core.properties.Properties
+import core.properties.Tags
+import core.properties.Values
 import core.thing.Thing
 import core.thing.item.ITEM_TAG
 import createPouch
@@ -11,7 +14,9 @@ import inventory.pickupItem.TakeItemEvent
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import traveling.location.location.*
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationsCollection
+import traveling.location.location.LocationsMock
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock

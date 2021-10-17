@@ -1,8 +1,8 @@
 package core.commands
 
+import org.junit.Test
 import traveling.direction.Direction
 import traveling.position.Vector
-import org.junit.Test
 import kotlin.test.assertEquals
 
 class DirectionParserTest {

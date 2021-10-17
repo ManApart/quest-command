@@ -3,8 +3,8 @@ package status.statChanged
 import core.GameState
 import core.events.EventListener
 import core.history.display
-import core.utility.then
 import core.utility.asSubjectPossessive
+import core.utility.then
 import system.debug.DebugType
 import kotlin.math.abs
 

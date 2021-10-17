@@ -12,12 +12,12 @@ import inventory.putItem.TransferItemEvent
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-
-import traveling.location.location.*
+import traveling.location.location.LocationManager
+import traveling.location.location.LocationsCollection
+import traveling.location.location.LocationsMock
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
-
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 

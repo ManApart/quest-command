@@ -12,7 +12,6 @@ import core.ai.behavior.BehaviorsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
 import core.body.*
-import core.commands.CommandParser
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
 import core.events.EventListenersCollection

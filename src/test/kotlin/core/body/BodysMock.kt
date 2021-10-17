@@ -1,6 +1,6 @@
 package core.body
 
-import traveling.location.location.*
+import traveling.location.location.LocationRecipeBuilder
 import traveling.location.network.NetworkBuilder
 import traveling.location.network.network
 import traveling.location.network.networks

@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
 import core.thing.Thing
-import core.utility.isAre
 import core.utility.asSubject
+import core.utility.isAre
 
 class TakeItem : EventListener<TakeItemEvent>() {
     override fun execute(event: TakeItemEvent) {

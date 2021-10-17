@@ -4,10 +4,12 @@ import conversation.parsing.QuestionType
 import conversation.parsing.Verb
 import conversation.start.StartConversationEvent
 import core.Player
-import core.commands.*
+import core.commands.Args
+import core.commands.Command
+import core.commands.CommandParsers
+import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.thing.Thing
 import core.utility.capitalize2
 
 class SpeakCommand : Command() {
@@ -45,7 +47,7 @@ class SpeakCommand : Command() {
     private fun speakTo(speaker: Player, thingName: String) {
         val things = speaker.location.getLocation().getThings(thingName)
         if (things.size == 1) {
-            EventManager.postEvent(StartConversationEvent(speaker.thing, things.first()))
+            EventManager.postEvent(StartConversationEvent(speaker, things.first()))
         } else {
             val creatures = speaker.location.getLocation().getCreatures(speaker.thing)
             val message = "Speak to who?\n\t${creatures.joinToString(", ")}"

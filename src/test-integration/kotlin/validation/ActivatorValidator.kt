@@ -1,7 +1,6 @@
 package validation
 
 import core.thing.activator.ActivatorManager
-import core.ai.behavior.BehaviorManager
 
 //TODO - check that connections with connection networks exist
 

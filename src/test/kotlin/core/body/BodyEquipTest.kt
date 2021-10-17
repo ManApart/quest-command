@@ -1,6 +1,5 @@
 package core.body
 
-import core.thing.Thing
 import core.thing.thing
 import org.junit.Test
 import traveling.location.location.LocationRecipe

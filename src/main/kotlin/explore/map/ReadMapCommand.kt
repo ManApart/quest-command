@@ -3,10 +3,9 @@ package explore.map
 import core.Player
 import core.commands.Args
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.thing.Thing
 import traveling.location.location.LocationManager
 
 class ReadMapCommand : Command() {
@@ -34,16 +33,16 @@ class ReadMapCommand : Command() {
         val otherArgs = args.minus(depth.toString())
 
         when{
-            arguments.isEmpty() && keyword == "map" -> clarifyDepth()
+            arguments.isEmpty() && keyword == "map" -> clarifyDepth(source)
             otherArgs.isEmpty() -> currentLocation(source, depth)
             else -> thingLocation(source, otherArgs, depth)
         }
     }
 
-    private fun clarifyDepth() {
+    private fun clarifyDepth(player: Player) {
         val things = listOf("1", "3", "5", "10", "20")
         val message = "View how many hops?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "map $it" }))
+        CommandParsers.setResponseRequest(player, ResponseRequest(message, things.associateWith { "map $it" }))
     }
 
     private fun currentLocation(source: Player, depth: Int){

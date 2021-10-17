@@ -2,10 +2,8 @@ package core.thing
 
 import core.ai.behavior.BehaviorRecipe
 import core.ai.behavior.getPersisted
-import core.body.Body
 import core.body.Slot
 import core.properties.getPersisted
-import status.Soul
 import system.persistance.clean
 import system.persistance.cleanPathToFile
 import system.persistance.loadMap

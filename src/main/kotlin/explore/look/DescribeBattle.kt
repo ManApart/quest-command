@@ -2,9 +2,9 @@ package explore.look
 
 import core.commands.CommandParser
 import core.history.display
+import core.history.displayToMe
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
-import core.history.displayToMe
 import core.thing.Thing
 import status.stat.HEALTH
 

@@ -3,7 +3,6 @@ package system.persistance.saving
 import core.Player
 import core.commands.Command
 import core.events.EventManager
-import core.thing.Thing
 
 class SaveCommand : Command() {
     override fun getAliases(): List<String> {

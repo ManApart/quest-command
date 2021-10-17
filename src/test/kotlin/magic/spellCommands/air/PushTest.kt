@@ -1,7 +1,6 @@
 package magic.spellCommands.air
 
 import combat.DamageType
-import traveling.position.ThingAim
 import core.DependencyInjector
 import core.GameState
 import core.commands.Args
@@ -21,6 +20,7 @@ import status.stat.AIR_MAGIC
 import status.stat.FOCUS
 import status.stat.StatEffect
 import traveling.position.NO_VECTOR
+import traveling.position.ThingAim
 import traveling.position.Vector
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

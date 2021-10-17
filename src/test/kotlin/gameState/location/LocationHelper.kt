@@ -1,10 +1,11 @@
 package gameState.location
 
 import traveling.direction.Direction
-import traveling.location.*
+import traveling.location.Connection
+import traveling.location.Network
+import traveling.location.location.LocationPoint
 import traveling.location.location.LocationRecipe
 import traveling.location.network.LocationNode
-import traveling.location.location.LocationPoint
 
 class LocationHelper {
 

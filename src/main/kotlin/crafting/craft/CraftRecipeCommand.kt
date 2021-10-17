@@ -2,7 +2,7 @@ package crafting.craft
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
@@ -33,18 +33,18 @@ class CraftRecipeCommand : Command() {
 
         when {
             args.isEmpty() && knownRecipes.isEmpty() -> source.displayToMe("You don't know any recipes.")
-            args.isEmpty() -> chooseRecipe(knownRecipes)
-            pickedRecipes.isEmpty() -> chooseRecipe(knownRecipes)
+            args.isEmpty() -> chooseRecipe(source, knownRecipes)
+            pickedRecipes.isEmpty() -> chooseRecipe(source, knownRecipes)
             pickedRecipes.size == 1 -> processRecipe(source, source.knownRecipes.get(argString))
-            pickedRecipes.size > 1 -> chooseRecipe(pickedRecipes)
+            pickedRecipes.size > 1 -> chooseRecipe(source, pickedRecipes)
             else -> source.displayToMe("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
 
-    private fun chooseRecipe(recipes: List<Recipe>) {
+    private fun chooseRecipe(source: Player, recipes: List<Recipe>) {
         val message = "Craft which recipe?${recipes.joinToString { "\n\t${it.name}" }}"
         val response = ResponseRequest(message, recipes.associate { it.name to "craft ${it.name}" })
-         CommandParsers.setResponseRequest(response)
+         CommandParsers.setResponseRequest(source, response)
     }
 
     private fun processRecipe(source: Player, recipe: Recipe) {
