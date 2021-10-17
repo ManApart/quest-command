@@ -1,7 +1,7 @@
 package core
 
 import core.ai.PLAYER_CONTROLLED_ID
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
 import core.thing.Thing
@@ -46,7 +46,7 @@ object GameManager {
 
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)
-        CommandParser.reset()
+        CommandParsers.reset()
         GameLogger.reset()
 
         giveStartingItems(GameState.player.thing)

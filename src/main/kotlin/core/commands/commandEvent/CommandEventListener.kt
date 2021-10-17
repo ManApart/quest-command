@@ -1,10 +1,10 @@
 package core.commands.commandEvent
 
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventListener
 
 class CommandEventListener : EventListener<CommandEvent>() {
     override fun execute(event: CommandEvent) {
-        CommandParser.parseCommand(event.command)
+        CommandParsers.parseCommand(event.command)
     }
 }

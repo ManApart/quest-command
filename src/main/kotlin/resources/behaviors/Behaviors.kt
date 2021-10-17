@@ -47,7 +47,7 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Climbable", InteractEvent::class) {
             events { event, _ ->
-                listOf(CommandEvent("climb ${event.thing.name}"))
+                listOf(CommandEvent(GameState.getPlayer(event.source),"climb ${event.thing.name}"))
             }
         }
 

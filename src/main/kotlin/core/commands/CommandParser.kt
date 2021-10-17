@@ -1,40 +1,15 @@
 package core.commands
 
-import core.DependencyInjector
 import core.GameState
 import core.Player
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.display
-import core.utility.NameSearchableList
 import core.utility.removeFirstItem
-import magic.castSpell.CastCommand
 
-object CommandParser {
-    private var commandsCollection = DependencyInjector.getImplementation(CommandsCollection::class)
-    var commands = loadCommands()
-    val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
-    private val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
+class CommandParser(private val commandSource: Player) {
     private var responseRequest: ResponseRequest? = null
-    var commandSource: Player = GameState.player
-    var commandInterceptor: CommandInterceptor? = null
-
-    private fun loadCommands(): NameSearchableList<Command> {
-        val commands = NameSearchableList(commandsCollection.values.toList())
-
-        commands.forEach {
-            commands.addProxy(it, it.getAliases().toList())
-        }
-
-        return commands
-    }
-
-    fun reset() {
-        responseRequest = null
-        commandSource = GameState.player
-        commandInterceptor = null
-        commands = loadCommands()
-    }
+    private var commandInterceptor: CommandInterceptor? = null
 
     fun parseInitialCommand(args: Array<String>) {
         val initialCommand = if (args.isEmpty()) {
@@ -76,18 +51,18 @@ object CommandParser {
     private fun parseSingleCommand(line: String) {
         val args: List<String> = cleanLine(line)
         if (args.isEmpty()) {
-            unknownCommand.execute(listOf(line))
+            CommandParsers.unknownCommand.execute(listOf(line))
         } else {
             val aliasCommand = findAliasCommand(args[0])
             if (aliasCommand != null) {
                 parseSingleCommand(aliasCommand)
             } else {
-                val command = findCommand(args[0])
-                if (command == unknownCommand) {
-                    if (castCommand.hasWord(args[0])) {
-                        executeCommand(castCommand, listOf("c") + args)
+                val command = CommandParsers.findCommand(args[0])
+                if (command == CommandParsers.unknownCommand) {
+                    if (CommandParsers.castCommand.hasWord(args[0])) {
+                        executeCommand(CommandParsers.castCommand, listOf("c") + args)
                     } else {
-                        unknownCommand.execute(listOf(line))
+                        CommandParsers.unknownCommand.execute(listOf(line))
                     }
                 } else {
                     executeCommand(command, args)
@@ -109,44 +84,6 @@ object CommandParser {
         return GameState.aliases[alias]
     }
 
-    fun findCommand(alias: String): Command {
-        return commands.getOrNull(alias) ?: unknownCommand
-    }
-
-    inline fun <reified C : Command> getCommand(): C {
-        return commands.first { it is C } as C
-    }
-
-    fun getCategories(): List<String> {
-        val categories = mutableListOf<String>()
-        commands.flatMap { it.getCategory() }.forEach {
-            if (!categories.contains(it)) {
-                categories.add(it)
-            }
-        }
-        return categories
-    }
-
-    fun getGroupedCommands(): Map<String, List<Command>> {
-        val groups = HashMap<String, MutableList<Command>>()
-        commands.forEach { command ->
-            run {
-                if (!groups.containsKey(command.getCategory()[0])) {
-                    groups[command.getCategory()[0]] = ArrayList()
-                }
-                groups[command.getCategory()[0]]?.add(command)
-            }
-        }
-        groups.forEach { entry ->
-            entry.value.sortBy { it.name }
-        }
-        return groups.toSortedMap()
-    }
-
-    fun isPlayersTurn(): Boolean {
-        return commandSource.thing.isPlayer()
-    }
-
     fun setResponseRequest(responseRequest: ResponseRequest?) {
         if (responseRequest != null && responseRequest.message != "") {
             commandSource.display(responseRequest.message)
@@ -156,6 +93,10 @@ object CommandParser {
 
     fun getResponseRequest(): ResponseRequest? {
         return this.responseRequest
+    }
+
+    fun isPlayersTurn(): Boolean {
+        return commandSource.isPlayer()
     }
 
 }

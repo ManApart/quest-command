@@ -38,9 +38,6 @@ class AttackCommand : Command() {
     override fun getCategory(): List<String> {
         return listOf("Combat")
     }
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
-        //Ignored
-    }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val sourceT = source.thing
@@ -99,32 +96,32 @@ class AttackCommand : Command() {
         return AttackType.values().map { it.alias }.contains(keyword.lowercase())
     }
 
-    private fun clarifyAttackType(args: List<String>) {
+    private fun clarifyAttackType(player: Player, args: List<String>) {
         val options = listOf("Chop", "Crush", "Slash", "Stab")
         val message = "Attack how?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.associateWith { "$it ${args.joinToString(" ")}" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(player, response)
     }
 
-    private fun clarifyThing(source: Thing, keyword: String, weaponName: String) {
-        val options = source.currentLocation().getThings()
+    private fun clarifyThing(player: Player, keyword: String, weaponName: String) {
+        val options = player.thing.currentLocation().getThings()
         val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message, options.associate { it.name to "$keyword ${it.name}" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(player, response)
     }
 
-    private fun clarifyThings(keyword: String, options: List<ThingAim>, weaponName: String) {
+    private fun clarifyThings(player: Player, keyword: String, options: List<ThingAim>, weaponName: String) {
         val message = "$keyword which one with $weaponName?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.associate { it.thing.name to "$keyword ${it.thing.name}" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(player, response)
     }
 
-    private fun clarifyThingPart(keyword: String, thing: ThingAim, weaponName: String) {
+    private fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
         val options = thing.thing.body.getParts()
         val message = "$keyword what part of ${thing.thing.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message,
             options.associate { it.name to "$keyword ${it.name} of ${thing.thing.name}" })
-        CommandParser.setResponseRequest(response)
+        CommandParsers.setResponseRequest(player, response)
     }
 
     private fun processAttack(source: Thing, arguments: Args, attackType: AttackType, handHelper: HandHelper, thing: ThingAim?) {
