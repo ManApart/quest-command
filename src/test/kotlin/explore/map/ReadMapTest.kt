@@ -1,5 +1,6 @@
 package explore.map
 
+import core.GameState
 import core.Player
 import core.history.GameLogger
 import core.target.Target
@@ -16,8 +17,9 @@ class ReadMapTest {
 
     @Before
     fun setup(){
+        GameState.player = player
         GameLogger.reset()
-        GameLogger.track(player.target)
+        GameLogger.track(player)
     }
 
     @Test
@@ -28,7 +30,7 @@ class ReadMapTest {
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = GameLogger.getHistory(player.target).getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
 
@@ -42,7 +44,7 @@ class ReadMapTest {
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = GameLogger.getHistory(player.target).getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name         Distance  Direction Path  \n" +
                 "  Destination  10        N               \n", actual)
@@ -62,7 +64,7 @@ class ReadMapTest {
 
         val listener = ReadMap()
         listener.execute(event)
-        val actual = GameLogger.getHistory(player.target).getLastOutput()
+        val actual = GameLogger.getHistory(player).getLastOutput()
         Assert.assertEquals("My Place is a part of Wilderness. It is neighbored by:\n" +
                 "  Name   Distance  Direction Path  \n" +
                 "  north  10        N               \n" +

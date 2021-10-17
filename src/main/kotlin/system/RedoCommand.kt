@@ -1,10 +1,10 @@
 package system
 
+import core.Player
 import core.commands.Command
 import core.commands.CommandParser
 import core.history.GameLogger
 import core.history.displayToMe
-import core.target.Target
 
 class RedoCommand : Command() {
     override fun getAliases(): List<String> {
@@ -23,7 +23,7 @@ class RedoCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val lastCommand = findLastCommand(source)
         if (lastCommand == null) {
             source.displayToMe("Could not find a command to repeat.")
@@ -32,7 +32,7 @@ class RedoCommand : Command() {
         }
     }
 
-    private fun findLastCommand(source: Target): String? {
+    private fun findLastCommand(source: Player): String? {
         val chatHistory = GameLogger.getHistory(source)
         val history = chatHistory.history + chatHistory.getCurrent()
         for (i in history.size - 1 downTo 0) {

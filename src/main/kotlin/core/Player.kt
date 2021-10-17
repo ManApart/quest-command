@@ -15,6 +15,14 @@ data class Player(
     val knownRecipes: NameSearchableList<Recipe> = NameSearchableList()
     var compassRoute: Route? = null
 
+    override fun equals(other: Any?): Boolean {
+        return other is Player && id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+
     fun isPlayer(): Boolean {
         return target.isPlayer()
     }

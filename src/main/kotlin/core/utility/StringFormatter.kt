@@ -11,32 +11,32 @@ fun Boolean.then(trueChoice: String, falseChoice: String): String {
 /**
  * Returns You if you are the listener, otherwise the target's name
  */
-fun Target.asSubject(listener: Target): String {
-    return (this === listener).then("You", name)
+fun Target.asSubject(listener: Player): String {
+    return (this === listener.target).then("You", name)
 }
 
-fun Player.asSubject(listener: Target): String {
+fun Player.asSubject(listener: Player): String {
     return target.asSubject(listener)
 }
 
 /**
  * Returns Your if you are the listener, otherwise the target's name as a possessive
  */
-fun Target.asSubjectPossessive(listener: Target): String {
-    return (this === listener).then("Your", "$name's")
+fun Target.asSubjectPossessive(listener: Player): String {
+    return (this === listener.target).then("Your", "$name's")
 }
 
-fun Player.asSubjectPossessive(listener: Target): String {
+fun Player.asSubjectPossessive(listener: Player): String {
     return target.asSubjectPossessive(listener)
 }
 
 /**
  * Returns are if you are the listener, otherwise is
  */
-fun Target.isAre(listener: Target): String {
-    return (this === listener).then("are", "is")
+fun Target.isAre(listener: Player): String {
+    return (this === listener.target).then("are", "is")
 }
 
-fun Player.isAre(listener: Target): String {
+fun Player.isAre(listener: Player): String {
     return target.isAre(listener)
 }

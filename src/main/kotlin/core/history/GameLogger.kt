@@ -10,18 +10,24 @@ import system.debug.DebugType
  * Only displayed to this target (you)
  */
 fun Target.displayToMe(message: String) {
-    GameLogger.getHistory(this).print(message)
+    if (isPlayer()) {
+        GameLogger.getHistory(GameState.getPlayer(this)).print(message)
+    }
 }
 
 fun Player.displayToMe(message: String) {
-    GameLogger.getHistory(this.target).print(message)
+    GameLogger.getHistory(this).print(message)
 }
 
 /**
  * Displayed to everyone but you (the calling target)
  */
 fun Target.displayToOthers(message: String) {
-    GameLogger.getHistory(this).print(message)
+    if (isPlayer()) {
+        GameLogger.histories.filter { it.listener.target !== this }.forEach { it.print(message) }
+    } else {
+        GameLogger.histories.forEach { it.print(message) }
+    }
 }
 
 /**
@@ -34,7 +40,7 @@ fun display(message: String) {
 /**
  * The message is evaluated for each listener, regardless of perception
  */
-fun display(message: (Target) -> String) {
+fun display(message: (Player) -> String) {
     GameLogger.histories.forEach { history ->
         val messageText = message(history.listener)
         history.print(messageText)
@@ -52,16 +58,16 @@ fun Player.display(message: String) {
     this.display { message }
 }
 
-fun Player.display(message: (Target) -> String) {
+fun Player.display(message: (Player) -> String) {
     this.target.display(message)
 }
 
 /**
  * The message is evaluated for each listener that perceives this target
  */
-fun Target.display(message: (Target) -> String) {
+fun Target.display(message: (Player) -> String) {
     GameLogger.histories
-        .filter { it.listener.perceives(this) }
+        .filter { it.listener.target.perceives(this) }
         .forEach { history ->
             val messageText = message(history.listener)
             history.print(messageText)
@@ -85,22 +91,22 @@ fun displayUpdateEnd(message: String) {
 object GameLogger {
     //Target hashcode changes and breaks == as a key lookup
     //Instead use a list and filter for referential equality
-    val histories = mutableListOf<GameLog>()
+    val histories = mutableSetOf<GameLog>()
 
     init {
-        track(GameState.player.target)
+        track(GameState.player)
     }
 
-    var main = getHistory(GameState.player.target)
+    var main = getHistory(GameState.player)
 
-    fun track(player: Target) {
+    fun track(player: Player) {
         histories.add(GameLog(player))
     }
 
     fun reset() {
         histories.clear()
-        track(GameState.player.target)
-        main = getHistory(GameState.player.target)
+        track(GameState.player)
+        main = getHistory(GameState.player)
     }
 
     fun addInput(input: String) {
@@ -112,8 +118,23 @@ object GameLogger {
         histories.forEach { it.getCurrent().timeTaken = timeTaken }
     }
 
-    fun getHistory(source: Target): GameLog {
-        var candidate = histories.firstOrNull { it.listener === source }
+//    fun hasHistory(source: Target): Boolean {
+//        if (source.isPlayer()) {
+//            return hasHistory(GameState.getPlayer(source))
+//        }
+//        return false
+//    }
+
+    fun hasHistory(source: Player): Boolean {
+        return histories.any { it.listener === source }
+    }
+
+//    fun getHistory(source: Target): GameLog {
+//        return getHistory(GameState.getPlayer(source))
+//    }
+
+    fun getHistory(source: Player): GameLog {
+        var candidate = histories.firstOrNull { it.listener == source }
         if (candidate == null) {
             candidate = GameLog(source)
             histories.add(candidate)

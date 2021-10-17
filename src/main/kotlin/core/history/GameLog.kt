@@ -2,11 +2,19 @@ package core.history
 
 import core.GameState
 import core.PRINT_WITHOUT_FLUSH
-import core.target.Target
+import core.Player
 
-class GameLog(val listener: Target) {
+class GameLog(val listener: Player) {
     val history = mutableListOf<InputOutput>()
     private var current: InputOutput? = null
+
+    override fun toString(): String {
+        return "id: ${listener.id} name: ${listener.target.name} size: ${history.size}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is GameLog && listener == other.listener
+    }
 
     fun addInput(input: String) {
         if (current != null) history.add(current!!)

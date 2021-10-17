@@ -1,6 +1,7 @@
 package core.history
 
 import core.GameState
+import core.Player
 import core.target.Target
 import org.junit.Assert
 import org.junit.Before
@@ -15,7 +16,7 @@ class GameLogManagerTest {
 
     @Test
     fun beforeChatHistoryIsEmpty(){
-        val history = GameLogger.getHistory(GameState.player.target)
+        val history = GameLogger.getHistory(GameState.player)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
         Assert.assertEquals("", history.getLastOutput())
         Assert.assertEquals(0, history.history.size)
@@ -25,7 +26,7 @@ class GameLogManagerTest {
     fun displayAddsMessageToHistory(){
         val message = "Test Message"
         display(message)
-        val history = GameLogger.getHistory(GameState.player.target)
+        val history = GameLogger.getHistory(GameState.player)
         Assert.assertEquals(InputOutput().input, history.getLastInput())
         Assert.assertEquals(message, history.getLastOutput())
     }
@@ -33,22 +34,25 @@ class GameLogManagerTest {
     @Test
     fun trackTarget(){
         val target = Target("Bob")
+        val player = Player(2, target)
         val message = "Test Message"
-        GameLogger.track(target)
-        target.displayToMe(message)
-        val history = GameLogger.getHistory(target)
+        GameLogger.track(player)
+        player.displayToMe(message)
+        val history = GameLogger.getHistory(player)
         Assert.assertEquals(message, history.getLastOutput())
     }
 
     @Test
     fun thing(){
         val target = Target("Bob")
+        val player = Player(2, target)
         val target2 = Target("Bob")
+        val player2 = Player(2, target2)
         val message = "Test Message"
-        GameLogger.track(target)
-        GameLogger.track(target2)
-        target2.displayToMe(message)
-        val history = GameLogger.getHistory(target2)
+        GameLogger.track(player)
+        GameLogger.track(player2)
+        player2.displayToMe(message)
+        val history = GameLogger.getHistory(player2)
         Assert.assertEquals(message, history.getLastOutput())
     }
 }
