@@ -138,8 +138,8 @@ private fun duplicateNodesAndConnections(oldNodes: List<LocationNode>): List<Loc
     newToOldNodes.keys.forEach { newNode ->
         val oldNode = newToOldNodes[newNode]!!
         oldNode.getNeighborConnections().forEach { oldConnection ->
-            val newSource = LocationPoint(oldToNewNodes[oldConnection.source.location]!!, oldConnection.source.targetName, oldConnection.source.partName)
-            val newDest = LocationPoint(oldToNewNodes[oldConnection.destination.location]!!, oldConnection.destination.targetName, oldConnection.destination.partName)
+            val newSource = LocationPoint(oldToNewNodes[oldConnection.source.location]!!, oldConnection.source.thingName, oldConnection.source.partName)
+            val newDest = LocationPoint(oldToNewNodes[oldConnection.destination.location]!!, oldConnection.destination.thingName, oldConnection.destination.partName)
             newNode.addConnection(Connection(newSource, newDest, oldConnection.vector, oldConnection.restricted))
         }
     }

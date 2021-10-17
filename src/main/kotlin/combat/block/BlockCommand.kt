@@ -5,7 +5,7 @@ import core.commands.Args
 import core.commands.Command
 import core.commands.parseBodyParts
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 
 class BlockCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,7 +26,7 @@ class BlockCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
         val handHelper = HandHelper(source, arguments.getString("with"), "block")
         val shieldedPart = parseBodyParts(source, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand

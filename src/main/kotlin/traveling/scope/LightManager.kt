@@ -1,7 +1,7 @@
 package traveling.scope
 
 import core.GameState
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.LIGHT
 import traveling.location.location.Location
 import kotlin.math.max
@@ -26,6 +26,6 @@ private fun Location.getDayBonus(): Int {
     }
 }
 
-fun Location.getLightLevel(target: Target): Int {
-    return getLightLevel() + target.properties.values.getInt(LIGHT)
+fun Location.getLightLevel(thing: Thing): Int {
+    return getLightLevel() + thing.properties.values.getInt(LIGHT)
 }

@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.filterUniqueByName
 
 class StatusCommand : Command() {
@@ -20,14 +20,14 @@ class StatusCommand : Command() {
     override fun getManual(): String {
         return """
 	Status - Get your current status
-	Status <target> - Get the status of a target."""
+	Status <thing> - Get the status of a thing."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Character")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         when {
             args.isEmpty() && keyword == "status" -> clarifyStatus(source)
@@ -37,10 +37,10 @@ class StatusCommand : Command() {
         }
     }
 
-    private fun clarifyStatus(source: Target) {
-        val targets = source.currentLocation().getCreatures().map { it.name }
-        val message = "Status of what?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "status $it" }))
+    private fun clarifyStatus(source: Thing) {
+        val things = source.currentLocation().getCreatures().map { it.name }
+        val message = "Status of what?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, things.associateWith { "status $it" }))
     }
 
 

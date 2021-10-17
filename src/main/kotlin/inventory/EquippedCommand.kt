@@ -2,7 +2,7 @@ package inventory
 
 import core.commands.Command
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class EquippedCommand : Command() {
     override fun getAliases(): List<String> {
@@ -22,7 +22,7 @@ class EquippedCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             listEquipped(source)
         } else {
@@ -30,7 +30,7 @@ class EquippedCommand : Command() {
         }
     }
 
-    private fun listEquipped(source: Target) {
+    private fun listEquipped(source: Thing) {
         val body = source.body
         val items = body.getEquippedItems()
         if (items.isEmpty()) {

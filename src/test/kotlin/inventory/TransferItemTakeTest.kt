@@ -4,8 +4,8 @@ import core.DependencyInjector
 import core.body.*
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
-import core.target.item.ITEM_TAG
+import core.thing.Thing
+import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
@@ -45,8 +45,8 @@ class TransferItemTakeTest {
     fun pickupItemFromContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Target("Chest", properties = Properties(tags = Tags("Container", "Open")))
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val chest = Thing("Chest", properties = Properties(tags = Tags("Container", "Open")))
+        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, chest, creature))
@@ -59,8 +59,8 @@ class TransferItemTakeTest {
     fun doNotPickupFromNonContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Target("Chest", properties = Properties(tags = Tags("Open")))
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val chest = Thing("Chest", properties = Properties(tags = Tags("Open")))
+        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
@@ -73,8 +73,8 @@ class TransferItemTakeTest {
     fun doNotPickupFromClosedContainer() {
         val creature = getCreatureWithCapacity()
 
-        val chest = Target("Chest", properties = Properties(tags = Tags("Container")))
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val chest = Thing("Chest", properties = Properties(tags = Tags("Container")))
+        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
         TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
@@ -83,9 +83,9 @@ class TransferItemTakeTest {
         assertNull(creature.inventory.getItem(item.name))
     }
 
-    private fun getCreatureWithCapacity(): Target {
-        val creature = Target("Target", properties = Properties(tags = Tags("Container", "Open", "Creature")))
-//        val pouch = Target("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
+    private fun getCreatureWithCapacity(): Thing {
+        val creature = Thing("Thing", properties = Properties(tags = Tags("Container", "Open", "Creature")))
+//        val pouch = Thing("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)
         creature.inventory.add(pouch)
         return creature

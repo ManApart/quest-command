@@ -2,10 +2,10 @@ package balance
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
+import core.thing.Thing
 import core.properties.Values
 import status.stat.AGILITY
 import status.stat.STRENGTH
@@ -47,19 +47,19 @@ fun main() {
 }
 
 private fun testAttackTime(agility: Int, strength: Int, weaponSize: String, weaponWeight: Int, otherWeight: Int) {
-    val creature = Target("Creature")
+    val creature = Thing("Creature")
     creature.soul.addStat(AGILITY, agility)
     creature.soul.addStat(STRENGTH, strength)
 
     val recipe = LocationRecipe("hand", slots = listOf("hand"))
     val node = LocationNode("hand")
     val part = Location(node, recipe = recipe)
-    val weapon = Target("Weapon", properties = Properties(Values("weight" to weaponWeight.toString()), Tags("Weapon", weaponSize)))
+    val weapon = Thing("Weapon", properties = Properties(Values("weight" to weaponWeight.toString()), Tags("Weapon", weaponSize)))
     creature.inventory.add(weapon)
-    creature.inventory.add(Target("Dead weight", properties = Properties(Values("weight" to otherWeight.toString()))))
+    creature.inventory.add(Thing("Dead weight", properties = Properties(Values("weight" to otherWeight.toString()))))
     part.equipItem("hand", weapon)
 
-    val event = StartAttackEvent(creature, part, TargetAim(Target("Target")), DamageType.SLASH)
+    val event = StartAttackEvent(creature, part, ThingAim(Thing("Thing")), DamageType.SLASH)
 
     println("\t${creature.soul.getCurrent(AGILITY)} \t\t${creature.soul.getCurrent(STRENGTH)} \t\t\t${creature.getEncumbrance()} \t\t\t$weaponSize \t\t\t$weaponWeight \t\t\t\t${event.timeLeft}")
 }

@@ -12,14 +12,14 @@ class CastSpell : EventListener<CastSpellEvent>() {
     override fun execute(event: CastSpellEvent) {
         if (canCast(event)) {
             event.spell.cast(event)
-            if (event.spell.isHostile && event.target.target.soul.hasStat(HEALTH) && event.target.target != event.source){
-                event.source.ai.aggroTarget = event.target.target
-                event.target.target.ai.aggroTarget = event.source
+            if (event.spell.isHostile && event.thing.thing.soul.hasStat(HEALTH) && event.thing.thing != event.source){
+                event.source.ai.aggroThing = event.thing.thing
+                event.thing.thing.ai.aggroThing = event.source
             }
         }
     }
 
-    //TODO - what if spell is hostile and target has health?
+    //TODO - what if spell is hostile and thing has health?
     private fun canCast(event: CastSpellEvent): Boolean {
         val level = event.source.soul.getCurrent(event.spell.statRequired)
         val focus = event.source.soul.getCurrent(FOCUS)

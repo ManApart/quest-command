@@ -1,6 +1,6 @@
 package status.statChanged
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class StatMinnedEvent(val target: Target, val stat: String) : Event
+class StatMinnedEvent(val thing: Thing, val stat: String) : Event

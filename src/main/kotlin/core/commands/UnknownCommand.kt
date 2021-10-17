@@ -4,7 +4,7 @@ import core.AUTO_SAVE
 import core.GameState
 import core.history.SessionHistory
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 
 class UnknownCommand : Command() {
 
@@ -25,10 +25,10 @@ class UnknownCommand : Command() {
     }
 
     fun execute(args: List<String>) {
-        execute(GameState.player.target, "", args)
+        execute(GameState.player.thing, "", args)
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val line = args.joinToString(" ")
         if (line.isNotBlank()) {
             SessionHistory.addUnknownCommand(line)

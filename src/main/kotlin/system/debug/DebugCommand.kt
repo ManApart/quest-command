@@ -3,10 +3,10 @@ package system.debug
 import core.GameState
 import core.commands.Args
 import core.commands.Command
-import core.commands.parseTargets
+import core.commands.parseThings
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import status.stat.StatKind
 
 class DebugCommand : Command() {
@@ -29,9 +29,9 @@ class DebugCommand : Command() {
     Debug map <on/off> - Toggle showing all or just discovered map locations. 
     Debug clarity <on/off> - Toggle total clarity on or off. Total clarity skips perception checks 
     Debug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). 
-    Debug stat <stat name> <desired level> on *<target> - Set a stat to the desired level.
-    Debug prop <prop name> <desired level> on *<target> - Set a property to the desired level.
-    Debug tag *<remove> <tag name> on *<target> - Add (or remove) a tag.
+    Debug stat <stat name> <desired level> on *<thing> - Set a stat to the desired level.
+    Debug prop <prop name> <desired level> on *<thing> - Set a property to the desired level.
+    Debug tag *<remove> <tag name> on *<thing> - Add (or remove) a tag.
     Debug weather <weather name> - Set weather in current location to the given weather, if it exists.
         """
     }
@@ -40,7 +40,7 @@ class DebugCommand : Command() {
         return listOf("Debugging")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("on"))
 
         if (args.isEmpty()) {
@@ -63,7 +63,7 @@ class DebugCommand : Command() {
         }
     }
 
-    private fun sendDebugToggleEvent(source: Target, type: DebugType, args: Args) {
+    private fun sendDebugToggleEvent(source: Thing, type: DebugType, args: Args) {
         val toggleWords = args.hasAny(listOf("on", "off", "true", "false"))
         val toggledOn = if (toggleWords.isNotEmpty()) {
             toggleWords.contains("on") || toggleWords.contains("true")
@@ -74,8 +74,8 @@ class DebugCommand : Command() {
         EventManager.postEvent(DebugToggleEvent(source, type, toggledOn))
     }
 
-    private fun sendDebugStatEvent(source: Target, type: StatKind, args: Args) {
-        val target = parseTargets(source, args.getGroup("on")).firstOrNull()?.target ?: source
+    private fun sendDebugStatEvent(source: Thing, type: StatKind, args: Args) {
+        val thing = parseThings(source, args.getGroup("on")).firstOrNull()?.thing ?: source
         val level = args.getNumber()
 
         if (level == null) {
@@ -83,19 +83,19 @@ class DebugCommand : Command() {
         } else {
             val statName = args.argsWithout(listOf("remove", args.args.first(), level.toString())).joinToString(" ")
 
-            EventManager.postEvent(DebugStatEvent(target, type, statName, level))
+            EventManager.postEvent(DebugStatEvent(thing, type, statName, level))
         }
     }
 
-    private fun sendDebugTagEvent(source: Target, args: Args) {
-        val target = parseTargets(source, args.getGroup("on")).firstOrNull()?.target ?: source
+    private fun sendDebugTagEvent(source: Thing, args: Args) {
+        val thing = parseThings(source, args.getGroup("on")).firstOrNull()?.thing ?: source
         val tagName = args.argsWithout(listOf("remove", args.args.first())).joinToString(" ")
         val isAdding = !args.contains("remove")
 
-        EventManager.postEvent(DebugTagEvent(target, tagName, isAdding))
+        EventManager.postEvent(DebugTagEvent(thing, tagName, isAdding))
     }
 
-    private fun sendDebugWeatherEvent(source: Target, arguments: Args) {
+    private fun sendDebugWeatherEvent(source: Thing, arguments: Args) {
         val weather = arguments.argsWithout(listOf("weather")).joinToString(" ")
         EventManager.postEvent(DebugWeatherEvent(source, weather))
     }

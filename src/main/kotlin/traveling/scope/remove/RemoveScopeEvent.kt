@@ -1,6 +1,6 @@
 package traveling.scope.remove
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class RemoveScopeEvent(val target: Target) : Event
+class RemoveScopeEvent(val thing: Thing) : Event

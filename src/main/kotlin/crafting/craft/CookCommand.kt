@@ -6,8 +6,8 @@ import core.commands.Args
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
-import core.target.item.ItemManager
+import core.thing.Thing
+import core.thing.item.ItemManager
 import crafting.RecipeManager
 
 class CookCommand : Command() {
@@ -36,8 +36,8 @@ class CookCommand : Command() {
             source.displayToMe("Make sure to separate ingredients with commas, and then specify what tool you're using by saying on <tool>")
         } else {
             val ingredients = getIngredients(arguments)
-            val tool = getTool(source.target, arguments)
-            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.target.soul)
+            val tool = getTool(source.thing, arguments)
+            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.thing.soul)
 
             when {
                 tool == null -> source.displayToMe("Couldn't find something to cook on")
@@ -53,8 +53,8 @@ class CookCommand : Command() {
         return args.hasBase() && args.hasGroup("on")
     }
 
-    private fun getIngredients(args: Args): List<Target> {
-        val ingredients = mutableListOf<Target>()
+    private fun getIngredients(args: Args): List<Thing> {
+        val ingredients = mutableListOf<Thing>()
         args.getBaseAndStrings(",").forEach {
             if (ItemManager.itemExists(it)) {
                 ingredients.add(ItemManager.getItem(it))
@@ -63,7 +63,7 @@ class CookCommand : Command() {
         return ingredients
     }
 
-    private fun getTool(source: Target, args: Args): Target? {
+    private fun getTool(source: Thing, args: Args): Thing? {
         val group = args.getGroup("on")
         val location = source.currentLocation()
         return (location.getActivators(group.joinToString(" "), source) + location.findActivatorsByTag("Range")).firstOrNull()

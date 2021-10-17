@@ -14,9 +14,9 @@ const val LIGHT = "Light"
 data class LocationRecipe(
     override val name: String,
     private val description: ConditionalString = ConditionalString(""),
-    val activators: List<LocationTarget> = listOf(),
-    val creatures: List<LocationTarget> = listOf(),
-    val items: List<LocationTarget> = listOf(),
+    val activators: List<LocationThing> = listOf(),
+    val creatures: List<LocationThing> = listOf(),
+    val items: List<LocationThing> = listOf(),
     val weatherChangeFrequency: Int = 5,
     val weather: ConditionalString = ConditionalString("Still"),
     val properties: Properties = Properties(),

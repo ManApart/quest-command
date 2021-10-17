@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 
 class LookCommand : Command() {
     override fun getAliases(): List<String> {
@@ -19,20 +19,20 @@ class LookCommand : Command() {
     override fun getManual(): String {
         return """
 	Look all - View the objects you can interact with.
-	Look <target> - Look at a specific target."""
+	Look <thing> - Look at a specific thing."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Explore")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
-            keyword == "look" && args.isEmpty() -> clarifyTarget(source)
+            keyword == "look" && args.isEmpty() -> clarifyThing(source)
             args.isEmpty() -> EventManager.postEvent(LookEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent(source))
-            source.currentLocation().getTargetsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getTargetsIncludingPlayerInventory(
+            source.currentLocation().getThingsIncludingPlayerInventory(source, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.currentLocation().getThingsIncludingPlayerInventory(
                 source,
                 argString
             ).first()))
@@ -40,10 +40,10 @@ class LookCommand : Command() {
         }
     }
 
-    private fun clarifyTarget(source: Target) {
-        val targets  = (listOf("all") + source.currentLocation().getTargets().map { it.name })
-        val message = "Look at what?\n\t${targets.joinToString(", ")}"
-        val response = ResponseRequest(message, targets.associateWith { "look $it" })
+    private fun clarifyThing(source: Thing) {
+        val things  = (listOf("all") + source.currentLocation().getThings().map { it.name })
+        val message = "Look at what?\n\t${things.joinToString(", ")}"
+        val response = ResponseRequest(message, things.associateWith { "look $it" })
         CommandParser.setResponseRequest(response)
     }
 

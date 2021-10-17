@@ -6,7 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class RestCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,7 +27,7 @@ class RestCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args)
         when {
             args.isEmpty() && keyword == "rest" -> clarifyHours()
@@ -38,12 +38,12 @@ class RestCommand : Command() {
     }
 
     private fun clarifyHours() {
-        val targets = listOf("1", "3", "5", "10")
-        val message = "Rest for how many hours?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "rest $it" }))
+        val things = listOf("1", "3", "5", "10")
+        val message = "Rest for how many hours?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "rest $it" }))
     }
 
-    private fun rest(source: Target, hours: Int) {
+    private fun rest(source: Thing, hours: Int) {
         EventManager.postEvent(RestEvent(source, hours))
     }
 }

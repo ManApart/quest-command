@@ -9,8 +9,8 @@ import core.properties.CAN_HOLD
 import core.properties.COUNT
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
-import core.target.item.ITEM_TAG
+import core.thing.Thing
+import core.thing.item.ITEM_TAG
 import createChest
 import createClosedChest
 import createItem
@@ -102,7 +102,7 @@ class TransferItemPlaceTest {
         BodyManager.reset()
 
         val creature = createChest()
-        val item = Target("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM_TAG)))
+        val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
 
 
@@ -147,7 +147,7 @@ class TransferItemPlaceTest {
 
     @Test
     fun doNotPlaceInNonContainer() {
-        val creature = Target("Creature")
+        val creature = Thing("Creature")
         val item = createItem("Apple", 1)
         creature.inventory.add(item)
 
@@ -161,7 +161,7 @@ class TransferItemPlaceTest {
 
     @Test
     fun doNotPlaceInNonOpenContainer() {
-        val creature = Target("Creature")
+        val creature = Thing("Creature")
         val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
 
@@ -175,7 +175,7 @@ class TransferItemPlaceTest {
 
     @Test
     fun doNotPlaceInFullContainer() {
-        val creature = Target("Creature")
+        val creature = Thing("Creature")
         val item = createItem("Apple", weight = 5)
         creature.inventory.add(item)
 
@@ -189,7 +189,7 @@ class TransferItemPlaceTest {
 
     @Test
     fun doNotPlaceInContainerWithoutCapacity() {
-        val creature = Target("Creature")
+        val creature = Thing("Creature")
         val item = createItem("Apple", weight = 1)
         creature.inventory.add(item)
 
@@ -203,11 +203,11 @@ class TransferItemPlaceTest {
 
 //    @Test
 //    fun chestWithNoCapacityTagAtLocation() {
-//        val creature = Target("Creature")
+//        val creature = Thing("Creature")
 //        val item = createItem("Apple", weight = 1)
 //        creature.inventory.add(item)
 //
-////        val chest = Target("Chest", properties = Properties(Tags("Container", "Open", "Activator"))))
+////        val chest = Thing("Chest", properties = Properties(Tags("Container", "Open", "Activator"))))
 //
 //        val chest = createChest(size = 0)
 //
@@ -235,7 +235,7 @@ class TransferItemPlaceTest {
 
     @Test
     fun doNotPlaceItemInContainerThatHasNoMatchingTags() {
-        val creature = Target("Creature")
+        val creature = Thing("Creature")
         val item = createItem()
         item.properties.tags.add("Food", "Fruit")
         creature.inventory.add(item)

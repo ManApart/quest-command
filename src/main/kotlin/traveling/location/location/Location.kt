@@ -6,10 +6,10 @@ import core.history.display
 import core.properties.CONTAINER
 import core.properties.Properties
 import core.properties.SIZE
-import core.target.Target
-import core.target.activator.ActivatorManager
-import core.target.creature.CreatureManager
-import core.target.item.ItemManager
+import core.thing.Thing
+import core.thing.activator.ActivatorManager
+import core.thing.creature.CreatureManager
+import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.plus
@@ -24,19 +24,19 @@ import traveling.location.weather.WeatherManager
 
 data class Location(
     val locationNode: LocationNode,
-    private val activators: NameSearchableList<Target> = NameSearchableList(),
-    private val creatures: NameSearchableList<Target> = NameSearchableList(),
-    private val items: NameSearchableList<Target> = NameSearchableList(),
-    private val other: NameSearchableList<Target> = NameSearchableList(),
+    private val activators: NameSearchableList<Thing> = NameSearchableList(),
+    private val creatures: NameSearchableList<Thing> = NameSearchableList(),
+    private val items: NameSearchableList<Thing> = NameSearchableList(),
+    private val other: NameSearchableList<Thing> = NameSearchableList(),
     val properties: Properties = Properties(),
     private val recipe: LocationRecipe = locationNode.getLocationRecipe()
 ) : Named {
     constructor(locationNode: LocationNode) : this(
         locationNode,
-        NameSearchableList<Target>(),
-        NameSearchableList<Target>(),
-        NameSearchableList<Target>(),
-        NameSearchableList<Target>(),
+        NameSearchableList<Thing>(),
+        NameSearchableList<Thing>(),
+        NameSearchableList<Thing>(),
+        NameSearchableList<Thing>(),
         Properties()
     ){
         populateFromProtoLocation()
@@ -44,7 +44,7 @@ data class Location(
 
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
-    private var equippedItems: MutableMap<String, Target?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
+    private var equippedItems: MutableMap<String, Thing?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
 
     override val name: String
         get() = locationNode.name
@@ -57,13 +57,13 @@ data class Location(
         properties.replaceWith(locationNode.getLocationRecipe().properties)
 
         if (recipe.activators.isNotEmpty()) {
-            addTargets(ActivatorManager.getActivatorsFromLocationTargets(recipe.activators))
+            addThings(ActivatorManager.getActivatorsFromLocationThings(recipe.activators))
         }
         if (recipe.creatures.isNotEmpty()) {
-            addTargets(CreatureManager.getCreaturesFromLocationTargets(recipe.creatures))
+            addThings(CreatureManager.getCreaturesFromLocationThings(recipe.creatures))
         }
         if (recipe.items.isNotEmpty()) {
-            addTargets(ItemManager.getItemsFromLocationTargets(recipe.items))
+            addThings(ItemManager.getItemsFromLocationThings(recipe.items))
         }
 
         changeWeatherIfEnoughTimeHasPassed()
@@ -73,42 +73,42 @@ data class Location(
         return equippedItems.map { it.key.lowercase() }.contains(attachPoint.lowercase())
     }
 
-    fun getEquippedItem(slot: String): Target? {
+    fun getEquippedItem(slot: String): Thing? {
         return equippedItems[slot.lowercase()]
     }
 
-    fun getEquippedItems(): List<Target> {
+    fun getEquippedItems(): List<Thing> {
         return equippedItems.values.filterNotNull()
     }
 
-    fun getEquippedItemMap(): Map<String, Target?> {
+    fun getEquippedItemMap(): Map<String, Thing?> {
         return equippedItems
     }
 
-    fun getEquippedWeapon(): Target? {
+    fun getEquippedWeapon(): Thing? {
         return equippedItems.values.firstOrNull { it?.properties?.tags?.has("Weapon") ?: false }
     }
 
-    fun equipItem(attachPoint: String, item: Target) {
+    fun equipItem(attachPoint: String, item: Thing) {
         if (!equippedItems.containsKey(attachPoint.lowercase())) {
             item.display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
         } else {
             equippedItems[attachPoint.lowercase()] = item
-            addTarget(item)
+            addThing(item)
         }
     }
 
-    fun unEquip(item: Target) {
+    fun unEquip(item: Thing) {
         equippedItems.keys.forEach {
             if (equippedItems[it] == item) {
                 equippedItems[it] = null
             }
         }
-        removeTarget(item)
+        removeThing(item)
     }
 
     fun isEmpty(): Boolean {
-        return getAllTargets().isEmpty()
+        return getAllThings().isEmpty()
     }
 
     fun clear() {
@@ -118,183 +118,183 @@ data class Location(
         other.clear()
     }
 
-    fun addTargets(targets: List<Target>) {
-        targets.forEach { addTarget(it) }
+    fun addThings(things: List<Thing>) {
+        things.forEach { addThing(it) }
     }
 
-    fun addTarget(target: Target, proxies: List<String> = listOf()) {
+    fun addThing(thing: Thing, proxies: List<String> = listOf()) {
         when {
-            target.properties.isActivator() -> addTargetTo(target, activators, proxies)
-            target.properties.isCreature() -> addTargetTo(target, creatures, proxies)
-            target.properties.isItem() -> addTargetTo(target, items, proxies)
-            else -> addTargetTo(target, other, proxies)
+            thing.properties.isActivator() -> addThingTo(thing, activators, proxies)
+            thing.properties.isCreature() -> addThingTo(thing, creatures, proxies)
+            thing.properties.isItem() -> addThingTo(thing, items, proxies)
+            else -> addThingTo(thing, other, proxies)
         }
-        target.location = locationNode
+        thing.location = locationNode
     }
 
-    private fun addTargetTo(target: Target, listToAddTo: NameSearchableList<Target>, proxies: List<String>) {
-        if (!getAllTargets().contains(target)) {
-            listToAddTo.add(target)
+    private fun addThingTo(thing: Thing, listToAddTo: NameSearchableList<Thing>, proxies: List<String>) {
+        if (!getAllThings().contains(thing)) {
+            listToAddTo.add(thing)
         }
         if (proxies.isNotEmpty()) {
-            listToAddTo.addProxy(target, proxies)
+            listToAddTo.addProxy(thing, proxies)
         }
     }
 
-    fun removeTarget(target: Target) {
-        activators.remove(target)
-        creatures.remove(target)
-        items.remove(target)
-        other.remove(target)
-        target.properties.values.clear("locationDescription")
+    fun removeThing(thing: Thing) {
+        activators.remove(thing)
+        creatures.remove(thing)
+        items.remove(thing)
+        other.remove(thing)
+        thing.properties.values.clear("locationDescription")
     }
 
-    fun removeTargetIncludingPlayerInventory(source: Target, target: Target) {
-        if (source.inventory.exists(target)) {
-            source.inventory.remove(target)
+    fun removeThingIncludingPlayerInventory(source: Thing, thing: Thing) {
+        if (source.inventory.exists(thing)) {
+            source.inventory.remove(thing)
         } else {
-            removeTarget(target)
+            removeThing(thing)
         }
     }
 
-    private fun getAllTargets(): NameSearchableList<Target> {
+    private fun getAllThings(): NameSearchableList<Thing> {
         return (creatures + items + activators + other)
     }
 
-    //TODO - rename get all targets and just use that
-    fun getTargets(): NameSearchableList<Target> {
-        return getAllTargets()
+    //TODO - rename get all things and just use that
+    fun getThings(): NameSearchableList<Thing> {
+        return getAllThings()
     }
 
-    fun getTargets(source: Target): NameSearchableList<Target> {
-        return getAllTargets().sortedBy { source.position.getDistance(it.position) }
+    fun getThings(source: Thing): NameSearchableList<Thing> {
+        return getAllThings().sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getTargets(name: String, source: Target): NameSearchableList<Target> {
-        return getTargetsByName(getAllTargets(), name, source)
+    fun getThings(name: String, source: Thing): NameSearchableList<Thing> {
+        return getThingsByName(getAllThings(), name, source)
     }
 
-    fun getTargets(name: String): NameSearchableList<Target> {
-        return getTargetsByName(getAllTargets(), name)
+    fun getThings(name: String): NameSearchableList<Thing> {
+        return getThingsByName(getAllThings(), name)
     }
 
-    private fun getTargetsByName(targets: NameSearchableList<Target>, name: String, source: Target): NameSearchableList<Target> {
+    private fun getThingsByName(things: NameSearchableList<Thing>, name: String, source: Thing): NameSearchableList<Thing> {
         return when {
-            targets.existsExact(name) && targets.countExact(name) == 1 -> NameSearchableList(targets.get(name))
-            targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> targets.getAll(name)
-            else -> targets.getAll(name).sortedBy { source.position.getDistance(it.position) }
+            things.existsExact(name) && things.countExact(name) == 1 -> NameSearchableList(things.get(name))
+            things.existsByWholeWord(name) && things.countByWholeWord(name) == 1 -> things.getAll(name)
+            else -> things.getAll(name).sortedBy { source.position.getDistance(it.position) }
         }
     }
 
-    private fun getTargetsByName(targets: NameSearchableList<Target>, name: String): NameSearchableList<Target> {
+    private fun getThingsByName(things: NameSearchableList<Thing>, name: String): NameSearchableList<Thing> {
         return when {
-            targets.existsExact(name) && targets.countExact(name) == 1 -> NameSearchableList(targets.get(name))
-            targets.existsByWholeWord(name) && targets.countByWholeWord(name) == 1 -> targets.getAll(name)
-            else -> targets.getAll(name)
+            things.existsExact(name) && things.countExact(name) == 1 -> NameSearchableList(things.get(name))
+            things.existsByWholeWord(name) && things.countByWholeWord(name) == 1 -> things.getAll(name)
+            else -> things.getAll(name)
         }
     }
 
-    fun getTargetsIncludingPlayerInventory(source: Target): List<Target> {
-        return source.inventory.getItems() + getTargets(source)
+    fun getThingsIncludingPlayerInventory(source: Thing): List<Thing> {
+        return source.inventory.getItems() + getThings(source)
     }
 
-    fun getTargetsIncludingPlayerInventory(source: Target, name: String): NameSearchableList<Target> {
-        return source.inventory.getItems(name) + getTargets(name, source)
+    fun getThingsIncludingPlayerInventory(source: Thing, name: String): NameSearchableList<Thing> {
+        return source.inventory.getItems(name) + getThings(name, source)
     }
 
-    fun getCreaturesExcludingPlayer(source: Target): NameSearchableList<Target> {
+    fun getCreaturesExcludingPlayer(source: Thing): NameSearchableList<Thing> {
         return getCreatures(source).also { it.remove(source) }
     }
 
-    fun getCreatures(source: Target): NameSearchableList<Target> {
+    fun getCreatures(source: Thing): NameSearchableList<Thing> {
         return creatures.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getCreatures(): NameSearchableList<Target> {
+    fun getCreatures(): NameSearchableList<Thing> {
         return creatures
     }
 
-    fun getCreatures(name: String, source: Target): NameSearchableList<Target> {
-        return getTargetsByName(creatures, name, source)
+    fun getCreatures(name: String, source: Thing): NameSearchableList<Thing> {
+        return getThingsByName(creatures, name, source)
     }
 
-    fun getCreatures(name: String): NameSearchableList<Target> {
-        return getTargetsByName(creatures, name)
+    fun getCreatures(name: String): NameSearchableList<Thing> {
+        return getThingsByName(creatures, name)
     }
 
-    fun getActivators(name: String, source: Target): NameSearchableList<Target> {
-        return getTargetsByName(activators, name, source)
+    fun getActivators(name: String, source: Thing): NameSearchableList<Thing> {
+        return getThingsByName(activators, name, source)
     }
 
-    fun getActivators(name: String): NameSearchableList<Target> {
-        return getTargetsByName(activators, name)
+    fun getActivators(name: String): NameSearchableList<Thing> {
+        return getThingsByName(activators, name)
     }
 
-    fun getActivators(source: Target): NameSearchableList<Target> {
+    fun getActivators(source: Thing): NameSearchableList<Thing> {
         return activators.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getActivators(): NameSearchableList<Target> {
+    fun getActivators(): NameSearchableList<Thing> {
         return activators
     }
 
-    fun getItems(): NameSearchableList<Target> {
+    fun getItems(): NameSearchableList<Thing> {
         return items
     }
 
-    fun getItems(source: Target): NameSearchableList<Target> {
+    fun getItems(source: Thing): NameSearchableList<Thing> {
         return items.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getItems(source: Target, name: String): NameSearchableList<Target> {
-        return getTargetsByName(items, name, source)
+    fun getItems(source: Thing, name: String): NameSearchableList<Thing> {
+        return getThingsByName(items, name, source)
     }
 
-    fun getItems(name: String): NameSearchableList<Target> {
-        return getTargetsByName(items, name)
+    fun getItems(name: String): NameSearchableList<Thing> {
+        return getThingsByName(items, name)
     }
 
-    fun getItemsIncludingPlayerInventory(source: Target): NameSearchableList<Target> {
+    fun getItemsIncludingPlayerInventory(source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems() + getItems(source)
     }
 
-    fun getItemsIncludingPlayerInventory(name: String, source: Target): NameSearchableList<Target> {
+    fun getItemsIncludingPlayerInventory(name: String, source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems(name) + getItems(source, name)
     }
 
-    fun getOther(source: Target): NameSearchableList<Target> {
+    fun getOther(source: Thing): NameSearchableList<Thing> {
         return other.sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getOther(): NameSearchableList<Target> {
+    fun getOther(): NameSearchableList<Thing> {
         return other
     }
 
-    fun findTargetsByTag(tag: String): NameSearchableList<Target> {
-        return getAllTargets().filter { it.properties.tags.has(tag) }
+    fun findThingsByTag(tag: String): NameSearchableList<Thing> {
+        return getAllThings().filter { it.properties.tags.has(tag) }
     }
 
-    fun findActivatorsByTag(tag: String): NameSearchableList<Target> {
+    fun findActivatorsByTag(tag: String): NameSearchableList<Thing> {
         return activators.filter { it.properties.tags.has(tag) }
     }
 
-    fun findActivatorsByProperties(properties: Properties): NameSearchableList<Target> {
+    fun findActivatorsByProperties(properties: Properties): NameSearchableList<Thing> {
         return activators.filter { it.properties.hasAll(properties) }
     }
 
-    fun getAllSouls(source: Target): List<Soul> {
-        val targets = mutableSetOf(source)
-        targets.addAll(source.inventory.getAllItems())
+    fun getAllSouls(source: Thing): List<Soul> {
+        val things = mutableSetOf(source)
+        things.addAll(source.inventory.getAllItems())
 
-        getAllTargets().forEach {
-            targets.add(it)
-            it.inventory.getAllItems().forEach { item -> targets.add(item) }
+        getAllThings().forEach {
+            things.add(it)
+            it.inventory.getAllItems().forEach { item -> things.add(item) }
         }
-        return targets.map { it.soul }.toList()
+        return things.map { it.soul }.toList()
     }
 
     fun getAllInventories(): List<Inventory> {
-        return getAllTargets().asSequence().map { it.inventory }.toList()
+        return getAllThings().asSequence().map { it.inventory }.toList()
     }
 
     fun changeWeatherIfEnoughTimeHasPassed() {
@@ -311,15 +311,15 @@ data class Location(
     fun applyWeatherEffects() {
         val conditionRecipes = weather.conditionNames
         conditionRecipes.forEach { recipeName ->
-            getAllTargets().forEach { target ->
-                val parts = target.body.getParts()
+            getAllThings().forEach { thing ->
+                val parts = thing.body.getParts()
                 val condition = ConditionManager.getCondition(recipeName, parts)
-                EventManager.postEvent(AddConditionEvent(target, condition))
+                EventManager.postEvent(AddConditionEvent(thing, condition))
             }
         }
     }
 
-    fun canHold(item: Target): Boolean {
+    fun canHold(item: Thing): Boolean {
         return properties.tags.has(CONTAINER) && hasRoomFor(item)
                 && item.properties.canBeHeldByContainerWithProperties(properties)
     }
@@ -327,21 +327,21 @@ data class Location(
     /**
      * How much do all of the items in this location weigh?
      */
-    private fun getWeight(source: Target): Int {
+    private fun getWeight(source: Thing): Int {
         return getItems(source).sumOf { it.getWeight() }
     }
 
-    fun hasRoomFor(target: Target): Boolean {
+    fun hasRoomFor(thing: Thing): Boolean {
         if (properties.values.has(SIZE)) {
             val room = properties.values.getInt(SIZE)
-            return room - getWeight(target) >= target.getWeight()
+            return room - getWeight(thing) >= thing.getWeight()
         }
         return true
     }
 
-    fun isSafeFor(creature: Target): Boolean {
+    fun isSafeFor(creature: Thing): Boolean {
         //No one is hostile towards the creature
-        return creatures.none { it.ai.aggroTarget == creature }
+        return creatures.none { it.ai.aggroThing == creature }
     }
 
 }

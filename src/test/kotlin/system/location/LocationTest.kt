@@ -3,7 +3,7 @@ package system.location
 import core.GameState
 import core.properties.Properties
 import core.properties.Values
-import core.target.Target
+import core.thing.Thing
 import core.utility.toNameSearchableList
 import createMockedGame
 import org.junit.Before
@@ -40,13 +40,13 @@ class LocationTest {
         createItem("Dagger", 5),
         createItem("Sword", 5))
         val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values("Size" to "3")))
-        val souls = location.getAllSouls(GameState.player.target)
+        val souls = location.getAllSouls(GameState.player.thing)
         assertEquals(4, souls.size)
-        assertTrue(souls.contains(GameState.player.target.soul))
+        assertTrue(souls.contains(GameState.player.thing.soul))
     }
 
-    private fun createItem(name: String, weight: Int) : Target {
-        return Target(name, properties = Properties(Values("weight" to weight.toString())))
+    private fun createItem(name: String, weight: Int) : Thing {
+        return Thing(name, properties = Properties(Values("weight" to weight.toString())))
     }
 
 }

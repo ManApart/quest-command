@@ -4,7 +4,7 @@ import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import traveling.direction.Direction
 import traveling.direction.getDirection
@@ -12,7 +12,7 @@ import traveling.location.network.LocationNode
 
 class ClimbCommand : Command() {
 
-    private class ClimbOption(val target: Target, val direction: Direction)
+    private class ClimbOption(val thing: Thing, val direction: Direction)
 
     override fun getAliases(): List<String> {
         return listOf("Climb", "cl", "scale", "descend")
@@ -24,7 +24,7 @@ class ClimbCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Climb <part> of <target> - Climb (onto) the target
+	Climb <part> of <thing> - Climb (onto) the thing
 	Climb <direction> - Continue climbing in <direction>
 	Climb to <part> - Climb to <part>
 	Climb s - The s flag silences travel, meaning a minimum amount of output"""
@@ -34,26 +34,26 @@ class ClimbCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)
         when {
             source.getEncumbrance() >= 1 -> source.displayToMe("You are too encumbered to climb.")
-            source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(source, keyword, arguments, source.climbTarget!!)
+            source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(source, keyword, arguments, source.climbThing!!)
             else -> processNewClimb(source, arguments)
         }
     }
 
-    private fun processNewClimb(source: Target, arguments: Args) {
-        val targetName = if (arguments.getString("to") != "") {
+    private fun processNewClimb(source: Thing, arguments: Args) {
+        val thingName = if (arguments.getString("to") != "") {
             arguments.getString("to")
         } else {
             arguments.getBaseString()
         }
-        val targets = findAllTargets(source)
+        val things = findAllThings(source)
         val desiredDirection = arguments.getDirection()
-        val matchByName = targets.getOrNull(targetName)
-        val matchByDirection = getDirectionMatches(source, targets, desiredDirection)
+        val matchByName = things.getOrNull(thingName)
+        val matchByDirection = getDirectionMatches(source, things, desiredDirection)
         val confidentMatch = getConfidentMatch(matchByName, matchByDirection)
         val quiet = arguments.hasFlag("s")
 
@@ -69,37 +69,37 @@ class ClimbCommand : Command() {
                 }
             }
         } else {
-            clarifyClimbTarget(source, targets, desiredDirection)
+            clarifyClimbThing(source, things, desiredDirection)
         }
     }
 
-    private fun getConfidentMatch(namedMatch: Target?, directionMatches: List<ClimbOption>): Target? {
+    private fun getConfidentMatch(namedMatch: Thing?, directionMatches: List<ClimbOption>): Thing? {
         return namedMatch ?: if (directionMatches.size == 1) {
-            directionMatches.first().target
+            directionMatches.first().thing
         } else {
             null
         }
     }
 
-    private fun findAllTargets(source: Target): NameSearchableList<Target> {
-        val localClimbableTargets = source.currentLocation().findTargetsByTag("Climbable")
+    private fun findAllThings(source: Thing): NameSearchableList<Thing> {
+        val localClimbableThings = source.currentLocation().findThingsByTag("Climbable")
         val connections = source.location.getNeighborConnections().filter { connection ->
-            localClimbableTargets.none { it.name == connection.source.targetName }
-                    && connection.destination.hasTargetAndPart()
+            localClimbableThings.none { it.name == connection.source.thingName }
+                    && connection.destination.hasThingAndPart()
         }
-        val connectedTargets = connections.map { it.destination.location.getLocation().getTargets(it.destination.targetName!!) }.flatten()
-        return NameSearchableList(localClimbableTargets + connectedTargets)
+        val connectedThings = connections.map { it.destination.location.getLocation().getThings(it.destination.thingName!!) }.flatten()
+        return NameSearchableList(localClimbableThings + connectedThings)
     }
 
-    private fun getDirectionMatches(player: Target, targets: NameSearchableList<Target>, desiredDirection: Direction): List<ClimbOption> {
-        return targets.asSequence()
+    private fun getDirectionMatches(player: Thing, things: NameSearchableList<Thing>, desiredDirection: Direction): List<ClimbOption> {
+        return things.asSequence()
                 .filter { getEntryPoints(player, it).isNotEmpty() }
                 .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
                 .filter { it.direction == desiredDirection }
                 .toList()
     }
 
-    private fun clarifyClimbTarget(player: Target, options: NameSearchableList<Target>, desiredDirection: Direction) {
+    private fun clarifyClimbThing(player: Thing, options: NameSearchableList<Thing>, desiredDirection: Direction) {
         val climbOptions = options.asSequence()
                 .filter { getEntryPoints(player, it).isNotEmpty() }
                 .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
@@ -111,9 +111,9 @@ class ClimbCommand : Command() {
             climbOptions.size == 1 && desiredDirection != Direction.NONE -> CommandParser.parseCommand("climb $desiredDirection ${options[0]}")
             climbOptions.size == 1 -> CommandParser.parseCommand("climb ${options[0]}")
             desiredDirection != Direction.NONE -> {
-                val message = "Climb what?\n\t${climbOptions.joinToString { "${it.target.name} (${it.direction})" }}"
-                val response = ResponseRequest(message, (climbOptions.map { it.target.name to "climb ${it.direction} ${it.target.name}" } +
-                        climbOptions.map { "${it.target.name} (${it.direction})" to "climb ${it.direction} ${it.target.name}" }
+                val message = "Climb what?\n\t${climbOptions.joinToString { "${it.thing.name} (${it.direction})" }}"
+                val response = ResponseRequest(message, (climbOptions.map { it.thing.name to "climb ${it.direction} ${it.thing.name}" } +
+                        climbOptions.map { "${it.thing.name} (${it.direction})" to "climb ${it.direction} ${it.thing.name}" }
                         ).toMap())
                 CommandParser.setResponseRequest(response)
             }
@@ -125,44 +125,44 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun clarifyClimbPart(player: Target, currentLocation: LocationNode, target: Target) {
-        val options = getAvailableOptions(player, currentLocation, target)
+    private fun clarifyClimbPart(player: Thing, currentLocation: LocationNode, thing: Thing) {
+        val options = getAvailableOptions(player, currentLocation, thing)
 
         if (options.isEmpty()) {
-            player.displayToMe("${target.name} doesn't seem to have anything to climb.")
+            player.displayToMe("${thing.name} doesn't seem to have anything to climb.")
         } else {
-            val message = "Climb what part of ${target.name}?\n\t${options.joinToString(", ")}"
+            val message = "Climb what part of ${thing.name}?\n\t${options.joinToString(", ")}"
             val response = ResponseRequest(message,
-                options.associate { it.name to "climb ${it.name} of ${target.name}" })
+                options.associate { it.name to "climb ${it.name} of ${thing.name}" })
             CommandParser.setResponseRequest(response)
         }
     }
 
-    private fun getAvailableOptions(player: Target, currentLocation: LocationNode, target: Target): List<LocationNode> {
+    private fun getAvailableOptions(player: Thing, currentLocation: LocationNode, thing: Thing): List<LocationNode> {
         //If in same network, all neighbor nodes available, otherwise only entry points
-        return if (currentLocation.network == target.body.layout) {
+        return if (currentLocation.network == thing.body.layout) {
             currentLocation.getNeighbors()
         } else {
-            getEntryPoints(player, target)
+            getEntryPoints(player, thing)
         }
     }
 
-    private fun getEntryPoints(player: Target, target: Target): List<LocationNode> {
-        val sourceConnection = player.location.getNeighborConnections().firstOrNull { it.source.hasTargetAndPart() && it.source.targetName == target.name }
-        val destConnection = player.location.getNeighborConnections().firstOrNull { it.destination.hasTargetAndPart() && it.destination.targetName == target.name }
+    private fun getEntryPoints(player: Thing, thing: Thing): List<LocationNode> {
+        val sourceConnection = player.location.getNeighborConnections().firstOrNull { it.source.hasThingAndPart() && it.source.thingName == thing.name }
+        val destConnection = player.location.getNeighborConnections().firstOrNull { it.destination.hasThingAndPart() && it.destination.thingName == thing.name }
 
-        return if (target.body.getParts().size > 1 && target.location == player.location) {
-            target.body.getClimbEntryParts()
-        } else if (sourceConnection != null && target.body.hasPart(sourceConnection.source.partName ?: "")) {
-            listOf(target.body.getPartLocation(sourceConnection.source.partName!!))
-        } else if (destConnection != null && target.body.hasPart(destConnection.destination.partName ?: "")) {
-            listOf(target.body.getPartLocation(destConnection.destination.partName!!))
+        return if (thing.body.getParts().size > 1 && thing.location == player.location) {
+            thing.body.getClimbEntryParts()
+        } else if (sourceConnection != null && thing.body.hasPart(sourceConnection.source.partName ?: "")) {
+            listOf(thing.body.getPartLocation(sourceConnection.source.partName!!))
+        } else if (destConnection != null && thing.body.hasPart(destConnection.destination.partName ?: "")) {
+            listOf(thing.body.getPartLocation(destConnection.destination.partName!!))
         } else {
-            target.body.getClimbEntryParts()
+            thing.body.getClimbEntryParts()
         }
     }
 
-    private fun processClimbing(player: Target, keyword: String, arguments: Args, target: Target) {
+    private fun processClimbing(player: Thing, keyword: String, arguments: Args, thing: Thing) {
         val direction = arguments.getDirection()
         when {
             arguments.isEmpty() -> {
@@ -171,30 +171,30 @@ class ClimbCommand : Command() {
                 } else {
                     Direction.ABOVE
                 }
-                climbInDirection(player, keywordDirection, target)
+                climbInDirection(player, keywordDirection, thing)
             }
-            direction != Direction.NONE -> climbInDirection(player, direction, target)
-            else -> climbToPart(player, arguments, target)
+            direction != Direction.NONE -> climbInDirection(player, direction, thing)
+            else -> climbToPart(player, arguments, thing)
         }
     }
 
-    private fun climbInDirection(player: Target, direction: Direction, target: Target) {
+    private fun climbInDirection(player: Thing, direction: Direction, thing: Thing) {
         val location = player.location.getNeighbors(direction).firstOrNull()
         if (location != null) {
-            EventManager.postEvent(AttemptClimbEvent(player, target, location, direction))
+            EventManager.postEvent(AttemptClimbEvent(player, thing, location, direction))
         } else {
-            clarifyClimbPart(player, player.location, target)
+            clarifyClimbPart(player, player.location, thing)
         }
     }
 
-    private fun climbToPart(player: Target, arguments: Args, target: Target) {
+    private fun climbToPart(player: Thing, arguments: Args, thing: Thing) {
         val partArgs = arguments.getBaseString()
-        if (target.body.hasPart(partArgs)) {
-            val part = target.body.getPartLocation(partArgs)
-            val direction = getDirection(player, target, part)
-            EventManager.postEvent(AttemptClimbEvent(player, target, part, direction))
+        if (thing.body.hasPart(partArgs)) {
+            val part = thing.body.getPartLocation(partArgs)
+            val direction = getDirection(player, thing, part)
+            EventManager.postEvent(AttemptClimbEvent(player, thing, part, direction))
         } else {
-            clarifyClimbPart(player, player.location, target)
+            clarifyClimbPart(player, player.location, thing)
         }
     }
 

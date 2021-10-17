@@ -20,18 +20,18 @@ import core.events.EventListenersMock
 import core.events.EventManager
 import core.history.GameLogger
 import core.properties.*
-import core.target.Target
-import core.target.TargetBuilder
-import core.target.activator.ACTIVATOR_TAG
-import core.target.activator.ActivatorManager
-import core.target.activator.dsl.ActivatorsCollection
-import core.target.activator.dsl.ActivatorsMock
-import core.target.creature.CREATURE_TAG
-import core.target.item.ITEM_TAG
-import core.target.item.ItemManager
-import core.target.item.ItemsCollection
-import core.target.item.ItemsMock
-import core.target.target
+import core.thing.Thing
+import core.thing.ThingBuilder
+import core.thing.activator.ACTIVATOR_TAG
+import core.thing.activator.ActivatorManager
+import core.thing.activator.dsl.ActivatorsCollection
+import core.thing.activator.dsl.ActivatorsMock
+import core.thing.creature.CREATURE_TAG
+import core.thing.item.ITEM_TAG
+import core.thing.item.ItemManager
+import core.thing.item.ItemsCollection
+import core.thing.item.ItemsMock
+import core.thing.thing
 import crafting.RecipeManager
 import crafting.RecipesCollection
 import crafting.RecipesMock
@@ -57,12 +57,12 @@ import traveling.location.weather.WeatherManager
 import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersMock
 
-fun createItem(name: String = "Apple", weight: Int = 1): Target {
+fun createItem(name: String = "Apple", weight: Int = 1): Thing {
     return createItemBuilder(name, weight).build()
 }
 
-fun createItemBuilder(name: String = "Apple", weight: Int = 1): TargetBuilder {
-    return target(name) {
+fun createItemBuilder(name: String = "Apple", weight: Int = 1): ThingBuilder {
+    return thing(name) {
         props {
             value("weight" to weight)
             tag(ITEM_TAG)
@@ -71,8 +71,8 @@ fun createItemBuilder(name: String = "Apple", weight: Int = 1): TargetBuilder {
 }
 
 //Pouch is a container that is also an item
-fun createPouch(size: Int = 5, weight: Int = 1): Target {
-    return Target(
+fun createPouch(size: Int = 5, weight: Int = 1): Thing {
+    return Thing(
         "Pouch",
         body = createInventoryBody("Pouch", size),
         properties = Properties(
@@ -86,8 +86,8 @@ fun createPouch(size: Int = 5, weight: Int = 1): Target {
 }
 
 // Chest is a container
-fun createChest(size: Int = 10): Target {
-    return Target(
+fun createChest(size: Int = 10): Thing {
+    return Thing(
         "Chest", body = createInventoryBody("Chest", size),
         properties = Properties(
             Values(SIZE to size.toString()),
@@ -96,8 +96,8 @@ fun createChest(size: Int = 10): Target {
     )
 }
 
-fun createClosedChest(size: Int = 10): Target {
-    return Target(
+fun createClosedChest(size: Int = 10): Thing {
+    return Thing(
         "Closed Chest",
         body = createInventoryBody("Closed Chest", size),
         properties = Properties(
@@ -107,8 +107,8 @@ fun createClosedChest(size: Int = 10): Target {
     )
 }
 
-fun createPackMule(strength: Int = 1): Target {
-    return Target(
+fun createPackMule(strength: Int = 1): Thing {
+    return Thing(
         "Pack Mule", body = createInventoryBody("Pack Mule"),
         properties = Properties(
             Values(STRENGTH to strength.toString()),

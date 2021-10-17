@@ -6,7 +6,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.LocationManager
 
 class ReadMapCommand : Command() {
@@ -36,24 +36,24 @@ class ReadMapCommand : Command() {
         when{
             arguments.isEmpty() && keyword == "map" -> clarifyDepth()
             otherArgs.isEmpty() -> currentLocation(source, depth)
-            else -> targetLocation(source, otherArgs, depth)
+            else -> thingLocation(source, otherArgs, depth)
         }
     }
 
     private fun clarifyDepth() {
-        val targets = listOf("1", "3", "5", "10", "20")
-        val message = "View how many hops?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "map $it" }))
+        val things = listOf("1", "3", "5", "10", "20")
+        val message = "View how many hops?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "map $it" }))
     }
 
     private fun currentLocation(source: Player, depth: Int){
-        EventManager.postEvent(ReadMapEvent(source, source.target.location, depth))
+        EventManager.postEvent(ReadMapEvent(source, source.thing.location, depth))
     }
 
-    private fun targetLocation(source: Player, args: List<String>, depth: Int){
-        val target = LocationManager.findLocationInAnyNetwork(source.target, args.joinToString(" "))
-        if (target != null) {
-            EventManager.postEvent(ReadMapEvent(source, target, depth))
+    private fun thingLocation(source: Player, args: List<String>, depth: Int){
+        val thing = LocationManager.findLocationInAnyNetwork(source.thing, args.joinToString(" "))
+        if (thing != null) {
+            EventManager.postEvent(ReadMapEvent(source, thing, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }

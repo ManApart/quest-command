@@ -6,7 +6,7 @@ import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import system.debug.DebugType
 import traveling.location.RouteNeighborFinder
@@ -40,26 +40,26 @@ class RouteCommand : Command() {
         val otherArgs = args.minus(depth.toString())
 
         when {
-            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source.target))
-            else -> targetLocation(source.target, otherArgs, depth, player)
+            otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source.thing))
+            else -> thingLocation(source.thing, otherArgs, depth, player)
         }
     }
 
-    private fun targetLocation(source: Target, args: List<String>, depth: Int, player: Player) {
+    private fun thingLocation(source: Thing, args: List<String>, depth: Int, player: Player) {
         val locationName = args.joinToString(" ")
-        val target = findTarget(source.location, locationName, depth, player)
-        if (target != null) {
-            EventManager.postEvent(FindRouteEvent(source, source.location, target, depth))
+        val thing = findThing(source.location, locationName, depth, player)
+        if (thing != null) {
+            EventManager.postEvent(FindRouteEvent(source, source.location, thing, depth))
         } else {
             println("Could not find ${args.joinToString(" ")} on the map.")
         }
     }
 
-    private fun findTarget(source: LocationNode, locationName: String, depth: Int, player: Player): LocationNode? {
+    private fun findThing(source: LocationNode, locationName: String, depth: Int, player: Player): LocationNode? {
         if (LocationManager.getNetwork(source.parent).hasLocation(locationName)) {
-            val target = LocationManager.getNetwork(source.parent).findLocation(locationName)
-            if (target != NOWHERE_NODE) {
-                return target
+            val thing = LocationManager.getNetwork(source.parent).findLocation(locationName)
+            if (thing != NOWHERE_NODE) {
+                return thing
             }
         }
         val ignoreHidden = !GameState.getDebugBoolean(DebugType.MAP_SHOW_ALL_LOCATIONS)

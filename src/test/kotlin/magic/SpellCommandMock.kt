@@ -1,13 +1,13 @@
 package magic
 
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import core.commands.Args
-import core.target.Target
+import core.thing.Thing
 import magic.spellCommands.SpellCommand
 
 class SpellCommandMock(override val name: String = "testspell", private val category: List<String> = listOf()) : SpellCommand() {
     var args = Args(listOf())
-    var targets = listOf<TargetAim>()
+    var things = listOf<ThingAim>()
 
     override fun getDescription(): String {
         return ""
@@ -21,9 +21,9 @@ class SpellCommandMock(override val name: String = "testspell", private val cate
         return category
     }
 
-    override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
+    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         this.args = args
-        this.targets = targets
+        this.things = things
     }
 
 

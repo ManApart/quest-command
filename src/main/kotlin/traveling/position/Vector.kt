@@ -190,16 +190,16 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return this - difference
     }
 
-    fun getVectorInDirection(target: Vector, distance: Int): Vector {
-        val percent = distance / getDistance(target).toFloat()
+    fun getVectorInDirection(thing: Vector, distance: Int): Vector {
+        val percent = distance / getDistance(thing).toFloat()
         if (percent.isNaN()){
-            return target
+            return thing
         }
         val inversePercent = 1 - percent
 
-        val newX = x * inversePercent + target.x * percent
-        val newY = y * inversePercent + target.y * percent
-        val newZ = z * inversePercent + target.z * percent
+        val newX = x * inversePercent + thing.x * percent
+        val newY = y * inversePercent + thing.y * percent
+        val newZ = z * inversePercent + thing.z * percent
 
         return Vector(newX.roundToInt(), newY.roundToInt(), newZ.roundToInt())
     }

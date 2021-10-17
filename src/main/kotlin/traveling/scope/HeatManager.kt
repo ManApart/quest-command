@@ -1,7 +1,7 @@
 package traveling.scope
 
 import core.GameState
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.HEAT
 import traveling.location.location.Location
 
@@ -25,6 +25,6 @@ private fun getDayBonus(location: Location): Int {
 }
 
 
-fun getHeatLevel(scope: Location, target: Target): Int {
-    return getHeatLevel(scope) + target.properties.values.getInt(HEAT)
+fun getHeatLevel(scope: Location, thing: Thing): Int {
+    return getHeatLevel(scope) + thing.properties.values.getInt(HEAT)
 }

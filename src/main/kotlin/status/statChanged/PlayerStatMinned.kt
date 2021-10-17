@@ -7,13 +7,13 @@ import status.stat.STAMINA
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return event.target.isPlayer()
+        return event.thing.isPlayer()
     }
 
     override fun execute(event: StatMinnedEvent) {
         when (event.stat.lowercase()){
-            HEALTH.lowercase() -> event.target.displayToMe("Oh dear, you have died!")
-            STAMINA.lowercase() -> event.target.displayToMe("You are completely exhausted.")
+            HEALTH.lowercase() -> event.thing.displayToMe("Oh dear, you have died!")
+            STAMINA.lowercase() -> event.thing.displayToMe("You are completely exhausted.")
         }
     }
 }

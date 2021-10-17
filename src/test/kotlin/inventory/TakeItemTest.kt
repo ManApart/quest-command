@@ -3,8 +3,8 @@ package inventory
 import core.DependencyInjector
 import core.body.*
 import core.properties.*
-import core.target.Target
-import core.target.item.ITEM_TAG
+import core.thing.Thing
+import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.pickupItem.TakeItem
 import inventory.pickupItem.TakeItemEvent
@@ -44,32 +44,32 @@ class TakeItemTest {
     fun pickupItemFromLocation() {
         val creature = getCreatureWithCapacity()
         val location = creature.location.getLocation()
-        val item = Target("Apple",  properties = Properties(Tags(ITEM_TAG)))
-        location.addTarget(item)
+        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        location.addThing(item)
 
         TakeItem().execute(TakeItemEvent(creature, item))
         assertNotNull(creature.inventory.getItem(item.name))
-        assertTrue(location.getTargets(item.name).isEmpty())
+        assertTrue(location.getThings(item.name).isEmpty())
     }
 
     @Test
     fun noPickupItemFromLocationIfNoCapacity() {
-        val creature = Target("Target")
+        val creature = Thing("Thing")
         val location = creature.location.getLocation()
-        val item = Target("Apple")
-        location.addTarget(item)
+        val item = Thing("Apple")
+        location.addThing(item)
 
         TakeItem().execute(TakeItemEvent(creature, item))
         assertNull(creature.inventory.getItem(item.name))
-        assertTrue(location.getTargets(item.name).isNotEmpty())
+        assertTrue(location.getThings(item.name).isNotEmpty())
     }
 
     @Test
     fun pickupSingleItemLeavesRestOfStack() {
         val creature = getCreatureWithCapacity()
         val location = creature.location.getLocation()
-        val item = Target("Apple",  properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
-        location.addTarget(item)
+        val item = Thing("Apple",  properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
+        location.addThing(item)
 
         TakeItem().execute(TakeItemEvent(creature, item))
         val inInventory = creature.inventory.getItem(item.name)
@@ -85,9 +85,9 @@ class TakeItemTest {
         assertEquals(creature.inventory.getItem("Pouch")?.body?.getRootPart(), inInventory.location.getLocation())
     }
 
-    private fun getCreatureWithCapacity(): Target {
-        val creature = Target("Target", properties = Properties(tags = Tags("Container", "Open", "Creature")))
-//        val pouch = Target("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
+    private fun getCreatureWithCapacity(): Thing {
+        val creature = Thing("Thing", properties = Properties(tags = Tags("Container", "Open", "Creature")))
+//        val pouch = Thing("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)
         creature.inventory.add(pouch)
         return creature

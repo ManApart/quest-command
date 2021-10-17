@@ -1,6 +1,6 @@
 package explore.examine
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ExamineEvent(val source: Target, val target: Target? = null) : Event
+class ExamineEvent(val source: Thing, val thing: Thing? = null) : Event

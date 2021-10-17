@@ -18,7 +18,7 @@ class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
         CommandParser.commandSource = newCreature
 
         if (newCreature != oldCreature) {
-            if (newCreature.target.isPlayer()) {
+            if (newCreature.thing.isPlayer()) {
                 newCreature.display("What do you do?")
             } else {
                 newCreature.display("${creature.name} does what?")

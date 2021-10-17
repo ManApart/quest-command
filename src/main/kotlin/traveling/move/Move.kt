@@ -66,8 +66,8 @@ class Move : EventListener<MoveEvent>() {
 
     private fun displayMovement(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
         if (!event.silent) {
-            val destinationTarget = event.creature.location.getLocation().getTargets(event.creature).firstOrNull { it.position == actualDestination }
-            val destinationString = destinationTarget?.getDisplayName() ?: actualDestination.toString()
+            val destinationThing = event.creature.location.getLocation().getThings(event.creature).firstOrNull { it.position == actualDestination }
+            val destinationString = destinationThing?.getDisplayName() ?: actualDestination.toString()
 
             val youMove = event.creature.isPlayer().then("You move", "${event.creature} moves")
 

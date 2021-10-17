@@ -1,6 +1,6 @@
 package traveling.routes
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ViewRouteEvent(val source: Target) : Event
+class ViewRouteEvent(val source: Thing) : Event

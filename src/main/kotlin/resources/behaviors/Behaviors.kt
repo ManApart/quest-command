@@ -5,7 +5,7 @@ import core.ai.behavior.BehaviorResource
 import core.ai.behavior.behaviors
 import core.commands.commandEvent.CommandEvent
 import core.properties.propValChanged.PropertyStatMinnedEvent
-import core.target.activator.ActivatorManager
+import core.thing.activator.ActivatorManager
 import core.utility.parseLocation
 import crafting.DiscoverRecipeEvent
 import crafting.RecipeManager
@@ -37,17 +37,17 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val treeName = params["treeName"] ?: "tree"
                 listOf(
-                    MessageEvent(GameState.getPlayer(event.target), "The $treeName cracks and falls to the ground."),
-                    RemoveScopeEvent(event.target),
-                    SpawnActivatorEvent(ActivatorManager.getActivator("Logs"), targetLocation = event.target.location),
-                    SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, targetLocation = event.target.location)
+                    MessageEvent(GameState.getPlayer(event.thing), "The $treeName cracks and falls to the ground."),
+                    RemoveScopeEvent(event.thing),
+                    SpawnActivatorEvent(ActivatorManager.getActivator("Logs"), thingLocation = event.thing.location),
+                    SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.thing.location)
                 )
             }
         }
 
         behavior("Climbable", InteractEvent::class) {
             events { event, _ ->
-                listOf(CommandEvent("climb ${event.target.name}"))
+                listOf(CommandEvent("climb ${event.thing.name}"))
             }
         }
 
@@ -58,22 +58,22 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val name = params["name"] ?: "object"
                 listOf(
-                    MessageEvent(GameState.getPlayer(event.target), "The $name smolders until it is nothing more than ash."),
-                    RemoveScopeEvent(event.target),
-                    SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, targetLocation = event.target.location, positionParent = event.target)
+                    MessageEvent(GameState.getPlayer(event.thing), "The $name smolders until it is nothing more than ash."),
+                    RemoveScopeEvent(event.thing),
+                    SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, thingLocation = event.thing.location, positionParent = event.thing)
                 )
             }
         }
 
         behavior("Burn Out", PropertyStatMinnedEvent::class) {
             condition { event, _ ->
-                event.stat == "fireHealth" && event.target.soul.hasEffect("On Fire")
+                event.stat == "fireHealth" && event.thing.soul.hasEffect("On Fire")
             }
             events { event, params ->
                 listOf(
-                    MessageEvent(GameState.getPlayer(event.target), "The ${event.target} smolders out and needs to be relit."),
-                    RemoveConditionEvent(event.target, event.target.soul.getConditionWithEffect("On Fire")),
-                    StatChangeEvent(event.target, "lighting", "fireHealth", params["fireHealth"]?.toInt() ?: 1)
+                    MessageEvent(GameState.getPlayer(event.thing), "The ${event.thing} smolders out and needs to be relit."),
+                    RemoveConditionEvent(event.thing, event.thing.soul.getConditionWithEffect("On Fire")),
+                    StatChangeEvent(event.thing, "lighting", "fireHealth", params["fireHealth"]?.toInt() ?: 1)
                 )
             }
         }
@@ -84,8 +84,8 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOf(
-                    MessageEvent(GameState.getPlayer(event.source), params["message"] ?: "You harvest ${event.target} with ${event.used}."),
-                    SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, targetLocation = event.target.location, positionParent = event.target)
+                    MessageEvent(GameState.getPlayer(event.source), params["message"] ?: "You harvest ${event.thing} with ${event.used}."),
+                    SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.thing.location, positionParent = event.thing)
                 )
             }
         }
@@ -99,9 +99,9 @@ class CommonBehaviors : BehaviorResource {
                 val replacement = ActivatorManager.getActivator(params["replacementActivator"] ?: "Logs")
                 listOf(
                     MessageEvent(GameState.getPlayer(source), params["message"] ?: ""),
-                    RestrictLocationEvent(event.target, sourceLocation, destinationLocation, makeRestricted),
-                    RemoveScopeEvent(event.target),
-                    SpawnActivatorEvent(replacement, true, event.target.location)
+                    RestrictLocationEvent(event.thing, sourceLocation, destinationLocation, makeRestricted),
+                    RemoveScopeEvent(event.thing),
+                    SpawnActivatorEvent(replacement, true, event.thing.location)
                 )
             }
         }
@@ -115,14 +115,14 @@ class CommonBehaviors : BehaviorResource {
                 val sourceItemName = params["sourceItem"] ?: "Wheat Bundle"
                 val sourceItem = event.source.inventory.getItem(sourceItemName)
                 val depositLocation = parseLocation(params, event.source, "resultItemNetwork", "resultItemLocation")
-                val depositTarget = depositLocation.getLocation().getTargets(params["resultContainer"] ?: "Grain Bin").firstOrNull()
-                if (sourceItem == null || depositTarget == null) {
+                val depositThing = depositLocation.getLocation().getThings(params["resultContainer"] ?: "Grain Bin").firstOrNull()
+                if (sourceItem == null || depositThing == null) {
                     listOf(MessageEvent(GameState.getPlayer(event.source), "Unable to Mill."))
                 } else {
                     listOf(
-                        MessageEvent(GameState.getPlayer(event.source), "The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the $depositTarget."),
+                        MessageEvent(GameState.getPlayer(event.source), "The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the $depositThing."),
                         RemoveItemEvent(event.source, sourceItem),
-                        SpawnItemEvent(resultItem, 1, depositTarget)
+                        SpawnItemEvent(resultItem, 1, depositThing)
                     )
                 }
             }

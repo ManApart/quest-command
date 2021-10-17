@@ -1,6 +1,6 @@
 package use.eat
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class EatFoodEvent(val creature: Target, val food: Target) : Event
+class EatFoodEvent(val creature: Thing, val food: Thing) : Event

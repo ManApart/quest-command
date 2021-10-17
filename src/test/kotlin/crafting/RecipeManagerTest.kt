@@ -4,7 +4,7 @@ import core.DependencyInjector
 import core.GameManager
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
+import core.thing.Thing
 import createMockedGame
 import org.junit.Assert
 import org.junit.Before
@@ -26,15 +26,15 @@ class RecipeManagerTest {
             result("Baked Apple")
         }
         val recipe = recipeBuilder.build()
-        val ingredients = listOf(Target("Apple"))
-        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
+        val ingredients = listOf(Thing("Apple"))
+        val tool = Thing("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertEquals(recipe, results.first())
     }
 
@@ -45,15 +45,15 @@ class RecipeManagerTest {
         }
         val recipe = recipeBuilder.build()
 
-        val ingredients = listOf(Target("Pear", properties = Properties(tags = Tags("Raw", "Fruit"))))
-        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
+        val ingredients = listOf(Thing("Pear", properties = Properties(tags = Tags("Raw", "Fruit"))))
+        val tool = Thing("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertEquals(recipe, results.first())
     }
 
@@ -63,15 +63,15 @@ class RecipeManagerTest {
             ingredient("Apple", listOf("Raw", "fruit"))
         }
         val recipe = recipeBuilder.build()
-        val ingredients = listOf(Target("Apple", properties = Properties(tags = Tags("Raw", "Fruit"))))
-        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
+        val ingredients = listOf(Thing("Apple", properties = Properties(tags = Tags("Raw", "Fruit"))))
+        val tool = Thing("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertEquals(recipe, results.first())
     }
 
@@ -83,15 +83,15 @@ class RecipeManagerTest {
             toolProps { tag("Range") }
             result("Baked Apple")
         }
-        val ingredients = listOf<Target>()
-        val tool = Target("Range")
+        val ingredients = listOf<Thing>()
+        val tool = Thing("Range")
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertTrue(results.isEmpty())
     }
 
@@ -103,15 +103,15 @@ class RecipeManagerTest {
             toolProps { tag("Range") }
             result("Poor Quality Cooked Meat")
         }
-        val ingredients = listOf(Target("Apple"))
-        val tool = Target("Range")
+        val ingredients = listOf(Thing("Apple"))
+        val tool = Thing("Range")
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertTrue(results.isEmpty())
     }
 
@@ -123,15 +123,15 @@ class RecipeManagerTest {
             toolProps { tag("Range") }
             result("Baked Apple")
         }
-        val ingredients = listOf(Target("Apple"))
-        val tool = Target("NONE")
+        val ingredients = listOf(Thing("Apple"))
+        val tool = Thing("NONE")
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertTrue(results.isEmpty())
     }
 
@@ -143,15 +143,15 @@ class RecipeManagerTest {
             toolProps { tag("Range") }
             result("Baked Apple")
         }
-        val ingredients = listOf(Target("Apple"))
-        val tool = Target("Range", properties = Properties(tags = Tags("Range")))
+        val ingredients = listOf(Thing("Apple"))
+        val tool = Thing("Range", properties = Properties(tags = Tags("Range")))
         val baker = GameManager.newPlayer()
 
         val fakeParser = RecipesMock(listOf(recipeBuilder))
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.target.soul)
+        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
         Assert.assertTrue(results.isEmpty())
     }
 

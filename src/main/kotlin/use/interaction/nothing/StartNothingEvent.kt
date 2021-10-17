@@ -2,9 +2,9 @@ package use.interaction.nothing
 
 import core.events.DelayedEvent
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class StartNothingEvent(override val source: Target, private val hoursWaited: Int = 0) : Event, DelayedEvent {
+class StartNothingEvent(override val source: Thing, private val hoursWaited: Int = 0) : Event, DelayedEvent {
     override var timeLeft = 100
 
     override fun getActionEvent(): Event {

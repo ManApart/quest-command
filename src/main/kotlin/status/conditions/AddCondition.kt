@@ -9,7 +9,7 @@ class AddCondition: EventListener<AddConditionEvent>() {
     }
 
     override fun execute(event: AddConditionEvent) {
-        event.target.soul.addNewCondition(event.condition)
-        event.target.display("${event.target.name} is now ${event.condition.name}")
+        event.thing.soul.addNewCondition(event.condition)
+        event.thing.display("${event.thing.name} is now ${event.condition.name}")
     }
 }

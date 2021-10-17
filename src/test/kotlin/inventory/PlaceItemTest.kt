@@ -5,7 +5,7 @@ import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.body.*
-import core.target.Target
+import core.thing.Thing
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
 import org.junit.Before
@@ -38,13 +38,13 @@ class PlaceItemTest {
 
     @Test
     fun dropItem() {
-        val creature = Target("Creature")
-        val item = Target("Apple")
+        val creature = Thing("Creature")
+        val item = Thing("Apple")
         creature.inventory.add(item)
         val scope = creature.location.getLocation()
 
         PlaceItem().execute(PlaceItemEvent(creature, item))
-        assertTrue(scope.getTargets(item.name).isNotEmpty())
+        assertTrue(scope.getThings(item.name).isNotEmpty())
         assertNull(creature.inventory.getItem(item.name))
     }
 

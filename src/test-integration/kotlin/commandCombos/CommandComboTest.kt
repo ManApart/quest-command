@@ -26,23 +26,23 @@ class CommandComboTest {
     fun sliceApple() {
         val input = "use dagger on apple"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.target.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.target.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
     }
 
     @Test
     fun chopApple() {
         val input = "chop apple"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.target.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.target.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
     }
 
     @Test
     fun eatApple() {
         val input = "sl head of self && eat apple && n && eat apple"
         CommandParser.parseCommand(input)
-        assertNull(GameState.player.target.inventory.getItem("Apple"))
+        assertNull(GameState.player.thing.inventory.getItem("Apple"))
         assertEquals("You feel the fullness of life beating in your bosom.", GameLogger.main.getLastOutput())
     }
 
@@ -50,32 +50,32 @@ class CommandComboTest {
     fun roastApple() {
         val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && use tinder on tree && use apple on tree"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.target.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.target.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
     }
 
     @Test
     fun cookApple() {
-        val stat = GameState.player.target.soul.getStats().first { it.name.lowercase() == "cooking" }
+        val stat = GameState.player.thing.soul.getStats().first { it.name.lowercase() == "cooking" }
         stat.setLevel(2)
 
         val input = "w && s && move to range && cook apple on range"
         CommandParser.parseCommand(input)
-        assertTrue(GameState.player.target.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.target.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
     }
 
     @Test
     fun makeFire() {
         val input = "n && pickup hatchet && ch tree && ch tree"
         CommandParser.parseCommand(input)
-        assertEquals(0, GameState.player.target.currentLocation().getActivators("tree").size)
-        assertEquals(1, GameState.player.target.currentLocation().getActivators("logs").size)
+        assertEquals(0, GameState.player.thing.currentLocation().getActivators("tree").size)
+        assertEquals(1, GameState.player.thing.currentLocation().getActivators("logs").size)
         CommandParser.parseCommand("cast flame 1 on logs")
-        assertTrue(GameState.player.target.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
+        assertTrue(GameState.player.thing.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
         CommandParser.parseCommand("eat apple && eat apple && cast flame 1 on logs && rest 3")
-        assertEquals(0, GameState.player.target.currentLocation().getActivators("logs").size)
-        assertEquals(1, GameState.player.target.currentLocation().getItems("ash").size)
+        assertEquals(0, GameState.player.thing.currentLocation().getActivators("logs").size)
+        assertEquals(1, GameState.player.thing.currentLocation().getItems("ash").size)
     }
 
     @Test
@@ -137,19 +137,19 @@ GameLogger.main.getLastInput()
     @Test
     fun compassToPub() {
         CommandParser.parseCommand("co pub && w && co pub")
-        assertEquals("Farmer's Hut", GameState.player.target.location.name)
+        assertEquals("Farmer's Hut", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is WEST of you.", GameLogger.main.getLastOutput())
 
         CommandParser.parseCommand("co pub && w && rest 10 && co pub")
-        assertEquals("Kanbara Gate", GameState.player.target.location.name)
+        assertEquals("Kanbara Gate", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is WEST of you.", GameLogger.main.getLastOutput())
 
         CommandParser.parseCommand("use gate && w && co pub")
-        assertEquals("Kanbara City", GameState.player.target.location.name)
+        assertEquals("Kanbara City", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is near you.", GameLogger.main.getLastOutput())
 
         CommandParser.parseCommand("t pub && co pub")
-        assertEquals("Kanbara Pub", GameState.player.target.location.name)
+        assertEquals("Kanbara Pub", GameState.player.thing.location.name)
         assertEquals("You are at Kanbara Pub.", GameLogger.main.getLastOutput())
     }
 
@@ -170,7 +170,7 @@ GameLogger.main.getLastInput()
                 "&& take box && use box on range && craft apple pie"
         CommandParser.parseCommand(input)
 
-        assertNotNull(GameState.player.target.inventory.getItem("Apple Pie"))
+        assertNotNull(GameState.player.thing.inventory.getItem("Apple Pie"))
         assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
     }
 
@@ -203,20 +203,20 @@ GameLogger.main.getLastInput()
     @Test
     fun poisonSelf() {
         CommandParser.parseCommand("poison 1 for 5 on head of self")
-        assertEquals(1, GameState.player.target.soul.getConditions().size)
+        assertEquals(1, GameState.player.thing.soul.getConditions().size)
         assertEquals("Poison decreases Your Health by 1 (9/10).", GameLogger.main.getLastOutput())
 
         CommandParser.parseCommand("wait 5")
         CommandParser.parseCommand("wait 1")
-        assertEquals(0, GameState.player.target.soul.getConditions().size)
-        assertEquals(5, GameState.player.target.soul.getCurrent(HEALTH))
+        assertEquals(0, GameState.player.thing.soul.getConditions().size)
+        assertEquals(5, GameState.player.thing.soul.getCurrent(HEALTH))
         assertEquals("Player is no longer Poisoned.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun feelTheRain() {
         CommandParser.parseCommand("rest 1 && debug weather gentle rain && rest 1")
-        assertEquals(1, GameState.player.target.soul.getConditions().size)
-        assertEquals("Rain Wet", GameState.player.target.soul.getConditions().first().name)
+        assertEquals(1, GameState.player.thing.soul.getConditions().size)
+        assertEquals("Rain Wet", GameState.player.thing.soul.getConditions().first().name)
     }
 }

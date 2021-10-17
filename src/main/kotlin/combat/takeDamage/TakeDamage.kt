@@ -3,7 +3,7 @@ package combat.takeDamage
 import combat.DamageType
 import core.events.EventListener
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
@@ -20,7 +20,7 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
         }
     }
 
-    private fun getUndefendedDamage(source: Target, damage: Int, attackedPart: Location, attackType: DamageType): Int {
+    private fun getUndefendedDamage(source: Thing, damage: Int, attackedPart: Location, attackType: DamageType): Int {
         var damageDefended = source.soul.getStatOrNull(attackType.defense)?.current ?: 0
         attackedPart.getEquippedItems().forEach {
             damageDefended += it.properties.getDefense(attackType.defense)
@@ -28,8 +28,8 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
         return max(damage-damageDefended, 0)
     }
 
-    private fun hasSpecificHealth(target: Target, attackType: DamageType): Boolean {
-        return target.soul.hasStat(attackType.health)
+    private fun hasSpecificHealth(thing: Thing, attackType: DamageType): Boolean {
+        return thing.soul.hasStat(attackType.health)
     }
 
 }

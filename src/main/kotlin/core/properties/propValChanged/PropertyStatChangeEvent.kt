@@ -1,10 +1,10 @@
 package core.properties.propValChanged
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class PropertyStatChangeEvent(val target: Target, val sourceOfChange: String, val statName: String, val amount: Int, val silent: Boolean = false) : Event {
+class PropertyStatChangeEvent(val thing: Thing, val sourceOfChange: String, val statName: String, val amount: Int, val silent: Boolean = false) : Event {
     override fun toString(): String {
-        return "${target.name} $statName changed $amount by $sourceOfChange."
+        return "${thing.name} $statName changed $amount by $sourceOfChange."
     }
 }

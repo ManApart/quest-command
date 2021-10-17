@@ -1,6 +1,6 @@
 package system.alias
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ListAliasesEvent(val source: Target) : Event
+class ListAliasesEvent(val source: Thing) : Event

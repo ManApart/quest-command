@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class AliasCommand : Command() {
     override fun getAliases(): List<String> {
@@ -30,7 +30,7 @@ class AliasCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             EventManager.postEvent(ListAliasesEvent(source))
         } else {
@@ -46,7 +46,7 @@ class AliasCommand : Command() {
     }
 
 
-    private fun createAlias(source: Target, args: List<String>) {
+    private fun createAlias(source: Thing, args: List<String>) {
         if (args.size <= 2) {
             source.displayToMe("Must give an alias followed by a command.")
         } else {
@@ -56,7 +56,7 @@ class AliasCommand : Command() {
         }
     }
 
-    private fun deleteAlias(source: Target, args: List<String>) {
+    private fun deleteAlias(source: Thing, args: List<String>) {
         if (args.size != 2) {
             //TODO - get from command parser
             val aliases = listOf("alias1", "alias2")

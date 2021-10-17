@@ -5,9 +5,9 @@ import core.body.*
 import core.history.GameLogger
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
-import core.target.item.ITEM_TAG
-import core.target.target
+import core.thing.Thing
+import core.thing.item.ITEM_TAG
+import core.thing.thing
 import createClosedChest
 import createItem
 import createMockedGame
@@ -48,11 +48,11 @@ class ListInventoryTest {
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
-        val creature = target("Soldier") {
+        val creature = thing("Soldier") {
             body("body")
             props { tag("Container")}
         }.build()
-        val item = Target("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
+        val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
         creature.body.equip(item)
         val event = ListInventoryEvent(creature)
@@ -63,7 +63,7 @@ class ListInventoryTest {
     @Test
     fun listInventoryEquippedNested() {
         val item = createItem("Apple")
-        val pouch = Target("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
+        val pouch = Thing("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         pouch.inventory.add(item)
 
         val chest = locationRecipe("Chest") { slot("Chest") }
@@ -72,7 +72,7 @@ class ListInventoryTest {
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
         BodyManager.reset()
 
-        val creature = target("Soldier") {
+        val creature = thing("Soldier") {
             body("body")
             props { tag("Container")}
         }.build()
@@ -86,8 +86,8 @@ class ListInventoryTest {
 
     @Test
     fun creatureWithoutTagDoesNotListInventory() {
-        val creature = Target("Chest")
-        creature.inventory.add(Target("Apple"))
+        val creature = Thing("Chest")
+        creature.inventory.add(Thing("Apple"))
         val event = ListInventoryEvent(creature)
         ListInventory().execute(event)
         assertEquals("Cannot view inventory of Chest", GameLogger.main.getLastOutput())

@@ -5,7 +5,7 @@ import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.LocationPoint
 
 class DismountCommand : Command() {
@@ -26,18 +26,18 @@ class DismountCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         if (source.properties.values.getBoolean(IS_CLIMBING)) {
-            //If current location has a network connection/ exit, dismount there, otherwise dismount to target location if height 0
+            //If current location has a network connection/ exit, dismount there, otherwise dismount to thing location if height 0
             val exit = getExitLocation(source)
-            val climbTarget = source.climbTarget!!
-            val targetLocation = LocationPoint(climbTarget.location)
+            val climbThing = source.climbThing!!
+            val thingLocation = LocationPoint(climbThing.location)
             val part = source.location
-            val origin = LocationPoint(climbTarget.location, climbTarget.name, part.name)
+            val origin = LocationPoint(climbThing.location, climbThing.name, part.name)
 
             when {
-                exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbTarget!!, origin, exit))
-                source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.target, GameState.player.target.climbTarget!!, origin, targetLocation))
+                exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbThing!!, origin, exit))
+                source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.thing, GameState.player.thing.climbThing!!, origin, thingLocation))
                 else -> source.displayToMe("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {
@@ -45,13 +45,13 @@ class DismountCommand : Command() {
         }
     }
 
-    private fun getExitLocation(source: Target) : LocationPoint? {
-        val climbTarget = source.climbTarget!!
-        val location = climbTarget.location
-        val part = climbTarget.body.getPart(source.location.name)
+    private fun getExitLocation(source: Thing) : LocationPoint? {
+        val climbThing = source.climbThing!!
+        val location = climbThing.location
+        val part = climbThing.body.getPart(source.location.name)
 
-        return climbTarget.location.getNeighborConnections().firstOrNull {
-            it.source.equals(location, climbTarget, part)
+        return climbThing.location.getNeighborConnections().firstOrNull {
+            it.source.equals(location, climbThing, part)
         }?.destination
     }
 

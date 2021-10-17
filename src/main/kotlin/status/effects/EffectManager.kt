@@ -18,8 +18,8 @@ object EffectManager {
     }
 
     // should effects be parsable from json as well as effect bases?
-    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartTargets: List<Location> = listOf()) : Effect {
-        return Effect(effects.get(baseName), amount, duration, bodyPartTargets)
+    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartThings: List<Location> = listOf()) : Effect {
+        return Effect(effects.get(baseName), amount, duration, bodyPartThings)
     }
 
     fun effectBaseExists(name: String): Boolean {

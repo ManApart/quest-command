@@ -105,19 +105,19 @@ class VectorTest {
     @Test
     fun inDirection100Percent() {
         val source = Vector()
-        val target = Vector(10, 10, 10)
-        val distance = source.getDistance(target)
-        val result = source.getVectorInDirection(target, distance)
-        assertEquals(target, result)
+        val thing = Vector(10, 10, 10)
+        val distance = source.getDistance(thing)
+        val result = source.getVectorInDirection(thing, distance)
+        assertEquals(thing, result)
     }
 
     @Test
     fun inDirection200Percent() {
         val source = Vector()
-        val target = Vector(10, 10, 10)
+        val thing = Vector(10, 10, 10)
         val further = Vector(20, 20, 20)
         val distance = source.getDistance(further)
-        val result = source.getVectorInDirection(target, distance)
+        val result = source.getVectorInDirection(thing, distance)
         assertEquals(further, result)
     }
 
@@ -130,16 +130,16 @@ class VectorTest {
     @Test
     fun inverseOfOther() {
         val source = Vector()
-        val target = Vector(10, 10, 10)
-        val result = source.getInverse(target)
-        assertEquals(target.invert(), result)
+        val thing = Vector(10, 10, 10)
+        val result = source.getInverse(thing)
+        assertEquals(thing.invert(), result)
     }
 
     @Test
     fun inverseOfOther2() {
         val source = Vector(10, 10, 10)
-        val target = Vector()
-        val result = source.getInverse(target)
+        val thing = Vector()
+        val result = source.getInverse(thing)
         assertEquals(Vector(20, 20, 20), result)
     }
 
@@ -160,7 +160,7 @@ class VectorTest {
     }
 
     @Test
-    fun closerIsSourcePlusDistanceTowardTarget() {
+    fun closerIsSourcePlusDistanceTowardThing() {
         val source = Vector(y = 0)
         val direction  = Vector(y = 10)
         val expected = Vector(y = 5)
@@ -177,7 +177,7 @@ class VectorTest {
     }
 
     @Test
-    fun furtherIsTargetPlusAdditionalDistanceInSameDirectionFromSource() {
+    fun furtherIsThingPlusAdditionalDistanceInSameDirectionFromSource() {
         val source = Vector(y = 0)
         val direction  = Vector(y = 10)
         val expected = Vector(y = 15)

@@ -7,9 +7,9 @@ import core.ai.action.AIAction
 import core.ai.action.dsl.AIActionResource
 import core.ai.action.dsl.actions
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 import core.utility.RandomManager
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import use.interaction.nothing.NothingEvent
 
 class CommonActions : AIActionResource {
@@ -20,17 +20,17 @@ class CommonActions : AIActionResource {
     } + listOf(defaultAction)
 }
 
-private fun ratAttack(owner: Target): Event {
-    val playerBody = GameState.player.target.body
+private fun ratAttack(owner: Thing): Event {
+    val playerBody = GameState.player.thing.body
     val possibleParts = listOf(
         playerBody.getPart("Right Foot"),
         playerBody.getPart("Left Foot")
     )
-    val targetPart = listOf(RandomManager.getRandom(possibleParts))
+    val thingPart = listOf(RandomManager.getRandom(possibleParts))
     val partToAttackWith = if (owner.body.hasPart("Small Claws")) {
         owner.body.getPart("Small Claws")
     } else {
         owner.body.getRootPart()
     }
-    return StartAttackEvent(owner, partToAttackWith, TargetAim(GameState.player.target, targetPart), DamageType.SLASH)
+    return StartAttackEvent(owner, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
 }

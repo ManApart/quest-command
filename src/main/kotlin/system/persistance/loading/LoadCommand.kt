@@ -4,7 +4,7 @@ import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class LoadCommand : Command() {
     override fun getAliases(): List<String> {

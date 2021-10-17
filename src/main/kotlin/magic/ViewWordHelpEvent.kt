@@ -1,6 +1,6 @@
 package magic
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ViewWordHelpEvent(val source: Target, val word: String? = null, val groups: Boolean = false) : Event
+class ViewWordHelpEvent(val source: Thing, val word: String? = null, val groups: Boolean = false) : Event

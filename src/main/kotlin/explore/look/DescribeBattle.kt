@@ -5,10 +5,10 @@ import core.history.display
 import core.history.displayUpdate
 import core.history.displayUpdateEnd
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import status.stat.HEALTH
 
-fun describeBattle(source: Target) {
+fun describeBattle(source: Thing) {
     val creatures = source.location.getLocation().getCreatures(source)
     creatures.filter { it != source }.forEach {
         it.display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
@@ -24,11 +24,11 @@ fun describeBattle(source: Target) {
     printTurnStatus(source, creatures)
 }
 
-private fun status(target: Target): String {
-    return "${target.name}: ${target.soul.getCurrent(HEALTH)}/${target.soul.getTotal(HEALTH)} HP, ${target.ai.getActionPoints()}/100 AP, ${target.ai.action?.javaClass?.simpleName ?: "None"}."
+private fun status(thing: Thing): String {
+    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.ai.getActionPoints()}/100 AP, ${thing.ai.action?.javaClass?.simpleName ?: "None"}."
 }
 
-private fun printTurnStatus(source: Target, creatures: List<Target>) {
+private fun printTurnStatus(source: Thing, creatures: List<Thing>) {
     val combatantString = creatures.map {
         when {
             it.ai.isActionReady() -> ""
@@ -44,7 +44,7 @@ private fun printTurnStatus(source: Target, creatures: List<Target>) {
     }
 }
 
-fun printUpdatingStatus(creatures: List<Target>) {
+fun printUpdatingStatus(creatures: List<Thing>) {
     val combatantString = creatures.joinToString("\t\t") {
         val points = it.ai.getActionPoints()
         val timeLeft = it.ai.action?.timeLeft ?: 0
@@ -53,7 +53,7 @@ fun printUpdatingStatus(creatures: List<Target>) {
     displayUpdate(combatantString)
 }
 
-fun printUpdatingStatusEnd(creatures: List<Target>) {
+fun printUpdatingStatusEnd(creatures: List<Thing>) {
     val combatantString = creatures.joinToString("\t\t") {
         val points = it.ai.getActionPoints()
         val timeLeft = it.ai.action?.timeLeft ?: 0

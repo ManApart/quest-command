@@ -1,6 +1,6 @@
 package explore.listen
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ListenEvent(val source: Target) : Event
+class ListenEvent(val source: Thing) : Event

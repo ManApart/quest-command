@@ -1,12 +1,12 @@
 package magic.spellCommands.water
 
 import combat.DamageType
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import core.DependencyInjector
 import core.GameState
 import core.commands.Args
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import createMockedGame
 import magic.SpellCommandMock
 import magic.castSpell.StartCastSpellEvent
@@ -33,16 +33,16 @@ class HealTest {
 
             DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock(listOf(
                     EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
-                    EffectBase("Wet", "", statTarget = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
+                    EffectBase("Wet", "", statThing = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
             )))
             EffectManager.reset()
         }
 
-        private val targetA = Target("targetA")
-        private val scope = GameState.player.target.currentLocation()
+        private val thingA = Thing("thingA")
+        private val scope = GameState.player.thing.currentLocation()
 
         init {
-            scope.addTarget(targetA)
+            scope.addThing(thingA)
         }
 
     }
@@ -50,8 +50,8 @@ class HealTest {
     @Before
     fun setup() {
         EventManager.clear()
-        targetA.soul.setStat(WATER_MAGIC, 20)
-        targetA.soul.addStat(FOCUS, 10, 100, 1)
+        thingA.soul.setStat(WATER_MAGIC, 20)
+        thingA.soul.addStat(FOCUS, 10, 100, 1)
     }
 
     @Test
@@ -63,7 +63,7 @@ class HealTest {
         val spell = castHeal("")
 
         assertTrue(spellCommand.args.isEmpty())
-        assertTrue(spellCommand.targets.isEmpty())
+        assertTrue(spellCommand.things.isEmpty())
 
         assertNotNull(spell)
         assertEquals(5, spell.condition.elementStrength)
@@ -79,7 +79,7 @@ class HealTest {
         val spell = castHeal("5 for 10")
 
         assertTrue(spellCommand.args.isEmpty())
-        assertTrue(spellCommand.targets.isEmpty())
+        assertTrue(spellCommand.things.isEmpty())
 
         assertNotNull(spell)
         assertEquals(5, spell.condition.elementStrength)
@@ -89,7 +89,7 @@ class HealTest {
 
     private fun castHeal(input: String): Spell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
-        Heal().execute(targetA, args, listOf(TargetAim(targetA)), true)
+        Heal().execute(thingA, args, listOf(ThingAim(thingA)), true)
         return (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell
     }
 

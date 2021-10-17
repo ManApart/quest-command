@@ -6,11 +6,11 @@ import core.GameState
 import core.commands.CommandInterceptor
 import core.commands.CommandParser
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 
 class ConversationCommandInterceptor : CommandInterceptor {
 
-    override fun parseCommand(source: Target, line: String) {
+    override fun parseCommand(source: Thing, line: String) {
         val commandLine = CommandParser.cleanLine(line).joinToString(" ")
 
         if (commandLine == "goodbye" || commandLine == "exit") {

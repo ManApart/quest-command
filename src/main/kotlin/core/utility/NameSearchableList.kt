@@ -86,8 +86,8 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         other.proxies.forEach { (proxy, item) -> this.addProxy(item, proxy) }
     }
 
-    fun exists(target: N): Boolean {
-        return contains(target)
+    fun exists(thing: N): Boolean {
+        return contains(thing)
     }
 
     fun exists(name: String): Boolean {

@@ -3,7 +3,7 @@ package traveling.travel
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
@@ -33,7 +33,7 @@ fun getDistanceToNeighbor(source: LocationNode, destination: LocationNode): Int 
     return source.getConnection(destination)?.vector?.getDistance() ?: 1
 }
 
-fun postArriveEvent(source: Target, destination: LocationPoint, distance: Int, quiet: Boolean) {
+fun postArriveEvent(source: Thing, destination: LocationPoint, distance: Int, quiet: Boolean) {
     EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -distance / 10, silent = quiet))
     EventManager.postEvent(ArriveEvent(source, destination = destination, method = "travel", quiet = quiet))
 }

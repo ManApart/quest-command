@@ -4,17 +4,17 @@ import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import createMockedGame
 import magic.castSpell.CastCommand
-import magic.castSpell.getTargetedPartsOrAll
+import magic.castSpell.getThingedPartsOrAll
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
 import org.junit.Before
 import org.junit.Test
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -25,14 +25,14 @@ class CastCommandCastTest {
             createMockedGame()
         }
 
-        private val targetA = Target("targetA")
-        private val targetB = Target("targetB")
-        private val scope = GameState.player.target.currentLocation()
-        private val player = GameManager.newPlayer().target
+        private val thingA = Thing("thingA")
+        private val thingB = Thing("thingB")
+        private val scope = GameState.player.thing.currentLocation()
+        private val player = GameManager.newPlayer().thing
 
         init {
-            scope.addTarget(targetA)
-            scope.addTarget(targetB)
+            scope.addThing(thingA)
+            scope.addThing(thingB)
         }
 
     }
@@ -51,7 +51,7 @@ class CastCommandCastTest {
         CastCommand().execute(player,"cast", "testspellA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
-        assertTrue(spellCommand.targets.isEmpty())
+        assertTrue(spellCommand.things.isEmpty())
     }
 
     @Test
@@ -63,44 +63,44 @@ class CastCommandCastTest {
         CastCommand().execute(player,"cast", "testspellA 1 2".split(" "))
 
         assertEquals("1 2", spellCommand.args.fullString)
-        assertTrue(spellCommand.targets.isEmpty())
+        assertTrue(spellCommand.things.isEmpty())
     }
 
     @Test
-    fun castWordWithTarget() {
+    fun castWordWithThing() {
         val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute(player,"cast", "testspellA on targetA".split(" "))
+        CastCommand().execute(player,"cast", "testspellA on thingA".split(" "))
 
         assertTrue(spellCommand.args.isEmpty())
-        assertTrue(targetsContainByName(spellCommand.targets, targetA))
+        assertTrue(thingsContainByName(spellCommand.things, thingA))
     }
 
     @Test
-    fun castWordWithTargetsAndParams() {
+    fun castWordWithThingsAndParams() {
         val spellCommand = SpellCommandMock("testSpellA", listOf("catA"))
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute(player,"cast", "testspellA 1 2 on targetA and targetB".split(" "))
+        CastCommand().execute(player,"cast", "testspellA 1 2 on thingA and thingB".split(" "))
 
         assertEquals("1 2", spellCommand.args.fullString)
-        assertTrue(targetsContainByName(spellCommand.targets, targetA))
-        assertTrue(targetsContainByName(spellCommand.targets, targetB))
+        assertTrue(thingsContainByName(spellCommand.things, thingA))
+        assertTrue(thingsContainByName(spellCommand.things, thingB))
     }
 
-    private fun targetsContainByName(targetAims: List<TargetAim>, target: Target): Boolean {
-        return targetAims.map { it.target }.firstOrNull { target.name == it.name } != null
+    private fun thingsContainByName(thingAims: List<ThingAim>, thing: Thing): Boolean {
+        return thingAims.map { it.thing }.firstOrNull { thing.name == it.name } != null
     }
 
     @Test
     fun limitParts() {
         val part = Location(LocationNode("leg"))
-        val target = TargetAim(Target("Bob"), listOf(part))
+        val thing = ThingAim(Thing("Bob"), listOf(part))
 
-        val results = getTargetedPartsOrAll(target, 3)
+        val results = getThingedPartsOrAll(thing, 3)
 
         assertEquals(1, results.size)
         assertEquals(part, results.first())

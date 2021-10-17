@@ -4,7 +4,7 @@ import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import system.debug.DebugType
 import traveling.location.Route
 import traveling.location.RouteFinder
@@ -29,7 +29,7 @@ class FindRoute : EventListener<FindRouteEvent>() {
                 startTravel(event.source, route, event.quiet)
             } else {
                 //TODO - make source instead of gamestate player
-                event.source.displayToMe(route.getRouteProgressString(GameState.player.target.location))
+                event.source.displayToMe(route.getRouteProgressString(GameState.player.thing.location))
             }
 
         } else {
@@ -37,7 +37,7 @@ class FindRoute : EventListener<FindRouteEvent>() {
         }
     }
 
-    private fun startTravel(source: Target, route: Route, quiet: Boolean){
+    private fun startTravel(source: Thing, route: Route, quiet: Boolean){
         val sourceLocation = source.location
         when {
             route.destination == sourceLocation -> source.displayToMe("You're already at the end of the route.")

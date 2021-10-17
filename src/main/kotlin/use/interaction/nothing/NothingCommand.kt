@@ -6,7 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class NothingCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,7 +27,7 @@ class NothingCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args)
         when {
             args.isEmpty() && keyword == "Nothing" -> clarifyHours()
@@ -38,12 +38,12 @@ class NothingCommand : Command() {
     }
 
     private fun clarifyHours() {
-        val targets = listOf("1", "3", "5", "10")
-        val message = "Wait for how many hours?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "wait $it" }))
+        val things = listOf("1", "3", "5", "10")
+        val message = "Wait for how many hours?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "wait $it" }))
     }
 
-    private fun wait(source: Target, hours: Int) {
+    private fun wait(source: Thing, hours: Int) {
         EventManager.postEvent(StartNothingEvent(source, hours))
     }
 

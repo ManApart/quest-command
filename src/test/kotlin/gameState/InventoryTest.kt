@@ -117,9 +117,9 @@ class InventoryTest {
         val body = createBody(listOf(rightHand, leftHand))
         val inventory = Inventory("Inventory", body)
 
-        body.getParts().first().addTarget(apple)
-        body.getParts().last().addTarget(apple)
-        body.getParts().first().addTarget(pear)
+        body.getParts().first().addThing(apple)
+        body.getParts().last().addThing(apple)
+        body.getParts().first().addThing(pear)
 
         assertEquals(2, inventory.getItems().size)
         assertTrue(inventory.getItems().contains(apple))

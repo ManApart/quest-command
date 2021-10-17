@@ -9,8 +9,8 @@ class Look : EventListener<LookEvent>() {
     override fun execute(event: LookEvent) {
         when {
             event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(GameState.getPlayer(event.source))
-            event.target != null -> describeTarget(event.target)
-            event.source.ai.aggroTarget != null -> describeBattle(event.source)
+            event.thing != null -> describeThing(event.thing)
+            event.source.ai.aggroThing != null -> describeBattle(event.source)
             else -> describeLocation(event.source)
         }
     }

@@ -1,6 +1,6 @@
 package inventory.pickupItem
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ItemPickedUpEvent(val source: Target, val item: Target, val silent: Boolean = false) : Event
+class ItemPickedUpEvent(val source: Thing, val item: Thing, val silent: Boolean = false) : Event

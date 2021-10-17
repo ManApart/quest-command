@@ -9,10 +9,10 @@ class WeatherListener : EventListener<GameTickEvent>() {
     private val effectAppliedCadence = 5
 
     override fun execute(event: GameTickEvent) {
-        GameState.player.target.currentLocation().changeWeatherIfEnoughTimeHasPassed()
+        GameState.player.thing.currentLocation().changeWeatherIfEnoughTimeHasPassed()
         if (GameState.timeManager.getTicks() > lastAppliedEffects + effectAppliedCadence) {
             lastAppliedEffects = GameState.timeManager.getTicks()
-            GameState.player.target.currentLocation().applyWeatherEffects()
+            GameState.player.thing.currentLocation().applyWeatherEffects()
         }
     }
 

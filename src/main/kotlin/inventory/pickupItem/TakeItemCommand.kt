@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.filterUniqueByName
 import inventory.putItem.TransferItemEvent
 
@@ -21,14 +21,14 @@ class TakeItemCommand : core.commands.Command() {
     override fun getManual(): String {
         return """
 	Take <item> - take an item.
-	Take <item> from <target> - take item from target's inventory, if possible."""
+	Take <item> from <thing> - take item from thing's inventory, if possible."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from"))
         when {
             args.isEmpty() -> pickupWhat(source, source.currentLocation().getItems().filterUniqueByName())
@@ -37,7 +37,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupItemFromScope(source: Target, args: Args) {
+    private fun pickupItemFromScope(source: Thing, args: Args) {
         val items = source.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> source.displayToMe("Couldn't find ${args.getBaseString()}")
@@ -46,7 +46,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupWhat(source: Target, items: List<Target>) {
+    private fun pickupWhat(source: Thing, items: List<Thing>) {
         if (items.isEmpty()) {
             source.displayToMe("Nothing to pickup!")
         } else {
@@ -56,8 +56,8 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupItemFromContainer(source: Target, args: Args) {
-        val from = source.currentLocation().getTargets(args.getString("from")).filterUniqueByName()
+    private fun pickupItemFromContainer(source: Thing, args: Args) {
+        val from = source.currentLocation().getThings(args.getString("from")).filterUniqueByName()
         when {
             from.isEmpty() -> source.displayToMe("Couldn't find ${args.getString("from")}.")
             from.size == 1 -> takeItemFromContainer(source, from.first(), args.getBaseString())
@@ -65,13 +65,13 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun takeFromWhat(creatures: List<Target>, itemName: String) {
+    private fun takeFromWhat(creatures: List<Thing>, itemName: String) {
         val message = "Take $itemName from what?\n\t${creatures.joinToString(", ")}"
         val response = ResponseRequest(message, creatures.associate { it.name to "take $itemName from ${it.name}." })
         CommandParser.setResponseRequest(response)
     }
 
-    private fun takeItemFromContainer(source: Target, from: Target, itemName: String) {
+    private fun takeItemFromContainer(source: Thing, from: Thing, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(source, item, from, source))

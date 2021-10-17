@@ -1,19 +1,19 @@
 package traveling.location
 
 import core.body.BodyManager
-import core.target.Target
+import core.thing.Thing
 import system.persistance.clean
 import system.persistance.getFiles
 import traveling.location.location.LocationManager
 
 //TODO - save discovered
-fun persist(dataObject: Network, path: String, ignoredTargets: List<Target>) {
+fun persist(dataObject: Network, path: String, ignoredThings: List<Thing>) {
     val cleanedPath = clean(path, dataObject.name)
 
     dataObject.getLocationNodes()
             .filter { it.hasLoadedLocation() }
             .map { it.getLocation() }
-            .map { traveling.location.location.persist(it, cleanedPath, ignoredTargets) }
+            .map { traveling.location.location.persist(it, cleanedPath, ignoredThings) }
 }
 
 @Suppress("UNCHECKED_CAST")

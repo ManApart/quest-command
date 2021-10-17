@@ -1,7 +1,7 @@
 package status
 
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import magic.ElementInteraction
 import status.conditions.Condition
@@ -14,7 +14,7 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
         addStats(stats)
     }
 
-    lateinit var parent: Target
+    lateinit var parent: Thing
     private val conditions = NameSearchableList<Condition>()
 
     fun copy(): Soul {

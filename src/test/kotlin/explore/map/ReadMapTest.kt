@@ -3,7 +3,7 @@ package explore.map
 import core.GameState
 import core.Player
 import core.history.GameLogger
-import core.target.Target
+import core.thing.Thing
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -13,7 +13,7 @@ import traveling.location.network.LocationNode
 import traveling.position.Vector
 
 class ReadMapTest {
-    val player = Player(1, Target("Bob"))
+    val player = Player(1, Thing("Bob"))
 
     @Before
     fun setup(){
@@ -25,9 +25,9 @@ class ReadMapTest {
 
     @Test
     fun noNeighbors(){
-        val target = LocationNode("My Place")
+        val thing = LocationNode("My Place")
 
-        val event = ReadMapEvent(player, target)
+        val event = ReadMapEvent(player, thing)
 
         val listener = ReadMap()
         listener.execute(event)
@@ -37,10 +37,10 @@ class ReadMapTest {
 
     @Test
     fun aSingleNeighborIsProperlyDisplayedWithDirection(){
-        val target = LocationNode("My Place")
-        target.addConnection(Connection(LocationPoint(target), LocationPoint(LocationNode("Destination")), Vector(0, 10, 0)))
-        target.getNeighborConnections().forEach { player.discover(it.destination.location) }
-        val event = ReadMapEvent(player, target)
+        val thing = LocationNode("My Place")
+        thing.addConnection(Connection(LocationPoint(thing), LocationPoint(LocationNode("Destination")), Vector(0, 10, 0)))
+        thing.getNeighborConnections().forEach { player.discover(it.destination.location) }
+        val event = ReadMapEvent(player, thing)
 
         val listener = ReadMap()
         listener.execute(event)
@@ -52,14 +52,14 @@ class ReadMapTest {
 
     @Test
     fun neighborsAreProperlyDisplayedWithDirection(){
-        val target = LocationNode("My Place")
-        val targetPoint = LocationPoint(target)
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("north")), Vector(0, 10, 0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("south")), Vector(0, -10, 0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("east")), Vector(10, 0, 0)))
-        target.addConnection(Connection(targetPoint, LocationPoint(LocationNode("west")), Vector(-10, 0, 0)))
-        target.getNeighborConnections().forEach { player.discover(it.destination.location) }
-        val event = ReadMapEvent(player, target)
+        val thing = LocationNode("My Place")
+        val thingPoint = LocationPoint(thing)
+        thing.addConnection(Connection(thingPoint, LocationPoint(LocationNode("north")), Vector(0, 10, 0)))
+        thing.addConnection(Connection(thingPoint, LocationPoint(LocationNode("south")), Vector(0, -10, 0)))
+        thing.addConnection(Connection(thingPoint, LocationPoint(LocationNode("east")), Vector(10, 0, 0)))
+        thing.addConnection(Connection(thingPoint, LocationPoint(LocationNode("west")), Vector(-10, 0, 0)))
+        thing.getNeighborConnections().forEach { player.discover(it.destination.location) }
+        val event = ReadMapEvent(player, thing)
 
         val listener = ReadMap()
         listener.execute(event)

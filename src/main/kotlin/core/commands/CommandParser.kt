@@ -52,7 +52,7 @@ object CommandParser {
         if (commandInterceptor == null) {
             splitAndParseCommand(line)
         } else {
-            commandInterceptor!!.parseCommand(commandSource.target, line)
+            commandInterceptor!!.parseCommand(commandSource.thing, line)
         }
 
         val time = System.currentTimeMillis() - startTime
@@ -144,7 +144,7 @@ object CommandParser {
     }
 
     fun isPlayersTurn(): Boolean {
-        return commandSource.target.isPlayer()
+        return commandSource.thing.isPlayer()
     }
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {

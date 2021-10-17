@@ -1,7 +1,7 @@
 package core.utility
 
 import core.Player
-import core.target.Target
+import core.thing.Thing
 
 
 fun Boolean.then(trueChoice: String, falseChoice: String): String {
@@ -9,34 +9,34 @@ fun Boolean.then(trueChoice: String, falseChoice: String): String {
 }
 
 /**
- * Returns You if you are the listener, otherwise the target's name
+ * Returns You if you are the listener, otherwise the thing's name
  */
-fun Target.asSubject(listener: Player): String {
-    return (this === listener.target).then("You", name)
+fun Thing.asSubject(listener: Player): String {
+    return (this === listener.thing).then("You", name)
 }
 
 fun Player.asSubject(listener: Player): String {
-    return target.asSubject(listener)
+    return thing.asSubject(listener)
 }
 
 /**
- * Returns Your if you are the listener, otherwise the target's name as a possessive
+ * Returns Your if you are the listener, otherwise the thing's name as a possessive
  */
-fun Target.asSubjectPossessive(listener: Player): String {
-    return (this === listener.target).then("Your", "$name's")
+fun Thing.asSubjectPossessive(listener: Player): String {
+    return (this === listener.thing).then("Your", "$name's")
 }
 
 fun Player.asSubjectPossessive(listener: Player): String {
-    return target.asSubjectPossessive(listener)
+    return thing.asSubjectPossessive(listener)
 }
 
 /**
  * Returns are if you are the listener, otherwise is
  */
-fun Target.isAre(listener: Player): String {
-    return (this === listener.target).then("are", "is")
+fun Thing.isAre(listener: Player): String {
+    return (this === listener.thing).then("are", "is")
 }
 
 fun Player.isAre(listener: Player): String {
-    return target.isAre(listener)
+    return thing.isAre(listener)
 }

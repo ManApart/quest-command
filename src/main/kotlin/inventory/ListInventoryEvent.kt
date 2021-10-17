@@ -1,6 +1,6 @@
 package inventory
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ListInventoryEvent(val target: Target) : Event
+class ListInventoryEvent(val thing: Thing) : Event

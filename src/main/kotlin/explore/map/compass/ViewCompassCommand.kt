@@ -6,7 +6,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 
 class ViewCompassCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,8 +27,8 @@ class ViewCompassCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
-        //TODO - replace commands with Player instead of target
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
+        //TODO - replace commands with Player instead of thing
         val sourceT = Player(0, source)
         val arguments = Args(args)
         val isAlias = keyword != "compass"
@@ -47,9 +47,9 @@ class ViewCompassCommand : Command() {
     }
 
     private fun clarifyDepth(locationArgs: String) {
-        val targets = listOf("1", "3", "5", "10", "20")
-        val message = "Search how far?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "compass $locationArgs $it" }))
+        val things = listOf("1", "3", "5", "10", "20")
+        val message = "Search how far?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "compass $locationArgs $it" }))
     }
 
 }

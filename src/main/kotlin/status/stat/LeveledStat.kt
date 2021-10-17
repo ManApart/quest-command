@@ -1,6 +1,6 @@
 package status.stat
 
-import core.target.Target
+import core.thing.Thing
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -40,7 +40,7 @@ class LeveledStat(
     private val statMinned: (String) -> Unit = { },
     private val statMaxed: (String) -> Unit = { },
 ) {
-    constructor(parent: Target, base: LeveledStat) : this(base.name, base.level, base.maxMultiplier, base.expExponential)
+    constructor(parent: Thing, base: LeveledStat) : this(base.name, base.level, base.maxMultiplier, base.expExponential)
 
     var level: Int = level; private set
     var max: Int = max ?: getBaseMaxAtCurrentLevel(); private set

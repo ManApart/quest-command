@@ -3,7 +3,7 @@ package core.body
 import com.fasterxml.jackson.annotation.JsonCreator
 import combat.block.BlockHelper
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
@@ -34,8 +34,8 @@ data class Body(override val name: String = "None", val layout: Network = Networ
         return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
-    fun getEquippedItems(): NameSearchableList<Target> {
-        val items = NameSearchableList<Target>()
+    fun getEquippedItems(): NameSearchableList<Thing> {
+        val items = NameSearchableList<Thing>()
         parts.forEach { part ->
             part.getEquippedItems().forEach { item ->
                 if (!items.contains(item)) {
@@ -46,11 +46,11 @@ data class Body(override val name: String = "None", val layout: Network = Networ
         return items
     }
 
-    fun isEquipped(item: Target): Boolean {
+    fun isEquipped(item: Thing): Boolean {
         return getEquippedItems().contains(item)
     }
 
-    fun getEquippedItemsAt(attachPoint: String): List<Target> {
+    fun getEquippedItemsAt(attachPoint: String): List<Thing> {
         return parts.asSequence().map { it.getEquippedItem(attachPoint) }.filterNotNull().toList()
     }
 
@@ -82,11 +82,11 @@ data class Body(override val name: String = "None", val layout: Network = Networ
         return parts.filter { it.hasAttachPoint(attachPoint) }
     }
 
-    private fun getPartsEquippedWith(item: Target): List<Location> {
+    private fun getPartsEquippedWith(item: Thing): List<Location> {
         return parts.filter { it.getEquippedItems().contains(item) }
     }
 
-    fun canEquip(item: Target, slot: Slot = getDefaultSlot(item)): Boolean {
+    fun canEquip(item: Thing, slot: Slot = getDefaultSlot(item)): Boolean {
         return canEquip(slot)
     }
 
@@ -102,13 +102,13 @@ data class Body(override val name: String = "None", val layout: Network = Networ
         }
     }
 
-    fun getDefaultSlot(item: Target): Slot {
+    fun getDefaultSlot(item: Thing): Slot {
         return getEmptyEquipSlot(item)
                 ?: item.equipSlots.firstOrNull { canEquip(it) }
                 ?: throw IllegalArgumentException("Found no slot for $item for body $name. This should not happen!")
     }
 
-    fun getEmptyEquipSlot(item: Target): Slot? {
+    fun getEmptyEquipSlot(item: Thing): Slot? {
         return item.equipSlots.sortedBy {
             it.attachPoints.any { point ->
                 point.contains("Right")
@@ -120,7 +120,7 @@ data class Body(override val name: String = "None", val layout: Network = Networ
                 }
     }
 
-    fun equip(item: Target, slot: Slot = getDefaultSlot(item)) {
+    fun equip(item: Thing, slot: Slot = getDefaultSlot(item)) {
         if (canEquip(slot)) {
             unEquip(item)
             slotMap[item.name] = slot.description
@@ -139,7 +139,7 @@ data class Body(override val name: String = "None", val layout: Network = Networ
         }
     }
 
-    fun unEquip(item: Target) {
+    fun unEquip(item: Thing) {
         slotMap.remove(item.name)
         getPartsEquippedWith(item).forEach {
             it.unEquip(item)

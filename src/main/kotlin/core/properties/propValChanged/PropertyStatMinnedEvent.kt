@@ -1,6 +1,6 @@
 package core.properties.propValChanged
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class PropertyStatMinnedEvent(val target: Target, val stat: String) : Event
+class PropertyStatMinnedEvent(val thing: Thing, val stat: String) : Event

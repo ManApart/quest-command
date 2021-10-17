@@ -1,6 +1,6 @@
 package core.properties
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class SetPropertiesEvent(val target: Target, val properties: Properties) : Event
+class SetPropertiesEvent(val thing: Thing, val properties: Properties) : Event

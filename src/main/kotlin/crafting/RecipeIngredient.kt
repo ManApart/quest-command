@@ -1,7 +1,7 @@
 package crafting
 
 import core.properties.Tags
-import core.target.Target
+import core.thing.Thing
 import core.utility.wrapNonEmpty
 
 data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
@@ -13,7 +13,7 @@ data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
         }
     }
 
-    fun findMatchingIngredient(ingredients: List<Target>): Target? {
+    fun findMatchingIngredient(ingredients: List<Thing>): Thing? {
         val filtered = if (name != null) {
             ingredients.filter { it.name.lowercase() == name.lowercase() }
         } else {

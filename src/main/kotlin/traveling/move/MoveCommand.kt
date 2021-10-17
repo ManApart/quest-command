@@ -3,7 +3,7 @@ package traveling.move
 import core.commands.*
 import core.events.EventManager
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 import core.utility.isAre
 import core.utility.asSubject
 import traveling.direction.Direction
@@ -23,7 +23,7 @@ class MoveCommand : Command() {
     override fun getManual(): String {
         return """
 	Move to 0,1,0 - Move to a specific place within a location.
-	Move to <target> - Move to a target within a location.
+	Move to <thing> - Move to a thing within a location.
 	Move <distance> towards <direction> - Move a set distance in a direction."""
     }
 
@@ -31,21 +31,21 @@ class MoveCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         //Move this check to the listener
         if (source.getEncumbrance() >= 1) {
             source.display{"${source.asSubject(it)} ${source.isAre(it)} too encumbered to move."}
         } else {
             val arguments = Args(args, delimiters = listOf("to", "towards"))
             val vector = parseVector(args)
-            val target = parseTargets(source, arguments.getBaseAndStrings("to")).firstOrNull()
+            val thing = parseThings(source, arguments.getBaseAndStrings("to")).firstOrNull()
             val direction = parseNullableDirection(arguments.getBaseAndStrings("towards"))
             val distance = arguments.getNumber()
             val useDefault = keyword != "move"
 
             when {
                 vector != NO_VECTOR -> EventManager.postEvent(StartMoveEvent(source, vector))
-                target != null -> EventManager.postEvent(StartMoveEvent(source, target.target.position))
+                thing != null -> EventManager.postEvent(StartMoveEvent(source, thing.thing.position))
                 distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source, source.position.getVectorInDirection(direction.vector, distance)))
                 direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance, useDefault)
                 //TODO - response request
@@ -54,7 +54,7 @@ class MoveCommand : Command() {
         }
     }
 
-    private fun parseDirectionAndDistance(source: Target, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
+    private fun parseDirectionAndDistance(source: Thing, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
         val distanceResponse = ResponseRequest("Move how far?\n\t${distanceOptions.joinToString(", ")}",
             distanceOptions.associateWith { "move $it towards ${initialDirection.toString()}" })

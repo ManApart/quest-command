@@ -2,12 +2,12 @@ package combat.attack
 
 import combat.DamageType
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.Location
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 
 
-class AttackEvent(val source: Target, val sourcePart: Location, val target: TargetAim, val type: DamageType) : Event {
+class AttackEvent(val source: Thing, val sourcePart: Location, val thing: ThingAim, val type: DamageType) : Event {
     override fun gameTicks(): Int = 1
     override fun isExecutableByAI(): Boolean = true
 }

@@ -1,12 +1,12 @@
 package use.interaction
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
 /**
- * A target is interacting with another target. Different from UseEvent in that nothing is being used ON/WITH the target.
+ * A thing is interacting with another thing. Different from UseEvent in that nothing is being used ON/WITH the thing.
  */
-class InteractEvent(val source: Target, val target: Target) : Event {
+class InteractEvent(val source: Thing, val thing: Thing) : Event {
     override fun gameTicks(): Int {
         return 1
     }

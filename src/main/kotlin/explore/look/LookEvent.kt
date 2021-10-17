@@ -1,6 +1,6 @@
 package explore.look
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class LookEvent(val source: Target, val target: Target? = null) : Event
+class LookEvent(val source: Thing, val thing: Thing? = null) : Event

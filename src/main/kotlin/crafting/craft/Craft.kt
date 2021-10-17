@@ -4,8 +4,8 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
-import core.target.Target
-import core.target.item.ItemManager
+import core.thing.Thing
+import core.thing.item.ItemManager
 import core.utility.asSubject
 import core.utility.isAre
 import crafting.DiscoverRecipeEvent
@@ -15,7 +15,7 @@ import inventory.pickupItem.TakeItemEvent
 class Craft : EventListener<CraftRecipeEvent>() {
 
     override fun execute(event: CraftRecipeEvent) {
-        val sourceT = event.source.target
+        val sourceT = event.source.thing
         when {
             event.tool?.isWithinRangeOf(sourceT) == false -> event.source.display{sourceT.asSubject(it) + " " + sourceT.isAre(it) + " too far away to use ${event.tool}."}
             event.recipe.canBeCraftedBy(sourceT, event.tool) -> {
@@ -31,13 +31,13 @@ class Craft : EventListener<CraftRecipeEvent>() {
         }
     }
 
-    private fun removeIngredients(inventory: Inventory, ingredients: List<Target>) {
+    private fun removeIngredients(inventory: Inventory, ingredients: List<Thing>) {
         ingredients.forEach {
             inventory.remove(it)
         }
     }
 
-    private fun addResults(results: List<Target>, source: Target) {
+    private fun addResults(results: List<Thing>, source: Thing) {
         results.forEach {
             it.location = source.location
             it.position = source.position

@@ -3,7 +3,7 @@ package combat.block
 import combat.DamageType
 import core.events.EventListener
 import core.properties.DEFENSE
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.Location
 
 class Block : EventListener<BlockEvent>() {
@@ -23,13 +23,13 @@ class Block : EventListener<BlockEvent>() {
         return locations.map { it.getLocation() }
     }
 
-    private fun getShield(partThatWillShield: Location): Target? {
+    private fun getShield(partThatWillShield: Location): Thing? {
         val equippedItems = partThatWillShield.getEquippedItems()
         return equippedItems.firstOrNull { it.properties.tags.has("shield") }
                 ?: equippedItems.maxByOrNull { getTotalDefense(it) }
     }
 
-    private fun getTotalDefense(apparel: Target): Int {
+    private fun getTotalDefense(apparel: Thing): Int {
         val values = apparel.properties.values
         return values.getInt(DEFENSE) + DamageType.values().sumOf { values.getInt(it.defense) }
     }

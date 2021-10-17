@@ -1,20 +1,20 @@
 package conversation
 
 import conversation.dialogue.DialogueEvent
-import core.target.Target
+import core.thing.Thing
 
-class Conversation(private val firstSpeaker: Target, private val firstListener: Target) {
+class Conversation(private val firstSpeaker: Thing, private val firstListener: Thing) {
     val history: MutableList<DialogueEvent> = mutableListOf()
 
-    fun getLatestSpeaker(): Target{
+    fun getLatestSpeaker(): Thing{
         return history.lastOrNull()?.speaker ?: firstSpeaker
     }
 
-    fun getLatestListener() : Target {
+    fun getLatestListener() : Thing {
         return getListener(getLatestSpeaker())
     }
 
-    private fun getListener(speaker: Target): Target {
+    private fun getListener(speaker: Thing): Thing {
         return if (firstSpeaker == speaker) {
             firstListener
         } else {

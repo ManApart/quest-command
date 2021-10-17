@@ -1,11 +1,11 @@
 package core.utility
 
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
 
 //TODO - move all helper functions somewhere else
-fun parseLocation(params: Map<String, String>, parent: Target, networkNameKey: String, locationNameKey: String): LocationNode {
+fun parseLocation(params: Map<String, String>, parent: Thing, networkNameKey: String, locationNameKey: String): LocationNode {
     val network = if (params.containsKey(networkNameKey)) {
         LocationManager.getNetwork(params[networkNameKey]!!)
     } else {

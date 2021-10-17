@@ -1,21 +1,21 @@
 package crafting
 
 import core.properties.Properties
-import core.target.Target
+import core.thing.Thing
 import core.utility.Named
 import status.Soul
 
 data class Recipe(override val name: String, val ingredients: List<RecipeIngredient>, val skills: Map<String, Int> = mapOf(), val toolProperties: Properties = Properties(), val results: List<RecipeResult> = listOf(), val craftVerb: String = "craft") : Named {
 
-    fun matches(ingredients: List<Target>, tool: Target?): Boolean {
+    fun matches(ingredients: List<Thing>, tool: Thing?): Boolean {
         return toolMatches(tool) && ingredientsMatch(ingredients)
     }
 
-    private fun toolMatches(tool: Target?): Boolean {
+    private fun toolMatches(tool: Thing?): Boolean {
         return (tool?.properties ?: Properties()).hasAll(this.toolProperties)
     }
 
-    fun canBeCraftedBy(creature: Target, tool: Target?): Boolean {
+    fun canBeCraftedBy(creature: Thing, tool: Thing?): Boolean {
         return hasSkillsToCraft(creature.soul) && matches(creature.inventory.getAllItems(), tool)
     }
 
@@ -29,9 +29,9 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return true
     }
 
-    fun getUsedIngredients(availableItems: List<Target>): List<Target> {
+    fun getUsedIngredients(availableItems: List<Thing>): List<Thing> {
         val ingredientsLeft = availableItems.toMutableList()
-        val usedIngredients = mutableListOf<Target>()
+        val usedIngredients = mutableListOf<Thing>()
         this.ingredients.forEach {
             val match = it.findMatchingIngredient(ingredientsLeft)
             if (match != null) {
@@ -42,11 +42,11 @@ data class Recipe(override val name: String, val ingredients: List<RecipeIngredi
         return usedIngredients
     }
 
-    fun getResults(usedIngredients: List<Target>): List<Target> {
+    fun getResults(usedIngredients: List<Thing>): List<Thing> {
         return results.map { it.getResult(usedIngredients) }
     }
 
-    private fun ingredientsMatch(ingredients: List<Target>): Boolean {
+    private fun ingredientsMatch(ingredients: List<Thing>): Boolean {
         val ingredientsLeft = ingredients.toMutableList()
         this.ingredients.forEach {
             val match = it.findMatchingIngredient(ingredientsLeft)

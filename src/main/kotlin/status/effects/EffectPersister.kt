@@ -9,7 +9,7 @@ fun getPersisted(dataObject: Effect): Map<String, Any> {
     data["amount"] = dataObject.amount
     data["duration"] = dataObject.duration
     data["originalValue"] = dataObject.originalValue
-    data["bodyParts"] = dataObject.bodyPartTargets.map { it.name }
+    data["bodyParts"] = dataObject.bodyPartThings.map { it.name }
     return data
 }
 

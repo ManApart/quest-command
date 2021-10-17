@@ -5,6 +5,6 @@ import core.events.EventListener
 class SetProperties: EventListener<SetPropertiesEvent>() {
 
     override fun execute(event: SetPropertiesEvent) {
-        event.target.properties.setFrom(event.properties)
+        event.thing.properties.setFrom(event.properties)
     }
 }

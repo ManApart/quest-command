@@ -1,6 +1,6 @@
 package conversation.end
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class EndConversationEvent(val source: Target) : Event
+class EndConversationEvent(val source: Thing) : Event

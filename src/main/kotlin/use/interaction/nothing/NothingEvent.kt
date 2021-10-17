@@ -1,9 +1,9 @@
 package use.interaction.nothing
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class NothingEvent(val source: Target, private val hoursWaited: Int = 1) : Event {
+class NothingEvent(val source: Thing, private val hoursWaited: Int = 1) : Event {
     override fun gameTicks(): Int = hoursWaited
     override fun isExecutableByAI(): Boolean = true
 }

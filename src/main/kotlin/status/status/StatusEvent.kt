@@ -1,9 +1,9 @@
 package status.status
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class StatusEvent(val creature: Target) : Event {
+class StatusEvent(val creature: Thing) : Event {
 
     override fun gameTicks(): Int {
         return 0

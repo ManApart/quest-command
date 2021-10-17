@@ -1,6 +1,6 @@
 package core.body
 
-import core.target.Target
+import core.thing.Thing
 
 class Slot(val attachPoints: List<String>) {
     val description = attachPoints.joinToString(", ")
@@ -9,15 +9,15 @@ class Slot(val attachPoints: List<String>) {
         return description
     }
 
-    fun getEquippedItems(body: Body) : List<Target> {
-        val items = mutableListOf<Target>()
+    fun getEquippedItems(body: Body) : List<Thing> {
+        val items = mutableListOf<Thing>()
         attachPoints.forEach {
             items.addAll(body.getEquippedItemsAt(it))
         }
         return items
     }
 
-    fun itemIsEquipped(item: Target, body: Body) : Boolean {
+    fun itemIsEquipped(item: Thing, body: Body) : Boolean {
         attachPoints.forEach {
             if (!body.getEquippedItemsAt(it).contains(item)) {
                 return false

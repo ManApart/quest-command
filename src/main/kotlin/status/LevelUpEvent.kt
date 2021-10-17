@@ -1,7 +1,7 @@
 package status
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 import status.stat.LeveledStat
 
-class LevelUpEvent(val source: Target, val leveledStat: LeveledStat, val level: Int) : Event
+class LevelUpEvent(val source: Thing, val leveledStat: LeveledStat, val level: Int) : Event

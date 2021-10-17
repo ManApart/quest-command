@@ -3,7 +3,7 @@ package inventory.dropItem
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 import core.utility.isAre
 import core.utility.asSubject
 import traveling.position.Vector
@@ -17,7 +17,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         }
     }
 
-    private fun placeItem(source: Target, item: Target, position: Vector, silent: Boolean) {
+    private fun placeItem(source: Thing, item: Thing, position: Vector, silent: Boolean) {
         if (item.properties.getCount() > 1) {
             item.properties.incCount(-1)
         } else {
@@ -25,7 +25,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         }
         item.location = source.location
         item.position = position
-        source.location.getLocation().addTarget(item)
+        source.location.getLocation().addThing(item)
         EventManager.postEvent(ItemDroppedEvent(source, item, silent))
     }
 }

@@ -3,7 +3,7 @@ package traveling.approach
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import traveling.move.StartMoveEvent
 import traveling.position.Distances.HUMAN_LENGTH
 
@@ -13,54 +13,54 @@ class RetreatCommand : Command() {
     }
 
     override fun getDescription(): String {
-        return "Move further from the target."
+        return "Move further from the thing."
     }
 
     override fun getManual(): String {
         return """
-	Retreat from <target> - Move away from the target.
-	Retreat from <target> by <amount> - Move away from the target by the amount."""
+	Retreat from <thing> - Move away from the thing.
+	Retreat from <thing> by <amount> - Move away from the thing by the amount."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from", "by"))
         val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source)
-        val target = determineTarget(source, arguments, creatures)
+        val thing = determineThing(source, arguments, creatures)
         val distance = arguments.getNumber()
         when {
-            target != null && distance != null -> retreatByAmount(source, target, distance)
-            target != null && keyword.lowercase() == "retreat" -> clarifyAmount(target)
-            target != null -> retreatByAmount(source, target, HUMAN_LENGTH)
-            else -> clarifyTarget(source, creatures)
+            thing != null && distance != null -> retreatByAmount(source, thing, distance)
+            thing != null && keyword.lowercase() == "retreat" -> clarifyAmount(thing)
+            thing != null -> retreatByAmount(source, thing, HUMAN_LENGTH)
+            else -> clarifyThing(source, creatures)
         }
     }
 
-    private fun determineTarget(source: Target, args: Args, creatures: List<Target>) : Target? {
-        val parsedTarget = parseTargets(source, args.getBaseGroup()).firstOrNull()?.target ?: parseTargets(source, args.getGroup("from")).firstOrNull()?.target ?: source.ai.aggroTarget
+    private fun determineThing(source: Thing, args: Args, creatures: List<Thing>) : Thing? {
+        val parsedThing = parseThings(source, args.getBaseGroup()).firstOrNull()?.thing ?: parseThings(source, args.getGroup("from")).firstOrNull()?.thing ?: source.ai.aggroThing
         return when {
-            parsedTarget != null -> parsedTarget
+            parsedThing != null -> parsedThing
             creatures.size == 1 -> creatures.first()
             else -> null
         }
     }
 
-    private fun retreatByAmount(source: Target, target: Target, distance: Int) {
-        val goal = source.position.further(target.position, distance)
+    private fun retreatByAmount(source: Thing, thing: Thing, distance: Int) {
+        val goal = source.position.further(thing.position, distance)
         EventManager.postEvent(StartMoveEvent(source, goal))
     }
 
-    private fun clarifyAmount(target: Target) {
+    private fun clarifyAmount(thing: Thing) {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
         val distanceResponse = ResponseRequest("Retreat how much?\n\t${distanceOptions.joinToString(", ")}",
-            distanceOptions.associateWith { "retreat from $target by $it" })
+            distanceOptions.associateWith { "retreat from $thing by $it" })
         CommandParser.setResponseRequest(distanceResponse)
     }
 
-    private fun clarifyTarget(source: Target, creatures: List<Target>) {
+    private fun clarifyThing(source: Thing, creatures: List<Thing>) {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to retreat from. You must be really frightened.")
         } else {

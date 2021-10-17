@@ -1,6 +1,6 @@
 package quests.journal
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ViewQuestListEvent(val source: Target, val justActive: Boolean = false) : Event
+class ViewQuestListEvent(val source: Thing, val justActive: Boolean = false) : Event

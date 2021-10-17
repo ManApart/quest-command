@@ -1,6 +1,6 @@
 package status.statChanged
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class StatMaxedEvent(val target: Target, val stat: String) : Event
+class StatMaxedEvent(val thing: Thing, val stat: String) : Event

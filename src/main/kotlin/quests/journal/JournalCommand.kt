@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import quests.QuestManager
 
 class JournalCommand : Command() {
@@ -28,7 +28,7 @@ class JournalCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         when {
             args.isEmpty() && keyword == "Quest" -> clarifyQuest()
 
@@ -51,15 +51,15 @@ class JournalCommand : Command() {
     }
 
     private fun clarifyQuest() {
-        val targets = listOf("Active", "All", "Quest")
-        val message = "Info about what type?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "quest $it" }))
+        val things = listOf("Active", "All", "Quest")
+        val message = "Info about what type?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, things.associateWith { "quest $it" }))
     }
 
     private fun clarifyWhichQuest() {
-        val targets = QuestManager.getAllPlayerQuests().map { it.name }
-        val message = "Info about which quest?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.associateWith { "quest $it" }))
+        val things = QuestManager.getAllPlayerQuests().map { it.name }
+        val message = "Info about which quest?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, things.associateWith { "quest $it" }))
     }
 
 }

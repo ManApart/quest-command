@@ -4,10 +4,10 @@ import core.DependencyInjector
 import core.PLAYER_START_LOCATION
 import core.PLAYER_START_NETWORK
 import core.body.*
-import core.target.activator.ActivatorManager
-import core.target.activator.dsl.ActivatorsCollection
-import core.target.activator.dsl.ActivatorsMock
-import core.target.target
+import core.thing.activator.ActivatorManager
+import core.thing.activator.dsl.ActivatorsCollection
+import core.thing.activator.dsl.ActivatorsMock
+import core.thing.thing
 import org.junit.Before
 import org.junit.Test
 import traveling.location.location.*
@@ -42,30 +42,30 @@ class ActivatorManagerTest {
 
     @Test
     fun topLevelValueIsParameterized() {
-        val activator = target("Target"){
+        val activator = thing("Thing"){
             description("This is a \$key")
         }
         val mock = ActivatorsMock(listOf(activator))
         DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
         ActivatorManager.reset()
 
-        val target = LocationTarget("Target", null, NO_VECTOR, mapOf("key" to "value"))
-        val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
+        val thing = LocationThing("Thing", null, NO_VECTOR, mapOf("key" to "value"))
+        val result = ActivatorManager.getActivatorsFromLocationThings(listOf(thing)).first()
 
         assertEquals("This is a value", result.description)
     }
 
     @Test
     fun nestedClimbableGetsParams() {
-        val activator = target("Target"){
+        val activator = thing("Thing"){
             description("\$destination")
         }
         val mock = ActivatorsMock(listOf(activator))
         DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
         ActivatorManager.reset()
 
-        val target = LocationTarget("Target", null, NO_VECTOR, mapOf("destination" to "resort"))
-        val result = ActivatorManager.getActivatorsFromLocationTargets(listOf(target)).first()
+        val thing = LocationThing("Thing", null, NO_VECTOR, mapOf("destination" to "resort"))
+        val result = ActivatorManager.getActivatorsFromLocationThings(listOf(thing)).first()
 
         assertEquals("resort", result.description)
     }

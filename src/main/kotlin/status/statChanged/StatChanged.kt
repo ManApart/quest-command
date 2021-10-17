@@ -16,7 +16,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
 
     override fun execute(event: StatChangeEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
-        val soul = event.target.soul
+        val soul = event.thing.soul
 
         val oldVal = soul.getCurrent(event.statName)
 
@@ -28,8 +28,8 @@ class StatChanged : EventListener<StatChangeEvent>() {
         val max = soul.getTotal(event.statName)
 
         if (current != oldVal && !event.silent) {
-            event.target.display {
-                val subject = event.target.asSubjectPossessive(it)
+            event.thing.display {
+                val subject = event.thing.asSubjectPossessive(it)
                 "${event.sourceOfChange} $change $subject ${event.statName} by ${abs(event.amount)} ($current/$max)."
             }
         }

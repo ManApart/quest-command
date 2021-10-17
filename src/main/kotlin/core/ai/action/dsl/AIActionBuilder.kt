@@ -1,23 +1,23 @@
 package core.ai.action.dsl
 import core.ai.action.AIAction
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class AIActionBuilder(val condition: (Target) -> Boolean) {
+class AIActionBuilder(val condition: (Thing) -> Boolean) {
     var priority: Int? = null
     val depthScale: Int = 2
     private val children: MutableList<AIActionBuilder> = mutableListOf()
     private var protoActions: MutableList<ProtoAction> = mutableListOf()
 
-    fun cond(condition: (Target) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit) {
+    fun cond(condition: (Thing) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit) {
         children.add(AIActionBuilder(condition).apply(initializer))
     }
 
-    fun action(name: String, result: ((Target) -> Event)) {
+    fun action(name: String, result: ((Thing) -> Event)) {
         this.protoActions.add(ProtoAction(name) { listOf(result(it)) })
     }
 
-    fun actions(name: String, results: ((Target) -> List<Event>)) {
+    fun actions(name: String, results: ((Thing) -> List<Event>)) {
         this.protoActions.add(ProtoAction(name, results))
     }
 
@@ -25,7 +25,7 @@ class AIActionBuilder(val condition: (Target) -> Boolean) {
         return build(listOf())
     }
 
-    private fun build(parentConditions: List<(Target) -> Boolean>, depth: Int = 0): List<AIAction> {
+    private fun build(parentConditions: List<(Thing) -> Boolean>, depth: Int = 0): List<AIAction> {
         val conditions = parentConditions + listOf(condition)
         val evaluations = mutableListOf<AIAction>()
         val usedPriority = priority ?: (10 + depthScale * depth)
@@ -42,6 +42,6 @@ class AIActionBuilder(val condition: (Target) -> Boolean) {
     }
 }
 
-fun actions(condition: (Target) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit): List<AIAction> {
+fun actions(condition: (Thing) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit): List<AIAction> {
     return AIActionBuilder(condition).apply(initializer).build()
 }

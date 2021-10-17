@@ -1,6 +1,6 @@
 package status.conditions
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class AddConditionEvent(val target: Target, val condition: Condition) : Event
+class AddConditionEvent(val thing: Thing, val condition: Condition) : Event

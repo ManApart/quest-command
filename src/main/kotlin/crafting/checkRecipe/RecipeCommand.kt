@@ -39,15 +39,15 @@ class RecipeCommand : Command() {
     }
 
     private fun clarifyRecipe() {
-        val targets = listOf("All", "Recipe")
-        val message = "List all or read a specific recipe?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "recipe $it" }))
+        val things = listOf("All", "Recipe")
+        val message = "List all or read a specific recipe?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "recipe $it" }))
     }
 
     private fun clarifyWhichRecipe(source: Player) {
-        val targets = source.knownRecipes.map { it.name }
-        val message = "Read what recipe?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "recipe $it" }))
+        val things = source.knownRecipes.map { it.name }
+        val message = "Read what recipe?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "recipe $it" }))
     }
 
 }

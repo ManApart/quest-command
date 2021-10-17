@@ -1,7 +1,7 @@
 package core.body
 
-import core.target.Target
-import core.target.target
+import core.thing.Thing
+import core.thing.thing
 import org.junit.Test
 import traveling.location.location.LocationRecipe
 import kotlin.test.assertEquals
@@ -11,7 +11,7 @@ class BodyEquipTest {
 
     @Test
     fun equipItem() {
-        val item = target("Dagger") {
+        val item = thing("Dagger") {
             equipSlot("Grip")
         }.build()
         val part = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
@@ -26,7 +26,7 @@ class BodyEquipTest {
 
     @Test
     fun unEquipItem() {
-        val item = target("Dagger") {
+        val item = thing("Dagger") {
             equipSlot("Grip")
         }.build()
         val part = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
@@ -41,10 +41,10 @@ class BodyEquipTest {
 
     @Test
     fun equipItemToFreeSlot() {
-        val dagger = target("Dagger") {
+        val dagger = thing("Dagger") {
             equipSlotOptions("Right Grip", "Left Grip")
         }.build()
-        val hatchet = target("Hatchet") {
+        val hatchet = thing("Hatchet") {
             equipSlotOptions("Right Grip", "Left Grip")
         }.build()
         val rightHand = LocationRecipe("Right Hand", slots = listOf("Right Grip", "Right Glove"))
@@ -61,7 +61,7 @@ class BodyEquipTest {
 
     @Test
     fun equipPrefersRightSide() {
-        val dagger = target("Dagger") {
+        val dagger = thing("Dagger") {
             equipSlotOptions("Right Grip", "Left Grip")
         }.build()
         val rightHand = LocationRecipe("Right Hand", slots = listOf("Right Grip", "Right Glove"))
@@ -75,10 +75,10 @@ class BodyEquipTest {
 
     @Test
     fun replaceEquippedItem() {
-        val dagger = target("Dagger") {
+        val dagger = thing("Dagger") {
             equipSlotOptions("Right Grip", "Left Grip")
         }.build()
-        val hatchet = target("Hatchet") {
+        val hatchet = thing("Hatchet") {
             equipSlotOptions("Right Grip", "Left Grip")
         }.build()
 
@@ -97,10 +97,10 @@ class BodyEquipTest {
 
     @Test
     fun replaceOverlappedEquippedItem() {
-        val shoe = target("Shoe") {
+        val shoe = thing("Shoe") {
             equipSlotOptions("Right Foot")
         }.build()
-        val boot = target("Boot") {
+        val boot = thing("Boot") {
             equipSlot("Right Foot", "Right Leg")
         }.build()
 

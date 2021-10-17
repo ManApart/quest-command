@@ -1,6 +1,6 @@
 package core
 
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import crafting.Recipe
 import traveling.location.Route
@@ -8,7 +8,7 @@ import traveling.location.network.LocationNode
 
 data class Player(
     val id: Int,
-    val target: Target
+    val thing: Thing
 ) {
     //Map of Network to Location Node Name. Presence means it's discovered
     val knownLocations = mutableMapOf<String, MutableSet<String>>()
@@ -24,16 +24,16 @@ data class Player(
     }
 
     fun isPlayer(): Boolean {
-        return target.isPlayer()
+        return thing.isPlayer()
     }
 
-    val soul get() = target.soul
-    val body get() = target.body
-    val properties get() = target.properties
-    val ai get() = target.ai
-    val inventory get() = target.inventory
-    val location get() = target.location
-    val position get() = target.position
+    val soul get() = thing.soul
+    val body get() = thing.body
+    val properties get() = thing.properties
+    val ai get() = thing.ai
+    val inventory get() = thing.inventory
+    val location get() = thing.location
+    val position get() = thing.position
 
     fun discover(location: LocationNode){
         val network = location.network.name

@@ -2,45 +2,45 @@ package magic.spellCommands.water
 
 import core.commands.Args
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
-import magic.castSpell.getTargetedPartsOrAll
+import magic.castSpell.getThingedPartsOrAll
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
 import status.stat.WATER_MAGIC
 import traveling.position.Distances
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 
 class Jet : SpellCommand() {
     override val name = "Jet"
 
     override fun getDescription(): String {
-        return "Burst of water that does one time damage to one or more targets."
+        return "Burst of water that does one time damage to one or more things."
     }
 
     override fun getManual(): String {
         return """
-	Cast Jet <damage amount> on *<targets> - Burst of water that does one time damage to one or more targets."""
+	Cast Jet <damage amount> on *<things> - Burst of water that does one time damage to one or more things."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Water")
     }
 
-    override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
+    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
-        val hitCount = targets.sumOf { getTargetedPartsOrAll(it).size }
+        val hitCount = things.sumOf { getThingedPartsOrAll(it).size }
         val totalCost = damageAmount * hitCount
 //        val levelRequirement = damageAmount + (hitCount / 2)
         val levelRequirement = damageAmount/2
 
-        executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, targets) {
-            targets.forEach { target ->
-                val parts = getTargetedPartsOrAll(target)
+        executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, things) {
+            things.forEach { thing ->
+                val parts = getThingedPartsOrAll(thing)
                 val effects = listOf(
                         EffectManager.getEffect("Water Slice", damageAmount, 1, parts),
                         EffectManager.getEffect("Wet", 0, 5, parts)
@@ -49,7 +49,7 @@ class Jet : SpellCommand() {
                 val cost = damageAmount * parts.size
                 val condition = Condition("Water Blasted", Element.WATER, cost, effects)
                 val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
-                EventManager.postEvent(StartCastSpellEvent(source, target, spell))
+                EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
             }
         }
     }

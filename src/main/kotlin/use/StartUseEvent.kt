@@ -2,11 +2,11 @@ package use
 
 import core.events.DelayedEvent
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 import status.stat.AGILITY
 import kotlin.math.max
 
-class StartUseEvent(override val source: Target, val used: Target, val target: Target, timeLeft: Int = -1) : Event, DelayedEvent {
+class StartUseEvent(override val source: Thing, val used: Thing, val thing: Thing, timeLeft: Int = -1) : Event, DelayedEvent {
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {
@@ -24,6 +24,6 @@ class StartUseEvent(override val source: Target, val used: Target, val target: T
     }
 
     override fun getActionEvent(): UseEvent {
-        return UseEvent(source, used, target)
+        return UseEvent(source, used, thing)
     }
 }

@@ -5,44 +5,44 @@ import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
-import magic.castSpell.getTargetedPartsOrRootPart
+import magic.castSpell.getThingedPartsOrRootPart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
 import status.stat.EARTH_MAGIC
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import traveling.position.toCommandString
 
 class Rooted : SpellCommand() {
     override val name = "Rooted"
 
     override fun getDescription(): String {
-        return "Encase the target in earth to increase their defense."
+        return "Encase the thing in earth to increase their defense."
     }
 
     override fun getManual(): String {
         return """
-	Cast Rooted <amount> for <duration> on <target> - Encase the target in earth to increase their defense. Increases defense by amount * percent encumbered. Fully encumbers target."""
+	Cast Rooted <amount> for <duration> on <thing> - Encase the thing in earth to increase their defense. Increases defense by amount * percent encumbered. Fully encumbers thing."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Earth")
     }
 
-    override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
+    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialPower = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
 
         val options = listOf("1", "3", "5", "10", "50", "#")
         val amountResponse = ResponseRequest("Increase defense how much?",
-            options.associateWith { "cast rooted $it for ${initialDuration.toString()} on ${targets.toCommandString()}" })
+            options.associateWith { "cast rooted $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
         val durationResponse = ResponseRequest("Increase for how long?",
-            options.associateWith { "cast rooted ${initialPower.toString()} for $it on ${targets.toCommandString()}" })
+            options.associateWith { "cast rooted ${initialPower.toString()} for $it on ${things.toCommandString()}" })
         val responseHelper = ResponseRequestHelper(mapOf(
                 "power" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
@@ -56,10 +56,10 @@ class Rooted : SpellCommand() {
             val totalCost = power / 10
             val levelRequirement = power / 2
 
-            executeWithWarns(source, EARTH_MAGIC, levelRequirement, totalCost, targets, maxTargetCount = 1) {
-                val target = targets.first()
-                val amount = (power * target.target.getEncumbrancePhysicalOnly()).toInt()
-                val parts = getTargetedPartsOrRootPart(target)
+            executeWithWarns(source, EARTH_MAGIC, levelRequirement, totalCost, things, maxThingCount = 1) {
+                val thing = things.first()
+                val amount = (power * thing.thing.getEncumbrancePhysicalOnly()).toInt()
+                val parts = getThingedPartsOrRootPart(thing)
                 val effects = listOf(
                         EffectManager.getEffect("Encased Agility", amount, duration, parts),
                         EffectManager.getEffect("Encased Encumbrance", 100, duration, parts),
@@ -70,7 +70,7 @@ class Rooted : SpellCommand() {
 
                 val condition = Condition("Rooted", Element.EARTH, amount, effects)
                 val spell = Spell("Rooted", condition, amount, EARTH_MAGIC, levelRequirement)
-                EventManager.postEvent(StartCastSpellEvent(source, target, spell))
+                EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
             }
         }
     }

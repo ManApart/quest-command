@@ -9,7 +9,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.capitalize2
 
 class SpeakCommand : Command() {
@@ -23,7 +23,7 @@ class SpeakCommand : Command() {
 
     override fun getManual(): String {
         return """  
-	Speak with <target> - Start a conversation with someone.
+	Speak with <thing> - Start a conversation with someone.
 	To stop talking, type 'goodbye' or 'exit'.
 	To ask a question, end your statement with '?'.
 	Ex: 'Where you are?'.
@@ -35,7 +35,7 @@ class SpeakCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("to", "with"))
         when {
             arguments.hasGroup("with") -> speakTo(source, arguments.getString("with"))
@@ -44,10 +44,10 @@ class SpeakCommand : Command() {
         }
     }
 
-    private fun speakTo(speaker: Target, targetName: String) {
-        val targets = speaker.location.getLocation().getTargets(targetName)
-        if (targets.size == 1) {
-            EventManager.postEvent(StartConversationEvent(speaker, targets.first()))
+    private fun speakTo(speaker: Thing, thingName: String) {
+        val things = speaker.location.getLocation().getThings(thingName)
+        if (things.size == 1) {
+            EventManager.postEvent(StartConversationEvent(speaker, things.first()))
         } else {
             val creatures = speaker.location.getLocation().getCreatures(speaker)
             val message = "Speak to who?\n\t${creatures.joinToString(", ")}"

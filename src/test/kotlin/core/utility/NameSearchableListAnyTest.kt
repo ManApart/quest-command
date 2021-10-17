@@ -8,73 +8,73 @@ class NameSearchableListAnyTest {
 
     @Test
     fun getAnyUnique() {
-        val targetA = NamedString("ItemA")
-        val targetB = NamedString("ItemB")
-        val targetC = NamedString("ItemC")
+        val thingA = NamedString("ItemA")
+        val thingB = NamedString("ItemB")
+        val thingC = NamedString("ItemC")
 
         val list = NameSearchableList<NamedString>()
-        list.add(targetA)
-        list.add(targetB)
-        list.add(targetC)
+        list.add(thingA)
+        list.add(thingB)
+        list.add(thingC)
 
         val results = list.getAny(listOf("ItemA", "itemb"))
 
         Assert.assertEquals(2, results.size)
-        assertTrue(results.contains(targetA))
-        assertTrue(results.contains(targetB))
+        assertTrue(results.contains(thingA))
+        assertTrue(results.contains(thingB))
     }
 
     @Test
     fun getAnyOverlapReturnsAsManyAsMatch() {
-        val targetA = NamedString("Left Hand")
-        val targetB = NamedString("Right Hand")
-        val targetC = NamedString("Chest")
+        val thingA = NamedString("Left Hand")
+        val thingB = NamedString("Right Hand")
+        val thingC = NamedString("Chest")
 
         val list = NameSearchableList<NamedString>()
-        list.add(targetA)
-        list.add(targetB)
-        list.add(targetC)
+        list.add(thingA)
+        list.add(thingB)
+        list.add(thingC)
 
         val results = list.getAny(listOf("hand"))
 
         Assert.assertEquals(2, results.size)
-        assertTrue(results.contains(targetA))
-        assertTrue(results.contains(targetB))
+        assertTrue(results.contains(thingA))
+        assertTrue(results.contains(thingB))
     }
 
     @Test
     fun getAnyOverlapPrefersGroupedArgs() {
-        val targetA = NamedString("Left Hand")
-        val targetB = NamedString("Right Hand")
-        val targetC = NamedString("Chest")
+        val thingA = NamedString("Left Hand")
+        val thingB = NamedString("Right Hand")
+        val thingC = NamedString("Chest")
 
         val list = NameSearchableList<NamedString>()
-        list.add(targetA)
-        list.add(targetB)
-        list.add(targetC)
+        list.add(thingA)
+        list.add(thingB)
+        list.add(thingC)
 
         val results = list.getAny(listOf("left", "hand", "chest"))
 
         Assert.assertEquals(2, results.size)
-        assertTrue(results.contains(targetA))
-        assertTrue(results.contains(targetC))
+        assertTrue(results.contains(thingA))
+        assertTrue(results.contains(thingC))
     }
 
     @Test
     fun getAnyOverlapPrefersGroupedArgs2() {
-        val targetA = NamedString("Left Hand")
-        val targetB = NamedString("Right Hand")
-        val targetC = NamedString("hand")
+        val thingA = NamedString("Left Hand")
+        val thingB = NamedString("Right Hand")
+        val thingC = NamedString("hand")
 
         val list = NameSearchableList<NamedString>()
-        list.add(targetA)
-        list.add(targetB)
-        list.add(targetC)
+        list.add(thingA)
+        list.add(thingB)
+        list.add(thingC)
 
         val results = list.getAny(listOf("left", "hand", "right hand"))
 
         Assert.assertEquals(2, results.size)
-        assertTrue(results.contains(targetA))
-        assertTrue(results.contains(targetB))
+        assertTrue(results.contains(thingA))
+        assertTrue(results.contains(thingB))
     }
 }

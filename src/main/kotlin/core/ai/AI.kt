@@ -3,15 +3,15 @@ package core.ai
 import conversation.dialogue.DialogueEvent
 import core.events.DelayedEvent
 import core.properties.ACTION_POINTS
-import core.target.Target
+import core.thing.Thing
 import status.stat.WISDOM
 
 abstract class AI(val name: String) {
-    lateinit var creature: Target
+    lateinit var creature: Thing
     abstract fun hear(event: DialogueEvent)
     abstract fun takeAction()
 
-    var aggroTarget: Target? = null
+    var aggroThing: Thing? = null
     var action: DelayedEvent? = null
 
     private var actionPoints = 0

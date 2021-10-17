@@ -6,10 +6,10 @@ import core.GameState
 import core.commands.Args
 import core.events.EventManager
 import core.properties.WEIGHT
-import core.target.Target
+import core.thing.Thing
 import createMockedGame
 import magic.castSpell.StartCastSpellEvent
-import magic.spells.MoveTargetSpell
+import magic.spells.MoveThingSpell
 import org.junit.Before
 import org.junit.Test
 import status.effects.EffectBase
@@ -20,7 +20,7 @@ import status.stat.AIR_MAGIC
 import status.stat.FOCUS
 import status.stat.StatEffect
 import traveling.position.NO_VECTOR
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import traveling.position.Vector
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -36,13 +36,13 @@ class PullTest {
             EffectManager.reset()
         }
 
-        private val caster = Target("caster")
-        private val victim = Target("victim")
-        private val scope = GameState.player.target.currentLocation()
+        private val caster = Thing("caster")
+        private val victim = Thing("victim")
+        private val scope = GameState.player.thing.currentLocation()
 
         init {
-            scope.addTarget(caster)
-            scope.addTarget(victim)
+            scope.addThing(caster)
+            scope.addThing(victim)
         }
 
     }
@@ -110,10 +110,10 @@ class PullTest {
 //        assertEquals(Vector(20, 0, 0), spell.vector)
 //    }
 
-    private fun castSpell(input: String): MoveTargetSpell {
+    private fun castSpell(input: String): MoveThingSpell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
-        Pull().execute(caster, args, listOf(TargetAim(victim)), false)
-        val spell = (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell as MoveTargetSpell?
+        Pull().execute(caster, args, listOf(ThingAim(victim)), false)
+        val spell = (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell as MoveThingSpell?
         assertNotNull(spell)
         return spell
     }

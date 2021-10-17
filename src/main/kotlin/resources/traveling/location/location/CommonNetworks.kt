@@ -31,7 +31,7 @@ class CommonNetworks : NetworkResource {
             locationNode("Kanbara Wall North") {
                 location("City Wall")
                 connection {
-                    target("City Wall")
+                    thing("City Wall")
                     part("Wall Top")
                     connectsTo("Kanbara City", "Kanbara", "City Wall", "Wall Top")
                     restricted(true)
@@ -42,7 +42,7 @@ class CommonNetworks : NetworkResource {
             locationNode("Kanbara Wall South") {
                 location("City Wall")
                 connection {
-                    target("City Wall")
+                    thing("City Wall")
                     part("Wall Top")
                     connectsTo("Kanbara City South", "Kanbara", "City Wall", "Wall Top")
                     restricted(true)
@@ -71,7 +71,7 @@ class CommonNetworks : NetworkResource {
 
             locationNode("Windmill") {
                 connection("Stairs") {
-                    target("Stairs")
+                    thing("Stairs")
                     part("Stairs")
                     z(20)
                     restricted(true)
@@ -81,7 +81,7 @@ class CommonNetworks : NetworkResource {
 
             locationNode("Windmill - Second Floor") {
                 connection("Stairs") {
-                    target("Stairs")
+                    thing("Stairs")
                     part("Stairs")
                     z(20)
                     restricted(true)
@@ -91,7 +91,7 @@ class CommonNetworks : NetworkResource {
 
             locationNode("Apple Tree") {
                 connection {
-                    target("Apple Tree")
+                    thing("Apple Tree")
                     part("Branches")
                     z(15)
                     restricted(true)
@@ -109,7 +109,7 @@ class CommonNetworks : NetworkResource {
             }
             locationNode("Cave Mouth") {
                 connection("Wall Crack") {
-                    target("Wall Crack")
+                    thing("Wall Crack")
                     restricted(true)
                     hidden(true)
                     connectsTo("Cave Tunnel", "Kanbara Countryside")

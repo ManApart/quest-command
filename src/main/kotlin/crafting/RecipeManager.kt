@@ -1,7 +1,7 @@
 package crafting
 
 import core.DependencyInjector
-import core.target.Target
+import core.thing.Thing
 import status.Soul
 
 object RecipeManager {
@@ -25,11 +25,11 @@ object RecipeManager {
         return names.map { recipes.getAll(it) }.flatten()
     }
 
-    fun findCraftableRecipes(ingredients: List<Target>, tool: Target?, soul: Soul): List<Recipe> {
+    fun findCraftableRecipes(ingredients: List<Thing>, tool: Thing?, soul: Soul): List<Recipe> {
         return recipes.filter { it.matches(ingredients, tool) && it.hasSkillsToCraft(soul) }
     }
 
-    fun findRecipes(ingredients: List<Target>, tool: Target?): List<Recipe> {
+    fun findRecipes(ingredients: List<Thing>, tool: Thing?): List<Recipe> {
         return recipes.filter { it.matches(ingredients, tool) }
     }
 }

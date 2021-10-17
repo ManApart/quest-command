@@ -6,8 +6,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import core.*
 import core.history.SessionHistory
 import core.properties.Properties
-import core.target.Target
-import core.target.loadFromDisk
+import core.thing.Thing
+import core.thing.loadFromDisk
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import java.io.File
@@ -71,7 +71,7 @@ fun save(rawGameName: String, player: Player) {
     saveSessionStats()
     persist(player, gamePath)
     LocationManager.getNetworks().forEach { save(gamePath, it) }
-    saveGameState(player.target, gamePath)
+    saveGameState(player.thing, gamePath)
     saveTopLevelMetadata(gameName)
 }
 
@@ -81,7 +81,7 @@ private fun saveSessionStats() {
     }
 }
 
-private fun saveGameState(player: Target, path: String) {
+private fun saveGameState(player: Thing, path: String) {
     GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, cleanPathPart(player.name))
     GameState.properties.values.put(AUTO_LOAD, true)
     val gameData = getPersistedGameState()

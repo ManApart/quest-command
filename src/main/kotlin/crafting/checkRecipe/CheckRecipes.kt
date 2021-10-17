@@ -6,7 +6,7 @@ import core.history.displayToMe
 
 class CheckRecipes : EventListener<CheckRecipeEvent>() {
     override fun shouldExecute(event: CheckRecipeEvent): Boolean {
-        return event.source.target.isPlayer()
+        return event.source.thing.isPlayer()
     }
 
     override fun execute(event: CheckRecipeEvent) {

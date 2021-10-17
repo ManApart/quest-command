@@ -6,7 +6,7 @@ import core.commands.ResponseRequest
 import core.commands.parseVector
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import traveling.position.Vector
 
 class DropItemCommand : core.commands.Command() {
@@ -29,7 +29,7 @@ class DropItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("at"))
         val vector = parseVector(args, source.position)
         when {
@@ -39,13 +39,13 @@ class DropItemCommand : core.commands.Command() {
         }
     }
 
-    private fun clarifyItemToDrop(source: Target) {
-        val targets = source.inventory.getItems().map { it.name }
-        val message = "Drop what item?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "drop $it" }))
+    private fun clarifyItemToDrop(source: Thing) {
+        val things = source.inventory.getItems().map { it.name }
+        val message = "Drop what item?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "drop $it" }))
     }
 
-    private fun dropItem(source: Target, args: Args, position: Vector) {
+    private fun dropItem(source: Thing, args: Args, position: Vector) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             EventManager.postEvent(PlaceItemEvent(source, item, position))

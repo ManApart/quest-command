@@ -5,8 +5,8 @@ import core.commands.CommandParser
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
-import core.target.item.ITEM_TAG
+import core.thing.Thing
+import core.thing.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
 import createMockedGame
 import org.junit.Before
@@ -28,9 +28,9 @@ class EatCommandTest {
 
     @Test
     fun eatFood() {
-        val player = GameManager.newPlayer(location = NOWHERE_NODE).target
+        val player = GameManager.newPlayer(location = NOWHERE_NODE).thing
         val timer = PoorMansInstrumenter(10000)
-        val item = Target("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
+        val item = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         timer.printElapsed("new item")
         player.inventory.add(item)
         timer.printElapsed("add item")
@@ -47,9 +47,9 @@ class EatCommandTest {
 
     @Test
     fun eatMultipleFoodGivesChoice() {
-        val player = GameManager.newPlayer(location = NOWHERE_NODE).target
-        val fruit = Target("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
-        val pie = Target("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
+        val player = GameManager.newPlayer(location = NOWHERE_NODE).thing
+        val fruit = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
+        val pie = Thing("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         player.inventory.add(fruit)
         player.inventory.add(pie)
         EatCommand().execute(player, "eat", listOf("Pear"))

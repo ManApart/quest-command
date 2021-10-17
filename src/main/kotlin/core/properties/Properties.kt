@@ -1,8 +1,8 @@
 package core.properties
 
-import core.target.activator.ACTIVATOR_TAG
-import core.target.creature.CREATURE_TAG
-import core.target.item.ITEM_TAG
+import core.thing.activator.ACTIVATOR_TAG
+import core.thing.creature.CREATURE_TAG
+import core.thing.item.ITEM_TAG
 import core.utility.wrapNonEmpty
 import traveling.position.Distances.BOW_RANGE
 import traveling.position.Distances.DAGGER_RANGE

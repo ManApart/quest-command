@@ -11,14 +11,14 @@ class ChopWood : EventListener<UseEvent>() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
         return event.source.canInteract()
-                && event.target.properties.tags.has("Wood")
-                && event.target.properties.values.has(DamageType.CHOP.health)
+                && event.thing.properties.tags.has("Wood")
+                && event.thing.properties.values.has(DamageType.CHOP.health)
                 && event.used.properties.values.getInt(DamageType.CHOP.damage, 0) != 0
     }
 
     override fun execute(event: UseEvent) {
-        event.source.display("The ${event.used.name} hacks at ${event.target.name}.")
+        event.source.display("The ${event.used.name} hacks at ${event.thing.name}.")
         val damageDone = -event.used.properties.values.getInt(DamageType.CHOP.damage, 0)
-        EventManager.postEvent(PropertyStatChangeEvent(event.target, event.used.name, DamageType.CHOP.health, damageDone))
+        EventManager.postEvent(PropertyStatChangeEvent(event.thing, event.used.name, DamageType.CHOP.health, damageDone))
     }
 }

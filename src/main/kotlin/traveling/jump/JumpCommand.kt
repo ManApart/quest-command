@@ -4,7 +4,7 @@ import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
-import core.target.Target
+import core.thing.Thing
 import traveling.direction.Direction
 
 //TODO - eventually jump to specific part while climbing (in any direction)
@@ -28,11 +28,11 @@ class JumpCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         if (source.properties.values.getBoolean(IS_CLIMBING)) {
             val playerLocation = source.location
-            val targetLocation= source.climbTarget!!.location
-            EventManager.postEvent(JumpEvent(source, source = playerLocation, destination = targetLocation, fallDistance = playerLocation.getDistanceToLowestNodeInNetwork()))
+            val thingLocation= source.climbThing!!.location
+            EventManager.postEvent(JumpEvent(source, source = playerLocation, destination = thingLocation, fallDistance = playerLocation.getDistanceToLowestNodeInNetwork()))
         } else {
             val found = source.location.getNeighbors(Direction.BELOW).firstOrNull()
             if (found != null) {

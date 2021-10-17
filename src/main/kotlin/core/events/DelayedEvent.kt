@@ -1,9 +1,9 @@
 package core.events
 
-import core.target.Target
+import core.thing.Thing
 
 interface DelayedEvent {
-    val source: Target
+    val source: Thing
     var timeLeft: Int
     fun getActionEvent(): Event
 }

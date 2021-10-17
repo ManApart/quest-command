@@ -15,11 +15,11 @@ class Arrive : EventListener<ArriveEvent>() {
         if (event.origin != event.destination) {
             val player = event.creature
             player.position = Vector()
-            if (!event.destination.targetName.isNullOrBlank() && !event.destination.partName.isNullOrBlank()) {
-                val climbTarget = event.destination.location.getLocation().getTargets(event.destination.targetName).first()
-                val part = climbTarget.body.getPartLocation(event.destination.partName)
+            if (!event.destination.thingName.isNullOrBlank() && !event.destination.partName.isNullOrBlank()) {
+                val climbThing = event.destination.location.getLocation().getThings(event.destination.thingName).first()
+                val part = climbThing.body.getPartLocation(event.destination.partName)
                 player.location = part
-                player.setClimbing(climbTarget)
+                player.setClimbing(climbThing)
                 if (!event.silent) {
                     event.creature.display{"${event.creature.asSubject(it)} ${event.method} to ${event.destination}."}
                 }

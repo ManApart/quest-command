@@ -3,13 +3,13 @@ package combat.attack
 import combat.DamageType
 import core.events.DelayedEvent
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 import status.stat.AGILITY
 import traveling.location.location.Location
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import kotlin.math.max
 
-class StartAttackEvent(override val source: Target, private val sourcePart: Location, val target: TargetAim, val type: DamageType, timeLeft: Int = -1) : Event, DelayedEvent {
+class StartAttackEvent(override val source: Thing, private val sourcePart: Location, val thing: ThingAim, val type: DamageType, timeLeft: Int = -1) : Event, DelayedEvent {
     override var timeLeft = calcTimeLeft(timeLeft)
 
     private fun calcTimeLeft(defaultTimeLeft: Int): Int {
@@ -27,6 +27,6 @@ class StartAttackEvent(override val source: Target, private val sourcePart: Loca
     }
 
     override fun getActionEvent(): AttackEvent {
-        return AttackEvent(source, sourcePart, target, type)
+        return AttackEvent(source, sourcePart, thing, type)
     }
 }

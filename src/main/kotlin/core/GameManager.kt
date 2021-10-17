@@ -4,9 +4,9 @@ import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParser
 import core.events.EventManager
 import core.history.GameLogger
-import core.target.Target
-import core.target.item.ItemManager
-import core.target.target
+import core.thing.Thing
+import core.thing.item.ItemManager
+import core.thing.thing
 import quests.QuestManager
 import status.stat.*
 import system.persistance.getGameNames
@@ -49,8 +49,8 @@ object GameManager {
         CommandParser.reset()
         GameLogger.reset()
 
-        giveStartingItems(GameState.player.target)
-        EventManager.postEvent(ArriveEvent(GameState.player.target, destination = LocationPoint(GameState.player.target.location), method = "wake"))
+        giveStartingItems(GameState.player.thing)
+        EventManager.postEvent(ArriveEvent(GameState.player.thing, destination = LocationPoint(GameState.player.thing.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }
@@ -68,7 +68,7 @@ object GameManager {
         body: String = "Human",
         location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
     ): Player {
-        val player = target(name){
+        val player = thing(name){
             description(description)
             ai(PLAYER_CONTROLLED_ID)
             body(body)
@@ -96,7 +96,7 @@ object GameManager {
         return Player(0, player)
     }
 
-    private fun giveStartingItems(player: Target) {
+    private fun giveStartingItems(player: Thing) {
         val inventory = player.inventory
         val body = player.body
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {

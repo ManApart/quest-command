@@ -4,7 +4,7 @@ import core.GameState
 import core.commands.CommandParser
 import core.events.EventListener
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class CreateAlias : EventListener<CreateAliasEvent>() {
     override fun execute(event: CreateAliasEvent) {
@@ -17,7 +17,7 @@ class CreateAlias : EventListener<CreateAliasEvent>() {
         }
     }
 
-    private fun updateAlias(source: Target, alias: String, event: CreateAliasEvent) {
+    private fun updateAlias(source: Thing, alias: String, event: CreateAliasEvent) {
         val replacing = GameState.aliases.containsKey(alias)
         val oldValue = GameState.aliases[alias] ?: ""
 

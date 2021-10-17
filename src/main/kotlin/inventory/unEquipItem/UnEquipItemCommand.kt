@@ -6,7 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 
 class UnEquipItemCommand : Command() {
@@ -29,7 +29,7 @@ class UnEquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {
@@ -49,7 +49,7 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun getItem(source: Target, args: Args): Target? {
+    private fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         val items = source.body.getEquippedItems()
         return if (items.exists(itemName)) {
@@ -59,7 +59,7 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun getUnequippedItem(source: Target, args: Args): Target? {
+    private fun getUnequippedItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         val equippedItems = source.body.getEquippedItems()
         val items = NameSearchableList(source.inventory.getItems().filter { !equippedItems.contains(it) })
@@ -70,10 +70,10 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun clarifyItem(source: Target) {
-        val targets = source.body.getEquippedItems()
-        val message = "What do you want to un-equip?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest( ResponseRequest(message, targets.associate { "$it" to "unequip $it" }))
+    private fun clarifyItem(source: Thing) {
+        val things = source.body.getEquippedItems()
+        val message = "What do you want to un-equip?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest( ResponseRequest(message, things.associate { "$it" to "unequip $it" }))
     }
 
 }

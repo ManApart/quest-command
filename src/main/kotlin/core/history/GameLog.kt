@@ -9,7 +9,7 @@ class GameLog(val listener: Player) {
     private var current: InputOutput? = null
 
     override fun toString(): String {
-        return "id: ${listener.id} name: ${listener.target.name} size: ${history.size}"
+        return "id: ${listener.id} name: ${listener.thing.name} size: ${history.size}"
     }
 
     override fun equals(other: Any?): Boolean {

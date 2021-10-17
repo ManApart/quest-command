@@ -3,8 +3,8 @@ package core
 import core.properties.Properties
 import core.properties.Tags
 import core.properties.Values
-import core.target.Target
-import core.target.item.ITEM_TAG
+import core.thing.Thing
+import core.thing.item.ITEM_TAG
 import createMockedGame
 import inventory.createInventoryBody
 import org.junit.Before
@@ -20,7 +20,7 @@ class CreatureTest {
 
     @Test
     fun encumbrance0() {
-        val creature = Target("creature")
+        val creature = Thing("creature")
         creature.soul.addStat(STRENGTH, 10)
         creature.inventory.add(createItem(0))
 
@@ -42,7 +42,7 @@ class CreatureTest {
 
     @Test
     fun encumbrance75() {
-        val creature = Target("creature")
+        val creature = Thing("creature")
         creature.soul.addStat(STRENGTH, 10)
         creature.inventory.add(createItem(75))
 
@@ -53,7 +53,7 @@ class CreatureTest {
 
     @Test
     fun encumbrance100() {
-        val creature = Target("creature")
+        val creature = Thing("creature")
         creature.soul.addStat(STRENGTH, 10)
         creature.inventory.add(createItem(100))
 
@@ -64,7 +64,7 @@ class CreatureTest {
 
     @Test
     fun encumbranceIsAPercent() {
-        val creature = Target("creature")
+        val creature = Thing("creature")
         creature.soul.addStat(STRENGTH, 100)
         creature.inventory.add(createItem(500))
 
@@ -73,15 +73,15 @@ class CreatureTest {
         assertEquals(.5f, creature.getEncumbrance())
     }
 
-    private fun createCreature(): Target {
-        return Target("creature", body = createInventoryBody())
+    private fun createCreature(): Thing {
+        return Thing("creature", body = createInventoryBody())
     }
 
-    private fun createItem(weight: Int): Target {
+    private fun createItem(weight: Int): Thing {
         val properties = Properties(
                 Values("weight" to weight.toString()),
                 Tags(ITEM_TAG)
         )
-        return Target("Target", properties = properties)
+        return Thing("Thing", properties = properties)
     }
 }

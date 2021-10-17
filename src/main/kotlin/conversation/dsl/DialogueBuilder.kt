@@ -5,7 +5,7 @@ import conversation.dialogue.DialogueEvent
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 import core.utility.Named
 import traveling.location.network.LocationNode
 
@@ -78,7 +78,7 @@ fun Conversation.subjects(): List<Named>? {
 fun Named?.hasTag(tag: String): Boolean {
     return if (this != null) {
         (this is LocationNode && getLocation().properties.tags.has(tag)) ||
-                (this is Target && properties.tags.has(tag))
+                (this is Thing && properties.tags.has(tag))
     } else {
         false
     }

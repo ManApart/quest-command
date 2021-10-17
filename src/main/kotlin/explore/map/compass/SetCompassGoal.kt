@@ -10,7 +10,7 @@ import traveling.location.network.LocationNode
 
 class SetCompassGoal : EventListener<SetCompassEvent>() {
     override fun execute(event: SetCompassEvent) {
-        val sourceT = event.source.target
+        val sourceT = event.source.thing
         val destination = LocationManager.findLocationInAnyNetwork(sourceT, event.locationName)
         if (destination == null) {
             sourceT.display("Could not find ${event.locationName} on the map.")
@@ -28,12 +28,12 @@ class SetCompassGoal : EventListener<SetCompassEvent>() {
 
 fun Player.findRoute(destination: LocationNode, depth: Int) {
     val existingRoute = compassRoute
-    if (target.location == existingRoute?.source && existingRoute.destination == destination) {
+    if (thing.location == existingRoute?.source && existingRoute.destination == destination) {
         compassRoute = existingRoute
-    } else if (existingRoute != null && existingRoute.isOnRoute(target.location)) {
-        compassRoute = existingRoute.trim(target.location)
+    } else if (existingRoute != null && existingRoute.isOnRoute(thing.location)) {
+        compassRoute = existingRoute.trim(thing.location)
     } else {
-        val routeFinder = RouteFinder(target.location, destination, depth, player = this)
+        val routeFinder = RouteFinder(thing.location, destination, depth, player = this)
         if (routeFinder.hasRoute()) {
             compassRoute = routeFinder.getRoute()
         } else {

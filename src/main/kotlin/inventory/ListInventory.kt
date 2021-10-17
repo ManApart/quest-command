@@ -3,20 +3,20 @@ package inventory
 import core.body.Body
 import core.events.EventListener
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 import core.utility.then
 
 class ListInventory : EventListener<ListInventoryEvent>() {
 
     override fun execute(event: ListInventoryEvent) {
-        if (event.target.properties.tags.has("Container")) {
-            if (event.target.inventory.getItems().isNotEmpty()) {
-                event.target.display("${event.target.name} has:${inventoryToString(event.target.inventory, event.target.body)}")
+        if (event.thing.properties.tags.has("Container")) {
+            if (event.thing.inventory.getItems().isNotEmpty()) {
+                event.thing.display("${event.thing.name} has:${inventoryToString(event.thing.inventory, event.thing.body)}")
             } else {
-                event.target.display("${event.target.name} has no items.")
+                event.thing.display("${event.thing.name} has no items.")
             }
         } else {
-            event.target.display("Cannot view inventory of ${event.target.name}")
+            event.thing.display("Cannot view inventory of ${event.thing.name}")
         }
     }
 
@@ -32,13 +32,13 @@ class ListInventory : EventListener<ListInventoryEvent>() {
         return message
     }
 
-    private fun printItem(item: Target, body: Body, tabCount: Int): String {
+    private fun printItem(item: Thing, body: Body, tabCount: Int): String {
         val asterisk = body.isEquipped(item).then("* ", "")
         val tabs = "\t".repeat(tabCount)
         return "\n" + tabs + asterisk + item.name
     }
 
-    private fun getSortedInventory(inventory: Inventory, body: Body): List<Target> {
+    private fun getSortedInventory(inventory: Inventory, body: Body): List<Thing> {
         val equippedItems = inventory.getItems().filter { body.isEquipped(it) }.sortedBy { it.name }
         val unEquippedItems = inventory.getItems().filter { !body.isEquipped(it) }.sortedBy { it.name }
         return equippedItems + unEquippedItems

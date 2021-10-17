@@ -1,23 +1,23 @@
 package combat
 
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import traveling.location.location.Location
 
-class HandHelper(creature: Target, source: String, desiredSkill: String) {
+class HandHelper(creature: Thing, source: String, desiredSkill: String) {
     lateinit var hand: Location; private set
-    var weapon: Target? = null
+    var weapon: Thing? = null
 
     init {
         determineHand(creature, source, desiredSkill)
     }
 
-    private fun determineHand(creature: Target, source: String, desiredSkill: String) {
+    private fun determineHand(creature: Thing, source: String, desiredSkill: String) {
         val rightHand = creature.body.getPart("right hand")
         val leftHand = creature.body.getPart("left hand")
         val rightWeapon = rightHand.getEquippedItem("right hand grip")
         val leftWeapon = leftHand.getEquippedItem("left hand grip")
-        val weapons = NameSearchableList<Target>()
+        val weapons = NameSearchableList<Thing>()
         if (rightWeapon != null) weapons.add(rightWeapon)
         if (leftWeapon != null) weapons.add(leftWeapon)
 
@@ -54,15 +54,15 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
         return source.isNotBlank() && listOf("left hand", "left", "l", "right", "r").contains(source)
     }
 
-    private fun isWeapon(source: String, weapons: NameSearchableList<Target>): Boolean {
+    private fun isWeapon(source: String, weapons: NameSearchableList<Thing>): Boolean {
         return source.isNotBlank() && weapons.exists(source)
     }
 
-    private fun getWeapon(source: String, weapons: NameSearchableList<Target>): Target {
+    private fun getWeapon(source: String, weapons: NameSearchableList<Thing>): Thing {
         return weapons.get(source)
     }
 
-    private fun getWeapon(source: Location): Target? {
+    private fun getWeapon(source: Location): Thing? {
         return source.getEquippedItem("right hand grip") ?: source.getEquippedItem("left hand grip")
     }
 
@@ -74,7 +74,7 @@ class HandHelper(creature: Target, source: String, desiredSkill: String) {
         }
     }
 
-    private fun getHand(weapon: Target, rightHand: Location, leftHand: Location): Location {
+    private fun getHand(weapon: Thing, rightHand: Location, leftHand: Location): Location {
         return if (weapon == getWeapon(rightHand)) {
             rightHand
         } else {

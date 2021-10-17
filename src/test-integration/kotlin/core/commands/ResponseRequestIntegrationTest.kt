@@ -6,7 +6,7 @@ import core.events.EventManager
 import core.history.GameLogger
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
+import core.thing.Thing
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -31,8 +31,8 @@ class ResponseRequestIntegrationTest {
     @Test
     fun takeSecondObject() {
         val props = Properties(tags = Tags("Item"))
-        GameState.player.target.currentLocation().addTarget(Target("Wheat Bundle", properties = props))
-        GameState.player.target.currentLocation().addTarget(Target("Wheat Flour", properties = props))
+        GameState.player.thing.currentLocation().addThing(Thing("Wheat Bundle", properties = props))
+        GameState.player.thing.currentLocation().addThing(Thing("Wheat Flour", properties = props))
 
         val input = "pickup wheat && 2"
         CommandParser.parseCommand(input)

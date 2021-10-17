@@ -1,7 +1,7 @@
 package traveling.location.location
 
 import core.DependencyInjector
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.Network
@@ -61,22 +61,22 @@ object LocationManager {
         return networks.toList()
     }
 
-    fun findLocationInAnyNetwork(source: Target, name: String): LocationNode? {
+    fun findLocationInAnyNetwork(source: Thing, name: String): LocationNode? {
         val network = getNetwork(source.location.parent)
-        var target = findTarget(name, network)
+        var thing = findThing(name, network)
         var i = 0
-        while (target == null && i < getNetworks().size) {
-            target = findTarget(name, getNetworks()[i])
+        while (thing == null && i < getNetworks().size) {
+            thing = findThing(name, getNetworks()[i])
             i++
         }
-        return target
+        return thing
     }
 
     fun findLocationsInAnyNetwork(name: String): List<LocationNode> {
         return getNetworks().flatMap { it.findLocations(name) }
     }
 
-    private fun findTarget(name: String, network: Network): LocationNode? {
+    private fun findThing(name: String, network: Network): LocationNode? {
         return if (network.locationRecipeExists(name)) {
             network.findLocation(name)
         } else {

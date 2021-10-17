@@ -2,7 +2,7 @@ package gameState
 
 import core.properties.Properties
 import core.properties.Tags
-import core.target.Target
+import core.thing.Thing
 import core.properties.Values
 import org.junit.Test
 import kotlin.test.assertFalse
@@ -12,21 +12,21 @@ class ItemTest {
 
     @Test
     fun canBeHeldByContainerWithProperties() {
-        val item = Target("Apple", properties = Properties(tags = Tags("Raw")))
+        val item = Thing("Apple", properties = Properties(tags = Tags("Raw")))
         val properties = Properties(values = Values("CanHold" to "Raw,Food"))
         assertTrue(item.properties.canBeHeldByContainerWithProperties(properties))
     }
 
     @Test
     fun canBeHeldByContainerWithPropertiesEmpty() {
-        val item = Target("Apple")
+        val item = Thing("Apple")
         val properties = Properties()
         assertTrue(item.properties.canBeHeldByContainerWithProperties(properties))
     }
 
     @Test
     fun canBeHeldByContainerWithPropertiesNegative() {
-        val item = Target("Apple", properties = Properties(tags = Tags("Small")))
+        val item = Thing("Apple", properties = Properties(tags = Tags("Small")))
         val properties = Properties(values = Values("CanHold" to "Raw,Food"))
         assertFalse(item.properties.canBeHeldByContainerWithProperties(properties))
     }

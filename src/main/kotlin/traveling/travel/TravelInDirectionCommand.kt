@@ -7,7 +7,7 @@ import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
-import core.target.Target
+import core.thing.Thing
 import traveling.direction.Direction
 import traveling.location.network.LocationNode
 
@@ -35,7 +35,7 @@ class TravelInDirectionCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         if (keyword.lowercase() == "direction") {
             clarifyDirection()
         } else {
@@ -61,9 +61,9 @@ class TravelInDirectionCommand : Command() {
     }
 
     private fun clarifyDirection() {
-        val targets = Direction.values().map { it.name }
+        val things = Direction.values().map { it.name }
         val message = "Travel in which direction?"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { it }))
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { it }))
     }
 
     private fun requestLocation(openNeighbors: List<LocationNode>) {

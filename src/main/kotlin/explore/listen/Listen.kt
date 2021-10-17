@@ -2,7 +2,7 @@ package explore.listen
 
 import core.events.EventListener
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.joinToStringAnd
 import traveling.location.location.Location
 import traveling.location.weather.Weather
@@ -21,7 +21,7 @@ class Listen : EventListener<ListenEvent>() {
     override fun execute(event: ListenEvent) {
         val location = event.source.location.getLocation()
         val sounds =
-            location.getTargetSounds(event.source) + listOfNotNull(location.getSound(), location.weather.getSound())
+            location.getThingSounds(event.source) + listOfNotNull(location.getSound(), location.weather.getSound())
         val threshold = (sounds.maxOfOrNull { it.strength } ?: 0) - 50
 
         val filteredSounds = sounds.filter { it.strength > threshold }.sortedBy { it.strength }
@@ -58,12 +58,12 @@ private fun Weather.getSound(): Sound? {
     return Sound(description, level, NO_VECTOR, strength)
 }
 
-private fun Location.getTargetSounds(source: Target): List<Sound> {
-    return getTargets().mapNotNull { it.getSound(source) }
+private fun Location.getThingSounds(source: Thing): List<Sound> {
+    return getThings().mapNotNull { it.getSound(source) }
 }
 
 
-private fun Target.getSound(source: Target): Sound? {
+private fun Thing.getSound(source: Thing): Sound? {
     if (!properties.values.has(SOUND_DESCRIPTION)) return null
 
     val description = properties.values.getString(SOUND_DESCRIPTION)

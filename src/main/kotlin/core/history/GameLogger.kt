@@ -2,14 +2,14 @@ package core.history
 
 import core.GameState
 import core.Player
-import core.target.Target
+import core.thing.Thing
 import system.debug.DebugType
 
 
 /**
- * Only displayed to this target (you)
+ * Only displayed to this thing (you)
  */
-fun Target.displayToMe(message: String) {
+fun Thing.displayToMe(message: String) {
     if (isPlayer()) {
         GameLogger.getHistory(GameState.getPlayer(this)).print(message)
     }
@@ -20,11 +20,11 @@ fun Player.displayToMe(message: String) {
 }
 
 /**
- * Displayed to everyone but you (the calling target)
+ * Displayed to everyone but you (the calling thing)
  */
-fun Target.displayToOthers(message: String) {
+fun Thing.displayToOthers(message: String) {
     if (isPlayer()) {
-        GameLogger.histories.filter { it.listener.target !== this }.forEach { it.print(message) }
+        GameLogger.histories.filter { it.listener.thing !== this }.forEach { it.print(message) }
     } else {
         GameLogger.histories.forEach { it.print(message) }
     }
@@ -48,9 +48,9 @@ fun display(message: (Player) -> String) {
 }
 
 /**
- * The message is evaluated for each listener that perceives this target
+ * The message is evaluated for each listener that perceives this thing
  */
-fun Target.display(message: String) {
+fun Thing.display(message: String) {
     this.display { message }
 }
 
@@ -59,15 +59,15 @@ fun Player.display(message: String) {
 }
 
 fun Player.display(message: (Player) -> String) {
-    this.target.display(message)
+    this.thing.display(message)
 }
 
 /**
- * The message is evaluated for each listener that perceives this target
+ * The message is evaluated for each listener that perceives this thing
  */
-fun Target.display(message: (Player) -> String) {
+fun Thing.display(message: (Player) -> String) {
     GameLogger.histories
-        .filter { it.listener.target.perceives(this) }
+        .filter { it.listener.thing.perceives(this) }
         .forEach { history ->
             val messageText = message(history.listener)
             history.print(messageText)
@@ -89,7 +89,7 @@ fun displayUpdateEnd(message: String) {
 }
 
 object GameLogger {
-    //Target hashcode changes and breaks == as a key lookup
+    //Thing hashcode changes and breaks == as a key lookup
     //Instead use a list and filter for referential equality
     val histories = mutableSetOf<GameLog>()
 
@@ -118,20 +118,9 @@ object GameLogger {
         histories.forEach { it.getCurrent().timeTaken = timeTaken }
     }
 
-//    fun hasHistory(source: Target): Boolean {
-//        if (source.isPlayer()) {
-//            return hasHistory(GameState.getPlayer(source))
-//        }
-//        return false
-//    }
-
     fun hasHistory(source: Player): Boolean {
         return histories.any { it.listener === source }
     }
-
-//    fun getHistory(source: Target): GameLog {
-//        return getHistory(GameState.getPlayer(source))
-//    }
 
     fun getHistory(source: Player): GameLog {
         var candidate = histories.firstOrNull { it.listener == source }

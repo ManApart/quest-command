@@ -2,7 +2,7 @@ package core.history
 
 import core.GameState
 import core.Player
-import core.target.Target
+import core.thing.Thing
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -32,9 +32,9 @@ class GameLogManagerTest {
     }
 
     @Test
-    fun trackTarget(){
-        val target = Target("Bob")
-        val player = Player(2, target)
+    fun trackThing(){
+        val thing = Thing("Bob")
+        val player = Player(2, thing)
         val message = "Test Message"
         GameLogger.track(player)
         player.displayToMe(message)
@@ -44,10 +44,10 @@ class GameLogManagerTest {
 
     @Test
     fun thing(){
-        val target = Target("Bob")
-        val player = Player(2, target)
-        val target2 = Target("Bob")
-        val player2 = Player(2, target2)
+        val thing = Thing("Bob")
+        val player = Player(2, thing)
+        val thing2 = Thing("Bob")
+        val player2 = Player(2, thing2)
         val message = "Test Message"
         GameLogger.track(player)
         GameLogger.track(player2)

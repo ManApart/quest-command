@@ -12,11 +12,11 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
     }
 
     override fun execute(event: ClimbCompleteEvent) {
-        event.climbTarget.consume(event)
+        event.climbThing.consume(event)
         val climbBackOff = event.destination.location == event.origin.location
 
         if (climbBackOff) {
-            event.creature.display{"${event.creature.asSubject(it)} climb back off ${event.climbTarget.name}."}
+            event.creature.display{"${event.creature.asSubject(it)} climb back off ${event.climbThing.name}."}
         }
 
         val position = event.origin.location.getPositionRelativeTo(event.destination.location)

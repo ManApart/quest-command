@@ -1,6 +1,6 @@
 package status.statChanged
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class StatBoostEvent(val target: Target, val source: String, val type: String, val amount: Int) : Event
+class StatBoostEvent(val thing: Thing, val source: String, val type: String, val amount: Int) : Event

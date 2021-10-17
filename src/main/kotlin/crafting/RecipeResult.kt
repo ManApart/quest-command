@@ -1,8 +1,8 @@
 package crafting
 
 import core.properties.Tags
-import core.target.Target
-import core.target.item.ItemManager
+import core.thing.Thing
+import core.thing.item.ItemManager
 import core.utility.wrapNonEmpty
 
 data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsAdded: Tags = Tags(), val tagsRemoved: Tags = Tags()) {
@@ -14,7 +14,7 @@ data class RecipeResult(val name: String? = null, val id: Int? = null, val tagsA
         }
     }
 
-    fun getResult(usedIngredients: List<Target>): Target {
+    fun getResult(usedIngredients: List<Thing>): Thing {
         val item = if (!name.isNullOrBlank()) {
             ItemManager.getItem(name)
         } else {

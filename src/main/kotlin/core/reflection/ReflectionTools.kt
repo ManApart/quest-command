@@ -12,10 +12,10 @@ import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command
 import core.events.EventListener
-import core.target.TargetBuilder
-import core.target.activator.dsl.ActivatorResource
-import core.target.creature.CreatureResource
-import core.target.item.ItemResource
+import core.thing.ThingBuilder
+import core.thing.activator.dsl.ActivatorResource
+import core.thing.creature.CreatureResource
+import core.thing.item.ItemResource
 import crafting.RecipeBuilder
 import crafting.RecipeResource
 import magic.spellCommands.SpellCommand
@@ -53,12 +53,12 @@ object ReflectionTools {
 
         generateResourcesFile(AIResource::class, AIBase::class)
         generateResourcesFile(AIActionResource::class, AIAction::class)
-        generateResourcesFile(ActivatorResource::class, TargetBuilder::class)
+        generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
         generateResourcesFile(BodyResource::class, NetworkBuilder::class)
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
-        generateResourcesFile(CreatureResource::class, TargetBuilder::class)
-        generateResourcesFile(ItemResource::class, TargetBuilder::class)
+        generateResourcesFile(CreatureResource::class, ThingBuilder::class)
+        generateResourcesFile(ItemResource::class, ThingBuilder::class)
         generateResourcesFile(BehaviorResource::class, Behavior::class)
         generateResourcesFile(DialogueResource::class, Dialogue::class)
         generateResourcesFile(EffectResource::class, EffectBase::class)

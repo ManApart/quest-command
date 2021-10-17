@@ -48,11 +48,11 @@ class CraftRecipeCommand : Command() {
     }
 
     private fun processRecipe(source: Player, recipe: Recipe) {
-        val tool = source.target.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
-                ?: source.target.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
+        val tool = source.thing.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
+                ?: source.thing.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {
             source.displayToMe("Couldn't find the necessary tools to create ${recipe.name}")
-        } else if (!recipe.matches(source.target.inventory.getAllItems(), tool)) {
+        } else if (!recipe.matches(source.thing.inventory.getAllItems(), tool)) {
             source.displayToMe("Couldn't find all the needed ingredients to create ${recipe.name}.")
         } else {
             EventManager.postEvent(CraftRecipeEvent(source, recipe, tool))

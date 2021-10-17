@@ -5,23 +5,23 @@ import traveling.position.VectorParentI
 
 class ProtoConnectionBuilder : VectorParent by VectorParentI() {
     private var name: String? = null
-    private var target: String? = null
+    private var thing: String? = null
     private var part: String? = null
     private var restricted = false
     private var oneWay = false
     private var hidden = false
-    private var connectsTo: ProtoTarget? = null
+    private var connectsTo: ProtoThing? = null
 
     fun build(): ProtoConnection {
-        return ProtoConnection(target, part, vector, name, connectsTo, restricted, oneWay, hidden)
+        return ProtoConnection(thing, part, vector, name, connectsTo, restricted, oneWay, hidden)
     }
 
     fun name(name: String) {
         this.name = name
     }
 
-    fun target(target: String) {
-        this.target = target
+    fun thing(thing: String) {
+        this.thing = thing
     }
 
     fun part(part: String) {
@@ -40,12 +40,12 @@ class ProtoConnectionBuilder : VectorParent by VectorParentI() {
         this.hidden = yes
     }
 
-    fun connectsTo(protoTarget: ProtoTarget) {
-        this.connectsTo = protoTarget
+    fun connectsTo(protoThing: ProtoThing) {
+        this.connectsTo = protoThing
     }
 
-    fun connectsTo(location: String, network: String? = null, target: String? = null, part: String? = null) {
-        this.connectsTo = ProtoTarget(location, network, target, part)
+    fun connectsTo(location: String, network: String? = null, thing: String? = null, part: String? = null) {
+        this.connectsTo = ProtoThing(location, network, thing, part)
     }
 
 }

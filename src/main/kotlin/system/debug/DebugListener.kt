@@ -29,12 +29,12 @@ class DebugToggleListener : EventListener<DebugToggleEvent>() {
 class DebugStatListener : EventListener<DebugStatEvent>() {
     override fun execute(event: DebugStatEvent) {
         if (event.statKind == StatKind.LEVELED) {
-            event.target.soul.setStat(event.statName, event.level)
-            val newStat = event.target.soul.getStatOrNull(event.statName)
-            event.target.displayToMe("Set ${event.target}'s ${event.statName} to ${newStat?.current} / ${newStat?.max}")
+            event.thing.soul.setStat(event.statName, event.level)
+            val newStat = event.thing.soul.getStatOrNull(event.statName)
+            event.thing.displayToMe("Set ${event.thing}'s ${event.statName} to ${newStat?.current} / ${newStat?.max}")
         } else {
-            event.target.properties.values.put(event.statName, event.level)
-            event.target.displayToMe("Set ${event.target}'s ${event.statName} to ${event.target.properties.values.getInt(event.statName)}")
+            event.thing.properties.values.put(event.statName, event.level)
+            event.thing.displayToMe("Set ${event.thing}'s ${event.statName} to ${event.thing.properties.values.getInt(event.statName)}")
         }
     }
 }
@@ -42,11 +42,11 @@ class DebugStatListener : EventListener<DebugStatEvent>() {
 class DebugTagListener : EventListener<DebugTagEvent>() {
     override fun execute(event: DebugTagEvent) {
         if (event.isAddingTag) {
-            event.target.properties.tags.add(event.tag)
+            event.thing.properties.tags.add(event.tag)
         } else {
-            event.target.properties.tags.remove(event.tag)
+            event.thing.properties.tags.remove(event.tag)
         }
-        event.target.displayToMe("${event.target}'s tags are now ${event.target.properties.tags}")
+        event.thing.displayToMe("${event.thing}'s tags are now ${event.thing.properties.tags}")
     }
 }
 

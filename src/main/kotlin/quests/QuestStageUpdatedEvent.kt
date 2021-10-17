@@ -1,6 +1,6 @@
 package quests
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class QuestStageUpdatedEvent(val source: Target, val quest: Quest, val stage: Int) : Event
+class QuestStageUpdatedEvent(val source: Thing, val quest: Quest, val stage: Int) : Event

@@ -4,7 +4,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.events.EventListener
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.removeFirstItem
 
 //TODO - can this and ViewWordHelp share code?
@@ -21,11 +21,11 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         }
     }
 
-    private fun printManual(source: Target, command: Command) {
+    private fun printManual(source: Thing, command: Command) {
         source.displayToMe(getTitle(command) + command.getManual())
     }
 
-    private fun printCommandGroupsSummary(source: Target) {
+    private fun printCommandGroupsSummary(source: Thing) {
         val groups = CommandParser.getGroupedCommands()
 
         var groupList = ""
@@ -36,7 +36,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printCommandGroupsDetail(source: Target) {
+    private fun printCommandGroupsDetail(source: Thing) {
         val groups = HashMap<String, MutableList<String>>()
         CommandParser.commands.forEach { command ->
             run {
@@ -55,7 +55,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printCommandGroup(source: Target, args: List<String>) {
+    private fun printCommandGroup(source: Thing, args: List<String>) {
         var description = "Help <Command> to learn more about on of the following topics:\n"
         //TODO - handle sub-categories
         //TODO - sort alphabetically

@@ -1,6 +1,6 @@
 package conversation.start
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class StartConversationEvent(val speaker: Target, val listener: Target) : Event
+class StartConversationEvent(val speaker: Thing, val listener: Thing) : Event

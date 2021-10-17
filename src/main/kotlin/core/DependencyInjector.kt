@@ -17,12 +17,12 @@ import core.commands.CommandsGenerated
 import core.events.EventListener
 import core.events.EventListenersCollection
 import core.events.EventListenersGenerated
-import core.target.activator.dsl.ActivatorsCollection
-import core.target.activator.dsl.ActivatorsGenerated
-import core.target.creature.CreaturesCollection
-import core.target.creature.CreaturesGenerated
-import core.target.item.ItemsCollection
-import core.target.item.ItemsGenerated
+import core.thing.activator.dsl.ActivatorsCollection
+import core.thing.activator.dsl.ActivatorsGenerated
+import core.thing.creature.CreaturesCollection
+import core.thing.creature.CreaturesGenerated
+import core.thing.item.ItemsCollection
+import core.thing.item.ItemsGenerated
 import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipesCollection
@@ -48,29 +48,29 @@ object DependencyInjector {
     private val defaultImplementations by lazy { createDefaultImplementations() }
 
 
-    fun <T : E, E : Any> setImplementation(targetInterface: KClass<E>, implementation: T) {
-        interfaces[targetInterface] = implementation
+    fun <T : E, E : Any> setImplementation(thingInterface: KClass<E>, implementation: T) {
+        interfaces[thingInterface] = implementation
     }
 
-    fun <E : Any> clearImplementation(targetInterface: KClass<E>) {
-        interfaces.remove(targetInterface)
+    fun <E : Any> clearImplementation(thingInterface: KClass<E>) {
+        interfaces.remove(thingInterface)
     }
 
     fun clearAllImplementations() {
         interfaces.clear()
     }
 
-    fun <T : E, E : Any> getImplementation(targetInterface: KClass<E>): T {
+    fun <T : E, E : Any> getImplementation(thingInterface: KClass<E>): T {
         return when {
-            interfaces.containsKey(targetInterface) -> {
+            interfaces.containsKey(thingInterface) -> {
                 @Suppress("UNCHECKED_CAST")
-                interfaces[targetInterface] as T
+                interfaces[thingInterface] as T
             }
-            defaultImplementations.containsKey(targetInterface) -> {
+            defaultImplementations.containsKey(thingInterface) -> {
                 @Suppress("UNCHECKED_CAST")
-                defaultImplementations[targetInterface] as T
+                defaultImplementations[thingInterface] as T
             }
-            else -> throw IllegalArgumentException("No implementation could be found for interface ${targetInterface.simpleName}")
+            else -> throw IllegalArgumentException("No implementation could be found for interface ${thingInterface.simpleName}")
         }
     }
 

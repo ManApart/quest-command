@@ -1,28 +1,28 @@
 package explore.look
 
 import core.history.displayToMe
-import core.target.Target
-import core.target.targetsToString
+import core.thing.Thing
+import core.thing.thingsToString
 import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
 
-fun describeLocation(source: Target) {
+fun describeLocation(source: Thing) {
     val pos = source.position
     if (pos == NO_VECTOR) {
         source.displayToMe("You are at ${source.location.name}")
     } else {
         source.displayToMe("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
-    if (source.currentLocation().getTargets().size > 1) {
-        val targetList = targetsToString(source.currentLocation().getTargets().filterNot { it.isPlayer() })
-        source.displayToMe("You find yourself surrounded by $targetList.")
+    if (source.currentLocation().getThings().size > 1) {
+        val thingList = thingsToString(source.currentLocation().getThings().filterNot { it.isPlayer() })
+        source.displayToMe("You find yourself surrounded by $thingList.")
     } else {
         source.displayToMe("You don't see anything of use.")
     }
 }
 
-fun describeLocationDetailed(source: Target) {
+fun describeLocationDetailed(source: Thing) {
     val pos = source.position
     val locationRecipe = source.location.getLocationRecipe()
     val location = source.currentLocation()
@@ -36,9 +36,9 @@ fun describeLocationDetailed(source: Target) {
     val light = location.getLightLevel()
     val heat = getHeatLevel(location)
     source.displayToMe("It is $light light and $heat hot.")
-    if (location.getTargets().size > 1) {
-        val targetList = targetsToString(location.getTargets().filterNot { it.isPlayer() })
-        source.displayToMe("You find yourself surrounded by $targetList.")
+    if (location.getThings().size > 1) {
+        val thingList = thingsToString(location.getThings().filterNot { it.isPlayer() })
+        source.displayToMe("You find yourself surrounded by $thingList.")
     } else {
         source.displayToMe("You don't see anything of use.")
     }

@@ -11,9 +11,9 @@ class LocationRecipeBuilder(val name: String) {
     private val descriptionBuilder = ConditionalStringBuilder("")
     private val weatherBuilder = ConditionalStringBuilder("Still")
     private val slots = mutableListOf<String>()
-    private val activatorBuilders = mutableListOf<LocationTargetBuilder>()
-    private val creatureBuilders = mutableListOf<LocationTargetBuilder>()
-    private val itemBuilders = mutableListOf<LocationTargetBuilder>()
+    private val activatorBuilders = mutableListOf<LocationThingBuilder>()
+    private val creatureBuilders = mutableListOf<LocationThingBuilder>()
+    private val itemBuilders = mutableListOf<LocationThingBuilder>()
     private var baseNames = mutableListOf<String>()
     private var bases = mutableListOf<LocationRecipeBuilder>()
 
@@ -67,7 +67,7 @@ class LocationRecipeBuilder(val name: String) {
      * Note that each time this function is used, the latter extends object will win any extension conflicts.
      * extends(tree) - fire health 2
      * extends(burnable) - fire health 1
-     * The end target will have fire health 1
+     * The end thing will have fire health 1
      */
     fun extends(other: String) = baseNames.add(other)
     fun extends(other: LocationRecipeBuilder) = bases.add(other)
@@ -87,27 +87,27 @@ class LocationRecipeBuilder(val name: String) {
     }
 
     fun activator(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
-        activatorBuilders.add(LocationTargetBuilder(name).apply{vector(x,y,z)})
+        activatorBuilders.add(LocationThingBuilder(name).apply{vector(x,y,z)})
     }
 
-    fun activator(name: String, initializer: LocationTargetBuilder.() -> Unit = {}) {
-        activatorBuilders.add(LocationTargetBuilder(name).apply(initializer))
+    fun activator(name: String, initializer: LocationThingBuilder.() -> Unit = {}) {
+        activatorBuilders.add(LocationThingBuilder(name).apply(initializer))
     }
 
     fun creature(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
-        creatureBuilders.add(LocationTargetBuilder(name).apply{vector(x,y,z)})
+        creatureBuilders.add(LocationThingBuilder(name).apply{vector(x,y,z)})
     }
 
-    fun creature(name: String, initializer: LocationTargetBuilder.() -> Unit = {}) {
-        creatureBuilders.add(LocationTargetBuilder(name).apply(initializer))
+    fun creature(name: String, initializer: LocationThingBuilder.() -> Unit = {}) {
+        creatureBuilders.add(LocationThingBuilder(name).apply(initializer))
     }
 
     fun item(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
-        itemBuilders.add(LocationTargetBuilder(name).apply{vector(x,y,z)})
+        itemBuilders.add(LocationThingBuilder(name).apply{vector(x,y,z)})
     }
 
-    fun item(name: String, initializer: LocationTargetBuilder.() -> Unit = {}) {
-        itemBuilders.add(LocationTargetBuilder(name).apply(initializer))
+    fun item(name: String, initializer: LocationThingBuilder.() -> Unit = {}) {
+        itemBuilders.add(LocationThingBuilder(name).apply(initializer))
     }
 
     fun weather(weather: String){

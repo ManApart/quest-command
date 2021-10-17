@@ -3,7 +3,7 @@ package conversation.dsl
 import conversation.Conversation
 import conversation.dialogue.DialogueEvent
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
 private val sampleConvo by lazy { buildSampleConvo() }
 
@@ -24,8 +24,8 @@ class Dialogue(
 }
 
 private fun buildSampleConvo(): Conversation {
-    val speaker = Target("Speaker")
-    val sampleConvo = Conversation(speaker, Target("Listener"))
+    val speaker = Thing("Speaker")
+    val sampleConvo = Conversation(speaker, Thing("Listener"))
     sampleConvo.history.add(DialogueEvent(speaker, sampleConvo, "Sample Line"))
     return sampleConvo
 }

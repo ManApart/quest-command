@@ -212,11 +212,11 @@ class ArgsTest {
 
     @Test
     fun getFirstString() {
-        val input = "place in target".split(" ")
+        val input = "place in thing".split(" ")
         val args = Args(input, delimiters = listOf("at", "in"))
 
-        assertEquals("target", args.getFirstString("at", "in"))
-        assertEquals("target", args.getFirstString("in", "at"))
+        assertEquals("thing", args.getFirstString("at", "in"))
+        assertEquals("thing", args.getFirstString("in", "at"))
     }
 
     @Test

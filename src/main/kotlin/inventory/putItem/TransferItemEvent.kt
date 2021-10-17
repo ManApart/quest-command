@@ -1,9 +1,9 @@
 package inventory.putItem
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class TransferItemEvent(val mover: Target, val item: Target, val source: Target, val destination: Target, val silent: Boolean = false) : Event {
+class TransferItemEvent(val mover: Thing, val item: Thing, val source: Thing, val destination: Thing, val silent: Boolean = false) : Event {
     override fun gameTicks(): Int {
         return if (mover.isPlayer()) {
             1

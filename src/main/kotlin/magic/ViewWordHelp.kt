@@ -3,7 +3,7 @@ package magic
 import core.DependencyInjector
 import core.events.EventListener
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
@@ -23,7 +23,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
         }
     }
 
-    private fun listWords(source: Target) {
+    private fun listWords(source: Thing) {
         val groups = HashMap<String, MutableList<String>>()
         wordsOfPower.forEach { word ->
             run {
@@ -41,7 +41,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
         source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printWordGroup(source: Target, group: String) {
+    private fun printWordGroup(source: Thing, group: String) {
         var description = "Help <Word> to learn more about on of the following topics:\n"
         wordsOfPower.forEach { word ->
             if (word.getCategory().map { it.lowercase() }.contains(group)) {
@@ -51,7 +51,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
         source.displayToMe(description)
     }
 
-    private fun helpWord(source: Target, word: String) {
+    private fun helpWord(source: Thing, word: String) {
         if (wordsOfPower.exists(word)) {
             source.displayToMe(wordsOfPower.get(word).getManual())
         } else {

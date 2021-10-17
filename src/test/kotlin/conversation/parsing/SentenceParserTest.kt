@@ -1,7 +1,7 @@
 package conversation.parsing
 
 import conversation.dialogue.ParsedDialogue
-import core.target.Target
+import core.thing.Thing
 import createMockedGame
 import org.junit.BeforeClass
 import org.junit.Test
@@ -10,15 +10,15 @@ import kotlin.test.assertEquals
 class SentenceParserTest {
 
     companion object {
-        private val speaker by lazy { Target("speaker") }
-        private val listener by lazy { Target("listener") }
+        private val speaker by lazy { Thing("speaker") }
+        private val listener by lazy { Thing("listener") }
 
         @JvmStatic
         @BeforeClass
         fun setup() {
             createMockedGame()
 
-            speaker.location.getLocation().addTarget(listener)
+            speaker.location.getLocation().addThing(listener)
         }
     }
 

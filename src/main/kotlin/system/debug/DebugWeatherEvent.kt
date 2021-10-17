@@ -1,6 +1,6 @@
 package system.debug
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class DebugWeatherEvent(val source: Target, val weather: String) : Event
+class DebugWeatherEvent(val source: Thing, val weather: String) : Event

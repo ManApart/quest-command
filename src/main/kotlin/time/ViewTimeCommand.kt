@@ -2,7 +2,7 @@ package time
 
 import core.commands.Command
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 
 class ViewTimeCommand : Command() {
     override fun getAliases(): List<String> {
@@ -22,7 +22,7 @@ class ViewTimeCommand : Command() {
         return listOf("Debugging")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         EventManager.postEvent(ViewTimeEvent(source))
     }
 

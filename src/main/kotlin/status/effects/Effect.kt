@@ -13,12 +13,12 @@ import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
 import kotlin.math.min
 
-class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyPartTargets: List<Location> = listOf()) : Named {
+class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyPartThings: List<Location> = listOf()) : Named {
     var originalValue = 0; private set
     override val name = base.name
 
     override fun toString(): String {
-        return "${base.name} ${base.statEffect} $amount (${base.amountType}) ${base.statTarget} (${base.statKind}) for $duration."
+        return "${base.name} ${base.statEffect} $amount (${base.amountType}) ${base.statThing} (${base.statKind}) for $duration."
     }
 
     fun apply(soul: Soul, firstApply: Boolean) {
@@ -58,23 +58,23 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyP
 
     private fun applyStatValue(soul: Soul, firstApply: Boolean) {
         val values = soul.parent.properties.values
-        if (base.statTarget != null) {
-            if (!values.hasInt(base.statTarget)) {
-                values.put(base.statTarget, 0)
+        if (base.statThing != null) {
+            if (!values.hasInt(base.statThing)) {
+                values.put(base.statThing, 0)
             }
             when {
                 base.statEffect == StatEffect.DRAIN -> {
-                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statTarget, -amount))
+                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statThing, -amount))
                 }
                 base.statEffect == StatEffect.DEPLETE && firstApply -> {
-                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statTarget, -amount))
+                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statThing, -amount))
                 }
                 base.statEffect == StatEffect.BOOST && firstApply -> {
-                    originalValue = values.getInt(base.statTarget)
-                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statTarget, amount))
+                    originalValue = values.getInt(base.statThing)
+                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statThing, amount))
                 }
                 base.statEffect == StatEffect.RECOVER -> {
-                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statTarget, amount))
+                    EventManager.postEvent(PropertyStatChangeEvent(soul.parent, base.name, base.statThing, amount))
                 }
                 base.statEffect == StatEffect.NONE -> {
                 }
@@ -83,7 +83,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyP
     }
 
     private fun getEffectedStat(soul: Soul): LeveledStat? {
-        return soul.getStatOrNull(base.statTarget)
+        return soul.getStatOrNull(base.statThing)
     }
 
     private fun getAppliedAmount(leveledStat: LeveledStat): Int {
@@ -98,7 +98,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyP
         soul.parent.getTopParent().properties.tags.remove(base.name)
         if (base.statEffect == StatEffect.BOOST || base.statEffect == StatEffect.DEPLETE) {
             if (base.statKind == StatKind.LEVELED) {
-                val stat = soul.getStatOrNull(base.statTarget)
+                val stat = soul.getStatOrNull(base.statThing)
                 if (stat != null) {
                     restoreValue(soul, stat, getAppliedAmount(stat))
                 }
@@ -116,21 +116,21 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyP
     }
 
     private fun restorePropertyVal(soul: Soul) {
-        if (base.statTarget != null) {
-            if (!soul.parent.properties.values.hasInt(base.statTarget)) {
-                soul.parent.properties.values.put(base.statTarget, 0)
+        if (base.statThing != null) {
+            if (!soul.parent.properties.values.hasInt(base.statThing)) {
+                soul.parent.properties.values.put(base.statThing, 0)
             }
             if (base.statEffect == StatEffect.DEPLETE) {
-                EventManager.postEvent(PropertyStatChangeEvent(soul.parent, "Removing " + base.name, base.statTarget, amount))
+                EventManager.postEvent(PropertyStatChangeEvent(soul.parent, "Removing " + base.name, base.statThing, amount))
             } else if (base.statEffect == StatEffect.BOOST) {
-                EventManager.postEvent(PropertyStatChangeEvent(soul.parent, "Removing " + base.name, base.statTarget, -amount))
+                EventManager.postEvent(PropertyStatChangeEvent(soul.parent, "Removing " + base.name, base.statThing, -amount))
             }
         }
     }
 
     private fun changeStat(soul: Soul, leveledStat: LeveledStat, amount: Int, sourceOfChangePrefix: String = "") {
         if (leveledStat.isHealth() && amount < 0) {
-            bodyPartTargets.forEach { bodyPart ->
+            bodyPartThings.forEach { bodyPart ->
                 EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, -amount, base.damageType, sourceOfChangePrefix + base.name))
             }
         } else {

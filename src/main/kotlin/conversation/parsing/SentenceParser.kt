@@ -2,11 +2,11 @@ package conversation.parsing
 
 import conversation.dialogue.ParsedDialogue
 import core.history.display
-import core.target.Target
+import core.thing.Thing
 import core.utility.Named
 import traveling.location.location.LocationManager
 
-class SentenceParser(private val speaker: Target, private val listener: Target, sentenceToParse: String) {
+class SentenceParser(private val speaker: Thing, private val listener: Thing, sentenceToParse: String) {
     private val sentence = Sentence(sentenceToParse.lowercase())
 
     val parsedDialogue = parseDialogue()
@@ -73,7 +73,7 @@ class SentenceParser(private val speaker: Target, private val listener: Target, 
     }
 
     private fun findNamed(subjectName: String): List<Named> {
-        val subjects = speaker.location.getLocation().getTargets(subjectName, speaker)
+        val subjects = speaker.location.getLocation().getThings(subjectName, speaker)
         val exact = subjects.getExact(subjectName)
         if (exact != null){
             return listOf(exact)

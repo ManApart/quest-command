@@ -5,9 +5,9 @@ import core.GameManager
 import core.Player
 import core.events.EventManager
 import core.properties.Tags
-import core.target.item.ItemManager
-import core.target.item.ItemsCollection
-import core.target.item.ItemsMock
+import core.thing.item.ItemManager
+import core.thing.item.ItemsCollection
+import core.thing.item.ItemsMock
 import crafting.craft.Craft
 import crafting.craft.CraftRecipeEvent
 import createItem
@@ -78,7 +78,7 @@ class CraftTest {
     private fun createBaker(): Player {
         val baker = GameManager.newPlayer()
         val pouch = createPouch(size = 30)
-        baker.target.inventory.add(pouch)
+        baker.thing.inventory.add(pouch)
         return baker
     }
 }

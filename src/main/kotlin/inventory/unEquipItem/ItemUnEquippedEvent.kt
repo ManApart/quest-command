@@ -2,6 +2,6 @@ package inventory.unEquipItem
 
 import core.body.Slot
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class ItemUnEquippedEvent(val creature: Target, val item: Target, val slot: Slot) : Event
+class ItemUnEquippedEvent(val creature: Thing, val item: Thing, val slot: Slot) : Event

@@ -5,7 +5,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import use.StartUseEvent
 
 class EatCommand : Command() {
@@ -26,7 +26,7 @@ class EatCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         val allFood = source.currentLocation().getItemsIncludingPlayerInventory(source).filter { it.properties.tags.has("food") }
         val pickedFood = source.currentLocation().getItemsIncludingPlayerInventory(argsString, source)
@@ -41,13 +41,13 @@ class EatCommand : Command() {
         }
     }
 
-    private fun eatWhat(food: List<Target>) {
+    private fun eatWhat(food: List<Thing>) {
         val message = "Eat what?\n\t${food.joinToString(", ")}"
         val response = ResponseRequest(message, food.associate { it.name to "eat ${it.name}" })
          CommandParser.setResponseRequest(response)
     }
 
-    private fun eatFood(source: Target, food: Target) {
+    private fun eatFood(source: Thing, food: Thing) {
         if (food.properties.tags.has("food")) {
             EventManager.postEvent(StartUseEvent(source, food, source))
         } else {

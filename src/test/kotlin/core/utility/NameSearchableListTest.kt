@@ -10,29 +10,29 @@ import kotlin.test.assertTrue
 class NameSearchableListTest {
 
     @Test
-    fun targetExistsFull() {
-        val target = NamedString("Full Match")
-        val badTarget = NamedString("No Match")
+    fun thingExistsFull() {
+        val thing = NamedString("Full Match")
+        val badThing = NamedString("No Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val baseline = list.exists(badTarget.name)
-        val actual = list.exists(target.name)
+        val baseline = list.exists(badThing.name)
+        val actual = list.exists(thing.name)
 
         assertFalse(baseline)
         assertTrue(actual)
     }
 
     @Test
-    fun targetExistsPartial() {
-        val target = NamedString("Partial Match")
-        val badTarget = NamedString("No Match")
+    fun thingExistsPartial() {
+        val thing = NamedString("Partial Match")
+        val badThing = NamedString("No Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val baseline = list.exists(badTarget.name)
+        val baseline = list.exists(badThing.name)
         val actual = list.exists("Partial")
 
         assertFalse(baseline)
@@ -67,7 +67,7 @@ class NameSearchableListTest {
     }
 
     @Test
-    fun targetExistsPartialPrefersExactMatch() {
+    fun thingExistsPartialPrefersExactMatch() {
         val applePieTin = NamedString("apple pie Tin")
         val pieTin = NamedString("Pie Tin")
         val tinderBox = NamedString("Tinderbox")
@@ -82,7 +82,7 @@ class NameSearchableListTest {
     }
 
     @Test
-    fun targetExistsPartialPrefersWholeWord() {
+    fun thingExistsPartialPrefersWholeWord() {
         val pieTin = NamedString("Pie Tin")
         val tinderBox = NamedString("Tinderbox")
 
@@ -95,7 +95,7 @@ class NameSearchableListTest {
     }
 
     @Test
-    fun blankTargetDoesNotReturnResults() {
+    fun blankThingDoesNotReturnResults() {
         val list = NameSearchableList<NamedString>()
         list.add(NamedString("Match"))
 
@@ -106,29 +106,29 @@ class NameSearchableListTest {
     }
 
     @Test
-    fun targetExistsUsingListFull() {
-        val target = NamedString("Full Match")
-        val badTarget = NamedString("No Match")
+    fun thingExistsUsingListFull() {
+        val thing = NamedString("Full Match")
+        val badThing = NamedString("No Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val baseline = list.exists(badTarget.name)
-        val actual = list.exists(target.name)
+        val baseline = list.exists(badThing.name)
+        val actual = list.exists(thing.name)
 
         assertFalse(baseline)
         assertTrue(actual)
     }
 
     @Test
-    fun targetExistsUsingListPartial() {
-        val target = NamedString("Partial Match")
-        val badTarget = NamedString("No Match")
+    fun thingExistsUsingListPartial() {
+        val thing = NamedString("Partial Match")
+        val badThing = NamedString("No Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val baseline = list.exists(badTarget.name)
+        val baseline = list.exists(badThing.name)
         val actual = list.exists("Partial")
 
         assertFalse(baseline)
@@ -136,204 +136,204 @@ class NameSearchableListTest {
     }
 
     @Test
-    fun getTargetFull() {
-        val target = NamedString("Full Match")
+    fun getThingFull() {
+        val thing = NamedString("Full Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val actual = list.get(target.name)
+        val actual = list.get(thing.name)
 
-        assertEquals(target, actual)
+        assertEquals(thing, actual)
     }
 
     @Test
-    fun getTargetPartial() {
-        val target = NamedString("Partial Match")
+    fun getThingPartial() {
+        val thing = NamedString("Partial Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
         val actual = list.get("Partial")
 
-        assertEquals(target, actual)
+        assertEquals(thing, actual)
     }
 
     @Test
-    fun getTargetUsingListFull() {
-        val target = NamedString("Full Match")
+    fun getThingUsingListFull() {
+        val thing = NamedString("Full Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val actual = list.get(target.name)
+        val actual = list.get(thing.name)
 
-        assertEquals(target, actual)
+        assertEquals(thing, actual)
     }
 
     @Test
-    fun getTargetUsingListPartial() {
-        val target = NamedString("Partial Match")
+    fun getThingUsingListPartial() {
+        val thing = NamedString("Partial Match")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
         val actual = list.get("Partial")
 
-        assertEquals(target, actual)
+        assertEquals(thing, actual)
     }
 
     @Test
     fun getOrNullProxy() {
-        val target = NamedString("Target")
+        val thing = NamedString("Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.addProxy(target, listOf("proxy"))
+        list.addProxy(thing, listOf("proxy"))
 
         val actual = list.get("proxy")
 
-        assertEquals(target, actual)
+        assertEquals(thing, actual)
     }
 
     @Test
     fun getOrNullProxyCaseInsensitive() {
-        val target = NamedString("Target")
+        val thing = NamedString("Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.addProxy(target, listOf("PROXY"))
+        list.addProxy(thing, listOf("PROXY"))
 
         val actual = list.get("proxy")
 
-        assertEquals(target, actual)
+        assertEquals(thing, actual)
     }
 
     @Test
     fun constructFromItem() {
-        val target = NamedString("Target")
+        val thing = NamedString("Thing")
 
-        val list = NameSearchableList(target)
+        val list = NameSearchableList(thing)
         assertEquals(1, list.size)
-        assertEquals(target, list.get("Target"))
+        assertEquals(thing, list.get("Thing"))
     }
 
     @Test
     fun constructFromIterable() {
-        val target = NamedString("Target")
-        val target2 = NamedString("Target2")
+        val thing = NamedString("Thing")
+        val thing2 = NamedString("Thing2")
 
-        val list = NameSearchableList(listOf(target, target2))
+        val list = NameSearchableList(listOf(thing, thing2))
         assertEquals(2, list.size)
-        assertEquals(target, list.get("Target"))
-        assertEquals(target2, list.get("Target2"))
+        assertEquals(thing, list.get("Thing"))
+        assertEquals(thing2, list.get("Thing2"))
 
     }
 
     @Test
     fun constructFromNameSearchable() {
-        val target = NamedString("Target")
-        val target2 = NamedString("Target2")
+        val thing = NamedString("Thing")
+        val thing2 = NamedString("Thing2")
 
-        val firstList = NameSearchableList(target)
-        firstList.addProxy(target2, listOf("proxy"))
+        val firstList = NameSearchableList(thing)
+        firstList.addProxy(thing2, listOf("proxy"))
 
         val list = NameSearchableList(firstList)
 
         assertEquals(2, list.size)
-        assertEquals(target, list.get("Target"))
-        assertEquals(target2, list.get("proxy"))
+        assertEquals(thing, list.get("Thing"))
+        assertEquals(thing2, list.get("proxy"))
     }
 
     @Test
     fun toList() {
-        val target = NamedString("Target")
+        val thing = NamedString("Thing")
 
-        val list = listOf(target).toNameSearchableList()
+        val list = listOf(thing).toNameSearchableList()
         assertEquals(1, list.size)
-        assertEquals(target, list.get("Target"))
+        assertEquals(thing, list.get("Thing"))
     }
 
     @Test
     fun existsExactCleansString() {
-        val target = NamedString("Target")
+        val thing = NamedString("Target")
 
-        val list = listOf(target).toNameSearchableList()
+        val list = listOf(thing).toNameSearchableList()
         assertTrue(list.existsExact(" TARGET "))
     }
 
     @Test
     fun existsExactMatchesProxy() {
-        val target = NamedString("Target")
+        val thing = NamedString("Target")
 
-        val list = listOf(target).toNameSearchableList()
-        list.addProxy(target, "Carget")
+        val list = listOf(thing).toNameSearchableList()
+        list.addProxy(thing, "Carget")
         assertTrue(list.existsExact(" carget "))
     }
 
     @Test
     fun existsExactDoesNotReturnPartialMatch() {
-        val target = NamedString("Target")
+        val thing = NamedString("Thing")
 
-        val list = listOf(target).toNameSearchableList()
+        val list = listOf(thing).toNameSearchableList()
         assertFalse(list.existsExact("tar"))
     }
 
     @Test
-    fun removeTargetAlsoRemovesProxy() {
-        val target = NamedString("Target")
+    fun removeThingAlsoRemovesProxy() {
+        val thing = NamedString("Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.addProxy(target, listOf("proxy"))
+        list.addProxy(thing, listOf("proxy"))
 
         val actual = list.get("proxy")
-        assertEquals(target, actual)
-        list.remove(target)
-        assertNull(list.getOrNull(target.name))
+        assertEquals(thing, actual)
+        list.remove(thing)
+        assertNull(list.getOrNull(thing.name))
         assertNull(list.getOrNull("proxy"))
     }
 
     @Test
     fun getTriesWithSpaces() {
-        val target = NamedString("A Target")
+        val thing = NamedString("A Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val actual = list.get("ATarget")
-        assertEquals(target, actual)
+        val actual = list.get("AThing")
+        assertEquals(thing, actual)
     }
 
     @Test
     fun equalsMethod() {
-        val target = NamedString("A Target")
+        val thing = NamedString("A Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val actual = NameSearchableList(target)
+        val actual = NameSearchableList(thing)
         assertEquals(list, actual)
     }
 
     @Test
     fun differentProxiesStillEqual() {
-        val target = NamedString("A Target")
+        val thing = NamedString("A Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val actual = NameSearchableList(target)
-        actual.addProxy(target, "Bob")
+        val actual = NameSearchableList(thing)
+        actual.addProxy(thing, "Bob")
         assertEquals(list, actual)
     }
 
     @Test
     fun notEquals() {
-        val target = NamedString("A Target")
-        val target2 = NamedString("Not A Target")
+        val thing = NamedString("A Thing")
+        val thing2 = NamedString("Not A Thing")
 
         val list = NameSearchableList<NamedString>()
-        list.add(target)
+        list.add(thing)
 
-        val actual = NameSearchableList(target2)
+        val actual = NameSearchableList(thing2)
         assertNotEquals(list, actual)
     }
 

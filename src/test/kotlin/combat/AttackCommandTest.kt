@@ -4,7 +4,7 @@ import combat.attack.AttackCommand
 import combat.attack.StartAttackEvent
 import core.GameManager
 import core.events.EventManager
-import core.target.target
+import core.thing.thing
 import createMockedGame
 import org.junit.Before
 import org.junit.Test
@@ -22,13 +22,13 @@ class AttackCommandTest {
     @Test
     fun attackCreatureWithoutDirection() {
         val player = GameManager.newPlayer()
-        val rat = target("Rat"){
+        val rat = thing("Rat"){
             body("human")
         }.build()
-        player.target.currentLocation().addTarget(rat)
+        player.thing.currentLocation().addThing(rat)
 
         command.execute(player, "sl", "rat".split(" "))
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
-        assertEquals(rat, event.target.target)
+        assertEquals(rat, event.thing.thing)
     }
 }

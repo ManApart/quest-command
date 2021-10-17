@@ -64,7 +64,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
 
         stage = event.stage
         //TODO - quests per player?
-        EventManager.postEvent(QuestStageUpdatedEvent(GameState.player.target, this, stage))
+        EventManager.postEvent(QuestStageUpdatedEvent(GameState.player.thing, this, stage))
         calculateListenedForEvents()
         if (event.completesQuest || listenedForEvents.isEmpty()) {
             EventManager.postEvent(CompleteQuestEvent(this))

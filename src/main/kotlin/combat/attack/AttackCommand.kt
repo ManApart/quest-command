@@ -5,9 +5,9 @@ import core.Player
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import status.stat.HEALTH
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import use.StartUseEvent
 
 class AttackCommand : Command() {
@@ -23,27 +23,27 @@ class AttackCommand : Command() {
     override val name = "Chop, Slash, Stab"
 
     override fun getDescription(): String {
-        return "Chop/Stab/Slash/Crush the target"
+        return "Chop/Stab/Slash/Crush the thing"
     }
 
     override fun getManual(): String {
         return """
-	<attack> <target> - Chop, crush, slash, or stab the target with the item in your right hand
-	<attack> <target> with <hand> - Attack the target with the item in your left/right hand
-	<attack> <part> of <target> - Attack the target, aiming for a specific body part
-	<attack> <target> with <item> - Attack the target with the item in your left/right hand
-	Attacking a target damages it based on the chop/stab/slash damage of the item you're holding in that hand, or the damage you do if empty handed"""
+	<attack> <thing> - Chop, crush, slash, or stab the thing with the item in your right hand
+	<attack> <thing> with <hand> - Attack the thing with the item in your left/right hand
+	<attack> <part> of <thing> - Attack the thing, aiming for a specific body part
+	<attack> <thing> with <item> - Attack the thing with the item in your left/right hand
+	Attacking a thing damages it based on the chop/stab/slash damage of the item you're holding in that hand, or the damage you do if empty handed"""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Combat")
     }
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         //Ignored
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        val sourceT = source.target
+        val sourceT = source.thing
         if (keyword.lowercase() == "attack") {
             clarifyAttackType(args)
         } else {
@@ -51,46 +51,46 @@ class AttackCommand : Command() {
             val attackType = fromString(keyword)
             val handHelper = HandHelper(sourceT, arguments.getString("with"), attackType.damageType.damage.lowercase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
-            val target = getTarget(keyword, arguments, weaponName, sourceT)
+            val thing = getThing(keyword, arguments, weaponName, sourceT)
 
-            if (target == null) {
-                clarifyTarget(sourceT, keyword, weaponName)
+            if (thing == null) {
+                clarifyThing(sourceT, keyword, weaponName)
             } else {
-                //Go ahead and process a target that has aimed for body parts or no body parts at all
-                if (target.bodyPartTargets.isNotEmpty()) {
-                    processAttack(sourceT, arguments, attackType, handHelper, target)
+                //Go ahead and process a thing that has aimed for body parts or no body parts at all
+                if (thing.bodyPartThings.isNotEmpty()) {
+                    processAttack(sourceT, arguments, attackType, handHelper, thing)
                 } else {
                     //If we got an alias, process with a default value of the body root part
-                    if (isAlias(keyword) || target.target.body.getParts().size == 1) {
-                        processAttack(sourceT, arguments, attackType, handHelper, TargetAim(target.target, listOf(target.target.body.getRootPart())))
+                    if (isAlias(keyword) || thing.thing.body.getParts().size == 1) {
+                        processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body.getRootPart())))
                         //Otherwise clarify body parts.
                     } else {
-                        clarifyTargetPart(keyword, target, weaponName)
+                        clarifyThingPart(keyword, thing, weaponName)
                     }
                 }
             }
         }
     }
 
-    private fun getTarget(keyword: String, arguments: Args, weaponName: String, source: Target): TargetAim? {
-        val targets = parseTargets(source, arguments.getBaseGroup()) + parseTargetsFromInventory(source, arguments.getBaseGroup(), source)
-        return if (targets.isEmpty() && !isAlias(keyword)) {
-            clarifyTarget(source, keyword, weaponName)
+    private fun getThing(keyword: String, arguments: Args, weaponName: String, source: Thing): ThingAim? {
+        val things = parseThings(source, arguments.getBaseGroup()) + parseThingsFromInventory(source, arguments.getBaseGroup(), source)
+        return if (things.isEmpty() && !isAlias(keyword)) {
+            clarifyThing(source, keyword, weaponName)
             null
-        } else if (targets.isEmpty()) {
-            val target = source.ai.aggroTarget
-            return if (target != null) {
-                TargetAim(target)
+        } else if (things.isEmpty()) {
+            val thing = source.ai.aggroThing
+            return if (thing != null) {
+                ThingAim(thing)
             } else {
                 null
             }
-        } else if (targets.size > 1) {
-            clarifyTargets(keyword, targets, weaponName)
+        } else if (things.size > 1) {
+            clarifyThings(keyword, things, weaponName)
             null
-        } else if (targets.size == 1) {
-            targets.first()
+        } else if (things.size == 1) {
+            things.first()
         } else {
-            clarifyTarget(source, keyword, weaponName)
+            clarifyThing(source, keyword, weaponName)
             null
         }
     }
@@ -106,40 +106,40 @@ class AttackCommand : Command() {
         CommandParser.setResponseRequest(response)
     }
 
-    private fun clarifyTarget(source: Target, keyword: String, weaponName: String) {
-        val options = source.currentLocation().getTargets()
+    private fun clarifyThing(source: Thing, keyword: String, weaponName: String) {
+        val options = source.currentLocation().getThings()
         val message = "$keyword what with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message, options.associate { it.name to "$keyword ${it.name}" })
         CommandParser.setResponseRequest(response)
     }
 
-    private fun clarifyTargets(keyword: String, options: List<TargetAim>, weaponName: String) {
+    private fun clarifyThings(keyword: String, options: List<ThingAim>, weaponName: String) {
         val message = "$keyword which one with $weaponName?\n\t${options.joinToString(", ")}"
-        val response = ResponseRequest(message, options.associate { it.target.name to "$keyword ${it.target.name}" })
+        val response = ResponseRequest(message, options.associate { it.thing.name to "$keyword ${it.thing.name}" })
         CommandParser.setResponseRequest(response)
     }
 
-    private fun clarifyTargetPart(keyword: String, target: TargetAim, weaponName: String) {
-        val options = target.target.body.getParts()
-        val message = "$keyword what part of ${target.target.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
+    private fun clarifyThingPart(keyword: String, thing: ThingAim, weaponName: String) {
+        val options = thing.thing.body.getParts()
+        val message = "$keyword what part of ${thing.thing.name} with $weaponName?\n\t${options.joinToString(", ") { it.name }}"
         val response = ResponseRequest(message,
-            options.associate { it.name to "$keyword ${it.name} of ${target.target.name}" })
+            options.associate { it.name to "$keyword ${it.name} of ${thing.thing.name}" })
         CommandParser.setResponseRequest(response)
     }
 
-    private fun processAttack(source: Target, arguments: Args, attackType: AttackType, handHelper: HandHelper, target: TargetAim?) {
+    private fun processAttack(source: Thing, arguments: Args, attackType: AttackType, handHelper: HandHelper, thing: ThingAim?) {
         when {
-            isAttackingActivatorWithWeapon(target, handHelper) -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, target!!.target))
-            target != null && target.target == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
-            target != null && !target.target.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, target.target))
-            target != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, target, attackType.damageType))
-            source.ai.aggroTarget != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, TargetAim(source.ai.aggroTarget!!), attackType.damageType))
+            isAttackingActivatorWithWeapon(thing, handHelper) -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing!!.thing))
+            thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
+            thing != null && !thing.thing.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing.thing))
+            thing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, thing, attackType.damageType))
+            source.ai.aggroThing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, ThingAim(source.ai.aggroThing!!), attackType.damageType))
             else -> source.displayToMe("Couldn't find ${arguments.getBaseString()}.")
         }
     }
 
-    private fun isAttackingActivatorWithWeapon(target: TargetAim?, handHelper: HandHelper) =
-        target != null && handHelper.weapon != null && target.target.properties.isActivator()
+    private fun isAttackingActivatorWithWeapon(thing: ThingAim?, handHelper: HandHelper) =
+        thing != null && handHelper.weapon != null && thing.thing.properties.isActivator()
 
 
 }

@@ -5,72 +5,72 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.commands.parseDirection
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommand
-import magic.spells.MoveTargetSpell
+import magic.spells.MoveThingSpell
 import status.conditions.Condition
 import status.effects.EffectManager
 import status.stat.AIR_MAGIC
 import traveling.direction.Direction
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 import traveling.position.toCommandString
 
 class Pull : SpellCommand() {
     override val name = "Pull"
 
     override fun getDescription(): String {
-        return "Pull targets closer to you."
+        return "Pull things closer to you."
     }
 
     override fun getManual(): String {
         return """
-	Cast Pull <power> on *<targets> - Pull the targets a set distance closer to you. The higher the power, the further the target will be pulled. Lighter targets are pulled further.
-	Cast Pull <power> towards <direction> on *<targets> - Pull the targets a set distance in the given direction."""
+	Cast Pull <power> on *<things> - Pull the things a set distance closer to you. The higher the power, the further the thing will be pulled. Lighter things are pulled further.
+	Cast Pull <power> towards <direction> on *<things> - Pull the things a set distance in the given direction."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Air")
     }
 
-    override fun execute(source: Target, args: Args, targets: List<TargetAim>, useDefaults: Boolean) {
+    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
         val direction = parseDirection(argsWithTowards.getGroup("towards"))
 
         val power = args.getNumber()
         if (power == null) {
-            val message =  "Pull ${targets.toCommandString()} how hard?"
+            val message =  "Pull ${things.toCommandString()} how hard?"
             val options = listOf("1", "3", "5", "10", "50")
             val response = ResponseRequest(message,
-                options.associateWith { "pull $it towards ${direction.name} on ${targets.toCommandString()}}" })
+                options.associateWith { "pull $it towards ${direction.name} on ${things.toCommandString()}}" })
              CommandParser.setResponseRequest(response)
         } else {
-            val hitCount = targets.count()
-            val perTargetCost = power / 10
-            val totalCost = perTargetCost * hitCount
+            val hitCount = things.count()
+            val perThingCost = power / 10
+            val totalCost = perThingCost * hitCount
             val levelRequirement = power / 2
 
-            executeWithWarns(source, AIR_MAGIC, levelRequirement, totalCost, targets) {
-                targets.forEach { target ->
-                    val parts = target.target.body.getParts()
+            executeWithWarns(source, AIR_MAGIC, levelRequirement, totalCost, things) {
+                things.forEach { thing ->
+                    val parts = thing.thing.body.getParts()
                     val effects = listOf(EffectManager.getEffect("Air Blasted", 0, 0, parts))
                     val condition = Condition("Air Blasted", Element.AIR, power, effects)
-                    val distance = calcDistance(target.target, power)
+                    val distance = calcDistance(thing.thing, power)
                     val vector = if (direction == Direction.NONE) {
-                        target.target.position.closer(source.position, distance)
+                        thing.thing.position.closer(source.position, distance)
                     } else {
-                        target.target.position.getVectorInDirection((direction.vector * distance) + target.target.position, distance)
+                        thing.thing.position.getVectorInDirection((direction.vector * distance) + thing.thing.position, distance)
                     }
-                    val spell = MoveTargetSpell("Push", vector, condition, perTargetCost, AIR_MAGIC, levelRequirement)
-                    EventManager.postEvent(StartCastSpellEvent(source, target, spell))
+                    val spell = MoveThingSpell("Push", vector, condition, perThingCost, AIR_MAGIC, levelRequirement)
+                    EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
                 }
             }
         }
     }
 
-    private fun calcDistance(target: Target, power: Int): Int {
-        val weight = target.getWeight()
+    private fun calcDistance(thing: Thing, power: Int): Int {
+        val weight = thing.getWeight()
         return if (weight > power) {
             0
         } else {

@@ -27,7 +27,7 @@ class Load : EventListener<LoadEvent>() {
     private fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
         CommandParser.commandSource = GameState.player
-        GameState.player.target.displayToMe("Now playing ${GameState.player.target.name} in ${GameState.gameName}.")
+        GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName}.")
     }
 
 }

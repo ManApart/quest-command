@@ -6,7 +6,7 @@ import core.commands.CommandParser
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.filterUniqueByName
 
 class PutItemCommand : core.commands.Command() {
@@ -21,36 +21,36 @@ class PutItemCommand : core.commands.Command() {
 
     override fun getManual(): String {
         return """
-	Put <item> in <target> - Place an item from your inventory into another container."""
+	Put <item> in <thing> - Place an item from your inventory into another container."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "in")))
         val arguments = Args(args, delimiters)
         when {
             arguments.isEmpty() && keyword == "put" -> clarifyItemToPlace(source)
             arguments.hasBase() && (arguments.hasGroup("in") || arguments.hasGroup("to")) -> placeItemInContainer(source, arguments)
-            else -> source.displayToMe("Place what where? Try 'place <item> in <target>'.")
+            else -> source.displayToMe("Place what where? Try 'place <item> in <thing>'.")
         }
     }
 
-    private fun clarifyItemToPlace(source: Target) {
-        val targets = source.inventory.getItems().map { it.name }
-        val message = "Give what item?\n\t${targets.joinToString(", ")}"
-        CommandParser.setResponseRequest(ResponseRequest(message, targets.associateWith { "place $it in" }))
+    private fun clarifyItemToPlace(source: Thing) {
+        val things = source.inventory.getItems().map { it.name }
+        val message = "Give what item?\n\t${things.joinToString(", ")}"
+        CommandParser.setResponseRequest(ResponseRequest(message, things.associateWith { "place $it in" }))
     }
 
-    private fun placeItemInContainer(source: Target, args: Args) {
+    private fun placeItemInContainer(source: Thing, args: Args) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
-            val targetString = args.getFirstString("in", "to")
-            val destinations = source.currentLocation().getTargets(targetString).filterUniqueByName()
+            val thingString = args.getFirstString("in", "to")
+            val destinations = source.currentLocation().getThings(thingString).filterUniqueByName()
             when {
-                targetString.isNotBlank() && destinations.isEmpty() -> source.displayToMe("Couldn't find $targetString")
+                thingString.isNotBlank() && destinations.isEmpty() -> source.displayToMe("Couldn't find $thingString")
                 destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source, item, source, destinations.first(), true))
                 else -> giveToWhat(destinations, args.getBaseString())
             }
@@ -59,7 +59,7 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private fun giveToWhat(creatures: List<Target>, itemName: String) {
+    private fun giveToWhat(creatures: List<Thing>, itemName: String) {
         val message = "Give $itemName to what?\n\t${creatures.joinToString(", ")}"
         val response = ResponseRequest(message, creatures.associate { it.name to "give $itemName to ${it.name}" })
          CommandParser.setResponseRequest(response)

@@ -5,7 +5,7 @@ import core.commands.Command
 import core.commands.CommandParser
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
@@ -32,7 +32,7 @@ class TravelCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         if (source.getEncumbrance() >=1){
             source.displayToMe("You are too encumbered to travel.")
         } else if (args.isEmpty()) {

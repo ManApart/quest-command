@@ -1,7 +1,7 @@
 package core.utility
 
 import org.junit.Test
-import traveling.location.location.LocationTarget
+import traveling.location.location.LocationThing
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -67,7 +67,7 @@ class MapHelperTest {
 
     @Test
     fun getAllStrings() {
-        val map = mapOf("One" to "1", "Two" to mapOf("Three" to "three"), "Four" to LocationTarget("IgnoredValue"), LocationTarget("IgnoredKey") to "IgnoredValue2")
+        val map = mapOf("One" to "1", "Two" to mapOf("Three" to "three"), "Four" to LocationThing("IgnoredValue"), LocationThing("IgnoredKey") to "IgnoredValue2")
         val expected = listOf("One", "1", "Two", "Three", "three", "Four")
         assertEquals(expected, map.getAllStrings())
     }

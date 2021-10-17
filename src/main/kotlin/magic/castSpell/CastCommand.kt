@@ -4,13 +4,13 @@ import core.DependencyInjector
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 import core.utility.NameSearchableList
 import magic.ViewWordHelpEvent
 import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
 import traveling.location.location.Location
-import traveling.position.TargetAim
+import traveling.position.ThingAim
 
 class CastCommand : Command() {
     //Should this go to the command parser?
@@ -32,7 +32,7 @@ class CastCommand : Command() {
         return """
     word list - list known words. 
     word <word> - view the manual for that word.
-    cast <word> <word args> on *<target> - cast a spell with specific arguments on a target
+    cast <word> <word args> on *<thing> - cast a spell with specific arguments on a thing
     Simple Example:
         Cast shard 5 on bandit - This would cast an ice shard with 5 points of damage at a random body part of the bandit.
     Complicated Example:
@@ -47,14 +47,14 @@ class CastCommand : Command() {
         return spellCommands.exists(keyword)
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         when (keyword) {
             "word" -> executeWord(source, args)
             else -> castWord(source, keyword != "cast", args, keyword == "c")
         }
     }
 
-    private fun executeWord(source: Target, args: List<String>) {
+    private fun executeWord(source: Thing, args: List<String>) {
         if (args.size <= 1) {
             if (args.isEmpty() || args.first() == "list") {
                 EventManager.postEvent(ViewWordHelpEvent(source))
@@ -78,7 +78,7 @@ class CastCommand : Command() {
         return categories.contains(word)
     }
 
-    private fun castWord(source: Target, isAlias: Boolean, args: List<String>, useDefaults: Boolean) {
+    private fun castWord(source: Thing, isAlias: Boolean, args: List<String>, useDefaults: Boolean) {
         if (args.isEmpty()) {
             clarifyWord()
         } else {
@@ -86,11 +86,11 @@ class CastCommand : Command() {
             if (spellCommand != null) {
                 val arguments = Args(args, delimiters = listOf("on"))
                 val spellArgs = parseSpellArgs(arguments)
-                val targets = parseTargets(source, arguments.getGroup("on")).toMutableList()
-                if (isAlias && targets.isEmpty()) {
-                    targets.add(TargetAim(source, parseBodyParts(source, args)))
+                val things = parseThings(source, arguments.getGroup("on")).toMutableList()
+                if (isAlias && things.isEmpty()) {
+                    things.add(ThingAim(source, parseBodyParts(source, args)))
                 }
-                spellCommand.execute(source, spellArgs, targets, useDefaults)
+                spellCommand.execute(source, spellArgs, things, useDefaults)
             } else {
                 source.displayToMe("Unknown word ${args.first()}")
             }
@@ -121,9 +121,9 @@ class CastCommand : Command() {
     }
 }
 
-fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Location> {
-    val parts = targetAim.bodyPartTargets.ifEmpty {
-        targetAim.target.body.getParts()
+fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<Location> {
+    val parts = thingAim.bodyPartThings.ifEmpty {
+        thingAim.thing.body.getParts()
     }
 
     return if (maxParts > 0) {
@@ -134,8 +134,8 @@ fun getTargetedPartsOrAll(targetAim: TargetAim, maxParts: Int = -1): List<Locati
 
 }
 
-fun getTargetedPartsOrRootPart(targetAim: TargetAim): List<Location> {
-    return targetAim.bodyPartTargets.ifEmpty {
-        listOfNotNull(targetAim.target.body.getRootPart())
+fun getThingedPartsOrRootPart(thingAim: ThingAim): List<Location> {
+    return thingAim.bodyPartThings.ifEmpty {
+        listOfNotNull(thingAim.thing.body.getRootPart())
     }
 }

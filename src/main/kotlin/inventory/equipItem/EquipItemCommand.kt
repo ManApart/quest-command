@@ -5,7 +5,7 @@ import core.body.Slot
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
-import core.target.Target
+import core.thing.Thing
 
 class EquipItemCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,7 +27,7 @@ class EquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Target, keyword: String, args: List<String>) {
+    override fun execute(source: Thing, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "on")))
         val arguments = Args(args, delimiters, listOf("f"))
 
@@ -61,7 +61,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun getItem(source: Target, args: Args): Target? {
+    private fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         return source.inventory.getItem(itemName)
     }
@@ -74,7 +74,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun findSlot(attachPointGuess: String?, body: Body, item: Target): Slot? {
+    private fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
         return if (attachPointGuess == null) {
             body.getDefaultSlot(item)
         } else {
@@ -82,27 +82,27 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun suggestEquippableItems(source: Target) {
+    private fun suggestEquippableItems(source: Thing) {
         val equippableItems = getEquipableItems(source)
         val message = "What do you want to equip?\n\t${equippableItems.joinToString(", ")}"
         val response = ResponseRequest(message, equippableItems.associate { it.name to "equip ${it.name}" })
          CommandParser.setResponseRequest(response)
     }
 
-    private fun getEquipableItems(source: Target): List<Target> {
+    private fun getEquipableItems(source: Thing): List<Thing> {
         val body = source.body
         val equippedItems = body.getEquippedItems()
         return source.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
     }
 
-    private fun suggestAttachPoints(attachPointGuess: String?, item: Target) {
+    private fun suggestAttachPoints(attachPointGuess: String?, item: Thing) {
         val message = "Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}"
         val response = ResponseRequest(message,
             item.equipSlots.flatMap { it.attachPoints }.associateWith { "equip $item to $it" })
          CommandParser.setResponseRequest(response)
     }
 
-    private fun confirmEquip(newEquip: Target, equippedItems: List<Target>, attachPoint: String?) {
+    private fun confirmEquip(newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
         val message = "Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?"
 
         val toPart = if (attachPoint.isNullOrBlank()) {

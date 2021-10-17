@@ -8,14 +8,14 @@ import inventory.pickupItem.ItemPickedUpEvent
 
 class SpawnItem : EventListener<ItemSpawnedEvent>() {
     override fun execute(event: ItemSpawnedEvent) {
-        if (event.target == null) {
+        if (event.thing == null) {
             val name = (event.item.properties.getCount() > 1).then("${event.item.properties.getCount()}x ${event.item.name}s", event.item.name)
             event.item.display("$name appeared.")
-            event.item.location = event.targetLocation
-            event.item.location.getLocation().addTarget(event.item)
+            event.item.location = event.thingLocation
+            event.item.location.getLocation().addThing(event.item)
         } else {
-            event.target.inventory.add(event.item)
-            EventManager.postEvent(ItemPickedUpEvent(event.target, event.item, true))
+            event.thing.inventory.add(event.item)
+            EventManager.postEvent(ItemPickedUpEvent(event.thing, event.item, true))
         }
     }
 }

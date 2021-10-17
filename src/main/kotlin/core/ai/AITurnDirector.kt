@@ -3,13 +3,13 @@ package core.ai
 import core.GameState
 import core.events.EventListener
 import core.events.EventManager
-import core.target.Target
+import core.thing.Thing
 import explore.look.printUpdatingStatusEnd
 
 class AITurnDirector : EventListener<AIUpdateTick>() {
 
     override fun execute(event: AIUpdateTick) {
-        val creatures = GameState.player.target.location.getLocation().getCreatures(GameState.player.target)
+        val creatures = GameState.player.thing.location.getLocation().getCreatures(GameState.player.thing)
 
         //If only one creature, instantly fill their action points to avoid all the looping
         if (creatures.size == 1) {
@@ -25,20 +25,20 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
 
     }
 
-    private fun takeATurn(creatures: List<Target>): Boolean {
+    private fun takeATurn(creatures: List<Thing>): Boolean {
         val creatureAIs = creatures.map { it.ai }
         creatureAIs.forEach { it.tick() }
         creatureAIs.forEach {
             //Make this only if some verbosity level is set?
             if (it.isActionReady()) {
-                if (it.aggroTarget != null) {
+                if (it.aggroThing != null) {
                     printUpdatingStatusEnd(creatures)
                 }
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
                 return false
             } else if (it.canChooseAction()) {
-                if (it.aggroTarget != null) {
+                if (it.aggroThing != null) {
                     printUpdatingStatusEnd(creatures)
                 }
                 it.creature.body.blockHelper.resetStance()

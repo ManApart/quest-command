@@ -20,6 +20,6 @@ open class Spell(
 ) {
     open fun cast(event: CastSpellEvent) {
         EventManager.postEvent(StatChangeEvent(event.source, "Casting", FOCUS, -event.spell.cost))
-        EventManager.postEvent(AddConditionEvent(event.target.target, event.spell.condition))
+        EventManager.postEvent(AddConditionEvent(event.thing.thing, event.spell.condition))
     }
 }

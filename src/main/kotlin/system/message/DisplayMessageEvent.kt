@@ -1,6 +1,6 @@
 package system.message
 
 import core.events.Event
-import core.target.Target
+import core.thing.Thing
 
-class DisplayMessageEvent(val listener: Target, val message: String) : Event
+class DisplayMessageEvent(val listener: Thing, val message: String) : Event

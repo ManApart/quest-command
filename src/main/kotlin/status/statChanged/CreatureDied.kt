@@ -10,16 +10,16 @@ import traveling.scope.remove.RemoveScopeEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
     override fun shouldExecute(event: StatMinnedEvent): Boolean {
-        return !event.target.isPlayer() && event.stat.lowercase() == HEALTH.lowercase()
+        return !event.thing.isPlayer() && event.stat.lowercase() == HEALTH.lowercase()
     }
 
     override fun execute(event: StatMinnedEvent) {
-        event.target.display("${event.target.name} has died.")
-        val creature = event.target
+        event.thing.display("${event.thing.name} has died.")
+        val creature = event.thing
 
         creature.location.getLocation().getCreatures().forEach {
-            if (it.ai.aggroTarget == creature) {
-                it.ai.aggroTarget = null
+            if (it.ai.aggroThing == creature) {
+                it.ai.aggroThing = null
             }
         }
 
