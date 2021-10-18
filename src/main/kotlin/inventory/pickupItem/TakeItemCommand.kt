@@ -38,11 +38,11 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupItemFromScope(source: Thing, args: Args) {
-        val items = source.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
+    private fun pickupItemFromScope(source: Player, args: Args) {
+        val items = source.thing.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> source.displayToMe("Couldn't find ${args.getBaseString()}")
-            items.size == 1 -> EventManager.postEvent(TakeItemEvent(source, items.first()))
+            items.size == 1 -> EventManager.postEvent(TakeItemEvent(source.thing, items.first()))
             else -> pickupWhat(source, items)
         }
     }
@@ -58,10 +58,10 @@ class TakeItemCommand : core.commands.Command() {
     }
 
     private fun pickupItemFromContainer(source: Player, args: Args) {
-        val from = source.currentLocation().getThings(args.getString("from")).filterUniqueByName()
+        val from = source.thing.currentLocation().getThings(args.getString("from")).filterUniqueByName()
         when {
             from.isEmpty() -> source.displayToMe("Couldn't find ${args.getString("from")}.")
-            from.size == 1 -> takeItemFromContainer(source, from.first(), args.getBaseString())
+            from.size == 1 -> takeItemFromContainer(source.thing, from.first(), args.getBaseString())
             else -> takeFromWhat(source, from, args.getBaseString())
         }
     }

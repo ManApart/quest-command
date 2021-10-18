@@ -28,7 +28,7 @@ class CommandParser(private val commandSource: Player) {
         if (commandInterceptor == null) {
             splitAndParseCommand(line)
         } else {
-            commandInterceptor!!.parseCommand(commandSource.thing, line)
+            commandInterceptor!!.parseCommand(commandSource, line)
         }
 
         val time = System.currentTimeMillis() - startTime
@@ -77,8 +77,6 @@ class CommandParser(private val commandSource: Player) {
         command.execute(commandSource, args[0], trimmedArgs)
     }
 
-
-
     private fun findAliasCommand(alias: String): String? {
         return GameState.aliases[alias]
     }
@@ -92,10 +90,6 @@ class CommandParser(private val commandSource: Player) {
 
     fun getResponseRequest(): ResponseRequest? {
         return this.responseRequest
-    }
-
-    fun isPlayersTurn(): Boolean {
-        return commandSource.isPlayer()
     }
 
 }

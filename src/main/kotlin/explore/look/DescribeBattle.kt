@@ -1,6 +1,5 @@
 package explore.look
 
-import core.commands.CommandParser
 import core.history.display
 import core.history.displayToMe
 import core.history.displayUpdate
@@ -14,9 +13,9 @@ fun describeBattle(source: Thing) {
         it.display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
     }
 
-    if (!CommandParser.isPlayersTurn()) {
-        source.display("It is ${CommandParser.commandSource}'s turn.")
-    }
+//    if (!CommandParser.isPlayersTurn()) {
+//        source.display("It is ${CommandParser.commandSource}'s turn.")
+//    }
 
     creatures.forEach {
         it.display("\t${status(it)}")

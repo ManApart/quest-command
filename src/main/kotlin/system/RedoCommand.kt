@@ -2,7 +2,7 @@ package system
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.displayToMe
 
@@ -28,7 +28,7 @@ class RedoCommand : Command() {
         if (lastCommand == null) {
             source.displayToMe("Could not find a command to repeat.")
         } else {
-            CommandParser.parseCommand(lastCommand)
+            CommandParsers.parseCommand(source, lastCommand)
         }
     }
 
@@ -48,7 +48,7 @@ class RedoCommand : Command() {
 
     private fun isRedoCommand(command: String): Boolean {
         val alias = command.trim().split(" ")[0]
-        return CommandParser.findCommand(alias) == this
+        return CommandParsers.findCommand(alias) == this
     }
 
 }

@@ -1,6 +1,7 @@
 package magic.castSpell
 
 import core.DependencyInjector
+import core.Player
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
@@ -47,9 +48,9 @@ class CastCommand : Command() {
         return spellCommands.exists(keyword)
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         when (keyword) {
-            "word" -> executeWord(source, args)
+            "word" -> executeWord(source.thing, args)
             else -> castWord(source, keyword != "cast", args, keyword == "c")
         }
     }
@@ -78,17 +79,17 @@ class CastCommand : Command() {
         return categories.contains(word)
     }
 
-    private fun castWord(source: Thing, isAlias: Boolean, args: List<String>, useDefaults: Boolean) {
+    private fun castWord(source: Player, isAlias: Boolean, args: List<String>, useDefaults: Boolean) {
         if (args.isEmpty()) {
-            clarifyWord()
+            clarifyWord(source)
         } else {
             val spellCommand = getSpellCommand(args)
             if (spellCommand != null) {
                 val arguments = Args(args, delimiters = listOf("on"))
                 val spellArgs = parseSpellArgs(arguments)
-                val things = parseThings(source, arguments.getGroup("on")).toMutableList()
+                val things = parseThings(source.thing, arguments.getGroup("on")).toMutableList()
                 if (isAlias && things.isEmpty()) {
-                    things.add(ThingAim(source, parseBodyParts(source, args)))
+                    things.add(ThingAim(source.thing, parseBodyParts(source.thing, args)))
                 }
                 spellCommand.execute(source, spellArgs, things, useDefaults)
             } else {
@@ -97,11 +98,11 @@ class CastCommand : Command() {
         }
     }
 
-    private fun clarifyWord() {
+    private fun clarifyWord(source: Player) {
         val options = spellCommands.map { it.name }
         val message = "Cast what?\n\t${options.joinToString(", ")}"
         val response = ResponseRequest(message, options.associateWith { "cast $it" })
-        CommandParsers.setResponseRequest(response)
+        CommandParsers.setResponseRequest(source, response)
     }
 
     private fun getSpellCommand(args: List<String>): SpellCommand? {

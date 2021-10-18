@@ -1,11 +1,11 @@
 package magic.spellCommands.water
 
+import core.Player
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
 import core.events.EventManager
-import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
@@ -34,7 +34,7 @@ class Poison : SpellCommand() {
         return listOf("Water")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialAmount = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
@@ -44,7 +44,7 @@ class Poison : SpellCommand() {
             options.associateWith { "cast poison $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
         val durationResponse = ResponseRequest("Poison for how long?",
             options.associateWith { "cast poison ${initialAmount.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(mapOf(
+        val responseHelper = ResponseRequestHelper(source, mapOf(
                 "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 1),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 10)
         ))
@@ -68,7 +68,7 @@ class Poison : SpellCommand() {
 
                     val condition = Condition("Poisoned", Element.WATER, amount, effects)
                     val spell = Spell("Poison", condition, amount, WATER_MAGIC, levelRequirement, range = Distances.SWORD_RANGE)
-                    EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
+                    EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
                 }
             }
         }

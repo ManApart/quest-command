@@ -1,11 +1,11 @@
 package magic.spellCommands.earth
 
+import core.Player
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
 import core.events.EventManager
-import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
@@ -35,7 +35,7 @@ class Rock : SpellCommand() {
         return listOf("Earth")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("size"))
         val initialPower = spellArgs.getBaseNumber()
         val initialSize = spellArgs.getNumber("size")
@@ -47,7 +47,7 @@ class Rock : SpellCommand() {
         val sizeResponse = ResponseRequest("Cast Rock with what size?",
             sizeOptions.associateWith { "cast rock ${initialPower ?: ""} size $it on ${things.toCommandString()}" })
 
-        val responseHelper = ResponseRequestHelper(mapOf(
+        val responseHelper = ResponseRequestHelper(source, mapOf(
                 "power" to ResponseRequestWrapper(initialPower, powerResponse, useDefaults, 1),
                 "size" to ResponseRequestWrapper(initialSize, sizeResponse, useDefaults, 2)
         ))
@@ -77,7 +77,7 @@ class Rock : SpellCommand() {
 
                 val condition = Condition("Hit by a Rock", Element.EARTH, amount, effects)
                 val spell = Spell("Rock", condition, amount, EARTH_MAGIC, levelRequirement, castTime = castTime)
-                EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
+                EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
             }
         }
     }

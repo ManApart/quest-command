@@ -1,10 +1,11 @@
 package quests.journal
 
+import core.Player
 import core.commands.Command
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.thing.Thing
 import quests.QuestManager
 
 class JournalCommand : Command() {
@@ -27,21 +28,21 @@ class JournalCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         when {
-            args.isEmpty() && keyword == "Quest" -> clarifyQuest()
+            args.isEmpty() && keyword == "Quest" -> clarifyQuest(source)
 
-            args.isEmpty() -> EventManager.postEvent(ViewQuestListEvent(source, justActive = true))
-            args.size == 1 && args[0] == "active" -> EventManager.postEvent(ViewQuestListEvent(source, justActive = true))
+            args.isEmpty() -> EventManager.postEvent(ViewQuestListEvent(source.thing, justActive = true))
+            args.size == 1 && args[0] == "active" -> EventManager.postEvent(ViewQuestListEvent(source.thing, justActive = true))
 
-            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ViewQuestListEvent(source, justActive = false))
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ViewQuestListEvent(source.thing, justActive = false))
 
-            args.size == 1 && args[0] == "quest" -> clarifyWhichQuest()
+            args.size == 1 && args[0] == "quest" -> clarifyWhichQuest(source)
 
             else -> {
                 val quest = QuestManager.quests.getOrNull(args.joinToString())
                 if (quest != null) {
-                    EventManager.postEvent(ViewQuestJournalEvent(source, quest))
+                    EventManager.postEvent(ViewQuestJournalEvent(source.thing, quest))
                 } else {
                     source.displayToMe("Couldn't find quest: ${args.joinToString(" ")}")
                 }
@@ -49,16 +50,16 @@ class JournalCommand : Command() {
         }
     }
 
-    private fun clarifyQuest() {
+    private fun clarifyQuest(source: Player) {
         val things = listOf("Active", "All", "Quest")
         val message = "Info about what type?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest( ResponseRequest(message, things.associateWith { "quest $it" }))
+        CommandParsers.setResponseRequest(source,  ResponseRequest(message, things.associateWith { "quest $it" }))
     }
 
-    private fun clarifyWhichQuest() {
+    private fun clarifyWhichQuest(source: Player) {
         val things = QuestManager.getAllPlayerQuests().map { it.name }
         val message = "Info about which quest?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest( ResponseRequest(message, things.associateWith { "quest $it" }))
+        CommandParsers.setResponseRequest(source,  ResponseRequest(message, things.associateWith { "quest $it" }))
     }
 
 }

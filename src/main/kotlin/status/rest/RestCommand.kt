@@ -1,7 +1,9 @@
 package status.rest
 
+import core.Player
 import core.commands.Args
 import core.commands.Command
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
@@ -26,20 +28,20 @@ class RestCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args)
         when {
-            args.isEmpty() && keyword == "rest" -> clarifyHours()
-            args.isEmpty() -> rest(source, 1)
-            args.size == 1 && arguments.getNumber() != null -> rest(source, arguments.getNumber()!!)
+            args.isEmpty() && keyword == "rest" -> clarifyHours(source)
+            args.isEmpty() -> rest(source.thing, 1)
+            args.size == 1 && arguments.getNumber() != null -> rest(source.thing, arguments.getNumber()!!)
             else -> source.displayToMe("Unknown params for rest: ${args.joinToString(" ")}")
         }
     }
 
-    private fun clarifyHours() {
+    private fun clarifyHours(source: Player) {
         val things = listOf("1", "3", "5", "10")
         val message = "Rest for how many hours?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "rest $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "rest $it" }))
     }
 
     private fun rest(source: Thing, hours: Int) {

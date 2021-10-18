@@ -1,7 +1,9 @@
 package inventory.unEquipItem
 
+import core.Player
 import core.commands.Args
 import core.commands.Command
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
@@ -28,17 +30,17 @@ class UnEquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {
             clarifyItem(source)
         } else {
-            val item = getItem(source, arguments)
+            val item = getItem(source.thing, arguments)
             if (item != null) {
-                EventManager.postEvent(UnEquipItemEvent(source, item))
+                EventManager.postEvent(UnEquipItemEvent(source.thing, item))
             } else {
-                val unEquippedItem = getUnequippedItem(source, arguments)
+                val unEquippedItem = getUnequippedItem(source.thing, arguments)
                 if (unEquippedItem != null) {
                     source.displayToMe("${unEquippedItem.name} is already unequipped.")
                 } else {
@@ -69,10 +71,10 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun clarifyItem(source: Thing) {
+    private fun clarifyItem(source: Player) {
         val things = source.body.getEquippedItems()
         val message = "What do you want to un-equip?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest( ResponseRequest(message, things.associate { "$it" to "unequip $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associate { "$it" to "unequip $it" }))
     }
 
 }

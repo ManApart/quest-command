@@ -1,10 +1,11 @@
 package status.status
 
+import core.Player
 import core.commands.Command
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.thing.Thing
 import core.utility.filterUniqueByName
 
 class StatusCommand : Command() {
@@ -26,20 +27,20 @@ class StatusCommand : Command() {
         return listOf("Character")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         when {
             args.isEmpty() && keyword == "status" -> clarifyStatus(source)
-            args.isEmpty() -> EventManager.postEvent(StatusEvent(source))
-            source.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
+            args.isEmpty() -> EventManager.postEvent(StatusEvent(source.thing))
+            source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
             else -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
         }
     }
 
-    private fun clarifyStatus(source: Thing) {
-        val things = source.currentLocation().getCreatures().map { it.name }
+    private fun clarifyStatus(source: Player) {
+        val things = source.thing.currentLocation().getCreatures().map { it.name }
         val message = "Status of what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest( ResponseRequest(message, things.associateWith { "status $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "status $it" }))
     }
 
 

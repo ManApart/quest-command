@@ -1,11 +1,11 @@
 package magic.spellCommands.air
 
+import core.Player
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
 import core.events.EventManager
-import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
@@ -35,7 +35,7 @@ class Adrenaline : SpellCommand() {
         return listOf("Air")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialPower = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
@@ -45,7 +45,7 @@ class Adrenaline : SpellCommand() {
             options.associateWith { "cast adrenaline $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
         val durationResponse = ResponseRequest("Increase for how long?",
             options.associateWith { "cast adrenaline ${initialPower.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(mapOf(
+        val responseHelper = ResponseRequestHelper(source, mapOf(
                 "amount" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
         ))
@@ -54,7 +54,7 @@ class Adrenaline : SpellCommand() {
             responseHelper.requestAResponse()
         } else {
             val power = responseHelper.getIntValue("amount")
-            val amount = power + ((source.soul.getStatOrNull(AGILITY)?.current ?: 0) * source.getEncumbranceInverted()).toInt()
+            val amount = power + ((source.soul.getStatOrNull(AGILITY)?.current ?: 0) * source.thing.getEncumbranceInverted()).toInt()
             val duration = responseHelper.getIntValue("duration")
             val hitCount = things.count()
             val perThingCost = power / 10
@@ -71,7 +71,7 @@ class Adrenaline : SpellCommand() {
 
                     val condition = Condition("On Adrenaline", Element.AIR, amount, effects)
                     val spell = Spell("Adrenaline", condition, amount, AIR_MAGIC, levelRequirement, range = Distances.DAGGER_RANGE)
-                    EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
+                    EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
                 }
             }
         }

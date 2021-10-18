@@ -1,8 +1,8 @@
 package magic.spellCommands.water
 
+import core.Player
 import core.commands.Args
 import core.events.EventManager
-import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getThingedPartsOrAll
@@ -30,7 +30,7 @@ class Jet : SpellCommand() {
         return listOf("Water")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         //TODO - response request instead of hard coded default
         val damageAmount = args.getNumber() ?: 1
         val hitCount = things.sumOf { getThingedPartsOrAll(it).size }
@@ -49,7 +49,7 @@ class Jet : SpellCommand() {
                 val cost = damageAmount * parts.size
                 val condition = Condition("Water Blasted", Element.WATER, cost, effects)
                 val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
-                EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
+                EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
             }
         }
     }

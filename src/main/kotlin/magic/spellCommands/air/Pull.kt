@@ -1,6 +1,8 @@
 package magic.spellCommands.air
 
+import core.Player
 import core.commands.Args
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.commands.parseDirection
 import core.events.EventManager
@@ -33,7 +35,7 @@ class Pull : SpellCommand() {
         return listOf("Air")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
         val direction = parseDirection(argsWithTowards.getGroup("towards"))
 
@@ -43,7 +45,7 @@ class Pull : SpellCommand() {
             val options = listOf("1", "3", "5", "10", "50")
             val response = ResponseRequest(message,
                 options.associateWith { "pull $it towards ${direction.name} on ${things.toCommandString()}}" })
-             CommandParsers.setResponseRequest(response)
+             CommandParsers.setResponseRequest(source, response)
         } else {
             val hitCount = things.count()
             val perThingCost = power / 10
@@ -62,7 +64,7 @@ class Pull : SpellCommand() {
                         thing.thing.position.getVectorInDirection((direction.vector * distance) + thing.thing.position, distance)
                     }
                     val spell = MoveThingSpell("Push", vector, condition, perThingCost, AIR_MAGIC, levelRequirement)
-                    EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
+                    EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
                 }
             }
         }

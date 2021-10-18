@@ -1,7 +1,9 @@
 package inventory.putItem
 
+import core.Player
 import core.commands.ArgDelimiter
 import core.commands.Args
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
@@ -27,7 +29,7 @@ class PutItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "in")))
         val arguments = Args(args, delimiters)
         when {
@@ -37,31 +39,31 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private fun clarifyItemToPlace(source: Thing) {
+    private fun clarifyItemToPlace(source: Player) {
         val things = source.inventory.getItems().map { it.name }
         val message = "Give what item?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "place $it in" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "place $it in" }))
     }
 
-    private fun placeItemInContainer(source: Thing, args: Args) {
+    private fun placeItemInContainer(source: Player, args: Args) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             val thingString = args.getFirstString("in", "to")
-            val destinations = source.currentLocation().getThings(thingString).filterUniqueByName()
+            val destinations = source.thing.currentLocation().getThings(thingString).filterUniqueByName()
             when {
                 thingString.isNotBlank() && destinations.isEmpty() -> source.displayToMe("Couldn't find $thingString")
-                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source, item, source, destinations.first(), true))
-                else -> giveToWhat(destinations, args.getBaseString())
+                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source.thing, item, source.thing, destinations.first(), true))
+                else -> giveToWhat(source, destinations, args.getBaseString())
             }
         } else {
             source.displayToMe("Couldn't find ${args.getBaseString()}")
         }
     }
 
-    private fun giveToWhat(creatures: List<Thing>, itemName: String) {
+    private fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
         val message = "Give $itemName to what?\n\t${creatures.joinToString(", ")}"
         val response = ResponseRequest(message, creatures.associate { it.name to "give $itemName to ${it.name}" })
-         CommandParsers.setResponseRequest(response)
+         CommandParsers.setResponseRequest(source, response)
     }
 
 

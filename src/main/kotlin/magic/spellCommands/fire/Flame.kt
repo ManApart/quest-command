@@ -1,5 +1,6 @@
 package magic.spellCommands.fire
 
+import core.Player
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
@@ -36,14 +37,14 @@ class Flame : SpellCommand() {
         return listOf("Fire")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val initialPower = args.getBaseNumber()
 
         val powerOptions = listOf("1", "3", "5", "10", "50", "#")
         val powerResponse = ResponseRequest("Cast Flame with what power?",
             powerOptions.associateWith { "cast flame $it on ${things.toCommandString()}" })
 
-        val responseHelper = ResponseRequestHelper(mapOf(
+        val responseHelper = ResponseRequestHelper(source, mapOf(
                 "power" to ResponseRequestWrapper(initialPower, powerResponse, useDefaults, 1)
         ))
 
@@ -57,13 +58,13 @@ class Flame : SpellCommand() {
 
             executeWithWarns(source, FIRE_MAGIC, levelRequirement, totalCost, things) {
                 val spells = mutableListOf(
-                        postSpell(source, ThingAim(source, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement)
+                        postSpell(source.thing, ThingAim(source.thing, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement)
                 )
                 things.forEach { thing ->
-                    spells.add(postSpell(source, thing, damageAmount, cost, levelRequirement))
+                    spells.add(postSpell(source.thing, thing, damageAmount, cost, levelRequirement))
                 }
 
-                EventManager.postEvent(StartMultiEvent(source, spells.first().timeLeft, spells))
+                EventManager.postEvent(StartMultiEvent(source.thing, spells.first().timeLeft, spells))
             }
         }
     }

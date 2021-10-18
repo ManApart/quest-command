@@ -1,11 +1,11 @@
 package magic.spellCommands.earth
 
+import core.Player
 import core.commands.Args
 import core.commands.ResponseRequest
 import core.commands.ResponseRequestHelper
 import core.commands.ResponseRequestWrapper
 import core.events.EventManager
-import core.thing.Thing
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
@@ -33,7 +33,7 @@ class Rooted : SpellCommand() {
         return listOf("Earth")
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialPower = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
@@ -43,7 +43,7 @@ class Rooted : SpellCommand() {
             options.associateWith { "cast rooted $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
         val durationResponse = ResponseRequest("Increase for how long?",
             options.associateWith { "cast rooted ${initialPower.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(mapOf(
+        val responseHelper = ResponseRequestHelper(source, mapOf(
                 "power" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
                 "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
         ))
@@ -70,7 +70,7 @@ class Rooted : SpellCommand() {
 
                 val condition = Condition("Rooted", Element.EARTH, amount, effects)
                 val spell = Spell("Rooted", condition, amount, EARTH_MAGIC, levelRequirement)
-                EventManager.postEvent(StartCastSpellEvent(source, thing, spell))
+                EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
             }
         }
     }
