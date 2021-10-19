@@ -22,7 +22,7 @@ class Tutorial : StoryEventResource {
 
         StoryEvent("Tutorial", 20, "To see my progress I should type `journal`.",
             ConditionalEvents(ViewHelpEvent::class,
-                createEvents = { event, _ -> listOf(MessageEvent(GameState.getPlayer(event.source), "I have made progress in a quest! To see my progress I should type `journal`.")) }
+                createEvents = { event, _ -> listOf(MessageEvent(event.source, "I have made progress in a quest! To see my progress I should type `journal`.")) }
             )
         ),
 

@@ -3,6 +3,7 @@ package magic.spellCommands.air
 import combat.DamageType
 import core.DependencyInjector
 import core.GameState
+import core.Player
 import core.commands.Args
 import core.events.EventManager
 import core.properties.WEIGHT
@@ -36,12 +37,12 @@ class PullTest {
             EffectManager.reset()
         }
 
-        private val caster = Thing("caster")
+        private val caster = Player(0, Thing("caster"))
         private val victim = Thing("victim")
         private val scope = GameState.player.thing.currentLocation()
 
         init {
-            scope.addThing(caster)
+            scope.addThing(caster.thing)
             scope.addThing(victim)
         }
 
@@ -50,7 +51,7 @@ class PullTest {
     @Before
     fun setup() {
         EventManager.clear()
-        caster.position = NO_VECTOR
+        caster.thing.position = NO_VECTOR
         victim.position = Vector(0, 10, 0)
         caster.soul.setStat(AIR_MAGIC, 100)
         caster.soul.addStat(FOCUS, 10, 100, 1)

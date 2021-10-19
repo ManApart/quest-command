@@ -3,6 +3,7 @@ package magic.spellCommands.water
 import combat.DamageType
 import core.DependencyInjector
 import core.GameState
+import core.Player
 import core.commands.Args
 import core.events.EventManager
 import core.thing.Thing
@@ -38,11 +39,11 @@ class HealTest {
             EffectManager.reset()
         }
 
-        private val thingA = Thing("thingA")
+        private val thingA = Player(0, Thing("thingA"))
         private val scope = GameState.player.thing.currentLocation()
 
         init {
-            scope.addThing(thingA)
+            scope.addThing(thingA.thing)
         }
 
     }
@@ -89,7 +90,7 @@ class HealTest {
 
     private fun castHeal(input: String): Spell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
-        Heal().execute(thingA, args, listOf(ThingAim(thingA)), true)
+        Heal().execute(thingA, args, listOf(ThingAim(thingA.thing)), true)
         return (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell
     }
 

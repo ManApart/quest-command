@@ -12,6 +12,7 @@ import core.ai.behavior.BehaviorsMock
 import core.ai.dsl.AIsCollection
 import core.ai.dsl.AIsMock
 import core.body.*
+import core.commands.CommandParsers
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
 import core.events.EventListenersCollection
@@ -164,8 +165,8 @@ fun createMockedGame() {
     WeatherManager.reset()
 
     EventManager.clear()
-    CommandParsers.setResponseRequest(null)
     GameState.player = GameManager.newPlayer()
+    CommandParsers.setResponseRequest(GameState.player, null)
 
     GameLogger.reset()
 

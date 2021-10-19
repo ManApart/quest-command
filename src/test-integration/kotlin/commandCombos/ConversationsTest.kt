@@ -2,7 +2,7 @@ package commandCombos
 
 import core.GameManager
 import core.GameState
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
 import org.junit.Before
@@ -23,45 +23,45 @@ class ConversationsTest {
     @Test
     fun noCriteriaMet() {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("why is the sky blue?")
+        CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
+        CommandParsers.parseCommand(GameState.player, "why is the sky blue?")
         assertEquals("Farmer", GameState.conversation.getLatestSpeaker().name)
     }
 
     @Test
     fun whereListener() {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where are you?")
+        CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
+        CommandParsers.parseCommand(GameState.player, "where are you?")
         assertEquals("Farmer: I be here.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun multipleMatchesPicksAtRandom() {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 1)
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where are you?")
+        CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
+        CommandParsers.parseCommand(GameState.player, "where are you?")
         assertEquals("Farmer: I be with you.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun whereBeMe() {
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("where am I?")
+        CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
+        CommandParsers.parseCommand(GameState.player, "where am I?")
         assertEquals("Farmer: You be in Farmer's Hut.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun whatKanbaraCity() {
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("what is kanbara city?")
+        CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
+        CommandParsers.parseCommand(GameState.player, "what is kanbara city?")
         assertEquals("Farmer: Kanbara City be a city.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun whatLocationWithMultipleMatches() {
-        CommandParser.parseCommand("w && speak with farmer")
-        CommandParser.parseCommand("what is kanbara?")
+        CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
+        CommandParsers.parseCommand(GameState.player, "what is kanbara?")
         assertEquals("Farmer: What you mean? You mean Kanbara Gate or Kanbara City?", GameLogger.main.getLastOutput())
     }
 }

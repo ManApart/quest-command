@@ -1,7 +1,7 @@
 package system.alias
 
 import core.GameState
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventListener
 import core.history.displayToMe
 import core.thing.Thing
@@ -9,11 +9,11 @@ import core.thing.Thing
 class CreateAlias : EventListener<CreateAliasEvent>() {
     override fun execute(event: CreateAliasEvent) {
         val alias = event.alias.lowercase()
-        val existingCommand = CommandParser.findCommand(alias)
-        if (existingCommand != CommandParser.unknownCommand) {
+        val existingCommand = CommandParsers.findCommand(alias)
+        if (existingCommand != CommandParsers.unknownCommand) {
             event.source.displayToMe("Cannot create alias for '$alias' because it exists as a built in command or alias for ${existingCommand.name}.")
         } else {
-            updateAlias(event.source, alias, event)
+            updateAlias(event.source.thing, alias, event)
         }
     }
 

@@ -1,7 +1,7 @@
 package use.eat
 
 import core.GameManager
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.Properties
 import core.properties.Tags
@@ -28,7 +28,7 @@ class EatCommandTest {
 
     @Test
     fun eatFood() {
-        val player = GameManager.newPlayer(location = NOWHERE_NODE).thing
+        val player = GameManager.newPlayer(location = NOWHERE_NODE)
         val timer = PoorMansInstrumenter(10000)
         val item = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         timer.printElapsed("new item")
@@ -42,12 +42,12 @@ class EatCommandTest {
         assertEquals(1, events.size)
         assertTrue(events[0] is StartUseEvent)
         assertEquals(item, (events[0] as StartUseEvent).used)
-        assertNull(CommandParser.getResponseRequest())
+        assertNull(CommandParsers.getParser(player).getResponseRequest())
     }
 
     @Test
     fun eatMultipleFoodGivesChoice() {
-        val player = GameManager.newPlayer(location = NOWHERE_NODE).thing
+        val player = GameManager.newPlayer(location = NOWHERE_NODE)
         val fruit = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         val pie = Thing("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         player.inventory.add(fruit)
@@ -56,6 +56,6 @@ class EatCommandTest {
         val events = EventManager.getUnexecutedEvents()
 
         assertEquals(0, events.size)
-        assertNotNull(CommandParser.getResponseRequest())
+        assertNotNull(CommandParsers.getParser(player).getResponseRequest())
     }
 }

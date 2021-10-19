@@ -1,7 +1,7 @@
 package magic
 
+import core.Player
 import core.commands.Args
-import core.thing.Thing
 import magic.spellCommands.SpellCommand
 import traveling.position.ThingAim
 
@@ -21,7 +21,7 @@ class SpellCommandMock(override val name: String = "testspell", private val cate
         return category
     }
 
-    override fun execute(source: Thing, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         this.args = args
         this.things = things
     }

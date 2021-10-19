@@ -3,7 +3,7 @@ package persistance
 import core.GameManager
 import core.GameState
 import core.PRINT_WITHOUT_FLUSH
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventManager
 import org.junit.After
 import org.junit.Before
@@ -34,7 +34,7 @@ class PersistenceTest {
 
     @Test
     fun playerSave() {
-        CommandParser.parseCommand("move to wheat && slash wheat && pickup wheat && ne")
+        CommandParsers.parseCommand(GameState.player, "move to wheat && slash wheat && pickup wheat && ne")
         EventManager.executeEvents()
         GameState.player.thing.properties.tags.add("Saved")
 
@@ -50,7 +50,7 @@ class PersistenceTest {
         assertTrue(GameState.player.thing.properties.tags.has("Saved"))
         assertEquals(equippedItemCount, GameState.player.thing.body.getEquippedItems().size)
 
-        CommandParser.parseCommand("travel to open field && r")
+        CommandParsers.parseCommand(GameState.player, "travel to open field && r")
         assertEquals(2, GameState.player.thing.location.getLocation().getItems("bundle").first().properties.getCount())
     }
 

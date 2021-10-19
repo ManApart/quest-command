@@ -1,7 +1,7 @@
 package wiki
 
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import java.io.File
 
 private const val filePath = "../quest_command.wiki/Commands.md"
@@ -17,7 +17,7 @@ internal fun printCommands() {
 }
 
 private fun generateTables(): String {
-    return CommandParser.getGroupedCommands().entries.filter { it.key.isNotBlank() }.joinToString("\n\n") { (category, commands) ->
+    return CommandParsers.getGroupedCommands().entries.filter { it.key.isNotBlank() }.joinToString("\n\n") { (category, commands) ->
         generateTable(category, commands)
     }
 }

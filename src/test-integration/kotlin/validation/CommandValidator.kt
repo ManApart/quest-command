@@ -1,8 +1,8 @@
 package validation
 
 import core.commands.Command
-import core.commands.CommandParser.commands
-import core.commands.CommandParser.getCategories
+import core.commands.CommandParsers.commands
+import core.commands.CommandParsers.getCategories
 import core.commands.UnknownCommand
 
 class CommandValidator {

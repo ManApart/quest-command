@@ -1,7 +1,8 @@
 package performance
 
 import core.GameManager
-import core.commands.CommandParser
+import core.GameState
+import core.commands.CommandParsers
 import core.events.EventManager
 import core.utility.PoorMansInstrumenter
 import org.junit.Ignore
@@ -18,7 +19,7 @@ class StartupTest {
         timer.printElapsed("Listeners Registered")
         GameManager.newGame()
         timer.printElapsed("New Game Started")
-        CommandParser.parseInitialCommand(arrayOf())
+        CommandParsers.parseInitialCommand(GameState.player, arrayOf())
         timer.printElapsed("Initial Command Parsed")
     }
 

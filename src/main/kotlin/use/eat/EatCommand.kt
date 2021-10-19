@@ -1,6 +1,8 @@
 package use.eat
 
+import core.Player
 import core.commands.Command
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
@@ -25,25 +27,25 @@ class EatCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
-        val allFood = source.currentLocation().getItemsIncludingPlayerInventory(source).filter { it.properties.tags.has("food") }
-        val pickedFood = source.currentLocation().getItemsIncludingPlayerInventory(argsString, source)
+        val allFood = source.thing.currentLocation().getItemsIncludingPlayerInventory(source.thing).filter { it.properties.tags.has("food") }
+        val pickedFood = source.thing.currentLocation().getItemsIncludingPlayerInventory(argsString, source.thing)
         val topChoice = pickedFood.firstOrNull { it.name.lowercase() == argsString }
 
         when {
-            args.isEmpty() -> eatWhat(allFood)
+            args.isEmpty() -> eatWhat(source, allFood)
             pickedFood.isEmpty() -> source.displayToMe("Couldn't find $argsString")
-            topChoice != null -> eatFood(source, topChoice)
-            pickedFood.size > 1 -> eatWhat(pickedFood)
-            else -> eatFood(source, pickedFood.first())
+            topChoice != null -> eatFood(source.thing, topChoice)
+            pickedFood.size > 1 -> eatWhat(source, pickedFood)
+            else -> eatFood(source.thing, pickedFood.first())
         }
     }
 
-    private fun eatWhat(food: List<Thing>) {
+    private fun eatWhat(source: Player, food: List<Thing>) {
         val message = "Eat what?\n\t${food.joinToString(", ")}"
         val response = ResponseRequest(message, food.associate { it.name to "eat ${it.name}" })
-         CommandParsers.setResponseRequest(response)
+         CommandParsers.setResponseRequest(source, response)
     }
 
     private fun eatFood(source: Thing, food: Thing) {
