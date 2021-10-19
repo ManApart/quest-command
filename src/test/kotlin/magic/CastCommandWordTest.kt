@@ -18,7 +18,7 @@ class CastCommandWordTest {
         private val spellA = SpellCommandMock("testSpellA", listOf("catA"))
         private val spellB = SpellCommandMock("testSpellB", listOf("catA"))
         private val spellC = SpellCommandMock("testSpellC")
-        private val player = GameManager.newPlayer().thing
+        private val player = GameManager.newPlayer()
 
         @BeforeClass
         @JvmStatic

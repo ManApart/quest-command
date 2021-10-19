@@ -27,8 +27,8 @@ class CastCommandCastTest {
 
         private val thingA = Thing("thingA")
         private val thingB = Thing("thingB")
+        private val player = GameManager.newPlayer()
         private val scope = GameState.player.thing.currentLocation()
-        private val player = GameManager.newPlayer().thing
 
         init {
             scope.addThing(thingA)
@@ -92,7 +92,7 @@ class CastCommandCastTest {
     }
 
     private fun thingsContainByName(thingAims: List<ThingAim>, thing: Thing): Boolean {
-        return thingAims.map { it.thing }.firstOrNull { thing.name == it.name } != null
+        return thingAims.any { it.thing.name == thing.name }
     }
 
     @Test
