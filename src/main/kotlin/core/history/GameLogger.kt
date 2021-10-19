@@ -103,10 +103,14 @@ object GameLogger {
         histories.add(GameLog(player))
     }
 
+    fun trackNewMain(player: Player) {
+        track(player)
+        main = getHistory(GameState.player)
+    }
+
     fun reset() {
         histories.clear()
-        track(GameState.player)
-        main = getHistory(GameState.player)
+        trackNewMain(GameState.player)
     }
 
     fun addInput(input: String) {

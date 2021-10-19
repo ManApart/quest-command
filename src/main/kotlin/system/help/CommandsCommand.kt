@@ -1,9 +1,9 @@
 package system.help
 
+import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
-import core.thing.Thing
 
 class CommandsCommand : Command() {
 
@@ -23,25 +23,25 @@ class CommandsCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         when {
-            args.isEmpty() -> clarifyCommandGroup()
-            args.size == 1 && isCommand(args) -> CommandParser.parseCommand(args[1])
-            args.size == 1 && isCommandGroup(args) -> clarifyCommand(args[0])
-            args.size == 2 -> CommandParser.parseCommand(args[2])
+            args.isEmpty() -> clarifyCommandGroup(source)
+            args.size == 1 && isCommand(args) -> CommandParsers.parseCommand(source, args[1])
+            args.size == 1 && isCommandGroup(args) -> clarifyCommand(source, args[0])
+            args.size == 2 -> CommandParsers.parseCommand(source, args[2])
         }
     }
 
-    private fun clarifyCommandGroup() {
+    private fun clarifyCommandGroup(source: Player) {
         val groups = getCommandGroups()
         val response = ResponseRequest(groups.associateWith { "commands $it" })
-        CommandParsers.setResponseRequest(response)
+        CommandParsers.setResponseRequest(source, response)
     }
 
-    private fun clarifyCommand(group: String) {
+    private fun clarifyCommand(source: Player, group: String) {
         val commands = getCommands(group).map { it.name }
         val response = ResponseRequest(commands.associateWith { it })
-         CommandParsers.setResponseRequest(response)
+         CommandParsers.setResponseRequest(source, response)
     }
 
 

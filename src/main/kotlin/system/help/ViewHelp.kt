@@ -1,10 +1,10 @@
 package system.help
 
+import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.events.EventListener
 import core.history.displayToMe
-import core.thing.Thing
 import core.utility.removeFirstItem
 
 //TODO - can this and ViewWordHelp share code?
@@ -21,12 +21,12 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         }
     }
 
-    private fun printManual(source: Thing, command: Command) {
+    private fun printManual(source: Player, command: Command) {
         source.displayToMe(getTitle(command) + command.getManual())
     }
 
-    private fun printCommandGroupsSummary(source: Thing) {
-        val groups = CommandParser.getGroupedCommands()
+    private fun printCommandGroupsSummary(source: Player) {
+        val groups = CommandParsers.getGroupedCommands()
 
         var groupList = ""
         groups.forEach { entry ->
@@ -36,9 +36,9 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printCommandGroupsDetail(source: Thing) {
+    private fun printCommandGroupsDetail(source: Player) {
         val groups = HashMap<String, MutableList<String>>()
-        CommandParser.commands.forEach { command ->
+        CommandParsers.commands.forEach { command ->
             run {
                 if (!groups.containsKey(command.getCategory()[0])) {
                     groups[command.getCategory()[0]] = ArrayList()
@@ -55,11 +55,11 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
-    private fun printCommandGroup(source: Thing, args: List<String>) {
+    private fun printCommandGroup(source: Player, args: List<String>) {
         var description = "Help <Command> to learn more about on of the following topics:\n"
         //TODO - handle sub-categories
         //TODO - sort alphabetically
-        CommandParser.commands.forEach { command ->
+        CommandParsers.commands.forEach { command ->
             if (command.getCategory().map { it.lowercase() }.toTypedArray() contentEquals args.toTypedArray()) {
                 description += command.name + ":\n\t" + command.getDescription() + "\n"
             }

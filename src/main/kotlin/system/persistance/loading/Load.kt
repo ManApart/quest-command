@@ -1,7 +1,7 @@
 package system.persistance.loading
 
 import core.GameState
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventListener
 import core.history.displayToMe
@@ -18,15 +18,14 @@ class Load : EventListener<LoadEvent>() {
         val tooManyMatchesResponse = ResponseRequest("What game would you like to load?\n\t${saves.joinToString(", ")}",
             saves.associateWith { "Load $it" })
         when {
-            saves.isEmpty() -> CommandParsers.setResponseRequest(noMatchResponse)
-            saves.size > 1 -> CommandParsers.setResponseRequest(tooManyMatchesResponse)
+            saves.isEmpty() -> CommandParsers.setResponseRequest(event.source, noMatchResponse)
+            saves.size > 1 -> CommandParsers.setResponseRequest(event.source, tooManyMatchesResponse)
             else -> loadGameAndPlayer(gameName)
         }
     }
 
     private fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
-        CommandParser.commandSource = GameState.player
         GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName}.")
     }
 

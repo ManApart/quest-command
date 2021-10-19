@@ -1,5 +1,6 @@
 package traveling.approach
 
+import core.Player
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
@@ -26,15 +27,15 @@ class RetreatCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from", "by"))
-        val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source)
-        val thing = determineThing(source, arguments, creatures)
+        val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source.thing)
+        val thing = determineThing(source.thing, arguments, creatures)
         val distance = arguments.getNumber()
         when {
-            thing != null && distance != null -> retreatByAmount(source, thing, distance)
-            thing != null && keyword.lowercase() == "retreat" -> clarifyAmount(thing)
-            thing != null -> retreatByAmount(source, thing, HUMAN_LENGTH)
+            thing != null && distance != null -> retreatByAmount(source.thing, thing, distance)
+            thing != null && keyword.lowercase() == "retreat" -> clarifyAmount(source, thing)
+            thing != null -> retreatByAmount(source.thing, thing, HUMAN_LENGTH)
             else -> clarifyThing(source, creatures)
         }
     }
@@ -53,20 +54,20 @@ class RetreatCommand : Command() {
         EventManager.postEvent(StartMoveEvent(source, goal))
     }
 
-    private fun clarifyAmount(thing: Thing) {
+    private fun clarifyAmount(player: Player, thing: Thing) {
         val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
         val distanceResponse = ResponseRequest("Retreat how much?\n\t${distanceOptions.joinToString(", ")}",
             distanceOptions.associateWith { "retreat from $thing by $it" })
-        CommandParsers.setResponseRequest(distanceResponse)
+        CommandParsers.setResponseRequest(player, distanceResponse)
     }
 
-    private fun clarifyThing(source: Thing, creatures: List<Thing>) {
+    private fun clarifyThing(source: Player, creatures: List<Thing>) {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to retreat from. You must be really frightened.")
         } else {
             val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "retreat from ${it.name}" })
-            CommandParsers.setResponseRequest(response)
+            CommandParsers.setResponseRequest(source, response)
         }
     }
 

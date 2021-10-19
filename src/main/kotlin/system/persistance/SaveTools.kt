@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import core.*
+import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
 import core.thing.Thing
@@ -112,6 +113,7 @@ fun loadGame(gameName: String) {
     loadGameState(gameName)
     val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
     loadCharacter(gameName, characterName)
+    GameLogger.trackNewMain(GameState.player)
     GameManager.playing = true
 }
 

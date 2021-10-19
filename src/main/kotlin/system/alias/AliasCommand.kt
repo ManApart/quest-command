@@ -1,10 +1,12 @@
 package system.alias
 
+import core.GameState.player
+import core.Player
 import core.commands.Command
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
 import core.history.displayToMe
-import core.thing.Thing
 
 class AliasCommand : Command() {
     override fun getAliases(): List<String> {
@@ -29,7 +31,7 @@ class AliasCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             EventManager.postEvent(ListAliasesEvent(source))
         } else {
@@ -45,7 +47,7 @@ class AliasCommand : Command() {
     }
 
 
-    private fun createAlias(source: Thing, args: List<String>) {
+    private fun createAlias(source: Player, args: List<String>) {
         if (args.size <= 2) {
             source.displayToMe("Must give an alias followed by a command.")
         } else {
@@ -55,13 +57,13 @@ class AliasCommand : Command() {
         }
     }
 
-    private fun deleteAlias(source: Thing, args: List<String>) {
+    private fun deleteAlias(source: Player, args: List<String>) {
         if (args.size != 2) {
             //TODO - get from command parser
             val aliases = listOf("alias1", "alias2")
             val message = "Delete which alias?\n\t${aliases.joinToString(", ")}"
             val response = ResponseRequest(message, aliases.associateWith { "alias delete $it" })
-            CommandParsers.setResponseRequest(response)
+            CommandParsers.setResponseRequest(player, response)
         } else {
             EventManager.postEvent(DeleteAliasEvent(source, args[1]))
         }

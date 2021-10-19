@@ -1,10 +1,10 @@
 package system.help
 
+import core.Player
 import core.commands.Command
-import core.commands.CommandParser
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventManager
-import core.thing.Thing
 
 class HelpCommand : Command() {
 
@@ -32,51 +32,51 @@ class HelpCommand : Command() {
         return listOf("System")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val argsArray = args.toTypedArray()
         when {
-            args.isEmpty() && keyword == "help" -> clarifyHelp()
+            args.isEmpty() && keyword == "help" -> clarifyHelp(source)
             args.isEmpty() -> EventManager.postEvent(ViewHelpEvent(source))
 
             args.size == 1 && args[0] == "commands" -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true))
             args.size == 2 && argsArray.contentEquals(arrayOf("commands", "extended")) -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true, args = listOf("all")))
 
-            args.size == 2 && argsArray.contentEquals(arrayOf("command", "group")) -> clarifyCommandGroupHelp()
+            args.size == 2 && argsArray.contentEquals(arrayOf("command", "group")) -> clarifyCommandGroupHelp(source)
 
-            args.size == 1 && args[0] == "command" -> clarifyCommandFromGroupHelp()
-            args.size == 2 && args[0] == "command" -> clarifyCommandHelp(args[1])
+            args.size == 1 && args[0] == "command" -> clarifyCommandFromGroupHelp(source)
+            args.size == 2 && args[0] == "command" -> clarifyCommandHelp(source, args[1])
 
-            isCommand(args) -> EventManager.postEvent(ViewHelpEvent(source, commandManual = CommandParser.findCommand(args[0])))
+            isCommand(args) -> EventManager.postEvent(ViewHelpEvent(source, commandManual = CommandParsers.findCommand(args[0])))
             isCommandGroup(args) -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true, args = args))
 
             else -> EventManager.postEvent(ViewHelpEvent(source))
         }
     }
 
-    private fun clarifyHelp() {
+    private fun clarifyHelp(source: Player) {
         val things = listOf("General Help", "List Commands", "List Commands (extended)", "A Command Group", "A Command")
         val commands = listOf("All", "Commands", "Commands extended", "Command Group", "Command").map { "help $it" }
 
         val message = "Help about what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest.new(message, things, commands))
+        CommandParsers.setResponseRequest(source, ResponseRequest.new(message, things, commands))
     }
 
-    private fun clarifyCommandGroupHelp() {
+    private fun clarifyCommandGroupHelp(source: Player) {
         val things = getCommandGroups()
         val message = "Help about which command group?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "help $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "help $it" }))
     }
 
-    private fun clarifyCommandFromGroupHelp() {
+    private fun clarifyCommandFromGroupHelp(source: Player) {
         val things = getCommandGroups()
         val message = "Help about a command from which command group?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "help command $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "help command $it" }))
     }
 
-    private fun clarifyCommandHelp(group: String) {
+    private fun clarifyCommandHelp(source: Player, group: String) {
         val things = getCommands(group).map { it.name }
         val message = "Help about what command?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(ResponseRequest(message, things.associateWith { "help $it" }))
+        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "help $it" }))
     }
 
 }

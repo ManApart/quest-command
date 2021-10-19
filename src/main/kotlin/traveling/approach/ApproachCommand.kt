@@ -1,5 +1,6 @@
 package traveling.approach
 
+import core.Player
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
@@ -26,15 +27,15 @@ class ApproachCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("to"))
-        val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source)
-        val thing = determineThing(source, arguments, creatures)
+        val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source.thing)
+        val thing = determineThing(source.thing, arguments, creatures)
         val distance = arguments.getNumber()
         when {
-            thing != null && distance != null -> approachByAmount(source, thing, distance)
+            thing != null && distance != null -> approachByAmount(source.thing, thing, distance)
             thing != null && keyword.lowercase() == "approach" -> clarifyAmount(source, thing)
-            thing != null -> EventManager.postEvent(StartMoveEvent(source, thing.position))
+            thing != null -> EventManager.postEvent(StartMoveEvent(source.thing, thing.position))
             else -> clarifyThing(source, creatures)
         }
     }
@@ -53,20 +54,20 @@ class ApproachCommand : Command() {
         EventManager.postEvent(StartMoveEvent(source, goal))
     }
 
-    private fun clarifyAmount(source: Thing, thing: Thing) {
+    private fun clarifyAmount(source: Player, thing: Thing) {
         val thingRange = source.position.getDistance(thing.position)
         val things = mapOf("minimum" to Distances.MIN_RANGE, "halfway" to thingRange / 2, "all the way" to thingRange)
-        CommandParsers.setResponseRequest(ResponseRequest("Move how much?\n\t${things.keys.joinToString(", ")}",
+        CommandParsers.setResponseRequest(source, ResponseRequest("Move how much?\n\t${things.keys.joinToString(", ")}",
             things.entries.associate { it.key to "approach ${thing.name} by ${it.value}" }))
     }
 
-    private fun clarifyThing(source: Thing, creatures: List<Thing>) {
+    private fun clarifyThing(source: Player, creatures: List<Thing>) {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to approach.")
         } else {
             val message = "Approach what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "approach ${it.name}" })
-            CommandParsers.setResponseRequest(response)
+            CommandParsers.setResponseRequest(source, response)
         }
     }
 

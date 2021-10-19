@@ -1,6 +1,8 @@
 package system.persistance.changePlayer
 
 import core.GameState
+import core.Player
+import core.commands.CommandParsers
 import core.commands.ResponseRequest
 import core.events.EventListener
 import core.history.displayToMe
@@ -11,11 +13,11 @@ import system.persistance.save
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
         save(GameState.gameName, event.source)
-        loadCharacter(GameState.gameName, event.saveName)
+        loadCharacter(event.source, GameState.gameName, event.saveName)
         event.source.displayToMe("Now playing ${event.source.thing.name} in ${GameState.gameName}.")
     }
 
-    private fun loadCharacter(gameName: String, characterName: String) {
+    private fun loadCharacter(source: Player, gameName: String, characterName: String) {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }
@@ -24,8 +26,8 @@ class PlayAs : EventListener<PlayAsEvent>() {
         val tooManyMatchesResponse = ResponseRequest("What character would you like to play?\n\t${saves.joinToString(", ")}",
             saves.associateWith { "Be $it" })
         when {
-            saves.isEmpty() -> CommandParsers.setResponseRequest(noMatchResponse)
-            saves.size > 1 -> CommandParsers.setResponseRequest(tooManyMatchesResponse)
+            saves.isEmpty() -> CommandParsers.setResponseRequest(source, noMatchResponse)
+            saves.size > 1 -> CommandParsers.setResponseRequest(source, tooManyMatchesResponse)
             else -> system.persistance.loadCharacter(gameName, saves.first())
         }
     }
