@@ -51,7 +51,10 @@ class PersistenceTest {
         assertEquals(equippedItemCount, GameState.player.thing.body.getEquippedItems().size)
 
         CommandParsers.parseCommand(GameState.player, "travel to open field && r")
-        assertEquals(2, GameState.player.thing.location.getLocation().getItems("bundle").first().properties.getCount())
+        val location = GameState.player.thing.location.getLocation()
+        val bundles = location.getItems("bundle")
+        assertTrue(bundles.isNotEmpty(), "Should have found wheat bundles")
+        assertEquals(2, bundles.first().properties.getCount())
     }
 
 }

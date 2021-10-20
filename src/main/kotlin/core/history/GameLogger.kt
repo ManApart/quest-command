@@ -103,6 +103,10 @@ object GameLogger {
         histories.add(GameLog(player))
     }
 
+    fun stopTracking(player: Player) {
+        histories.removeIf {it.listener.id == player.id}
+    }
+
     fun trackNewMain(player: Player) {
         track(player)
         main = getHistory(GameState.player)
