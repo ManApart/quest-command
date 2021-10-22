@@ -68,6 +68,12 @@ class RetreatCommand : Command() {
             val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
             val response = ResponseRequest(message, creatures.associate { it.name to "retreat from ${it.name}" })
             CommandParsers.setResponseRequest(source, response)
+
+//            source.respond{
+//                message("Retreat from what?")
+//                options(creatures.map { it.name })
+//                command { "retreat from $it" }
+//            }
         }
     }
 
