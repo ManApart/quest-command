@@ -1,10 +1,7 @@
 package magic.spellCommands.air
 
 import core.Player
-import core.commands.Args
-import core.commands.ResponseRequest
-import core.commands.ResponseRequestHelper
-import core.commands.ResponseRequestWrapper
+import core.commands.*
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent

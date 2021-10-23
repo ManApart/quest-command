@@ -84,10 +84,11 @@ class EquipItemCommand : Command() {
     }
 
     private fun suggestEquippableItems(source: Player) {
-        val equippableItems = getEquipableItems(source.thing)
-        val message = "What do you want to equip?\n\t${equippableItems.joinToString(", ")}"
-        val response = ResponseRequest(message, equippableItems.associate { it.name to "equip ${it.name}" })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("What do you want to equip?")
+            options(getEquipableItems(source.thing))
+            command { "equip $it" }
+        }
     }
 
     private fun getEquipableItems(source: Thing): List<Thing> {
