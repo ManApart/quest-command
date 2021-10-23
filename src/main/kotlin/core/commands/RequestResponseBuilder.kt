@@ -4,10 +4,24 @@ import core.Player
 import core.utility.Named
 
 class RequestResponseBuilder {
-    private var message: String? = null
+    private var message: String = ""
     private val options = mutableListOf<String>()
     private val displayedOptions = mutableListOf<String>()
     private var line: ((String) -> String) = { it }
+    private var useDefault = false
+    private var value: String? = null
+    private var defaultValue: String? = null
+
+    fun build(): ResponseRequest {
+        if (options.isEmpty()) throw Exception("Response must have options.")
+        if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
+
+        val usedOptions = displayedOptions.ifEmpty { options }
+
+        val fullMessage = "$message\n\t${usedOptions.joinToString(", ")}"
+        val messageOptions = options.associateWith(line)
+        return ResponseRequest(fullMessage, messageOptions, value, useDefault, defaultValue)
+    }
 
     fun message(message: String) {
         this.message = message
@@ -48,16 +62,26 @@ class RequestResponseBuilder {
         this.line = line
     }
 
-    fun build(): ResponseRequest {
-        if (message == null || options.isEmpty()) throw Exception("Response request cannot have null values.")
-        if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
-
-        val usedOptions = displayedOptions.ifEmpty { options }
-
-        val fullMessage = "$message\n\t${usedOptions.joinToString(", ")}"
-        val messageOptions = options.associateWith(line)
-        return ResponseRequest(fullMessage, messageOptions)
+    fun value(value: Int?){
+        this.value = value.toString()
     }
+
+    fun value(value: String?){
+        this.value = value
+    }
+
+    fun useDefault(yes: Boolean){
+        this.useDefault = yes
+    }
+
+    fun defaultValue(default: Int){
+        this.defaultValue = default.toString()
+    }
+
+    fun defaultValue(default: String){
+        this.defaultValue = default
+    }
+
 }
 
 fun Player.respond(initializer: RequestResponseBuilder.() -> Unit) {

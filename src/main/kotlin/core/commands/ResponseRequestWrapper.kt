@@ -1,5 +1,6 @@
 package core.commands
 
+//TODO - delete
 class ResponseRequestWrapper(
     private val value: String?,
     val responseRequest: ResponseRequest,

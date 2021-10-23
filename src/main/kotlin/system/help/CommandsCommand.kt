@@ -3,7 +3,6 @@ package system.help
 import core.Player
 import core.commands.Command
 import core.commands.CommandParsers
-import core.commands.ResponseRequest
 import core.commands.respond
 
 class CommandsCommand : Command() {
@@ -34,9 +33,10 @@ class CommandsCommand : Command() {
     }
 
     private fun clarifyCommandGroup(source: Player) {
-        val groups = getCommandGroups()
-        val response = ResponseRequest(groups.associateWith { "commands $it" })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            options(getCommandGroups())
+            command { "commands $it" }
+        }
     }
 
     private fun clarifyCommand(source: Player, group: String) {

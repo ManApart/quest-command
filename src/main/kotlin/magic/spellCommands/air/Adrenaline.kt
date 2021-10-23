@@ -1,7 +1,8 @@
 package magic.spellCommands.air
 
 import core.Player
-import core.commands.*
+import core.commands.Args
+import core.commands.respondWrapper
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -38,14 +39,25 @@ class Adrenaline : SpellCommand() {
         val initialDuration = spellArgs.getNumber("for")
 
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Increase how much?",
-            options.associateWith { "cast adrenaline $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
-        val durationResponse = ResponseRequest("Increase for how long?",
-            options.associateWith { "cast adrenaline ${initialPower.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "amount" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
-                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
-        ))
+
+        val responseHelper = source.respondWrapper {
+            respond("amount") {
+                message("Increase how much?")
+                options(options)
+                command {  "cast adrenaline $it for ${initialDuration.toString()} on ${things.toCommandString()}" }
+                value(initialPower)
+                useDefault(useDefaults)
+                defaultValue(5)
+            }
+            respond("duration") {
+                message("Increase for how long?")
+                options(options)
+                command {  "cast adrenaline ${initialPower.toString()} for $it on ${things.toCommandString()}"  }
+                value(initialDuration)
+                useDefault(useDefaults)
+                defaultValue(1)
+            }
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()

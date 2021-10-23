@@ -2,8 +2,13 @@ package core.commands
 
 import core.utility.NameSearchableList
 
-class ResponseRequest(val message: String, responses: Map<String, String>) {
-    constructor(responses: Map<String, String>) : this("", responses)
+class ResponseRequest(
+    val message: String,
+    responses: Map<String, String>,
+    private val value: String? = null,
+    private val useDefault: Boolean = false,
+    private val defaultValue: String? = null
+) {
     private val responses: Map<String, String> = processResponses(responses)
     private val responseKeys = NameSearchableList.from(this.responses.keys.map { it.lowercase() })
 
@@ -21,6 +26,10 @@ class ResponseRequest(val message: String, responses: Map<String, String>) {
 
         }
         return newMap
+    }
+
+    override fun toString(): String {
+        return "$value:$message"
     }
 
     fun getCommand(input: String): String? {
@@ -51,6 +60,14 @@ class ResponseRequest(val message: String, responses: Map<String, String>) {
 
     fun getOptions(): List<String> {
         return responseKeys.map { it.name }.toList()
+    }
+
+    fun hasValue(): Boolean {
+        return !value.isNullOrBlank() || (useDefault && defaultValue != null)
+    }
+
+    fun getValue(): String? {
+        return value ?: defaultValue
     }
 
 }
