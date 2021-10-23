@@ -2,8 +2,7 @@ package inventory.pickupItem
 
 import core.Player
 import core.commands.Args
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -51,9 +50,11 @@ class TakeItemCommand : core.commands.Command() {
         if (items.isEmpty()) {
             source.displayToMe("Nothing to pickup!")
         } else {
-            val message = "Take which item?\n\t${items.joinToString(", ")}"
-            val response = ResponseRequest(message, items.associate { it.name to "take ${it.name}" })
-            CommandParsers.setResponseRequest(source, response)
+            source.respond {
+                message("Take which item?")
+                options(items)
+                command { "take $it" }
+            }
         }
     }
 
@@ -67,9 +68,11 @@ class TakeItemCommand : core.commands.Command() {
     }
 
     private fun takeFromWhat(source: Player, creatures: List<Thing>, itemName: String) {
-        val message = "Take $itemName from what?\n\t${creatures.joinToString(", ")}"
-        val response = ResponseRequest(message, creatures.associate { it.name to "take $itemName from ${it.name}." })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Take $itemName from what?")
+            options(creatures)
+            command { "take $itemName from $it." }
+        }
     }
 
     private fun takeItemFromContainer(source: Thing, from: Thing, itemName: String) {

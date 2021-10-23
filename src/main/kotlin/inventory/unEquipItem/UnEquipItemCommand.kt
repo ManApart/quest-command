@@ -3,8 +3,7 @@ package inventory.unEquipItem
 import core.Player
 import core.commands.Args
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -72,9 +71,11 @@ class UnEquipItemCommand : Command() {
     }
 
     private fun clarifyItem(source: Player) {
-        val things = source.body.getEquippedItems()
-        val message = "What do you want to un-equip?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associate { "$it" to "unequip $it" }))
+        source.respond {
+            message("What do you want to un-equip?")
+            options(source.body.getEquippedItems())
+            command { "unequip $it" }
+        }
     }
 
 }

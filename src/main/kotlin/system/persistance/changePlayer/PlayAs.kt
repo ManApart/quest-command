@@ -2,8 +2,7 @@ package system.persistance.changePlayer
 
 import core.GameState
 import core.Player
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventListener
 import core.history.displayToMe
 import system.persistance.clean
@@ -21,13 +20,17 @@ class PlayAs : EventListener<PlayAsEvent>() {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }
-        val noMatchResponse = ResponseRequest("Could not find a match for $playerSaveName. What character would you like to play?\n\t${allSaves.joinToString(", ")}",
-            allSaves.associateWith { "Be $it" })
-        val tooManyMatchesResponse = ResponseRequest("What character would you like to play?\n\t${saves.joinToString(", ")}",
-            saves.associateWith { "Be $it" })
         when {
-            saves.isEmpty() -> CommandParsers.setResponseRequest(source, noMatchResponse)
-            saves.size > 1 -> CommandParsers.setResponseRequest(source, tooManyMatchesResponse)
+            saves.isEmpty() -> source.respond {
+                message("Could not find a match for $playerSaveName. What character would you like to play?")
+                options(allSaves)
+                command { "be $it" }
+            }
+            saves.size > 1 -> source.respond {
+                message("What character would you like to play?")
+                options(saves)
+                command { "be $it" }
+            }
             else -> system.persistance.loadCharacter(gameName, saves.first())
         }
     }

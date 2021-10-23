@@ -1,7 +1,10 @@
 package traveling.approach
 
 import core.Player
-import core.commands.*
+import core.commands.Args
+import core.commands.Command
+import core.commands.parseThings
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -56,18 +59,24 @@ class ApproachCommand : Command() {
 
     private fun clarifyAmount(source: Player, thing: Thing) {
         val thingRange = source.position.getDistance(thing.position)
-        val things = mapOf("minimum" to Distances.MIN_RANGE, "halfway" to thingRange / 2, "all the way" to thingRange)
-        CommandParsers.setResponseRequest(source, ResponseRequest("Move how much?\n\t${things.keys.joinToString(", ")}",
-            things.entries.associate { it.key to "approach ${thing.name} by ${it.value}" }))
+
+        source.respond {
+            message("Move how much?")
+            displayedOptions("minimum", "halfway", "all the way")
+            options(Distances.MIN_RANGE.toString(), (thingRange/2).toString(), thingRange.toString())
+            command { "approach ${thing.name} by $it" }
+        }
     }
 
     private fun clarifyThing(source: Player, creatures: List<Thing>) {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to approach.")
         } else {
-            val message = "Approach what?\n\t${creatures.joinToString(", ")}"
-            val response = ResponseRequest(message, creatures.associate { it.name to "approach ${it.name}" })
-            CommandParsers.setResponseRequest(source, response)
+            source.respond {
+                message("Approach what?")
+                options(creatures)
+                command { "approach $it" }
+            }
         }
     }
 

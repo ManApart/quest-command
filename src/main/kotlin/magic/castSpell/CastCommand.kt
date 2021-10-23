@@ -99,10 +99,11 @@ class CastCommand : Command() {
     }
 
     private fun clarifyWord(source: Player) {
-        val options = spellCommands.map { it.name }
-        val message = "Cast what?\n\t${options.joinToString(", ")}"
-        val response = ResponseRequest(message, options.associateWith { "cast $it" })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Cast what?")
+            options(spellCommands)
+            command { "cast $it" }
+        }
     }
 
     private fun getSpellCommand(args: List<String>): SpellCommand? {

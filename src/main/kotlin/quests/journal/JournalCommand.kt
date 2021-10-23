@@ -2,8 +2,7 @@ package quests.journal
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import quests.QuestManager
@@ -51,15 +50,19 @@ class JournalCommand : Command() {
     }
 
     private fun clarifyQuest(source: Player) {
-        val things = listOf("Active", "All", "Quest")
-        val message = "Info about what type?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source,  ResponseRequest(message, things.associateWith { "quest $it" }))
+        source.respond {
+            message("Info about what type?")
+            options("Active", "All", "Quest")
+            command { "quest $it" }
+        }
     }
 
     private fun clarifyWhichQuest(source: Player) {
-        val things = QuestManager.getAllPlayerQuests().map { it.name }
-        val message = "Info about which quest?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source,  ResponseRequest(message, things.associateWith { "quest $it" }))
+        source.respond {
+            message("Info about which quest?")
+            options(QuestManager.getAllPlayerQuests())
+            command { "quest $it" }
+        }
     }
 
 }

@@ -7,7 +7,7 @@ class RequestResponseBuilder {
     private var message: String? = null
     private val options = mutableListOf<String>()
     private val displayedOptions = mutableListOf<String>()
-    private var line: ((String) -> String)? = null
+    private var line: ((String) -> String) = { it }
 
     fun message(message: String) {
         this.message = message
@@ -37,18 +37,25 @@ class RequestResponseBuilder {
         this.displayedOptions.addAll(options)
     }
 
+    fun yesNoOptions(yesOption: String, noOption: String) {
+        this.displayedOptions.add("y")
+        this.displayedOptions.add("n")
+        this.options.add(yesOption)
+        this.options.add(noOption)
+    }
+
     fun command(line: (String) -> String) {
         this.line = line
     }
 
     fun build(): ResponseRequest {
-        if (message == null || options.isEmpty() || line == null) throw Exception("Response request cannot have null values.")
+        if (message == null || options.isEmpty()) throw Exception("Response request cannot have null values.")
         if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
 
         val usedOptions = displayedOptions.ifEmpty { options }
 
         val fullMessage = "$message\n\t${usedOptions.joinToString(", ")}"
-        val messageOptions = options.associateWith(line!!)
+        val messageOptions = options.associateWith(line)
         return ResponseRequest(fullMessage, messageOptions)
     }
 }

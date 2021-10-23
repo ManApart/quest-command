@@ -1,7 +1,10 @@
 package use
 
 import core.Player
-import core.commands.*
+import core.commands.ArgDelimiter
+import core.commands.Args
+import core.commands.Command
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import use.interaction.InteractEvent
@@ -52,27 +55,34 @@ class UseCommand : Command() {
     }
 
     private fun clarifyAction(source: Player) {
-        val things = listOf("Use Item", "Use Item on Thing")
-        val message = "Do what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { it }))
+        source.respond {
+            message("Do what?")
+            options("Use Item", "Use Item on Thing")
+        }
     }
 
     private fun clarifyItem(source: Player) {
-        val things = source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing).map { it.name }
-        val message = "Use what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "use $it" }))
+        source.respond {
+            message("Use what?")
+            options(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
+            command { "use $it" }
+        }
     }
 
     private fun clarifyItemForThing(source: Player) {
-        val things = source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing).map { it.name }
-        val message = "Use what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "use $it on" }))
+        source.respond {
+            message("Use what?")
+            options(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
+            command { "use $it on" }
+        }
     }
 
     private fun clarifyThing(source: Player, used: String) {
-        val things = source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing).map { it.name }
-        val message = "Use $used on what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "use $used on $it" }))
+        source.respond {
+            message("Use $used on what?")
+            options(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
+            command { "use $used on $it" }
+        }
     }
 
 }

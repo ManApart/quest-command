@@ -1,8 +1,7 @@
 package system.persistance.loading
 
 import core.GameState
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventListener
 import core.history.displayToMe
 import system.persistance.clean
@@ -13,13 +12,18 @@ class Load : EventListener<LoadEvent>() {
         val gameName = clean(event.saveName).removeSuffix("/")
         val allSaves = getGameNames()
         val saves = allSaves.filter { it.lowercase().contains(gameName.lowercase()) }
-        val noMatchResponse = ResponseRequest("Could not find a match for $gameName. What game would you like to load?\n\t${allSaves.joinToString(", ")}",
-            allSaves.associateWith { "Load $it" })
-        val tooManyMatchesResponse = ResponseRequest("What game would you like to load?\n\t${saves.joinToString(", ")}",
-            saves.associateWith { "Load $it" })
+
         when {
-            saves.isEmpty() -> CommandParsers.setResponseRequest(event.source, noMatchResponse)
-            saves.size > 1 -> CommandParsers.setResponseRequest(event.source, tooManyMatchesResponse)
+            saves.isEmpty() -> event.source.respond {
+                message("Could not find a match for $gameName. What game would you like to load?")
+                options(allSaves)
+                command { "load $it" }
+            }
+            saves.size > 1 -> event.source.respond {
+                message("What game would you like to load?")
+                options(saves)
+                command { "load $it" }
+            }
             else -> loadGameAndPlayer(gameName)
         }
     }

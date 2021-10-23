@@ -4,7 +4,7 @@ import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
@@ -61,15 +61,18 @@ class TravelInDirectionCommand : Command() {
     }
 
     private fun clarifyDirection(source: Player) {
-        val things = Direction.values().map { it.name }
-        val message = "Travel in which direction?"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { it }))
+        source.respond {
+            message("Travel in which direction?")
+            options(Direction.values().map { it.name })
+        }
     }
 
     private fun requestLocation(source: Player, openNeighbors: List<LocationNode>) {
-        val message = "Travel towards what location?\n\t${openNeighbors.joinToString(", ")}"
-        val response = ResponseRequest(message, openNeighbors.associate { it.name to "travel ${it.name}" })
-         CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Travel towards what location?")
+            options(openNeighbors)
+            command { "travel $it" }
+        }
     }
 
 

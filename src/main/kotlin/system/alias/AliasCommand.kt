@@ -1,10 +1,8 @@
 package system.alias
 
-import core.GameState.player
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 
@@ -59,11 +57,12 @@ class AliasCommand : Command() {
 
     private fun deleteAlias(source: Player, args: List<String>) {
         if (args.size != 2) {
-            //TODO - get from command parser
-            val aliases = listOf("alias1", "alias2")
-            val message = "Delete which alias?\n\t${aliases.joinToString(", ")}"
-            val response = ResponseRequest(message, aliases.associateWith { "alias delete $it" })
-            CommandParsers.setResponseRequest(player, response)
+            source.respond {
+                message("Delete which alias?")
+                //TODO - get from command parser
+                options("alias1", "alias2")
+                command { "alias delete $it" }
+            }
         } else {
             EventManager.postEvent(DeleteAliasEvent(source, args[1]))
         }

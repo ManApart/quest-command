@@ -87,7 +87,7 @@ class EquipItemCommand : Command() {
         val equippableItems = getEquipableItems(source.thing)
         val message = "What do you want to equip?\n\t${equippableItems.joinToString(", ")}"
         val response = ResponseRequest(message, equippableItems.associate { it.name to "equip ${it.name}" })
-         CommandParsers.setResponseRequest(source, response)
+        CommandParsers.setResponseRequest(source, response)
     }
 
     private fun getEquipableItems(source: Thing): List<Thing> {
@@ -100,19 +100,14 @@ class EquipItemCommand : Command() {
         val message = "Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}"
         val response = ResponseRequest(message,
             item.equipSlots.flatMap { it.attachPoints }.associateWith { "equip $item to $it" })
-         CommandParsers.setResponseRequest(source, response)
+        CommandParsers.setResponseRequest(source, response)
     }
 
     private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
-        val message = "Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?"
-
-        val toPart = if (attachPoint.isNullOrBlank()) {
-            ""
-        } else {
-            " to $attachPoint"
+        val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
+        source.respond {
+            message("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
+            yesNoOptions("equip $newEquip$toPart f", "")
         }
-
-        val response = ResponseRequest(message, mapOf("y" to "equip $newEquip$toPart f", "n" to ""))
-         CommandParsers.setResponseRequest(source, response)
     }
 }

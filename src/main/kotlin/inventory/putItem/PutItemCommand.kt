@@ -3,8 +3,7 @@ package inventory.putItem
 import core.Player
 import core.commands.ArgDelimiter
 import core.commands.Args
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -40,9 +39,11 @@ class PutItemCommand : core.commands.Command() {
     }
 
     private fun clarifyItemToPlace(source: Player) {
-        val things = source.inventory.getItems().map { it.name }
-        val message = "Give what item?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "place $it in" }))
+        source.respond {
+            message("Give what item?")
+            options(source.inventory.getItems())
+            command { "place $it in" }
+        }
     }
 
     private fun placeItemInContainer(source: Player, args: Args) {
@@ -61,9 +62,11 @@ class PutItemCommand : core.commands.Command() {
     }
 
     private fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
-        val message = "Give $itemName to what?\n\t${creatures.joinToString(", ")}"
-        val response = ResponseRequest(message, creatures.associate { it.name to "give $itemName to ${it.name}" })
-         CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Give $itemName to what?")
+            options(creatures)
+            command { "give $itemName to $it" }
+        }
     }
 
 

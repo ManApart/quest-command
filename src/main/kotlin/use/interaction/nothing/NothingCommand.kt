@@ -3,8 +3,7 @@ package use.interaction.nothing
 import core.Player
 import core.commands.Args
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -39,9 +38,11 @@ class NothingCommand : Command() {
     }
 
     private fun clarifyHours(source: Player) {
-        val things = listOf("1", "3", "5", "10")
-        val message = "Wait for how many hours?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "wait $it" }))
+        source.respond {
+            message("Wait for how many hours?")
+            options("1", "3", "5", "10")
+            command { "wait $it" }
+        }
     }
 
     private fun wait(source: Thing, hours: Int) {

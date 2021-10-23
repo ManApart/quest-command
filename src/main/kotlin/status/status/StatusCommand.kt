@@ -2,8 +2,7 @@ package status.status
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.utility.filterUniqueByName
@@ -38,9 +37,11 @@ class StatusCommand : Command() {
     }
 
     private fun clarifyStatus(source: Player) {
-        val things = source.thing.currentLocation().getCreatures().map { it.name }
-        val message = "Status of what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "status $it" }))
+        source.respond {
+            message("Status of what?")
+            options(source.thing.currentLocation().getCreatures())
+            command { "status $it" }
+        }
     }
 
 

@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.commands.CommandParsers
 import core.commands.ResponseRequest
+import core.commands.respond
 
 class CommandsCommand : Command() {
 
@@ -39,9 +40,9 @@ class CommandsCommand : Command() {
     }
 
     private fun clarifyCommand(source: Player, group: String) {
-        val commands = getCommands(group).map { it.name }
-        val response = ResponseRequest(commands.associateWith { it })
-         CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            options(getCommands(group))
+        }
     }
 
 

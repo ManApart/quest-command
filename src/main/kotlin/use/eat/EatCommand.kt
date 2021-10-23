@@ -2,8 +2,7 @@ package use.eat
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -43,9 +42,11 @@ class EatCommand : Command() {
     }
 
     private fun eatWhat(source: Player, food: List<Thing>) {
-        val message = "Eat what?\n\t${food.joinToString(", ")}"
-        val response = ResponseRequest(message, food.associate { it.name to "eat ${it.name}" })
-         CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Eat what?")
+            options(food)
+            command { "eat $it" }
+        }
     }
 
     private fun eatFood(source: Thing, food: Thing) {

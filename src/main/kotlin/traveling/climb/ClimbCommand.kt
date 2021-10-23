@@ -95,34 +95,32 @@ class ClimbCommand : Command() {
 
     private fun getDirectionMatches(player: Thing, things: NameSearchableList<Thing>, desiredDirection: Direction): List<ClimbOption> {
         return things.asSequence()
-                .filter { getEntryPoints(player, it).isNotEmpty() }
-                .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
-                .filter { it.direction == desiredDirection }
-                .toList()
+            .filter { getEntryPoints(player, it).isNotEmpty() }
+            .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
+            .filter { it.direction == desiredDirection }
+            .toList()
     }
 
     private fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
         val climbOptions = options.asSequence()
-                .filter { getEntryPoints(player.thing, it).isNotEmpty() }
-                .map { ClimbOption(it, getDirection(player.thing, it, getEntryPoints(player.thing, it).first())) }
-                .filter { desiredDirection == Direction.NONE || it.direction == desiredDirection }
-                .toList()
+            .filter { getEntryPoints(player.thing, it).isNotEmpty() }
+            .map { ClimbOption(it, getDirection(player.thing, it, getEntryPoints(player.thing, it).first())) }
+            .filter { desiredDirection == Direction.NONE || it.direction == desiredDirection }
+            .toList()
 
         when {
             climbOptions.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
             climbOptions.size == 1 && desiredDirection != Direction.NONE -> CommandParsers.parseCommand(player, "climb $desiredDirection ${options[0]}")
             climbOptions.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
-            desiredDirection != Direction.NONE -> {
-                val message = "Climb what?\n\t${climbOptions.joinToString { "${it.thing.name} (${it.direction})" }}"
-                val response = ResponseRequest(message, (climbOptions.map { it.thing.name to "climb ${it.direction} ${it.thing.name}" } +
-                        climbOptions.map { "${it.thing.name} (${it.direction})" to "climb ${it.direction} ${it.thing.name}" }
-                        ).toMap())
-                CommandParsers.setResponseRequest(player, response)
+            desiredDirection != Direction.NONE -> player.respond {
+                message("Climb what?")
+                displayedOptions(climbOptions.map { "${it.thing.name} (${it.direction})" })
+                options(climbOptions.map { "climb ${it.direction} ${it.thing.name}" })
             }
-            else -> {
-                val message = "Climb what?\n\t${options.joinToString(", ")}"
-                val response = ResponseRequest(message, options.associate { it.name to "climb ${it.name}" })
-                CommandParsers.setResponseRequest(player, response)
+            else -> player.respond {
+                message("Climb what?")
+                options(options)
+                command { "climb $it" }
             }
         }
     }
@@ -133,10 +131,11 @@ class ClimbCommand : Command() {
         if (options.isEmpty()) {
             player.displayToMe("${thing.name} doesn't seem to have anything to climb.")
         } else {
-            val message = "Climb what part of ${thing.name}?\n\t${options.joinToString(", ")}"
-            val response = ResponseRequest(message,
-                options.associate { it.name to "climb ${it.name} of ${thing.name}" })
-            CommandParsers.setResponseRequest(player, response)
+            player.respond {
+                message("Climb what part of ${thing.name}?")
+                options(options)
+                command { "climb $it of ${thing.name}" }
+            }
         }
     }
 
