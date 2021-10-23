@@ -2,9 +2,7 @@ package magic.spellCommands.fire
 
 import core.Player
 import core.commands.Args
-import core.commands.ResponseRequest
-import core.commands.ResponseRequestHelper
-import core.commands.ResponseRequestWrapper
+import core.commands.responseHelper
 import core.events.EventManager
 import core.events.multiEvent.StartMultiEvent
 import core.thing.Thing
@@ -40,13 +38,15 @@ class Flame : SpellCommand() {
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val initialPower = args.getBaseNumber()
 
-        val powerOptions = listOf("1", "3", "5", "10", "50", "#")
-        val powerResponse = ResponseRequest("Cast Flame with what power?",
-            powerOptions.associateWith { "cast flame $it on ${things.toCommandString()}" })
-
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "power" to ResponseRequestWrapper(initialPower, powerResponse, useDefaults, 1)
-        ))
+        val responseHelper = source.responseHelper {
+            respond("power") {
+                message("Cast Flame with what power?")
+                options("1", "3", "5", "10", "50", "#")
+                command { "cast flame $it on ${things.toCommandString()}"}
+                value(initialPower)
+                defaultValue(1)
+            }
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()

@@ -2,7 +2,7 @@ package core.commands
 
 import core.Player
 
-class ResponseRequestHelper(private val player: Player, private val responses: Map<String, ResponseRequestWrapper>) {
+class ResponseRequestHelper(private val player: Player, private val responses: Map<String, ResponseRequest>) {
 
     fun hasAllValues(): Boolean {
         return responses.values.all {
@@ -19,7 +19,7 @@ class ResponseRequestHelper(private val player: Player, private val responses: M
     }
 
     fun requestAResponse() {
-        val response = responses.values.first { !it.hasValue() }.responseRequest
+        val response = responses.values.first { !it.hasValue() }
         CommandParsers.setResponseRequest(player, response)
     }
 }

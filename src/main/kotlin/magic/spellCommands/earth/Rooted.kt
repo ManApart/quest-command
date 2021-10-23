@@ -2,9 +2,7 @@ package magic.spellCommands.earth
 
 import core.Player
 import core.commands.Args
-import core.commands.ResponseRequest
-import core.commands.ResponseRequestHelper
-import core.commands.ResponseRequestWrapper
+import core.commands.responseHelper
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -37,16 +35,24 @@ class Rooted : SpellCommand() {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialPower = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
-
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Increase defense how much?",
-            options.associateWith { "cast rooted $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
-        val durationResponse = ResponseRequest("Increase for how long?",
-            options.associateWith { "cast rooted ${initialPower.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "power" to ResponseRequestWrapper(initialPower, amountResponse, useDefaults, 5),
-                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
-        ))
+
+        val responseHelper = source.responseHelper {
+            respond("power") {
+                message("Increase defense how much?")
+                options(options)
+                command { "cast rooted $it for ${initialDuration.toString()} on ${things.toCommandString()}" }
+                value(initialPower)
+                defaultValue(5)
+            }
+            respond("duration") {
+                message("Increase for how long?")
+                options(options)
+                command { "cast rooted ${initialPower.toString()} for $it on ${things.toCommandString()}" }
+                value(initialDuration)
+                defaultValue(1)
+            }
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()
@@ -61,11 +67,11 @@ class Rooted : SpellCommand() {
                 val amount = (power * thing.thing.getEncumbrancePhysicalOnly()).toInt()
                 val parts = getThingedPartsOrRootPart(thing)
                 val effects = listOf(
-                        EffectManager.getEffect("Encased Agility", amount, duration, parts),
-                        EffectManager.getEffect("Encased Encumbrance", 100, duration, parts),
-                        EffectManager.getEffect("Encased Slash Defense", amount, duration, parts),
-                        EffectManager.getEffect("Encased Chop Defense", amount, duration, parts),
-                        EffectManager.getEffect("Dirty", 0, duration + 1, parts)
+                    EffectManager.getEffect("Encased Agility", amount, duration, parts),
+                    EffectManager.getEffect("Encased Encumbrance", 100, duration, parts),
+                    EffectManager.getEffect("Encased Slash Defense", amount, duration, parts),
+                    EffectManager.getEffect("Encased Chop Defense", amount, duration, parts),
+                    EffectManager.getEffect("Dirty", 0, duration + 1, parts)
                 )
 
                 val condition = Condition("Rooted", Element.EARTH, amount, effects)

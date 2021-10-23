@@ -9,7 +9,7 @@ class ResponseRequestTest {
     @Test
     fun assureYesVariant() {
         val input = mapOf("yes" to "correct")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("correct", response.getCommand("y"))
     }
@@ -17,7 +17,7 @@ class ResponseRequestTest {
     @Test
     fun assureYesVariantB() {
         val input = mapOf("y" to "correct")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("correct", response.getCommand("yes"))
     }
@@ -25,7 +25,7 @@ class ResponseRequestTest {
     @Test
     fun assureNoVariant() {
         val input = mapOf("no" to "correct")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("correct", response.getCommand("n"))
     }
@@ -33,7 +33,7 @@ class ResponseRequestTest {
     @Test
     fun assureNoVariantB() {
         val input = mapOf("n" to "correct")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("correct", response.getCommand("no"))
     }
@@ -41,7 +41,7 @@ class ResponseRequestTest {
     @Test
     fun getNthOption() {
         val input = mapOf("hot" to "false", "cold" to "false", "warm" to "just right")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("just right", response.getCommand("  3  "))
     }
@@ -49,7 +49,7 @@ class ResponseRequestTest {
     @Test
     fun preferExactMatchToNthNumber() {
         val input = mapOf("1" to "do 1", "3" to "do 3", "5" to "do 5")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("do 1", response.getCommand("1"))
         assertEquals("do 3", response.getCommand("3"))
@@ -58,7 +58,7 @@ class ResponseRequestTest {
     @Test
     fun numberSymbolMatchesAnyNumber() {
         val input = mapOf("1" to "do 1", "3" to "do 3", "5" to "do 5", "#" to "good #")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("good 2", response.getCommand("2"), "# takes precedence over index")
         assertEquals("do 3", response.getCommand("3"), "exact match takes precedence over #")
@@ -69,7 +69,7 @@ class ResponseRequestTest {
     @Test
     fun getExactName() {
         val input = mapOf("hot" to "false", "cold" to "false", "warm" to "just right")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals("false", response.getCommand("  hot  "))
     }
@@ -77,9 +77,13 @@ class ResponseRequestTest {
     @Test
     fun ignorePartialMatch() {
         val input = mapOf("hot" to "false", "cold" to "false", "warm" to "just right")
-        val response = ResponseRequest(input)
+        val response = buildResponse(input)
 
         assertEquals(null, response.getCommand("  c  "))
+    }
+    
+    private fun buildResponse(input: Map<String, String>): ResponseRequest{
+        return ResponseRequest("", input)
     }
 
 }

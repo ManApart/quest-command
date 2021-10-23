@@ -2,9 +2,7 @@ package magic.spellCommands.water
 
 import core.Player
 import core.commands.Args
-import core.commands.ResponseRequest
-import core.commands.ResponseRequestHelper
-import core.commands.ResponseRequestWrapper
+import core.commands.responseHelper
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -38,16 +36,24 @@ class Heal : SpellCommand() {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialAmount = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
-
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Heal how much?",
-            options.associateWith { "cast heal $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
-        val durationResponse = ResponseRequest("Heal for how long?",
-            options.associateWith { "cast heal ${initialAmount.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 5),
-                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 1)
-        ))
+
+        val responseHelper = source.responseHelper {
+            respond("amount"){
+                message("Heal how much?")
+                options(options)
+                command { "cast heal $it for ${initialDuration.toString()} on ${things.toCommandString()}"  }
+                value(initialAmount)
+                defaultValue(5)
+            }
+            respond("duration"){
+                message("Heal for how long?")
+                options(options)
+                command {"cast heal ${initialAmount.toString()} for $it on ${things.toCommandString()}" }
+                value(initialAmount)
+                defaultValue(1)
+            }
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()

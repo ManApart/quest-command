@@ -2,9 +2,7 @@ package magic.spellCommands.earth
 
 import core.Player
 import core.commands.Args
-import core.commands.ResponseRequest
-import core.commands.ResponseRequestHelper
-import core.commands.ResponseRequestWrapper
+import core.commands.responseHelper
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -40,17 +38,23 @@ class Rock : SpellCommand() {
         val initialPower = spellArgs.getBaseNumber()
         val initialSize = spellArgs.getNumber("size")
 
-        val powerOptions = listOf("1", "3", "5", "10", "50", "#")
-        val powerResponse = ResponseRequest("Cast Rock with what power?",
-            powerOptions.associateWith { "cast rock $it size ${initialSize ?: ""} on ${things.toCommandString()}" })
-        val sizeOptions = listOf("1", "2", "3")
-        val sizeResponse = ResponseRequest("Cast Rock with what size?",
-            sizeOptions.associateWith { "cast rock ${initialPower ?: ""} size $it on ${things.toCommandString()}" })
+        val responseHelper = source.responseHelper {
+            respond("power") {
+                message("Cast Rock with what power?")
+                options("1", "3", "5", "10", "50", "#")
+                command { "cast rock $it size ${initialSize ?: ""} on ${things.toCommandString()}" }
+                value(initialPower)
+                defaultValue(1)
+            }
+            respond("size") {
+                message("Cast Rock with what size?")
+                options(1, 2, 3)
+                command { "cast rock ${initialPower ?: ""} size $it on ${things.toCommandString()}" }
+                value(initialSize)
+                defaultValue(2)
+            }
 
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "power" to ResponseRequestWrapper(initialPower, powerResponse, useDefaults, 1),
-                "size" to ResponseRequestWrapper(initialSize, sizeResponse, useDefaults, 2)
-        ))
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()
@@ -67,11 +71,11 @@ class Rock : SpellCommand() {
                 val castTime = getCastTime(size, power)
 
                 val effects = mutableListOf(
-                        EffectManager.getEffect("Chopped", amount, 1, parts),
-                        EffectManager.getEffect("Dirty", 0, 2, parts)
+                    EffectManager.getEffect("Chopped", amount, 1, parts),
+                    EffectManager.getEffect("Dirty", 0, 2, parts)
                 )
 
-                if (size == 3){
+                if (size == 3) {
                     effects.add(EffectManager.getEffect("Stunned", 1, 1, parts))
                 }
 

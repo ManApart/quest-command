@@ -34,7 +34,7 @@ class MoveCommand : Command() {
     override fun execute(source: Player, keyword: String, args: List<String>) {
         //Move this check to the listener
         if (source.thing.getEncumbrance() >= 1) {
-            source.display{"${source.asSubject(it)} ${source.isAre(it)} too encumbered to move."}
+            source.display { "${source.asSubject(it)} ${source.isAre(it)} too encumbered to move." }
         } else {
             val arguments = Args(args, delimiters = listOf("to", "towards"))
             val vector = parseVector(args)
@@ -55,18 +55,22 @@ class MoveCommand : Command() {
     }
 
     private fun parseDirectionAndDistance(source: Player, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
-        val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
-        val distanceResponse = ResponseRequest("Move how far?\n\t${distanceOptions.joinToString(", ")}",
-            distanceOptions.associateWith { "move $it towards ${initialDirection.toString()}" })
-
-        val directionOptions = Direction.values().map { it.name }
-        val directionResponse = ResponseRequest("Move in what direction?\n\t${directionOptions.joinToString(", ")}",
-            directionOptions.associateWith { "move ${initialDirection ?: ""} towards $it" })
-
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "direction" to ResponseRequestWrapper(initialDirection?.name, directionResponse, useDefault, Direction.NORTH.name),
-                "distance" to ResponseRequestWrapper(initialDistance, distanceResponse, useDefault, 1)
-        ))
+        val responseHelper = source.responseHelper {
+            respond("direction") {
+                message("Move in what direction?")
+                options(Direction.values().map { it.name })
+                command { "move ${initialDirection ?: ""} towards $it" }
+                value(initialDirection?.name)
+                defaultValue(Direction.NORTH.name)
+            }
+            respond("distance") {
+                message("Move how far?")
+                options("1", "3", "5", "10", "50", "#")
+                command { "move $it towards ${initialDirection.toString()}" }
+                value(initialDistance)
+                defaultValue(1)
+            }
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()

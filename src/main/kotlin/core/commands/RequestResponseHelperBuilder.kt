@@ -9,13 +9,12 @@ class RequestResponseHelperBuilder(private val source: Player) {
         responses[key] = RequestResponseBuilder().apply(initializer)
     }
 
-    fun build(): ResponseRequestHelper? {
-//        val builtResponses = responses.entries.map {  }
-//        return ResponseRequestHelper(source, )
-        return null
+    fun build(): ResponseRequestHelper {
+        val builtResponses = responses.entries.associate { it.key to it.value.build() }
+        return ResponseRequestHelper(source, builtResponses)
     }
 }
 
-fun Player.respondWrapper(initializer: RequestResponseHelperBuilder.() -> Unit): ResponseRequestHelper {
-    return RequestResponseHelperBuilder(this).apply(initializer).build()!!
+fun Player.responseHelper(initializer: RequestResponseHelperBuilder.() -> Unit): ResponseRequestHelper {
+    return RequestResponseHelperBuilder(this).apply(initializer).build()
 }

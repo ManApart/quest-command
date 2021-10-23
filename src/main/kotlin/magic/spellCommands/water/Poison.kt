@@ -2,9 +2,7 @@ package magic.spellCommands.water
 
 import core.Player
 import core.commands.Args
-import core.commands.ResponseRequest
-import core.commands.ResponseRequestHelper
-import core.commands.ResponseRequestWrapper
+import core.commands.responseHelper
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -38,16 +36,24 @@ class Poison : SpellCommand() {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialAmount = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")
-
         val options = listOf("1", "3", "5", "10", "50", "#")
-        val amountResponse = ResponseRequest("Poison how much?",
-            options.associateWith { "cast poison $it for ${initialDuration.toString()} on ${things.toCommandString()}" })
-        val durationResponse = ResponseRequest("Poison for how long?",
-            options.associateWith { "cast poison ${initialAmount.toString()} for $it on ${things.toCommandString()}" })
-        val responseHelper = ResponseRequestHelper(source, mapOf(
-                "amount" to ResponseRequestWrapper(initialAmount, amountResponse, useDefaults, 1),
-                "duration" to ResponseRequestWrapper(initialDuration, durationResponse, useDefaults, 10)
-        ))
+
+        val responseHelper = source.responseHelper {
+            respond("amount") {
+                message("Poison how much?")
+                options(options)
+                command { "cast poison $it for ${initialDuration.toString()} on ${things.toCommandString()}"  }
+                value(initialAmount)
+                defaultValue(1)
+            }
+            respond("duration") {
+                message("Poison for how long?")
+                options(options)
+                command { "cast poison ${initialAmount.toString()} for $it on ${things.toCommandString()}" }
+                value(initialDuration)
+                defaultValue(10)
+            }
+        }
 
         if (!responseHelper.hasAllValues()) {
             responseHelper.requestAResponse()
@@ -56,14 +62,14 @@ class Poison : SpellCommand() {
             val duration = responseHelper.getIntValue("duration")
             val hitCount = things.count()
             val totalCost = (amount * hitCount * 2) + (duration / 4)
-            val levelRequirement = amount/2
+            val levelRequirement = amount / 2
 
             executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, things) {
                 things.forEach { thing ->
                     val parts = getThingedPartsOrRootPart(thing)
                     val effects = listOf(
-                            EffectManager.getEffect("Poison", amount, duration, parts),
-                            EffectManager.getEffect("Wet", 0, duration + 1, parts)
+                        EffectManager.getEffect("Poison", amount, duration, parts),
+                        EffectManager.getEffect("Wet", 0, duration + 1, parts)
                     )
 
                     val condition = Condition("Poisoned", Element.WATER, amount, effects)

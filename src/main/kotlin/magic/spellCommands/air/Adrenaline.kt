@@ -2,7 +2,7 @@ package magic.spellCommands.air
 
 import core.Player
 import core.commands.Args
-import core.commands.respondWrapper
+import core.commands.responseHelper
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -40,7 +40,7 @@ class Adrenaline : SpellCommand() {
 
         val options = listOf("1", "3", "5", "10", "50", "#")
 
-        val responseHelper = source.respondWrapper {
+        val responseHelper = source.responseHelper {
             respond("amount") {
                 message("Increase how much?")
                 options(options)

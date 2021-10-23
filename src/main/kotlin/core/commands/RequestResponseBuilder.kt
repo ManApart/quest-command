@@ -27,6 +27,10 @@ class RequestResponseBuilder {
         this.message = message
     }
 
+    fun options(vararg option: Int) {
+        this.options.addAll(option.map { it.toString() })
+    }
+
     fun options(vararg option: String) {
         this.options.addAll(option)
     }
@@ -70,15 +74,17 @@ class RequestResponseBuilder {
         this.value = value
     }
 
-    fun useDefault(yes: Boolean){
+    fun useDefault(yes: Boolean = true){
         this.useDefault = yes
     }
 
     fun defaultValue(default: Int){
+        this.useDefault = true
         this.defaultValue = default.toString()
     }
 
     fun defaultValue(default: String){
+        this.useDefault = true
         this.defaultValue = default
     }
 
