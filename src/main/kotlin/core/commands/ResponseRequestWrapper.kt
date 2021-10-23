@@ -1,6 +1,12 @@
 package core.commands
 
-class ResponseRequestWrapper(private val value: String?, val responseRequest: ResponseRequest, private val useDefault: Boolean = false, private val defaultValue: String? = null) {
+class ResponseRequestWrapper(
+    private val value: String?,
+    val responseRequest: ResponseRequest,
+    private val useDefault: Boolean = false,
+    private val defaultValue: String? = null
+) {
+
     constructor(value: Int?, responseRequest: ResponseRequest, useDefault: Boolean = false, defaultValue: Int? = null) : this(value?.toString(), responseRequest, useDefault, defaultValue?.toString())
 
     override fun toString(): String {

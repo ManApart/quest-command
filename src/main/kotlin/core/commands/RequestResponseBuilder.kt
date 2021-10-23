@@ -1,11 +1,13 @@
 package core.commands
 
 import core.Player
+import core.utility.Named
 
 class RequestResponseBuilder {
-    private var message: String = ""
+    private var message: String? = null
     private val options = mutableListOf<String>()
-    private var line: (String) -> String = { "" }
+    private val displayedOptions = mutableListOf<String>()
+    private var line: ((String) -> String)? = null
 
     fun message(message: String) {
         this.message = message
@@ -19,13 +21,34 @@ class RequestResponseBuilder {
         this.options.addAll(options)
     }
 
+    @JvmName("optionsNamed")
+    fun options(options: List<Named>) {
+        this.options.addAll(options.map { it.name })
+    }
+
+    /**
+     * Overrides the visual display of options. Must be the same length as options
+     */
+    fun displayedOptions(vararg option: String) {
+        this.displayedOptions.addAll(option)
+    }
+
+    fun displayedOptions(options: List<String>) {
+        this.displayedOptions.addAll(options)
+    }
+
     fun command(line: (String) -> String) {
         this.line = line
     }
 
     fun build(): ResponseRequest {
-        val fullMessage = "$message\n\t${options.joinToString(", ")}"
-        val messageOptions = options.associateWith(line)
+        if (message == null || options.isEmpty() || line == null) throw Exception("Response request cannot have null values.")
+        if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
+
+        val usedOptions = displayedOptions.ifEmpty { options }
+
+        val fullMessage = "$message\n\t${usedOptions.joinToString(", ")}"
+        val messageOptions = options.associateWith(line!!)
         return ResponseRequest(fullMessage, messageOptions)
     }
 }

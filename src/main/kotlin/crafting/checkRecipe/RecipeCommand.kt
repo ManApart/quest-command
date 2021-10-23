@@ -2,8 +2,7 @@ package crafting.checkRecipe
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.display
 
@@ -39,15 +38,19 @@ class RecipeCommand : Command() {
     }
 
     private fun clarifyRecipe(player: Player) {
-        val things = listOf("All", "Recipe")
-        val message = "List all or read a specific recipe?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(player, ResponseRequest(message, things.associateWith { "recipe $it" }))
+        player.respond {
+            message("List all or read a specific recipe?")
+            options("All", "Recipe")
+            command { "recipe $it" }
+        }
     }
 
     private fun clarifyWhichRecipe(player: Player) {
-        val things = player.knownRecipes.map { it.name }
-        val message = "Read what recipe?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(player, ResponseRequest(message, things.associateWith { "recipe $it" }))
+        player.respond {
+            message("Read what recipe?")
+            options(player.knownRecipes)
+            command { "recipe $it" }
+        }
     }
 
 }

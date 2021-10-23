@@ -3,8 +3,7 @@ package explore.map.compass
 import core.Player
 import core.commands.Args
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 
 class ViewCompassCommand : Command() {
@@ -45,9 +44,11 @@ class ViewCompassCommand : Command() {
     }
 
     private fun clarifyDepth(source: Player, locationArgs: String) {
-        val things = listOf("1", "3", "5", "10", "20")
-        val message = "Search how far?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "compass $locationArgs $it" }))
+        source.respond {
+            message("Search how far?")
+            options("1", "3", "5", "10", "20")
+            command { "compass $locationArgs $it" }
+        }
     }
 
 }

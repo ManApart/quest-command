@@ -1,7 +1,10 @@
 package traveling.approach
 
 import core.Player
-import core.commands.*
+import core.commands.Args
+import core.commands.Command
+import core.commands.parseThings
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -40,7 +43,7 @@ class RetreatCommand : Command() {
         }
     }
 
-    private fun determineThing(source: Thing, args: Args, creatures: List<Thing>) : Thing? {
+    private fun determineThing(source: Thing, args: Args, creatures: List<Thing>): Thing? {
         val parsedThing = parseThings(source, args.getBaseGroup()).firstOrNull()?.thing ?: parseThings(source, args.getGroup("from")).firstOrNull()?.thing ?: source.ai.aggroThing
         return when {
             parsedThing != null -> parsedThing
@@ -55,25 +58,22 @@ class RetreatCommand : Command() {
     }
 
     private fun clarifyAmount(player: Player, thing: Thing) {
-        val distanceOptions = listOf("1", "3", "5", "10", "50", "#")
-        val distanceResponse = ResponseRequest("Retreat how much?\n\t${distanceOptions.joinToString(", ")}",
-            distanceOptions.associateWith { "retreat from $thing by $it" })
-        CommandParsers.setResponseRequest(player, distanceResponse)
+        player.respond {
+            message("Retreat how much?")
+            options("1", "3", "5", "10", "50", "#")
+            command { "retreat from $thing by $it" }
+        }
     }
 
     private fun clarifyThing(source: Player, creatures: List<Thing>) {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to retreat from. You must be really frightened.")
         } else {
-            val message = "Retreat from what?\n\t${creatures.joinToString(", ")}"
-            val response = ResponseRequest(message, creatures.associate { it.name to "retreat from ${it.name}" })
-            CommandParsers.setResponseRequest(source, response)
-
-//            source.respond{
-//                message("Retreat from what?")
-//                options(creatures.map { it.name })
-//                command { "retreat from $it" }
-//            }
+            source.respond {
+                message("Retreat from what?")
+                options(creatures)
+                command { "retreat from $it" }
+            }
         }
     }
 

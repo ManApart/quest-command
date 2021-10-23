@@ -53,16 +53,4 @@ class ResponseRequest(val message: String, responses: Map<String, String>) {
         return responseKeys.map { it.name }.toList()
     }
 
-    companion object {
-        fun new(message: String, keys: List<String>, values: List<String>): ResponseRequest {
-            if (keys.size != values.size) {
-                throw IllegalArgumentException("Keys and values must have the same number of items!")
-            }
-            val responseMap = keys.indices.associate { i -> keys[i] to values[i]}
-
-            return ResponseRequest(message, responseMap)
-        }
-    }
-
-
 }

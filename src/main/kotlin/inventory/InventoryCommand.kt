@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.commands.CommandParsers
 import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -46,6 +47,11 @@ class InventoryCommand : Command() {
         val names = things.map { it.name }
         val message = "View whose inventory?\n\t${names.joinToString(", ")}"
         CommandParsers.setResponseRequest(source, ResponseRequest(message, names.associateWith { "bag $it" }))
+        source.respond {
+            message("View whose inventory?")
+            options(things)
+            command { "bag $it" }
+        }
     }
 
 

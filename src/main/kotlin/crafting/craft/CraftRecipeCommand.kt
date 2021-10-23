@@ -2,8 +2,7 @@ package crafting.craft
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import crafting.Recipe
@@ -42,9 +41,11 @@ class CraftRecipeCommand : Command() {
     }
 
     private fun chooseRecipe(source: Player, recipes: List<Recipe>) {
-        val message = "Craft which recipe?${recipes.joinToString { "\n\t${it.name}" }}"
-        val response = ResponseRequest(message, recipes.associate { it.name to "craft ${it.name}" })
-         CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Craft what recipe?")
+            options(recipes)
+            command { "craft $it" }
+        }
     }
 
     private fun processRecipe(source: Player, recipe: Recipe) {

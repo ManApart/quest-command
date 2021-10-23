@@ -2,9 +2,8 @@ package inventory.dropItem
 
 import core.Player
 import core.commands.Args
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
 import core.commands.parseVector
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -41,9 +40,11 @@ class DropItemCommand : core.commands.Command() {
     }
 
     private fun clarifyItemToDrop(source: Player) {
-        val things = source.inventory.getItems().map { it.name }
-        val message = "Drop what item?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "drop $it" }))
+        source.respond {
+            message("Drop what item?")
+            options(source.inventory.getItems())
+            command { "drop $it" }
+        }
     }
 
     private fun dropItem(source: Thing, args: Args, position: Vector) {

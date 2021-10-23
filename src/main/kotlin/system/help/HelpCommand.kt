@@ -3,7 +3,7 @@ package system.help
 import core.Player
 import core.commands.Command
 import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 
 class HelpCommand : Command() {
@@ -54,29 +54,36 @@ class HelpCommand : Command() {
     }
 
     private fun clarifyHelp(source: Player) {
-        val things = listOf("General Help", "List Commands", "List Commands (extended)", "A Command Group", "A Command")
-        val commands = listOf("All", "Commands", "Commands extended", "Command Group", "Command").map { "help $it" }
-
-        val message = "Help about what?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest.new(message, things, commands))
+        source.respond {
+            message("Help about what?")
+            displayedOptions("General Help", "List Commands", "List Commands (extended)", "A Command Group", "A Command")
+            options("All", "Commands", "Commands extended", "Command Group", "Command")
+            command { "help $it" }
+        }
     }
 
     private fun clarifyCommandGroupHelp(source: Player) {
-        val things = getCommandGroups()
-        val message = "Help about which command group?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "help $it" }))
+        source.respond {
+            message("Help about which command group?")
+            options(getCommandGroups())
+            command { "help $it" }
+        }
     }
 
     private fun clarifyCommandFromGroupHelp(source: Player) {
-        val things = getCommandGroups()
-        val message = "Help about a command from which command group?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "help command $it" }))
+        source.respond {
+            message("Help about a command from which command group?")
+            options(getCommandGroups())
+            command { "help command $it" }
+        }
     }
 
     private fun clarifyCommandHelp(source: Player, group: String) {
-        val things = getCommands(group).map { it.name }
-        val message = "Help about what command?\n\t${things.joinToString(", ")}"
-        CommandParsers.setResponseRequest(source, ResponseRequest(message, things.associateWith { "help $it" }))
+        source.respond {
+            message("Help about what command?")
+            options(getCommands(group).map { it.name })
+            command { "help $it" }
+        }
     }
 
 }

@@ -2,8 +2,7 @@ package explore.look
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.display
 
@@ -41,10 +40,11 @@ class LookCommand : Command() {
     }
 
     private fun clarifyThing(source: Player) {
-        val things  = (listOf("all") + source.thing.currentLocation().getThings().map { it.name })
-        val message = "Look at what?\n\t${things.joinToString(", ")}"
-        val response = ResponseRequest(message, things.associateWith { "look $it" })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Look at what?")
+            options(listOf("all") + source.thing.currentLocation().getThings().map { it.name })
+            command { "look $it" }
+        }
     }
 
 }

@@ -2,8 +2,7 @@ package explore.examine
 
 import core.Player
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 
@@ -41,10 +40,11 @@ class ExamineCommand : Command() {
     }
 
     private fun clarifyThing(source: Player) {
-        val things  = (listOf("all") + source.thing.currentLocation().getThings().map { it.name })
-        val message = "Examine what?\n\t${things.joinToString(", ")}"
-        val response = ResponseRequest(message, things.associateWith { "examine $it" })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Examine what?")
+            options(listOf("all") + source.thing.currentLocation().getThings().map { it.name })
+            command { "examine $it" }
+        }
     }
 
 }

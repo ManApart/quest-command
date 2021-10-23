@@ -6,8 +6,7 @@ import conversation.start.StartConversationEvent
 import core.Player
 import core.commands.Args
 import core.commands.Command
-import core.commands.CommandParsers
-import core.commands.ResponseRequest
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.utility.capitalize2
@@ -49,10 +48,11 @@ class SpeakCommand : Command() {
         if (things.size == 1) {
             EventManager.postEvent(StartConversationEvent(speaker, things.first()))
         } else {
-            val creatures = speaker.location.getLocation().getCreatures(speaker.thing)
-            val message = "Speak to who?\n\t${creatures.joinToString(", ")}"
-            val response = ResponseRequest(message, creatures.associate { it.name to "speak to ${it.name}." })
-            CommandParsers.setResponseRequest(speaker, response)
+            speaker.respond {
+                message( "Speak to who?")
+                options(speaker.location.getLocation().getCreatures(speaker.thing))
+                command { "speak to $it" }
+            }
         }
     }
 }
