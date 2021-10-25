@@ -67,7 +67,7 @@ class RequestResponseBuilder {
     }
 
     fun value(value: Int?){
-        this.value = value.toString()
+        this.value = value?.toString()
     }
 
     fun value(value: String?){

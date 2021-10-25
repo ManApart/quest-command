@@ -50,7 +50,7 @@ class Heal : SpellCommand() {
                 message("Heal for how long?")
                 options(options)
                 command {"cast heal ${initialAmount.toString()} for $it on ${things.toCommandString()}" }
-                value(initialAmount)
+                value(initialDuration)
                 defaultValue(1)
             }
         }
