@@ -9,6 +9,7 @@ import core.body.Slot
 import core.events.Event
 import core.properties.*
 import core.utility.Named
+import core.utility.clamp
 import core.utility.max
 import inventory.Inventory
 import status.Soul
@@ -22,6 +23,7 @@ import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import traveling.scope.getLightLevel
+import traveling.scope.getLightSources
 import kotlin.math.max
 import kotlin.math.min
 
@@ -207,32 +209,44 @@ data class Thing(
         return location.getLocation()
     }
 
-    private fun getClarity(): Int {
+    internal fun getClarity(): Int {
         val base = soul.getCurrent(PERCEPTION)
         val darkLevel = (10 - location.getLocation().getLightLevel()) * 10
         return max(0, base - darkLevel)
     }
 
-    private fun getStealthLevel(): Int {
+    internal fun getStealthLevel(): Int {
         val size = min(body.getSize().getDistance(), 50)
         val sneak = soul.getCurrent(SNEAK)
-        return max(0, min(100, sneak - size))
+        return (sneak - size).clamp(0, 100)
     }
 
     fun perceives(other: Thing): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
-        return getClarity() >= other.getStealthLevel()
-    }
+        val litLevel = location.getLocation().getLightLevel(other)
 
-    fun List<Thing>.perceived(): List<Thing> {
-        if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
-
-        val clarity = getClarity()
-        return filter { other -> this@Thing === other || clarity >= other.getStealthLevel() }
+        return getClarity() >= other.getStealthLevel() - litLevel
     }
 
 }
 
+fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
+    if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
+    val clarity = source.getClarity()
+    val location = source.location.getLocation()
+    val lightSources = location.getLightSources()
+
+    return filter { other ->
+        source === other || clarity >= other.getStealthLevel() - location.getLightLevel(other, lightSources)
+    }
+}
+
+
+fun List<Thing>.toThingString(): String {
+    return thingsToString(this)
+}
+
+//TODO - replace with above
 fun thingsToString(things: List<Thing>): String {
     val thingCounts = HashMap<String, Int>()
     things.forEach {

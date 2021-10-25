@@ -2,17 +2,18 @@ package traveling.scope
 
 import core.GameState
 import core.thing.Thing
+import core.utility.clamp
 import traveling.location.location.LIGHT
 import traveling.location.location.Location
-import kotlin.math.max
-import kotlin.math.min
 
+const val LIGHT_FALLOFF_RATE = 1
+const val MAX_LIGHT = 10
 
 fun Location.getLightLevel(): Int {
     val light = properties.values.getInt(LIGHT) +
             weather.properties.values.getInt(LIGHT) +
             getDayBonus()
-    return max(0, min(10, light))
+    return light.clamp(0, MAX_LIGHT)
 }
 
 private fun Location.getDayBonus(): Int {
@@ -26,6 +27,20 @@ private fun Location.getDayBonus(): Int {
     }
 }
 
-fun Location.getLightLevel(thing: Thing): Int {
-    return getLightLevel() + thing.properties.values.getInt(LIGHT)
+fun Location.getLightLevel(thing: Thing, lightSources: List<Thing> = this.getLightSources()): Int {
+    return (getLightLevel() + thing.properties.values.getInt(LIGHT) + getLightCastOn(thing, lightSources)).clamp(0, MAX_LIGHT)
+}
+
+fun Location.getLightSources(): List<Thing> {
+    return this.getThingsIncludingInventories().filter { it.properties.values.getInt(LIGHT) != 0 }
+}
+
+fun getLightCastOn(thing: Thing, lightSources: List<Thing>): Int {
+    return lightSources.sumOf { getLightCastOn(thing, it) }.clamp(0, MAX_LIGHT)
+}
+
+fun getLightCastOn(thing: Thing, lightSource: Thing): Int {
+    val distance = thing.position.getDistance(lightSource.position)
+    val light = lightSource.properties.values.getInt(LIGHT) - (LIGHT_FALLOFF_RATE * distance)
+    return light.clamp(0, MAX_LIGHT)
 }

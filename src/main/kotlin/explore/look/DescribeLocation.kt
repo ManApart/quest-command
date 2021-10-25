@@ -2,7 +2,8 @@ package explore.look
 
 import core.history.displayToMe
 import core.thing.Thing
-import core.thing.thingsToString
+import core.thing.perceivedBy
+import core.thing.toThingString
 import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
@@ -14,11 +15,11 @@ fun describeLocation(source: Thing) {
     } else {
         source.displayToMe("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
-    if (source.currentLocation().getThings().size > 1) {
-        val thingList = thingsToString(source.currentLocation().getThings().filterNot { it.isPlayer() })
-        source.displayToMe("You find yourself surrounded by $thingList.")
-    } else {
+    val things = source.currentLocation().getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source)
+    if (things.isEmpty()) {
         source.displayToMe("You don't see anything of use.")
+    } else {
+        source.displayToMe("You find yourself surrounded by ${things.toThingString()}.")
     }
 }
 
@@ -36,10 +37,11 @@ fun describeLocationDetailed(source: Thing) {
     val light = location.getLightLevel()
     val heat = getHeatLevel(location)
     source.displayToMe("It is $light light and $heat hot.")
-    if (location.getThings().size > 1) {
-        val thingList = thingsToString(location.getThings().filterNot { it.isPlayer() })
-        source.displayToMe("You find yourself surrounded by $thingList.")
-    } else {
+
+    val things = source.currentLocation().getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source)
+    if (things.isEmpty()) {
         source.displayToMe("You don't see anything of use.")
+    } else {
+        source.displayToMe("You find yourself surrounded by ${things.toThingString()}.")
     }
 }

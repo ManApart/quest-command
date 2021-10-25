@@ -108,7 +108,7 @@ data class Location(
     }
 
     fun isEmpty(): Boolean {
-        return getAllThings().isEmpty()
+        return getThings().isEmpty()
     }
 
     fun clear() {
@@ -133,7 +133,7 @@ data class Location(
     }
 
     private fun addThingTo(thing: Thing, listToAddTo: NameSearchableList<Thing>, proxies: List<String>) {
-        if (!getAllThings().contains(thing)) {
+        if (!getThings().contains(thing)) {
             listToAddTo.add(thing)
         }
         if (proxies.isNotEmpty()) {
@@ -157,25 +157,25 @@ data class Location(
         }
     }
 
-    private fun getAllThings(): NameSearchableList<Thing> {
+    fun getThings(): NameSearchableList<Thing> {
         return (creatures + items + activators + other)
     }
 
-    //TODO - rename get all things and just use that
-    fun getThings(): NameSearchableList<Thing> {
-        return getAllThings()
-    }
-
     fun getThings(source: Thing): NameSearchableList<Thing> {
-        return getAllThings().sortedBy { source.position.getDistance(it.position) }
+        return getThings().sortedBy { source.position.getDistance(it.position) }
     }
 
     fun getThings(name: String, source: Thing): NameSearchableList<Thing> {
-        return getThingsByName(getAllThings(), name, source)
+        return getThingsByName(getThings(), name, source)
     }
 
     fun getThings(name: String): NameSearchableList<Thing> {
-        return getThingsByName(getAllThings(), name)
+        return getThingsByName(getThings(), name)
+    }
+
+    fun getThingsIncludingInventories(): NameSearchableList<Thing> {
+        val baseThings = getThings()
+        return baseThings + baseThings.flatMap { it.inventory.getAllItems() }
     }
 
     private fun getThingsByName(things: NameSearchableList<Thing>, name: String, source: Thing): NameSearchableList<Thing> {
@@ -271,7 +271,7 @@ data class Location(
     }
 
     fun findThingsByTag(tag: String): NameSearchableList<Thing> {
-        return getAllThings().filter { it.properties.tags.has(tag) }
+        return getThings().filter { it.properties.tags.has(tag) }
     }
 
     fun findActivatorsByTag(tag: String): NameSearchableList<Thing> {
@@ -286,7 +286,7 @@ data class Location(
         val things = mutableSetOf(source)
         things.addAll(source.inventory.getAllItems())
 
-        getAllThings().forEach {
+        getThings().forEach {
             things.add(it)
             it.inventory.getAllItems().forEach { item -> things.add(item) }
         }
@@ -294,7 +294,7 @@ data class Location(
     }
 
     fun getAllInventories(): List<Inventory> {
-        return getAllThings().asSequence().map { it.inventory }.toList()
+        return getThings().asSequence().map { it.inventory }.toList()
     }
 
     fun changeWeatherIfEnoughTimeHasPassed() {
@@ -311,7 +311,7 @@ data class Location(
     fun applyWeatherEffects() {
         val conditionRecipes = weather.conditionNames
         conditionRecipes.forEach { recipeName ->
-            getAllThings().forEach { thing ->
+            getThings().forEach { thing ->
                 val parts = thing.body.getParts()
                 val condition = ConditionManager.getCondition(recipeName, parts)
                 EventManager.postEvent(AddConditionEvent(thing, condition))
