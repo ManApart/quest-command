@@ -2,7 +2,7 @@ package magic.spellCommands.earth
 
 import core.Player
 import core.commands.Args
-import core.commands.responseHelper
+import core.commands.clarify
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -38,7 +38,7 @@ class Rock : SpellCommand() {
         val initialPower = spellArgs.getBaseNumber()
         val initialSize = spellArgs.getNumber("size")
 
-        val responseHelper = source.responseHelper {
+        val clarifier = source.clarify {
             respond("power") {
                 message("Cast Rock with what power?")
                 options("1", "3", "5", "10", "50", "#")
@@ -56,11 +56,11 @@ class Rock : SpellCommand() {
 
         }
 
-        if (!responseHelper.hasAllValues()) {
-            responseHelper.requestAResponse()
+        if (!clarifier.hasAllValues()) {
+            clarifier.requestAResponse()
         } else {
-            val power = responseHelper.getIntValue("power")
-            val size = min(0, max(3, responseHelper.getIntValue("size")))
+            val power = clarifier.getIntValue("power")
+            val size = min(0, max(3, clarifier.getIntValue("size")))
             val totalCost = power / 10
             val levelRequirement = power / 2
 

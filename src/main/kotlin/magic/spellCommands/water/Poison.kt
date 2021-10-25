@@ -2,7 +2,7 @@ package magic.spellCommands.water
 
 import core.Player
 import core.commands.Args
-import core.commands.responseHelper
+import core.commands.clarify
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -38,7 +38,7 @@ class Poison : SpellCommand() {
         val initialDuration = spellArgs.getNumber("for")
         val options = listOf("1", "3", "5", "10", "50", "#")
 
-        val responseHelper = source.responseHelper {
+        val clarifier = source.clarify {
             respond("amount") {
                 message("Poison how much?")
                 options(options)
@@ -55,11 +55,11 @@ class Poison : SpellCommand() {
             }
         }
 
-        if (!responseHelper.hasAllValues()) {
-            responseHelper.requestAResponse()
+        if (!clarifier.hasAllValues()) {
+            clarifier.requestAResponse()
         } else {
-            val amount = responseHelper.getIntValue("amount")
-            val duration = responseHelper.getIntValue("duration")
+            val amount = clarifier.getIntValue("amount")
+            val duration = clarifier.getIntValue("duration")
             val hitCount = things.count()
             val totalCost = (amount * hitCount * 2) + (duration / 4)
             val levelRequirement = amount / 2

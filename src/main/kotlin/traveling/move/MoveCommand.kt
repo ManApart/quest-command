@@ -55,7 +55,7 @@ class MoveCommand : Command() {
     }
 
     private fun parseDirectionAndDistance(source: Player, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
-        val responseHelper = source.responseHelper {
+        val clarifier = source.clarify {
             respond("direction") {
                 message("Move in what direction?")
                 options(Direction.values().map { it.name })
@@ -72,11 +72,11 @@ class MoveCommand : Command() {
             }
         }
 
-        if (!responseHelper.hasAllValues()) {
-            responseHelper.requestAResponse()
+        if (!clarifier.hasAllValues()) {
+            clarifier.requestAResponse()
         } else {
-            val distance = responseHelper.getIntValue("distance")
-            val direction = Direction.getDirection(responseHelper.getStringValue("direction"))
+            val distance = clarifier.getIntValue("distance")
+            val direction = Direction.getDirection(clarifier.getStringValue("direction"))
             val vector = (direction.vector * distance) + source.position
             EventManager.postEvent(StartMoveEvent(source.thing, vector))
         }

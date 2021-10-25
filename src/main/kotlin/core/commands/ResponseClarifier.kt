@@ -2,7 +2,7 @@ package core.commands
 
 import core.Player
 
-class ResponseRequestHelper(private val player: Player, private val responses: Map<String, ResponseRequest>) {
+class ResponseClarifier(private val player: Player, private val responses: Map<String, ResponseRequest>) {
 
     fun hasAllValues(): Boolean {
         return responses.values.all {

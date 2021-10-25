@@ -2,7 +2,7 @@ package magic.spellCommands.fire
 
 import core.Player
 import core.commands.Args
-import core.commands.responseHelper
+import core.commands.clarify
 import core.events.EventManager
 import core.events.multiEvent.StartMultiEvent
 import core.thing.Thing
@@ -38,7 +38,7 @@ class Flame : SpellCommand() {
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val initialPower = args.getBaseNumber()
 
-        val responseHelper = source.responseHelper {
+        val clarifier = source.clarify {
             respond("power") {
                 message("Cast Flame with what power?")
                 options("1", "3", "5", "10", "50", "#")
@@ -48,10 +48,10 @@ class Flame : SpellCommand() {
             }
         }
 
-        if (!responseHelper.hasAllValues()) {
-            responseHelper.requestAResponse()
+        if (!clarifier.hasAllValues()) {
+            clarifier.requestAResponse()
         } else {
-            val damageAmount = responseHelper.getIntValue("power")
+            val damageAmount = clarifier.getIntValue("power")
             val cost = damageAmount / 2
             val totalCost = cost * things.count()
             val levelRequirement = damageAmount / 2

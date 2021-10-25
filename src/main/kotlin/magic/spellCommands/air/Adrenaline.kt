@@ -2,7 +2,7 @@ package magic.spellCommands.air
 
 import core.Player
 import core.commands.Args
-import core.commands.responseHelper
+import core.commands.clarify
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.StartCastSpellEvent
@@ -40,11 +40,11 @@ class Adrenaline : SpellCommand() {
 
         val options = listOf("1", "3", "5", "10", "50", "#")
 
-        val responseHelper = source.responseHelper {
+        val clarifier = source.clarify {
             respond("amount") {
                 message("Increase how much?")
                 options(options)
-                command {  "cast adrenaline $it for ${initialDuration.toString()} on ${things.toCommandString()}" }
+                command { "cast adrenaline $it for ${initialDuration.toString()} on ${things.toCommandString()}" }
                 value(initialPower)
                 useDefault(useDefaults)
                 defaultValue(5)
@@ -52,19 +52,19 @@ class Adrenaline : SpellCommand() {
             respond("duration") {
                 message("Increase for how long?")
                 options(options)
-                command {  "cast adrenaline ${initialPower.toString()} for $it on ${things.toCommandString()}"  }
+                command { "cast adrenaline ${initialPower.toString()} for $it on ${things.toCommandString()}" }
                 value(initialDuration)
                 useDefault(useDefaults)
                 defaultValue(1)
             }
         }
 
-        if (!responseHelper.hasAllValues()) {
-            responseHelper.requestAResponse()
+        if (!clarifier.hasAllValues()) {
+            clarifier.requestAResponse()
         } else {
-            val power = responseHelper.getIntValue("amount")
+            val power = clarifier.getIntValue("amount")
             val amount = power + ((source.soul.getStatOrNull(AGILITY)?.current ?: 0) * source.thing.getEncumbranceInverted()).toInt()
-            val duration = responseHelper.getIntValue("duration")
+            val duration = clarifier.getIntValue("duration")
             val hitCount = things.count()
             val perThingCost = power / 10
             val totalCost = perThingCost * hitCount
@@ -74,8 +74,8 @@ class Adrenaline : SpellCommand() {
                 things.forEach { thing ->
                     val parts = getThingedPartsOrRootPart(thing)
                     val effects = listOf(
-                            EffectManager.getEffect("Action Point Boost", amount, duration, parts),
-                            EffectManager.getEffect("Air Blasted", 0, duration + 1, parts)
+                        EffectManager.getEffect("Action Point Boost", amount, duration, parts),
+                        EffectManager.getEffect("Air Blasted", 0, duration + 1, parts)
                     )
 
                     val condition = Condition("On Adrenaline", Element.AIR, amount, effects)
