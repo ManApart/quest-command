@@ -224,7 +224,7 @@ data class Thing(
 
     fun perceives(other: Thing): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
-        return getClarity() >= other.getStealthLevel()
+        return getClarity() >= other.getStealthLevel() || inventory.exists(other)
     }
 
 }
@@ -235,7 +235,7 @@ fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
     val lightSources = source.location.getLocation().getLightSources()
 
     return filter { other ->
-        source === other || clarity >= other.getStealthLevel(lightSources)
+        source === other || clarity >= other.getStealthLevel(lightSources) || source.inventory.exists(other)
     }
 }
 

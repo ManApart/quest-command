@@ -1,5 +1,6 @@
 package explore.look
 
+import core.Player
 import core.history.display
 import core.history.displayToMe
 import core.history.displayUpdate
@@ -7,10 +8,10 @@ import core.history.displayUpdateEnd
 import core.thing.Thing
 import status.stat.HEALTH
 
-fun describeBattle(source: Thing) {
-    val creatures = source.location.getLocation().getCreatures(source)
-    creatures.filter { it != source }.forEach {
-        it.display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.getDisplayName()}.")
+fun describeBattle(source: Player) {
+    val creatures = source.location.getLocation().getCreatures(source.thing)
+    creatures.filter { it !== source.thing }.forEach {
+        it.display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.thing.getDisplayName()}.")
     }
 
 //    if (!CommandParser.isPlayersTurn()) {
@@ -27,7 +28,7 @@ private fun status(thing: Thing): String {
     return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.ai.getActionPoints()}/100 AP, ${thing.ai.action?.javaClass?.simpleName ?: "None"}."
 }
 
-private fun printTurnStatus(source: Thing, creatures: List<Thing>) {
+private fun printTurnStatus(source: Player, creatures: List<Thing>) {
     val combatantString = creatures.map {
         when {
             it.ai.isActionReady() -> ""

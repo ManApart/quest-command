@@ -1,15 +1,22 @@
 package explore.look
 
-import core.history.display
+import core.Player
+import core.history.displayToMe
 import core.thing.Thing
 
-fun describeThing(thing: Thing) {
+fun describeThing(source:Player, thing: Thing) {
+    var message = thing.getDisplayName()
+    message += "\n\t${thing.description}"
+    source.displayToMe(message)
+}
+
+fun describeThingDetailed(source:Player, thing: Thing) {
     var message = thing.getDisplayName()
     message += "\n\t${thing.description}"
     message += describeStatusEffects(thing)
     message += describeWeight(thing)
     message += describeProperties(thing)
-    thing.display(message)
+    source.displayToMe(message)
 }
 
 private fun describeStatusEffects(thing: Thing): String {

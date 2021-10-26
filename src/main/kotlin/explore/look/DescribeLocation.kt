@@ -1,14 +1,14 @@
 package explore.look
 
+import core.Player
 import core.history.displayToMe
-import core.thing.Thing
 import core.thing.perceivedBy
 import core.thing.toThingString
 import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
 
-fun describeLocation(source: Thing) {
+fun describeLocation(source: Player) {
     val pos = source.position
     if (pos == NO_VECTOR) {
         source.displayToMe("You are at ${source.location.name}")
@@ -18,10 +18,10 @@ fun describeLocation(source: Thing) {
     describePerceivedThings(source)
 }
 
-private fun describePerceivedThings(source: Thing) {
-    val things = source.currentLocation().getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source)
+private fun describePerceivedThings(source: Player) {
+    val things = source.thing.currentLocation().getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source.thing)
     when {
-        things.isEmpty() && source.location.getLocation().getLightLevel() < source.getClarity() -> {
+        things.isEmpty() && source.location.getLocation().getLightLevel() < source.thing.getClarity() -> {
             source.displayToMe("It's too dark to see anything.")
         }
         things.isEmpty() -> {
@@ -33,10 +33,10 @@ private fun describePerceivedThings(source: Thing) {
     }
 }
 
-fun describeLocationDetailed(source: Thing) {
+fun describeLocationDetailed(source: Player) {
     val pos = source.position
     val locationRecipe = source.location.getLocationRecipe()
-    val location = source.currentLocation()
+    val location = source.thing.currentLocation()
     if (pos == NO_VECTOR) {
         source.displayToMe("You are at ${source.location.name}")
     } else {

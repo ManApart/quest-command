@@ -56,7 +56,7 @@ class Tutorial : StoryEventResource {
         StoryEvent("Tutorial", 70, "I should move to that recipe for Apple Pie by typing 'move 0,10,0'.",
             ConditionalEvents(LookEvent::class,
                 { event, _ -> event.source.location.name == "Farmer's Hut Interior" },
-                { event, _ -> listOf(MessageEvent(GameState.getPlayer(event.source), "I should move to that recipe for Apple Pie by typing 'move 0,10,0'.")) }
+                { event, _ -> listOf(MessageEvent(event.source, "I should move to that recipe for Apple Pie by typing 'move 0,10,0'.")) }
             )
         ),
 

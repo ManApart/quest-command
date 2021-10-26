@@ -29,9 +29,9 @@ class ExamineCommand : Command() {
         val argString = args.joinToString(" ")
         when {
             keyword == "examine" && args.isEmpty() -> clarifyThing(source)
-            args.isEmpty() -> EventManager.postEvent(ExamineEvent(source.thing))
-            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent(source.thing))
-            source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(source.thing, source.thing.currentLocation().getThingsIncludingPlayerInventory(
+            args.isEmpty() -> EventManager.postEvent(ExamineEvent(source))
+            args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent(source))
+            source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(source, source.thing.currentLocation().getThingsIncludingPlayerInventory(
                 source.thing,
                 argString
             ).first()))
