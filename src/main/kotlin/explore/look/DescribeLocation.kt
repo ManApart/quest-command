@@ -15,11 +15,21 @@ fun describeLocation(source: Thing) {
     } else {
         source.displayToMe("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
     }
+    describePerceivedThings(source)
+}
+
+private fun describePerceivedThings(source: Thing) {
     val things = source.currentLocation().getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source)
-    if (things.isEmpty()) {
-        source.displayToMe("You don't see anything of use.")
-    } else {
-        source.displayToMe("You find yourself surrounded by ${things.toThingString()}.")
+    when {
+        things.isEmpty() && source.location.getLocation().getLightLevel() < source.getClarity() -> {
+            source.displayToMe("It's too dark to see anything.")
+        }
+        things.isEmpty() -> {
+            source.displayToMe("You don't see anything of use.")
+        }
+        else -> {
+            source.displayToMe("You find yourself surrounded by ${things.toThingString()}.")
+        }
     }
 }
 
@@ -38,10 +48,5 @@ fun describeLocationDetailed(source: Thing) {
     val heat = getHeatLevel(location)
     source.displayToMe("It is $light light and $heat hot.")
 
-    val things = source.currentLocation().getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source)
-    if (things.isEmpty()) {
-        source.displayToMe("You don't see anything of use.")
-    } else {
-        source.displayToMe("You find yourself surrounded by ${things.toThingString()}.")
-    }
+    describePerceivedThings(source)
 }

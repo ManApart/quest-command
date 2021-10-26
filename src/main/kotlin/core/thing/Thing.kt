@@ -22,6 +22,7 @@ import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
+import traveling.scope.MAX_LIGHT
 import traveling.scope.getLightLevel
 import traveling.scope.getLightSources
 import kotlin.math.max
@@ -210,22 +211,20 @@ data class Thing(
     }
 
     internal fun getClarity(): Int {
-        val base = soul.getCurrent(PERCEPTION)
-        val darkLevel = (10 - location.getLocation().getLightLevel()) * 10
-        return max(0, base - darkLevel)
+        return (soul.getCurrent(PERCEPTION) + 5).clamp(0, 100)
     }
 
-    internal fun getStealthLevel(): Int {
+    internal fun getStealthLevel(lightSources: List<Thing> = location.getLocation().getLightSources()): Int {
         val size = min(body.getSize().getDistance(), 50)
         val sneak = soul.getCurrent(SNEAK)
-        return (sneak - size).clamp(0, 100)
+        val darkLevel = (MAX_LIGHT - location.getLocation().getLightLevel(this, lightSources)).clamp(0, 10)
+        val adjustedDark = (darkLevel * darkLevel)
+        return (sneak + adjustedDark - size).clamp(0, 100)
     }
 
     fun perceives(other: Thing): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
-        val litLevel = location.getLocation().getLightLevel(other)
-
-        return getClarity() >= other.getStealthLevel() - litLevel
+        return getClarity() >= other.getStealthLevel()
     }
 
 }
@@ -233,23 +232,16 @@ data class Thing(
 fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
     if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
     val clarity = source.getClarity()
-    val location = source.location.getLocation()
-    val lightSources = location.getLightSources()
+    val lightSources = source.location.getLocation().getLightSources()
 
     return filter { other ->
-        source === other || clarity >= other.getStealthLevel() - location.getLightLevel(other, lightSources)
+        source === other || clarity >= other.getStealthLevel(lightSources)
     }
 }
 
-
 fun List<Thing>.toThingString(): String {
-    return thingsToString(this)
-}
-
-//TODO - replace with above
-fun thingsToString(things: List<Thing>): String {
     val thingCounts = HashMap<String, Int>()
-    things.forEach {
+    this.forEach {
         val count = it.properties.getCount()
         thingCounts[it.getDisplayName()] = thingCounts[it.getDisplayName()]?.plus(count) ?: count
     }
