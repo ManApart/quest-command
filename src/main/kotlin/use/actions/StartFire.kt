@@ -6,6 +6,7 @@ import magic.Element
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
 import status.effects.EffectManager
+import traveling.scope.LIT_LIGHT
 import use.UseEvent
 import use.UseListener
 
@@ -19,9 +20,11 @@ class StartFire : UseListener() {
 
     override fun executeUseEvent(event: UseEvent) {
         event.source.display("${event.thing.name} catches on fire.")
+        val litLevel = event.thing.properties.values.getInt(LIT_LIGHT, 1)
         val condition = Condition("Burning", Element.FIRE, 1, listOf(
                 EffectManager.getEffect("Burning", 1, 5),
-                EffectManager.getEffect("On Fire", 1, 5)
+                EffectManager.getEffect("On Fire", 1, 5),
+                EffectManager.getEffect("Lit", litLevel, 3)
         ))
         EventManager.postEvent(AddConditionEvent(event.thing, condition))
     }

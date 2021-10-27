@@ -5,6 +5,7 @@ import core.properties.PropsBuilder
 import explore.listen.SOUND_DESCRIPTION
 import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
+import traveling.scope.LIGHT
 
 class LocationRecipeBuilder(val name: String) {
     private val propsBuilder = PropsBuilder()

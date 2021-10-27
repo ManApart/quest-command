@@ -3,11 +3,12 @@ package traveling.scope
 import core.GameState
 import core.thing.Thing
 import core.utility.clamp
-import traveling.location.location.LIGHT
 import traveling.location.location.Location
 
 const val LIGHT_FALLOFF_RATE = 1
 const val MAX_LIGHT = 10
+const val LIGHT = "Light"
+const val LIT_LIGHT = "litLight"
 
 fun Location.getLightLevel(): Int {
     val light = properties.values.getInt(LIGHT) +

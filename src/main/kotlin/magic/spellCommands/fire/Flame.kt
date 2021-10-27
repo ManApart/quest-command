@@ -17,6 +17,7 @@ import status.stat.FIRE_MAGIC
 import traveling.position.Distances
 import traveling.position.ThingAim
 import traveling.position.toCommandString
+import traveling.scope.LIT_LIGHT
 import kotlin.math.max
 
 class Flame : SpellCommand() {
@@ -71,9 +72,11 @@ class Flame : SpellCommand() {
 
     private fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int): StartCastSpellEvent {
         val parts = getThingedPartsOrAll(thing, 3)
+        val litLevel = max(damageAmount, thing.thing.properties.values.getInt(LIT_LIGHT, 1))
         val effects = listOf(
                 EffectManager.getEffect("Burning", damageAmount, 3, parts),
-                EffectManager.getEffect("On Fire", damageAmount, 3, parts)
+                EffectManager.getEffect("On Fire", damageAmount, 3, parts),
+                EffectManager.getEffect("Lit", litLevel, 3, parts),
         )
 
         val condition = Condition("Fire Blasted", Element.FIRE, cost, effects)

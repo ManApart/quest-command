@@ -7,7 +7,6 @@ import core.utility.Named
 val NOWHERE = LocationRecipe("Nowhere")
 
 const val HEAT = "Heat"
-const val LIGHT = "Light"
 
 //TODO - combine items and equipped items
 //only do equip check if slots exist

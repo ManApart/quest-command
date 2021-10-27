@@ -5,6 +5,7 @@ import status.effects.EffectBase
 import status.effects.EffectResource
 import status.stat.StatEffect
 import status.stat.StatKind
+import traveling.scope.LIGHT
 
 class CommonEffects : EffectResource {
     override val values = listOf(
@@ -20,6 +21,7 @@ class CommonEffects : EffectResource {
         EffectBase("Encased Chop Defense", "Encased in a thick layer of dirt.", "chopDefense", StatKind.PROP_VAL, StatEffect.BOOST, damageType = DamageType.EARTH),
         EffectBase("Burning", "Flames linger and lick, curling into the air.", "Health", statEffect= StatEffect.DRAIN, damageType = DamageType.FIRE),
         EffectBase("On Fire", "Flames linger and lick, curling into the air.", "fireHealth", StatKind.PROP_VAL, StatEffect.DRAIN, damageType = DamageType.FIRE),
+        EffectBase("Lit", "Red and yellow light dance together.", LIGHT, StatKind.PROP_VAL, StatEffect.BOOST, damageType = DamageType.FIRE),
         EffectBase("Frozen", "Encased in a thck layer of ice.", damageType = DamageType.ICE),
         EffectBase("Shocked", "Current rushes across muscle and tendon.", damageType = DamageType.LIGHTNING),
         EffectBase("Stunned", "Consciousness is lost for a second.", "Agility", statEffect = StatEffect.DEPLETE),

@@ -2,6 +2,7 @@ package resources.thing.items
 
 import core.thing.item.ItemResource
 import core.thing.things
+import traveling.scope.LIT_LIGHT
 
 class Items : ItemResource {
 
@@ -59,7 +60,7 @@ class Items : ItemResource {
             description("The metal cage is battered, and the glass seems to seep down towards the base.")
             props {
                 value("fireHealth", 2)
-                value("litLight", 2)
+                value(LIT_LIGHT, 2)
                 tag("Metal", "Flammable", "Light")
             }
             behavior("Burn Out", "fireHealth" to 5)
