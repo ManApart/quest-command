@@ -60,7 +60,7 @@ class Items : ItemResource {
             description("The metal cage is battered, and the glass seems to seep down towards the base.")
             props {
                 value("fireHealth", 2)
-                value(LIT_LIGHT, 2)
+                value(LIT_LIGHT, 7)
                 tag("Metal", "Flammable", "Light")
             }
             behavior("Burn Out", "fireHealth" to 5)

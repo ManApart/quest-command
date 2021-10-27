@@ -223,4 +223,12 @@ GameLogger.main.getLastInput()
         assertEquals(1, GameState.player.thing.soul.getConditions().size)
         assertEquals("Rain Wet", GameState.player.thing.soul.getConditions().first().name)
     }
+
+    @Test
+    fun lightTheWay() {
+        CommandParsers.parseCommand(GameState.player, "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && ls")
+        assertEquals("It's too dark to see anything.", GameLogger.main.getLastOutput())
+        CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
+        assertEquals("You find yourself surrounded by Wall Crack.", GameLogger.main.getLastOutput())
+    }
 }
