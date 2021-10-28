@@ -1,6 +1,7 @@
 package inventory
 
 import core.DependencyInjector
+import core.GameState
 import core.body.*
 import core.history.GameLogger
 import core.properties.Properties
@@ -13,6 +14,7 @@ import createItem
 import createMockedGame
 import org.junit.Before
 import org.junit.Test
+import system.debug.DebugType
 import traveling.location.location.locationRecipe
 import kotlin.test.assertEquals
 
@@ -21,6 +23,7 @@ class ListInventoryTest {
     @Before
     fun setup() {
         createMockedGame()
+        GameState.putDebug(DebugType.CLARITY, true)
     }
 
     @Test
