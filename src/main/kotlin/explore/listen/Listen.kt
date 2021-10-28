@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.joinToStringAnd
+import status.stat.StatKind
 import traveling.location.location.Location
 import traveling.location.weather.Weather
 import traveling.position.NO_VECTOR
@@ -14,7 +15,7 @@ const val SOUND_DESCRIPTION = "Sound Description"
 const val SOUND_LEVEL = "Sound Level"
 const val SOUND_LEVEL_DEFAULT = 5
 
-private data class Sound(val description: String, val level: Int, val distance: Vector, val strength: Int)
+data class Sound(val description: String, val level: Int, val distance: Vector, val strength: Int)
 
 class Listen : EventListener<ListenEvent>() {
 
@@ -62,11 +63,16 @@ private fun Location.getThingSounds(source: Thing): List<Sound> {
     return getThings().mapNotNull { it.getSound(source) }
 }
 
+fun Thing.getSound(source: Thing): Sound? {
 
-private fun Thing.getSound(source: Thing): Sound? {
-    if (!properties.values.has(SOUND_DESCRIPTION)) return null
+    val soundEffects = soul.getConditions()
+        .flatMap { it.effects }
+        .map { it.base }
+        .filter { it.statKind == StatKind.PROP_VAL && it.statThing == SOUND_LEVEL}
 
-    val description = properties.values.getString(SOUND_DESCRIPTION)
+    val description = soundEffects.firstOrNull()?.description ?: properties.values.getString(SOUND_DESCRIPTION, "")
+    if (description.isBlank()) return null
+
     val level = properties.values.getInt(SOUND_LEVEL, SOUND_LEVEL_DEFAULT)
     val vector = position.minus(source.position)
     val distance = position.getDistance(source.position)

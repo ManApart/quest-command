@@ -4,6 +4,7 @@ import core.GameState
 import core.utility.RandomManager
 import traveling.location.location.LocationResource
 import traveling.location.location.locations
+import traveling.scope.LIGHT
 
 class CommonLocations : LocationResource {
     override val values = locations {
@@ -15,6 +16,13 @@ class CommonLocations : LocationResource {
                 option("Distant Rain") { RandomManager.isSuccess(40) }
                 option("Distant Storm") { RandomManager.isSuccess(10) }
                 option("Calm")
+            }
+        }
+
+        location("Inside Building") {
+            extends("Inside")
+            props {
+                value(LIGHT, 5)
             }
         }
 
@@ -77,7 +85,7 @@ class CommonLocations : LocationResource {
         }
 
         location("Farmer's Hut Interior") {
-            extends("Inside")
+            extends("Inside Building")
             description("The thatched roof hangs close to the ground; the single room is empty but for a small cooking range.")
             activator("Range") {
                 location("by the door")
@@ -153,19 +161,19 @@ class CommonLocations : LocationResource {
         }
 
         location("Windmill") {
-            extends("Inside")
+            extends("Inside Building")
             activator("Grain Bin")
             activator("Stairs")
             item("Pot")
         }
 
         location("Windmill - Second Floor") {
-            extends("Inside")
+            extends("Inside Building")
             activator("Stairs")
         }
 
         location("Windmill - Third Floor") {
-            extends("Inside")
+            extends("Inside Building")
             activator("Grain Chute")
         }
 

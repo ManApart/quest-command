@@ -1,6 +1,7 @@
 package resources.status
 
 import combat.DamageType
+import explore.listen.SOUND_LEVEL
 import status.effects.EffectBase
 import status.effects.EffectResource
 import status.stat.StatEffect
@@ -32,8 +33,9 @@ class CommonEffects : EffectResource {
         EffectBase("Poison", "Lose health over time.", "Health", statEffect = StatEffect.DRAIN, damageType = DamageType.WATER),
         EffectBase("Warm", "Increase the level of heat.", "Heat", statEffect = StatEffect.BOOST, damageType = DamageType.FIRE),
         EffectBase("Cool", "Decrease the level of heat.", "Heat", statEffect = StatEffect.DEPLETE, damageType = DamageType.ICE),
-        EffectBase("Brighten", "Light is cast on this.", "Light", StatKind.PROP_VAL, statEffect = StatEffect.BOOST),
-        EffectBase("Darken", "Shadow is cast on this.", "Light", StatKind.PROP_VAL, statEffect = StatEffect.DEPLETE),
+        EffectBase("Brighten", "Light is cast on this.", LIGHT, StatKind.PROP_VAL, statEffect = StatEffect.BOOST),
+        EffectBase("Darken", "Shadow is cast on this.", LIGHT, StatKind.PROP_VAL, statEffect = StatEffect.DEPLETE),
+        EffectBase("Talking", "You hear them talking.", SOUND_LEVEL, StatKind.PROP_VAL, statEffect = StatEffect.BOOST),
         )
 
 }

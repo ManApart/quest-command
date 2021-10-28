@@ -178,6 +178,11 @@ data class Location(
         return baseThings + baseThings.flatMap { it.inventory.getAllItems() }
     }
 
+    fun getThingsIncludingTopLevelInventories(): NameSearchableList<Thing> {
+        val baseThings = getThings()
+        return baseThings + baseThings.flatMap { it.inventory.getItems() }
+    }
+
     private fun getThingsByName(things: NameSearchableList<Thing>, name: String, source: Thing): NameSearchableList<Thing> {
         return when {
             things.existsExact(name) && things.countExact(name) == 1 -> NameSearchableList(things.get(name))

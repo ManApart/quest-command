@@ -41,8 +41,9 @@ object GameManager {
         LocationManager.reset()
         EventManager.reset()
         GameState.reset()
-//        LocationManager.clear()
         setDefaultProperties(testing)
+        //Set initial time to day
+        GameState.timeManager.setTime(50)
 
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)

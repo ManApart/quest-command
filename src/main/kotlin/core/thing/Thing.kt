@@ -11,6 +11,7 @@ import core.properties.*
 import core.utility.Named
 import core.utility.clamp
 import core.utility.max
+import explore.listen.getSound
 import inventory.Inventory
 import status.Soul
 import status.stat.PERCEPTION
@@ -218,17 +219,18 @@ data class Thing(
         return (soul.getCurrent(PERCEPTION) + 5).clamp(0, 100)
     }
 
-    fun getStealthLevel(lightSources: List<Thing> = location.getLocation().getLightSources()): Int {
+    fun getStealthLevel(observer: Thing, lightSources: List<Thing> = location.getLocation().getLightSources()): Int {
         val size = min(getSize(), 50)
+        val soundLevel = getSound(observer)?.strength ?: 0
         val sneak = soul.getCurrent(SNEAK)
         val darkLevel = (MAX_LIGHT - location.getLocation().getLightLevel(this, lightSources)).clamp(0, 10)
         val adjustedDark = (darkLevel * darkLevel)
-        return (sneak + adjustedDark - size).clamp(0, 100)
+        return (sneak + adjustedDark - size - soundLevel).clamp(0, 100)
     }
 
     fun perceives(other: Thing): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
-        return getClarity() >= other.getStealthLevel() || inventory.exists(other)
+        return getClarity() >= other.getStealthLevel(this) || inventory.exists(other)
     }
 
 }
@@ -239,7 +241,7 @@ fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
     val lightSources = source.location.getLocation().getLightSources()
 
     return filter { other ->
-        source === other || clarity >= other.getStealthLevel(lightSources) || source.inventory.exists(other)
+        source === other || clarity >= other.getStealthLevel(source, lightSources) || source.inventory.exists(other)
     }
 }
 
