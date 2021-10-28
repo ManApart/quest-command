@@ -37,13 +37,14 @@ object GameManager {
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
         GameState.reset()
+        //Set initial time to day
+        GameState.timeManager.setTime(50)
+
         QuestManager.reset()
         LocationManager.reset()
         EventManager.reset()
         GameState.reset()
         setDefaultProperties(testing)
-        //Set initial time to day
-        GameState.timeManager.setTime(50)
 
         GameState.gameName = gameName
         GameState.player = newPlayer(playerName)

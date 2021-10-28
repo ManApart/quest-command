@@ -16,4 +16,8 @@ class WeatherListener : EventListener<GameTickEvent>() {
         }
     }
 
+    override fun reset() {
+        lastAppliedEffects = GameState.timeManager.getTicks()
+    }
+
 }
