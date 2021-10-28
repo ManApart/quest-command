@@ -11,6 +11,7 @@ import core.properties.Properties
 import core.thing.Thing
 import traveling.location.Network
 import traveling.location.location.LocationManager
+import traveling.location.network.NOWHERE_NODE
 import java.io.File
 
 private const val directory = "./saves/"
@@ -104,7 +105,7 @@ fun save(gameName: String, network: Network) {
         .map {
             val path = clean(gameName, network.name)
             traveling.location.location.persist(it.getLocation(), path)
-            it.loadPath = cleanPathToFile(".json", path, it.name)
+            if (it !== NOWHERE_NODE) it.loadPath = cleanPathToFile(".json", path, it.name)
             it.flushLocation()
         }
 }
