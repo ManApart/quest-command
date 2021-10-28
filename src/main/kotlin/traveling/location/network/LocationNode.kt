@@ -84,7 +84,6 @@ data class LocationNode(
         return when {
             location != null -> location!!
             loadPath != null -> {
-                println("Loading from $loadPath")
                 location = load(loadPath!!, this)
                 if (location == null) {
                     location = Location(this)
