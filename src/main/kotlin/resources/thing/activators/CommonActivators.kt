@@ -148,7 +148,7 @@ class CommonActivators : ActivatorResource {
 
         thing("Wall Crack") {
             description("This crack is large enough to squeeze through.")
-
+            body("Wall Crack")
         }
 
     }

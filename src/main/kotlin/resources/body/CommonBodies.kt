@@ -85,5 +85,12 @@ class CommonBodies : BodyResource {
                 isRoot(true)
             }
         }
+        network("Wall Crack") {
+            locationNode {
+                isRoot(true)
+                connection("Top", z = 5)
+            }
+            locationNode("Top")
+        }
     }
 }

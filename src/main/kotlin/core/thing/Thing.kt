@@ -210,14 +210,16 @@ data class Thing(
         return location.getLocation()
     }
 
-    internal fun getClarity(): Int {
+    fun getSize(): Int {
+        return properties.values.getInt("size", body.getSize().getDistance())
+    }
+
+    fun getClarity(): Int {
         return (soul.getCurrent(PERCEPTION) + 5).clamp(0, 100)
     }
 
-    internal fun getStealthLevel(lightSources: List<Thing> = location.getLocation().getLightSources()): Int {
-        //TODO - hard coded size
-//        val size = min(body.getSize().getDistance(), 50)
-        val size = 9
+    fun getStealthLevel(lightSources: List<Thing> = location.getLocation().getLightSources()): Int {
+        val size = min(getSize(), 50)
         val sneak = soul.getCurrent(SNEAK)
         val darkLevel = (MAX_LIGHT - location.getLocation().getLightLevel(this, lightSources)).clamp(0, 10)
         val adjustedDark = (darkLevel * darkLevel)
