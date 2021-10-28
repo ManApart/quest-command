@@ -20,23 +20,34 @@ class SentenceParser(private val speaker: Thing, private val listener: Thing, se
         when {
             !sentence.hasMapped(PartOfSpeech.QUESTION_TYPE) -> speaker.display("Could not parse type of question from '${sentence.sentence}'.")
             !sentence.hasMapped(PartOfSpeech.VERB) -> speaker.display("Could not parse verb from '${sentence.sentence}'.")
-            else -> return ParsedDialogue(speaker, listener, sentence.subjects, sentence.verb, sentence.verbOptions, sentence.questionType)
+            else -> return ParsedDialogue(
+                speaker,
+                listener,
+                sentence.subjects,
+                sentence.verb,
+                sentence.verbOptions,
+                sentence.questionType
+            )
         }
         return null
     }
 
     private fun parseQuestionType(sentence: Sentence) {
         if (sentence.isQuestion) {
-            val position = sentence.words.indices.first { questionTypeFromWord(sentence.words[it]) != null }
-            sentence.mapWord(position, PartOfSpeech.QUESTION_TYPE)
-            sentence.questionType = questionTypeFromWord(sentence.words[position])!!
+            val position = sentence.words.indices.firstOrNull { questionTypeFromWord(sentence.words[it]) != null }
+            if (position != null) {
+                sentence.mapWord(position, PartOfSpeech.QUESTION_TYPE)
+                sentence.questionType = questionTypeFromWord(sentence.words[position])!!
+            }
         }
     }
 
     private fun parseVerb(sentence: Sentence) {
-        val position = sentence.words.indices.first { verbFromWord(sentence.words[it]) != null }
-        sentence.mapWord(position, PartOfSpeech.VERB)
-        sentence.verb = verbFromWord(sentence.words[position])!!
+        val position = sentence.words.indices.firstOrNull { verbFromWord(sentence.words[it]) != null }
+        if (position != null) {
+            sentence.mapWord(position, PartOfSpeech.VERB)
+            sentence.verb = verbFromWord(sentence.words[position])!!
+        }
     }
 
     private fun parseVerbOptions(sentence: Sentence) {
@@ -75,7 +86,7 @@ class SentenceParser(private val speaker: Thing, private val listener: Thing, se
     private fun findNamed(subjectName: String): List<Named> {
         val subjects = speaker.location.getLocation().getThings(subjectName, speaker)
         val exact = subjects.getExact(subjectName)
-        if (exact != null){
+        if (exact != null) {
             return listOf(exact)
         }
         if (subjects.isNotEmpty()) {
