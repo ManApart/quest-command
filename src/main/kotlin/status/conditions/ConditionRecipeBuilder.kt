@@ -18,9 +18,12 @@ class ConditionRecipeBuilder(
         this.elementStrength = strength
     }
 
-    //TODO - build effect by passing in an effect builder
     fun effect(vararg effect: EffectRecipe) {
         effects.addAll(effect)
+    }
+
+    fun effect(name: String, amount: Int, duration: Int = 1) {
+        effects.add(EffectRecipe(name, amount, duration))
     }
 
     fun element(element: Element) {
