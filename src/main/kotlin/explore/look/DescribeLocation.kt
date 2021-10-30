@@ -5,6 +5,7 @@ import core.history.displayToMe
 import core.thing.perceivedBy
 import core.thing.toThingString
 import traveling.location.location.Location
+import traveling.location.weather.DEFAULT_WEATHER
 import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
@@ -28,9 +29,10 @@ private fun describePosition(source: Player, location: Location) {
 }
 
 private fun describePerceivedThings(source: Player, location: Location) {
-    val things = location.getThings().filterNot { it.isPlayer() }.toList().perceivedBy(source.thing)
+    val allThings = location.getThings()
+    val things = allThings.filterNot { it.isPlayer() }.toList().perceivedBy(source.thing)
     when {
-        things.isEmpty() && location.getLightLevel() < source.thing.getClarity() -> {
+        things.isEmpty() && allThings.isNotEmpty() && location.getLightLevel() < source.thing.getClarity() -> {
             source.displayToMe("It's too dark to see anything.")
         }
         things.isEmpty() -> {
@@ -42,20 +44,17 @@ private fun describePerceivedThings(source: Player, location: Location) {
     }
 }
 
-fun describeLocationDetailed(source: Player) {
-    val pos = source.position
-    val locationRecipe = source.location.getLocationRecipe()
-    val location = source.thing.currentLocation()
-    if (pos == NO_VECTOR) {
-        source.displayToMe("You are at ${source.location.name}")
-    } else {
-        source.displayToMe("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${source.location.name}")
-    }
-    source.displayToMe(locationRecipe.getDescription())
-    source.displayToMe(location.weather.description)
+fun describeLocationDetailed(source: Player, location: Location) {
+    val locationRecipe = location.locationNode.getLocationRecipe()
+    describePosition(source, location)
+
+    if (locationRecipe.getDescription().isNotBlank()) source.displayToMe(locationRecipe.getDescription())
+
+    if (location.weather != DEFAULT_WEATHER) source.displayToMe(location.weather.description)
+
     val light = location.getLightLevel()
     val heat = getHeatLevel(location)
-    source.displayToMe("It is $light light and $heat hot.")
+    if (light != 0 || heat != 0) source.displayToMe("It is $light light and $heat hot.")
 
-    describePerceivedThings(source, source.thing.currentLocation())
+    describePerceivedThings(source, location)
 }

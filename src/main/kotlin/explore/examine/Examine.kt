@@ -16,8 +16,9 @@ class Examine : EventListener<ExamineEvent>() {
         when {
             event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(event.source)
             event.thing != null -> describePerceivedThing(event.source, event.thing)
+            event.location != null -> describeLocationDetailed(event.source, event.location)
             event.source.ai.aggroThing != null -> describeBattle(event.source)
-            else -> describeLocationDetailed(event.source)
+            else -> describeLocationDetailed(event.source, event.source.thing.currentLocation())
         }
     }
 

@@ -20,7 +20,8 @@ class LookCommand : Command() {
     override fun getManual(): String {
         return """
 	Look all - View the objects you can interact with.
-	Look <thing> - Look at a specific thing."""
+	Look <thingAim> - Look at a specific thing.
+    Look hand of player - Look at the player's right hand."""
     }
 
     override fun getCategory(): List<String> {
@@ -32,11 +33,6 @@ class LookCommand : Command() {
             keyword == "look" && args.isEmpty() -> clarifyThing(source)
             args.isEmpty() -> EventManager.postEvent(LookEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent(source))
-//            source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.thing.currentLocation().getThingsIncludingPlayerInventory(
-//                source.thing,
-//                argString
-//            ).first()))
-//            else -> source.display("Couldn't find ${args.joinToString(" ")}.")
             else -> tryAndGetThing(args, source)
         }
     }

@@ -2,9 +2,11 @@ package explore.examine
 
 import core.Player
 import core.commands.Command
+import core.commands.parseThings
 import core.commands.respond
 import core.events.EventManager
-import core.history.displayToMe
+import core.history.display
+import traveling.position.ThingAim
 
 class ExamineCommand : Command() {
     override fun getAliases(): List<String> {
@@ -18,7 +20,9 @@ class ExamineCommand : Command() {
     override fun getManual(): String {
         return """
 	Examine all - Look more closely at your surroundings. Gives more detailed information than look, based on how perceptive you are.
-	Examine <thing> - Look closely at a specific thing."""
+	Examine <thingAim> - Look closely at a specific thing.
+    Examine hand of player - Look closely at the player's right hand.
+    """
     }
 
     override fun getCategory(): List<String> {
@@ -26,16 +30,37 @@ class ExamineCommand : Command() {
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        val argString = args.joinToString(" ")
         when {
-            keyword == "examine" && args.isEmpty() -> clarifyThing(source)
+            keyword == "look" && args.isEmpty() -> clarifyThing(source)
             args.isEmpty() -> EventManager.postEvent(ExamineEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent(source))
-            source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, argString).isNotEmpty() -> EventManager.postEvent(ExamineEvent(source, source.thing.currentLocation().getThingsIncludingPlayerInventory(
-                source.thing,
-                argString
-            ).first()))
-            else -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
+            else -> tryAndGetThing(args, source)
+        }
+    }
+
+    private fun tryAndGetThing(args: List<String>, source: Player) {
+        val thing = getThing(args, source)
+        when {
+            thing?.bodyPartThings?.firstOrNull() != null -> EventManager.postEvent(ExamineEvent(source, location = thing.bodyPartThings.firstOrNull()))
+            thing?.thing != null -> EventManager.postEvent(ExamineEvent(source, thing = thing.thing))
+            else -> source.display("Couldn't find ${args.joinToString(" ")}.")
+        }
+    }
+
+    private fun getThing(args: List<String>, source: Player): ThingAim? {
+        val allThings = source.thing.currentLocation().getThingsIncludingInventories()
+        val things = parseThings(source.thing, args, allThings)
+
+        return when {
+            things.size == 1 -> things.first()
+            things.isEmpty() -> {
+                clarifyThing(source)
+                null
+            }
+            else -> {
+                clarifyThings(source, things)
+                null
+            }
         }
     }
 
@@ -43,6 +68,14 @@ class ExamineCommand : Command() {
         source.respond {
             message("Examine what?")
             options(listOf("all") + source.thing.currentLocation().getThings().map { it.name })
+            command { "examine $it" }
+        }
+    }
+
+    private fun clarifyThings(source: Player, options: List<ThingAim>) {
+        source.respond {
+            message("Examine what?")
+            options(options.map { it.toString() })
             command { "examine $it" }
         }
     }

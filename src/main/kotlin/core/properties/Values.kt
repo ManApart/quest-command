@@ -17,7 +17,7 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
         return if (properties.isEmpty()) {
             ""
         } else {
-            properties.entries.joinToString(", ") { "${it.key} - ${it.value}" }
+            properties.entries.joinToString(", ") { "${it.key} ${it.value}" }
         }
     }
 
