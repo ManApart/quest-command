@@ -30,13 +30,13 @@ class InventoryCommand : Command() {
         val location = source.thing.currentLocation()
         val allInventories = location.findThingsByTag("Container")
         val argString = args.joinToString(" ")
-        val thing = location.getThings(argString).firstOrNull()
+        val thing = location.getThingsIncludingInventories(argString).firstOrNull()
 
         when {
-            args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(allInventories.first()))
+            args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(source, allInventories.first()))
             args.isEmpty() && keyword == "bag" -> clarifyThing(source, allInventories)
-            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source.thing))
-            thing != null -> EventManager.postEvent(ListInventoryEvent(thing))
+            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source, source.thing))
+            thing != null -> EventManager.postEvent(ListInventoryEvent(source, thing))
             else -> source.displayToMe("Could not find $argString")
         }
     }

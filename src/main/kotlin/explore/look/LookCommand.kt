@@ -21,6 +21,7 @@ class LookCommand : Command() {
         return """
 	Look all - View the objects you can interact with.
 	Look <thingAim> - Look at a specific thing.
+    Look body of <thing> - Look at the body of a thing.
     Look hand of player - Look at the player's right hand."""
     }
 

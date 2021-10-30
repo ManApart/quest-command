@@ -30,7 +30,7 @@ class ListInventoryTest {
     fun listInventory() {
         val creature = createClosedChest()
         creature.inventory.add(createItem())
-        val event = ListInventoryEvent(creature)
+        val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
         assertEquals("Closed Chest has:\n\tApple", GameLogger.main.getLastOutput())
     }
@@ -38,7 +38,7 @@ class ListInventoryTest {
     @Test
     fun listNoItemsInventory() {
         val creature = createClosedChest()
-        val event = ListInventoryEvent(creature)
+        val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
         assertEquals("Closed Chest has no items.", GameLogger.main.getLastOutput())
     }
@@ -58,7 +58,7 @@ class ListInventoryTest {
         val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
         creature.body.equip(item)
-        val event = ListInventoryEvent(creature)
+        val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
         assertEquals("Soldier has:\n\t* Chestplate", GameLogger.main.getLastOutput())
     }
@@ -82,7 +82,7 @@ class ListInventoryTest {
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 
-        val event = ListInventoryEvent(creature)
+        val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
         assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", GameLogger.main.getLastOutput())
     }
@@ -91,7 +91,7 @@ class ListInventoryTest {
     fun creatureWithoutTagDoesNotListInventory() {
         val creature = Thing("Chest")
         creature.inventory.add(Thing("Apple"))
-        val event = ListInventoryEvent(creature)
+        val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
         assertEquals("Cannot view inventory of Chest", GameLogger.main.getLastOutput())
     }

@@ -177,6 +177,9 @@ data class Location(
         val baseThings = getThings()
         return baseThings + baseThings.flatMap { it.inventory.getAllItems() }
     }
+    fun getThingsIncludingInventories(name: String): NameSearchableList<Thing> {
+        return getThingsByName(getThingsIncludingInventories(), name)
+    }
 
     fun getThingsIncludingTopLevelInventories(): NameSearchableList<Thing> {
         val baseThings = getThings()

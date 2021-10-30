@@ -38,7 +38,7 @@ class CommonBodies : BodyResource {
 
         network("Rat") {
             locationNode("Canine Head")
-            locationNode("Canine Body") {
+            locationNode("Canine Torso") {
                 isRoot(true)
                 connection("Canine Head", z = 1)
                 connection("Small Claws", z = -1)

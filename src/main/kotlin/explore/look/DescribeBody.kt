@@ -2,6 +2,7 @@ package explore.look
 
 import core.Player
 import core.body.Body
+import core.body.NONE
 import core.history.StringTable
 import core.history.displayToMe
 import traveling.location.RouteNeighborFinder
@@ -17,7 +18,11 @@ fun describeBody(source: Player, body: Body) {
         table.getString()
     } else ""
 
-    source.displayToMe("${body.name} body:\n$routeTable")
+    if (body == NONE) {
+        source.displayToMe("This has no body.")
+    } else {
+        source.displayToMe("${body.name} body:\n$routeTable")
+    }
 }
 
 fun describeBodyDetailed(source: Player, body: Body) {

@@ -93,7 +93,7 @@ class CommandComboTest {
     @Test
     fun fightRat() {
         CommandParsers.parseCommand(GameState.player, "s")
-        val input = "slash body of rat && r && r"
+        val input = "slash torso of rat && r && r"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("Rat has died.", GameLogger.main.getLastOutput())
         CommandParsers.parseCommand(GameState.player, "ex")
@@ -111,7 +111,7 @@ GameLogger.main.getLastInput()
 
     @Test
     fun doNotAttackDeadThing() {
-        val input = "s && slash body of rat && sl rat && sl && slash rat"
+        val input = "s && slash torso of rat && sl rat && sl && slash rat"
         CommandParsers.parseCommand(GameState.player, input)
         val expected = "slash what with Rusty Dagger?\n\tPlayer, Poor Quality Meat"
         assertEquals(expected, GameLogger.main.getLastOutput())

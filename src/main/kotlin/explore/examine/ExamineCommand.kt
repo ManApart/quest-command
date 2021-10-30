@@ -21,6 +21,7 @@ class ExamineCommand : Command() {
         return """
 	Examine all - Look more closely at your surroundings. Gives more detailed information than look, based on how perceptive you are.
 	Examine <thingAim> - Look closely at a specific thing.
+    Look body of <thing> - Look at the body of a thing.
     Examine hand of player - Look closely at the player's right hand.
     """
     }
