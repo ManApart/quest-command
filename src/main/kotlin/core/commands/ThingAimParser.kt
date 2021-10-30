@@ -7,20 +7,22 @@ import traveling.location.location.Location
 import traveling.position.ThingAim
 
 //TODO - allow for response requests?
-fun parseThingsFromInventory(source: Thing, arguments: List<String>, thing: Thing): List<ThingAim> {
-    val args = Args(arguments, delimiters = listOf("and"))
-    val things = NameSearchableList(thing.inventory.getAllItems())
-    return args.getBaseAndGroups("and").mapNotNull { getThing(source, it, things) }
+fun parseThingsFromInventory(source: Thing, arguments: List<String>): List<ThingAim> {
+    val things = NameSearchableList(source.inventory.getAllItems())
+    return parseThings(source, arguments, things)
 }
 
-//TODO - make location paramatized
-fun parseThings(source: Thing, arguments: List<String>): List<ThingAim> {
-    val args = Args(arguments, delimiters = listOf("and"))
+fun parseThingsFromLocation(source: Thing, arguments: List<String>): List<ThingAim> {
     val things = source.currentLocation().getThings()
-    return args.getBaseAndGroups("and").mapNotNull { getThing(source, it, things) }
+    return parseThings(source, arguments, things)
 }
 
-private fun getThing(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): ThingAim? {
+fun parseThings(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): List<ThingAim> {
+    val args = Args(arguments, delimiters = listOf("and"))
+    return args.getBaseAndGroups("and").mapNotNull { parseThingsInGroup(source, it, things) }
+}
+
+private fun parseThingsInGroup(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): ThingAim? {
     val args = Args(arguments, delimiters = listOf("of"))
     return when {
         args.hasBase() && args.hasGroup("of") -> parseThingAndParts(args, things)

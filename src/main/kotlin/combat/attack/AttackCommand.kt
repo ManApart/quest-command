@@ -70,30 +70,22 @@ class AttackCommand : Command() {
     }
 
     private fun getThing(keyword: String, arguments: Args, weaponName: String, source: Player): ThingAim? {
-        val things = parseThings(source.thing, arguments.getBaseGroup()) + parseThingsFromInventory(source.thing, arguments.getBaseGroup(), source.thing)
-        return if (things.isEmpty() && !isAlias(keyword)) {
-            clarifyThing(source, keyword, weaponName)
-            null
-        } else if (things.isEmpty()) {
-            val thing = source.ai.aggroThing
-            return if (thing != null) {
-                ThingAim(thing)
-            } else {
+        val things = parseThingsFromLocation(source.thing, arguments.getBaseGroup()) + parseThingsFromInventory(source.thing, arguments.getBaseGroup())
+
+        return when {
+            things.size == 1 -> things.first()
+            things.isEmpty() && !isAlias(keyword) -> {
+                clarifyThing(source, keyword, weaponName)
                 null
             }
-        } else if (things.size > 1) {
-            clarifyThings(source, keyword, things, weaponName)
-            null
-        } else if (things.size == 1) {
-            things.first()
-        } else {
-            clarifyThing(source, keyword, weaponName)
-            null
+            things.isEmpty() -> {
+                source.ai.aggroThing?.let { ThingAim(it) }
+            }
+            else -> {
+                clarifyThing(source, keyword, weaponName)
+                null
+            }
         }
-    }
-
-    private fun isAlias(keyword: String): Boolean {
-        return AttackType.values().map { it.alias }.contains(keyword.lowercase())
     }
 
     private fun clarifyAttackType(player: Player, args: List<String>) {

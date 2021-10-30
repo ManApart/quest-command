@@ -3,7 +3,7 @@ package system.debug
 import core.GameState
 import core.commands.Args
 import core.commands.Command
-import core.commands.parseThings
+import core.commands.parseThingsFromLocation
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -75,7 +75,7 @@ class DebugCommand : Command() {
     }
 
     private fun sendDebugStatEvent(source: Thing, type: StatKind, args: Args) {
-        val thing = parseThings(source, args.getGroup("on")).firstOrNull()?.thing ?: source
+        val thing = parseThingsFromLocation(source, args.getGroup("on")).firstOrNull()?.thing ?: source
         val level = args.getNumber()
 
         if (level == null) {
@@ -88,7 +88,7 @@ class DebugCommand : Command() {
     }
 
     private fun sendDebugTagEvent(source: Thing, args: Args) {
-        val thing = parseThings(source, args.getGroup("on")).firstOrNull()?.thing ?: source
+        val thing = parseThingsFromLocation(source, args.getGroup("on")).firstOrNull()?.thing ?: source
         val tagName = args.argsWithout(listOf("remove", args.args.first())).joinToString(" ")
         val isAdding = !args.contains("remove")
 

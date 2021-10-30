@@ -67,13 +67,13 @@ class ThingAimParserTest {
 
     @Test
     fun noThing() {
-        val results = parseThings(GameState.player.thing, "".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "".split(" "))
         assertEquals(0, results.size)
     }
 
     @Test
     fun singleThing() {
-        val results = parseThings(GameState.player.thing, "thingA".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "thingA".split(" "))
 
         assertEquals(1, results.size)
         assertEquals(thingA, results.first().thing)
@@ -81,7 +81,7 @@ class ThingAimParserTest {
 
     @Test
     fun singleThingOneBodyPart() {
-        val results = parseThings(GameState.player.thing, "bodyPartB of thingA".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "bodyPartB of thingA".split(" "))
 
         assertEquals(1, results.size)
         assertEquals(1, results.first().bodyPartThings.size)
@@ -92,7 +92,7 @@ class ThingAimParserTest {
 
     @Test
     fun singleThingAllBodyParts() {
-        val results = parseThings(GameState.player.thing, "all of thingA".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "all of thingA".split(" "))
 
         assertEquals(1, results.size)
         assertEquals(3, results.first().bodyPartThings.size)
@@ -106,7 +106,7 @@ class ThingAimParserTest {
 
     @Test
     fun singleThingTwoBodyParts() {
-        val results = parseThings(GameState.player.thing, "bodyPartA bodyPartB of thingA".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "bodyPartA bodyPartB of thingA".split(" "))
 
         assertEquals(1, results.size)
 
@@ -119,7 +119,7 @@ class ThingAimParserTest {
 
     @Test
     fun multiThing() {
-        val results = parseThings(GameState.player.thing, "thingA and thingB".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "thingA and thingB".split(" "))
 
         assertEquals(2, results.size)
         assertEquals(thingA, results.first().thing)
@@ -128,7 +128,7 @@ class ThingAimParserTest {
 
     @Test
     fun multiThingReverseOrder() {
-        val results = parseThings(GameState.player.thing, "thingB and thingA".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "thingB and thingA".split(" "))
 
         assertEquals(2, results.size)
         assertEquals(thingA, results.last().thing)
@@ -137,7 +137,7 @@ class ThingAimParserTest {
 
     @Test
     fun multiThingOnBodyPart() {
-        val results = parseThings(GameState.player.thing, "bodyPartC of thingA and thingB".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "bodyPartC of thingA and thingB".split(" "))
 
         assertEquals(2, results.size)
         assertEquals(thingA, results.first().thing)
@@ -150,7 +150,7 @@ class ThingAimParserTest {
 
     @Test
     fun multiThingTwoBodyParts() {
-        val results = parseThings(GameState.player.thing, "bodyPartA bodyPartB of thingA and bodyPartB bodyPartC of thingB".split(" "))
+        val results = parseThingsFromLocation(GameState.player.thing, "bodyPartA bodyPartB of thingA and bodyPartB bodyPartC of thingB".split(" "))
 
         assertEquals(2, results.size)
 

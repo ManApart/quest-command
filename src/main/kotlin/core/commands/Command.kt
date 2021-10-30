@@ -18,7 +18,9 @@ abstract class Command : Named {
         execute(source.thing, keyword, args)
     }
 
-
+    fun isAlias(word: String): Boolean {
+        return getAliases().contains(word.lowercase())
+    }
 
     override val name = getAliases()[0]
 }

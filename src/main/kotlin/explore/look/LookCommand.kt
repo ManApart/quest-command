@@ -2,9 +2,11 @@ package explore.look
 
 import core.Player
 import core.commands.Command
+import core.commands.parseThings
 import core.commands.respond
 import core.events.EventManager
 import core.history.display
+import traveling.position.ThingAim
 
 class LookCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,16 +28,42 @@ class LookCommand : Command() {
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        val argString = args.joinToString(" ")
         when {
             keyword == "look" && args.isEmpty() -> clarifyThing(source)
             args.isEmpty() -> EventManager.postEvent(LookEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(LookEvent(source))
-            source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.thing.currentLocation().getThingsIncludingPlayerInventory(
-                source.thing,
-                argString
-            ).first()))
+//            source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, argString).isNotEmpty() -> EventManager.postEvent(LookEvent(source, source.thing.currentLocation().getThingsIncludingPlayerInventory(
+//                source.thing,
+//                argString
+//            ).first()))
+//            else -> source.display("Couldn't find ${args.joinToString(" ")}.")
+            else -> tryAndGetThing(args, source)
+        }
+    }
+
+    private fun tryAndGetThing(args: List<String>, source: Player) {
+        val thing = getThing(args, source)
+        when {
+            thing?.bodyPartThings?.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, location = thing.bodyPartThings.firstOrNull()))
+            thing?.thing != null -> EventManager.postEvent(LookEvent(source, thing = thing.thing))
             else -> source.display("Couldn't find ${args.joinToString(" ")}.")
+        }
+    }
+
+    private fun getThing(args: List<String>, source: Player): ThingAim? {
+        val allThings = source.thing.currentLocation().getThingsIncludingInventories()
+        val things = parseThings(source.thing, args, allThings)
+
+        return when {
+            things.size == 1 -> things.first()
+            things.isEmpty() -> {
+                clarifyThing(source)
+                null
+            }
+            else -> {
+                clarifyThings(source, things)
+                null
+            }
         }
     }
 
@@ -43,6 +71,14 @@ class LookCommand : Command() {
         source.respond {
             message("Look at what?")
             options(listOf("all") + source.thing.currentLocation().getThings().map { it.name })
+            command { "look $it" }
+        }
+    }
+
+    private fun clarifyThings(source: Player, options: List<ThingAim>) {
+        source.respond {
+            message("Look at what?")
+            options(options.map { it.toString() })
             command { "look $it" }
         }
     }

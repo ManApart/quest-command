@@ -97,7 +97,7 @@ class CommandComboTest {
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("Rat has died.", GameLogger.main.getLastOutput())
         CommandParsers.parseCommand(GameState.player, "ex")
-        assertEquals("You find yourself surrounded by Poor Quality Meat.", GameLogger.main.getLastOutput())
+        assertEquals("It contains Poor Quality Meat.", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -135,7 +135,7 @@ GameLogger.main.getLastInput()
     fun enterKanbaraThroughWall() {
         val input = "w && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You are at Kanbara City South", GameLogger.main.getCurrent().outPut[3])
+        assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[3])
     }
 
     @Test
@@ -229,6 +229,6 @@ GameLogger.main.getLastInput()
         CommandParsers.parseCommand(GameState.player, "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && ls")
         assertEquals("It's too dark to see anything.", GameLogger.main.getLastOutput())
         CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
-        assertEquals("You find yourself surrounded by Wall Crack.", GameLogger.main.getLastOutput())
+        assertEquals("It contains Wall Crack.", GameLogger.main.getLastOutput())
     }
 }

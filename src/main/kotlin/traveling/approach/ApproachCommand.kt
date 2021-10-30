@@ -3,7 +3,7 @@ package traveling.approach
 import core.Player
 import core.commands.Args
 import core.commands.Command
-import core.commands.parseThings
+import core.commands.parseThingsFromLocation
 import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
@@ -44,7 +44,7 @@ class ApproachCommand : Command() {
     }
 
     private fun determineThing(source: Thing, args: Args, creatures: List<Thing>) : Thing? {
-        val parsedThing = parseThings(source, args.getBaseGroup()).firstOrNull()?.thing ?: source.ai.aggroThing
+        val parsedThing = parseThingsFromLocation(source, args.getBaseGroup()).firstOrNull()?.thing ?: source.ai.aggroThing
         return when {
             parsedThing != null -> parsedThing
             creatures.size == 1 -> creatures.first()
