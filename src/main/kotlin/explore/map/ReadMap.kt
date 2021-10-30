@@ -5,7 +5,6 @@ import core.events.EventListener
 import core.history.StringTable
 import core.history.displayToMe
 import system.debug.DebugType
-import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 
 class ReadMap : EventListener<ReadMapEvent>() {
@@ -23,17 +22,13 @@ class ReadMap : EventListener<ReadMapEvent>() {
 
         return if (routes.isNotEmpty()) {
             val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))
-            input.addAll(routes.map { getRouteString(it) })
+            input.addAll(routes.map { it.getRouteString() })
             val table = StringTable(input, 2, rightPadding = 2)
 
             "is neighbored by:\n${table.getString()}"
         } else {
             "has no known neighbors."
         }
-    }
-
-    private fun getRouteString(route: Route): List<String> {
-        return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString())
     }
 
 }

@@ -40,9 +40,10 @@ class LookCommand : Command() {
     private fun tryAndGetThing(args: List<String>, source: Player) {
         val thing = getThing(args, source)
         when {
-            thing?.bodyPartThings?.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, location = thing.bodyPartThings.firstOrNull()))
-            thing?.thing != null -> EventManager.postEvent(LookEvent(source, thing = thing.thing))
-            else -> source.display("Couldn't find ${args.joinToString(" ")}.")
+            thing == null -> source.display("Couldn't find ${args.joinToString(" ")}.")
+            thing.isLookingAtBody() -> EventManager.postEvent(LookEvent(source, thing.thing, body = thing.thing.body))
+            thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, location = thing.bodyPartThings.firstOrNull()))
+            else -> EventManager.postEvent(LookEvent(source, thing = thing.thing))
         }
     }
 

@@ -83,4 +83,8 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
         }
     }
 
+    fun getRouteString(): List<String> {
+        return listOf(destination.name, getDistance().toString(), getDirectionString())
+    }
+
 }

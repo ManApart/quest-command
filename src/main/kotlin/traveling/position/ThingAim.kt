@@ -15,6 +15,10 @@ class ThingAim(val thing: Thing, val bodyPartThings: List<Location> = listOf()) 
     fun toCommandString(): String {
         return bodyPartThings.joinToString(" ") { it.name } + " of " + thing.name
     }
+
+    fun isLookingAtBody(): Boolean {
+        return this.thing.body.getParts().size == this.bodyPartThings.size
+    }
 }
 
 fun List<ThingAim>.toCommandString(): String {
