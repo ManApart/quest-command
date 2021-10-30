@@ -10,7 +10,7 @@ import traveling.position.ThingAim
 
 class ExamineCommand : Command() {
     override fun getAliases(): List<String> {
-        return listOf("Examine", "Exa", "cat")
+        return listOf("Examine", "Exa", "cat", "describe")
     }
 
     override fun getDescription(): String {

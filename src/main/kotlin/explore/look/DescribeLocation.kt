@@ -4,6 +4,7 @@ import core.Player
 import core.history.displayToMe
 import core.thing.perceivedBy
 import core.thing.toThingString
+import core.utility.joinToStringOr
 import traveling.location.location.Location
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.position.NO_VECTOR
@@ -55,6 +56,8 @@ fun describeLocationDetailed(source: Player, location: Location) {
     val light = location.getLightLevel()
     val heat = getHeatLevel(location)
     if (light != 0 || heat != 0) source.displayToMe("It is $light light and $heat hot.")
+
+    if (locationRecipe.slots.isNotEmpty()) source.displayToMe("It can be equipped to at ${locationRecipe.slots.joinToStringOr()}.")
 
     describePerceivedThings(source, location)
 }

@@ -32,6 +32,14 @@ fun String.capitalize2() : String {
 }
 
 fun <T> List<T>.joinToStringAnd(transform: ((T) -> CharSequence)? = null) : String {
+    return joinToStringWithDifferentLast("and", transform)
+}
+
+fun <T> List<T>.joinToStringOr(transform: ((T) -> CharSequence)? = null) : String {
+    return joinToStringWithDifferentLast("or", transform)
+}
+
+fun <T> List<T>.joinToStringWithDifferentLast(lastDelimiter: String, transform: ((T) -> CharSequence)? = null) : String {
     val stringList = if (transform == null) this else {
         this.map { transform(it) }
     }
@@ -40,7 +48,7 @@ fun <T> List<T>.joinToStringAnd(transform: ((T) -> CharSequence)? = null) : Stri
         val last = if (transform == null) last().toString() else {
             transform(last())
         }
-        subList.joinToString(", ") + " and " + last
+        subList.joinToString(", ") + " $lastDelimiter " + last
     } else {
         stringList.joinToString(", ")
     }
