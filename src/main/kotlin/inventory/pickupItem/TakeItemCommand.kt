@@ -11,7 +11,7 @@ import inventory.putItem.TransferItemEvent
 
 class TakeItemCommand : core.commands.Command() {
     override fun getAliases(): List<String> {
-        return listOf("Take", "pickup", "p", "get", "add", "grab")
+        return listOf("Take", "pickup", "p", "get", "add")
     }
 
     override fun getDescription(): String {

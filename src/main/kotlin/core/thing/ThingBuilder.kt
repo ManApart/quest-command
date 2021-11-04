@@ -59,7 +59,7 @@ class ThingBuilder(internal val name: String) {
         val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
         val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
         val ai = discernAI(possibleAI, possibleAIName)
-        val equipSlots = (slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) }
+        val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
 
         return Thing(
@@ -76,6 +76,14 @@ class ThingBuilder(internal val name: String) {
             inventory = inventory,
             properties = props,
         )
+    }
+
+    private fun calcHeldSlots(props: Properties): List<Slot> {
+        return when {
+            props.tags.has("Small") || props.values.getInt("weight") < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Right Hand Grip")))
+            props.tags.has("Medium") || props.values.getInt("weight") < 6 -> listOf(Slot(listOf("Right Hand Grip", "Right Hand Grip")))
+            else -> listOf()
+        }
     }
 
     fun buildWithBase(builders: Map<String, ThingBuilder>): Thing {
@@ -136,6 +144,7 @@ class ThingBuilder(internal val name: String) {
     fun body(body: String) {
         this.bodyName = body
     }
+
     fun body(body: Body) {
         this.body = body
     }
@@ -169,11 +178,11 @@ class ThingBuilder(internal val name: String) {
      */
     fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
 
-    fun sound(description: String){
+    fun sound(description: String) {
         sound(SOUND_LEVEL_DEFAULT, description)
     }
 
-    fun sound(level: Int, description: String){
+    fun sound(level: Int, description: String) {
         propsBuilder.value(SOUND_DESCRIPTION, description)
         propsBuilder.value(SOUND_LEVEL, level)
     }
@@ -206,7 +215,7 @@ class ThingBuilder(internal val name: String) {
     private fun discernBody(possibleBody: Body?, possibleBodyName: String?): Body {
         return when {
             possibleBody != null -> possibleBody
-            possibleBodyName != null ->  BodyManager.getBody(possibleBodyName)
+            possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
             else -> Body()
         }
     }

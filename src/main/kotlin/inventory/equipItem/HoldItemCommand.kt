@@ -3,25 +3,29 @@ package inventory.equipItem
 import core.Player
 import core.body.Body
 import core.body.Slot
-import core.commands.*
+import core.commands.ArgDelimiter
+import core.commands.Args
+import core.commands.Command
+import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 
-class EquipItemCommand : Command() {
+class HoldItemCommand : Command() {
     override fun getAliases(): List<String> {
-        return listOf("Equip")
+        return listOf("Hold", "Grab")
     }
 
     override fun getDescription(): String {
-        return "Equip an item from your inventory."
+        return "Hold an item."
     }
 
     override fun getManual(): String {
         return """
-	Equip <item> - Equip an item
-	Equip <item> to <body part> - Equip an item to a specific body part (ex: left hand). X
-	Equip <item> to <body part> f - Equip an item even if that means unequipping what's already equipped there. X"""
+	Hold <item> - Hold an item in an open hand.
+	Hold <item> in <hand> - Hold an item in a specific hand.
+    To hold an item it must be small enough and your hand must be free.
+	"""
     }
 
     override fun getCategory(): List<String> {
@@ -29,7 +33,7 @@ class EquipItemCommand : Command() {
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        val delimiters = listOf(ArgDelimiter(listOf("to", "on")))
+        val delimiters = listOf(ArgDelimiter(listOf("in")))
         val arguments = Args(args, delimiters, listOf("f"))
 
         if (arguments.isEmpty()) {
@@ -41,10 +45,10 @@ class EquipItemCommand : Command() {
             val force = arguments.has("f")
 
             if (item == null) {
-                source.displayToMe("Could not find ${arguments.getBaseString()}. (Did you mean 'equip <item> to <body part>?")
+                source.displayToMe("Could not find ${arguments.getBaseString()}. (Did you mean 'hold item in <hand>?")
             } else {
                 if (!item.canEquipTo(body)) {
-                    source.displayToMe("You can't equip ${item.name}.")
+                    source.displayToMe("You can't hold ${item.name}.")
                 } else {
                     val slot = findSlot(attachPointGuess, body, item)
                     if (slot == null) {
@@ -64,15 +68,11 @@ class EquipItemCommand : Command() {
 
     private fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
-        return source.inventory.getItem(itemName)
+        return source.currentLocation().getItemsIncludingPlayerInventory(itemName, source).firstOrNull()
     }
 
     private fun getAttachPoint(args: Args): String? {
-        return if (args.hasGroup("to")) {
-            args.getString("to")
-        } else {
-            null
-        }
+        return if (args.hasGroup("in")) args.getString("in") else null
     }
 
     private fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
@@ -85,9 +85,9 @@ class EquipItemCommand : Command() {
 
     private fun suggestEquippableItems(source: Player) {
         source.respond {
-            message("What do you want to equip?")
+            message("What do you want to hold?")
             options(getEquipableItems(source.thing))
-            command { "equip $it" }
+            command { "hold $it" }
         }
     }
 
@@ -98,17 +98,20 @@ class EquipItemCommand : Command() {
     }
 
     private fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
-        val message = "Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}"
-        val response = ResponseRequest(message,
-            item.equipSlots.flatMap { it.attachPoints }.associateWith { "equip $item to $it" })
-        CommandParsers.setResponseRequest(source, response)
+        source.respond {
+            message("Could not find attach point $attachPointGuess. Where would you like to hold $item?")
+            val options = source.thing.body.getParts().filter { it.hasAttachPoint("Grip") }
+            options(options)
+            command { "hold $item in $it" }
+        }
+
     }
 
     private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
         val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
         source.respond {
             message("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
-            yesNoOptions("equip $newEquip$toPart f", "")
+            yesNoOptions("hold $newEquip$toPart f", "")
         }
     }
 }
