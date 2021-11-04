@@ -9,10 +9,10 @@ private const val BASE = "base"
 class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
     constructor(origArgs: List<String>, delimiters: List<String>) : this(origArgs, delimiters.map { ArgDelimiter(listOf(it)) })
 
-    private val excludedWords = excludedWords.lowercase()
     private val flags = flags.lowercase()
+    private val excludedWords = excludedWords.lowercase()
+    private val foundFlags = findFlags(origArgs)
     val args = cleanArgs(origArgs)
-    private val foundFlags = findFlags()
 
     private val groups = parseArgGroups()
     private val argStrings = groups.mapValues { delimiterGroups -> delimiterGroups.value.map { wordGroup -> wordGroup.joinToString(" ") } }
@@ -23,7 +23,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     private fun cleanArgs(origArgs: List<String>): List<String> {
-        return origArgs.extractCommas().filter { it != "" }.addSpaces().lowercase()
+        return removeExcludedWords(origArgs).extractCommas().filter { it != "" }.addSpaces().lowercase()
     }
 
     private fun List<String>.extractCommas(): List<String> {
@@ -207,7 +207,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return -1
     }
 
-    private fun findFlags(): List<String> {
+    private fun findFlags(args: List<String>): List<String> {
         val flagVariants = flags + flags.map { "-$it" }
         return args.filter { flagVariants.contains(it) }
     }

@@ -30,7 +30,7 @@ class EquipItemCommand : Command() {
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "on")))
-        val arguments = Args(args, delimiters, listOf("f"))
+        val arguments = Args(args, delimiters, flags = listOf("f"))
 
         if (arguments.isEmpty()) {
             suggestEquippableItems(source)
@@ -38,7 +38,7 @@ class EquipItemCommand : Command() {
             val item = getItem(source.thing, arguments)
             val attachPointGuess = getAttachPoint(arguments)
             val body = source.body
-            val force = arguments.has("f")
+            val force = arguments.hasFlag("f")
 
             if (item == null) {
                 source.displayToMe("Could not find ${arguments.getBaseString()}. (Did you mean 'equip <item> to <body part>?")

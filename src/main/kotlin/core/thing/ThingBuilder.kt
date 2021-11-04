@@ -80,8 +80,8 @@ class ThingBuilder(internal val name: String) {
 
     private fun calcHeldSlots(props: Properties): List<Slot> {
         return when {
-            props.tags.has("Small") || props.values.getInt("weight") < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
-            props.tags.has("Medium") || props.values.getInt("weight") < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
+            props.tags.has("Small") || props.values.getInt("weight", 100) < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
+            props.tags.has("Medium") || props.values.getInt("weight", 100) < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
             else -> listOf()
         }
     }
