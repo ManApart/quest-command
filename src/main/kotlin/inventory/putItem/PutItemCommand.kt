@@ -7,12 +7,13 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import core.thing.perceivedBy
 import core.utility.filterUniqueByName
 
 class PutItemCommand : core.commands.Command() {
 
     override fun getAliases(): List<String> {
-        return listOf("Put", "Give")
+        return listOf("Put", "Give", "place", "store")
     }
 
     override fun getDescription(): String {
@@ -50,7 +51,7 @@ class PutItemCommand : core.commands.Command() {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             val thingString = args.getFirstString("in", "to")
-            val destinations = source.thing.currentLocation().getThings(thingString).filterUniqueByName()
+            val destinations = source.thing.currentLocation().getThingsIncludingInventories(thingString).perceivedBy(source.thing).filterUniqueByName()
             when {
                 thingString.isNotBlank() && destinations.isEmpty() -> source.displayToMe("Couldn't find $thingString")
                 destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source.thing, item, source.thing, destinations.first(), true))
