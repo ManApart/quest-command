@@ -16,7 +16,11 @@ import traveling.position.Vector
 
 val NONE = Body("None")
 
-data class Body(override val name: String = "None", val layout: Network = Network(name), private val slotMap: MutableMap<String, String> = mutableMapOf()) : Named {
+data class Body(
+    override val name: String = "None",
+    val layout: Network = Network(name),
+    private val slotMap: MutableMap<String, String> = mutableMapOf()
+) : Named {
 
     constructor(base: Body) : this(base.name, Network(base.layout))
 
@@ -104,20 +108,29 @@ data class Body(override val name: String = "None", val layout: Network = Networ
 
     fun getDefaultSlot(item: Thing): Slot {
         return getEmptyEquipSlot(item)
-                ?: item.equipSlots.firstOrNull { canEquip(it) }
-                ?: throw IllegalArgumentException("Found no slot for $item for body $name. This should not happen!")
+            ?: item.equipSlots.firstOrNull { canEquip(it) }
+            ?: throw IllegalArgumentException("Found no slot for $item for body $name. This should not happen!")
     }
 
     fun getEmptyEquipSlot(item: Thing): Slot? {
-        return item.equipSlots.sortedBy {
+        val options = item.equipSlots.filter { canEquip(it) && it.isEmpty(this) }
+        val nonHandOption = options.firstOrNull { it.attachPoints.none { point ->
+            point.contains("Grip")
+        }}
+        val rightHandFirst = options.sortedBy {
             it.attachPoints.any { point ->
                 point.contains("Right")
             }
-        }
-                .reversed()
-                .firstOrNull {
-                    canEquip(it) && it.isEmpty(this)
-                }
+        }.reversed()
+        return nonHandOption ?: rightHandFirst.firstOrNull()
+//        return item.equipSlots.sortedBy {
+//            it.attachPoints.any { point ->
+//                point.contains("Right")
+//            }
+//        }.reversed()
+//            .firstOrNull {
+//                canEquip(it) && it.isEmpty(this)
+//            }
     }
 
     fun equip(item: Thing, slot: Slot = getDefaultSlot(item)) {
@@ -151,7 +164,11 @@ data class Body(override val name: String = "None", val layout: Network = Networ
     }
 
     fun getPositionInLocation(part: Location, parentOffset: Vector): Vector {
-        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode.getVectorDistanceTo(getPartLocation(part.name)))
+        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode.getVectorDistanceTo(
+            getPartLocation(
+                part.name
+            )
+        ))
     }
 
     fun getSize(): Vector {

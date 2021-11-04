@@ -2,7 +2,7 @@ package core.body
 
 import core.thing.Thing
 
-class Slot(val attachPoints: List<String>) {
+data class Slot(val attachPoints: List<String>) {
     val description = attachPoints.joinToString(", ")
 
     override fun toString(): String {

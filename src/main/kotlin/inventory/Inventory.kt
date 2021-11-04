@@ -104,6 +104,7 @@ data class Inventory(val name: String = "Inventory", private val body: Body = cr
                 item.properties.incCount(-count)
             } else {
                 location.removeThing(item)
+                body.unEquip(item)
             }
         }
     }

@@ -77,7 +77,7 @@ class HoldItemCommand : Command() {
 
     private fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
         return if (attachPointGuess == null) {
-            body.getDefaultSlot(item)
+           body.getEmptyEquipSlot(item) ?: body.getDefaultSlot(item)
         } else {
             item.findSlot(body, attachPointGuess)
         }
@@ -110,8 +110,9 @@ class HoldItemCommand : Command() {
     private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
         val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
         source.respond {
-            message("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
+            message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
             yesNoOptions("hold $newEquip$toPart f", "")
+            //TODO - no location to the north. Should swallow that
         }
     }
 }
