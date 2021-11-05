@@ -4,6 +4,7 @@ import core.thing.activator.dsl.ActivatorResource
 import core.thing.things
 import resources.thing.burnToAsh
 import resources.thing.burnable
+import traveling.scope.LIGHT
 
 class CommonActivators : ActivatorResource {
 
@@ -149,6 +150,13 @@ class CommonActivators : ActivatorResource {
         thing("Wall Crack") {
             description("This crack is large enough to squeeze through.")
             body("Wall Crack")
+        }
+
+        thing("Wall Scone") {
+            description("The torch is wrought with iron against the wall.")
+            props {
+                value(LIGHT, 7)
+            }
         }
 
     }

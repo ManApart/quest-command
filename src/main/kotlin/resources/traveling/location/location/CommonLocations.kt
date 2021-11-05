@@ -4,7 +4,6 @@ import core.GameState
 import core.utility.RandomManager
 import traveling.location.location.LocationResource
 import traveling.location.location.locations
-import traveling.scope.LIGHT
 
 class CommonLocations : LocationResource {
     override val values = locations {
@@ -21,9 +20,7 @@ class CommonLocations : LocationResource {
 
         location("Inside Building") {
             extends("Inside")
-            props {
-                value(LIGHT, 5)
-            }
+            activator("Wall Scone")
         }
 
         location("Outside") {
