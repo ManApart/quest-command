@@ -34,7 +34,7 @@ class HoldItemCommand : Command() {
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("in")))
-        val arguments = Args(args, delimiters, listOf("f"))
+        val arguments = Args(args, delimiters, flags = listOf("f"))
 
         if (arguments.isEmpty()) {
             suggestEquippableItems(source)
@@ -42,7 +42,7 @@ class HoldItemCommand : Command() {
             val item = getItem(source.thing, arguments)
             val attachPointGuess = getAttachPoint(arguments)
             val body = source.body
-            val force = arguments.has("f")
+            val force = arguments.hasFlag("f")
 
             if (item == null) {
                 source.displayToMe("Could not find ${arguments.getBaseString()}. (Did you mean 'hold item in <hand>?")
@@ -99,10 +99,10 @@ class HoldItemCommand : Command() {
 
     private fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
         source.respond {
-            message("Could not find attach point $attachPointGuess. Where would you like to hold $item?")
+            message("Could not find attach point $attachPointGuess. Where would you like to hold ${item.name}?")
             val options = source.thing.body.getParts().filter { it.hasAttachPoint("Grip") }
             options(options)
-            command { "hold $item in $it" }
+            command { "hold ${item.name} in $it" }
         }
 
     }
@@ -111,7 +111,7 @@ class HoldItemCommand : Command() {
         val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
         source.respond {
             message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
-            yesNoOptions("hold $newEquip$toPart f", "")
+            yesNoOptions("hold ${newEquip.name}$toPart f", "")
             //TODO - no location to the north. Should swallow that
         }
     }

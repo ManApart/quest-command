@@ -16,10 +16,12 @@ class RequestResponseBuilder {
         if (options.isEmpty()) throw Exception("Response must have options.")
         if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
 
-        val usedOptions = displayedOptions.ifEmpty { options }
+        val optionsForMessage = displayedOptions.ifEmpty { options }
 
-        val fullMessage = "$message\n\t${usedOptions.joinToString(", ")}"
-        val messageOptions = options.associateWith(line)
+        val additionalOptions = displayedOptions.mapIndexed { i, displayedOption -> displayedOption to options[i] }.toMap()
+
+        val fullMessage = "$message\n\t${optionsForMessage.joinToString(", ")}"
+        val messageOptions = options.associateWith(line) + additionalOptions
         return ResponseRequest(fullMessage, messageOptions, value, useDefault, defaultValue)
     }
 

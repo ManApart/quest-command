@@ -100,7 +100,7 @@ class EquipItemCommand : Command() {
     private fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
         val message = "Could not find attach point $attachPointGuess. Where would you like to equip $item?\n\t${item.equipSlots.joinToString("\n\t")}"
         val response = ResponseRequest(message,
-            item.equipSlots.flatMap { it.attachPoints }.associateWith { "equip $item to $it" })
+            item.equipSlots.flatMap { it.attachPoints }.associateWith { "equip ${item.name} to $it" })
         CommandParsers.setResponseRequest(source, response)
     }
 
