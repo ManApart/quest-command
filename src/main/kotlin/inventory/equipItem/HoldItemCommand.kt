@@ -112,7 +112,6 @@ class HoldItemCommand : Command() {
         source.respond {
             message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
             yesNoOptions("hold ${newEquip.name}$toPart f", "")
-            //TODO - no location to the north. Should swallow that
         }
     }
 }

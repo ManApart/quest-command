@@ -153,6 +153,7 @@ data class Body(
     }
 
     fun unEquip(item: Thing) {
+        item.location.getLocation().removeThing(item)
         slotMap.remove(item.name)
         getPartsEquippedWith(item).forEach {
             it.unEquip(item)
