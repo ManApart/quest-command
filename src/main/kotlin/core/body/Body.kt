@@ -66,6 +66,10 @@ data class Body(
         return parts.get(part)
     }
 
+    fun getPartOrNull(part: String): Location? {
+        return if (hasPart(part)) parts.get(part) else null
+    }
+
     fun getParts(): List<Location> {
         return parts.toList()
     }

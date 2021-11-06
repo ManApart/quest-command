@@ -79,7 +79,7 @@ class EquipItemCommand : Command() {
         return if (attachPointGuess == null) {
             body.getDefaultSlot(item)
         } else {
-            item.findSlot(body, attachPointGuess)
+            item.findSlot(body, attachPointGuess) ?: item.findSlotFromPart(body, attachPointGuess)
         }
     }
 
@@ -107,8 +107,8 @@ class EquipItemCommand : Command() {
     private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
         val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
         source.respond {
-            message("Replace ${equippedItems.joinToString(", ")} with ${newEquip.name}?")
-            yesNoOptions("equip $newEquip$toPart f", "")
+            message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
+            yesNoOptions("equip ${newEquip.name}$toPart f", "")
         }
     }
 }

@@ -139,6 +139,14 @@ data class Thing(
         return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
     }
 
+    fun findSlotFromPart(body: Body, partName: String): Slot? {
+        return body.getPartOrNull(partName)?.let { part ->
+            equipSlots.firstOrNull { slot ->
+                slot.attachPoints.all { part.hasAttachPoint(it) }
+            }
+        }
+    }
+
     fun getDamage(): Int {
         val chop = properties.values.getInt("chopDamage", 0)
         val stab = properties.values.getInt("stabDamage", 0)
