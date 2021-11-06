@@ -108,9 +108,10 @@ object GameManager {
                 body.equip(item)
             }
         }
+        val pouch = inventory.getItem("Small Pouch")!!
         listOf("Apple").forEach {
             val item = ItemManager.getItem(it)
-            inventory.add(item)
+            pouch.inventory.add(item)
         }
     }
 

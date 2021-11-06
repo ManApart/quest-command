@@ -33,9 +33,7 @@ fun Location.getLightLevel(thing: Thing, lightSources: List<Thing> = this.getLig
 }
 
 fun Location.getLightSources(): List<Thing> {
-    return this.getThingsIncludingInventories().filter { it.properties.values.getInt(LIGHT) != 0 }
-    //TODO - use only top level once can hold lantern
-//    return this.getThingsIncludingTopLevelInventoriesudingTopLevelInventories().filter { it.properties.values.getInt(LIGHT) != 0 }
+    return this.getThingsIncludingTopLevelInventories().filter { it.properties.values.getInt(LIGHT) != 0 }
 }
 
 fun getLightCastOn(thing: Thing, lightSources: List<Thing>): Int {

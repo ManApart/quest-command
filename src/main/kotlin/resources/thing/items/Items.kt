@@ -61,7 +61,7 @@ class Items : ItemResource {
             props {
                 value("fireHealth", 2)
                 value(LIT_LIGHT, 7)
-                tag("Metal", "Flammable", "Light")
+                tag("Metal", "Flammable", "Light", "Small")
             }
             behavior("Burn Out", "fireHealth" to 5)
         }

@@ -226,7 +226,7 @@ GameLogger.main.getLastInput()
 
     @Test
     fun lightTheWay() {
-        CommandParsers.parseCommand(GameState.player, "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && ls")
+        CommandParsers.parseCommand(GameState.player, "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && hold lantern f && ls")
         assertEquals("It's too dark to see anything.", GameLogger.main.getLastOutput())
         CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
         assertEquals("It contains Wall Crack.", GameLogger.main.getLastOutput())
