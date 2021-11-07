@@ -39,32 +39,9 @@ class CommonLocations : LocationResource {
             lightLevel(8)
         }
 
-        location("Kanbara") {
-            extends("Outside")
-            description("The bustling port town of Kanbara is one of the most densely packed cities in all of Lenovia.")
-        }
-
-        location("Kanbara City") {
-            extends("Outside")
-            description("The city of Kanbara is one of the most densely packed cities in all of Lenovia.")
-            activator("City Wall")
-            props {
-                tag("City")
-            }
-        }
-
         location("City Wall") {
             extends("Outside")
             activator("City Wall")
-            props {
-                tag("City")
-            }
-        }
-
-        location("Kanbara Gate") {
-            extends("Outside")
-            description("The large gate of Kanbara seems to be its only entrance point.")
-            activator("Kanbara Gate (Closed)")
             props {
                 tag("City")
             }
