@@ -11,18 +11,11 @@ class KanbaraCountryside : NetworkResource {
                     x(-10)
                     connectsTo("Kanbara Gate", "Kanbara")
                 }
-                connection("Kentle"){
-                    x(1000)
-                    y(800)
-                }
-                connection("Clovenwood"){
-                    x(2000)
-                    y(1600)
-                }
-                connection("Cadeya"){
-                    x(3000)
-                    y(2500)
-                }
+                connection("Northern Woods", y = 10)
+                connection("Southern Woods", y = -10)
+                connection("Kentle", x = 1000, y = 800)
+                connection("Clovenwood", x = 2000, y = 1600)
+                connection("Cadeya", x = 3000, y = 2500)
             }
             locationNode("Kentle") {
                 connection("Farmer's Hut", y = -500)
@@ -90,14 +83,14 @@ class KanbaraCountryside : NetworkResource {
             }
             locationNode("Cave Tunnel")
 
-            locationNode("Dwarven Tear River East"){
+            locationNode("Dwarven Tear River East") {
                 connection {
                     x(10)
                     y(-10)
                     connectsTo("Kanbara City", "Kanbara")
                 }
             }
-            locationNode("Dwarven Tear River West"){
+            locationNode("Dwarven Tear River West") {
                 connection {
                     x(-10)
                     y(10)
@@ -107,14 +100,14 @@ class KanbaraCountryside : NetworkResource {
                 connection("Dwarven Tear River North Fork", x = 100, y = -200)
                 connection("Dwarven Tear River South Fork", x = 100, y = -200)
             }
-            locationNode("Dwarven Tear River North Fork"){
+            locationNode("Dwarven Tear River North Fork") {
                 connection("Eldar Island", y = -100)
             }
-            locationNode("Dwarven Tear River South Fork"){
+            locationNode("Dwarven Tear River South Fork") {
                 connection("Eldar Island", y = 100)
             }
             locationNode("Eldar Island")
-            locationNode("Dwarven Tear River Mouth"){
+            locationNode("Dwarven Tear River Mouth") {
                 connection("Dwarven Tear River North Fork", x = -100, y = 100)
                 connection("Dwarven Tear River South Fork", x = -100, y = 100)
             }
