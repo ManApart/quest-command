@@ -21,7 +21,7 @@ class RouteNeighborFinderTest {
 
         neighbors.forEach {
             assertEquals(1, it.getConnections().size)
-            assertEquals(1, it.getDistance())
+            assertEquals(1, it.distance)
             assertEquals(source, it.source)
         }
 
@@ -41,7 +41,7 @@ class RouteNeighborFinderTest {
 
         neighbors.subList(6, neighbors.size).forEach {
             assertEquals(2, it.getConnections().size)
-            assertEquals(2, it.getDistance())
+            assertEquals(2, it.distance)
             assertEquals(source, it.source)
         }
     }

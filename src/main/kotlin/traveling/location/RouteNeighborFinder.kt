@@ -19,7 +19,9 @@ class RouteNeighborFinder(
     }
 
     fun getNeighbors(): List<Route> {
-        return neighbors.toList()
+        val neighborMap = getDestinations().associateWith { mutableListOf<Route>() }
+        neighbors.forEach { route -> neighborMap[route.destination]?.add(route) }
+        return neighborMap.values.mapNotNull { routes -> routes.minByOrNull { it.distance } }.sortedBy { it.distance }
     }
 
     fun getDestinations(): List<LocationNode> {

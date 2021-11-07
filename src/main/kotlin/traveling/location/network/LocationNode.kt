@@ -161,7 +161,7 @@ data class LocationNode(
 
         val route = RouteFinder(this, other)
         return if (route.hasRoute()) {
-            route.getRoute().getDistance()
+            route.getRoute().distance
         } else {
             0
         }

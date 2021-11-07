@@ -19,7 +19,7 @@ class RouteFinderTest {
         assertEquals(source, route.source)
         assertEquals(destination, route.destination)
         assertEquals(1, route.getConnections().size)
-        assertEquals(1, route.getDistance())
+        assertEquals(1, route.distance)
     }
 
     @Test
@@ -34,7 +34,7 @@ class RouteFinderTest {
         assertEquals(source, route.source)
         assertEquals(destination, route.destination)
         assertEquals(2, route.getConnections().size)
-        assertEquals(2, route.getDistance())
+        assertEquals(2, route.distance)
     }
 
 
