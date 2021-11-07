@@ -128,7 +128,7 @@ GameLogger.main.getLastInput()
     fun enterKanbaraThroughGate() {
         val input = "w && n && sw && rest 10 && w && rs 10 && use gate && w"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH).", GameLogger.main.getLastOutput())
+        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).", GameLogger.main.getLastOutput())
     }
 
     @Test

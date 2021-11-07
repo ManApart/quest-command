@@ -89,6 +89,35 @@ class KanbaraCountryside : NetworkResource {
                 }
             }
             locationNode("Cave Tunnel")
+
+            locationNode("Dwarven Tear River East"){
+                connection {
+                    x(10)
+                    y(-10)
+                    connectsTo("Kanbara City", "Kanbara")
+                }
+            }
+            locationNode("Dwarven Tear River West"){
+                connection {
+                    x(-10)
+                    y(10)
+                    connectsTo("Kanbara City", "Kanbara")
+                }
+                connection("Dwarven Tear River East", x = -10)
+                connection("Dwarven Tear River North Fork", x = 100, y = -200)
+                connection("Dwarven Tear River South Fork", x = 100, y = -200)
+            }
+            locationNode("Dwarven Tear River North Fork"){
+                connection("Eldar Island", y = -100)
+            }
+            locationNode("Dwarven Tear River South Fork"){
+                connection("Eldar Island", y = 100)
+            }
+            locationNode("Eldar Island")
+            locationNode("Dwarven Tear River Mouth"){
+                connection("Dwarven Tear River North Fork", x = -100, y = 100)
+                connection("Dwarven Tear River South Fork", x = -100, y = 100)
+            }
         }
     }
 }
