@@ -6,32 +6,32 @@ import traveling.location.network.networks
 class KanbaraCountryside : NetworkResource {
     override val values = networks {
         network("Kanbara Countryside") {
-            locationNode("Farmer's Hut") {
-                connection("Farmer's Hut Interior", y = -500)
-                connection("An Open Field", x = 100)
-            }
-
             locationNode("Kanbara Road") {
                 connection {
                     x(-10)
                     connectsTo("Kanbara Gate", "Kanbara")
                 }
-                connection("Farmer's Hut"){
+                connection("Kentle"){
                     x(1000)
                     y(800)
                 }
-                connection("Kentle"){
+                connection("Clovenwood"){
                     x(2000)
                     y(1600)
                 }
-                connection("Clovenwood"){
+                connection("Cadeya"){
                     x(3000)
                     y(2500)
                 }
-                connection("Cadeya"){
-                    x(5000)
-                    y(4000)
-                }
+            }
+            locationNode("Kentle") {
+                connection("Farmer's Hut", y = -500)
+                connection("Windmill", x = 250, y = -400)
+            }
+
+            locationNode("Farmer's Hut") {
+                connection("Farmer's Hut Interior", y = -500)
+                connection("An Open Field", x = 100)
             }
 
             locationNode("An Open Field") {

@@ -119,29 +119,29 @@ GameLogger.main.getLastInput()
 
     @Test
     fun useGate() {
-        val input = "w && sw && rest 10 && w && use gate"
+        val input = "w && n && sw && rest 10 && w && use gate"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("You can now access Kanbara City from Kanbara Gate.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughGate() {
-        val input = "w && sw && rest 10 && w && rs 10 && use gate && w"
+        val input = "w && n && sw && rest 10 && w && rs 10 && use gate && w"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH).", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && sw && rest 10 && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
+        val input = "w && n && sw && rest 10 && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[3])
     }
 
     @Test
     fun compassToPub() {
-        CommandParsers.parseCommand(GameState.player, "co pub && w && co pub")
-        assertEquals("Farmer's Hut", GameState.player.thing.location.name)
+        CommandParsers.parseCommand(GameState.player, "co pub && w && n && co pub")
+        assertEquals("Kentle", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is SOUTH_WEST of you.", GameLogger.main.getLastOutput())
 
         CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && co pub")
@@ -168,7 +168,7 @@ GameLogger.main.getLastInput()
     fun makePie() {
         val input = "move to wheat && slash wheat && pickup wheat && t hut && take bucket && use bucket on well && t windmill && t" +
                 "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
-                "&& use dagger on apple" +
+                "&& use dagger on apple && rs 10" +
                 "&& t interior && t && t && rest 10 && move to range && take pie tin" +
                 "&& read recipe && rs" +
                 "&& take box && use box on range && craft apple pie"
