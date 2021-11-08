@@ -56,17 +56,15 @@ data class LocationNode(
     }
 
     fun getNeighbors(direction: Direction): List<LocationNode> {
-        return connections.asSequence()
+        return connections
             .filter { it.vector.direction == direction }
             .map { it.destination.location }
-            .toList()
     }
 
     fun getNeighborsInGeneralDirection(direction: Direction): List<LocationNode> {
-        return connections.asSequence()
+        return connections
             .filter { it.vector.isInGeneralDirection(direction) }
             .map { it.destination.location }
-            .toList()
     }
 
     fun getLocationRecipe(): LocationRecipe {
@@ -180,7 +178,7 @@ data class LocationNode(
     }
 
     fun getPositionRelativeTo(neighbor: LocationNode): Vector? {
-        return connections.firstOrNull { it.destination.location == neighbor }?.vector?.invert()
+        return connections.firstOrNull { it.destination.location == neighbor }?.originPoint?.invert()
     }
 
 }

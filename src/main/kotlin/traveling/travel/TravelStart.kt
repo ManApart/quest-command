@@ -30,7 +30,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
 }
 
 fun getDistanceToNeighbor(source: LocationNode, destination: LocationNode): Int {
-    return source.getConnection(destination)?.vector?.getDistance() ?: 1
+    return source.getConnection(destination)?.originPoint?.getDistance() ?: 1
 }
 
 fun postArriveEvent(source: Thing, destination: LocationPoint, distance: Int, quiet: Boolean) {

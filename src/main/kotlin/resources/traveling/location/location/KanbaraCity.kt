@@ -20,7 +20,7 @@ class KanbaraCity : NetworkResource {
                 connection("Kanbara Manor", x = -10, y = 10)
                 connection("Kanbara City South") {
                     restricted(true)
-                    vector(-10, -20)
+                    origin(-10, -20)
                 }
             }
 

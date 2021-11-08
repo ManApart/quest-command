@@ -6,7 +6,8 @@ import traveling.position.Vector
 class ProtoConnection(
         val thing: String? = null,
         val part: String? = null,
-        val vector: Vector = NO_VECTOR,
+        val originPoint: Vector = NO_VECTOR,
+        val destinationPoint: Vector = NO_VECTOR,
         name: String? = null,
         connection: ProtoThing? = null,
         var restricted: Boolean = false,

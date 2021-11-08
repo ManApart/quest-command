@@ -24,7 +24,7 @@ fun getDirection(player: Thing, thing: Thing, part: LocationNode): Direction {
         //Or if it's a single part with a connection to another place, we're going in that direction
         val sourceConnection = thing.location.getNeighborConnections().firstOrNull { it.source.location == player.location && it.source.thingName == thing.name && it.source.partName == part.name }
         val destConnection = thing.location.getNeighborConnections().firstOrNull { it.destination.location == player.location && it.source.thingName == thing.name && it.source.partName == part.name }
-        sourceConnection?.vector?.direction ?: destConnection?.vector?.invert()?.direction ?: Direction.NONE
+        sourceConnection?.originPoint?.direction ?: destConnection?.originPoint?.invert()?.direction ?: Direction.NONE
     } else {
         Direction.NONE
     }

@@ -34,7 +34,7 @@ class LocationHelper {
 
                     val originPoint = LocationPoint(node, protoConnection.thing, protoConnection.part)
                     val destinationPoint = LocationPoint(neighbor, protoConnection.connection.thing, protoConnection.connection.part)
-                    val locationLink = Connection(originPoint, destinationPoint, protoConnection.vector, protoConnection.restricted, protoConnection.hidden)
+                    val locationLink = Connection(originPoint, destinationPoint, protoConnection.originPoint, protoConnection.destinationPoint, protoConnection.restricted, protoConnection.hidden)
                     node.addConnection(locationLink)
 
                     if (!protoConnection.oneWay) {

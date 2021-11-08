@@ -52,7 +52,7 @@ class RouteTest {
             route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
         }
 
-        val newStart = route.getConnections().first { it.vector.direction.shortcut == "e" }.source.location
+        val newStart = route.getConnections().first { it.originPoint.direction.shortcut == "e" }.source.location
         val trimmed = route.trim(newStart)
 
         assertEquals("E, W, S, SW, SE", trimmed?.getDirectionString())
@@ -69,7 +69,7 @@ class RouteTest {
             route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
         }
 
-        val newStart = route.getConnections().first { it.vector.direction.shortcut == "e" }.source.location
+        val newStart = route.getConnections().first { it.originPoint.direction.shortcut == "e" }.source.location
         val trimmed = route.trim(newStart)?.trim(newStart)
 
         assertEquals("E, W, S, SW, SE", trimmed?.getDirectionString())

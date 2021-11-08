@@ -111,6 +111,7 @@ class ClimbCommand : Command() {
         when {
             climbOptions.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
             climbOptions.size == 1 && desiredDirection != Direction.NONE -> CommandParsers.parseCommand(player, "climb $desiredDirection ${options[0]}")
+            options.size == 1 && options.size == climbOptions.size && options.first().name == climbOptions.first().thing.name -> player.displayToMe("Unable to climb ${options.first().name}.")
             climbOptions.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
             desiredDirection != Direction.NONE -> player.respond {
                 message("Climb what?")

@@ -37,7 +37,7 @@ class LocationNodeBuilder(private val name: String) {
     fun connection(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
         connectionBuilders.add(ProtoConnectionBuilder().apply {
             name(name)
-            vector(x, y, z)
+            origin(x, y, z)
         })
     }
 
