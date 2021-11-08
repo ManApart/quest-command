@@ -223,7 +223,7 @@ class NameSearchableList<N : Named>() : ArrayList<N>() {
         val cleaned = name.lowercase()
         return firstOrNull {
             it.name.lowercase() == cleaned
-        } ?: firstOrNull { named ->
+        } ?: sortedBy { it.name.length }.firstOrNull { named ->
             val cleanedParts = cleaned.split(" ")
             val trialWords = named.name.lowercase().split(" ")
             cleanedParts.any { trialWords.contains(it) }

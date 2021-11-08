@@ -135,14 +135,14 @@ GameLogger.main.getLastInput()
     fun enterKanbaraThroughWall() {
         val input = "w && n && sw && rest 10 && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[3])
+        assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[2])
     }
 
     @Test
     fun compassToPub() {
         CommandParsers.parseCommand(GameState.player, "co pub && w && n && co pub")
         assertEquals("Kentle", GameState.player.thing.location.name)
-        assertEquals("Kanbara Pub is SOUTH_WEST of you.", GameLogger.main.getLastOutput())
+        assertEquals("Kanbara Pub is WEST of you.", GameLogger.main.getLastOutput())
 
         CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && co pub")
         assertEquals("Kanbara Gate", GameState.player.thing.location.name)
@@ -194,10 +194,10 @@ GameLogger.main.getLastInput()
         val expected = """
             An Open Field is a part of Kanbara Countryside. It is neighbored by:
               Name             Distance  Direction Path  
-              Farmer's Hut     100       W               
               Apple Tree       100       N               
               Barren Patch     100       S               
               Training Circle  100       E               
+              Farmer's Hut     100       W               
               Windmill         180       NE
               """.trimIndent().trim()
 
