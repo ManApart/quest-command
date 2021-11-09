@@ -3,7 +3,6 @@ package traveling.arrive
 import core.events.EventListener
 import core.history.display
 import core.utility.asSubject
-import traveling.position.Vector
 
 class Arrive : EventListener<ArriveEvent>() {
 
@@ -14,7 +13,7 @@ class Arrive : EventListener<ArriveEvent>() {
     override fun execute(event: ArriveEvent) {
         if (event.origin != event.destination) {
             val player = event.creature
-            player.position = Vector()
+            player.position = event.destination.vector
             if (!event.destination.thingName.isNullOrBlank() && !event.destination.partName.isNullOrBlank()) {
                 val climbThing = event.destination.location.getLocation().getThings(event.destination.thingName).first()
                 val part = climbThing.body.getPartLocation(event.destination.partName)

@@ -9,13 +9,11 @@ import core.utility.isAre
 import core.utility.then
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
-import traveling.location.location.LocationPoint
+import traveling.location.Connection
 import traveling.location.network.LocationNode
 import traveling.position.Distances
 import traveling.position.Distances.LOCATION_SIZE
-import traveling.position.NO_VECTOR
 import traveling.position.Vector
-import traveling.travel.getDistanceToNeighbor
 import traveling.travel.postArriveEvent
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -29,13 +27,20 @@ class Move : EventListener<MoveEvent>() {
     override fun execute(event: MoveEvent) {
         val desiredDistance = event.source.getDistance(event.destination)
         val actualDistance = getActualDistanceMoved(event, desiredDistance)
-        val actualDestination = event.source.getVectorInDirection(event.destination, actualDistance)
-        val movedToNeighbor = getMovedToNeighbor(event.creature.location, actualDestination)
+        val attainableDestination = event.source.getVectorInDirection(event.destination, actualDistance)
+        val connection = getMovedToConnection(event.creature.location, attainableDestination)
+        val movedToNeighbor = connection?.destination
+        val actualDestination = event.creature.position.getNearest(attainableDestination, connection?.source?.vector ?: attainableDestination)
+        val vector = actualDestination - event.creature.position
+        val stamina = event.creature.soul.getCurrent(STAMINA)
+        val staminaRequired = vector.getDistance() / 10
 
         when {
             actualDestination.z > 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air."}
-            movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, getDistanceToNeighbor(event.creature.location, movedToNeighbor.location), event.silent)
-            NO_VECTOR.getDistance(event.destination) > LOCATION_SIZE -> event.creature.displayToMe("You cannot move that far in that direction.")
+            stamina == 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.isAre(it)} too tired to move."}
+            movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, staminaRequired, event.silent)
+            //TODO - location size needs to be calculated by the location
+            event.destination.getDistance() > LOCATION_SIZE -> event.creature.displayToMe("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, actualDestination)
         }
     }
@@ -49,11 +54,10 @@ class Move : EventListener<MoveEvent>() {
         }
     }
 
-    private fun getMovedToNeighbor(locationNode: LocationNode, destination: Vector): LocationPoint? {
+    private fun getMovedToConnection(locationNode: LocationNode, destination: Vector): Connection? {
         return locationNode.getNeighborConnections()
                 .filter { destination.isFurtherAlongSameDirectionThan(it.source.vector) }
                 .minByOrNull { destination.getDistance(it.source.vector) }
-                ?.destination
     }
 
     private fun move(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {

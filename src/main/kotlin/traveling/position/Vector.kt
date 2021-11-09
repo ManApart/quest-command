@@ -204,6 +204,10 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return Vector(newX.roundToInt(), newY.roundToInt(), newZ.roundToInt())
     }
 
+    fun getNearest(vararg other: Vector): Vector {
+        return other.minByOrNull { getDistance(it) } ?: other.first()
+    }
+
 }
 
 fun Sequence<Vector>.sum(): Vector {
