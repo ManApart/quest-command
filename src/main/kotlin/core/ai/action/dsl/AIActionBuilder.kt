@@ -7,18 +7,18 @@ class AIActionBuilder(val condition: (Thing) -> Boolean) {
     var priority: Int? = null
     val depthScale: Int = 2
     private val children: MutableList<AIActionBuilder> = mutableListOf()
-    private var protoActions: MutableList<ProtoAction> = mutableListOf()
+    private var actionRecipes: MutableList<ActionRecipe> = mutableListOf()
 
     fun cond(condition: (Thing) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit) {
         children.add(AIActionBuilder(condition).apply(initializer))
     }
 
     fun action(name: String, result: ((Thing) -> Event)) {
-        this.protoActions.add(ProtoAction(name) { listOf(result(it)) })
+        this.actionRecipes.add(ActionRecipe(name) { listOf(result(it)) })
     }
 
     fun actions(name: String, results: ((Thing) -> List<Event>)) {
-        this.protoActions.add(ProtoAction(name, results))
+        this.actionRecipes.add(ActionRecipe(name, results))
     }
 
     internal fun build(): List<AIAction> {
@@ -30,7 +30,7 @@ class AIActionBuilder(val condition: (Thing) -> Boolean) {
         val evaluations = mutableListOf<AIAction>()
         val usedPriority = priority ?: (10 + depthScale * depth)
 
-        protoActions.forEach { protoAction ->
+        actionRecipes.forEach { protoAction ->
             evaluations.add(AIAction(protoAction.name, conditions, protoAction.createEvents, usedPriority))
         }
 

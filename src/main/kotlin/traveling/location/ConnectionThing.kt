@@ -1,7 +1,6 @@
 package traveling.location
 
-class ProtoThing(
-//        val location: String? = null,
+class ConnectionThing(
         val location: String,
         val network: String? = null,
         val thing: String? = null,

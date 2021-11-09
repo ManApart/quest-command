@@ -19,7 +19,7 @@ class LocationHelper {
         nodeMap.keys.forEach { networkName ->
             val network = nodeMap[networkName]?.toList() ?: listOf()
             network.forEach { node ->
-                node.protoConnections.forEach { protoConnection ->
+                node.connectionRecipes.forEach { protoConnection ->
                     val connectionNetworkName = protoConnection.connection.network ?: networkName
                     if (nodeMap[connectionNetworkName] == null) {
                         nodeMap[connectionNetworkName] = mutableListOf()

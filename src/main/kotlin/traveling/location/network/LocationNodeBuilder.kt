@@ -1,14 +1,14 @@
 package traveling.location.network
 
 import traveling.location.Network
-import traveling.location.ProtoConnectionBuilder
+import traveling.location.ConnectionRecipeBuilder
 
 class LocationNodeBuilder(private val name: String) {
     private var locationName: String? = null
     private var parentName: String? = null
     private var network: Network? = null
     private var isRoot = false
-    private val connectionBuilders = mutableListOf<ProtoConnectionBuilder>()
+    private val connectionBuilders = mutableListOf<ConnectionRecipeBuilder>()
 
     internal fun build(inheritedParent: String? = null): LocationNode {
         val locName = locationName ?: name
@@ -35,18 +35,18 @@ class LocationNodeBuilder(private val name: String) {
     }
 
     fun connection(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
-        connectionBuilders.add(ProtoConnectionBuilder().apply {
+        connectionBuilders.add(ConnectionRecipeBuilder().apply {
             name(name)
             origin(x, y, z)
         })
     }
 
-    fun connection(initializer: ProtoConnectionBuilder.() -> Unit) {
-        connectionBuilders.add(ProtoConnectionBuilder().apply(initializer))
+    fun connection(initializer: ConnectionRecipeBuilder.() -> Unit) {
+        connectionBuilders.add(ConnectionRecipeBuilder().apply(initializer))
     }
 
-    fun connection(name: String, initializer: ProtoConnectionBuilder.() -> Unit) {
-        connectionBuilders.add(ProtoConnectionBuilder().apply { name(name) }.apply(initializer))
+    fun connection(name: String, initializer: ConnectionRecipeBuilder.() -> Unit) {
+        connectionBuilders.add(ConnectionRecipeBuilder().apply { name(name) }.apply(initializer))
     }
 
 }

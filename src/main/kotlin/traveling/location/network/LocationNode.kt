@@ -6,7 +6,7 @@ import core.utility.Named
 import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.Network
-import traveling.location.ProtoConnection
+import traveling.location.ConnectionRecipe
 import traveling.location.RouteFinder
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
@@ -23,10 +23,10 @@ data class LocationNode(
     val parent: String = DEFAULT_NETWORK.name,
     var network: Network = DEFAULT_NETWORK,
     val isRoot: Boolean = false,
-    @JsonProperty("locations") val protoConnections: List<ProtoConnection> = listOf(),
+    @JsonProperty("locations") val connectionRecipes: List<ConnectionRecipe> = listOf(),
     private val connections: MutableList<Connection> = mutableListOf(),
 ) : Named {
-    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.protoConnections)
+    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.connectionRecipes)
 
     private var location: Location? = null
     var loadPath: String? = null

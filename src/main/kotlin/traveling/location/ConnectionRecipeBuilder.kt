@@ -3,19 +3,19 @@ package traveling.location
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 
-class ProtoConnectionBuilder {
+class ConnectionRecipeBuilder {
     private var name: String? = null
     private var thing: String? = null
     private var part: String? = null
     private var restricted = false
     private var oneWay = false
     private var hidden = false
-    private var connectsTo: ProtoThing? = null
+    private var connectsTo: ConnectionThing? = null
     private var originPoint = NO_VECTOR
     private var destinationPoint = NO_VECTOR
 
-    fun build(): ProtoConnection {
-        return ProtoConnection(thing, part, originPoint, destinationPoint, name, connectsTo, restricted, oneWay, hidden)
+    fun build(): ConnectionRecipe {
+        return ConnectionRecipe(thing, part, originPoint, destinationPoint, name, connectsTo, restricted, oneWay, hidden)
     }
 
     fun name(name: String) {
@@ -42,12 +42,12 @@ class ProtoConnectionBuilder {
         this.hidden = yes
     }
 
-    fun connectsTo(protoThing: ProtoThing) {
-        this.connectsTo = protoThing
+    fun connectsTo(connectionThing: ConnectionThing) {
+        this.connectsTo = connectionThing
     }
 
     fun connectsTo(location: String, network: String? = null, thing: String? = null, part: String? = null) {
-        this.connectsTo = ProtoThing(location, network, thing, part)
+        this.connectsTo = ConnectionThing(location, network, thing, part)
     }
 
     fun origin(v: Vector) {
@@ -92,6 +92,6 @@ class ProtoConnectionBuilder {
 
 }
 
-fun connection(initializer: ProtoConnectionBuilder.() -> Unit): ProtoConnection {
-    return ProtoConnectionBuilder().apply(initializer).build()
+fun connection(initializer: ConnectionRecipeBuilder.() -> Unit): ConnectionRecipe {
+    return ConnectionRecipeBuilder().apply(initializer).build()
 }
