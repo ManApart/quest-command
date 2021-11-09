@@ -37,7 +37,7 @@ class RouteTest {
         val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
 
         directions.forEach {
-            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+            route.addLink(Connection(LocationPoint(route.destination, it.vector), LocationPoint(LocationNode(it.name))))
         }
 
         assertEquals("N, NE, NW, E, W, S, SW, SE", route.getDirectionString())
@@ -49,10 +49,10 @@ class RouteTest {
         val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
 
         directions.forEach {
-            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+            route.addLink(Connection(LocationPoint(route.destination, it.vector), LocationPoint(LocationNode(it.name))))
         }
 
-        val newStart = route.getConnections().first { it.originPoint.direction.shortcut == "e" }.source.location
+        val newStart = route.getConnections().first { it.source.vector.direction.shortcut == "e" }.source.location
         val trimmed = route.trim(newStart)
 
         assertEquals("E, W, S, SW, SE", trimmed?.getDirectionString())
@@ -66,10 +66,10 @@ class RouteTest {
         val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
 
         directions.forEach {
-            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+            route.addLink(Connection(LocationPoint(route.destination, it.vector), LocationPoint(LocationNode(it.name))))
         }
 
-        val newStart = route.getConnections().first { it.originPoint.direction.shortcut == "e" }.source.location
+        val newStart = route.getConnections().first { it.source.vector.direction.shortcut == "e" }.source.location
         val trimmed = route.trim(newStart)?.trim(newStart)
 
         assertEquals("E, W, S, SW, SE", trimmed?.getDirectionString())
@@ -81,7 +81,7 @@ class RouteTest {
         val directions = listOf(Direction.NORTH, Direction.NORTH_EAST, Direction.NORTH_WEST, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.SOUTH_WEST, Direction.SOUTH_EAST)
 
         directions.forEach {
-            route.addLink(Connection(LocationPoint(route.destination), LocationPoint(LocationNode(it.name)), it.vector))
+            route.addLink(Connection(LocationPoint(route.destination, it.vector), LocationPoint(LocationNode(it.name))))
         }
 
         val newStart = route.destination

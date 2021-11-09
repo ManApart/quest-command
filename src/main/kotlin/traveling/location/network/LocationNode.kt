@@ -178,7 +178,7 @@ data class LocationNode(
     }
 
     fun getPositionRelativeTo(neighbor: LocationNode): Vector? {
-        return connections.firstOrNull { it.destination.location == neighbor }?.originPoint?.invert()
+        return connections.firstOrNull { it.destination.location == neighbor }?.source?.vector?.invert()
     }
 
 }

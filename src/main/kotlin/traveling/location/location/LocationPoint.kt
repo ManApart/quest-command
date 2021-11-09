@@ -2,8 +2,10 @@ package traveling.location.location
 
 import core.thing.Thing
 import traveling.location.network.LocationNode
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 
-class LocationPoint(val location: LocationNode, val thingName: String? = null, val partName: String? = null) {
+class LocationPoint(val location: LocationNode, val vector: Vector = NO_VECTOR, val thingName: String? = null, val partName: String? = null) {
 
     override fun toString(): String {
         return getName()

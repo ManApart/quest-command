@@ -18,7 +18,7 @@ class Block : EventListener<BlockEvent>() {
         val shield = getShield(event.partThatWillShield)
         val shieldSize = shield?.properties?.values?.getInt("radius") ?: 0
         val partLocation = event.source.body.layout.findLocation(event.partThatWillBeShielded.name)
-        val locations = listOf(partLocation) + partLocation.getNeighbors().filter { partLocation.getConnection(it)?.originPoint?.getDistance() ?: 0 <= shieldSize }
+        val locations = listOf(partLocation) + partLocation.getNeighbors().filter { partLocation.getConnection(it)?.source?.vector?.getDistance() ?: 0 <= shieldSize }
 
         return locations.map { it.getLocation() }
     }

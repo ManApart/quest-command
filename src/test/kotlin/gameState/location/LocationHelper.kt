@@ -29,7 +29,7 @@ class LocationHelper {
                 .forEach { direction ->
                     val neighbor = LocationNode(direction.toString())
                     neighbors.add(neighbor)
-                    val link = Connection(LocationPoint(source), LocationPoint(neighbor), direction.vector)
+                    val link = Connection(LocationPoint(source, direction.vector), LocationPoint(neighbor))
                     source.addConnection(link)
                     neighbor.addConnection(link.invert())
                     createLocations(neighbor, direction, depth - 1, depth, neighbors)
@@ -44,7 +44,7 @@ class LocationHelper {
         val neighbor = LocationNode(direction.toString() + (totalDepth - depth))
         neighbors.add(neighbor)
 
-        val link = Connection(LocationPoint(source), LocationPoint(neighbor), direction.vector)
+        val link = Connection(LocationPoint(source, direction.vector), LocationPoint(neighbor))
         source.addConnection(link)
         neighbor.addConnection(link.invert())
 

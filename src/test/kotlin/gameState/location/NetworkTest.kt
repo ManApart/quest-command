@@ -25,11 +25,18 @@ class NetworkTest {
     private fun assertFurthestNeighbors(direction: Direction, depth: Int, expectedCount: Int) {
         val network = LocationHelper().createNetwork(depth)
         val furthest = network.getFurthestLocations(direction)
-        val addedInt = if (depth > 1) {(depth-1).toString()} else {""}
+        val addedInt = if (depth > 1) {
+            (depth - 1).toString()
+        } else {
+            ""
+        }
         val expectedName = direction.name + addedInt
 
         assertEquals(expectedCount, furthest.size)
-        assertNotNull(furthest.firstOrNull{it.name == expectedName}, "$expectedName was not found in ${furthest.joinToString { it.name }}")
+        assertNotNull(
+            furthest.firstOrNull { it.name == expectedName },
+            "$expectedName was not found in ${furthest.joinToString { it.name }}"
+        )
     }
 
 
@@ -40,10 +47,10 @@ class NetworkTest {
         val diagonalUp = LocationNode("DiagUp")
         val top = LocationNode("Top")
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(up), Vector(z = 1))
-        val buttomDiagUp = Connection(LocationPoint(bottom), LocationPoint(diagonalUp), Vector(x = 1, z = 1))
-        val upTop = Connection(LocationPoint(up), LocationPoint(top), Vector(z = 1))
-        val diagUpTop = Connection(LocationPoint(diagonalUp), LocationPoint(top), Vector(z = 1))
+        val bottomUp = Connection(LocationPoint(bottom, Vector(z = 1)), LocationPoint(up))
+        val buttomDiagUp = Connection(LocationPoint(bottom, Vector(x = 1, z = 1)), LocationPoint(diagonalUp))
+        val upTop = Connection(LocationPoint(up, Vector(z = 1)), LocationPoint(top))
+        val diagUpTop = Connection(LocationPoint(diagonalUp, Vector(z = 1)), LocationPoint(top))
 
         bottom.addConnection(bottomUp)
         up.addConnection(bottomUp.invert())
@@ -69,7 +76,7 @@ class NetworkTest {
         val bottom = LocationNode("Bottom")
         val top = LocationNode("Top", isRoot = true)
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z = 1))
+        val bottomUp = Connection(LocationPoint(bottom, Vector(z = 1)), LocationPoint(top))
 
         bottom.addConnection(bottomUp)
         top.addConnection(bottomUp.invert())
@@ -83,7 +90,7 @@ class NetworkTest {
         val bottom = LocationNode("Bottom")
         val top = LocationNode("Top")
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z = 1))
+        val bottomUp = Connection(LocationPoint(bottom, Vector(z = 1)), LocationPoint(top))
 
         bottom.addConnection(bottomUp)
         top.addConnection(bottomUp.invert())
@@ -97,7 +104,7 @@ class NetworkTest {
         val bottom = LocationNode("Bottom", isRoot = true)
         val top = LocationNode("Top", isRoot = true)
 
-        val bottomUp = Connection(LocationPoint(bottom), LocationPoint(top), Vector(z = 1))
+        val bottomUp = Connection(LocationPoint(bottom, Vector(z = 1)), LocationPoint(top))
 
         bottom.addConnection(bottomUp)
         top.addConnection(bottomUp.invert())

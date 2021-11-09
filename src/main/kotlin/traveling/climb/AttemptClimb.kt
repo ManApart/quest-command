@@ -18,6 +18,7 @@ import traveling.jump.FallEvent
 import traveling.location.RouteFinder
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
+import traveling.position.NO_VECTOR
 import kotlin.math.max
 
 class AttemptClimb : EventListener<AttemptClimbEvent>() {
@@ -140,13 +141,13 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun dismountFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
         val destination = LocationPoint(event.thing.location)
-        val origin = connectedLocation ?: LocationPoint(event.thing.location, event.thing.name, event.thingPart.name)
+        val origin = connectedLocation ?: LocationPoint(event.thing.location, NO_VECTOR, event.thing.name, event.thingPart.name)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.thing, origin, destination))
     }
 
     private fun dismountToConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
-        val origin = LocationPoint(event.thing.location, event.thing.name, event.thingPart.name)
+        val origin = LocationPoint(event.thing.location, NO_VECTOR, event.thing.name, event.thingPart.name)
         val destination = connectedLocation ?: LocationPoint(event.thing.location)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.thing, origin, destination))

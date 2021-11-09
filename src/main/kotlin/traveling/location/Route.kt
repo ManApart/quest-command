@@ -6,7 +6,7 @@ import traveling.position.sum
 
 
 class Route(val source: LocationNode, private val connections: MutableList<Connection> = mutableListOf()) {
-    val distance by lazy { connections.asSequence().map { it.originPoint.getDistance() }.sum() }
+    val distance by lazy { connections.asSequence().map { it.source.vector.getDistance() }.sum() }
 
     constructor(base: Route) : this(base.source) {
         base.getConnections().forEach {
@@ -34,12 +34,12 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
     }
 
     fun getVectorDistance(): Vector {
-        return connections.asSequence().map { it.originPoint }.sum()
+        return connections.asSequence().map { it.source.vector }.sum()
     }
 
     fun getDirectionString(): String {
         return connections.asSequence()
-            .map { it.originPoint.direction.shortcut }
+            .map { it.source.vector.direction.shortcut }
             .joinToString(", ")
             .uppercase()
     }

@@ -51,8 +51,8 @@ class Move : EventListener<MoveEvent>() {
 
     private fun getMovedToNeighbor(locationNode: LocationNode, destination: Vector): LocationPoint? {
         return locationNode.getNeighborConnections()
-                .filter { destination.isFurtherAlongSameDirectionThan(it.originPoint) }
-                .minByOrNull { destination.getDistance(it.originPoint) }
+                .filter { destination.isFurtherAlongSameDirectionThan(it.source.vector) }
+                .minByOrNull { destination.getDistance(it.source.vector) }
                 ?.destination
     }
 

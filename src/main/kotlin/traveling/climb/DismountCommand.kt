@@ -7,6 +7,7 @@ import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 import traveling.location.location.LocationPoint
+import traveling.position.NO_VECTOR
 
 class DismountCommand : Command() {
     override fun getAliases(): List<String> {
@@ -33,7 +34,7 @@ class DismountCommand : Command() {
             val climbThing = source.climbThing!!
             val thingLocation = LocationPoint(climbThing.location)
             val part = source.location
-            val origin = LocationPoint(climbThing.location, climbThing.name, part.name)
+            val origin = LocationPoint(climbThing.location, NO_VECTOR, climbThing.name, part.name)
 
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbThing!!, origin, exit))
