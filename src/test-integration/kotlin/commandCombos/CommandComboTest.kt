@@ -51,7 +51,7 @@ class CommandComboTest {
 
     @Test
     fun roastApple() {
-        val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && use tinder on tree && use apple on tree"
+        val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && n && use tinder on tree && use apple on tree"
         CommandParsers.parseCommand(GameState.player, input)
         assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
         assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
@@ -117,23 +117,25 @@ GameLogger.main.getLastInput()
         assertEquals(expected, GameLogger.main.getLastOutput())
     }
 
+    private val travelToGate = "w && n && sw && rest 10 && w && rs 10 && w"
+
     @Test
     fun useGate() {
-        val input = "w && n && sw && rest 10 && w && use gate"
+        val input = "$travelToGate && use gate"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("You can now access Kanbara City from Kanbara Gate.", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughGate() {
-        val input = "w && n && sw && rest 10 && w && rs 10 && use gate && w"
+        val input = "$travelToGate && use gate && w"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).", GameLogger.main.getLastOutput())
     }
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && n && sw && rest 10 && w && rs 10 && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
+        val input = "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
         CommandParsers.parseCommand(GameState.player, input)
         assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[2])
     }
@@ -144,7 +146,7 @@ GameLogger.main.getLastInput()
         assertEquals("Kentle", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is WEST of you.", GameLogger.main.getLastOutput())
 
-        CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && co pub")
+        CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && w && co pub")
         assertEquals("Kanbara Gate", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is WEST of you.", GameLogger.main.getLastOutput())
 

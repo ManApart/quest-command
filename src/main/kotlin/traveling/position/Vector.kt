@@ -208,6 +208,10 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return other.minByOrNull { getDistance(it) } ?: other.first()
     }
 
+    fun isNearer(to: Vector, than: Vector): Boolean{
+        return getDistance(to) < getDistance(than)
+    }
+
 }
 
 fun Sequence<Vector>.sum(): Vector {
