@@ -8,16 +8,16 @@ import core.utility.asSubject
 import core.utility.isAre
 import core.utility.then
 import status.stat.STAMINA
+import status.stat.getMaxPossibleMovement
+import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent
 import traveling.location.Connection
 import traveling.location.network.LocationNode
-import traveling.position.Distances
 import traveling.position.Distances.LOCATION_SIZE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import traveling.travel.postArriveEvent
 import kotlin.math.min
-import kotlin.math.roundToInt
 
 class Move : EventListener<MoveEvent>() {
 
@@ -47,7 +47,7 @@ class Move : EventListener<MoveEvent>() {
     }
 
     private fun getActualDistanceMoved(event: MoveEvent, desiredDistance: Int): Int {
-        val abilityToMove = event.creature.soul.getCurrent(STAMINA) * Distances.HUMAN_LENGTH
+        val abilityToMove = event.creature.getMaxPossibleMovement(event.staminaScalar)
         return if (event.staminaScalar != 0f) {
             min(abilityToMove, desiredDistance)
         } else {
@@ -68,7 +68,7 @@ class Move : EventListener<MoveEvent>() {
         event.creature.position = actualDestination
         displayMovement(event, desiredDistance, actualDistance, actualDestination)
         if (event.staminaScalar != 0f) {
-            EventManager.postEvent(StatChangeEvent(event.creature, "moving", STAMINA, (-actualDistance * event.staminaScalar).roundToInt() / Distances.HUMAN_LENGTH, true))
+            EventManager.postEvent(StatChangeEvent(event.creature, "moving", STAMINA, -getStaminaCost(actualDistance, event.staminaScalar), true))
         }
     }
 

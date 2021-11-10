@@ -5,6 +5,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import status.stat.STAMINA
+import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationPoint
@@ -19,7 +20,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
         }
         val vector = event.creature.position - connection.source.vector
         val stamina = event.creature.soul.getCurrent(STAMINA)
-        val requiredStamina = vector.getDistance() / 10
+        val requiredStamina = getStaminaCost(vector)
         when {
             event.destination == event.currentLocation -> event.creature.displayToMe("You realize that you're already at ${event.currentLocation}")
             event.currentLocation.isMovingToRestricted(event.destination) -> event.creature.displayToMe("You're not able to get to ${event.destination.name}")
