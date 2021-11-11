@@ -3,7 +3,6 @@ package status.stat
 import core.thing.Thing
 import traveling.position.Distances
 import traveling.position.Vector
-import kotlin.math.roundToInt
 
 //TODO - add encumbrance cost
 
@@ -12,9 +11,13 @@ fun getStaminaCost(movementAmount: Vector, staminaScalar: Float = 1f): Int {
 }
 
 fun getStaminaCost(movementAmount: Int, staminaScalar: Float = 1f): Int {
-    return (movementAmount * staminaScalar).roundToInt() / Distances.HUMAN_LENGTH
+    return (movementAmount / distancePerStamina(staminaScalar)).toInt()
 }
 
 fun Thing.getMaxPossibleMovement(staminaScalar: Float = 1f): Int {
-    return (soul.getCurrent(STAMINA) / staminaScalar).toInt() * Distances.HUMAN_LENGTH
+    return (soul.getCurrent(STAMINA) * distancePerStamina(staminaScalar)).toInt()
+}
+
+private fun distancePerStamina(staminaScalar: Float): Float {
+    return Distances.HUMAN_LENGTH / staminaScalar
 }
