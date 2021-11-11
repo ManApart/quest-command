@@ -64,7 +64,7 @@ data class Thing(
         val location = if (position == NO_VECTOR) {
             ""
         } else {
-            " ($position)"
+            " $position"
         }
 
         val count = if (properties.getCount() != 1) {

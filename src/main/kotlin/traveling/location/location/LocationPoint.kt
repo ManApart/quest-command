@@ -15,6 +15,7 @@ class LocationPoint(val location: LocationNode, val vector: Vector = NO_VECTOR, 
         return when {
             thingName != null && partName != null -> "${location.name}: $partName of $thingName"
             thingName != null -> "${location.name}: $thingName"
+            vector != NO_VECTOR -> "$vector of ${location.name}"
             else -> location.name
         }
     }

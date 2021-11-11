@@ -13,7 +13,11 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     val direction: Direction by lazy { calculateDirection() }
 
     override fun toString(): String {
-        return "$x, $y, $z"
+        return if (z == 0){
+            "($x, $y)"
+        } else {
+            "($x, $y, $z)"
+        }
     }
 
     fun toMap(): Map<String, Int> {
