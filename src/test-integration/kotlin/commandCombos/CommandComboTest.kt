@@ -135,9 +135,9 @@ GameLogger.main.getLastInput()
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && cl && cl && cl && cl && d && d && d && ls"
+        val input = "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && mv to wall && cl && cl && cl && cl && d && d && d && ls"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[2])
+        assertEquals("You are at Kanbara City South.", GameLogger.main.getCurrent().outPut[3])
     }
 
     @Test

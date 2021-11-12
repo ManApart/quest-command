@@ -45,10 +45,10 @@ class UseCommand : Command() {
             used == null -> source.displayToMe("Couldn't find $arguments")
 
             !arguments.hasGroup("on") && args.contains("on") -> clarifyThing(source, used.name)
-            !used.isWithinRangeOf(source.thing) -> source.displayToMe("You are too far away to use $used.")
+            !used.isWithinRangeOf(source.thing) -> source.displayToMe("You are too far away to use ${used.name}.")
             !arguments.hasGroup("on") -> EventManager.postEvent(InteractEvent(source.thing, used))
             thing == null -> source.displayToMe("Couldn't find ${arguments.getString("on")}")
-            !thing.isWithinRangeOf(source.thing) -> source.displayToMe("You are too far away to use $used on $thing.")
+            !thing.isWithinRangeOf(source.thing) -> source.displayToMe("You are too far away to use ${used.name} on ${thing.name}.")
 
             else -> EventManager.postEvent(StartUseEvent(source.thing, used, thing))
         }
