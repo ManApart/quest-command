@@ -7,8 +7,6 @@ class KanbaraCity : NetworkResource {
     override val values = networks {
         network("Kanbara") {
             locationNode("Kanbara Gate") {
-                connection("Kanbara Wall South", x = -100, y = -100)
-                connection("Kanbara Wall North", x = -100, y = 100)
                 connection("Kanbara City") {
                     restricted(true)
                     x(-100)
@@ -30,6 +28,7 @@ class KanbaraCity : NetworkResource {
 
             locationNode("Kanbara Wall North") {
                 location("City Wall")
+                connection("Kanbara Gate", x = 100, y = -100)
                 connection {
                     thing("City Wall")
                     part("Wall Top")
@@ -41,6 +40,7 @@ class KanbaraCity : NetworkResource {
 
             locationNode("Kanbara Wall South") {
                 location("City Wall")
+                connection("Kanbara Gate", x = 100, y = 100)
                 connection {
                     thing("City Wall")
                     part("Wall Top")
