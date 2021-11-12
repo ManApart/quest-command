@@ -3,8 +3,6 @@ package core.commands
 import traveling.direction.Direction
 import traveling.position.Vector
 
-private val commaSeparateDigits = Regex("\\d,\\d,\\d")
-
 fun parseDirection(arguments: List<String>): Direction {
     return parseNullableDirection(arguments) ?: Direction.NONE
 }
@@ -26,6 +24,7 @@ fun parseVector(arguments: List<String>, default: Vector = Vector()): Vector {
     val numbers = args.getNumbers(",", true)
     return when {
         numbers.size == 3 && numbers.all { it != null } -> Vector(numbers[0]!!, numbers[1]!!, numbers[2]!!)
+        numbers.size == 2 && numbers.all { it != null } -> Vector(numbers[0]!!, numbers[1]!!, 0)
         else -> default
     }
 }

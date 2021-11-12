@@ -11,6 +11,7 @@ import status.stat.STAMINA
 import status.stat.getMaxPossibleMovement
 import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent
+import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.network.LocationNode
 import traveling.position.Distances.LOCATION_SIZE
@@ -60,7 +61,9 @@ class Move : EventListener<MoveEvent>() {
         if (NO_VECTOR.isNearer(destination, source)) return null
 
         return locationNode.getNeighborConnections()
-            .filter { destination.isFurtherAlongSameDirectionThan(it.source.vector) }
+            .filter {
+                it.source.vector.direction != Direction.NONE && destination.isFurtherAlongSameDirectionThan(it.source.vector)
+            }
             .minByOrNull { destination.getDistance(it.source.vector) }
     }
 

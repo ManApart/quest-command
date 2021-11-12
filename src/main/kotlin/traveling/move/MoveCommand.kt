@@ -46,7 +46,7 @@ class MoveCommand : Command() {
             when {
                 vector != NO_VECTOR -> EventManager.postEvent(StartMoveEvent(source.thing, vector))
                 thing != null -> EventManager.postEvent(StartMoveEvent(source.thing, thing.thing.position))
-                distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source.thing, source.position.getVectorInDirection(direction.vector, distance)))
+                distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source.thing, source.position + (direction.vector * distance)))
                 direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance, useDefault)
                 //TODO - response request
                 else -> source.display("Could not understand: move ${args.joinToString(" ")}")
