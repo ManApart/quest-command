@@ -14,7 +14,6 @@ import status.statChanged.StatChangeEvent
 import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.network.LocationNode
-import traveling.position.Distances.LOCATION_SIZE
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import traveling.travel.postArriveEvent
@@ -36,13 +35,13 @@ class Move : EventListener<MoveEvent>() {
         val vector = actualDestination - event.creature.position
         val stamina = event.creature.soul.getCurrent(STAMINA)
         val staminaRequired = vector.getDistance() / 10
+        val boundedDestination = event.creature.currentLocation().bounds.trim(attainableDestination)
 
         when {
             actualDestination.z > 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air." }
             stamina == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} too tired to move." }
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, staminaRequired, event.silent)
-            //TODO - location size needs to be calculated by the location
-            event.destination.getDistance() > LOCATION_SIZE -> event.creature.displayToMe("You cannot move that far in that direction.")
+            attainableDestination == boundedDestination -> event.creature.displayToMe("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, actualDestination)
         }
     }

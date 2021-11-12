@@ -21,6 +21,7 @@ import traveling.location.network.LocationNode
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherManager
+import traveling.position.Shape
 
 data class Location(
     val locationNode: LocationNode,
@@ -45,6 +46,7 @@ data class Location(
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
     private var equippedItems: MutableMap<String, Thing?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
+    val bounds by lazy { calcBounds() }
 
     override val name: String
         get() = locationNode.name
@@ -350,6 +352,10 @@ data class Location(
     fun isSafeFor(creature: Thing): Boolean {
         //No one is hostile towards the creature
         return creatures.none { it.ai.aggroThing == creature }
+    }
+
+    private fun calcBounds(): Shape{
+        return Shape(locationNode.getNeighborConnections().map { it.source.vector })
     }
 
 }
