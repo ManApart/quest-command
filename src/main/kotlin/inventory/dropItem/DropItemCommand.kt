@@ -31,7 +31,7 @@ class DropItemCommand : core.commands.Command() {
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("at"))
-        val vector = parseVector(args, source.position)
+        val vector = parseVector(args) ?: source.position
         when {
             arguments.isEmpty() -> clarifyItemToDrop(source)
             arguments.hasBase() -> dropItem(source.thing, arguments, vector)

@@ -2,7 +2,7 @@ package traveling.position
 
 import core.utility.clamp
 
-class Shape(val vertices: List<Vector> = listOf(), val minRadius: Int) {
+class Shape(val vertices: List<Vector> = listOf(), val minRadius: Int = 0) {
     val min = calcMins()
     val max = calcMaxs()
 

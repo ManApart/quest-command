@@ -9,9 +9,9 @@ abstract class UseListener : EventListener<UseEvent>() {
 
     override fun execute(event: UseEvent) {
         if (!event.used.isWithinRangeOf(event.source)) {
-            event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.used}."}
+            event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.used.name}."}
         } else if (!event.thing.isWithinRangeOf(event.source)) {
-            event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.used} on ${event.thing}."}
+            event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.used.name} on ${event.thing.name}."}
         } else {
             executeUseEvent(event)
         }

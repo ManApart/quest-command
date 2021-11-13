@@ -7,7 +7,6 @@ import core.history.display
 import core.utility.asSubject
 import core.utility.isAre
 import traveling.direction.Direction
-import traveling.position.NO_VECTOR
 
 //TODO - take optional ignore z
 class MoveCommand : Command() {
@@ -44,7 +43,7 @@ class MoveCommand : Command() {
             val useDefault = keyword != "move"
 
             when {
-                vector != NO_VECTOR -> EventManager.postEvent(StartMoveEvent(source.thing, vector))
+                vector != null -> EventManager.postEvent(StartMoveEvent(source.thing, vector))
                 thing != null -> EventManager.postEvent(StartMoveEvent(source.thing, thing.thing.position))
                 distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source.thing, source.position + (direction.vector * distance)))
                 direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance, useDefault)

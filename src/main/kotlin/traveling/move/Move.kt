@@ -41,8 +41,8 @@ class Move : EventListener<MoveEvent>() {
             actualDestination.z > 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air." }
             stamina == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} too tired to move." }
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, staminaRequired, event.silent)
-            attainableDestination == boundedDestination -> event.creature.displayToMe("You cannot move that far in that direction.")
-            else -> move(event, desiredDistance, actualDistance, actualDestination)
+            event.creature.position == boundedDestination-> event.creature.displayToMe("You cannot move that far in that direction.")
+            else -> move(event, desiredDistance, actualDistance, boundedDestination)
         }
     }
 
