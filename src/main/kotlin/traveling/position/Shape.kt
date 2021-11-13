@@ -6,8 +6,16 @@ class Shape(val vertices: List<Vector> = listOf()) {
     val min = calcMins()
     val max = calcMaxs()
 
+    override fun toString(): String {
+        if (min == NO_VECTOR && max == NO_VECTOR) return ""
+
+        val zString = if (min.z != 0 || max.z != 0) " and Z: ${min.z} to ${max.z}" else ""
+
+        return "X: ${min.x} to ${max.x} and Y: ${min.y} to ${max.y}" + zString
+    }
+
     private fun calcMins(): Vector {
-        return Vector(vertices.minOf { it.x }, vertices.minOf  { it.y }, vertices.minOf  { it.z })
+        return Vector(vertices.minOf { it.x }, vertices.minOf { it.y }, vertices.minOf { it.z })
     }
 
     private fun calcMaxs(): Vector {

@@ -17,15 +17,16 @@ fun describeLocation(source: Player, location: Location) {
 }
 
 private fun describePosition(source: Player, location: Location) {
+    val boundsString = if (location.bounds.toString().isBlank()) "" else " (${location.bounds})"
     if (source.thing.currentLocation() == location) {
         val pos = source.position
         if (pos == NO_VECTOR) {
-            source.displayToMe("You are at ${location.name}.")
+            source.displayToMe("You are at ${location.name}$boundsString.")
         } else {
-            source.displayToMe("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${location.name}.")
+            source.displayToMe("You are at ${pos.x}, ${pos.y}, ${pos.z} of ${location.name}$boundsString.")
         }
     } else {
-        source.displayToMe("You look at ${location.name}.")
+        source.displayToMe("You look at ${location.name}$boundsString.")
     }
 }
 
