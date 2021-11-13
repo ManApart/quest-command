@@ -21,8 +21,6 @@ import traveling.location.network.LocationNode
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
 import traveling.location.weather.WeatherManager
-import traveling.position.Distances
-import traveling.position.NO_VECTOR
 import traveling.position.Shape
 
 data class Location(
@@ -357,7 +355,7 @@ data class Location(
     }
 
     private fun calcBounds(): Shape{
-        return Shape(locationNode.getNeighborConnections().map { it.source.vector }, Distances.HUMAN_LENGTH/2)
+        return Shape(locationNode.getNeighborConnections().map { it.source.vector } + getActivators().map { it.position })
     }
 
 }
