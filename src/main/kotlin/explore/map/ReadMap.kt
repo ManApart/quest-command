@@ -10,7 +10,7 @@ import traveling.location.RouteNeighborFinder
 class ReadMap : EventListener<ReadMapEvent>() {
     override fun execute(event: ReadMapEvent) {
         if (event.source.location == event.thing) {
-            event.source.displayToMe("You are in at ${event.source.position} in ${event.thing.name}.")
+            event.source.displayToMe("You are at ${event.source.position} in ${event.thing.name}.")
             event.source.displayToMe("${event.thing.name} has bounds ${event.thing.getLocation().bounds}")
         }
         val name = "${event.thing.name} is a part of ${event.thing.parent}. It"

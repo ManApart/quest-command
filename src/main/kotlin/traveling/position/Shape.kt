@@ -9,9 +9,11 @@ class Shape(val vertices: List<Vector> = listOf()) {
     override fun toString(): String {
         if (min == NO_VECTOR && max == NO_VECTOR) return ""
 
-        val zString = if (min.z != 0 || max.z != 0) " and Z: ${min.z} to ${max.z}" else ""
+        val xString = if (min.x != 0 || max.x != 0) "X: ${min.x} to ${max.x}" else null
+        val yString = if (min.y != 0 || max.y != 0) "Y: ${min.y} to ${max.y}" else null
+        val zString = if (min.z != 0 || max.z != 0) "Z: ${min.z} to ${max.z}" else null
 
-        return "X: ${min.x} to ${max.x} and Y: ${min.y} to ${max.y}" + zString
+        return listOfNotNull(xString, yString, zString).joinToString(" and ")
     }
 
     private fun calcMins(): Vector {
