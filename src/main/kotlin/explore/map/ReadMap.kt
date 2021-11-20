@@ -23,7 +23,7 @@ class ReadMap : EventListener<ReadMapEvent>() {
 
         return if (routes.isNotEmpty()) {
             val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))
-            input.addAll(routes.map { it.getRouteString() })
+            input.addAll(routes.map { it.getRouteString(event.source.position) })
             val table = StringTable(input, 2, rightPadding = 2)
 
             "is neighbored by:\n${table.getString()}"

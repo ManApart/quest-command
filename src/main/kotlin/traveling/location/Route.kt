@@ -92,8 +92,8 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
         }
     }
 
-    fun getRouteString(): List<String> {
-        return listOf(destination.name, distance.toString(), getDirectionString())
+    fun getRouteString(sourcePosition: Vector = NO_VECTOR): List<String> {
+        return listOf(destination.name, getDistance(sourcePosition).toString(), getDirectionString())
     }
 
 }
