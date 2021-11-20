@@ -94,6 +94,30 @@ class RouteVectorTest {
         assertEquals(Vector(50, 10), route.getVectorDistance(sourcePosition))
     }
 
+    @Test
+    fun routeWithNegativeOffsetStart() {
+        val network = network("Network") {
+            locationNode("A") {
+                connection("B", x = 100)
+            }
+
+            locationNode("B") {
+                connection("C", y = 10)
+            }
+            locationNode("C")
+        }.buildRoutes()
+
+        val locA = network.first { it.name == "A" }
+        val locC = network.first { it.name == "C" }
+
+        val route = RouteNeighborFinder(locA, 10).getNeighbors().first { it.destination == locC }
+        val sourcePosition = Vector(-50)
+
+        assertEquals(2, route.getConnections().size)
+        assertEquals(160, route.getDistance(sourcePosition))
+        assertEquals(Vector(150, 10), route.getVectorDistance(sourcePosition))
+    }
+
     private fun NetworkBuilder.buildRoutes(): List<LocationNode> {
         return build().also { nodes ->
             with(LocationHelper()) {
