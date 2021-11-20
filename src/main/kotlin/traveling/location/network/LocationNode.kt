@@ -5,8 +5,8 @@ import core.Player
 import core.utility.Named
 import traveling.direction.Direction
 import traveling.location.Connection
-import traveling.location.Network
 import traveling.location.ConnectionRecipe
+import traveling.location.Network
 import traveling.location.RouteFinder
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
@@ -159,7 +159,7 @@ data class LocationNode(
 
         val route = RouteFinder(this, other)
         return if (route.hasRoute()) {
-            route.getRoute().distance
+            route.getRoute().getDistance()
         } else {
             0
         }

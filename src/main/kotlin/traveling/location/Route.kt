@@ -1,12 +1,12 @@
 package traveling.location
 
 import traveling.location.network.LocationNode
+import traveling.position.NO_VECTOR
 import traveling.position.Vector
-import traveling.position.sum
 
 
 class Route(val source: LocationNode, private val connections: MutableList<Connection> = mutableListOf()) {
-    val distance by lazy { connections.asSequence().map { it.vector.getDistance() }.sum() }
+    private val distance by lazy { connections.asSequence().map { it.vector.getDistance() }.sum() }
 
     constructor(base: Route) : this(base.source) {
         base.getConnections().forEach {
@@ -15,7 +15,6 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
     }
 
     var destination: LocationNode = source
-    val vector: Vector = Vector()
 
     override fun toString(): String {
         return "Route : ${source.name} - ${destination.name}; Steps: ${getConnections().size}"
@@ -33,8 +32,21 @@ class Route(val source: LocationNode, private val connections: MutableList<Conne
         return connections.toList()
     }
 
-    fun getVectorDistance(): Vector {
-        return connections.asSequence().map { it.source.vector }.sum()
+    fun getVectorDistance(sourcePosition: Vector = NO_VECTOR): Vector {
+        var previous = sourcePosition
+        var sum = NO_VECTOR
+        connections.forEach { link ->
+            sum += link.source.vector - previous
+            previous = link.destination.vector
+        }
+        return sum - previous
+    }
+
+    fun getDistance(sourcePosition: Vector = NO_VECTOR): Int {
+        val firstExit = connections.first().source.vector
+        val distToFirstStep = sourcePosition.getDistance(firstExit)
+        val offset = firstExit.getDistance() - distToFirstStep
+        return distance - offset
     }
 
     fun getDirectionString(): String {

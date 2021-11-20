@@ -144,7 +144,7 @@ GameLogger.main.getLastInput()
     fun compassToPub() {
         CommandParsers.parseCommand(GameState.player, "co pub && w && n && co pub")
         assertEquals("Kentle", GameState.player.thing.location.name)
-        assertEquals("Kanbara Pub is WEST of you.", GameLogger.main.getLastOutput())
+        assertEquals("Kanbara Pub is SOUTH_WEST of you.", GameLogger.main.getLastOutput())
 
         CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && w && co pub")
         assertEquals("Kanbara Gate", GameState.player.thing.location.name)

@@ -52,7 +52,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         return if (source.parent == destination.parent) {
             val routeFinder = RouteFinder(source, destination)
             if (routeFinder.hasRoute()) {
-                routeFinder.getRoute().distance
+                routeFinder.getRoute().getDistance()
             } else {
                 0
             }

@@ -52,7 +52,7 @@ private fun getRoutesString(source: Player, location: LocationNode): String {
 
 private fun getRouteString(source: Thing, route: Route): List<String> {
     val exits = getExits(route.destination, source.climbThing!!)
-    return listOf(route.destination.name, route.distance.toString(), route.getDirectionString(), "1", exits.joinToString(", "))
+    return listOf(route.destination.name, route.getDistance().toString(), route.getDirectionString(), "1", exits.joinToString(", "))
 }
 
 private fun getExits(location: LocationNode, climbThing: Thing): List<String> {
