@@ -125,6 +125,7 @@ class CommonLocations : LocationResource {
 
         location("Barren Patch") {
             extends("Outside")
+            description("The surrounding grasses yellow and thin. Towards the center the ground is nothing more than packed dirt.")
             creature("Rat")
         }
 
@@ -136,33 +137,39 @@ class CommonLocations : LocationResource {
 
         location("Windmill") {
             extends("Inside Building")
+            description("Large hewed stone encircle encircle a patchwork floor. It smells of wheat and yeast.")
             activator("Grain Bin")
             activator("Stairs")
             item("Pot")
         }
 
         location("Windmill - Second Floor") {
+            description("The light is made golden by dust. The air is heavy.")
             extends("Inside Building")
             activator("Stairs")
         }
 
         location("Windmill - Third Floor") {
+            description("A small set of windows gives a view of the outside. The stone was long ago plastered over and is now yellow brown.")
             extends("Inside Building")
             activator("Grain Chute")
         }
 
         location("Cave Entrance") {
             extends("Outside")
+            description("The large wall of rock and moss is rended by shadow.")
             item("Lantern")
         }
 
         location("Cave Mouth") {
             extends("Inside")
+            description("The air is humid and heavy, interrupted by gasps of cooler wind from outside.")
             activator("Wall Crack")
         }
 
         location("Cave Tunnel") {
             extends("Inside")
+            description("The damp, cool stone runs along either side of the tunnel.")
         }
     }
 }
