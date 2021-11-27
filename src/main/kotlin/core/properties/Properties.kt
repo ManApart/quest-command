@@ -45,6 +45,10 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
         return tags.isEmpty() && values.isEmpty()
     }
 
+    fun isNotEmpty(): Boolean {
+        return !isEmpty()
+    }
+
     fun setFrom(other: Properties) {
         tags.addAll(other.tags)
         values.setFrom(other.values)

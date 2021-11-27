@@ -23,7 +23,6 @@ class RecipeBuilder(internal val name: String) {
     }
 
     fun skill(vararg values: Pair<String, Any>) = this.skills.entry(values.toList())
-    fun skill(key: String, value: String) = skills.entry(key to value)
     fun skill(key: String, value: Int) = skills.entry(key to value.toString())
 
     fun ingredientNamed(name: String) {
