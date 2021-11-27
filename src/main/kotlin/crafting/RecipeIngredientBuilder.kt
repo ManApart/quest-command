@@ -5,8 +5,12 @@ import core.properties.PropsBuilder
 import core.properties.Tags
 import core.thing.Thing
 import core.utility.MapBuilder
+import core.utility.capitalize2
+import core.utility.joinToStringAnd
+import core.utility.wrapNonEmpty
 
 class RecipeIngredientBuilder {
+    private var description = ""
     private var name: String? = null
     private val tags = mutableListOf<String>()
     private val skills: MapBuilder = MapBuilder()
@@ -17,6 +21,10 @@ class RecipeIngredientBuilder {
 
     fun name(name: String) {
         this.name = name.lowercase()
+    }
+
+    fun description(description: String) {
+        this.description = description
     }
 
     fun tag(tags: List<String>) {
@@ -69,9 +77,20 @@ class RecipeIngredientBuilder {
 
         if (criteria.isEmpty()) throw IllegalArgumentException("Recipe must include at least one criteria.")
 
-        return RecipeIngredient { crafter, ingredient, tool ->
+        if (description.isBlank()) buildDescription(skillMap, properties)
+
+        return RecipeIngredient(description) { crafter, ingredient, tool ->
             criteria.all { it(crafter, ingredient, tool) }
         }
+    }
+
+    private fun buildDescription(skillMap: Map<String, Int>, toolProps: Properties) {
+        val nameString = name?.capitalize2() ?: "Something"
+        val tagString = if (tags.isNotEmpty()) tags.joinToStringAnd().wrapNonEmpty("(", ")") else null
+        val toolString = if (toolProps.isNotEmpty()) toolProps.toString() else null
+        val skillString = if (skillMap.isNotEmpty()) skillMap.toString().wrapNonEmpty("(", ")") else null
+
+        description = listOfNotNull(nameString, tagString, toolString, skillString).joinToString(" ") { it }
     }
 }
 

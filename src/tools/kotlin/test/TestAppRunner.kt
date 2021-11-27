@@ -2,7 +2,7 @@ package test
 
 import main
 
-const val initialCommand: String = "map 2"
+const val initialCommand: String = "debug recipe && recipe sliced food && recipe apple pie"
 
 fun main() {
     main(arrayOf(initialCommand))

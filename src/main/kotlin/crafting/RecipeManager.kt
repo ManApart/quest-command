@@ -16,8 +16,16 @@ object RecipeManager {
         return recipes.get(name)
     }
 
+    fun recipeExists(name: String): Boolean{
+        return recipes.exists(name)
+    }
+
     fun getRecipeOrNull(name: String): Recipe? {
         return recipes.getOrNull(name)
+    }
+
+    fun getAllRecipes(): List<Recipe> {
+        return recipes.toList()
     }
 
     fun getRecipes(names: List<String>): List<Recipe> {

@@ -74,7 +74,7 @@ data class Recipe(
         return if (ingredients.isEmpty()) {
             ""
         } else {
-            "\n\tIngredients: ${ingredients.joinToString(", ") { it.read() }}"
+            "\n\tIngredients: ${ingredients.joinToString(", ") { it.description }}"
         }
     }
 
@@ -98,7 +98,7 @@ data class Recipe(
         return if (skills.isEmpty()) {
             ""
         } else {
-            "\n\tIngredients: ${skills.entries.joinToString(", ") { "${it.value} ${it.key}" }}"
+            "\n\tSkills: ${skills.entries.joinToString(", ") { "${it.value} ${it.key}" }}"
         }
     }
 
