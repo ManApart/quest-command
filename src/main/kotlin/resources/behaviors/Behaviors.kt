@@ -84,8 +84,8 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOf(
-                    MessageEvent(GameState.getPlayer(event.source), params["message"] ?: "You harvest ${event.thing} with ${event.used}."),
-                    SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.thing.location, positionParent = event.thing)
+                    MessageEvent(GameState.getPlayer(event.source), params["message"] ?: "You harvest ${event.usedOn} with ${event.used}."),
+                    SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.usedOn.location, positionParent = event.usedOn)
                 )
             }
         }

@@ -53,7 +53,7 @@ class CraftRecipeCommand : Command() {
                 ?: source.thing.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {
             source.displayToMe("Couldn't find the necessary tools to create ${recipe.name}")
-        } else if (!recipe.matches(source.thing.inventory.getAllItems(), tool)) {
+        } else if (!recipe.matches(source.thing, source.thing.inventory.getAllItems(), tool)) {
             source.displayToMe("Couldn't find all the needed ingredients to create ${recipe.name}.")
         } else {
             EventManager.postEvent(CraftRecipeEvent(source, recipe, tool))

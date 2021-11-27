@@ -11,10 +11,10 @@ import use.UseListener
 class UseItemOnIngredientRecipe : UseListener() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return if (event.used.properties.isItem() && event.thing.properties.isItem()) {
-            val recipes = RecipeManager.findCraftableRecipes(listOf(event.thing), event.used, event.source.soul) +
-                    RecipeManager.findCraftableRecipes(listOf(event.used), event.thing, event.source.soul) +
-                    RecipeManager.findCraftableRecipes(listOf(event.used, event.thing), null, event.source.soul)
+        return if (event.used.properties.isItem() && event.usedOn.properties.isItem()) {
+            val recipes = RecipeManager.findCraftableRecipes(event.source, listOf(event.usedOn), event.used) +
+                    RecipeManager.findCraftableRecipes(event.source, listOf(event.used), event.usedOn) +
+                    RecipeManager.findCraftableRecipes(event.source, listOf(event.used, event.usedOn), null)
             recipes.isNotEmpty()
         } else {
             false
@@ -22,15 +22,15 @@ class UseItemOnIngredientRecipe : UseListener() {
     }
 
     override fun executeUseEvent(event: UseEvent) {
-        val thingRecipes = RecipeManager.findCraftableRecipes(listOf(event.thing), event.used, event.source.soul)
-        val sourceRecipes = RecipeManager.findCraftableRecipes(listOf(event.used), event.thing, event.source.soul)
-        val itemOnlyRecipes = RecipeManager.findCraftableRecipes(listOf(event.used, event.thing), null, event.source.soul)
+        val thingRecipes = RecipeManager.findCraftableRecipes(event.source, listOf(event.usedOn), event.used)
+        val sourceRecipes = RecipeManager.findCraftableRecipes(event.source, listOf(event.used), event.usedOn)
+        val itemOnlyRecipes = RecipeManager.findCraftableRecipes(event.source, listOf(event.used, event.usedOn), null)
         val player = GameState.getPlayer(event.source)
 
         when {
             thingRecipes.size + sourceRecipes.size + itemOnlyRecipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${(thingRecipes + sourceRecipes + itemOnlyRecipes).joinToString(" or ") { it.name }}")
             thingRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, thingRecipes.first(), event.used))
-            sourceRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, sourceRecipes.first(), event.thing))
+            sourceRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, sourceRecipes.first(), event.usedOn))
             itemOnlyRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, itemOnlyRecipes.first(), null))
         }
     }

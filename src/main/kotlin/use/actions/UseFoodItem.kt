@@ -9,11 +9,11 @@ class UseFoodItem : UseListener() {
     override fun shouldExecute(event: UseEvent): Boolean {
         return event.source.canInteract()
                 && event.used.properties.tags.has("Food")
-                && event.thing.properties.tags.has("Creature")
+                && event.usedOn.properties.tags.has("Creature")
     }
 
     override fun executeUseEvent(event: UseEvent) {
-        EventManager.postEvent(EatFoodEvent(event.thing, event.used))
+        EventManager.postEvent(EatFoodEvent(event.usedOn, event.used))
     }
 
 }

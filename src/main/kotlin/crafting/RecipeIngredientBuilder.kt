@@ -19,6 +19,10 @@ class RecipeIngredientBuilder {
         this.name = name.lowercase()
     }
 
+    fun tag(tags: List<String>) {
+        this.tags.addAll(tags)
+    }
+
     fun tag(vararg tags: String) {
         this.tags.addAll(tags)
     }
@@ -35,7 +39,7 @@ class RecipeIngredientBuilder {
     }
 
     private fun matchesName(ingredient: Thing): Boolean {
-        return ingredient.name.lowercase() == name && matchesTags(ingredient)
+        return ingredient.name.lowercase() == name
     }
 
     private fun matchesTags(ingredient: Thing): Boolean {
@@ -45,7 +49,7 @@ class RecipeIngredientBuilder {
     private fun matchesSkills(crafter: Thing, skillMap: Map<String, Int>): Boolean {
         return skillMap.all { (skillName, skillValue) ->
             val current = crafter.soul.getStatOrNull(skillName)
-            return (current?.current ?: 0) > skillValue
+            return (current?.current ?: 0) >= skillValue
         }
     }
 
@@ -53,8 +57,8 @@ class RecipeIngredientBuilder {
         return (tool?.properties ?: Properties()).hasAll(props)
     }
 
-    fun build(): RecipeIngredient2 {
-        if (name != null) criteria.add { _, ingredient, _ -> matchesName(ingredient) }
+    fun build(): RecipeIngredient {
+        if (!name.isNullOrBlank()) criteria.add { _, ingredient, _ -> matchesName(ingredient) }
         if (tags.isNotEmpty()) criteria.add { _, ingredient, _ -> matchesTags(ingredient) }
 
         val skillMap = skills.build().mapValues { it.value.toInt() }
@@ -65,13 +69,13 @@ class RecipeIngredientBuilder {
 
         if (criteria.isEmpty()) throw IllegalArgumentException("Recipe must include at least one criteria.")
 
-        return RecipeIngredient2 { crafter, ingredient, tool ->
+        return RecipeIngredient { crafter, ingredient, tool ->
             criteria.all { it(crafter, ingredient, tool) }
         }
     }
 }
 
 
-fun ingredient(initializer: RecipeIngredientBuilder.() -> Unit): RecipeIngredientBuilder {
-    return RecipeIngredientBuilder().apply(initializer)
+fun ingredient(initializer: RecipeIngredientBuilder.() -> Unit): RecipeIngredient {
+    return RecipeIngredientBuilder().apply(initializer).build()
 }

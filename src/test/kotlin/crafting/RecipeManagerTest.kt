@@ -34,7 +34,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertEquals(recipe, results.first())
     }
 
@@ -53,7 +53,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertEquals(recipe, results.first())
     }
 
@@ -71,7 +71,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertEquals(recipe, results.first())
     }
 
@@ -91,7 +91,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertTrue(results.isEmpty())
     }
 
@@ -111,7 +111,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertTrue(results.isEmpty())
     }
 
@@ -131,7 +131,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertTrue(results.isEmpty())
     }
 
@@ -151,7 +151,7 @@ class RecipeManagerTest {
         DependencyInjector.setImplementation(RecipesCollection::class, fakeParser)
         RecipeManager.reset()
 
-        val results = RecipeManager.findCraftableRecipes(ingredients, tool, baker.thing.soul)
+        val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
         Assert.assertTrue(results.isEmpty())
     }
 

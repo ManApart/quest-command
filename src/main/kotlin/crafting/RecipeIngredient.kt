@@ -2,29 +2,36 @@ package crafting
 
 import core.properties.Tags
 import core.thing.Thing
-import core.utility.wrapNonEmpty
 
-data class RecipeIngredient(val name: String? = null, val tags: Tags = Tags()) {
-    constructor(name: String) : this(name, Tags())
+//Crafter, Ingredient, Tool?
+class RecipeIngredient(val matches: (Thing, Thing, Thing?) -> Boolean) {
+    constructor(itemName: String) : this({ _, ingredient, _ -> itemName.lowercase() == ingredient.name.lowercase() })
+    constructor(tags: Tags) : this({ _, ingredient, _ -> ingredient.properties.tags.hasAll(tags) })
 
-    init {
-        if (name.isNullOrBlank() && tags.isEmpty()){
-            throw IllegalArgumentException("Recipe Ingredient must have either a name or some tags.")
-        }
+    /**
+     * Equals is not useful with its default implementation and would be hard to implement properly.
+     * We don't really have cause to do equals here either, so it makes more sense to hard code it.
+     * This hack lets us do equality on recipes for other tests without having to fiddle with this.
+     */
+    override fun equals(other: Any?): Boolean {
+        return true
     }
 
-    fun findMatchingIngredient(ingredients: List<Thing>): Thing? {
-        val filtered = if (name != null) {
-            ingredients.filter { it.name.lowercase() == name.lowercase() }
-        } else {
-            ingredients
-        }
-
-        return filtered.asSequence().filter { it.properties.tags.hasAll(tags) }.firstOrNull()
+    override fun hashCode(): Int {
+        return 0
     }
 
-    fun read() : String {
-        return (name ?: "Something") + tags.toString().wrapNonEmpty(" (", ")")
+    fun findMatchingIngredient(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Thing? {
+        return ingredients.firstOrNull { matches(crafter, it, tool) }
     }
+
+    fun read(): String {
+        return ""
+    }
+
+
+//    fun read() : String {
+//        return (name ?: "Something") + tags.toString().wrapNonEmpty(" (", ")")
+//    }
 
 }

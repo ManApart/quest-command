@@ -37,7 +37,7 @@ class CookCommand : Command() {
         } else {
             val ingredients = getIngredients(arguments)
             val tool = getTool(source.thing, arguments)
-            val recipes = RecipeManager.findCraftableRecipes(ingredients, tool, source.thing.soul)
+            val recipes = RecipeManager.findCraftableRecipes(source.thing, ingredients, tool)
 
             when {
                 tool == null -> source.displayToMe("Couldn't find something to cook on")

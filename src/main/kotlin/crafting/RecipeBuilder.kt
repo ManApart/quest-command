@@ -1,7 +1,6 @@
 package crafting
 
 import core.properties.PropsBuilder
-import core.properties.Tags
 import core.utility.MapBuilder
 
 class RecipeBuilder(internal val name: String) {
@@ -26,15 +25,22 @@ class RecipeBuilder(internal val name: String) {
     fun skill(key: String, value: Int) = skills.entry(key to value.toString())
 
     fun ingredientNamed(name: String) {
-        ingredients.add(RecipeIngredient(name))
+        ingredient { name(name) }
     }
 
     fun ingredient(vararg tags: String) {
-        ingredients.add(RecipeIngredient(tags = Tags(tags.toMutableList())))
+        ingredient { tag(tags.toList()) }
     }
 
     fun ingredient(name: String, tags: List<String>) {
-        ingredients.add(RecipeIngredient(name, Tags(tags.toMutableList())))
+        ingredient {
+            name(name)
+            tag(tags.toList())
+        }
+    }
+
+    fun ingredient(initializer: RecipeIngredientBuilder.() -> Unit) {
+        ingredients.add(RecipeIngredientBuilder().apply(initializer).build())
     }
 
     fun toolProps(initializer: PropsBuilder.() -> Unit) {
