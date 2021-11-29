@@ -7,7 +7,7 @@ import status.Soul
 
 data class Recipe(
     override val name: String,
-    val ingredients: List<RecipeIngredient>,
+    val ingredients: Map<String, RecipeIngredient>,
     val skills: Map<String, Int> = mapOf(),
     val toolProperties: Properties = Properties(),
     val results: List<RecipeResult> = listOf(),
@@ -39,7 +39,7 @@ data class Recipe(
     fun getUsedIngredients(crafter: Thing, availableItems: List<Thing>, tool: Thing?): List<Thing> {
         val ingredientsLeft = availableItems.toMutableList()
         val usedIngredients = mutableListOf<Thing>()
-        this.ingredients.forEach {
+        this.ingredients.values.forEach {
             val match = it.findMatchingIngredient(crafter, ingredientsLeft, tool)
             if (match != null) {
                 ingredientsLeft.remove(match)
@@ -55,7 +55,7 @@ data class Recipe(
 
     private fun ingredientsMatch(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Boolean {
         val ingredientsLeft = ingredients.toMutableList()
-        this.ingredients.forEach {
+        this.ingredients.values.forEach {
             val match = it.findMatchingIngredient(crafter, ingredientsLeft, tool)
             if (match == null) {
                 return false
@@ -74,7 +74,7 @@ data class Recipe(
         return if (ingredients.isEmpty()) {
             ""
         } else {
-            "\n\tIngredients: ${ingredients.joinToString(", ") { it.description }}"
+            "\n\tIngredients: ${ingredients.values.joinToString(", ") { it.description }}"
         }
     }
 

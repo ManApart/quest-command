@@ -7,8 +7,9 @@ class RecipeBuilder(internal val name: String) {
     private var verb = "craft"
     private val skills: MapBuilder = MapBuilder()
     private var toolProps = PropsBuilder()
-    private val ingredients = mutableListOf<RecipeIngredient>()
+    private val ingredients = mutableMapOf<String, RecipeIngredient>()
     private val results = mutableListOf<RecipeResultBuilder>()
+    private var id = 0
 
     fun build(): Recipe {
         val skillMap = skills.build().mapValues { it.value.toInt() }
@@ -24,23 +25,24 @@ class RecipeBuilder(internal val name: String) {
     fun skill(vararg values: Pair<String, Any>) = this.skills.entry(values.toList())
     fun skill(key: String, value: Int) = skills.entry(key to value.toString())
 
-    fun ingredientNamed(name: String) {
-        ingredient { name(name) }
-    }
-
     fun ingredient(vararg tags: String) {
-        ingredient { tag(tags.toList()) }
-    }
-
-    fun ingredient(name: String, tags: List<String>) {
-        ingredient {
-            name(name)
+        val reference = (id++).toString()
+        ingredient(reference) {
             tag(tags.toList())
         }
     }
 
+    fun ingredientNamed(name: String, initializer: RecipeIngredientBuilder.() -> Unit = {}) {
+        ingredients[name] = RecipeIngredientBuilder().apply { name(name) }.apply(initializer).build()
+    }
+
+    fun ingredient(reference: String, initializer: RecipeIngredientBuilder.() -> Unit) {
+        ingredients[reference] = RecipeIngredientBuilder().apply(initializer).build()
+    }
+
     fun ingredient(initializer: RecipeIngredientBuilder.() -> Unit) {
-        ingredients.add(RecipeIngredientBuilder().apply(initializer).build())
+        val reference = (id++).toString()
+        ingredients[reference] = RecipeIngredientBuilder().apply(initializer).build()
     }
 
     fun toolProps(initializer: PropsBuilder.() -> Unit) {

@@ -60,7 +60,10 @@ class RecipeManagerTest {
     @Test
     fun findRecipeByItemWithTags() {
         val recipeBuilder = recipe("Baked Apple") {
-            ingredient("Apple", listOf("Raw", "fruit"))
+            ingredient {
+                name("Apple")
+                tag("Raw", "Fruit")
+            }
         }
         val recipe = recipeBuilder.build()
         val ingredients = listOf(Thing("Apple", properties = Properties(tags = Tags("Raw", "Fruit"))))

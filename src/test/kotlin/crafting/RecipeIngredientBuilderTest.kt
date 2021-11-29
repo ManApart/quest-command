@@ -81,4 +81,8 @@ class RecipeIngredientBuilderTest {
         assertFalse(item.matches(crafter, noMatch, null))
     }
 
+    private fun ingredient(initializer: RecipeIngredientBuilder.() -> Unit): RecipeIngredient {
+        return RecipeIngredientBuilder().apply(initializer).build()
+    }
+
 }

@@ -70,7 +70,10 @@ class CommonRecipes : RecipeResource {
 
         recipe("Apple Pie") {
             verb("bake")
-            ingredient("Apple", listOf("Sliced"))
+            ingredient {
+                name("Apple")
+                tag("Sliced")
+            }
             ingredientNamed("Pie Tin")
             ingredientNamed("Dough")
             skill("Cooking" to 2)
