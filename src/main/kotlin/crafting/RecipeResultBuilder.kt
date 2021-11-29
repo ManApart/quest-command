@@ -1,6 +1,7 @@
 package crafting
 
-import core.properties.Tags
+import core.thing.Thing
+import core.thing.item.ItemManager
 
 class RecipeResultBuilder {
     private var name: String? = null
@@ -25,10 +26,34 @@ class RecipeResultBuilder {
     }
 
     fun build(): RecipeResult {
-        return RecipeResult(name, id, Tags(tagsAdded), Tags(tagsRemoved))
+        return RecipeResult(id?.toString() ?: name!!, ::legacyGet)
     }
+
+    //Back compat until builder is switched over
+    private fun legacyGet(usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): Thing {
+        val item = if (!name.isNullOrBlank()) {
+            ItemManager.getItem(name!!)
+        } else {
+            if (usedIngredients.size <= id!!) {
+                throw IllegalArgumentException("Recipe Result had id $id but only ${usedIngredients.size} used ingredients")
+            } else {
+                (usedIngredients[id!!.toString()])!!.second
+            }
+        }
+        tagsRemoved.forEach {
+            item.properties.tags.remove(it)
+        }
+
+        tagsAdded.forEach {
+            item.properties.tags.add(it)
+        }
+
+        return item
+    }
+
 }
 
 fun result(initializer: RecipeResultBuilder.() -> Unit): RecipeResultBuilder {
     return RecipeResultBuilder().apply(initializer)
 }
+

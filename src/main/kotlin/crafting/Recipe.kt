@@ -36,20 +36,20 @@ data class Recipe(
         return true
     }
 
-    fun getUsedIngredients(crafter: Thing, availableItems: List<Thing>, tool: Thing?): List<Thing> {
+    fun getUsedIngredients(crafter: Thing, availableItems: List<Thing>, tool: Thing?): Map<String, Pair<RecipeIngredient, Thing>> {
         val ingredientsLeft = availableItems.toMutableList()
-        val usedIngredients = mutableListOf<Thing>()
-        this.ingredients.values.forEach {
-            val match = it.findMatchingIngredient(crafter, ingredientsLeft, tool)
+        val usedIngredients = mutableMapOf<String, Pair<RecipeIngredient, Thing>>()
+        this.ingredients.entries.forEach { (reference, recipeIngredient) ->
+            val match = recipeIngredient.findMatchingIngredient(crafter, ingredientsLeft, tool)
             if (match != null) {
                 ingredientsLeft.remove(match)
-                usedIngredients.add(match)
+                usedIngredients[reference] = Pair(recipeIngredient, match)
             }
         }
         return usedIngredients
     }
 
-    fun getResults(usedIngredients: List<Thing>): List<Thing> {
+    fun getResults(usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): List<Thing> {
         return results.map { it.getResult(usedIngredients) }
     }
 
@@ -82,7 +82,7 @@ data class Recipe(
         return if (results.isEmpty()) {
             ""
         } else {
-            "\n\tResults: ${results.joinToString(", ") { it.read() }}"
+            "\n\tResults: ${results.joinToString(", ") { it.description }}"
         }
     }
 

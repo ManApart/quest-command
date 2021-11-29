@@ -15,7 +15,7 @@ class RecipeBuilderTest {
             mapOf("Fruit" to RecipeIngredient(Tags("Food", "Slicable"))),
             mapOf("Cooking" to 1),
             Properties(tags = Tags("Sharp")),
-            listOf(RecipeResult(id = 0, tagsAdded = Tags("Sliced"), tagsRemoved = Tags("Slicable"))),
+            listOf(RecipeResult("0", listOf("Sliced"), listOf("Slicable"))),
             "slice"
         )
 

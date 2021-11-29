@@ -36,8 +36,20 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         other.tags.forEach { add(it) }
     }
 
+    fun addAll(other: List<String>) {
+        other.forEach { add(it) }
+    }
+
     fun remove(tag: String) {
         tags.remove(tag)
+    }
+
+    fun removeAll(other: Tags) {
+        other.tags.forEach { remove(it) }
+    }
+
+    fun removeAll(other: List<String>) {
+        other.forEach { remove(it) }
     }
 
     fun hasAll(other: Tags): Boolean {

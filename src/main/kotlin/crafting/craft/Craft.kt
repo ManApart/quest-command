@@ -20,12 +20,13 @@ class Craft : EventListener<CraftRecipeEvent>() {
             event.tool?.isWithinRangeOf(sourceT) == false -> event.source.display{sourceT.asSubject(it) + " " + sourceT.isAre(it) + " too far away to use ${event.tool.name}."}
             event.recipe.canBeCraftedBy(sourceT, event.tool) -> {
                 val ingredients = event.recipe.getUsedIngredients(sourceT, sourceT.inventory.getAllItems(), event.tool)
+                val usedIngredientList = ingredients.map { it.value.second }
                 val results = event.recipe.getResults(ingredients)
-                removeIngredients(sourceT.inventory, ingredients)
+                removeIngredients(sourceT.inventory, usedIngredientList)
                 addResults(results, sourceT)
                 EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))
 //            TODO - Add XP
-                event.source.displayToMe("You ${event.recipe.craftVerb} ${ingredients.joinToString(", ") { it.name }} and get ${results.joinToString(", ") { ItemManager.getTaggedItemName(it) }}.")
+                event.source.displayToMe("You ${event.recipe.craftVerb} ${usedIngredientList.joinToString(", ") { it.name }} and get ${results.joinToString(", ") { ItemManager.getTaggedItemName(it) }}.")
             }
             else -> event.source.displayToMe("You aren't able to craft ${event.recipe.name}.")
         }

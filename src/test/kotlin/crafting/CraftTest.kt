@@ -4,7 +4,6 @@ import core.DependencyInjector
 import core.GameManager
 import core.Player
 import core.events.EventManager
-import core.properties.Tags
 import core.thing.item.ItemManager
 import core.thing.item.ItemsCollection
 import core.thing.item.ItemsMock
@@ -65,7 +64,7 @@ class CraftTest {
 
         EventManager.registerListener(TakeItem())
 
-        val recipe = Recipe("Apples of Silver and Gold", mapOf("Fruit" to RecipeIngredient("Apple")), results = listOf(RecipeResult(id = 0, tagsAdded = Tags("Cooked"))))
+        val recipe = Recipe("Apples of Silver and Gold", mapOf("Fruit" to RecipeIngredient("Apple")), results = listOf(RecipeResult("Fruit", listOf("Cooked"), listOf())))
         Craft().execute(CraftRecipeEvent(baker, recipe))
 
         EventManager.executeEvents()
