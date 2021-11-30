@@ -8,12 +8,14 @@ class CommonRecipes : RecipeResource {
         recipe("Sliced Food") {
             verb("slice")
             skill("Cooking", 1)
-            ingredient("Food", "Slicable")
+            ingredient("Base"){
+                tag("Food", "Slicable")
+            }
             toolProps {
                 tag("Sharp")
             }
             result {
-                id(0)
+                reference("Base")
                 addTag("Sliced")
                 removeTag("Slicable")
             }
@@ -22,12 +24,14 @@ class CommonRecipes : RecipeResource {
         recipe("Roasted Food") {
             verb("roast")
             skill("Cooking", 1)
-            ingredient("Raw")
+            ingredient("Base"){
+                tag("Raw")
+            }
             toolProps {
                 tag("Burning")
             }
             result {
-                id(0)
+                reference("Base")
                 addTag("Roasted")
                 removeTag("Raw")
             }
@@ -36,12 +40,14 @@ class CommonRecipes : RecipeResource {
         recipe("Cooked Food") {
             verb("cook")
             skill("Cooking", 2)
-            ingredient("Raw")
+            ingredient("Base"){
+                tag("Raw")
+            }
             toolProps {
                 tag("Range")
             }
             result {
-                id(0)
+                reference("Base")
                 addTag("Cooked")
                 removeTag("Raw")
             }
@@ -53,19 +59,15 @@ class CommonRecipes : RecipeResource {
             toolProps {
                 tag("Water Source")
             }
-            result {
-                name("Bucket of Water")
-            }
+            result("Bucket of Water")
         }
 
         recipe("Dough") {
             verb("mix")
             ingredientNamed("Wheat Flour")
             ingredientNamed("Bucket of Water")
-            result {
-                name("Bucket")
-                name("Dough")
-            }
+            result("Bucket")
+            result("Dough")
         }
 
         recipe("Apple Pie") {
@@ -80,9 +82,7 @@ class CommonRecipes : RecipeResource {
             toolProps {
                 tag("Range", "Burning")
             }
-            result {
-                name("Apple Pie")
-            }
+            result("Apple Pie")
         }
     }
 }

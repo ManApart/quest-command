@@ -4,51 +4,61 @@ import core.thing.Thing
 import core.thing.item.ItemManager
 
 class RecipeResultBuilder {
-    private var name: String? = null
-    private var id: Int? = null
+    private var itemName: String? = null
+    private var ingredientReference: String? = null
+    private var description = ""
     private val tagsAdded = mutableListOf<String>()
     private val tagsRemoved = mutableListOf<String>()
+    private var getItem: ((Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)? = null
 
-    fun name(name: String){
-        this.name = name
+    /**
+     * Get an item by this name
+     */
+    fun name(itemName: String) {
+        this.itemName = itemName
     }
 
-    fun id(id: Int){
-        this.id = id
+    /**
+     * Refer to one of the ingredients
+     */
+    fun reference(ingredientReference: String) {
+        this.ingredientReference = ingredientReference
     }
 
-    fun addTag(vararg tags: String){
-        tagsAdded.addAll(tags.toList())
+    fun description(description: String) {
+        this.description = description
     }
 
-    fun removeTag(vararg tags: String){
-        tagsRemoved.addAll(tags.toList())
+    fun addTag(vararg tag: String) {
+        this.tagsAdded.addAll(tag)
+    }
+
+    fun removeTag(vararg tag: String) {
+        this.tagsRemoved.addAll(tag)
+    }
+
+    fun produces(getItem: ((Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
+        this.getItem = getItem
     }
 
     fun build(): RecipeResult {
-        return RecipeResult(id?.toString() ?: name!!, ::legacyGet)
-    }
+        //TODO - build description
+        if (getItem != null) return RecipeResult(description, getItem!!)
 
-    //Back compat until builder is switched over
-    private fun legacyGet(usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): Thing {
-        val item = if (!name.isNullOrBlank()) {
-            ItemManager.getItem(name!!)
-        } else {
-            if (usedIngredients.size <= id!!) {
-                throw IllegalArgumentException("Recipe Result had id $id but only ${usedIngredients.size} used ingredients")
-            } else {
-                (usedIngredients[id!!.toString()])!!.second
+        val baseItemGetter: (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = when {
+            (ingredientReference != null) -> { usedIngredients -> (usedIngredients[ingredientReference!!.toString()])!!.second }
+            (itemName != null) -> { _ -> ItemManager.getItem(itemName!!) }
+            else -> throw IllegalStateException("Recipe must have an item name or item reference")
+        }
+
+        val transformation: (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = { usedIngredients ->
+            baseItemGetter(usedIngredients).also { base ->
+                base.properties.tags.addAll(tagsAdded)
+                base.properties.tags.removeAll(tagsRemoved)
             }
         }
-        tagsRemoved.forEach {
-            item.properties.tags.remove(it)
-        }
 
-        tagsAdded.forEach {
-            item.properties.tags.add(it)
-        }
-
-        return item
+        return RecipeResult(description, transformation)
     }
 
 }

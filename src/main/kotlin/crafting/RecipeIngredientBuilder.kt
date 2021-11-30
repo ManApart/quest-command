@@ -11,7 +11,7 @@ import core.utility.wrapNonEmpty
 
 class RecipeIngredientBuilder {
     private var description = ""
-    private var name: String? = null
+    private var itemName: String? = null
     private val tags = mutableListOf<String>()
     private val skills: MapBuilder = MapBuilder()
     private var toolProps = PropsBuilder()
@@ -20,7 +20,7 @@ class RecipeIngredientBuilder {
     private var criteria = mutableListOf<(Thing, Thing, Thing?) -> Boolean>()
 
     fun name(name: String) {
-        this.name = name.lowercase()
+        this.itemName = name.lowercase()
     }
 
     fun description(description: String) {
@@ -47,7 +47,7 @@ class RecipeIngredientBuilder {
     }
 
     private fun matchesName(ingredient: Thing): Boolean {
-        return ingredient.name.lowercase() == name
+        return ingredient.name.lowercase() == itemName
     }
 
     private fun matchesTags(ingredient: Thing): Boolean {
@@ -66,7 +66,7 @@ class RecipeIngredientBuilder {
     }
 
     fun build(): RecipeIngredient {
-        if (!name.isNullOrBlank()) criteria.add { _, ingredient, _ -> matchesName(ingredient) }
+        if (!itemName.isNullOrBlank()) criteria.add { _, ingredient, _ -> matchesName(ingredient) }
         if (tags.isNotEmpty()) criteria.add { _, ingredient, _ -> matchesTags(ingredient) }
 
         val skillMap = skills.build().mapValues { it.value.toInt() }
@@ -85,7 +85,7 @@ class RecipeIngredientBuilder {
     }
 
     private fun buildDescription(skillMap: Map<String, Int>, toolProps: Properties) {
-        val nameString = name?.capitalize2() ?: "Something"
+        val nameString = itemName?.capitalize2() ?: "Something"
         val tagString = if (tags.isNotEmpty()) tags.joinToStringAnd().wrapNonEmpty("(", ")") else null
         val toolString = if (toolProps.isNotEmpty()) toolProps.toString() else null
         val skillString = if (skillMap.isNotEmpty()) skillMap.toString().wrapNonEmpty("(", ")") else null

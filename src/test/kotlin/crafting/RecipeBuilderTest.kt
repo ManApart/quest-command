@@ -15,7 +15,7 @@ class RecipeBuilderTest {
             mapOf("Fruit" to RecipeIngredient(Tags("Food", "Slicable"))),
             mapOf("Cooking" to 1),
             Properties(tags = Tags("Sharp")),
-            listOf(RecipeResult("0", listOf("Sliced"), listOf("Slicable"))),
+            listOf(RecipeResult("Fruit", listOf("Sliced"), listOf("Slicable"))),
             "slice"
         )
 
@@ -23,12 +23,14 @@ class RecipeBuilderTest {
         val actual = recipe("Sliced Food") {
             verb("slice")
             skill("Cooking", 1)
-            ingredient( "Fruit","Food", "Slicable")
+            ingredient( "Fruit") {
+                tag("Food", "Slicable")
+            }
             toolProps {
                 tag("Sharp")
             }
             result {
-                id(0)
+                reference("Fruit")
                 addTag("Sliced")
                 removeTag("Slicable")
             }

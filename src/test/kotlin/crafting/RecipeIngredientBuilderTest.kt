@@ -67,7 +67,6 @@ class RecipeIngredientBuilderTest {
 
     @Test
     fun noErrorWithTags() {
-
         val item = ingredient {
             tag("Tag")
         }
