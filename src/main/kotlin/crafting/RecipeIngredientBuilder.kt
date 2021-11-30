@@ -90,7 +90,7 @@ class RecipeIngredientBuilder {
         val toolString = if (toolProps.isNotEmpty()) toolProps.toString() else null
         val skillString = if (skillMap.isNotEmpty()) skillMap.toString().wrapNonEmpty("(", ")") else null
 
-        description = listOfNotNull(nameString, tagString, toolString, skillString).joinToString(" ") { it }
+        description = listOfNotNull(nameString, tagString, toolString, skillString).joinToString(" ")
     }
 }
 

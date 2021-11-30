@@ -2,6 +2,9 @@ package crafting
 
 import core.thing.Thing
 import core.thing.item.ItemManager
+import core.utility.capitalize2
+import core.utility.joinToStringAnd
+import core.utility.wrapNonEmpty
 
 class RecipeResultBuilder {
     private var itemName: String? = null
@@ -42,7 +45,8 @@ class RecipeResultBuilder {
     }
 
     fun build(): RecipeResult {
-        //TODO - build description
+        if (description.isBlank()) buildDescription()
+
         if (getItem != null) return RecipeResult(description, getItem!!)
 
         val baseItemGetter: (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = when {
@@ -59,6 +63,13 @@ class RecipeResultBuilder {
         }
 
         return RecipeResult(description, transformation)
+    }
+
+    private fun buildDescription() {
+        val nameString = itemName?.capitalize2() ?: ingredientReference?.capitalize2() ?: "Something"
+        val tagAddedString = if (tagsAdded.isNotEmpty()) tagsAdded.joinToStringAnd().wrapNonEmpty("(Adding ", ")") else null
+        val tagRemovedString = if (tagsRemoved.isNotEmpty()) tagsRemoved.joinToStringAnd().wrapNonEmpty("(Removing ", ")") else null
+        description = listOfNotNull(nameString, tagAddedString, tagRemovedString).joinToString(" ")
     }
 
 }
