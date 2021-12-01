@@ -2,13 +2,16 @@ package resources.crafting
 
 import crafting.RecipeResource
 import crafting.recipes
+import status.stat.COOKING
+import status.stat.SMITHING
+import status.stat.canSmith
 
 class CommonRecipes : RecipeResource {
     override val values = recipes {
         recipe("Sliced Food") {
             verb("slice")
-            skill("Cooking", 1)
-            ingredient("Base"){
+            skill(COOKING, 1)
+            ingredient("Base") {
                 tag("Food", "Slicable")
             }
             toolProps {
@@ -23,8 +26,8 @@ class CommonRecipes : RecipeResource {
 
         recipe("Roasted Food") {
             verb("roast")
-            skill("Cooking", 1)
-            ingredient("Base"){
+            skill(COOKING, 1)
+            ingredient("Base") {
                 tag("Raw")
             }
             toolProps {
@@ -39,8 +42,8 @@ class CommonRecipes : RecipeResource {
 
         recipe("Cooked Food") {
             verb("cook")
-            skill("Cooking", 2)
-            ingredient("Base"){
+            skill(COOKING, 2)
+            ingredient("Base") {
                 tag("Raw")
             }
             toolProps {
@@ -78,11 +81,31 @@ class CommonRecipes : RecipeResource {
             }
             ingredientNamed("Pie Tin")
             ingredientNamed("Dough")
-            skill("Cooking" to 2)
+            skill(COOKING to 2)
             toolProps {
                 tag("Range", "Burning")
             }
             result("Apple Pie")
+        }
+
+        recipe("Dagger") {
+            ingredient("Ingot") {
+                tag("Metal", "Ingot")
+                matches { crafter, ingredient, _ ->
+                    canSmith(crafter, ingredient, 2f)
+                }
+            }
+            ingredient("Inlay") {
+                optional()
+                tag("Gem")
+                skill(SMITHING to 10)
+            }
+            ingredientNamed("Leather")
+            skill(SMITHING to 1)
+            toolProps {
+                tag("Forge", "Burning")
+            }
+            result("Dagger")
         }
     }
 }

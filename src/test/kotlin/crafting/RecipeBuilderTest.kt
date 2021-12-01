@@ -3,6 +3,7 @@ package crafting
 import core.properties.Properties
 import core.properties.Tags
 import org.junit.Test
+import status.stat.COOKING
 import kotlin.test.assertEquals
 
 
@@ -13,7 +14,7 @@ class RecipeBuilderTest {
         val expected = Recipe(
             "Sliced Food",
             mapOf("Fruit" to RecipeIngredient(Tags("Food", "Slicable"))),
-            mapOf("Cooking" to 1),
+            mapOf(COOKING to 1),
             Properties(tags = Tags("Sharp")),
             listOf(RecipeResult("Fruit", listOf("Sliced"), listOf("Slicable"))),
             "slice"
@@ -22,7 +23,7 @@ class RecipeBuilderTest {
 
         val actual = recipe("Sliced Food") {
             verb("slice")
-            skill("Cooking", 1)
+            skill(COOKING, 1)
             ingredient( "Fruit") {
                 tag("Food", "Slicable")
             }

@@ -2,6 +2,7 @@ package crafting
 
 import core.thing.Thing
 import org.junit.Test
+import status.stat.COOKING
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -15,7 +16,7 @@ class RecipeIngredientBuilderTest {
         val recipeIngredient = ingredient {
             name("Apple")
             tag("Fruit")
-            skill("Cooking", 2)
+            skill(COOKING, 2)
             toolProps {
                 tag("Sharp")
             }
@@ -24,8 +25,8 @@ class RecipeIngredientBuilderTest {
             }
         }
 
-        val baker = Thing("Bob the Baker").also { it.soul.addStat("Cooking", 2) }
-        val thief = Thing("Thief").also { it.soul.addStat("Cooking", 2) }
+        val baker = Thing("Bob the Baker").also { it.soul.addStat(COOKING, 2) }
+        val thief = Thing("Thief").also { it.soul.addStat(COOKING, 2) }
         val tool = Thing("Knife").also { it.properties.tags.add("Sharp") }
         val ingredients = listOf(Thing("Apple").also { it.properties.tags.add("Fruit") })
 

@@ -8,6 +8,7 @@ import core.history.GameLogger
 import org.junit.Before
 import org.junit.Test
 import quests.QuestManager
+import status.stat.COOKING
 import status.stat.HEALTH
 import system.debug.DebugType
 import kotlin.test.assertEquals
@@ -59,7 +60,7 @@ class CommandComboTest {
 
     @Test
     fun cookApple() {
-        val stat = GameState.player.thing.soul.getStats().first { it.name.lowercase() == "cooking" }
+        val stat = GameState.player.thing.soul.getStats().first { it.name.lowercase() == COOKING.lowercase() }
         stat.setLevel(2)
 
         val input = "w && s && move to range && cook apple on range"

@@ -3,9 +3,9 @@ package crafting
 import core.properties.Tags
 import core.thing.Thing
 
-class RecipeIngredient(val description: String, val matches: (Thing, Thing, Thing?) -> Boolean) {
-    constructor(itemName: String) : this("", { _, ingredient, _ -> itemName.lowercase() == ingredient.name.lowercase() })
-    constructor(tags: Tags) : this("", { _, ingredient, _ -> ingredient.properties.tags.hasAll(tags) })
+class RecipeIngredient(val description: String, val isOptional: Boolean = false, val matches: (Thing, Thing, Thing?) -> Boolean) {
+    constructor(itemName: String) : this("", false, { _, ingredient, _ -> itemName.lowercase() == ingredient.name.lowercase() })
+    constructor(tags: Tags) : this("", false, { _, ingredient, _ -> ingredient.properties.tags.hasAll(tags) })
 
     /**
      * Equals is not useful with its default implementation and would be hard to implement properly.

@@ -15,6 +15,7 @@ class RecipeIngredientBuilder {
     private val tags = mutableListOf<String>()
     private val skills: MapBuilder = MapBuilder()
     private var toolProps = PropsBuilder()
+    private var optional = false
 
     //Crafter, Ingredient, Tool?
     private var criteria = mutableListOf<(Thing, Thing, Thing?) -> Boolean>()
@@ -40,6 +41,10 @@ class RecipeIngredientBuilder {
 
     fun toolProps(initializer: PropsBuilder.() -> Unit) {
         toolProps.apply(initializer)
+    }
+
+    fun optional(){
+        this.optional = true
     }
 
     fun matches(criteria: (Thing, Thing, Thing?) -> Boolean) {
@@ -79,7 +84,7 @@ class RecipeIngredientBuilder {
 
         if (description.isBlank()) buildDescription(skillMap, properties)
 
-        return RecipeIngredient(description) { crafter, ingredient, tool ->
+        return RecipeIngredient(description, optional) { crafter, ingredient, tool ->
             criteria.all { it(crafter, ingredient, tool) }
         }
     }

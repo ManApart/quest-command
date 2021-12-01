@@ -9,6 +9,7 @@ import createMockedGame
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import status.stat.COOKING
 
 class RecipeManagerTest {
 
@@ -21,7 +22,7 @@ class RecipeManagerTest {
     fun findRecipe() {
         val recipeBuilder = recipe("Baked Apple") {
             ingredientNamed("Apple")
-            skill("Cooking", 1)
+            skill(COOKING, 1)
             toolProps { tag("Range") }
             result("Baked Apple")
         }
@@ -82,7 +83,7 @@ class RecipeManagerTest {
     fun recipeWithoutIngredientsNotFound() {
         val recipeBuilder = recipe("Baked Apple") {
             ingredientNamed("Apple")
-            skill("Cooking", 1)
+            skill(COOKING, 1)
             toolProps { tag("Range") }
             result("Baked Apple")
         }
@@ -102,7 +103,7 @@ class RecipeManagerTest {
     fun recipeWithoutCorrectIngredientsNotFound() {
         val recipeBuilder = recipe("Poor Quality Cooked Meat") {
             ingredientNamed("Raw Poor Quality Meat")
-            skill("Cooking", 1)
+            skill(COOKING, 1)
             toolProps { tag("Range") }
             result("Poor Quality Cooked Meat")
         }
@@ -122,7 +123,7 @@ class RecipeManagerTest {
     fun recipeWithoutToolNotFound() {
         val recipeBuilder = recipe("Baked Apple") {
             ingredientNamed("Apple")
-            skill("Cooking", 1)
+            skill(COOKING, 1)
             toolProps { tag("Range") }
             result("Baked Apple")
         }
@@ -142,7 +143,7 @@ class RecipeManagerTest {
     fun recipeWithoutSkillNotFound() {
         val recipeBuilder = recipe("Baked Apple") {
             ingredientNamed("Apple")
-            skill("Cooking", 5)
+            skill(COOKING, 5)
             toolProps { tag("Range") }
             result("Baked Apple")
         }
