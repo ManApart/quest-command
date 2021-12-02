@@ -92,5 +92,10 @@ class CommonBodies : BodyResource {
             }
             locationNode("Top")
         }
+        network("Medium Container") {
+            locationNode("Medium Container") {
+                isRoot(true)
+            }
+        }
     }
 }

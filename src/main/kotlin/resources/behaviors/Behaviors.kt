@@ -120,7 +120,7 @@ class CommonBehaviors : BehaviorResource {
                     listOf(MessageEvent(GameState.getPlayer(event.source), "Unable to Mill."))
                 } else {
                     listOf(
-                        MessageEvent(GameState.getPlayer(event.source), "The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the $depositThing."),
+                        MessageEvent(GameState.getPlayer(event.source), "The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the ${depositThing.name}."),
                         RemoveItemEvent(event.source, sourceItem),
                         SpawnItemEvent(resultItem, 1, depositThing)
                     )

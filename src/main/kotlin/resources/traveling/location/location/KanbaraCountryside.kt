@@ -20,6 +20,7 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Kentle") {
                 connection("Farmer's Hut", y = -500)
                 connection("Windmill", x = 250, y = -400)
+                connection("Smith's Hut", x = -500)
             }
 
             locationNode("Farmer's Hut Interior") {

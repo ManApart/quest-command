@@ -1,6 +1,8 @@
 package resources.body
 
 import core.body.BodyPartResource
+import core.properties.CONTAINER
+import core.properties.OPEN
 import traveling.location.location.locations
 
 class CommonBodyParts : BodyPartResource {
@@ -84,6 +86,12 @@ class CommonBodyParts : BodyPartResource {
                 tag("Container")
                 value("weight", 1)
                 value("defense", 1)
+            }
+        }
+
+        location("Medium Container") {
+            props {
+                tag(CONTAINER, OPEN)
             }
         }
     }

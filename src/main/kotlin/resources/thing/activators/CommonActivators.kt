@@ -1,5 +1,8 @@
 package resources.thing.activators
 
+import core.properties.CONTAINER
+import core.properties.OPEN
+import core.properties.SIZE
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.things
 import resources.thing.burnToAsh
@@ -156,6 +159,24 @@ class CommonActivators : ActivatorResource {
             description("The torch is wrought with iron against the wall.")
             props {
                 value(LIGHT, 7)
+            }
+        }
+
+        thing("Forge") {
+            description("The large plates of iron seethe and glow.")
+            props {
+                value("fireHealth", 20)
+                tag("Metal", "Flammable", "Forge")
+            }
+        }
+
+        thing("Smithing Supply Chest") {
+            description("The over-thick iron banding is a giveaway that this is usually used for smithing supplies.")
+            body("Medium Container")
+//            item("Iron Ingot", "Leather")
+            props {
+                value(SIZE to 10)
+                tag(CONTAINER, OPEN)
             }
         }
 
