@@ -76,6 +76,10 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         return tags.isEmpty()
     }
 
+    fun getMatch(candidates: List<String>): String?{
+        return candidates.firstOrNull { has(it) }
+    }
+
     fun getAll(): List<String> {
         return tags.toList()
     }

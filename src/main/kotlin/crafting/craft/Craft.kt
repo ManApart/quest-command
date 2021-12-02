@@ -21,7 +21,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
             event.recipe.canBeCraftedBy(sourceT, event.tool) -> {
                 val ingredients = event.recipe.getUsedIngredients(sourceT, sourceT.inventory.getAllItems(), event.tool)
                 val usedIngredientList = ingredients.map { it.value.second }
-                val results = event.recipe.getResults(ingredients)
+                val results = event.recipe.getResults(event.source.thing, event.tool, ingredients)
                 removeIngredients(sourceT.inventory, usedIngredientList)
                 addResults(results, sourceT)
                 EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))

@@ -3,10 +3,19 @@ package status.stat
 import core.thing.Thing
 import kotlin.math.max
 
+val METAL_TAGS = listOf("Bronze", "Iron", "Steel", "Blackened Steel", "Adamant", "Mithril")
+
 fun canSmith(crafter: Thing, ingredient: Thing, difficultyScale: Float): Boolean {
     val needed = listOf("Metal", "Ingot")
-    val levels = listOf("Bronze", "Iron", "Steel", "Blackened Steel", "Adamant", "Mithril")
-    return canCraft(crafter, ingredient, SMITHING, difficultyScale, needed, levels)
+    return canCraft(crafter, ingredient, SMITHING, difficultyScale, needed, METAL_TAGS)
+}
+
+fun Thing.getMetal(): String? {
+    return properties.tags.getMatch(METAL_TAGS)
+}
+
+fun Thing.getMetalQuality(): Int {
+    return max(0, properties.tags.getAll().maxOf { METAL_TAGS.indexOf(it) })
 }
 
 fun canCraft(crafter: Thing, ingredient: Thing, skill: String, difficultyScale: Float, neededTags: List<String>, levels: List<String>): Boolean {

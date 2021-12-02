@@ -12,7 +12,9 @@ class RecipeResultBuilder {
     private var description = ""
     private val tagsAdded = mutableListOf<String>()
     private val tagsRemoved = mutableListOf<String>()
-    private var getItem: ((Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)? = null
+
+    //Crafter, Tool? Ingredients
+    private var getItem: ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)? = null
 
     /**
      * Get an item by this name
@@ -40,7 +42,7 @@ class RecipeResultBuilder {
         this.tagsRemoved.addAll(tag)
     }
 
-    fun produces(getItem: ((Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
+    fun produces(getItem: ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
         this.getItem = getItem
     }
 
@@ -55,7 +57,7 @@ class RecipeResultBuilder {
             else -> throw IllegalStateException("Recipe must have an item name or item reference")
         }
 
-        val transformation: (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = { usedIngredients ->
+        val transformation: (Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = { _, _, usedIngredients ->
             baseItemGetter(usedIngredients).also { base ->
                 base.properties.tags.addAll(tagsAdded)
                 base.properties.tags.removeAll(tagsRemoved)

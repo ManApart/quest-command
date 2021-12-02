@@ -25,7 +25,8 @@ class RecipeResultTest {
         }.build()
 
         val base = Thing("Apple").also { it.properties.tags.add("Fruit", "Stale") }
-        val result = recipeResult.getResult(mapOf("Apple" to Pair(recipeIngredient, base)))
+        val crafter = Thing("Crafter")
+        val result = recipeResult.getResult(crafter, null, mapOf("Apple" to Pair(recipeIngredient, base)))
 
         assertEquals("This is a test result", recipeResult.description)
         assertEquals(listOf("Fruit", "Tasty", "Fresh"), result.properties.tags.getAll())

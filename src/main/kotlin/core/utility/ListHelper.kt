@@ -83,7 +83,3 @@ fun <E> List<E>.safeSubList(start: Int = 0, end: Int = this.size): List<E> {
 
     return subList(cleanStart, cleanEnd)
 }
-
-fun <E> List<E>.foreEachWithPrevious(transform: (E, E) -> Unit){
-
-}

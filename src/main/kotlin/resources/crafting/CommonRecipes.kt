@@ -1,10 +1,9 @@
 package resources.crafting
 
+import core.thing.thing
 import crafting.RecipeResource
 import crafting.recipes
-import status.stat.COOKING
-import status.stat.SMITHING
-import status.stat.canSmith
+import status.stat.*
 
 class CommonRecipes : RecipeResource {
     override val values = recipes {
@@ -100,12 +99,35 @@ class CommonRecipes : RecipeResource {
                 tag("Gem")
                 skill(SMITHING to 10)
             }
-            ingredientNamed("Leather")
+            ingredientNamed("Leather") {
+                skill(CRAFTSMANSHIP to 1)
+            }
             skill(SMITHING to 1)
             toolProps {
                 tag("Forge", "Burning")
             }
-            result("Dagger")
+            result {
+                description("A dagger of the type of metal given, optionally with its handle inlaid with a gem.")
+                produces { _, _, usedIngredients ->
+                    val ingot = usedIngredients["Ingot"]!!.second
+                    val metalUsed = ingot.getMetal()!!
+                    val metalQuality = ingot.getMetalQuality()
+                    val inlay = usedIngredients["Inlay"]?.second
+                    val inlayString = if (inlay != null) " inlaid with $inlay" else ""
+                    thing("$metalUsed Dagger") {
+                        description("A $metalUsed Dagger$inlayString.")
+                        equipSlotOptions("Right Hand Grip")
+                        equipSlotOptions("Left Hand Grip")
+                        props {
+                            value("weight", 1)
+                            value("slashDamage", metalQuality)
+                            value("stabDamage", (metalQuality * 1.5).toInt())
+                            value("range", 2)
+                            tag("Weapon", "Sharp", "Small", metalUsed)
+                        }
+                    }.build()
+                }
+            }
         }
     }
 }

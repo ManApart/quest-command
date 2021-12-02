@@ -4,9 +4,9 @@ import core.thing.Thing
 import core.thing.item.ItemManager
 
 
-class RecipeResult(val description: String, val getResult: ((Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
-    constructor(name: String) : this(name, { ItemManager.getItem(name) })
-    constructor(reference: String, tagsAdded: List<String>, tagsRemoved: List<String>) : this("Something", { ingredients ->
+class RecipeResult(val description: String, val getResult: ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
+    constructor(name: String) : this(name, { _, _, _ -> ItemManager.getItem(name) })
+    constructor(reference: String, tagsAdded: List<String>, tagsRemoved: List<String>) : this("Something", { _, _, ingredients ->
         val result = ingredients[reference]!!.second
         result.properties.tags.addAll(tagsAdded)
         result.properties.tags.removeAll(tagsRemoved)

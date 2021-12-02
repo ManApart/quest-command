@@ -49,8 +49,8 @@ data class Recipe(
         return usedIngredients
     }
 
-    fun getResults(usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): List<Thing> {
-        return results.map { it.getResult(usedIngredients) }
+    fun getResults(crafter: Thing, tool: Thing?, usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): List<Thing> {
+        return results.map { it.getResult(crafter, tool, usedIngredients) }
     }
 
     private fun ingredientsMatch(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Boolean {
