@@ -35,8 +35,9 @@ class MoveCommand : Command() {
         if (source.thing.getEncumbrance() >= 1) {
             source.display { "${source.asSubject(it)} ${source.isAre(it)} too encumbered to move." }
         } else {
-            val arguments = Args(args, delimiters = listOf("to", "towards"))
-            val vector = parseVector(args)
+            val delimiters = listOf("to", "towards")
+            val arguments = Args(args, delimiters = delimiters)
+            val vector = parseVector(args.removeAll(delimiters))
             val thing = parseThingsFromLocation(source.thing, arguments.getBaseAndStrings("to")).firstOrNull()
             val direction = parseNullableDirection(arguments.getBaseAndStrings("towards"))
             val distance = arguments.getNumber()

@@ -275,3 +275,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
 
 
 }
+
+fun List<String>.removeAll(wordsToRemove: List<String>): List<String>{
+    return this.filterNot { wordsToRemove.contains(it) }
+}

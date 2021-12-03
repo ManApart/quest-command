@@ -93,7 +93,7 @@ class RecipeIngredientBuilder {
         val nameString = itemName?.capitalize2() ?: "Something"
         val tagString = if (tags.isNotEmpty()) tags.joinToStringAnd().wrapNonEmpty("(", ")") else null
         val toolString = if (toolProps.isNotEmpty()) toolProps.toString() else null
-        val skillString = if (skillMap.isNotEmpty()) skillMap.toString().wrapNonEmpty("(", ")") else null
+        val skillString = if (skillMap.isNotEmpty()) skillMap.entries.joinToString(", ") { (skill, level)-> "$skill = $level" }.wrapNonEmpty("(", ")") else null
 
         description = listOfNotNull(nameString, tagString, toolString, skillString).joinToString(" ")
     }

@@ -85,6 +85,10 @@ class CommonLocations : LocationResource {
         location("Smith's Hut") {
             extends("Outside")
             description("The open air hut smells of warm earth, ash, and iron. The posts and roof are blackened and dry.")
+            item("Tinder Box") {
+                location("near the forge")
+                vector(x = 4)
+            }
             activator("Forge", x = 5)
             activator("Smithing Supply Chest", y = 5)
             props {

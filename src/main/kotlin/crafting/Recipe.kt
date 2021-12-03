@@ -57,10 +57,10 @@ data class Recipe(
         val ingredientsLeft = ingredients.toMutableList()
         this.ingredients.values.forEach {
             val match = it.findMatchingIngredient(crafter, ingredientsLeft, tool)
-            if (match == null) {
-                return false
-            } else {
+            if (match != null) {
                 ingredientsLeft.remove(match)
+            } else if (!it.isOptional){
+                return false
             }
         }
         return true
