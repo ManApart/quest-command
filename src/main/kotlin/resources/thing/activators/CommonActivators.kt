@@ -173,7 +173,7 @@ class CommonActivators : ActivatorResource {
         thing("Smithing Supply Chest") {
             description("The over-thick iron banding is a giveaway that this is usually used for smithing supplies.")
             body("Medium Container")
-//            item("Iron Ingot", "Leather")
+            item("Iron Ingot", "Leather")
             props {
                 value(SIZE to 10)
                 tag(CONTAINER, OPEN)

@@ -66,6 +66,20 @@ class Items : ItemResource {
             behavior("Burn Out", "fireHealth" to 5)
         }
 
+        thing("Leather") {
+            description("It's odd to think this was once something's skin.")
+            props {
+                tag("Small")
+            }
+        }
+
+        thing("Iron Ingot") {
+            description("A bar of pure metal, ready to be worked into something more.")
+            props {
+                tag("Metal", "Iron", "Ingot", "Small")
+            }
+        }
+
     }
 
 }
