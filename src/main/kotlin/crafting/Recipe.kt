@@ -2,6 +2,7 @@ package crafting
 
 import core.properties.Properties
 import core.thing.Thing
+import core.thing.item.ITEM_TAG
 import core.utility.Named
 import status.Soul
 
@@ -64,7 +65,7 @@ data class Recipe(
     }
 
     fun getResults(crafter: Thing, tool: Thing?, usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): List<Thing> {
-        return results.map { it.getResult(crafter, tool, usedIngredients) }
+        return results.map { result -> result.getResult(crafter, tool, usedIngredients).also { it.properties.tags.add(ITEM_TAG) } }
     }
 
     private fun ingredientsMatch(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Boolean {

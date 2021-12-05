@@ -88,6 +88,7 @@ object GameManager {
             addStat(AGILITY, 1)
             addStat(COOKING, 1)
             addStat(SMITHING, 1)
+            addStat(CRAFTSMANSHIP, 1)
         }
 
         with(player.properties.tags) {

@@ -164,7 +164,7 @@ GameLogger.main.getLastInput()
     fun millFlour() {
         val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("Player picked up Wheat Flour.", GameLogger.main.getLastOutput())
+        assertEquals("You picked up Wheat Flour.", GameLogger.main.getLastOutput())
     }
 
     @Test
@@ -233,5 +233,16 @@ GameLogger.main.getLastInput()
         assertEquals("It's too dark to see anything.", GameLogger.main.getLastOutput())
         CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
         assertEquals("It contains Wall Crack.", GameLogger.main.getLastOutput())
+    }
+
+    @Test
+    fun craftDagger() {
+        CommandParsers.parseCommand(GameState.player, "w && n && w && debug recipe && recipe dagger && bag chest && exa forge && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger")
+
+        val dagger = GameState.player.inventory.getItem("Iron Dagger")
+        assertNotNull(dagger)
+
+        val tags = dagger.properties.tags
+        assertTrue(tags.hasAll(listOf("Iron", "Weapon")))
     }
 }

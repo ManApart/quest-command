@@ -31,10 +31,10 @@ class DebugStatListener : EventListener<DebugStatEvent>() {
         if (event.statKind == StatKind.LEVELED) {
             event.thing.soul.setStat(event.statName, event.level)
             val newStat = event.thing.soul.getStatOrNull(event.statName)
-            event.thing.displayToMe("Set ${event.thing}'s ${event.statName} to ${newStat?.current} / ${newStat?.max}")
+            event.thing.displayToMe("Set ${event.thing.name}'s ${event.statName} to ${newStat?.current} / ${newStat?.max}")
         } else {
             event.thing.properties.values.put(event.statName, event.level)
-            event.thing.displayToMe("Set ${event.thing}'s ${event.statName} to ${event.thing.properties.values.getInt(event.statName)}")
+            event.thing.displayToMe("Set ${event.thing.name}'s ${event.statName} to ${event.thing.properties.values.getInt(event.statName)}")
         }
     }
 }

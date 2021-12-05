@@ -5,9 +5,9 @@ import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
 import core.thing.Thing
-import core.thing.item.ItemManager
 import core.utility.asSubject
 import core.utility.isAre
+import core.utility.joinToStringAnd
 import crafting.DiscoverRecipeEvent
 import inventory.Inventory
 import inventory.pickupItem.TakeItemEvent
@@ -17,7 +17,11 @@ class Craft : EventListener<CraftRecipeEvent>() {
     override fun execute(event: CraftRecipeEvent) {
         val sourceT = event.source.thing
         when {
-            event.tool?.isWithinRangeOf(sourceT) == false -> event.source.display{sourceT.asSubject(it) + " " + sourceT.isAre(it) + " too far away to use ${event.tool.name}."}
+            event.tool?.isWithinRangeOf(sourceT) == false -> event.source.display {
+                sourceT.asSubject(it) + " " + sourceT.isAre(
+                    it
+                ) + " too far away to use ${event.tool.name}."
+            }
             event.recipe.canBeCraftedBy(sourceT, event.tool) -> {
                 val ingredients = event.recipe.getUsedIngredients(sourceT, sourceT.inventory.getAllItems(), event.tool)
                 val usedIngredientList = ingredients.map { it.value.second }
@@ -26,7 +30,9 @@ class Craft : EventListener<CraftRecipeEvent>() {
                 addResults(results, sourceT)
                 EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))
 //            TODO - Add XP
-                event.source.displayToMe("You ${event.recipe.craftVerb} ${usedIngredientList.joinToString(", ") { it.name }} and get ${results.joinToString(", ") { ItemManager.getTaggedItemName(it) }}.")
+                val ingredientNames = usedIngredientList.joinToStringAnd { it.name }
+                val resultNames = results.joinToString(", ") { it.name }
+                event.source.displayToMe("You ${event.recipe.craftVerb} $ingredientNames together and produce $resultNames.")
             }
             else -> event.source.displayToMe("You aren't able to craft ${event.recipe.name}.")
         }
