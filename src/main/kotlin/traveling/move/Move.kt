@@ -61,7 +61,7 @@ class Move : EventListener<MoveEvent>() {
 
         return locationNode.getNeighborConnections()
             .filter {
-                it.vector.direction != Direction.NONE && destination.isFurtherAlongSameDirectionThan(it.source.vector)
+                it.vector.direction != Direction.NONE && destination.isFurtherAlongSameDirectionThan(it.source.vector) && it.vector.isFurtherAlongSameDirectionThan(destination)
             }
             .minByOrNull { destination.getDistance(it.source.vector) }
     }

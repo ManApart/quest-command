@@ -89,7 +89,7 @@ class CommonLocations : LocationResource {
                 location("near the forge")
                 vector(x = 4)
             }
-            activator("Forge", x = 5)
+            activator("Forge", x = -5)
             activator("Smithing Supply Chest", y = 5)
             props {
                 tag("City")
