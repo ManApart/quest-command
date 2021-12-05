@@ -49,6 +49,20 @@ data class Recipe(
         return usedIngredients
     }
 
+    fun getMissingIngredients(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Map<String, RecipeIngredient> {
+        val missing = mutableMapOf<String, RecipeIngredient>()
+        val ingredientsLeft = ingredients.toMutableList()
+        this.ingredients.entries.forEach { (reference, ingredient) ->
+            val match = ingredient.findMatchingIngredient(crafter, ingredientsLeft, tool)
+            if (match != null) {
+                ingredientsLeft.remove(match)
+            } else {
+                missing[reference] = ingredient
+            }
+        }
+        return missing
+    }
+
     fun getResults(crafter: Thing, tool: Thing?, usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): List<Thing> {
         return results.map { it.getResult(crafter, tool, usedIngredients) }
     }
@@ -59,7 +73,7 @@ data class Recipe(
             val match = it.findMatchingIngredient(crafter, ingredientsLeft, tool)
             if (match != null) {
                 ingredientsLeft.remove(match)
-            } else if (!it.isOptional){
+            } else if (!it.isOptional) {
                 return false
             }
         }

@@ -1,7 +1,12 @@
 package crafting
 
 import core.DependencyInjector
+import core.GameState
+import core.Player
 import core.thing.Thing
+import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
+import system.debug.DebugType
 
 object RecipeManager {
     private var parser = DependencyInjector.getImplementation(RecipesCollection::class)
@@ -24,8 +29,12 @@ object RecipeManager {
         return recipes.getOrNull(name)
     }
 
-    fun getAllRecipes(): List<Recipe> {
-        return recipes.toList()
+    fun getAllRecipes(): NameSearchableList<Recipe> {
+        return recipes.toNameSearchableList()
+    }
+
+    fun getKnownRecipes(source: Player): NameSearchableList<Recipe> {
+        return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) getAllRecipes() else source.knownRecipes
     }
 
     fun getRecipes(names: List<String>): List<Recipe> {

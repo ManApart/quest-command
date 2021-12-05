@@ -21,7 +21,9 @@ class TakeItemCommand : core.commands.Command() {
     override fun getManual(): String {
         return """
 	Take <item> - take an item.
-	Take <item> from <thing> - take item from thing's inventory, if possible."""
+	Take <item> from <thing> - take item from thing's inventory, if possible.
+	Take all from <thing> - take everything you can from thing's inventory, if possible.
+"""
     }
 
     override fun getCategory(): List<String> {
@@ -76,6 +78,20 @@ class TakeItemCommand : core.commands.Command() {
     }
 
     private fun takeItemFromContainer(source: Thing, from: Thing, itemName: String) {
+        if (itemName.lowercase() == "all") {
+            takeAllFromContainer(source, from)
+        } else {
+            takeSingleItemFromContainer(source, from, itemName)
+        }
+    }
+
+    private fun takeAllFromContainer(source: Thing, from: Thing) {
+        from.inventory.getItems().forEach { item ->
+            EventManager.postEvent(TransferItemEvent(source, item, from, source))
+        }
+    }
+
+    private fun takeSingleItemFromContainer(source: Thing, from: Thing, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(source, item, from, source))

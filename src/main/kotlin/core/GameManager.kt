@@ -87,6 +87,7 @@ object GameManager {
             addStat(CLIMBING, 1)
             addStat(AGILITY, 1)
             addStat(COOKING, 1)
+            addStat(SMITHING, 1)
         }
 
         with(player.properties.tags) {

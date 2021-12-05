@@ -6,6 +6,7 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import crafting.Recipe
+import crafting.RecipeManager
 
 class CraftRecipeCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,14 +28,14 @@ class CraftRecipeCommand : Command() {
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
-        val knownRecipes = source.knownRecipes
-        val pickedRecipes = source.knownRecipes.getAll(argString)
+        val knownRecipes = RecipeManager.getKnownRecipes(source)
+        val pickedRecipes = knownRecipes.getAll(argString)
 
         when {
-            args.isEmpty() && knownRecipes.isEmpty() -> source.displayToMe("You don't know any recipes.")
+            knownRecipes.isEmpty() -> source.displayToMe("You don't know any recipes.")
             args.isEmpty() -> chooseRecipe(source, knownRecipes)
             pickedRecipes.isEmpty() -> chooseRecipe(source, knownRecipes)
-            pickedRecipes.size == 1 -> processRecipe(source, source.knownRecipes.get(argString))
+            pickedRecipes.size == 1 -> processRecipe(source, pickedRecipes.first())
             pickedRecipes.size > 1 -> chooseRecipe(source, pickedRecipes)
             else -> source.displayToMe("Couldn't find recipe ${args.joinToString(" ")}.")
         }
@@ -52,9 +53,11 @@ class CraftRecipeCommand : Command() {
         val tool = source.thing.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
                 ?: source.thing.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {
-            source.displayToMe("Couldn't find the necessary tools to create ${recipe.name}")
+            source.displayToMe("Couldn't find a tool with ${recipe.toolProperties}to create ${recipe.name}")
         } else if (!recipe.matches(source.thing, source.thing.inventory.getAllItems(), tool)) {
-            source.displayToMe("Couldn't find all the needed ingredients to create ${recipe.name}.")
+            val missing = recipe.getMissingIngredients(source.thing, source.thing.inventory.getAllItems(), tool)
+            val missingString = missing.values.joinToString(", ") { it.description }
+            source.displayToMe("Couldn't find all the needed ingredients to create ${recipe.name}. Missing $missingString.")
         } else {
             EventManager.postEvent(CraftRecipeEvent(source, recipe, tool))
         }

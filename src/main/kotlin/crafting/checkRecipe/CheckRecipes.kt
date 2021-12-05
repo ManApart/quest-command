@@ -21,7 +21,7 @@ class CheckRecipes : EventListener<CheckRecipeEvent>() {
     }
 
     private fun printRecipes(source: Player) {
-        val recipes = if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) RecipeManager.getAllRecipes() else source.knownRecipes
+        val recipes = RecipeManager.getKnownRecipes(source)
         val recipeString = recipes.joinToString { "\n\t${it.name}" }
 
         source.displayToMe("Recipes:$recipeString")
