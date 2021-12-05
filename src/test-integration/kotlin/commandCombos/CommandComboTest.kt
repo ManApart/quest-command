@@ -237,7 +237,7 @@ GameLogger.main.getLastInput()
 
     @Test
     fun craftDagger() {
-        CommandParsers.parseCommand(GameState.player, "w && n && w && debug recipe && recipe dagger && bag chest && exa forge && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger")
+        CommandParsers.parseCommand(GameState.player, "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger")
 
         val dagger = GameState.player.inventory.getItem("Iron Dagger")
         assertNotNull(dagger)
