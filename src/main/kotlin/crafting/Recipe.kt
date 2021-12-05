@@ -37,7 +37,11 @@ data class Recipe(
         return true
     }
 
-    fun getUsedIngredients(crafter: Thing, availableItems: List<Thing>, tool: Thing?): Map<String, Pair<RecipeIngredient, Thing>> {
+    fun getUsedIngredients(
+        crafter: Thing,
+        availableItems: List<Thing>,
+        tool: Thing?
+    ): Map<String, Pair<RecipeIngredient, Thing>> {
         val ingredientsLeft = availableItems.toMutableList()
         val usedIngredients = mutableMapOf<String, Pair<RecipeIngredient, Thing>>()
         this.ingredients.entries.forEach { (reference, recipeIngredient) ->
@@ -64,8 +68,14 @@ data class Recipe(
         return missing
     }
 
-    fun getResults(crafter: Thing, tool: Thing?, usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>): List<Thing> {
-        return results.map { result -> result.getResult(crafter, tool, usedIngredients).also { it.properties.tags.add(ITEM_TAG) } }
+    fun getResults(
+        crafter: Thing,
+        tool: Thing?,
+        usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>
+    ): List<Thing> {
+        return results.map { result ->
+            result.getResult(crafter, tool, usedIngredients).also { it.properties.tags.add(ITEM_TAG) }
+        }
     }
 
     private fun ingredientsMatch(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Boolean {
@@ -89,7 +99,12 @@ data class Recipe(
         return if (ingredients.isEmpty()) {
             ""
         } else {
-            "\n\tIngredients: ${ingredients.values.joinToString(", ") { it.description }}"
+            "\n\tIngredients: ${
+                ingredients.values.joinToString(", ") {
+                    val optionalString = if (it.isOptional) "Optionally " else ""
+                    "$optionalString${it.description}"
+                }
+            }"
         }
     }
 
