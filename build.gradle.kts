@@ -7,11 +7,12 @@ plugins {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-    implementation("org.reflections:reflections:0.9.12")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0")
+    implementation("org.reflections:reflections:0.10.2")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
     //Upgrading jackson breaks secondary constructor objects (see MultiObjectParserTest)
 //    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21")
@@ -76,7 +77,7 @@ task("test-all") {
 }
 
 tasks.withType<Jar> {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
         attributes["Main-Class"] = "MainKt"
     }
@@ -94,13 +95,20 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ManApart/quest-command")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
     publications {
         register<MavenPublication>("gpr") {
+            from(components["java"])
+        }
+
+        create<MavenPublication>("maven") {
+            groupId = "org.rak.manapart"
+            artifactId = "quest-command"
+            version = "SNAPSHOT"
             from(components["java"])
         }
     }
