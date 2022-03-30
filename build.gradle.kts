@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.20"
+    kotlin("jvm") version "1.6.10"
     `maven-publish`
 }
 
@@ -13,8 +13,6 @@ repositories {
 dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
-    //Upgrading jackson breaks secondary constructor objects (see MultiObjectParserTest)
-//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
 }
