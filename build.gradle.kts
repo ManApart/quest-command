@@ -13,8 +13,9 @@ repositories {
 dependencies {
     implementation("org.reflections:reflections:0.10.2")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.21")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.5.21")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
 }
 
 sourceSets.getByName("main") {
