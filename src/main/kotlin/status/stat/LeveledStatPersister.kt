@@ -1,11 +1,14 @@
 package status.stat
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 
 fun getPersisted(dataObject: LeveledStat): Map<String, Any> {
-    val string = jacksonObjectMapper().writeValueAsString(dataObject)
-    val data: MutableMap<String, Any> = jacksonObjectMapper().readValue(string)
+    //TODO - proper seralization
+//    val string = Json.encodeToString(dataObject)
+    val string = "{}"
+    val data: MutableMap<String, Any> = Json.decodeFromString(string)
     data["version"] = 1
 
     return data

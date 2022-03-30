@@ -1,14 +1,14 @@
 package system.persistance
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.*
 import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
 import core.thing.Thing
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import traveling.location.network.NOWHERE_NODE
@@ -16,8 +16,6 @@ import java.io.File
 
 private const val directory = "./saves/"
 private val ignoredNames = listOf("games", "gameState")
-
-private val mapper = jacksonObjectMapper()
 
 fun getGameNames(): List<String> {
     return getFolders(directory).map { it.name }
@@ -38,7 +36,7 @@ fun loadMaps(path: String): List<Map<String, Any>> {
 fun loadMap(path: String): Map<String, Any> {
     val stream = File(path)
     return if (stream.exists()) {
-        mapper.readValue(stream)
+        Json.decodeFromString(stream.readText())
     } else {
         mapOf()
     }
@@ -140,7 +138,7 @@ fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
     if (!directory.exists()) {
         directory.mkdirs()
     }
-    val json = ObjectMapper().writeValueAsString(data)
+    val json = Json.encodeToString(data)
     File(saveName).printWriter().use { out ->
         out.println(json)
     }

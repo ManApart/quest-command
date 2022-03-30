@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.6.10"
     `maven-publish`
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 repositories {
@@ -12,9 +13,9 @@ repositories {
 
 dependencies {
     implementation("org.reflections:reflections:0.10.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
-
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
 }
 

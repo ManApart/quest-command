@@ -1,8 +1,8 @@
 package traveling.location.network
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import core.Player
 import core.utility.Named
+import kotlinx.serialization.SerialName
 import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.ConnectionRecipe
@@ -23,7 +23,7 @@ data class LocationNode(
     val parent: String = DEFAULT_NETWORK.name,
     var network: Network = DEFAULT_NETWORK,
     val isRoot: Boolean = false,
-    @JsonProperty("locations") val connectionRecipes: List<ConnectionRecipe> = listOf(),
+    @SerialName("locations") val connectionRecipes: List<ConnectionRecipe> = listOf(),
     private val connections: MutableList<Connection> = mutableListOf(),
 ) : Named {
     constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.connectionRecipes)
