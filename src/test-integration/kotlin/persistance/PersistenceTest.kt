@@ -3,8 +3,15 @@ package persistance
 import core.GameManager
 import core.GameState
 import core.PRINT_WITHOUT_FLUSH
+import core.ai.behavior.BehaviorRecipe
 import core.commands.CommandParsers
 import core.events.EventManager
+import core.properties.Properties
+import core.properties.PropsBuilder
+import core.properties.props
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -30,6 +37,25 @@ class PersistenceTest {
     @After
     fun deleteSaves() {
         File("./saves/").listFiles()?.forEach { it.deleteRecursively() }
+    }
+
+    @Test
+    fun behaviorRecipe() {
+        val original = BehaviorRecipe("thing", mapOf("this" to "that"))
+        val json = Json.encodeToString(original)
+        val parsed: BehaviorRecipe = Json.decodeFromString(json)
+        assertEquals(original, parsed)
+    }
+
+    @Test
+    fun properties() {
+        val original = props {
+            tag("one", "two")
+            value("health", 100)
+        }
+        val json = Json.encodeToString(original)
+        val parsed: Properties = Json.decodeFromString(json)
+        assertEquals(original, parsed)
     }
 
     @Test

@@ -5,6 +5,7 @@ import core.utility.apply
 import core.utility.hasAllOf
 import core.utility.matches
 
+@kotlinx.serialization.Serializable
 data class Values(private val properties: MutableMap<String, String> = mutableMapOf()) {
     constructor(vararg props: Pair<String, String>): this(props.toMap().toMutableMap())
     constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params).toMutableMap())

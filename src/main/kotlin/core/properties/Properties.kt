@@ -10,6 +10,7 @@ import traveling.position.Distances.MIN_RANGE
 import traveling.position.Distances.SPEAR_RANGE
 import traveling.position.Distances.SWORD_RANGE
 
+@kotlinx.serialization.Serializable
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(tags: Tags) : this(Values(), tags)
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
