@@ -46,32 +46,21 @@ fun readFromData(data: Map<String, Any>, body: Body): Condition {
 }
 
 
-class ConditionPersister : KSerializer<Condition> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("Effect", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: Condition) =
-        encoder.encodeSerializableValue(ConditionP.serializer(), ConditionP(value))
-
-    override fun deserialize(decoder: Decoder): Condition =
-        decoder.decodeSerializableValue(ConditionP.serializer()).parsed()
-}
-
 @kotlinx.serialization.Serializable
 data class ConditionP(
     val name: String,
     val element: Element,
     val elementStrength: Int,
-    val effects: List<Effect>,
-    val criticalEffects: List<Effect>,
+    val effects: List<EffectP>,
+    val criticalEffects: List<EffectP>,
     val permanent: Boolean,
     val age: Int,
     val isCritical: Boolean,
     val isFirstApply: Boolean
 ){
-    constructor(b: Condition): this(b.name, b.element, b.elementStrength, b.effects, b.criticalEffects, b.permanent, b.age, b.isCritical, b.isFirstApply)
+    constructor(b: Condition): this(b.name, b.element, b.elementStrength, b.effects.map { EffectP(it) }, b.criticalEffects.map { EffectP(it) }, b.permanent, b.age, b.isCritical, b.isFirstApply)
 
-    fun parsed(): Condition {
-        return Condition(name, element, elementStrength, effects, criticalEffects, permanent, age, isCritical)
+    fun parsed(body: Body): Condition {
+        return Condition(name, element, elementStrength, effects.map { it.parsed(body) }, criticalEffects.map { it.parsed(body) }, permanent, age, isCritical)
     }
 }

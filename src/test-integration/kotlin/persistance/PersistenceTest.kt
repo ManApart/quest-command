@@ -16,8 +16,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import status.conditions.Condition
+import status.conditions.ConditionP
 import status.effects.Effect
 import status.effects.EffectBase
+import status.effects.EffectP
 import status.stat.LeveledStat
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
@@ -88,10 +90,9 @@ class PersistenceTest {
         val location = Location(LocationNode("Head"), recipe = locationRecipe)
         val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
         val body = Body("Head", Network("Head", locationRecipe))
-        val json = Json.encodeToString(original)
-        val parsed: Effect = Json.decodeFromString(json)
-        parsed.afterLoad(body)
-        assertEffectMatches(original, parsed)
+        val json = Json.encodeToString(EffectP(original))
+        val parsed: EffectP = Json.decodeFromString(json)
+        assertEffectMatches(original, parsed.parsed(body))
     }
 
     private fun assertEffectMatches(original: Effect, parsed: Effect) {
@@ -111,9 +112,8 @@ class PersistenceTest {
         val original = Condition("Fever", effects = listOf(effect))
         val body = Body("Head", Network("Head", locationRecipe))
 
-        val json = Json.encodeToString(original)
-        val parsed: Condition = Json.decodeFromString(json)
-        parsed.afterLoad(body)
+        val json = Json.encodeToString(ConditionP(original))
+        val parsed: ConditionP = Json.decodeFromString(json)
 
         with(parsed) {
             assertEquals(original.name, name)
@@ -124,7 +124,7 @@ class PersistenceTest {
             assertEquals(original.isCritical, isCritical)
             assertEquals(original.isFirstApply, isFirstApply)
         }
-        assertEffectMatches(original.effects.first(), parsed.effects.first())
+        assertEffectMatches(original.effects.first(), parsed.effects.first().parsed(body))
     }
 
     @Test

@@ -1,15 +1,12 @@
 package status.conditions
 
-import core.body.Body
 import core.utility.NameSearchableList
 import core.utility.Named
 import magic.Element
 import magic.ElementInteraction
 import status.Soul
 import status.effects.Effect
-import status.effects.EffectPersister
 
-@kotlinx.serialization.Serializable(with = ConditionPersister::class)
 class Condition(
         override val name: String,
         val element: Element = Element.NONE,
@@ -31,11 +28,6 @@ class Condition(
 
     override fun toString(): String {
         return name + ": " + effects.joinToString(", ") { it.base.name }
-    }
-
-    fun afterLoad(body: Body){
-        effects.forEach { it.afterLoad(body) }
-        criticalEffects.forEach { it.afterLoad(body) }
     }
 
     fun getReaction(other: Condition): ElementInteraction {

@@ -11,17 +11,12 @@ import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
 import kotlin.math.min
 
-@kotlinx.serialization.Serializable(with = EffectPersister::class)
-data class Effect(val base: EffectBase, val amount: Int, val duration: Int, var bodyPartTargets: List<Location> = listOf(), val bodyPartTargetNames: List<String> = listOf()) : Named {
+data class Effect(val base: EffectBase, val amount: Int, val duration: Int, var bodyPartTargets: List<Location> = listOf()) : Named {
     var originalValue = 0; private set
     override val name = base.name
 
     override fun toString(): String {
         return "${base.name} ${base.statEffect} $amount (${base.amountType}) ${base.statThing} (${base.statKind}) for $duration."
-    }
-
-    fun afterLoad(body: Body) {
-        bodyPartTargets = bodyPartTargetNames.map { body.getPart(it) }
     }
 
     fun apply(soul: Soul, firstApply: Boolean) {
