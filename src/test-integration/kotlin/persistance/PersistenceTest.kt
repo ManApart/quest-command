@@ -8,7 +8,6 @@ import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.Properties
-import core.properties.PropsBuilder
 import core.properties.props
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -16,16 +15,15 @@ import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import status.conditions.Condition
 import status.effects.Effect
 import status.effects.EffectBase
-import status.effects.EffectPersister
 import status.stat.LeveledStat
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
 import traveling.location.Network
 import traveling.location.location.Location
 import traveling.location.location.locationRecipe
-import traveling.location.location.locations
 import traveling.location.network.LocationNode
 import java.io.File
 import kotlin.test.assertEquals
@@ -93,6 +91,10 @@ class PersistenceTest {
         val json = Json.encodeToString(original)
         val parsed: Effect = Json.decodeFromString(json)
         parsed.afterLoad(body)
+        assertEffectMatches(original, parsed)
+    }
+
+    private fun assertEffectMatches(original: Effect, parsed: Effect) {
         with(parsed) {
             assertEquals(original.name, name)
             assertEquals(original.amount, amount)
@@ -101,23 +103,29 @@ class PersistenceTest {
         }
     }
 
-//    @Test
-//    fun condition() {
-//        val locationRecipe = locationRecipe("Head") { }.build()
-//        val location = Location(LocationNode("Head"), recipe = locationRecipe)
-//        val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
-//        val body = Body("Head", Network("Head", locationRecipe))
-//        val ser = EffectPersister()
-//        ser.body = body
-//        val json = Json.encodeToString(original)
-//        val parsed: Effect = Json.decodeFromString(ser, json)
-//        with(parsed) {
-//            assertEquals(original.name, name)
-//            assertEquals(original.amount, amount)
-//            assertEquals(original.duration, duration)
-//            assertEquals(1, bodyPartTargets.size)
-//        }
-//    }
+    @Test
+    fun condition() {
+        val locationRecipe = locationRecipe("Head") { }.build()
+        val location = Location(LocationNode("Head"), recipe = locationRecipe)
+        val effect = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
+        val original = Condition("Fever", effects = listOf(effect))
+        val body = Body("Head", Network("Head", locationRecipe))
+
+        val json = Json.encodeToString(original)
+        val parsed: Condition = Json.decodeFromString(json)
+        parsed.afterLoad(body)
+
+        with(parsed) {
+            assertEquals(original.name, name)
+            assertEquals(original.element, element)
+            assertEquals(original.elementStrength, elementStrength)
+            assertEquals(original.permanent, permanent)
+            assertEquals(original.age, age)
+            assertEquals(original.isCritical, isCritical)
+            assertEquals(original.isFirstApply, isFirstApply)
+        }
+        assertEffectMatches(original.effects.first(), parsed.effects.first())
+    }
 
     @Test
     fun playerSave() {

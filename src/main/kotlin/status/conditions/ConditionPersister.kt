@@ -46,28 +46,32 @@ fun readFromData(data: Map<String, Any>, body: Body): Condition {
 }
 
 
-//class ConditionPersister : KSerializer<Condition> {
-//    var body: Body = Body()
-//    override val descriptor: SerialDescriptor =
-//        PrimitiveSerialDescriptor("Effect", PrimitiveKind.STRING)
-//
-//    override fun serialize(encoder: Encoder, value: Condition) =
-//        encoder.encodeSerializableValue(EffectP.serializer(), EffectP(value))
-//
-//    override fun deserialize(decoder: Decoder): Condition =
-//        decoder.decodeSerializableValue(EffectP.serializer()).parsed(body)
-//}
-//
-//@kotlinx.serialization.Serializable
-//data class ConditionP(
-//    val base: EffectBase,
-//    val amount: Int,
-//    val duration: Int,
-//    val bodyPartTargets: List<String>
-//){
-//    constructor(b: Condition): this(b.base, b.amount, b.duration, b.bodyPartTargets.map { it.name })
-//
-//    fun parsed(body: Body): Condition {
-//        return Condition(base, amount, duration, bodyPartTargets.map { body.getPart(it) })
-//    }
-//}
+class ConditionPersister : KSerializer<Condition> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("Effect", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: Condition) =
+        encoder.encodeSerializableValue(ConditionP.serializer(), ConditionP(value))
+
+    override fun deserialize(decoder: Decoder): Condition =
+        decoder.decodeSerializableValue(ConditionP.serializer()).parsed()
+}
+
+@kotlinx.serialization.Serializable
+data class ConditionP(
+    val name: String,
+    val element: Element,
+    val elementStrength: Int,
+    val effects: List<Effect>,
+    val criticalEffects: List<Effect>,
+    val permanent: Boolean,
+    val age: Int,
+    val isCritical: Boolean,
+    val isFirstApply: Boolean
+){
+    constructor(b: Condition): this(b.name, b.element, b.elementStrength, b.effects, b.criticalEffects, b.permanent, b.age, b.isCritical, b.isFirstApply)
+
+    fun parsed(): Condition {
+        return Condition(name, element, elementStrength, effects, criticalEffects, permanent, age, isCritical)
+    }
+}
