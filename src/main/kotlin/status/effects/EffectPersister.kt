@@ -7,9 +7,6 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import status.stat.LeveledStat
-import status.stat.LeveledStatP
-import traveling.location.location.Location
 
 
 fun getPersisted(dataObject: Effect): Map<String, Any> {
@@ -34,15 +31,14 @@ fun readFromData(data: Map<String, Any>, body: Body): Effect {
 }
 
 
-object EffectPersister : KSerializer<Effect> {
-    var body = Body()
+class EffectPersister : KSerializer<Effect> {
+    var body: Body = Body()
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("Effect", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: Effect) =
         encoder.encodeSerializableValue(EffectP.serializer(), EffectP(value))
 
-    //TODO - how do we pass in locations?
     override fun deserialize(decoder: Decoder): Effect =
         decoder.decodeSerializableValue(EffectP.serializer()).parsed(body)
 }

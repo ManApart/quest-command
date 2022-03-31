@@ -90,9 +90,10 @@ class PersistenceTest {
         val location = Location(LocationNode("Villa"), recipe = locationRecipe)
         val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
         val body = Body("Villa", Network("Villa", locationRecipe))
+        val ser = EffectPersister()
+        ser.body = body
         val json = Json.encodeToString(original)
-        EffectPersister.body = body
-        val parsed: Effect = Json.decodeFromString(json)
+        val parsed: Effect = Json.decodeFromString(ser, json)
         with(parsed) {
             assertEquals(original.name, name)
             assertEquals(original.amount, amount)
