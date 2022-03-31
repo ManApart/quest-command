@@ -86,14 +86,13 @@ class PersistenceTest {
 
     @Test
     fun effect() {
-        val locationRecipe = locationRecipe("Villa") { }.build()
-        val location = Location(LocationNode("Villa"), recipe = locationRecipe)
+        val locationRecipe = locationRecipe("Head") { }.build()
+        val location = Location(LocationNode("Head"), recipe = locationRecipe)
         val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
-        val body = Body("Villa", Network("Villa", locationRecipe))
-        val ser = EffectPersister()
-        ser.body = body
+        val body = Body("Head", Network("Head", locationRecipe))
         val json = Json.encodeToString(original)
-        val parsed: Effect = Json.decodeFromString(ser, json)
+        val parsed: Effect = Json.decodeFromString(json)
+        parsed.afterLoad(body)
         with(parsed) {
             assertEquals(original.name, name)
             assertEquals(original.amount, amount)
@@ -101,6 +100,24 @@ class PersistenceTest {
             assertEquals(1, bodyPartTargets.size)
         }
     }
+
+//    @Test
+//    fun condition() {
+//        val locationRecipe = locationRecipe("Head") { }.build()
+//        val location = Location(LocationNode("Head"), recipe = locationRecipe)
+//        val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
+//        val body = Body("Head", Network("Head", locationRecipe))
+//        val ser = EffectPersister()
+//        ser.body = body
+//        val json = Json.encodeToString(original)
+//        val parsed: Effect = Json.decodeFromString(ser, json)
+//        with(parsed) {
+//            assertEquals(original.name, name)
+//            assertEquals(original.amount, amount)
+//            assertEquals(original.duration, duration)
+//            assertEquals(1, bodyPartTargets.size)
+//        }
+//    }
 
     @Test
     fun playerSave() {

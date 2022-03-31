@@ -30,9 +30,7 @@ fun readFromData(data: Map<String, Any>, body: Body): Effect {
     )
 }
 
-
 class EffectPersister : KSerializer<Effect> {
-    var body: Body = Body()
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("Effect", PrimitiveKind.STRING)
 
@@ -40,7 +38,7 @@ class EffectPersister : KSerializer<Effect> {
         encoder.encodeSerializableValue(EffectP.serializer(), EffectP(value))
 
     override fun deserialize(decoder: Decoder): Effect =
-        decoder.decodeSerializableValue(EffectP.serializer()).parsed(body)
+        decoder.decodeSerializableValue(EffectP.serializer()).parsed()
 }
 
 @kotlinx.serialization.Serializable
@@ -52,7 +50,7 @@ data class EffectP(
     ){
     constructor(b: Effect): this(b.base, b.amount, b.duration, b.bodyPartTargets.map { it.name })
 
-    fun parsed(body: Body): Effect {
-        return Effect(base, amount, duration, bodyPartTargets.map { body.getPart(it) })
+    fun parsed(): Effect {
+        return Effect(base, amount, duration, bodyPartTargetNames = bodyPartTargets)
     }
 }
