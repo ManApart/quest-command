@@ -5,15 +5,13 @@ import core.events.EventManager
 import core.properties.propValChanged.PropertyStatChangeEvent
 import core.utility.Named
 import status.Soul
-import status.stat.AmountType
-import status.stat.LeveledStat
-import status.stat.StatEffect
-import status.stat.StatKind
+import status.stat.*
 import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
 import kotlin.math.min
 
-class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyPartThings: List<Location> = listOf()) : Named {
+@kotlinx.serialization.Serializable(with = EffectPersister::class)
+data class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyPartTargets: List<Location> = listOf()) : Named {
     var originalValue = 0; private set
     override val name = base.name
 
@@ -130,7 +128,7 @@ class Effect(val base: EffectBase, val amount: Int, val duration: Int, val bodyP
 
     private fun changeStat(soul: Soul, leveledStat: LeveledStat, amount: Int, sourceOfChangePrefix: String = "") {
         if (leveledStat.isHealth() && amount < 0) {
-            bodyPartThings.forEach { bodyPart ->
+            bodyPartTargets.forEach { bodyPart ->
                 EventManager.postEvent(TakeDamageEvent(soul.parent, bodyPart, -amount, base.damageType, sourceOfChangePrefix + base.name))
             }
         } else {

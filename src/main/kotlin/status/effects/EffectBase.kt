@@ -6,6 +6,7 @@ import status.stat.AmountType
 import status.stat.StatEffect
 import status.stat.StatKind
 
+@kotlinx.serialization.Serializable
 data class EffectBase(
         override val name: String,
         val description: String,

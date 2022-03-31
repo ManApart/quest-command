@@ -29,6 +29,7 @@ const val EARTH_MAGIC = "EarthMagic"
 const val FIRE_MAGIC = "FireMagic"
 const val WATER_MAGIC = "WaterMagic"
 
+@kotlinx.serialization.Serializable(with = LeveledStatSerializer::class)
 class LeveledStat(
     val name: String,
     level: Int = 1,

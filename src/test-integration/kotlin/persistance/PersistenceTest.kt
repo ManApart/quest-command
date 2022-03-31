@@ -4,6 +4,7 @@ import core.GameManager
 import core.GameState
 import core.PRINT_WITHOUT_FLUSH
 import core.ai.behavior.BehaviorRecipe
+import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.Properties
@@ -15,8 +16,17 @@ import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import status.effects.Effect
+import status.effects.EffectBase
+import status.effects.EffectPersister
+import status.stat.LeveledStat
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
+import traveling.location.Network
+import traveling.location.location.Location
+import traveling.location.location.locationRecipe
+import traveling.location.location.locations
+import traveling.location.network.LocationNode
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -56,6 +66,39 @@ class PersistenceTest {
         val json = Json.encodeToString(original)
         val parsed: Properties = Json.decodeFromString(json)
         assertEquals(original, parsed)
+    }
+
+    @Test
+    fun leveledStat() {
+        val original = LeveledStat("health", 1, 1, 2)
+        val json = Json.encodeToString(original)
+        val parsed: LeveledStat = Json.decodeFromString(json)
+        with(parsed) {
+            assertEquals(original.name, name)
+            assertEquals(original.level, level)
+            assertEquals(original.getMaxMultiplier(), getMaxMultiplier())
+            assertEquals(original.expExponential, expExponential)
+            assertEquals(original.max, max)
+            assertEquals(original.current, current)
+            assertEquals(original.xp, xp)
+        }
+    }
+
+    @Test
+    fun effect() {
+        val locationRecipe = locationRecipe("Villa") { }.build()
+        val location = Location(LocationNode("Villa"), recipe = locationRecipe)
+        val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
+        val body = Body("Villa", Network("Villa", locationRecipe))
+        val json = Json.encodeToString(original)
+        EffectPersister.body = body
+        val parsed: Effect = Json.decodeFromString(json)
+        with(parsed) {
+            assertEquals(original.name, name)
+            assertEquals(original.amount, amount)
+            assertEquals(original.duration, duration)
+            assertEquals(1, bodyPartTargets.size)
+        }
     }
 
     @Test
