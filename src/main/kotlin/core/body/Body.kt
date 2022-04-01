@@ -38,6 +38,18 @@ data class Body(
         return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
+    fun equipItems(equippedItems: List<Thing>){
+        equippedItems.forEach { item ->
+            val slotName = slotMap[item.name]
+            val slot = item.equipSlots.firstOrNull { equipSlot -> equipSlot.description == slotName }
+            if (slot != null) {
+                equip(item, slot)
+            } else {
+                equip(item)
+            }
+        }
+    }
+
     fun getEquippedItems(): NameSearchableList<Thing> {
         val items = NameSearchableList<Thing>()
         parts.forEach { part ->

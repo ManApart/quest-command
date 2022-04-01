@@ -144,5 +144,15 @@ fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
     }
 }
 
+fun writeSave(directoryName: String, saveName: String, json: String) {
+    val directory = File(directoryName)
+    if (!directory.exists()) {
+        directory.mkdirs()
+    }
+    File(saveName).printWriter().use { out ->
+        out.println(json)
+    }
+}
+
 
 
