@@ -21,6 +21,7 @@ import status.effects.Effect
 import status.effects.EffectBase
 import status.effects.EffectP
 import status.stat.LeveledStat
+import status.stat.LeveledStatP
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
 import traveling.location.Network
@@ -71,9 +72,10 @@ class PersistenceTest {
     @Test
     fun leveledStat() {
         val original = LeveledStat("health", 1, 1, 2)
-        val json = Json.encodeToString(original)
-        val parsed: LeveledStat = Json.decodeFromString(json)
-        with(parsed) {
+        val json = Json.encodeToString(LeveledStatP(original))
+        val parsed: LeveledStatP = Json.decodeFromString(json)
+        val actual = parsed.parsed()
+        with(actual) {
             assertEquals(original.name, name)
             assertEquals(original.level, level)
             assertEquals(original.getMaxMultiplier(), getMaxMultiplier())

@@ -31,17 +31,6 @@ fun readFromData(data: Map<String, Any>): LeveledStat {
     )
 }
 
-class LeveledStatSerializer : KSerializer<LeveledStat> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("LeveledStat", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: LeveledStat) =
-        encoder.encodeSerializableValue(LeveledStatP.serializer(), LeveledStatP(value))
-
-    override fun deserialize(decoder: Decoder): LeveledStat =
-        decoder.decodeSerializableValue(LeveledStatP.serializer()).parsed()
-}
-
 @kotlinx.serialization.Serializable
 data class LeveledStatP(
     val name: String,
