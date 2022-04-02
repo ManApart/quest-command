@@ -61,12 +61,15 @@ class PersistenceTest {
     @Test
     fun properties() {
         val original = props {
-            tag("one", "two")
+            tag("one", "Two")
             value("health", 100)
         }
+        //retain casing
+        original.values.put("check", "Upper")
         val json = Json.encodeToString(original)
         val parsed: Properties = Json.decodeFromString(json)
         assertEquals(original, parsed)
+        assertEquals(original.values.getString("check"), parsed.values.getString("check"))
     }
 
     @Test

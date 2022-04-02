@@ -11,7 +11,8 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
     constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params).toMutableMap())
 
     init {
-        parseProperties()
+        //TODO - can I safely remove this?
+//        parseProperties()
     }
 
     override fun toString(): String {

@@ -29,18 +29,18 @@ fun getCharacterSaves(gameName: String): List<String> {
         .filter { !ignoredNames.contains(it) }
 }
 
-fun loadMaps(path: String): List<Map<String, Any>> {
-    return getFiles(path).map { loadMap(it.path) }
-}
+//fun loadMaps(path: String): List<Map<String, Any>> {
+//    return getFiles(path).map { loadMap(it.path) }
+//}
 
-fun loadMap(path: String): Map<String, Any> {
-    val stream = File(path)
-    return if (stream.exists()) {
-        Json.decodeFromString(stream.readText())
-    } else {
-        mapOf()
-    }
-}
+//fun loadMap(path: String): Map<String, Any> {
+//    val stream = File(path)
+//    return if (stream.exists()) {
+//        Json.decodeFromString(stream.readText())
+//    } else {
+//        mapOf()
+//    }
+//}
 
 inline fun <reified T> loadFromPath(path: String): T {
     return Json.decodeFromString(File(path).readText())
@@ -88,17 +88,17 @@ private fun saveSessionStats() {
 private fun saveGameState(player: Thing, path: String) {
     GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, cleanPathPart(player.name))
     GameState.properties.values.put(AUTO_LOAD, true)
-    val gameData = getPersistedGameState()
     val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
-    writeSave(path, gameStateSaveName, gameData)
+    val json = Json.encodeToString(GameStateP())
+    writeSave(path, gameStateSaveName, json)
 }
 
 private fun saveTopLevelMetadata(gameName: String) {
     val gameMetaData = Properties()
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
     gameMetaData.values.put(AUTO_LOAD, true)
-    val gameMetaDataData = core.properties.getPersisted(gameMetaData)
-    writeSave(directory, cleanPathToFile(".json", directory, "games"), gameMetaDataData)
+    val json = Json.encodeToString(gameMetaData)
+    writeSave(directory, cleanPathToFile(".json", directory, "games"), json)
 }
 
 fun save(gameName: String, network: Network) {
@@ -124,8 +124,8 @@ fun loadGame(gameName: String) {
 }
 
 fun loadGameState(gameName: String) {
-    val gameStateData = loadMap(cleanPathToFile(".json", directory, gameName, "gameState"))
-    readGameStateFromData(gameStateData)
+    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", directory, gameName, "gameState"))
+    gameStateData.updateGameState()
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
@@ -133,20 +133,20 @@ fun loadCharacter(gameName: String, saveName: String) {
 }
 
 fun getGamesMetaData(): Properties {
-    val data = loadMap(cleanPathToFile(".json", directory, "games"))
-    return core.properties.readFromData(data)
+    return loadFromPath(cleanPathToFile(".json", directory, "games"))
+
 }
 
-fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
-    val directory = File(directoryName)
-    if (!directory.exists()) {
-        directory.mkdirs()
-    }
-    val json = Json.encodeToString(data)
-    File(saveName).printWriter().use { out ->
-        out.println(json)
-    }
-}
+//fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
+//    val directory = File(directoryName)
+//    if (!directory.exists()) {
+//        directory.mkdirs()
+//    }
+//    val json = Json.encodeToString(data)
+//    File(saveName).printWriter().use { out ->
+//        out.println(json)
+//    }
+//}
 
 fun writeSave(directoryName: String, saveName: String, json: String) {
     val directory = File(directoryName)

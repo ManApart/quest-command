@@ -1,6 +1,7 @@
 package core
 
 import core.thing.ThingP
+import core.thing.saveBody
 import crafting.RecipeManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -13,9 +14,11 @@ import traveling.location.Network
 fun persist(dataObject: Player, path: String) {
     val prefix = clean(path, dataObject.thing.name)
     val saveName = cleanPathToFile("json", prefix)
-    val data = Json.encodeToString(PlayerP(dataObject))
+    val playerP = PlayerP(dataObject)
+    val data = Json.encodeToString(playerP)
 
     writeSave(path, saveName, data)
+    playerP.persistReferences(path)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -47,5 +50,10 @@ data class PlayerP(
         }
 
         return player
+    }
+
+    fun persistReferences(path: String) {
+        val prefix = clean(path, thing.name)
+        thing.persistReferences(prefix)
     }
 }

@@ -1,6 +1,7 @@
 package core.thing
 
 import core.ai.behavior.BehaviorRecipe
+import core.body.Body
 import core.body.Slot
 import core.properties.Properties
 import kotlinx.serialization.decodeFromString
@@ -17,6 +18,7 @@ import java.io.File
 fun persist(dataObject: Thing, path: String): ThingP {
     val prefix = clean(path, dataObject.name)
 
+    //Side Effect - write the body to disk as well
     core.body.persist(dataObject.body, prefix)
     return ThingP(dataObject)
 }
@@ -51,9 +53,11 @@ data class ThingP(
     val soul: SoulP,
     val properties: Properties,
     //TODO Persist Position
-    val body: String
+    val body: String,
+    @kotlinx.serialization.Transient
+    private val bodyReference: Body? = null
 ){
-    constructor(b: Thing): this(b.name, b.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), b.properties, b.body.name)
+    internal constructor(b: Thing): this(b.name, b.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), b.properties, b.body.name, b.body)
 
     fun parsed(path: String, parentLocation: Network? = null): Thing {
         val folderPath = path.removeSuffix(".json")
@@ -75,4 +79,13 @@ data class ThingP(
             it.location = location
         }
     }
+
+    fun persistReferences(path: String) {
+        core.body.persist(bodyReference!!, path)
+    }
+}
+
+fun saveBody(thing: Thing, path: String){
+    val prefix = clean(path, thing.name)
+    core.body.persist(thing.body, prefix)
 }

@@ -3,10 +3,7 @@ package core.body
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import system.persistance.clean
-import system.persistance.cleanPathToFile
-import system.persistance.getFiles
-import system.persistance.writeSave
+import system.persistance.*
 import java.io.File
 
 fun persist(dataObject: Body, path: String) {
@@ -27,7 +24,8 @@ fun load(path: String, name: String): Body {
     if (name == NONE.name) {
         return NONE
     }
-    val json: BodyP = Json.decodeFromString(File(path).readText())
+    val filePath = cleanPathToFile(".json", path, name)
+    val json: BodyP = loadFromPath(filePath)
     return json.parsed(path)
 }
 
