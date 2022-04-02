@@ -8,6 +8,7 @@ import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.Properties
+import core.properties.PropertiesP
 import core.properties.props
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -66,10 +67,11 @@ class PersistenceTest {
         }
         //retain casing
         original.values.put("check", "Upper")
-        val json = Json.encodeToString(original)
-        val parsed: Properties = Json.decodeFromString(json)
-        assertEquals(original, parsed)
-        assertEquals(original.values.getString("check"), parsed.values.getString("check"))
+        val json = Json.encodeToString(PropertiesP(original))
+        val parsed: PropertiesP = Json.decodeFromString(json)
+        val actual = parsed.parsed()
+        assertEquals(original, actual)
+        assertEquals(original.values.getString("check"), actual.values.getString("check"))
     }
 
     @Test
