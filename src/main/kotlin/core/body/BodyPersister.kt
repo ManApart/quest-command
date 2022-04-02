@@ -23,7 +23,7 @@ fun load(path: String, name: String): Body {
         return NONE
     }
     val filePath = cleanPathToFile(".json", path, name)
-    val json: BodyP = loadFromPath(filePath)
+    val json: BodyP = loadFromPath(filePath)!!
     return json.parsed(path)
 }
 

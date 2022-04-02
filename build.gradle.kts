@@ -88,7 +88,7 @@ task("test-all") {
 tasks.withType<Jar> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     manifest {
-        attributes["Main-Class"] = "MainKt"
+        attributes["Main-Class"] = "QuestCommandKt"
     }
     from(sourceSets.main.get().output)
     dependsOn(configurations.runtimeClasspath)

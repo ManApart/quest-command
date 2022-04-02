@@ -30,8 +30,11 @@ fun getCharacterSaves(gameName: String): List<String> {
         .filter { !ignoredNames.contains(it) }
 }
 
-inline fun <reified T> loadFromPath(path: String): T {
-    return Json.decodeFromString(File(path).readText())
+inline fun <reified T> loadFromPath(path: String): T? {
+    val file = File(path)
+    return if (file.exists()) {
+        Json.decodeFromString(file.readText())
+    } else null
 }
 
 fun getFiles(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
@@ -112,18 +115,18 @@ fun loadGame(gameName: String) {
 }
 
 fun loadGameState(gameName: String) {
-    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", directory, gameName, "gameState"))
+    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", directory, gameName, "gameState"))!!
     gameStateData.updateGameState()
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
     val path = cleanPathToFile(".json", directory, gameName, saveName)
-    val json: PlayerP = loadFromPath(path)
+    val json: PlayerP = loadFromPath(path)!!
     GameState.player = json.parsed(path, null)
 }
 
 fun getGamesMetaData(): Properties {
-    return loadFromPath(cleanPathToFile(".json", directory, "games"))
+    return loadFromPath(cleanPathToFile(".json", directory, "games")) ?: Properties()
 
 }
 

@@ -28,7 +28,7 @@ fun persistToDisk(dataObject: Thing, path: String) {
 
 
 fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
-    val json: ThingP = loadFromPath(path)
+    val json: ThingP = loadFromPath(path)!!
     return json.parsed(path, parentLocation)
 }
 
