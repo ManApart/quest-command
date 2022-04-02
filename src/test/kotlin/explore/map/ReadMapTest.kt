@@ -60,7 +60,6 @@ class ReadMapTest {
     @Test
     fun neighborsAreProperlyDisplayedWithDirection() {
         val thing = LocationNode("My Place")
-        val thingPoint = LocationPoint(thing)
 
         with(thing) {
             addConnection(Vector(0, 10, 0), "north")

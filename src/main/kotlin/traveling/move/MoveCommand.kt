@@ -41,20 +41,19 @@ class MoveCommand : Command() {
             val thing = parseThingsFromLocation(source.thing, arguments.getBaseAndStrings("to")).firstOrNull()
             val direction = parseNullableDirection(arguments.getBaseAndStrings("towards"))
             val distance = arguments.getNumber()
-            val useDefault = keyword != "move"
 
             when {
                 vector != null -> EventManager.postEvent(StartMoveEvent(source.thing, vector))
                 thing != null -> EventManager.postEvent(StartMoveEvent(source.thing, thing.thing.position))
                 distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source.thing, source.position + (direction.vector * distance)))
-                direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance, useDefault)
+                direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance)
                 //TODO - response request
                 else -> source.display("Could not understand: move ${args.joinToString(" ")}")
             }
         }
     }
 
-    private fun parseDirectionAndDistance(source: Player, initialDirection: Direction?, initialDistance: Int?, useDefault: Boolean) {
+    private fun parseDirectionAndDistance(source: Player, initialDirection: Direction?, initialDistance: Int?) {
         val clarifier = source.clarify {
             respond("direction") {
                 message("Move in what direction?")
