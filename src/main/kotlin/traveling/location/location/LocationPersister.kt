@@ -1,6 +1,7 @@
 package traveling.location.location
 
 import core.properties.Properties
+import core.properties.PropertiesP
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
@@ -42,9 +43,9 @@ private fun getThings(folderPath: String, folderName: String, parent: LocationNo
 @kotlinx.serialization.Serializable
 data class LocationP(
     val name: String,
-    val properties: Properties,
+    val properties: PropertiesP,
     ){
-    constructor(b: Location): this(b.name, b.properties)
+    constructor(b: Location): this(b.name, PropertiesP(b.properties))
 
     fun parsed(path: String, locationNode: LocationNode): Location {
         val folderPath = path.removeSuffix(".json")
@@ -53,6 +54,6 @@ data class LocationP(
         val creatures = getThings(folderPath, "creatures", locationNode)
         val items = getThings(folderPath, "items", locationNode)
         val other = getThings(folderPath, "other", locationNode)
-        return Location(locationNode, activators, creatures, items, other)
+        return Location(locationNode, activators, creatures, items, other, properties.parsed())
     }
 }

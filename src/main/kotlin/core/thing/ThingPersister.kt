@@ -4,6 +4,7 @@ import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.Slot
 import core.properties.Properties
+import core.properties.PropertiesP
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import status.SoulP
@@ -42,13 +43,13 @@ data class ThingP(
     val networkName: String,
     val locationName: String,
     val soul: SoulP,
-    val properties: Properties,
+    val properties: PropertiesP,
     //TODO Persist Position
     val body: String,
     @kotlinx.serialization.Transient
     private val bodyReference: Body? = null
 ){
-    internal constructor(b: Thing): this(b.name, b.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), b.properties, b.body.name, b.body)
+    internal constructor(b: Thing): this(b.name, b.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), PropertiesP(b.properties), b.body.name, b.body)
 
     fun parsed(path: String, parentLocation: Network? = null): Thing {
         val folderPath = path.removeSuffix(".json")
@@ -65,7 +66,7 @@ data class ThingP(
             description(description)
             soul(soul.parsed(body))
             equipSlotOptions(equipSlots.map { Slot(it) })
-            props(properties)
+            props(properties.parsed())
         }.build().also {
             it.location = location
         }

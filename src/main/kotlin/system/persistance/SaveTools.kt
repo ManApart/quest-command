@@ -5,6 +5,7 @@ import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
+import core.properties.PropertiesP
 import core.thing.Thing
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -84,7 +85,7 @@ private fun saveTopLevelMetadata(gameName: String) {
     val gameMetaData = Properties()
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
     gameMetaData.values.put(AUTO_LOAD, true)
-    val json = Json.encodeToString(gameMetaData)
+    val json = Json.encodeToString(PropertiesP(gameMetaData))
     writeSave(directory, cleanPathToFile(".json", directory, "games"), json)
 }
 
