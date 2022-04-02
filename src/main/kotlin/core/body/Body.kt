@@ -23,10 +23,6 @@ data class Body(
 
     constructor(base: Body) : this(base.name, Network(base.layout))
 
-    //TODO - use secondary class + translation
-//    @JsonCreator
-    constructor(name: String, bodyPart: LocationRecipe) : this(name, Network(name, bodyPart))
-
     private val parts: NameSearchableList<Location> by lazy { createParts() }
     val blockHelper = BlockHelper()
 

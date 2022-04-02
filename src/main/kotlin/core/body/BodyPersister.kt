@@ -31,7 +31,7 @@ fun load(path: String, name: String): Body {
 data class BodyP(
     val name: String,
     val slots: Map<String, String>,
-    ) {
+) {
     constructor(b: Body) : this(b.name, b.getSlotMap())
 
     fun parsed(path: String): Body {
