@@ -1,23 +1,19 @@
 package status.stat
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+@kotlinx.serialization.Serializable
+data class LeveledStatP(
+    val name: String,
+    val level: Int,
+    val maxMultiplier: Int,
+    val expExponential: Int,
+    val max: Int,
+    val current: Int,
+    val xp: Double,
 
-fun getPersisted(dataObject: LeveledStat): Map<String, Any> {
-    val string = jacksonObjectMapper().writeValueAsString(dataObject)
-    val data: MutableMap<String, Any> = jacksonObjectMapper().readValue(string)
-    data["version"] = 1
+){
+    constructor(b: LeveledStat): this(b.name, b.level, b.getMaxMultiplier(), b.expExponential, b.max, b.current, b.xp)
 
-    return data
-}
-
-fun readFromData(data: Map<String, Any>): LeveledStat {
-    return LeveledStat(data["name"] as String,
-            data["level"] as Int,
-            data["maxMultiplier"] as Int,
-            data["expExponential"] as Int,
-            data["max"] as Int,
-            data["current"] as Int,
-            data["xp"] as Double
-    )
+    fun parsed(): LeveledStat {
+        return LeveledStat(name, level, maxMultiplier, expExponential, max, current, xp)
+    }
 }

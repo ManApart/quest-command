@@ -2,6 +2,7 @@ package core.properties
 
 import core.utility.apply
 
+@kotlinx.serialization.Serializable
 data class Tags(private val tags: MutableList<String> = mutableListOf()) {
     constructor(vararg tags: String) : this(tags.toMutableList())
     constructor(base: Tags, params: Map<String, String> = mapOf()) : this(base.tags.apply(params).toMutableList())

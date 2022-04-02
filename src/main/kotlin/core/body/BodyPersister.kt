@@ -1,5 +1,7 @@
 package core.body
 
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import system.persistance.*
 
 fun persist(dataObject: Body, path: String) {
@@ -11,37 +13,34 @@ fun persist(dataObject: Body, path: String) {
     dataObject.getEquippedItems().forEach { core.thing.persistToDisk(it, path) }
 
     val saveName = cleanPathToFile("json", prefix)
-    val data = mutableMapOf<String, Any>("version" to 1)
-    data["name"] = dataObject.name
-    data["slots"] = dataObject.getSlotMap()
-    writeSave(path, saveName, data)
+    val json = Json.encodeToString(BodyP(dataObject))
+    writeSave(path, saveName, json)
 }
 
-@Suppress("UNCHECKED_CAST")
+
 fun load(path: String, name: String): Body {
     if (name == NONE.name) {
         return NONE
     }
     val filePath = cleanPathToFile(".json", path, name)
-    val networkFolderPath = clean(path, name)
+    val json: BodyP = loadFromPath(filePath)
+    return json.parsed(path)
+}
 
-    val network = traveling.location.load(networkFolderPath, name)
-    val data = loadMap(filePath)
-    val slotMap = (data["slots"] as Map<String, String>).toMutableMap()
+@kotlinx.serialization.Serializable
+data class BodyP(
+    val name: String,
+    val slots: Map<String, String>,
+    ) {
+    constructor(b: Body) : this(b.name, b.getSlotMap())
 
-    val equippedItems = getFiles(path, listOf(filePath)).map { core.thing.loadFromDisk(it.path, network) }
-
-    val body = Body(name, network, slotMap)
-
-    equippedItems.forEach {
-        val slotName = slotMap[it.name]
-        val slot = it.equipSlots.firstOrNull { equipSlot -> equipSlot.description == slotName }
-        if (slot != null) {
-            body.equip(it, slot)
-        } else {
-            body.equip(it)
+    fun parsed(path: String): Body {
+        val filePath = cleanPathToFile(".json", path, name)
+        val networkFolderPath = clean(path, name)
+        val network = traveling.location.load(networkFolderPath, name)
+        val equippedItems = getFiles(path, listOf(filePath)).map { core.thing.loadFromDisk(it.path, network) }
+        return Body(name, network, slots.toMutableMap()).apply {
+            equipItems(equippedItems)
         }
     }
-
-    return body
 }

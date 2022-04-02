@@ -1,6 +1,5 @@
 package core.body
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import combat.block.BlockHelper
 import core.history.display
 import core.thing.Thing
@@ -24,7 +23,8 @@ data class Body(
 
     constructor(base: Body) : this(base.name, Network(base.layout))
 
-    @JsonCreator
+    //TODO - use secondary class + translation
+//    @JsonCreator
     constructor(name: String, bodyPart: LocationRecipe) : this(name, Network(name, bodyPart))
 
     private val parts: NameSearchableList<Location> by lazy { createParts() }
@@ -36,6 +36,18 @@ data class Body(
 
     override fun toString(): String {
         return name + ": [" + parts.joinToString { it.name } + "]"
+    }
+
+    fun equipItems(equippedItems: List<Thing>){
+        equippedItems.forEach { item ->
+            val slotName = slotMap[item.name]
+            val slot = item.equipSlots.firstOrNull { equipSlot -> equipSlot.description == slotName }
+            if (slot != null) {
+                equip(item, slot)
+            } else {
+                equip(item)
+            }
+        }
     }
 
     fun getEquippedItems(): NameSearchableList<Thing> {

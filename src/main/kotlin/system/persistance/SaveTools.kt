@@ -1,14 +1,15 @@
 package system.persistance
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import core.*
 import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
+import core.properties.PropertiesP
 import core.thing.Thing
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import traveling.location.network.NOWHERE_NODE
@@ -16,8 +17,6 @@ import java.io.File
 
 private const val directory = "./saves/"
 private val ignoredNames = listOf("games", "gameState")
-
-private val mapper = jacksonObjectMapper()
 
 fun getGameNames(): List<String> {
     return getFolders(directory).map { it.name }
@@ -31,17 +30,8 @@ fun getCharacterSaves(gameName: String): List<String> {
         .filter { !ignoredNames.contains(it) }
 }
 
-fun loadMaps(path: String): List<Map<String, Any>> {
-    return getFiles(path).map { loadMap(it.path) }
-}
-
-fun loadMap(path: String): Map<String, Any> {
-    val stream = File(path)
-    return if (stream.exists()) {
-        mapper.readValue(stream)
-    } else {
-        mapOf()
-    }
+inline fun <reified T> loadFromPath(path: String): T {
+    return Json.decodeFromString(File(path).readText())
 }
 
 fun getFiles(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
@@ -86,17 +76,17 @@ private fun saveSessionStats() {
 private fun saveGameState(player: Thing, path: String) {
     GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, cleanPathPart(player.name))
     GameState.properties.values.put(AUTO_LOAD, true)
-    val gameData = getPersistedGameState()
     val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
-    writeSave(path, gameStateSaveName, gameData)
+    val json = Json.encodeToString(GameStateP())
+    writeSave(path, gameStateSaveName, json)
 }
 
 private fun saveTopLevelMetadata(gameName: String) {
     val gameMetaData = Properties()
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
     gameMetaData.values.put(AUTO_LOAD, true)
-    val gameMetaDataData = core.properties.getPersisted(gameMetaData)
-    writeSave(directory, cleanPathToFile(".json", directory, "games"), gameMetaDataData)
+    val json = Json.encodeToString(PropertiesP(gameMetaData))
+    writeSave(directory, cleanPathToFile(".json", directory, "games"), json)
 }
 
 fun save(gameName: String, network: Network) {
@@ -122,25 +112,26 @@ fun loadGame(gameName: String) {
 }
 
 fun loadGameState(gameName: String) {
-    val gameStateData = loadMap(cleanPathToFile(".json", directory, gameName, "gameState"))
-    readGameStateFromData(gameStateData)
+    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", directory, gameName, "gameState"))
+    gameStateData.updateGameState()
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
-    GameState.player = load(cleanPathToFile(".json", directory, gameName, saveName))
+    val path = cleanPathToFile(".json", directory, gameName, saveName)
+    val json: PlayerP = loadFromPath(path)
+    GameState.player = json.parsed(path, null)
 }
 
 fun getGamesMetaData(): Properties {
-    val data = loadMap(cleanPathToFile(".json", directory, "games"))
-    return core.properties.readFromData(data)
+    return loadFromPath(cleanPathToFile(".json", directory, "games"))
+
 }
 
-fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
+fun writeSave(directoryName: String, saveName: String, json: String) {
     val directory = File(directoryName)
     if (!directory.exists()) {
         directory.mkdirs()
     }
-    val json = ObjectMapper().writeValueAsString(data)
     File(saveName).printWriter().use { out ->
         out.println(json)
     }

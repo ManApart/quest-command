@@ -29,7 +29,6 @@ const val EARTH_MAGIC = "EarthMagic"
 const val FIRE_MAGIC = "FireMagic"
 const val WATER_MAGIC = "WaterMagic"
 
-
 class LeveledStat(
     val name: String,
     level: Int = 1,
@@ -42,7 +41,6 @@ class LeveledStat(
     private val statMinned: (String) -> Unit = { },
     private val statMaxed: (String) -> Unit = { },
 ) {
-    constructor(parent: Thing, base: LeveledStat) : this(base.name, base.level, base.maxMultiplier, base.expExponential)
 
     var level: Int = level; private set
     var max: Int = max ?: getBaseMaxAtCurrentLevel(); private set
