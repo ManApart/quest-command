@@ -29,19 +29,6 @@ fun getCharacterSaves(gameName: String): List<String> {
         .filter { !ignoredNames.contains(it) }
 }
 
-//fun loadMaps(path: String): List<Map<String, Any>> {
-//    return getFiles(path).map { loadMap(it.path) }
-//}
-
-//fun loadMap(path: String): Map<String, Any> {
-//    val stream = File(path)
-//    return if (stream.exists()) {
-//        Json.decodeFromString(stream.readText())
-//    } else {
-//        mapOf()
-//    }
-//}
-
 inline fun <reified T> loadFromPath(path: String): T {
     return Json.decodeFromString(File(path).readText())
 }
@@ -129,24 +116,15 @@ fun loadGameState(gameName: String) {
 }
 
 fun loadCharacter(gameName: String, saveName: String) {
-    GameState.player = load(cleanPathToFile(".json", directory, gameName, saveName))
+    val path = cleanPathToFile(".json", directory, gameName, saveName)
+    val json: PlayerP = loadFromPath(path)
+    GameState.player = json.parsed(path, null)
 }
 
 fun getGamesMetaData(): Properties {
     return loadFromPath(cleanPathToFile(".json", directory, "games"))
 
 }
-
-//fun writeSave(directoryName: String, saveName: String, data: Map<String, Any>) {
-//    val directory = File(directoryName)
-//    if (!directory.exists()) {
-//        directory.mkdirs()
-//    }
-//    val json = Json.encodeToString(data)
-//    File(saveName).printWriter().use { out ->
-//        out.println(json)
-//    }
-//}
 
 fun writeSave(directoryName: String, saveName: String, json: String) {
     val directory = File(directoryName)

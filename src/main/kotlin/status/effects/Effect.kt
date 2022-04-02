@@ -1,12 +1,14 @@
 package status.effects
 
 import combat.takeDamage.TakeDamageEvent
-import core.body.Body
 import core.events.EventManager
 import core.properties.propValChanged.PropertyStatChangeEvent
 import core.utility.Named
 import status.Soul
-import status.stat.*
+import status.stat.AmountType
+import status.stat.LeveledStat
+import status.stat.StatEffect
+import status.stat.StatKind
 import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
 import kotlin.math.min

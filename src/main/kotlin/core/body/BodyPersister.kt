@@ -1,10 +1,8 @@
 package core.body
 
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import system.persistance.*
-import java.io.File
 
 fun persist(dataObject: Body, path: String) {
     if (dataObject.name == NONE.name) {

@@ -4,24 +4,15 @@ import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.body.Slot
 import core.properties.Properties
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import status.SoulP
 import system.persistance.clean
 import system.persistance.cleanPathToFile
+import system.persistance.loadFromPath
 import system.persistance.writeSave
 import traveling.location.Network
 import traveling.location.location.LocationManager
-import java.io.File
-
-fun persist(dataObject: Thing, path: String): ThingP {
-    val prefix = clean(path, dataObject.name)
-
-    //Side Effect - write the body to disk as well
-    core.body.persist(dataObject.body, prefix)
-    return ThingP(dataObject)
-}
 
 fun persistToDisk(dataObject: Thing, path: String) {
     val prefix = clean(path, dataObject.name)
@@ -36,7 +27,7 @@ fun persistToDisk(dataObject: Thing, path: String) {
 
 
 fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
-    val json: ThingP = Json.decodeFromString(File(path).readText())
+    val json: ThingP = loadFromPath(path)
     return json.parsed(path, parentLocation)
 }
 

@@ -1,7 +1,7 @@
 package traveling.location.network
 
-import traveling.location.Network
 import traveling.location.ConnectionRecipeBuilder
+import traveling.location.Network
 
 class LocationNodeBuilder(private val name: String) {
     private var locationName: String? = null

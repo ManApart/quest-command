@@ -7,7 +7,6 @@ import core.ai.behavior.BehaviorRecipe
 import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
-import core.properties.Properties
 import core.properties.PropertiesP
 import core.properties.props
 import kotlinx.serialization.decodeFromString
