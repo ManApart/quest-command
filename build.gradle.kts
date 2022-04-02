@@ -58,12 +58,22 @@ task("buildData", type = JavaExec::class) {
     classpath = sourceSets["tools"].runtimeClasspath
 }
 
+tasks.getByName<Test>("test"){
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+
 task("test-integration", type = Test::class) {
     val integration = sourceSets["integrationTest"]
     description = "Runs the integration tests."
     group = "verification"
     testClassesDirs = integration.output.classesDirs
     classpath = integration.runtimeClasspath
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
 
     outputs.upToDateWhen { false }
     mustRunAfter(tasks["test"])
