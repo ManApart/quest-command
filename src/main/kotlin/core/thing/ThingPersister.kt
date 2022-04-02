@@ -1,31 +1,30 @@
 package core.thing
 
 import core.ai.behavior.BehaviorRecipe
-import core.ai.behavior.getPersisted
 import core.body.Slot
-import core.properties.getPersisted
+import core.properties.Properties
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import status.SoulP
 import system.persistance.clean
 import system.persistance.cleanPathToFile
-import system.persistance.loadMap
 import system.persistance.writeSave
 import traveling.location.Network
 import traveling.location.location.LocationManager
-import traveling.location.network.DEFAULT_NETWORK
-import traveling.location.network.LocationNode
-import traveling.location.network.NOWHERE_NODE
+import java.io.File
 
-fun persist(dataObject: Thing, path: String): Map<String, Any> {
+fun persist(dataObject: Thing, path: String): ThingP {
     val prefix = clean(path, dataObject.name)
-    val data = buildData(dataObject)
 
     core.body.persist(dataObject.body, prefix)
-    return data
+    return ThingP(dataObject)
 }
 
 fun persistToDisk(dataObject: Thing, path: String) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
-    val data = buildData(dataObject)
+    val data = Json.encodeToString(ThingP(dataObject))
     //Persist Position
     writeSave(path, saveName, data)
 
@@ -33,61 +32,47 @@ fun persistToDisk(dataObject: Thing, path: String) {
     core.body.persist(dataObject.body, prefix)
 }
 
-private fun buildData(dataObject: Thing): Map<String, Any> {
-    val data = mutableMapOf<String, Any>("version" to 1)
-    data["name"] = dataObject.name
-    data["aiName"] = dataObject.ai.name
-    val behaviorRecipes = dataObject.behaviors.map { BehaviorRecipe(it.name, it.params) }
-    data["behaviorRecipes"] = behaviorRecipes.map { getPersisted(it) }
-    data["equipSlots"] = dataObject.equipSlots.map { it.attachPoints }
-    data["description"] = dataObject.description
-    data["location"] = mapOf("network" to dataObject.location.network.name, "node" to dataObject.location.name)
-    data["soul"] = status.getPersisted(dataObject.soul)
-    data["properties"] = getPersisted(dataObject.properties)
-    data["body"] = dataObject.body.name
-    //Persist Position
-    return data
-}
 
-@Suppress("UNCHECKED_CAST")
 fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
-    val data = loadMap(path)
-    return readFromData(data, path, parentLocation)
+    val json: ThingP = Json.decodeFromString(File(path).readText())
+    return json.parsed(path, parentLocation)
 }
 
-@Suppress("UNCHECKED_CAST")
-fun readFromData(data: Map<String, Any>, path: String, parentLocation: Network? = null ): Thing {
-    val folderPath = path.removeSuffix(".json")
-    val params = mutableMapOf<String, String>()
-    val name = data["name"] as String
-    val aiName = data["aiName"] as String
-    val behaviors = (data["behaviorRecipes"] as List<Map<String, Any>>).map { core.ai.behavior.readFromData(it) }
-    val equipSlots = (data["equipSlots"] as List<List<String>>).map { Slot(it) }
-    val description = data["description"] as String
-    val location = getLocation(parentLocation, data)
-    val props = core.properties.readFromData(data["properties"] as Map<String, Any>)
 
-    val bodyName = data["body"] as String
-    val body = core.body.load(folderPath, bodyName)
-    val soul = status.readFromData(data["soul"] as Map<String, Any>, body)
+@kotlinx.serialization.Serializable
+data class ThingP(
+    val name: String,
+    val aiName: String,
+    val behaviorRecipes: List<BehaviorRecipe>,
+    val equipSlots: List<List<String>>,
+    val description: String,
+    val networkName: String,
+    val locationName: String,
+    val soul: SoulP,
+    val properties: Properties,
+    //TODO Persist Position
+    val body: String
+){
+    constructor(b: Thing): this(b.name, b.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), b.properties, b.body.name)
 
-    return thing(name) {
-        param(params)
-        ai(aiName)
-        behavior(behaviors)
-        body(body)
-        description(description)
-        soul(soul)
-        equipSlotOptions(equipSlots)
-        props(props)
-    }.build().also {
-        it.location = location
+    fun parsed(path: String, parentLocation: Network? = null): Thing {
+        val folderPath = path.removeSuffix(".json")
+
+        val network = parentLocation ?: LocationManager.getNetwork(networkName)
+        val location = network.getLocationNode(locationName)
+        val body = core.body.load(folderPath, body)
+
+        return thing(name) {
+            param(mutableMapOf<String, String>())
+            ai(aiName)
+            behavior(behaviorRecipes)
+            body(body)
+            description(description)
+            soul(soul.parsed(body))
+            equipSlotOptions(equipSlots.map { Slot(it) })
+            props(properties)
+        }.build().also {
+            it.location = location
+        }
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-private fun getLocation(parentLocation: Network?, data: Map<String, Any>): LocationNode {
-    val locationMap = (data["location"] as Map<String, String>)
-    val network = parentLocation ?: LocationManager.getNetwork(locationMap["network"] ?: DEFAULT_NETWORK.name)
-    return network.getLocationNode(locationMap["node"] ?: NOWHERE_NODE.name)
 }

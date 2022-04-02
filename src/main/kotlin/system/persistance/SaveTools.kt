@@ -42,6 +42,10 @@ fun loadMap(path: String): Map<String, Any> {
     }
 }
 
+inline fun <reified T> loadFromPath(path: String): T {
+    return Json.decodeFromString(File(path).readText())
+}
+
 fun getFiles(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
     return getFilesAndFolders(path, ignoredFileNames).filter { !it.isDirectory }
 }

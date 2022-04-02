@@ -31,8 +31,8 @@ fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = lis
 
 @Suppress("UNCHECKED_CAST")
 fun load(path: String, locationNode: LocationNode): Location {
-    val locationJson: LocationP = Json.decodeFromString(File(path).readText())
-    return locationJson.parsed(path, locationNode)
+    val json: LocationP = Json.decodeFromString(File(path).readText())
+    return json.parsed(path, locationNode)
 }
 
 private fun getThings(folderPath: String, folderName: String, parent: LocationNode): NameSearchableList<Thing> {
