@@ -22,14 +22,13 @@ fun persist(dataObject: Player, path: String) {
 
 @kotlinx.serialization.Serializable
 data class PlayerP(
-    val id: Int,
     val recipes: List<String>,
     val knownLocations: Map<String, Set<String>>,
     val thing: ThingP,
 ) {
-    constructor(b: Player) : this(b.id, b.knownRecipes.map { it.name }, b.knownLocations, ThingP(b.thing))
+    constructor(b: Player) : this(b.knownRecipes.map { it.name }, b.knownLocations, ThingP(b.thing))
 
-    fun parsed(path: String, parentLocation: Network? = null): Player {
+    fun parsed(id: Int, path: String, parentLocation: Network? = null): Player {
 
         val player = Player(id, thing.parsed(path, parentLocation))
         recipes.forEach { recipeName ->

@@ -47,7 +47,7 @@ object GameManager {
         setDefaultProperties(testing)
 
         GameState.gameName = gameName
-        GameState.player = newPlayer(playerName)
+        GameState.putPlayer(newPlayer(playerName))
         CommandParsers.reset()
         GameLogger.reset()
 

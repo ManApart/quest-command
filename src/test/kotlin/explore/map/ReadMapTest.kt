@@ -17,7 +17,7 @@ class ReadMapTest {
 
     @Before
     fun setup() {
-        GameState.player = player
+        GameState.putPlayer(player)
         GameLogger.reset()
         GameLogger.track(player)
         player.knownLocations.clear()

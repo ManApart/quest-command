@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
+import system.persistance.createPlayer.CreateCharacterEvent
 
 class PlayAsCommand : Command() {
     override fun getAliases(): List<String> {
@@ -29,7 +30,7 @@ class PlayAsCommand : Command() {
         when {
             argString == "ls" -> EventManager.postEvent(ListCharactersEvent(source))
             args.isEmpty() -> source.displayToMe("Please specify a character to play or use ls to list current characters.")
-            else -> EventManager.postEvent(PlayAsEvent(source, args.joinToString(" ")))
+            else -> EventManager.postEvent(CreateCharacterEvent(source, args.joinToString(" ")))
         }
     }
 }

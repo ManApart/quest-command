@@ -10,7 +10,8 @@ object GameState {
     var gameName = "Kanbara"
     var properties = Properties()
     val timeManager = TimeManager()
-    var player = GameManager.newPlayer()
+    private val players = mutableMapOf(0 to GameManager.newPlayer())
+    val player get() = players[0]!!
     val aliases = mutableMapOf<String, String>()
     var conversation = Conversation(player.thing, player.thing)
 
@@ -20,8 +21,16 @@ object GameState {
     }
 
     fun reset() {
-        player = GameManager.newPlayer()
+        putPlayer(GameManager.newPlayer())
         properties = Properties()
+    }
+
+    fun putPlayer(player: Player){
+        players[player.id] = player
+    }
+
+    fun nextPlayerId(): Int {
+        return players.keys.maxOf { it } + 1
     }
 
     fun getDebugBoolean(key: DebugType): Boolean {

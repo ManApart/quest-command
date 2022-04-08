@@ -108,7 +108,7 @@ fun loadGame(gameName: String) {
     loadGameState(gameName)
     val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
     GameLogger.stopTracking(GameState.player)
-    loadCharacter(gameName, characterName)
+    loadCharacter(gameName, characterName, 0)
     GameLogger.trackNewMain(GameState.player)
     CommandParsers.addParser(GameState.player)
     GameManager.playing = true
@@ -119,10 +119,10 @@ fun loadGameState(gameName: String) {
     gameStateData.updateGameState()
 }
 
-fun loadCharacter(gameName: String, saveName: String) {
+fun loadCharacter(gameName: String, saveName: String, id: Int) {
     val path = cleanPathToFile(".json", directory, gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    GameState.player = json.parsed(path, null)
+    GameState.putPlayer(json.parsed(id, path, null))
 }
 
 fun getGamesMetaData(): Properties {
