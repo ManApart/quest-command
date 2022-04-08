@@ -1,6 +1,7 @@
 package core.history
 
 import core.GameState
+import core.GameState.player
 import core.Player
 import core.thing.Thing
 import system.debug.DebugType
@@ -10,8 +11,8 @@ import system.debug.DebugType
  * Only displayed to this thing (you)
  */
 fun Thing.displayToMe(message: String) {
-    if (isPlayer()) {
-        GameLogger.getHistory(GameState.getPlayer(this)).print(message)
+    GameState.getPlayer(this)?.let {
+        GameLogger.getHistory(it).print(message)
     }
 }
 

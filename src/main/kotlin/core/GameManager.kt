@@ -66,6 +66,7 @@ object GameManager {
 
     fun newPlayer(
         name: String = "Player",
+        id: Int = 0,
         description: String = "Our Hero!",
         body: String = "Human",
         location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
@@ -97,7 +98,7 @@ object GameManager {
             add("Creature")
         }
 
-        return Player(0, player)
+        return Player(id, player)
     }
 
     private fun giveStartingItems(player: Thing) {

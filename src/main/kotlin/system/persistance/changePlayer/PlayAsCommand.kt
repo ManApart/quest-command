@@ -30,7 +30,7 @@ class PlayAsCommand : Command() {
         when {
             argString == "ls" -> EventManager.postEvent(ListCharactersEvent(source))
             args.isEmpty() -> source.displayToMe("Please specify a character to play or use ls to list current characters.")
-            else -> EventManager.postEvent(CreateCharacterEvent(source, args.joinToString(" ")))
+            else -> EventManager.postEvent(PlayAsEvent(source, args.joinToString(" ")))
         }
     }
 }

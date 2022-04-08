@@ -10,14 +10,13 @@ object GameState {
     var gameName = "Kanbara"
     var properties = Properties()
     val timeManager = TimeManager()
-    private val players = mutableMapOf(0 to GameManager.newPlayer())
+    val players = mutableMapOf(0 to GameManager.newPlayer())
     val player get() = players[0]!!
     val aliases = mutableMapOf<String, String>()
     var conversation = Conversation(player.thing, player.thing)
 
-    //TODO - eventually find player that has this creature or create new player
-    fun getPlayer(creature: Thing): Player {
-        return if (creature === player.thing) player else Player(1, creature)
+    fun getPlayer(creature: Thing): Player? {
+        return players.values.firstOrNull { it.thing == creature }
     }
 
     fun reset() {
@@ -29,9 +28,7 @@ object GameState {
         players[player.id] = player
     }
 
-    fun nextPlayerId(): Int {
-        return players.keys.maxOf { it } + 1
-    }
+
 
     fun getDebugBoolean(key: DebugType): Boolean {
         return properties.values.getBoolean(key.propertyName)

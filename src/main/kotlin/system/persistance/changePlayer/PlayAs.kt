@@ -6,13 +6,13 @@ import core.commands.respond
 import core.events.EventListener
 import core.history.displayToMe
 import system.persistance.clean
-import system.persistance.createPlayer.CreateCharacterEvent
 import system.persistance.getCharacterSaves
 import system.persistance.save
 
-class PlayAs : EventListener<CreateCharacterEvent>() {
-    override fun execute(event: CreateCharacterEvent) {
+class PlayAs : EventListener<PlayAsEvent>() {
+    override fun execute(event: PlayAsEvent) {
         save(GameState.gameName, event.source)
+        //TODO - only load if new player not in memory
         loadCharacter(event.source, GameState.gameName, event.saveName)
         event.source.displayToMe("Now playing ${event.source.thing.name} in ${GameState.gameName}.")
     }
