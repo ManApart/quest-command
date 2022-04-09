@@ -6,12 +6,8 @@ import core.events.EventListener
 
 class CreateCharacter : EventListener<CreateCharacterEvent>() {
     override fun execute(event: CreateCharacterEvent) {
-        val player = GameManager.newPlayer(event.characterName, id = nextPlayerId())
+        val player = GameManager.newPlayer(event.characterName, id = GameState.nextPlayerId())
         GameState.putPlayer(player)
-    }
-
-    private fun nextPlayerId(): Int {
-        return GameState.players.keys.maxOf { it } + 1
     }
 
 }

@@ -14,7 +14,7 @@ object CommandParsers {
     private val parsers = mutableMapOf<Int, CommandParser>()
 
     init {
-        addParser(GameState.player)
+        GameState.players.values.forEach { addParser(it) }
     }
 
     fun addParser(player: Player) {
@@ -41,7 +41,7 @@ object CommandParsers {
     fun reset() {
         parsers.clear()
         commands = loadCommands()
-        parsers[0] = CommandParser(GameState.player)
+        GameState.players.values.forEach { addParser(it) }
     }
 
     fun findCommand(alias: String): Command {

@@ -1,9 +1,9 @@
 package resources.behaviors
 
-import core.GameState
 import core.ai.behavior.BehaviorResource
 import core.ai.behavior.behaviors
 import core.commands.commandEvent.CommandEvent
+import core.eventWithPlayer
 import core.properties.propValChanged.PropertyStatMinnedEvent
 import core.thing.activator.ActivatorManager
 import core.utility.parseLocation
@@ -13,7 +13,6 @@ import inventory.pickupItem.ItemPickedUpEvent
 import status.conditions.RemoveConditionEvent
 import status.statChanged.StatChangeEvent
 import system.message.MessageEvent
-import system.message.messageEvent
 import traveling.RestrictLocationEvent
 import traveling.scope.remove.RemoveItemEvent
 import traveling.scope.remove.RemoveScopeEvent
@@ -38,7 +37,7 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val treeName = params["treeName"] ?: "tree"
                 listOfNotNull(
-                    messageEvent(GameState.getPlayer(event.thing), "The $treeName cracks and falls to the ground."),
+                    eventWithPlayer(event.thing) { MessageEvent(it, "The $treeName cracks and falls to the ground.") },
                     RemoveScopeEvent(event.thing),
                     SpawnActivatorEvent(ActivatorManager.getActivator("Logs"), thingLocation = event.thing.location),
                     SpawnItemEvent(params["resultItemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.thing.location)
@@ -48,7 +47,7 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Climbable", InteractEvent::class) {
             events { event, _ ->
-                listOfNotNull(CommandEvent(GameState.getPlayer(event.source),"climb ${event.thing.name}"))
+                listOfNotNull(eventWithPlayer(event.source) { CommandEvent(it, "climb ${event.thing.name}") })
             }
         }
 
@@ -59,7 +58,7 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val name = params["name"] ?: "object"
                 listOfNotNull(
-                    messageEvent(GameState.getPlayer(event.thing), "The $name smolders until it is nothing more than ash."),
+                    eventWithPlayer(event.thing) { MessageEvent(it, "The $name smolders until it is nothing more than ash.") },
                     RemoveScopeEvent(event.thing),
                     SpawnItemEvent("Ash", params["count"]?.toInt() ?: 1, thingLocation = event.thing.location, positionParent = event.thing)
                 )
@@ -72,7 +71,7 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOfNotNull(
-                    messageEvent(GameState.getPlayer(event.thing), "The ${event.thing} smolders out and needs to be relit."),
+                    eventWithPlayer(event.thing) { MessageEvent(it, "The ${event.thing} smolders out and needs to be relit.") },
                     RemoveConditionEvent(event.thing, event.thing.soul.getConditionWithEffect("On Fire")),
                     StatChangeEvent(event.thing, "lighting", "fireHealth", params["fireHealth"]?.toInt() ?: 1)
                 )
@@ -85,7 +84,7 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOfNotNull(
-                    messageEvent(GameState.getPlayer(event.source), params["message"] ?: "You harvest ${event.usedOn} with ${event.used}."),
+                    eventWithPlayer(event.source) { MessageEvent(it, params["message"] ?: "You harvest ${event.usedOn} with ${event.used}.") },
                     SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.usedOn.location, positionParent = event.usedOn)
                 )
             }
@@ -99,7 +98,7 @@ class CommonBehaviors : BehaviorResource {
                 val makeRestricted = false
                 val replacement = ActivatorManager.getActivator(params["replacementActivator"] ?: "Logs")
                 listOfNotNull(
-                    messageEvent(GameState.getPlayer(source), params["message"] ?: ""),
+                    eventWithPlayer(source) { MessageEvent(it, params["message"] ?: "") },
                     RestrictLocationEvent(event.thing, sourceLocation, destinationLocation, makeRestricted),
                     RemoveScopeEvent(event.thing),
                     SpawnActivatorEvent(replacement, true, event.thing.location)
@@ -118,10 +117,10 @@ class CommonBehaviors : BehaviorResource {
                 val depositLocation = parseLocation(params, event.source, "resultItemNetwork", "resultItemLocation")
                 val depositThing = depositLocation.getLocation().getThings(params["resultContainer"] ?: "Grain Bin").firstOrNull()
                 if (sourceItem == null || depositThing == null) {
-                    listOfNotNull(messageEvent(GameState.getPlayer(event.source), "Unable to Mill."))
+                    listOfNotNull(eventWithPlayer(event.source) { MessageEvent(it, "Unable to Mill.") })
                 } else {
                     listOfNotNull(
-                        messageEvent(GameState.getPlayer(event.source), "The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the ${depositThing.name}."),
+                        eventWithPlayer(event.source) { MessageEvent(it, "The ${event.item.name} slides down the chute and is milled into $resultItem as it collects in the ${depositThing.name}.") },
                         RemoveItemEvent(event.source, sourceItem),
                         SpawnItemEvent(resultItem, 1, depositThing)
                     )
@@ -136,11 +135,11 @@ class CommonBehaviors : BehaviorResource {
                 when {
                     recipe == null -> listOf()
                     !event.source.isPlayer() -> listOf()
-                    sourceItem == null -> listOfNotNull(DiscoverRecipeEvent(GameState.getPlayer(event.source), recipe))
+                    sourceItem == null -> listOfNotNull(eventWithPlayer(event.source) { DiscoverRecipeEvent(it, recipe) })
                     else -> listOfNotNull(
                         RemoveItemEvent(event.source, sourceItem),
                         RemoveScopeEvent(sourceItem),
-                        DiscoverRecipeEvent(GameState.getPlayer(event.source), recipe)
+                        eventWithPlayer(event.source) { DiscoverRecipeEvent(it, recipe) }
                     )
                 }
             }

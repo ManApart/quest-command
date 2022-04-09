@@ -10,6 +10,4 @@ class Save : EventListener<SaveEvent>() {
 
         println("Saved ${event.source.thing.name} in ${GameState.gameName}.")
     }
-
-
 }

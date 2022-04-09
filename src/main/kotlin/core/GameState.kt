@@ -1,6 +1,7 @@
 package core
 
 import conversation.Conversation
+import core.events.Event
 import core.properties.Properties
 import core.thing.Thing
 import system.debug.DebugType
@@ -13,22 +14,29 @@ object GameState {
     val players = mutableMapOf(0 to GameManager.newPlayer())
     val player get() = players[0]!!
     val aliases = mutableMapOf<String, String>()
+    //Conversation should be a list?
     var conversation = Conversation(player.thing, player.thing)
-
-    fun getPlayer(creature: Thing): Player? {
-        return players.values.firstOrNull { it.thing == creature }
-    }
 
     fun reset() {
         putPlayer(GameManager.newPlayer())
         properties = Properties()
     }
 
+    fun getPlayer(id: Int): Player? {
+        return players[id]
+    }
+
+    fun getPlayer(creature: Thing): Player? {
+        return players.values.firstOrNull { it.thing == creature }
+    }
+
     fun putPlayer(player: Player){
         players[player.id] = player
     }
 
-
+    fun nextPlayerId(): Int {
+        return players.keys.maxOf { it } + 1
+    }
 
     fun getDebugBoolean(key: DebugType): Boolean {
         return properties.values.getBoolean(key.propertyName)
@@ -42,6 +50,10 @@ object GameState {
         return properties.values.put(key.propertyName, value)
     }
 
+}
+
+fun eventWithPlayer(creature: Thing, event: (Player) -> Event): Event? {
+    return GameState.getPlayer(creature)?.let { event(it) }
 }
 
 

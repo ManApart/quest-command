@@ -52,7 +52,7 @@ class CommandParser(private val commandSource: Player) {
     private fun parseSingleCommand(line: String) {
         val args: List<String> = cleanLine(line)
         if (args.isEmpty()) {
-            CommandParsers.unknownCommand.execute(listOf(line))
+            CommandParsers.unknownCommand.execute(commandSource, listOf(line))
         } else {
             val aliasCommand = findAliasCommand(args[0])
             if (aliasCommand != null) {
@@ -63,7 +63,7 @@ class CommandParser(private val commandSource: Player) {
                     if (CommandParsers.castCommand.hasWord(args[0])) {
                         executeCommand(CommandParsers.castCommand, listOf("c") + args)
                     } else {
-                        CommandParsers.unknownCommand.execute(listOf(line))
+                        CommandParsers.unknownCommand.execute(commandSource, listOf(line))
                     }
                 } else {
                     executeCommand(command, args)

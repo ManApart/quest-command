@@ -1,7 +1,6 @@
 package core.history
 
 import core.GameState
-import core.GameState.player
 import core.Player
 import core.thing.Thing
 import system.debug.DebugType
@@ -90,12 +89,15 @@ fun displayUpdateEnd(message: String) {
 }
 
 object GameLogger {
+    //TODO - make map based on player id, remove main
     //Thing hashcode changes and breaks == as a key lookup
     //Instead use a list and filter for referential equality
     val histories = mutableSetOf<GameLog>()
 
     init {
-        track(GameState.player)
+        GameState.players.values.forEach {
+            track(it)
+        }
     }
 
     var main = getHistory(GameState.player)
@@ -110,7 +112,7 @@ object GameLogger {
 
     fun trackNewMain(player: Player) {
         track(player)
-        main = getHistory(GameState.player)
+        main = getHistory(player)
     }
 
     fun reset() {

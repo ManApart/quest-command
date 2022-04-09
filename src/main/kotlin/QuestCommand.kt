@@ -8,10 +8,10 @@ import core.history.TerminalPrinter
 fun main(args: Array<String>) {
     EventManager.registerListeners()
     GameManager.newOrLoadGame()
-    CommandParsers.parseInitialCommand(GameState.player, args)
+    CommandParsers.parseInitialCommand(GameState.getPlayer(0)!!, args)
     TerminalPrinter.print()
     while (GameManager.playing){
-        CommandParsers.parseCommand(GameState.player, readLine() ?: "")
+        CommandParsers.parseCommand(GameState.getPlayer(0)!!, readLine() ?: "")
         TerminalPrinter.print()
     }
 }

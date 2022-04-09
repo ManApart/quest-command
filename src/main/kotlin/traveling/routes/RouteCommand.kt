@@ -1,7 +1,6 @@
 package traveling.routes
 
 import core.GameState
-import core.GameState.player
 import core.Player
 import core.commands.Args
 import core.commands.Command
@@ -41,7 +40,7 @@ class RouteCommand : Command() {
 
         when {
             otherArgs.isEmpty() -> EventManager.postEvent(ViewRouteEvent(source.thing))
-            else -> thingLocation(source.thing, otherArgs, depth, player)
+            else -> thingLocation(source.thing, otherArgs, depth, source)
         }
     }
 

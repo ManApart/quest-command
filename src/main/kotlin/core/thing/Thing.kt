@@ -77,7 +77,7 @@ data class Thing(
     }
 
     fun isPlayer(): Boolean {
-        return this == GameState.player.thing
+        return GameState.getPlayer(this) != null
     }
 
     fun getTopParent(): Thing {

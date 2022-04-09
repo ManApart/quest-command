@@ -28,6 +28,7 @@ class UseItemOnIngredientRecipe : UseListener() {
         val player = GameState.getPlayer(event.source)
 
         when {
+            player == null -> println("Player is null")
             thingRecipes.size + sourceRecipes.size + itemOnlyRecipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${(thingRecipes + sourceRecipes + itemOnlyRecipes).joinToString(" or ") { it.name }}")
             thingRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, thingRecipes.first(), event.used))
             sourceRecipes.size == 1 -> EventManager.postEvent(CraftRecipeEvent(player, sourceRecipes.first(), event.usedOn))

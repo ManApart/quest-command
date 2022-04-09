@@ -2,6 +2,7 @@ package core.commands
 
 import core.AUTO_SAVE
 import core.GameState
+import core.Player
 import core.history.SessionHistory
 import core.history.display
 import core.thing.Thing
@@ -24,8 +25,8 @@ class UnknownCommand : Command() {
         return listOf("")
     }
 
-    fun execute(args: List<String>) {
-        execute(GameState.player.thing, "", args)
+    fun execute(source: Player, args: List<String>) {
+        execute(source.thing, "", args)
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

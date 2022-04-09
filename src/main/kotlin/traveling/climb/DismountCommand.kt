@@ -1,6 +1,5 @@
 package traveling.climb
 
-import core.GameState
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
@@ -38,7 +37,7 @@ class DismountCommand : Command() {
 
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbThing!!, origin, exit))
-                source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(GameState.player.thing, GameState.player.thing.climbThing!!, origin, thingLocation))
+                source.location.getDistanceToLowestNodeInNetwork() == 0 -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbThing!!, origin, thingLocation))
                 else -> source.displayToMe("You can't safely dismount from here, but you may be able to jump down.")
             }
         } else {
