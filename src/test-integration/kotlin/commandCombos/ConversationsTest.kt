@@ -25,7 +25,7 @@ class ConversationsTest {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
         CommandParsers.parseCommand(GameState.player, "why is the sky blue?")
-        assertEquals("Farmer", GameState.conversation.getLatestSpeaker().name)
+        assertEquals("Farmer", GameState.conversations.first().getLatestSpeaker().name)
     }
 
     @Test
