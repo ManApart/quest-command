@@ -8,7 +8,6 @@ import core.history.display
 class EndConversation : EventListener<EndConversationEvent>() {
     override fun execute(event: EndConversationEvent) {
         CommandParsers.getParser(event.source).commandInterceptor = null
-        GameState.getConversation(event.source.thing)?.let { GameState.conversations.remove(it) }
         event.source.display("The conversation ends.")
     }
 }

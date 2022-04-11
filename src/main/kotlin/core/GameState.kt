@@ -14,7 +14,6 @@ object GameState {
     val players = mutableMapOf(0 to GameManager.newPlayer())
     val player get() = players[0]!!
     val aliases = mutableMapOf<String, String>()
-    val conversations = mutableListOf<Conversation>()
 
     fun reset() {
         putPlayer(GameManager.newPlayer())
@@ -35,10 +34,6 @@ object GameState {
 
     fun nextPlayerId(): Int {
         return players.keys.maxOf { it } + 1
-    }
-
-    fun getConversation(participant: Thing) : Conversation? {
-        return conversations.firstOrNull { it.containsParticipant(participant) }
     }
 
     fun getDebugBoolean(key: DebugType): Boolean {
