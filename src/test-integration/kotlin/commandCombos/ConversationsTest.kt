@@ -1,5 +1,6 @@
 package commandCombos
 
+import conversation.ConversationCommandInterceptor
 import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
@@ -25,7 +26,8 @@ class ConversationsTest {
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
         CommandParsers.parseCommand(GameState.player, "why is the sky blue?")
-        assertEquals("Farmer", GameState.conversations.first().getLatestSpeaker().name)
+        val interceptor= CommandParsers.getParser(GameState.player).commandInterceptor as ConversationCommandInterceptor
+        assertEquals("Farmer", interceptor.conversation.getLatestSpeaker().name)
     }
 
     @Test
