@@ -10,6 +10,10 @@ import core.events.EventManager
 
 class ConversationCommandInterceptor(val conversation: Conversation) : CommandInterceptor {
 
+    override fun ignoredCommands(): List<String> {
+        return listOf()
+    }
+
     override fun parseCommand(source: Player, line: String) {
         val commandLine = CommandParsers.cleanLine(line).joinToString(" ")
 
