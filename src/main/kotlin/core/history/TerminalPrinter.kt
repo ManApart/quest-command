@@ -4,7 +4,7 @@ object TerminalPrinter {
     private var lastFlushed = 0
 
     fun print() {
-        val history = GameLogger.main
+        val history = GameLogger.getMainHistory()
         history.endCurrent()
         history.history.subList(lastFlushed, history.history.size).forEach { io ->
             io.outPut.forEach { line ->

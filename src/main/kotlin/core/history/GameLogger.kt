@@ -24,9 +24,9 @@ fun Player.displayToMe(message: String) {
  */
 fun Thing.displayToOthers(message: String) {
     if (isPlayer()) {
-        GameLogger.histories.filter { it.listener.thing !== this }.forEach { it.print(message) }
+        GameLogger.histories.values.filter { it.listener.thing !== this }.forEach { it.print(message) }
     } else {
-        GameLogger.histories.forEach { it.print(message) }
+        GameLogger.histories.values.forEach { it.print(message) }
     }
 }
 
@@ -41,7 +41,7 @@ fun display(message: String) {
  * The message is evaluated for each listener, regardless of perception
  */
 fun display(message: (Player) -> String) {
-    GameLogger.histories.forEach { history ->
+    GameLogger.histories.values.forEach { history ->
         val messageText = message(history.listener)
         history.print(messageText)
     }
@@ -66,7 +66,7 @@ fun Player.display(message: (Player) -> String) {
  * The message is evaluated for each listener that perceives this thing
  */
 fun Thing.display(message: (Player) -> String) {
-    GameLogger.histories
+    GameLogger.histories.values
         .filter { it.listener.thing.perceives(this) }
         .forEach { history ->
             val messageText = message(history.listener)
@@ -89,10 +89,7 @@ fun displayUpdateEnd(message: String) {
 }
 
 object GameLogger {
-    //TODO - make map based on player id, remove main
-    //Thing hashcode changes and breaks == as a key lookup
-    //Instead use a list and filter for referential equality
-    val histories = mutableSetOf<GameLog>()
+    val histories = mutableMapOf<Int, GameLog>()
 
     init {
         GameState.players.values.forEach {
@@ -100,44 +97,42 @@ object GameLogger {
         }
     }
 
-    var main = getHistory(GameState.player)
-
     fun track(player: Player) {
-        histories.add(GameLog(player))
+        histories[player.id] = GameLog(player)
     }
 
     fun stopTracking(player: Player) {
-        histories.removeIf {it.listener.id == player.id}
-    }
-
-    fun trackNewMain(player: Player) {
-        track(player)
-        main = getHistory(player)
+        histories.remove(player.id)
     }
 
     fun reset() {
         histories.clear()
-        trackNewMain(GameState.player)
+        track(GameState.player)
     }
 
     fun addInput(input: String) {
         //Should we only add based on the current actor or add to all?
-        histories.forEach { it.addInput(input) }
+        histories.values.forEach { it.addInput(input) }
     }
 
     fun setTimeTaken(timeTaken: Long) {
-        histories.forEach { it.getCurrent().timeTaken = timeTaken }
+        histories.values.forEach { it.getCurrent().timeTaken = timeTaken }
     }
 
     fun hasHistory(source: Player): Boolean {
-        return histories.any { it.listener === source }
+        return histories.containsKey(source.id)
+    }
+
+    //Shortcut for terminal printing, tests, etc where we only care about the main history
+    fun getMainHistory(): GameLog {
+        return getHistory(GameState.player)
     }
 
     fun getHistory(source: Player): GameLog {
-        var candidate = histories.firstOrNull { it.listener == source }
+        var candidate = histories.get(source.id)
         if (candidate == null) {
             candidate = GameLog(source)
-            histories.add(candidate)
+            histories[source.id] = candidate
         }
         return candidate
     }

@@ -6,6 +6,7 @@ import core.thing.Thing
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class GameLogManagerTest {
 
@@ -17,18 +18,18 @@ class GameLogManagerTest {
     @Test
     fun beforeChatHistoryIsEmpty(){
         val history = GameLogger.getHistory(GameState.player)
-        Assert.assertEquals(InputOutput().input, history.getLastInput())
-        Assert.assertEquals("", history.getLastOutput())
-        Assert.assertEquals(0, history.history.size)
+        assertEquals(InputOutput().input, history.getLastInput())
+        assertEquals("", history.getLastOutput())
+        assertEquals(0, history.history.size)
     }
 
     @Test
     fun displayAddsMessageToHistory(){
         val message = "Test Message"
         display(message)
-        val history = GameLogger.getHistory(GameState.player)
-        Assert.assertEquals(InputOutput().input, history.getLastInput())
-        Assert.assertEquals(message, history.getLastOutput())
+        val history = GameLogger.getMainHistory()
+        assertEquals(InputOutput().input, history.getLastInput())
+        assertEquals(message, history.getLastOutput())
     }
 
     @Test
@@ -39,7 +40,7 @@ class GameLogManagerTest {
         GameLogger.track(player)
         player.displayToMe(message)
         val history = GameLogger.getHistory(player)
-        Assert.assertEquals(message, history.getLastOutput())
+        assertEquals(message, history.getLastOutput())
     }
 
     @Test
@@ -53,6 +54,6 @@ class GameLogManagerTest {
         GameLogger.track(player2)
         player2.displayToMe(message)
         val history = GameLogger.getHistory(player2)
-        Assert.assertEquals(message, history.getLastOutput())
+        assertEquals(message, history.getLastOutput())
     }
 }

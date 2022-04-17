@@ -111,7 +111,7 @@ fun loadGame(gameName: String) {
     val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
     GameLogger.stopTracking(GameState.player)
     loadCharacter(gameName, characterName, 0)
-    GameLogger.trackNewMain(GameState.player)
+    GameLogger.track(GameState.player)
     CommandParsers.addParser(GameState.player)
     GameManager.playing = true
 }

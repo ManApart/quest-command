@@ -36,7 +36,7 @@ class ResponseRequestIntegrationTest {
 
         val input = "pickup wheat && 2"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You picked up Wheat Flour.", GameLogger.main.getLastOutput())
+        assertEquals("You picked up Wheat Flour.", GameLogger.getMainHistory().getLastOutput())
     }
 
 }

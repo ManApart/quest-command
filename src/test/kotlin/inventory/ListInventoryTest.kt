@@ -32,7 +32,7 @@ class ListInventoryTest {
         creature.inventory.add(createItem())
         val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
-        assertEquals("Closed Chest has:\n\tApple", GameLogger.main.getLastOutput())
+        assertEquals("Closed Chest has:\n\tApple", GameLogger.getMainHistory().getLastOutput())
     }
 
     @Test
@@ -40,7 +40,7 @@ class ListInventoryTest {
         val creature = createClosedChest()
         val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
-        assertEquals("Closed Chest has no items.", GameLogger.main.getLastOutput())
+        assertEquals("Closed Chest has no items.", GameLogger.getMainHistory().getLastOutput())
     }
 
     @Test
@@ -60,7 +60,7 @@ class ListInventoryTest {
         creature.body.equip(item)
         val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
-        assertEquals("Soldier has:\n\t* Chestplate", GameLogger.main.getLastOutput())
+        assertEquals("Soldier has:\n\t* Chestplate", GameLogger.getMainHistory().getLastOutput())
     }
 
     @Test
@@ -84,7 +84,7 @@ class ListInventoryTest {
 
         val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
-        assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", GameLogger.main.getLastOutput())
+        assertEquals("Soldier has:\n\t* Pouch\n\t\tApple", GameLogger.getMainHistory().getLastOutput())
     }
 
     @Test
@@ -93,7 +93,7 @@ class ListInventoryTest {
         creature.inventory.add(Thing("Apple"))
         val event = ListInventoryEvent(GameState.player, creature)
         ListInventory().execute(event)
-        assertEquals("Cannot view inventory of Chest", GameLogger.main.getLastOutput())
+        assertEquals("Cannot view inventory of Chest", GameLogger.getMainHistory().getLastOutput())
     }
 
 
