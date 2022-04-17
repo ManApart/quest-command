@@ -34,7 +34,7 @@ class CreateCharacterCommand : Command() {
         when {
             args.isEmpty() -> source.displayToMe("Please specify a character name or use play ls to list current characters.")
             saveNames.contains(argString) -> source.displayToMe("$properName already exists as a character.")
-            else -> EventManager.postEvent(CreateCharacterEvent(source, argString))
+            else -> EventManager.postEvent(CreateCharacterEvent(source, properName))
         }
     }
 }

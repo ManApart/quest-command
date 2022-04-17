@@ -11,10 +11,21 @@ import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
+        val id = event.source.id
+        //Do we need to save?
         save(GameState.gameName)
-        //TODO - only load if new player not in memory
-        loadCharacter(event.source, GameState.gameName, event.characterName)
-        event.source.displayToMe("Now playing ${event.source.thing.name} in ${GameState.gameName}.")
+        val newCharacter = GameState.players.values.firstOrNull { it.thing.name.lowercase() == event.characterName.lowercase() }
+        if (newCharacter != null) {
+            //Remove both old references, set the new character's id to match the caller
+            GameState.players.remove(id)
+            GameState.players.remove(newCharacter.id)
+            GameState.putPlayer(newCharacter.copy(id = id))
+        } else {
+            loadCharacter(event.source, GameState.gameName, event.characterName)
+        }
+        val selected = GameState.players[id]!!
+
+        selected.displayToMe("Now playing ${selected.thing.name} in ${GameState.gameName}.")
     }
 
     private fun loadCharacter(source: Player, gameName: String, characterName: String) {
