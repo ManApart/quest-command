@@ -11,9 +11,9 @@ import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
-        save(GameState.gameName, event.source)
+        save(GameState.gameName)
         //TODO - only load if new player not in memory
-        loadCharacter(event.source, GameState.gameName, event.saveName)
+        loadCharacter(event.source, GameState.gameName, event.characterName)
         event.source.displayToMe("Now playing ${event.source.thing.name} in ${GameState.gameName}.")
     }
 

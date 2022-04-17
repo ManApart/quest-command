@@ -60,13 +60,15 @@ private fun getFilesAndFolders(path: String, ignoredFileNames: List<String> = li
 }
 
 
-fun save(rawGameName: String, player: Player) {
+fun save(rawGameName: String) {
     val gameName = cleanPathPart(rawGameName)
     val gamePath = clean(directory, gameName)
     saveSessionStats()
-    persist(player, gamePath)
+    GameState.players.values.forEach {
+        persist(it, gamePath)
+    }
     LocationManager.getNetworks().forEach { save(gamePath, it) }
-    saveGameState(player.thing, gamePath)
+    saveGameState(GameState.player.thing, gamePath)
     saveTopLevelMetadata(gameName)
 }
 

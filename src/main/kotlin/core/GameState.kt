@@ -1,6 +1,5 @@
 package core
 
-import conversation.Conversation
 import core.events.Event
 import core.properties.Properties
 import core.thing.Thing
