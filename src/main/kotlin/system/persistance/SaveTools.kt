@@ -128,8 +128,8 @@ fun loadCharacter(gameName: String, saveName: String, id: Int) {
 }
 
 fun getGamesMetaData(): Properties {
-    return loadFromPath(cleanPathToFile(".json", directory, "games")) ?: Properties()
-
+    val props: PropertiesP? = loadFromPath(cleanPathToFile(".json", directory, "games"))
+    return props?.parsed() ?: Properties()
 }
 
 fun writeSave(directoryName: String, saveName: String, json: String) {
