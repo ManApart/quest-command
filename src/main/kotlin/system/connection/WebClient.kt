@@ -2,6 +2,7 @@ package system.connection
 
 import core.GameState
 import core.POLL_CONNECTION
+import core.history.displayToMe
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -14,11 +15,12 @@ data class ServerInfo(val gameName: String = "Game", val userId: Int = 0, val va
 data class ServerResponse(val lastResponse: Int, val history: List<String>)
 
 object WebClient {
+    private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
     var host = "localhost"
     var port = "8080"
-    var lastResponse = 0
+    var latestResponse = 0
     var playerId = 0
-    private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
+    val latestInfo = ServerInfo()
 
     fun createServerIfPossible(host: String, port: String): ServerInfo {
         val info = getServerInfo(host, port)
@@ -54,38 +56,36 @@ object WebClient {
                     setBody(line)
                 }.body()
             }
-            this@WebClient.lastResponse = response.lastResponse
+            this@WebClient.latestResponse = response.lastResponse
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server")
         }
     }
 
-    fun getServerUpdates(): List<String> {
-        return try {
-            val response: ServerResponse = runBlocking {
-                client.get("$host:$port/updates/$playerId") {
-                    parameter("since", lastResponse)
-                }.body()
-            }
-            this@WebClient.lastResponse = response.lastResponse
-            response.history
-        } catch (e: Exception) {
-            listOf("Unable to hit server")
-        }
-
-    }
-
+    @OptIn(DelicateCoroutinesApi::class)
     private fun pollForUpdates() {
         GlobalScope.launch {
             while (true) {
-                async {
-                    val updates = getServerUpdates()
-                    //TODO - add these to the logger
-                    updates.forEach { println(it) }
-                    delay(1000)
-                }.await()
+//                async {
+                val updates = getServerUpdates()
+                updates.forEach { GameState.player.displayToMe(it) }
+                delay(1000)
+//                }.await()
             }
+        }
+    }
+
+    private suspend fun getServerUpdates(): List<String> {
+        return try {
+            val response: ServerResponse = client.get("$host:$port/updates/$playerId") {
+                parameter("since", latestResponse)
+            }.body()
+
+            this@WebClient.latestResponse = response.lastResponse
+            response.history
+        } catch (e: Exception) {
+            listOf("Unable to hit server")
         }
     }
 
