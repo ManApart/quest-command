@@ -5,6 +5,6 @@ import core.history.display
 
 class ConnectInfo : EventListener<ConnectInfoEvent>() {
     override fun execute(event: ConnectInfoEvent) {
-        event.source.display(WebClient.getServerInfo())
+        event.source.display(WebClient.getServerInfo().toString())
     }
 }

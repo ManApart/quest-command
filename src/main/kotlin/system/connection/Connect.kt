@@ -1,18 +1,18 @@
 package system.connection
 
+import core.commands.CommandParsers
 import core.events.EventListener
 import core.history.display
 
 class Connect : EventListener<ConnectEvent>() {
 
     override fun execute(event: ConnectEvent) {
-        if (!WebClient.isValidServer(event.host, event.port)) {
-            event.source.display("Could not connect to ${event.host}:${event.port}")
+        val info = WebClient.createServerIfPossible(event.host, event.port)
+        if (info.validServer) {
+            CommandParsers.getParser(event.source).commandInterceptor = ConnectionCommandInterceptor()
+            event.source.display("Connected. Server info: $info")
         } else {
-            WebClient.host = event.host
-            WebClient.port = event.port
-//        CommandParsers.getParser(event.source).commandInterceptor  = ConversationCommandInterceptor(Conversation(event.source.thing, event.listener))
-            event.source.display("Connected. Server info: ${WebClient.getServerInfo()}")
+            event.source.display("Could not connect to ${event.host}:${event.port}")
         }
     }
 }
