@@ -39,7 +39,7 @@ class HealTest {
             EffectManager.reset()
         }
 
-        private val thingA = Player(0, Thing("thingA"))
+        private val thingA = Player("Thinga", Thing("thingA"))
         private val scope = GameState.player.thing.currentLocation()
 
         init {

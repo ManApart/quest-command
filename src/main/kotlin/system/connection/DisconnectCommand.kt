@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.events.EventManager
 
+const val SELF_HOST = "self"
 class DisconnectCommand : Command() {
     override fun getAliases(): List<String> {
         return listOf("Disconnect")
@@ -22,6 +23,6 @@ class DisconnectCommand : Command() {
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        EventManager.postEvent(ConnectEvent(source))
+        EventManager.postEvent(ConnectEvent(source, source.name, SELF_HOST))
     }
 }

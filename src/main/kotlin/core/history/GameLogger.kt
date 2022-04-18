@@ -89,7 +89,7 @@ fun displayUpdateEnd(message: String) {
 }
 
 object GameLogger {
-    val histories = mutableMapOf<Int, GameLog>()
+    val histories = mutableMapOf<String, GameLog>()
 
     init {
         GameState.players.values.forEach {
@@ -98,11 +98,11 @@ object GameLogger {
     }
 
     fun track(player: Player) {
-        histories[player.id] = GameLog(player)
+        histories[player.name] = GameLog(player)
     }
 
     fun stopTracking(player: Player) {
-        histories.remove(player.id)
+        histories.remove(player.name)
     }
 
     fun reset() {
@@ -120,7 +120,7 @@ object GameLogger {
     }
 
     fun hasHistory(source: Player): Boolean {
-        return histories.containsKey(source.id)
+        return histories.containsKey(source.name)
     }
 
     //Shortcut for terminal printing, tests, etc where we only care about the main history
@@ -129,10 +129,10 @@ object GameLogger {
     }
 
     fun getHistory(source: Player): GameLog {
-        var candidate = histories.get(source.id)
+        var candidate = histories.get(source.name)
         if (candidate == null) {
             candidate = GameLog(source)
-            histories[source.id] = candidate
+            histories[source.name] = candidate
         }
         return candidate
     }

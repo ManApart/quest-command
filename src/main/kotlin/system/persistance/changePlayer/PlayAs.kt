@@ -11,19 +11,19 @@ import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
-        val id = event.source.id
+        val name = event.source.name
         //Do we need to save?
         save(GameState.gameName)
         val newCharacter = GameState.players.values.firstOrNull { it.thing.name.lowercase() == event.characterName.lowercase() }
         if (newCharacter != null) {
             //Remove both old references, set the new character's id to match the caller
-            GameState.players.remove(id)
-            GameState.players.remove(newCharacter.id)
-            GameState.putPlayer(newCharacter.copy(id = id))
+            GameState.players.remove(name)
+            GameState.players.remove(newCharacter.name)
+            GameState.putPlayer(newCharacter.copy(name = name))
         } else {
             loadCharacter(event.source, GameState.gameName, event.characterName)
         }
-        val selected = GameState.players[id]!!
+        val selected = GameState.getPlayer(name)!!
 
         selected.displayToMe("Now playing ${selected.thing.name} in ${GameState.gameName}.")
     }
@@ -43,7 +43,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
                 options(saves)
                 command { "be $it" }
             }
-            else -> system.persistance.loadCharacter(gameName, saves.first(), source.id)
+            else -> system.persistance.loadCharacter(gameName, saves.first(), source.name)
         }
     }
 

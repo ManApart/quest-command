@@ -6,7 +6,6 @@ import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
 import core.properties.PropertiesP
-import core.thing.Thing
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -68,7 +67,7 @@ fun save(rawGameName: String) {
         persist(it, gamePath)
     }
     LocationManager.getNetworks().forEach { save(gamePath, it) }
-    saveGameState(GameState.player.thing, gamePath)
+    saveGameState(gamePath)
     saveTopLevelMetadata(gameName)
 }
 
@@ -78,8 +77,7 @@ private fun saveSessionStats() {
     }
 }
 
-private fun saveGameState(player: Thing, path: String) {
-    GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, cleanPathPart(player.name))
+private fun saveGameState(path: String) {
     GameState.properties.values.put(AUTO_LOAD, true)
     val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
     val json = Json.encodeToString(GameStateP())
@@ -108,9 +106,10 @@ fun save(gameName: String, network: Network) {
 //Instead of saving character at top level, save the path to the character's location and load that?
 fun loadGame(gameName: String) {
     loadGameState(gameName)
-    val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
     GameLogger.stopTracking(GameState.player)
-    loadCharacter(gameName, characterName, 0)
+    GameState.players.values.forEach { player ->
+        loadCharacter(gameName, player.thing.name, player.name)
+    }
     GameLogger.track(GameState.player)
     CommandParsers.addParser(GameState.player)
     GameManager.playing = true
@@ -121,10 +120,10 @@ fun loadGameState(gameName: String) {
     gameStateData.updateGameState()
 }
 
-fun loadCharacter(gameName: String, saveName: String, id: Int) {
+fun loadCharacter(gameName: String, saveName: String, playerName: String) {
     val path = cleanPathToFile(".json", directory, gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    GameState.putPlayer(json.parsed(id, path, null))
+    GameState.putPlayer(json.parsed(playerName, path, null))
 }
 
 fun getGamesMetaData(): Properties {

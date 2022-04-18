@@ -1,6 +1,7 @@
 package system.persistance.loading
 
 import core.GameState
+import core.commands.CommandParsers
 import core.commands.respond
 import core.events.EventListener
 import core.history.displayToMe
@@ -30,6 +31,7 @@ class Load : EventListener<LoadEvent>() {
 
     private fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
+        CommandParsers.reset()
         GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName}.")
     }
 

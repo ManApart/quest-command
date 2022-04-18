@@ -6,7 +6,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import system.persistance.clean
 import system.persistance.cleanPathToFile
-import system.persistance.loadFromPath
 import system.persistance.writeSave
 import traveling.location.Network
 
@@ -28,9 +27,8 @@ data class PlayerP(
 ) {
     constructor(b: Player) : this(b.knownRecipes.map { it.name }, b.knownLocations, ThingP(b.thing))
 
-    fun parsed(id: Int, path: String, parentLocation: Network? = null): Player {
-
-        val player = Player(id, thing.parsed(path, parentLocation))
+    fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
+        val player = Player(playerName, thing.parsed(path, parentLocation))
         recipes.forEach { recipeName ->
             player.knownRecipes.add(RecipeManager.getRecipe(recipeName))
         }

@@ -7,7 +7,7 @@ import traveling.location.Route
 import traveling.location.network.LocationNode
 
 data class Player(
-    val id: Int,
+    val name: String,
     val thing: Thing
 ) {
     //Map of Network to Location Node Name. Presence means it's discovered
@@ -16,11 +16,11 @@ data class Player(
     var compassRoute: Route? = null
 
     override fun equals(other: Any?): Boolean {
-        return other is Player && id == other.id
+        return other is Player && name == other.name
     }
 
     override fun hashCode(): Int {
-        return id
+        return name.length
     }
 
     fun isPlayer(): Boolean {

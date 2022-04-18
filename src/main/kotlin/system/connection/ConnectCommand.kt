@@ -1,12 +1,9 @@
 package system.connection
 
-import conversation.parsing.QuestionType
-import conversation.parsing.Verb
 import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
-import core.utility.capitalize2
 
 class ConnectCommand : Command() {
     override fun getAliases(): List<String> {
@@ -20,7 +17,8 @@ class ConnectCommand : Command() {
     override fun getManual(): String {
         return """  
 	Connect - View your current connection information.
-	Connect <host> *<port> - Connect to a given host and port. Defaults to localhost and 8080
+	Connect <playerName> <host> *<port> - Connect to a given host and port. Defaults to localhost and 8080
+    If the playerName matches no players on the server, a new one will be created
     """
     }
 

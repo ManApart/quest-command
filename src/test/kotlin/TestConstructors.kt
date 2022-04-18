@@ -165,7 +165,8 @@ fun createMockedGame() {
     WeatherManager.reset()
 
     EventManager.clear()
-    GameState.putPlayer(GameManager.newPlayer())
+    GameState.reset()
+    CommandParsers.reset()
     CommandParsers.setResponseRequest(GameState.player, null)
 
     GameLogger.reset()

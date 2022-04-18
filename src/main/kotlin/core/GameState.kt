@@ -10,17 +10,18 @@ object GameState {
     var gameName = "Kanbara"
     var properties = Properties()
     val timeManager = TimeManager()
-    val players = mutableMapOf(0 to GameManager.newPlayer())
-    val player get() = players[0]!!
+    val players = mutableMapOf("Player" to GameManager.newPlayer())
+    val player get() = players.values.first()
     val aliases = mutableMapOf<String, String>()
 
     fun reset() {
+        players.clear()
         putPlayer(GameManager.newPlayer())
         properties = Properties()
     }
 
-    fun getPlayer(id: Int): Player? {
-        return players[id]
+    fun getPlayer(name: String): Player? {
+        return players[name.lowercase()]
     }
 
     fun getPlayer(creature: Thing): Player? {
@@ -28,11 +29,7 @@ object GameState {
     }
 
     fun putPlayer(player: Player){
-        players[player.id] = player
-    }
-
-    fun nextPlayerId(): Int {
-        return players.keys.maxOf { it } + 1
+        players[player.name.lowercase()] = player
     }
 
     fun getDebugBoolean(key: DebugType): Boolean {
@@ -57,7 +54,6 @@ fun eventWithPlayer(creature: Thing, event: (Player) -> Event): Event? {
 const val AUTO_SAVE = "autosave"
 const val AUTO_LOAD = "autoload"
 const val SKIP_SAVE_STATS = "skip save stats"
-const val LAST_SAVE_CHARACTER_NAME = "last save character name"
 const val LAST_SAVE_GAME_NAME = "last save character name"
 const val PRINT_WITHOUT_FLUSH = "print without needing to flush histories"
 const val POLL_CONNECTION = "poll server on cadence for updates"

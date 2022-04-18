@@ -35,7 +35,7 @@ class GameLogManagerTest {
     @Test
     fun trackThing(){
         val thing = Thing("Bob")
-        val player = Player(2, thing)
+        val player = Player("Player", thing)
         val message = "Test Message"
         GameLogger.track(player)
         player.displayToMe(message)
@@ -46,9 +46,9 @@ class GameLogManagerTest {
     @Test
     fun thing(){
         val thing = Thing("Bob")
-        val player = Player(2, thing)
+        val player = Player("Player", thing)
         val thing2 = Thing("Bob")
-        val player2 = Player(2, thing2)
+        val player2 = Player("Player", thing2)
         val message = "Test Message"
         GameLogger.track(player)
         GameLogger.track(player2)

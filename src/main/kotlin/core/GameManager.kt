@@ -47,12 +47,13 @@ object GameManager {
         setDefaultProperties(testing)
 
         GameState.gameName = gameName
-        GameState.putPlayer(newPlayer(playerName))
+        val player = newPlayer(playerName)
+        GameState.putPlayer(player)
         CommandParsers.reset()
         GameLogger.reset()
 
-        giveStartingItems(GameState.player.thing)
-        EventManager.postEvent(ArriveEvent(GameState.player.thing, destination = LocationPoint(GameState.player.thing.location), method = "wake"))
+        giveStartingItems(player.thing)
+        EventManager.postEvent(ArriveEvent(player.thing, destination = LocationPoint(player.thing.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }
@@ -66,7 +67,6 @@ object GameManager {
 
     fun newPlayer(
         name: String = "Player",
-        id: Int = 0,
         description: String = "Our Hero!",
         body: String = "Human",
         location: LocationNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)
@@ -98,7 +98,7 @@ object GameManager {
             add("Creature")
         }
 
-        return Player(id, player)
+        return Player(name, player)
     }
 
     private fun giveStartingItems(player: Thing) {
