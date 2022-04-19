@@ -7,7 +7,7 @@ import core.history.display
 class Connect : EventListener<ConnectEvent>() {
 
     override fun execute(event: ConnectEvent) {
-        val info = WebClient.createServerIfPossible(event.host, event.port)
+        val info = WebClient.createServerConnectionIfPossible(event.host, event.port, event.playerName)
         if (info.validServer) {
             CommandParsers.getParser(event.source).commandInterceptor = ConnectionCommandInterceptor()
             event.source.display("Connected. Server info: $info")

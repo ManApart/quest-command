@@ -29,10 +29,21 @@ class ConnectCommand : Command() {
     override fun execute(source: Player, keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> EventManager.postEvent(ConnectInfoEvent(source))
-            args.size == 1 -> EventManager.postEvent(ConnectEvent(source, args.first()))
-            args.size == 2 && args.last().toIntOrNull() != null -> EventManager.postEvent(ConnectEvent(source, args.first(), args.last()))
+            args.size >= 2 -> {
+                val parsed = parseConnectArgs(args)
+                EventManager.postEvent(ConnectEvent(source, parsed.playerName, parsed.hostName, parsed.port))
+            }
             else -> source.displayToMe("Could not understand args ${args.joinToString(" ")}")
         }
-
     }
+
+    private fun parseConnectArgs(args: List<String>): ConnectionInfo {
+        val port = if (args.last().toIntOrNull() != null) args.last() else ""
+        val host = if (port.isBlank()) args.last() else args[args.size - 2]
+        val name = args.joinToString(" ").replace(port, "").replace(host, "")
+        return ConnectionInfo(name, host, port)
+    }
+
 }
+
+private data class ConnectionInfo(val playerName: String, val hostName: String, val port: String)
