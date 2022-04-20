@@ -11,24 +11,17 @@ import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
-        val name = event.source.name
         //Do we need to save?
         save(GameState.gameName)
-        val newCharacter = GameState.players.values.firstOrNull { it.thing.name.lowercase() == event.characterName.lowercase() }
+        val newCharacter = GameState.players.values.firstOrNull { it.thing.name.lowercase() == event.characterName.lowercase() } ?: loadCharacter(event.source, GameState.gameName, event.characterName)
         if (newCharacter != null) {
-            //Remove both old references, set the new character's id to match the caller
-            GameState.players.remove(name)
-            GameState.players.remove(newCharacter.name)
-            GameState.putPlayer(newCharacter.copy(name = name))
-        } else {
-            loadCharacter(event.source, GameState.gameName, event.characterName)
+            GameState.player = newCharacter
+            newCharacter.displayToMe("Now playing ${newCharacter.thing.name} in ${GameState.gameName}.")
         }
-        val selected = GameState.getPlayer(name)!!
 
-        selected.displayToMe("Now playing ${selected.thing.name} in ${GameState.gameName}.")
     }
 
-    private fun loadCharacter(source: Player, gameName: String, characterName: String) {
+    private fun loadCharacter(source: Player, gameName: String, characterName: String): Player? {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }
@@ -43,8 +36,9 @@ class PlayAs : EventListener<PlayAsEvent>() {
                 options(saves)
                 command { "be $it" }
             }
-            else -> system.persistance.loadCharacter(gameName, saves.first(), source.name)
+            else -> return system.persistance.loadCharacter(gameName, saves.first(), source.name)
         }
+        return null
     }
 
 

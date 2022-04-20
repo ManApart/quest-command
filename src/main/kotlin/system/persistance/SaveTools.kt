@@ -120,10 +120,10 @@ fun loadGameState(gameName: String) {
     gameStateData.updateGameState()
 }
 
-fun loadCharacter(gameName: String, saveName: String, playerName: String) {
+fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", directory, gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    GameState.putPlayer(json.parsed(playerName, path, null))
+    return json.parsed(playerName, path, null)
 }
 
 fun getGamesMetaData(): Properties {
