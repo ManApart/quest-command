@@ -10,12 +10,16 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.*
+import kotlinx.serialization.Serializable
 
-data class ServerInfo(val gameName: String = "Game", val playerName: String = "Player", val validServer: Boolean = false)
+@Serializable
+data class ServerInfo(val gameName: String = "Game", val playerNames: List<String> = listOf(), val validServer: Boolean = false)
+@Serializable
 data class ServerResponse(val lastResponse: Int, val history: List<String>)
 
 object WebClient {
     private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
+    var doPolling = false
     var host = "localhost"
     var port = "8080"
     var latestResponse = 0
@@ -23,6 +27,7 @@ object WebClient {
     var latestInfo = ServerInfo()
 
     fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
+        //TODO - create player if not exists
         latestInfo = getServerInfo(host, port)
         if (latestInfo.validServer) {
             this.host = host
@@ -53,20 +58,22 @@ object WebClient {
             this@WebClient.latestResponse = response.lastResponse
             response.history
         } catch (e: Exception) {
-            listOf("Unable to hit server")
+            listOf("Unable to hit server.")
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun pollForUpdates() {
+        doPolling = true
         GlobalScope.launch {
-            while (true) {
+            while (doPolling) {
                 if (latestInfo.validServer) {
-//                async {
-                    val updates = getServerUpdates()
-                    updates.forEach { GameState.player.displayToMe(it) }
-                    delay(1000)
-//                }.await()
+                    runBlocking {
+                        launch {
+                            val updates = getServerUpdates()
+                            updates.forEach { GameState.player.displayToMe(it) }
+                        }
+                        delay(1000)
+                    }
                 }
             }
         }
@@ -74,7 +81,7 @@ object WebClient {
 
     private suspend fun getServerUpdates(): List<String> {
         return try {
-            val response: ServerResponse = client.get("$host:$port/updates/$playerName") {
+            val response: ServerResponse = client.get("$host:$port/$playerName/history") {
                 parameter("since", latestResponse)
             }.body()
 

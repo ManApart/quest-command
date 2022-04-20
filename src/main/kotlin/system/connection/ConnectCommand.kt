@@ -27,21 +27,23 @@ class ConnectCommand : Command() {
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        when {
-            args.isEmpty() -> EventManager.postEvent(ConnectInfoEvent(source))
-            args.size >= 2 -> {
-                val parsed = parseConnectArgs(args)
-                EventManager.postEvent(ConnectEvent(source, parsed.playerName, parsed.hostName, parsed.port))
-            }
-            else -> source.displayToMe("Could not understand args ${args.joinToString(" ")}")
-        }
+        EventManager.postEvent(ConnectEvent(source, "Test", "http://localhost", "8080"))
+//        when {
+//            args.isEmpty() -> EventManager.postEvent(ConnectInfoEvent(source))
+//            args.size >= 2 -> {
+//                val parsed = parseConnectArgs(args)
+//                EventManager.postEvent(ConnectEvent(source, parsed.playerName, parsed.hostName, parsed.port))
+//            }
+//            else -> source.displayToMe("Could not understand args ${args.joinToString(" ")}")
+//        }
     }
 
     private fun parseConnectArgs(args: List<String>): ConnectionInfo {
-        val port = if (args.last().toIntOrNull() != null) args.last() else ""
+        val port = if (args.last().toIntOrNull() != null) args.last() else "8080"
         val host = if (port.isBlank()) args.last() else args[args.size - 2]
+        val cleanHost = if (host.startsWith("http")) host else "http://$host"
         val name = args.joinToString(" ").replace(port, "").replace(host, "")
-        return ConnectionInfo(name, host, port)
+        return ConnectionInfo(name, cleanHost, port)
     }
 
 }
