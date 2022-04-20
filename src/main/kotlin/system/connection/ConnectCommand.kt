@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
+import system.connection.WebClient.port
 
 class ConnectCommand : Command() {
     override fun getAliases(): List<String> {
@@ -27,22 +28,19 @@ class ConnectCommand : Command() {
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        EventManager.postEvent(ConnectEvent(source, "Test", "http://localhost", "8080"))
-//        when {
-//            args.isEmpty() -> EventManager.postEvent(ConnectInfoEvent(source))
-//            args.size >= 2 -> {
-//                val parsed = parseConnectArgs(args)
-//                EventManager.postEvent(ConnectEvent(source, parsed.playerName, parsed.hostName, parsed.port))
-//            }
-//            else -> source.displayToMe("Could not understand args ${args.joinToString(" ")}")
-//        }
+        if (args.isEmpty()) {
+            EventManager.postEvent(ConnectInfoEvent(source))
+        } else {
+            val parsed = parseConnectArgs(args)
+            EventManager.postEvent(ConnectEvent(source, parsed.playerName, parsed.hostName, parsed.port))
+        }
     }
 
     private fun parseConnectArgs(args: List<String>): ConnectionInfo {
+        val name = args.first()
         val port = if (args.last().toIntOrNull() != null) args.last() else "8080"
-        val host = if (port.isBlank()) args.last() else args[args.size - 2]
+        val host = if (args.size > 1) args[1] else "localhost"
         val cleanHost = if (host.startsWith("http")) host else "http://$host"
-        val name = args.joinToString(" ").replace(port, "").replace(host, "")
         return ConnectionInfo(name, cleanHost, port)
     }
 
