@@ -43,12 +43,11 @@ object GameManager {
         QuestManager.reset()
         LocationManager.reset()
         EventManager.reset()
-        GameState.reset()
         setDefaultProperties(testing)
 
         GameState.gameName = gameName
         val player = newPlayer(playerName)
-        GameState.putPlayer(player)
+        GameState.putPlayer(player, true)
         CommandParsers.reset()
         GameLogger.reset()
 

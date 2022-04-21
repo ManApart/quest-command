@@ -150,7 +150,7 @@ class PersistenceTest {
         EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
         EventManager.executeEvents()
         val postLoadPlayer = GameState.getPlayer("Saved Player")!!
-        assertEquals("Saved Player",postLoadPlayer.thing.name)
+        assertEquals("Saved Player", postLoadPlayer.thing.name)
         assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
         assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
 

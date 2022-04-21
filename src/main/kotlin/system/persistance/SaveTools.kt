@@ -107,9 +107,12 @@ fun save(gameName: String, network: Network) {
 fun loadGame(gameName: String) {
     loadGameState(gameName)
     GameLogger.stopTracking(GameState.player)
-    GameState.players.values.forEach { player ->
+    val newPlayers = GameState.players.values.map { player ->
         loadCharacter(gameName, player.thing.name, player.name)
     }
+    GameState.players.clear()
+    newPlayers.forEach { GameState.putPlayer(it) }
+    GameState.player = newPlayers.first()
     GameLogger.track(GameState.player)
     CommandParsers.addParser(GameState.player)
     GameManager.playing = true

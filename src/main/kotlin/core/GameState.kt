@@ -17,6 +17,7 @@ object GameState {
     fun reset() {
         players.clear()
         putPlayer(GameManager.newPlayer())
+        player = players.values.first()
         properties = Properties()
     }
 
@@ -28,8 +29,9 @@ object GameState {
         return players.values.firstOrNull { it.thing == creature }
     }
 
-    fun putPlayer(player: Player){
+    fun putPlayer(player: Player, isMainPlayer: Boolean = false){
         players[player.name.lowercase()] = player
+        if (isMainPlayer) GameState.player = player
     }
 
     fun getDebugBoolean(key: DebugType): Boolean {

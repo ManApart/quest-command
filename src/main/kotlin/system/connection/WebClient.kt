@@ -27,12 +27,14 @@ object WebClient {
     var latestInfo = ServerInfo()
 
     fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
-        //TODO - create player if not exists
         latestInfo = getServerInfo(host, port)
         if (latestInfo.validServer) {
             this.host = host
             this.port = port
             this.playerName = playerName
+            if (latestInfo.playerNames.none{ it.lowercase() == playerName.lowercase()}){
+                sendCommand("create $playerName")
+            }
             if (GameState.properties.values.getBoolean(POLL_CONNECTION)) pollForUpdates()
         }
         return latestInfo
