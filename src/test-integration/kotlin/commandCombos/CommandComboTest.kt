@@ -78,7 +78,7 @@ class CommandComboTest {
         CommandParsers.parseCommand(GameState.player, "cast flame 1 on logs")
         assertTrue(GameState.player.thing.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
         CommandParsers.parseCommand(GameState.player, "eat apple && eat apple && cast flame 1 on logs && rest 3")
-        
+
         assertEquals(0, GameState.player.thing.currentLocation().getActivators("logs").size)
         assertEquals(1, GameState.player.thing.currentLocation().getItems("ash").size)
     }
@@ -87,7 +87,7 @@ class CommandComboTest {
     fun climbTree() {
         val input = "db random && n && climb tree && climb && d && d"
         CommandParsers.parseCommand(GameState.player, input)
-        assertTrue(GameLogger.getMainHistory().history[1].outPut.contains("You climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
+        assertTrue(GameLogger.getMainHistory().history[4].outPut.contains("You climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
         assertTrue(GameLogger.getMainHistory().getLastOutputs().contains("You climb back off Apple Tree."))
     }
 
@@ -106,8 +106,7 @@ class CommandComboTest {
         GameState.putDebug(DebugType.RANDOM_SUCCEED, true)
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing")
-GameLogger.getMainHistory().getLastInput()
-        assertEquals("Oh dear, you have died!", GameLogger.getMainHistory().getLastOutput())
+        assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
     }
 
     @Test
@@ -131,14 +130,17 @@ GameLogger.getMainHistory().getLastInput()
     fun enterKanbaraThroughGate() {
         val input = "$travelToGate && use gate && w"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).", GameLogger.getMainHistory().getLastOutput())
+        assertEquals(
+            "You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).",
+            GameLogger.getMainHistory().getLastOutput()
+        )
     }
 
     @Test
     fun enterKanbaraThroughWall() {
         val input = "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && mv to wall && cl && cl && cl && cl && d && d && d && ls"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You are at Kanbara City South.", GameLogger.getMainHistory().getCurrent().outPut[3])
+        assertTrue(GameLogger.getMainHistory().contains("You are at Kanbara City South."))
     }
 
     @Test
@@ -237,7 +239,10 @@ GameLogger.getMainHistory().getLastInput()
 
     @Test
     fun craftDagger() {
-        CommandParsers.parseCommand(GameState.player, "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger")
+        CommandParsers.parseCommand(
+            GameState.player,
+            "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger"
+        )
 
         val dagger = GameState.player.inventory.getItem("Iron Dagger")
         assertNotNull(dagger)

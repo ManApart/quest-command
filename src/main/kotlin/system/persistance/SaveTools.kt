@@ -113,8 +113,8 @@ fun loadGame(gameName: String) {
     GameState.players.clear()
     newPlayers.forEach { GameState.putPlayer(it) }
     GameState.player = newPlayers.first()
-    GameLogger.track(GameState.player)
-    CommandParsers.addParser(GameState.player)
+    GameLogger.reset()
+    CommandParsers.reset()
     GameManager.playing = true
 }
 

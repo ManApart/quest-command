@@ -23,9 +23,9 @@ class CommandParser(private val commandSource: Player) {
 
     fun parseCommand(line: String) {
         val startTime = System.currentTimeMillis()
-        GameLogger.addInput(line)
 
         if (interceptorShouldParse(line)) {
+            GameLogger.addInput(line)
             commandInterceptor!!.parseCommand(commandSource, line)
         } else {
             splitAndParseCommand(line)
@@ -42,6 +42,7 @@ class CommandParser(private val commandSource: Player) {
     private fun splitAndParseCommand(line: String) {
         val commands = line.split("&&")
         for (command in commands) {
+            GameLogger.addInput(command)
             val responseCommand = responseRequest?.getCommand(command)
             responseRequest = null
             if (responseCommand != null) {

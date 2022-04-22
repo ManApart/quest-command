@@ -31,7 +31,6 @@ class Load : EventListener<LoadEvent>() {
 
     private fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
-        CommandParsers.reset()
         GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName}.")
     }
 

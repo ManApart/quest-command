@@ -107,7 +107,7 @@ object GameLogger {
 
     fun reset() {
         histories.clear()
-        track(GameState.player)
+        GameState.players.values.forEach { track(it) }
     }
 
     fun addInput(input: String) {
@@ -129,7 +129,7 @@ object GameLogger {
     }
 
     fun getHistory(source: Player): GameLog {
-        var candidate = histories.get(source.name)
+        var candidate = histories[source.name]
         if (candidate == null) {
             candidate = GameLog(source)
             histories[source.name] = candidate

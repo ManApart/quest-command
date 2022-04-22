@@ -21,15 +21,10 @@ class GameLog(val listener: Player) {
         current = InputOutput(input)
     }
 
-    fun endCurrent(){
-        if (current != null) history.add(current!!)
-        current = null
-    }
-
     fun print(message: String) {
         if (current == null) current = InputOutput()
         current!!.outPut.add(message)
-        if (GameState.properties.values.getBoolean(PRINT_WITHOUT_FLUSH)) println(message)
+        if (GameState.properties.values.getBoolean(PRINT_WITHOUT_FLUSH) && GameLogger.getMainHistory() == this) println(message)
     }
 
     fun reset() {
@@ -51,6 +46,10 @@ class GameLog(val listener: Player) {
 
     fun getCurrent(): InputOutput {
         return current ?: history.lastOrNull() ?: InputOutput()
+    }
+
+    fun contains(line: String): Boolean {
+        return current?.outPut?.contains(line) ?: false || history.any { history -> history.outPut.any { it.contains(line) } }
     }
 
 }
