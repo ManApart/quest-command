@@ -135,7 +135,7 @@ class PersistenceTest {
     @Test
     fun playerSave() {
         val preLoadPlayer = GameState.getPlayer("Saved Player")!!
-        CommandParsers.parseCommand(preLoadPlayer, "move to wheat && slash wheat && pickup wheat && ne")
+        CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
         EventManager.executeEvents()
         preLoadPlayer.thing.properties.tags.add("Saved")
 
