@@ -1,5 +1,5 @@
 package crafting
 
 class RecipesGenerated : RecipesCollection {
-    override val values = listOf<RecipeResource>(resources.crafting.CommonRecipes()).flatMap { it.values }
+    override val values by lazy { listOf<RecipeResource>(resources.crafting.CommonRecipes()).flatMap { it.values }}
 }
