@@ -17,8 +17,13 @@ class GameLog(val listener: Player) {
     }
 
     fun addInput(input: String) {
-        if (current != null) history.add(current!!)
+        endCurrent()
         current = InputOutput(input)
+    }
+
+    //Only should be used in special cases
+    fun endCurrent() {
+        if (current != null) history.add(current!!)
     }
 
     fun print(message: String) {
