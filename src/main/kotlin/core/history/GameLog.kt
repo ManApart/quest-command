@@ -13,15 +13,17 @@ class GameLog(val listener: Player) {
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is GameLog && listener == other.listener
+        return other is GameLog && listener.name == other.listener.name
+    }
+
+    override fun hashCode(): Int {
+        return current?.hashCode() ?: 0
     }
 
     fun addInput(input: String) {
-        endCurrent()
         current = InputOutput(input)
     }
 
-    //Only should be used in special cases
     fun endCurrent() {
         if (current != null) history.add(current!!)
     }

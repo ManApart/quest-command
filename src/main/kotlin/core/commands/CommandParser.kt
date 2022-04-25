@@ -27,6 +27,7 @@ class CommandParser(private val commandSource: Player) {
         if (interceptorShouldParse(line)) {
             GameLogger.addInput(line)
             commandInterceptor!!.parseCommand(commandSource, line)
+            GameLogger.endCurrent()
         } else {
             splitAndParseCommand(line)
         }
@@ -51,6 +52,7 @@ class CommandParser(private val commandSource: Player) {
                 parseSingleCommand(command)
             }
             EventManager.executeEvents()
+            GameLogger.endCurrent()
         }
     }
 

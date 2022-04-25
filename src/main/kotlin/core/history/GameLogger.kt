@@ -115,6 +115,10 @@ object GameLogger {
         histories.values.forEach { it.addInput(input) }
     }
 
+    fun endCurrent() {
+        histories.values.forEach { it.endCurrent() }
+    }
+
     fun setTimeTaken(timeTaken: Long) {
         histories.values.forEach { it.getCurrent().timeTaken = timeTaken }
     }

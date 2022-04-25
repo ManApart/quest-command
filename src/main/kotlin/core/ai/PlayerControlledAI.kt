@@ -13,7 +13,7 @@ class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
     }
 
     override fun takeAction() {
-        creature.displayToMe("What do you do?")
+        creature.displayToMe("What do you do, ${creature.name}?")
         creature.displayToOthers("${creature.name} does what?")
     }
 
