@@ -33,7 +33,7 @@ object WebClient {
             this.port = port
             this.playerName = playerName
             if (latestInfo.playerNames.none{ it.lowercase() == playerName.lowercase()}){
-                sendCommand("create $playerName")
+                latestInfo = createPlayer(playerName)
             }
             if (GameState.properties.values.getBoolean(POLL_CONNECTION)) pollForUpdates()
         }
@@ -47,6 +47,14 @@ object WebClient {
             ServerInfo()
         }.also {
             this.latestInfo = it
+        }
+    }
+
+    private fun createPlayer(name: String): ServerInfo {
+        return try {
+            runBlocking { client.post("$host:$port/$name").body() }
+        } catch (e: Exception) {
+            ServerInfo()
         }
     }
 
