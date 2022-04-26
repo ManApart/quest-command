@@ -17,6 +17,12 @@ object CommandParsers {
         GameState.players.values.forEach { addParser(it) }
     }
 
+    fun reset() {
+        parsers.clear()
+        commands = loadCommands()
+        GameState.players.values.forEach { addParser(it) }
+    }
+
     fun addParser(player: Player) {
         parsers[player.name] = CommandParser(player)
     }
@@ -36,12 +42,6 @@ object CommandParsers {
         }
 
         return commands
-    }
-
-    fun reset() {
-        parsers.clear()
-        commands = loadCommands()
-        GameState.players.values.forEach { addParser(it) }
     }
 
     fun findCommand(alias: String): Command {

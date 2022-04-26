@@ -12,6 +12,8 @@ class Connect : EventListener<ConnectEvent>() {
         if (info.validServer) {
             CommandParsers.getParser(event.source).commandInterceptor = ConnectionCommandInterceptor()
             event.source.displayToMe("Connected. Server info: $info")
+            val updates = WebClient.getServerHistory()
+            event.source.displayToMe(updates.last())
         } else {
             event.source.displayToMe("Could not connect to ${event.host}:${event.port}")
         }

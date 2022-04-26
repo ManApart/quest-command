@@ -97,17 +97,17 @@ object GameLogger {
         }
     }
 
+    fun reset() {
+        histories.clear()
+        GameState.players.values.forEach { track(it) }
+    }
+
     fun track(player: Player) {
         histories[player.name] = GameLog(player)
     }
 
     fun stopTracking(player: Player) {
         histories.remove(player.name)
-    }
-
-    fun reset() {
-        histories.clear()
-        GameState.players.values.forEach { track(it) }
     }
 
     fun addInput(input: String) {

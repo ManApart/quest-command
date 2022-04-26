@@ -62,6 +62,7 @@ object WebClient {
         return try {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
+                    parameter("start", latestResponse+1)
                     setBody(line)
                 }.body()
             }
@@ -89,10 +90,14 @@ object WebClient {
         }
     }
 
+    fun getServerHistory(): List<String> {
+        return runBlocking { getServerUpdates() }
+    }
+
     private suspend fun getServerUpdates(): List<String> {
         return try {
             val response: ServerResponse = client.get("$host:$port/$playerName/history") {
-                parameter("since", latestResponse)
+                parameter("start", latestResponse)
             }.body()
 
             this@WebClient.latestResponse = response.lastResponse

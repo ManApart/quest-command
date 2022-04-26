@@ -1,6 +1,8 @@
 package core
 
+import core.commands.CommandParsers
 import core.events.Event
+import core.history.GameLogger
 import core.properties.Properties
 import core.thing.Thing
 import system.debug.DebugType
@@ -31,6 +33,8 @@ object GameState {
 
     fun putPlayer(player: Player, isMainPlayer: Boolean = false){
         players[player.name.lowercase()] = player
+        GameLogger.track(player)
+        CommandParsers.addParser(player)
         if (isMainPlayer) GameState.player = player
     }
 
