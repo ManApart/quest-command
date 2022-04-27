@@ -4,6 +4,8 @@ import core.GameState
 import core.Player
 import core.commands.respond
 import core.events.EventListener
+import core.history.TerminalPrinter
+import core.history.display
 import core.history.displayToMe
 import system.persistance.clean
 import system.persistance.getCharacterSaves
@@ -13,10 +15,11 @@ class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
         //Do we need to save?
         save(GameState.gameName)
-        val newCharacter = GameState.players.values.firstOrNull { it.thing.name.lowercase() == event.characterName.lowercase() } ?: loadCharacter(event.source, GameState.gameName, event.characterName)
+        val newCharacter = GameState.players.values.firstOrNull { it.name.lowercase() == event.characterName.lowercase() } ?: loadCharacter(event.source, GameState.gameName, event.characterName)
         if (newCharacter != null) {
             GameState.player = newCharacter
-            newCharacter.displayToMe("Now playing ${newCharacter.thing.name} in ${GameState.gameName}.")
+            TerminalPrinter.reset()
+            display("${event.source.name} is now playing ${newCharacter.name} in ${GameState.gameName}.")
         }
 
     }

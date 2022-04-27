@@ -59,6 +59,7 @@ fun eventWithPlayer(creature: Thing, event: (Player) -> Event): Event? {
 
 const val AUTO_SAVE = "autosave"
 const val AUTO_LOAD = "autoload"
+const val TEST_SAVE_FOLDER = "use test save folder"
 const val SKIP_SAVE_STATS = "skip save stats"
 const val LAST_SAVE_GAME_NAME = "last save character name"
 const val PRINT_WITHOUT_FLUSH = "print without needing to flush histories"

@@ -10,7 +10,7 @@ import system.persistance.writeSave
 import traveling.location.Network
 
 fun persist(dataObject: Player, path: String) {
-    val prefix = clean(path, dataObject.thing.name)
+    val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
     val playerP = PlayerP(dataObject)
     val data = Json.encodeToString(playerP)

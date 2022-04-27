@@ -60,6 +60,7 @@ object GameManager {
     private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
         GameState.properties.values.put(AUTO_LOAD, !testing)
+        GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
     }
