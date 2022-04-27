@@ -101,7 +101,7 @@ object GameManager {
         return Player(name, player)
     }
 
-    private fun giveStartingItems(player: Thing) {
+    fun giveStartingItems(player: Thing) {
         val inventory = player.inventory
         val body = player.body
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {
