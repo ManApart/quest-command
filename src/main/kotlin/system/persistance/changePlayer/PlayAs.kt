@@ -13,8 +13,6 @@ import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
-        //Do we need to save?
-        save(GameState.gameName)
         val newCharacter = GameState.players.values.firstOrNull { it.name.lowercase() == event.characterName.lowercase() } ?: loadCharacter(event.source, GameState.gameName, event.characterName)
         if (newCharacter != null) {
             GameState.player = newCharacter
@@ -24,6 +22,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
 
     }
 
+    //TODO - I don't think loading a character makes sense
     private fun loadCharacter(source: Player, gameName: String, characterName: String): Player? {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
