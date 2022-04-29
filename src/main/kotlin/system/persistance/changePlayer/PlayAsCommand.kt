@@ -8,7 +8,7 @@ import system.persistance.createPlayer.CreateCharacterEvent
 
 class PlayAsCommand : Command() {
     override fun getAliases(): List<String> {
-        return listOf("Be", "Play")
+        return listOf("Be", "Play", "Who")
     }
 
     override fun getDescription(): String {

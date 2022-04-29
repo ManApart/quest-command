@@ -2,18 +2,24 @@ package system.connection
 
 import core.GameState
 import core.POLL_CONNECTION
-import core.history.displayToMe
+import core.history.GameLogger
+import core.history.TerminalPrinter
+import core.history.display
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class ServerInfo(val gameName: String = "Game", val playerNames: List<String> = listOf(), val validServer: Boolean = false)
+
 @Serializable
 data class ServerResponse(val lastResponse: Int, val history: List<String>)
 
@@ -32,7 +38,7 @@ object WebClient {
             this.host = host
             this.port = port
             this.playerName = playerName
-            if (latestInfo.playerNames.none{ it.lowercase() == playerName.lowercase()}){
+            if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
                 latestInfo = createPlayer(playerName)
             }
             if (GameState.properties.values.getBoolean(POLL_CONNECTION)) pollForUpdates()
@@ -62,11 +68,13 @@ object WebClient {
         return try {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
-                    parameter("start", latestResponse+1)
+                    parameter("start", latestResponse + 1)
                     setBody(line)
                 }.body()
             }
-            this@WebClient.latestResponse = response.lastResponse
+            synchronized(this) {
+                this@WebClient.latestResponse = response.lastResponse
+            }
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server.")
@@ -81,7 +89,11 @@ object WebClient {
                     runBlocking {
                         launch {
                             val updates = getServerUpdates()
-                            updates.forEach { GameState.player.displayToMe(it) }
+                            if (updates.isNotEmpty()) {
+                                updates.forEach { display(it) }
+                                GameLogger.endCurrent()
+                                TerminalPrinter.print()
+                            }
                         }
                         delay(1000)
                     }
@@ -100,7 +112,9 @@ object WebClient {
                 parameter("start", latestResponse)
             }.body()
 
-            this@WebClient.latestResponse = response.lastResponse
+            synchronized(this) {
+                this@WebClient.latestResponse = response.lastResponse
+            }
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server")

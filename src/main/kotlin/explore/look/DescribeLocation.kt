@@ -32,7 +32,7 @@ private fun describePosition(source: Player, location: Location) {
 
 private fun describePerceivedThings(source: Player, location: Location) {
     val allThings = location.getThings()
-    val things = allThings.filterNot { it.isPlayer() }.toList().perceivedBy(source.thing)
+    val things = allThings.filterNot { it == source.thing }.toList().perceivedBy(source.thing)
     when {
         things.isEmpty() && allThings.isNotEmpty() && location.getLightLevel() < source.thing.getClarity() -> {
             source.displayToMe("It's too dark to see anything.")
