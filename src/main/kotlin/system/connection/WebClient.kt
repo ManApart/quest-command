@@ -43,7 +43,6 @@ object WebClient {
             if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
                 latestInfo = createPlayer(playerName)
             }
-//            if (GameState.properties.values.getBoolean(POLL_CONNECTION)) pollForUpdates()
         }
         return latestInfo
     }
@@ -82,7 +81,7 @@ object WebClient {
     }
 
     //Currently not working correctly
-    private fun pollForUpdates() {
+    fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {
             while (doPolling) {
