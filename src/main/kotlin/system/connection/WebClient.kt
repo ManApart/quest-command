@@ -23,7 +23,7 @@ data class ServerInfo(val gameName: String = "Game", val playerNames: List<Strin
 }
 
 @Serializable
-data class ServerResponse(val lastResponse: Int, val history: List<String>)
+data class ServerResponse(val latestResponse: Int, val latestSubResponse: Int, val history: List<String>)
 
 object WebClient {
     private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
@@ -31,6 +31,7 @@ object WebClient {
     var host = "localhost"
     var port = "8080"
     var latestResponse = 0
+    var latestSubResponse = 0
     var playerName = "Player"
     var latestInfo = ServerInfo()
 
@@ -70,10 +71,12 @@ object WebClient {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
                     parameter("start", latestResponse)
+                    parameter("startSub", latestSubResponse)
                     setBody(line)
                 }.body()
             }
-            this@WebClient.latestResponse = response.lastResponse
+            this@WebClient.latestResponse = response.latestResponse
+            this@WebClient.latestSubResponse = response.latestSubResponse
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server.")
@@ -110,9 +113,11 @@ object WebClient {
         return try {
             val response: ServerResponse = client.get("$host:$port/$playerName/history") {
                 parameter("start", latestResponse)
+                parameter("startSub", latestSubResponse)
             }.body()
 
-            this@WebClient.latestResponse = response.lastResponse
+            this@WebClient.latestResponse = response.latestResponse
+            this@WebClient.latestSubResponse = response.latestSubResponse
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server")

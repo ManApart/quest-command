@@ -9,6 +9,7 @@ import core.thing.item.ItemManager
 import core.thing.thing
 import quests.QuestManager
 import status.stat.*
+import system.debug.DebugType
 import system.persistance.getGameNames
 import system.persistance.getGamesMetaData
 import system.persistance.loading.LoadEvent
@@ -60,7 +61,7 @@ object GameManager {
     private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
         GameState.properties.values.put(AUTO_LOAD, !testing)
-        GameState.properties.values.put(POLL_CONNECTION, !testing)
+        GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
         GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
