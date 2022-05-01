@@ -13,7 +13,7 @@ class Connect : EventListener<ConnectEvent>() {
             CommandParsers.getParser(event.source).commandInterceptor = ConnectionCommandInterceptor()
             event.source.displayToMe("Connected. Server info: $info")
             val updates = WebClient.getServerHistory()
-            event.source.displayToMe(updates.last())
+            updates.takeLast(10).forEach { event.source.displayToMe(it) }
         } else {
             event.source.displayToMe("Could not connect to ${event.host}:${event.port}")
         }

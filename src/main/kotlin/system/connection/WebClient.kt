@@ -1,7 +1,5 @@
 package system.connection
 
-import core.GameState
-import core.POLL_CONNECTION
 import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.display
@@ -18,7 +16,11 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ServerInfo(val gameName: String = "Game", val playerNames: List<String> = listOf(), val validServer: Boolean = false)
+data class ServerInfo(val gameName: String = "Game", val playerNames: List<String> = listOf(), val validServer: Boolean = false){
+    override fun toString(): String {
+        return if (validServer) "$gameName with players ${playerNames.joinToString()}" else "Invalid Server"
+     }
+}
 
 @Serializable
 data class ServerResponse(val lastResponse: Int, val history: List<String>)
@@ -41,7 +43,7 @@ object WebClient {
             if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
                 latestInfo = createPlayer(playerName)
             }
-            if (GameState.properties.values.getBoolean(POLL_CONNECTION)) pollForUpdates()
+//            if (GameState.properties.values.getBoolean(POLL_CONNECTION)) pollForUpdates()
         }
         return latestInfo
     }
@@ -68,19 +70,18 @@ object WebClient {
         return try {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
-                    parameter("start", latestResponse + 1)
+                    parameter("start", latestResponse)
                     setBody(line)
                 }.body()
             }
-            synchronized(this) {
-                this@WebClient.latestResponse = response.lastResponse
-            }
+            this@WebClient.latestResponse = response.lastResponse
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server.")
         }
     }
 
+    //Currently not working correctly
     private fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {
@@ -112,9 +113,7 @@ object WebClient {
                 parameter("start", latestResponse)
             }.body()
 
-            synchronized(this) {
-                this@WebClient.latestResponse = response.lastResponse
-            }
+            this@WebClient.latestResponse = response.lastResponse
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server")
