@@ -5,6 +5,7 @@ import core.GameState
 import core.Player
 import core.history.SessionHistory
 import core.history.display
+import core.history.displayToMe
 import core.thing.Thing
 
 class UnknownCommand : Command() {
@@ -36,7 +37,7 @@ class UnknownCommand : Command() {
             if (GameState.properties.values.getBoolean(AUTO_SAVE)){
                 SessionHistory.saveSessionStats()
             }
-            source.display("Unknown command: $line")
+            source.displayToMe("Unknown command: $line")
         }
     }
 }

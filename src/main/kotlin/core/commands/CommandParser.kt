@@ -5,7 +5,7 @@ import core.Player
 import core.commands.CommandParsers.cleanLine
 import core.events.EventManager
 import core.history.GameLogger
-import core.history.display
+import core.history.displayToMe
 import core.utility.removeFirstItem
 
 class CommandParser(private val commandSource: Player) {
@@ -90,7 +90,7 @@ class CommandParser(private val commandSource: Player) {
 
     fun setResponseRequest(responseRequest: ResponseRequest?) {
         if (responseRequest != null && responseRequest.message != "") {
-            commandSource.display(responseRequest.message)
+            commandSource.displayToMe(responseRequest.message)
         }
         this.responseRequest = responseRequest
     }
