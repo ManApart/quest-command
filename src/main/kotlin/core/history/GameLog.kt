@@ -25,7 +25,10 @@ class GameLog(val listener: Player) {
     }
 
     fun endCurrent() {
-        if (current != null) history.add(current!!)
+        if (current != null) {
+            history.add(current!!)
+            current = null
+        }
     }
 
     fun print(message: String) {
