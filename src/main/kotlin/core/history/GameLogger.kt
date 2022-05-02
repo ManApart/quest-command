@@ -74,6 +74,22 @@ fun Thing.display(message: (Player) -> String) {
         }
 }
 
+fun Thing.displayToPerceptiveOthers(message: String) = this.displayToPerceptiveOthers { message }
+fun Player.displayToPerceptiveOthers(message: String) = this.thing.displayToPerceptiveOthers(message)
+fun Player.displayToPerceptiveOthers(message:  (Player) -> String) = this.thing.displayToPerceptiveOthers(message)
+
+/**
+ * The message is evaluated for each listener that perceives this thing, but excludes this thing itself
+ */
+fun Thing.displayToPerceptiveOthers(message: (Player) -> String) {
+    GameLogger.histories.values
+        .filter { it.listener.thing !== this && it.listener.thing.perceives(this) }
+        .forEach { history ->
+            val messageText = message(history.listener)
+            history.print(messageText)
+        }
+}
+
 //TODO - how does this work with chat history? Is this valueable?
 fun displayUpdate(message: String, sleep: Long = 50) {
     if (GameState.getDebugBoolean(DebugType.DISPLAY_UPDATES)) {

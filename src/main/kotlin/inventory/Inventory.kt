@@ -63,12 +63,12 @@ data class Inventory(val name: String = "Inventory", private val body: Body = cr
 
     private fun findLocationWith(item: Thing): Location? {
         return body.getParts().firstOrNull { it.getItems().contains(item) }
-                ?: body.getParts().flatMap { it.getItems() }.mapNotNull { it.inventory.findLocationWith(item) }.firstOrNull()
+                ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationWith(item) }
     }
 
     private fun findLocationThatCanTake(item: Thing): Location? {
         return body.getParts().firstOrNull { it.canHold(item) }
-                ?: body.getParts().flatMap { it.getItems() }.mapNotNull { it.inventory.findLocationThatCanTake(item) }.firstOrNull()
+                ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationThatCanTake(item) }
     }
 
     //Eventually add count

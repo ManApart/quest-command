@@ -3,6 +3,7 @@ package traveling.arrive
 import core.events.EventListener
 import core.history.display
 import core.history.displayToMe
+import core.history.displayToPerceptiveOthers
 import core.utility.asSubject
 import core.utility.withS
 
