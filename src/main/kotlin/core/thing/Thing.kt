@@ -238,7 +238,7 @@ data class Thing(
 
     fun perceives(other: Thing): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
-        return getClarity() >= other.getStealthLevel(this) || inventory.exists(other)
+        return location == other.location && getClarity() >= other.getStealthLevel(this) || inventory.exists(other)
     }
 
 }

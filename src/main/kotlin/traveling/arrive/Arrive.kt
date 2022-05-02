@@ -2,6 +2,7 @@ package traveling.arrive
 
 import core.events.EventListener
 import core.history.display
+import core.history.displayToMe
 import core.utility.asSubject
 import core.utility.withS
 
@@ -30,7 +31,8 @@ class Arrive : EventListener<ArriveEvent>() {
                         if (quiet) {
                             creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
                         } else {
-                            creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}. It ${destination.location.getSiblings(false)}." }
+                            creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
+                            creature.displayToMe("It ${destination.location.getSiblings(false)}.")
                         }
                     }
                 }
