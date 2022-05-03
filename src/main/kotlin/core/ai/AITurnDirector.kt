@@ -6,10 +6,12 @@ import core.events.EventManager
 import core.thing.Thing
 import explore.look.printUpdatingStatusEnd
 
+private const val turnLimit = 1000
+
 class AITurnDirector : EventListener<AIUpdateTick>() {
 
     override fun execute(event: AIUpdateTick) {
-        val creatures = GameState.players.values.flatMap { it.thing.location.getLocation().getCreatures(it.thing) }
+        val creatures = GameState.players.values.flatMap { it.thing.location.getLocation().getCreatures(it.thing) }.toSet().toList()
 
         //If only one creature, instantly fill their action points to avoid all the looping
         if (creatures.size == 1) {
@@ -17,15 +19,21 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
         }
 
         if (creatures.isNotEmpty()) {
-            val takeAnotherTurn = takeATurn(creatures)
-            if (takeAnotherTurn) {
-                EventManager.postEvent(AIUpdateTick())
+            var turns = 0
+            var takeAnotherTurn = takeATurn(creatures)
+            while (turns < turnLimit && takeAnotherTurn){
+                takeAnotherTurn = takeATurn(creatures)
+                turns++
+            }
+            if (turns >= turnLimit){
+                println("Got stuck in a loop taking turns. This shouldn't happen!")
             }
         }
 
     }
 
     private fun takeATurn(creatures: List<Thing>): Boolean {
+        var anotherTurnNeeded = true
         val creatureAIs = creatures.map { it.ai }
         creatureAIs.forEach { it.tick() }
         creatureAIs.forEach {
@@ -36,6 +44,7 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
                 }
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
+                anotherTurnNeeded = false
                 return false
             } else if (it.canChooseAction()) {
                 if (it.aggroThing != null) {
@@ -43,10 +52,11 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
                 }
                 it.creature.body.blockHelper.resetStance()
                 it.chooseAction()
+                anotherTurnNeeded = false
                 return false
             }
         }
-        return true
+        return anotherTurnNeeded
     }
 
 }

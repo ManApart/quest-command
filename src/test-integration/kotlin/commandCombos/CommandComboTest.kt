@@ -87,7 +87,8 @@ class CommandComboTest {
     fun climbTree() {
         val input = "db random && n && climb tree && climb && d && d"
         CommandParsers.parseCommand(GameState.player, input)
-        assertTrue(GameLogger.getMainHistory().contains("You climb to Apple Tree Branches. It is neighbored by Apple Tree (BELOW)."))
+        assertTrue(GameLogger.getMainHistory().contains("You climb to Apple Tree Branches."))
+        assertTrue(GameLogger.getMainHistory().contains("It is neighbored by Apple Tree (BELOW)."))
         assertTrue(GameLogger.getMainHistory().getLastOutputs().contains("You climb back off Apple Tree."))
     }
 
@@ -130,10 +131,8 @@ class CommandComboTest {
     fun enterKanbaraThroughGate() {
         val input = "$travelToGate && use gate && w"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals(
-            "You travel to Kanbara City. It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).",
-            GameLogger.getMainHistory().getLastOutput()
-        )
+        assertTrue(GameLogger.getMainHistory().contains("You travel to Kanbara City."))
+        assertTrue(GameLogger.getMainHistory().contains("It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST)."))
     }
 
     @Test
