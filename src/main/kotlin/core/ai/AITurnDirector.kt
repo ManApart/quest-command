@@ -21,11 +21,11 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
         if (creatures.isNotEmpty()) {
             var turns = 0
             var takeAnotherTurn = takeATurn(creatures)
-            while (turns < turnLimit && takeAnotherTurn){
+            while (turns < turnLimit && takeAnotherTurn) {
                 takeAnotherTurn = takeATurn(creatures)
                 turns++
             }
-            if (turns >= turnLimit){
+            if (turns >= turnLimit) {
                 println("Got stuck in a loop taking turns. This shouldn't happen!")
             }
         }
@@ -33,78 +33,33 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
     }
 
     private fun takeATurn(creatures: List<Thing>): Boolean {
-        val multiplayer = creatures.count { it.isPlayer() } > 1
-        return if (multiplayer){
-            takeATurnMultiPlayer(creatures)
-        } else takeATurnSinglePlayer(creatures)
-    }
-
-    private fun takeATurnSinglePlayer(creatures: List<Thing>): Boolean {
-        val creatureAIs = creatures.map { it.ai }
-        creatureAIs.forEach { it.tick() }
-        creatureAIs.sortedByDescending { it.getActionPoints() }.forEach {
-            //Make this only if some verbosity level is set?
-            if (it.isActionReady()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
-                }
-                EventManager.postEvent(it.action!!.getActionEvent())
-                it.action = null
-                return false
-            } else if (it.canChooseAction()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
-                }
-                it.creature.body.blockHelper.resetStance()
-                it.chooseAction()
-                return false
-            }
-        }
-        return true
-    }
-    private fun takeATurnMultiPlayer(creatures: List<Thing>): Boolean {
-        val allAIs = creatures.map { it.ai }.sortedByDescending { it.getActionPoints() }
-        val (playerAIs, npcAIs) = allAIs.partition { it.creature.isPlayer() }
+        //Sort by action points and give players 1 extra point so they always come before npcs
+        val allAIs = creatures.map { it.ai }.sortedByDescending { it.getActionPoints() + if (it.creature.isPlayer()) 1 else 0 }
         allAIs.forEach { it.tick() }
+        var executedEvent = false
 
-        var needsAnotherTurn = true
-
-        playerAIs.forEach {
-            if (it.isActionReady()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
+        allAIs.forEach {
+            val isPlayer = it.creature.isPlayer()
+            if (!executedEvent || isPlayer) {
+                if (it.isActionReady()) {
+                    if (it.aggroThing != null) {
+                        printUpdatingStatusEnd(creatures)
+                    }
+                    EventManager.postEvent(it.action!!.getActionEvent())
+                    it.action = null
+                    executedEvent = true
+                } else if (it.canChooseAction()) {
+                    if (it.aggroThing != null) {
+                        printUpdatingStatusEnd(creatures)
+                    }
+                    it.creature.body.blockHelper.resetStance()
+                    it.chooseAction()
+                    executedEvent = true
                 }
-                EventManager.postEvent(it.action!!.getActionEvent())
-                it.action = null
-                needsAnotherTurn = false
-            } else if (it.canChooseAction()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
-                }
-                it.creature.body.blockHelper.resetStance()
             }
         }
 
-        if (!needsAnotherTurn) return false
-
-        npcAIs.forEach {
-            if (it.isActionReady()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
-                }
-                EventManager.postEvent(it.action!!.getActionEvent())
-                it.action = null
-                return false
-            } else if (it.canChooseAction()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
-                }
-                it.creature.body.blockHelper.resetStance()
-                it.chooseAction()
-                return false
-            }
-        }
-        return true
+        return !executedEvent
     }
 
 }
