@@ -2,7 +2,7 @@ package system.connection
 
 import core.history.GameLogger
 import core.history.TerminalPrinter
-import core.history.display
+import core.history.displayGlobal
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -93,7 +93,7 @@ object WebClient {
                         launch {
                             val updates = getServerUpdates()
                             if (updates.isNotEmpty()) {
-                                updates.forEach { display(it) }
+                                updates.forEach { displayGlobal(it) }
                                 GameLogger.endCurrent()
                                 TerminalPrinter.print()
                             }

@@ -3,7 +3,6 @@ package core.history
 import core.GameState
 import core.Player
 import core.thing.Thing
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -26,7 +25,7 @@ class GameLogManagerTest {
     @Test
     fun displayAddsMessageToHistory(){
         val message = "Test Message"
-        display(message)
+        displayGlobal(message)
         val history = GameLogger.getMainHistory()
         assertEquals(InputOutput().input, history.getLastInput())
         assertEquals(message, history.getLastOutput())

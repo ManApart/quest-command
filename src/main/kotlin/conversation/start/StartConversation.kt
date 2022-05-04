@@ -2,7 +2,6 @@ package conversation.start
 
 import conversation.Conversation
 import conversation.ConversationCommandInterceptor
-import core.GameState
 import core.commands.CommandParsers
 import core.events.EventListener
 import core.history.display

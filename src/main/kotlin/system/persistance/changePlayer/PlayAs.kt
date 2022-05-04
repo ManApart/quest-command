@@ -5,11 +5,9 @@ import core.Player
 import core.commands.respond
 import core.events.EventListener
 import core.history.TerminalPrinter
-import core.history.display
-import core.history.displayToMe
+import core.history.displayGlobal
 import system.persistance.clean
 import system.persistance.getCharacterSaves
-import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
@@ -17,7 +15,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
         if (newCharacter != null) {
             GameState.player = newCharacter
             TerminalPrinter.reset()
-            display("${event.source.name} is now playing ${newCharacter.name} in ${GameState.gameName}.")
+            displayGlobal("${event.source.name} is now playing ${newCharacter.name} in ${GameState.gameName}.")
         }
 
     }

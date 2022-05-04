@@ -83,12 +83,12 @@ class Move : EventListener<MoveEvent>() {
             val destinationString = destinationThing?.getDisplayName() ?: actualDestination.toString()
             val startString = startThing?.getDisplayName() ?: event.source.toString()
 
-            val youMove = event.creature.isPlayer().then("You move", "${event.creature} moves")
+            val youMove = event.creature.isPlayer().then("move", "moves")
 
             if (desiredDistance == actualDistance) {
-                event.creature.display { "$youMove from $startString to $destinationString." }
+                event.creature.display { "${event.creature.asSubject(it)} $youMove from $startString to $destinationString." }
             } else {
-                event.creature.display { "$youMove $actualDistance towards ${event.destination} and ${event.creature.isAre(it)} now at ${destinationString}." }
+                event.creature.display { "${event.creature.asSubject(it)}  $youMove $actualDistance towards ${event.destination} and ${event.creature.isAre(it)} now at ${destinationString}." }
             }
         }
     }

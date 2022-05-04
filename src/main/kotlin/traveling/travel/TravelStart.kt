@@ -1,13 +1,10 @@
 package traveling.travel
 
-import core.GameState.player
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
-import core.history.displayToPerceptiveOthers
+import core.history.displayToOthers
 import core.thing.Thing
-import core.utility.asSubject
-import core.utility.withS
 import status.stat.STAMINA
 import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent
@@ -34,7 +31,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.creature.getEncumbrance() >= 1 -> event.creature.displayToMe("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
-                    event.creature.displayToPerceptiveOthers { "${event.creature.name} leaves ${event.currentLocation}."  }
+                    event.creature.displayToOthers { "${event.creature.name} leaves ${event.currentLocation}."  }
                     event.creature.displayToMe("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 }
                 postArriveEvent(event.creature, connection.destination, requiredStamina, event.quiet)

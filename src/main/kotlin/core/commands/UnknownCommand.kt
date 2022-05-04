@@ -4,7 +4,6 @@ import core.AUTO_SAVE
 import core.GameState
 import core.Player
 import core.history.SessionHistory
-import core.history.display
 import core.history.displayToMe
 import core.thing.Thing
 

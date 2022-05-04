@@ -4,7 +4,7 @@ import core.GameManager
 import core.GameState
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
+import core.history.displayGlobal
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationPoint
 
@@ -14,7 +14,7 @@ class CreateCharacter : EventListener<CreateCharacterEvent>() {
         GameManager.giveStartingItems(player.thing)
         EventManager.postEvent(ArriveEvent(player.thing, destination = LocationPoint(player.thing.location), method = "wake"))
         GameState.putPlayer(player)
-        display("Created new Character ${event.characterName}.")
+        displayGlobal("Created new Character ${event.characterName}.")
     }
 
 }

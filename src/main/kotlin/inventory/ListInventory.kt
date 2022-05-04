@@ -4,7 +4,7 @@ import core.body.Body
 import core.events.EventListener
 import core.history.display
 import core.history.displayToMe
-import core.history.displayToPerceptiveOthers
+import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.then
 
@@ -18,7 +18,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
             !event.source.thing.perceives(event.thing) -> event.source.displayToMe("You know it's there; you just can't see it.")
             else -> {
                 if (event.thing.inventory.getItems().isNotEmpty()) {
-                    event.source.displayToPerceptiveOthers("${event.source.name} looks at ${event.thing.name}'s inventory.")
+                    event.source.displayToOthers("${event.source.name} looks at ${event.thing.name}'s inventory.")
                     event.source.displayToMe(
                         "${event.thing.name} has:${
                             inventoryToString(
