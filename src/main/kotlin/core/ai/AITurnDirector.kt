@@ -33,10 +33,16 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
     }
 
     private fun takeATurn(creatures: List<Thing>): Boolean {
-        var anotherTurnNeeded = true
+        val multiplayer = creatures.count { it.isPlayer() } > 1
+        return if (multiplayer){
+            takeATurnMultiPlayer(creatures)
+        } else takeATurnSinglePlayer(creatures)
+    }
+
+    private fun takeATurnSinglePlayer(creatures: List<Thing>): Boolean {
         val creatureAIs = creatures.map { it.ai }
         creatureAIs.forEach { it.tick() }
-        creatureAIs.forEach {
+        creatureAIs.sortedByDescending { it.getActionPoints() }.forEach {
             //Make this only if some verbosity level is set?
             if (it.isActionReady()) {
                 if (it.aggroThing != null) {
@@ -44,7 +50,6 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
                 }
                 EventManager.postEvent(it.action!!.getActionEvent())
                 it.action = null
-                anotherTurnNeeded = false
                 return false
             } else if (it.canChooseAction()) {
                 if (it.aggroThing != null) {
@@ -52,11 +57,54 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
                 }
                 it.creature.body.blockHelper.resetStance()
                 it.chooseAction()
-                anotherTurnNeeded = false
                 return false
             }
         }
-        return anotherTurnNeeded
+        return true
+    }
+    private fun takeATurnMultiPlayer(creatures: List<Thing>): Boolean {
+        val allAIs = creatures.map { it.ai }.sortedByDescending { it.getActionPoints() }
+        val (playerAIs, npcAIs) = allAIs.partition { it.creature.isPlayer() }
+        allAIs.forEach { it.tick() }
+
+        var needsAnotherTurn = true
+
+        playerAIs.forEach {
+            if (it.isActionReady()) {
+                if (it.aggroThing != null) {
+                    printUpdatingStatusEnd(creatures)
+                }
+                EventManager.postEvent(it.action!!.getActionEvent())
+                it.action = null
+                needsAnotherTurn = false
+            } else if (it.canChooseAction()) {
+                if (it.aggroThing != null) {
+                    printUpdatingStatusEnd(creatures)
+                }
+                it.creature.body.blockHelper.resetStance()
+            }
+        }
+
+        if (!needsAnotherTurn) return false
+
+        npcAIs.forEach {
+            if (it.isActionReady()) {
+                if (it.aggroThing != null) {
+                    printUpdatingStatusEnd(creatures)
+                }
+                EventManager.postEvent(it.action!!.getActionEvent())
+                it.action = null
+                return false
+            } else if (it.canChooseAction()) {
+                if (it.aggroThing != null) {
+                    printUpdatingStatusEnd(creatures)
+                }
+                it.creature.body.blockHelper.resetStance()
+                it.chooseAction()
+                return false
+            }
+        }
+        return true
     }
 
 }
