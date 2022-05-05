@@ -5,7 +5,7 @@ import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
 import java.io.File
 
-private const val filePath = "../quest_command.wiki/systems/magic/Spell_Commands.md"
+private const val filePath = "../wiki/systems/magic/Spell_Commands.md"
 
 internal fun printSpellCommands() {
     val existing = getExistingText(filePath, "## Command List")

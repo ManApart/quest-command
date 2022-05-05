@@ -22,6 +22,7 @@ import status.effects.EffectBase
 import status.effects.EffectP
 import status.stat.LeveledStat
 import status.stat.LeveledStatP
+import system.persistance.changePlayer.PlayAsEvent
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
 import traveling.location.Network
@@ -38,16 +39,14 @@ class PersistenceTest {
     fun reset() {
         EventManager.clear()
         EventManager.registerListeners()
-        GameManager.newGame(playerName = "Saved Player")
-        GameState.properties.values.put(PRINT_WITHOUT_FLUSH, true)
-
+        GameManager.newGame(playerName = "Saved Player", testing = true)
         EventManager.executeEvents()
-        File("./saves/").listFiles()?.forEach { it.deleteRecursively() }
+        File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
     }
 
     @After
     fun deleteSaves() {
-        File("./saves/").listFiles()?.forEach { it.deleteRecursively() }
+        File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
     }
 
     @Test
@@ -135,24 +134,26 @@ class PersistenceTest {
 
     @Test
     fun playerSave() {
-        CommandParsers.parseCommand(GameState.player, "move to wheat && slash wheat && pickup wheat && ne")
+        val preLoadPlayer = GameState.getPlayer("Saved Player")!!
+        CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
         EventManager.executeEvents()
-        GameState.player.thing.properties.tags.add("Saved")
+        preLoadPlayer.thing.properties.tags.add("Saved")
 
-        EventManager.postEvent(SaveEvent(GameState.player))
+        EventManager.postEvent(SaveEvent(preLoadPlayer))
         EventManager.executeEvents()
-        GameState.player.thing.properties.tags.remove("Saved")
-        assertFalse(GameState.player.thing.properties.tags.has("Saved"))
-        val equippedItemCount = GameState.player.thing.body.getEquippedItems().size
+        preLoadPlayer.thing.properties.tags.remove("Saved")
+        assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
+        val equippedItemCount = preLoadPlayer.thing.body.getEquippedItems().size
 
-        EventManager.postEvent(LoadEvent(GameState.player, "Kanbara"))
+        EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
         EventManager.executeEvents()
-        assertEquals("Saved Player", GameState.player.thing.name)
-        assertTrue(GameState.player.thing.properties.tags.has("Saved"))
-        assertEquals(equippedItemCount, GameState.player.thing.body.getEquippedItems().size)
+        val postLoadPlayer = GameState.getPlayer("Saved Player")!!
+        assertEquals("Saved Player", postLoadPlayer.thing.name)
+        assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
+        assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
 
-        CommandParsers.parseCommand(GameState.player, "travel to open field && r")
-        val location = GameState.player.thing.location.getLocation()
+        CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
+        val location = postLoadPlayer.thing.location.getLocation()
         val bundles = location.getItems("bundle")
         assertTrue(bundles.isNotEmpty(), "Should have found wheat bundles")
         assertEquals(2, bundles.first().properties.getCount())

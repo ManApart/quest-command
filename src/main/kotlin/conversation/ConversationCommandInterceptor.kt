@@ -8,7 +8,11 @@ import core.commands.CommandInterceptor
 import core.commands.CommandParsers
 import core.events.EventManager
 
-class ConversationCommandInterceptor : CommandInterceptor {
+class ConversationCommandInterceptor(val conversation: Conversation) : CommandInterceptor {
+
+    override fun ignoredCommands(): List<String> {
+        return listOf()
+    }
 
     override fun parseCommand(source: Player, line: String) {
         val commandLine = CommandParsers.cleanLine(line).joinToString(" ")
@@ -16,7 +20,7 @@ class ConversationCommandInterceptor : CommandInterceptor {
         if (commandLine == "goodbye" || commandLine == "exit") {
             EventManager.postEvent(EndConversationEvent(source))
         } else {
-            val event = DialogueEvent(source.thing, GameState.conversation, line)
+            val event = DialogueEvent(source.thing, conversation, line)
             EventManager.postEvent(event)
         }
         EventManager.executeEvents()

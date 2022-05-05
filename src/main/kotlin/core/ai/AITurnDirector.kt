@@ -6,10 +6,12 @@ import core.events.EventManager
 import core.thing.Thing
 import explore.look.printUpdatingStatusEnd
 
+private const val turnLimit = 1000
+
 class AITurnDirector : EventListener<AIUpdateTick>() {
 
     override fun execute(event: AIUpdateTick) {
-        val creatures = GameState.player.thing.location.getLocation().getCreatures(GameState.player.thing)
+        val creatures = GameState.players.values.flatMap { it.thing.location.getLocation().getCreatures(it.thing) }.toSet().toList()
 
         //If only one creature, instantly fill their action points to avoid all the looping
         if (creatures.size == 1) {
@@ -17,36 +19,47 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
         }
 
         if (creatures.isNotEmpty()) {
-            val takeAnotherTurn = takeATurn(creatures)
-            if (takeAnotherTurn) {
-                EventManager.postEvent(AIUpdateTick())
+            var turns = 0
+            var takeAnotherTurn = takeATurn(creatures)
+            while (turns < turnLimit && takeAnotherTurn) {
+                takeAnotherTurn = takeATurn(creatures)
+                turns++
+            }
+            if (turns >= turnLimit) {
+                println("Got stuck in a loop taking turns. This shouldn't happen!")
             }
         }
 
     }
 
     private fun takeATurn(creatures: List<Thing>): Boolean {
-        val creatureAIs = creatures.map { it.ai }
-        creatureAIs.forEach { it.tick() }
-        creatureAIs.forEach {
-            //Make this only if some verbosity level is set?
-            if (it.isActionReady()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
+        //Sort by action points and give players 1 extra point so they always come before npcs
+        val allAIs = creatures.map { it.ai }.sortedByDescending { it.getActionPoints() + if (it.creature.isPlayer()) 1 else 0 }
+        allAIs.forEach { it.tick() }
+        var executedEvent = false
+
+        allAIs.forEach {
+            val isPlayer = it.creature.isPlayer()
+            if (!executedEvent || isPlayer) {
+                if (it.isActionReady()) {
+                    if (it.aggroThing != null) {
+                        printUpdatingStatusEnd(creatures)
+                    }
+                    EventManager.postEvent(it.action!!.getActionEvent())
+                    it.action = null
+                    executedEvent = true
+                } else if (it.canChooseAction()) {
+                    if (it.aggroThing != null) {
+                        printUpdatingStatusEnd(creatures)
+                    }
+                    it.creature.body.blockHelper.resetStance()
+                    it.chooseAction()
+                    executedEvent = true
                 }
-                EventManager.postEvent(it.action!!.getActionEvent())
-                it.action = null
-                return false
-            } else if (it.canChooseAction()) {
-                if (it.aggroThing != null) {
-                    printUpdatingStatusEnd(creatures)
-                }
-                it.creature.body.blockHelper.resetStance()
-                it.chooseAction()
-                return false
             }
         }
-        return true
+
+        return !executedEvent
     }
 
 }

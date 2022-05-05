@@ -165,7 +165,7 @@ object ReflectionTools {
                 package ${resourceInterface.java.packageName}
 
                 class ${newClassName}sGenerated : ${newClassName}sCollection {
-                    override val values = listOf<${resourceInterface.simpleName}>($classes).flatMap { it.values }
+                    override val values by lazy { listOf<${resourceInterface.simpleName}>($classes).flatMap { it.values }}
                 }
             """.trimIndent()
             )

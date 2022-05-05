@@ -1,5 +1,6 @@
 package core.history
 
+import core.GameState
 import core.events.Event
 import java.io.File
 import java.text.SimpleDateFormat
@@ -43,7 +44,8 @@ object SessionHistory {
             out.println("\n## Input History" +
                     "\n\nTime in seconds | Command" +
                     "\n---|---")
-            GameLogger.main.history.forEach { inOut ->
+            //We could print _all_ histories, but for now just print the main one
+            GameLogger.getMainHistory().history.forEach { inOut ->
                 out.println("${inOut.timeTaken / 1000f} | ${inOut.input}")
             }
 

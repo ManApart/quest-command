@@ -11,21 +11,27 @@ object CommandParsers {
     var commands = loadCommands()
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
-    private val parsers = mutableMapOf<Int, CommandParser>()
+    private val parsers = mutableMapOf<String, CommandParser>()
 
     init {
-        addParser(GameState.player)
+        GameState.players.values.forEach { addParser(it) }
+    }
+
+    fun reset() {
+        parsers.clear()
+        commands = loadCommands()
+        GameState.players.values.forEach { addParser(it) }
     }
 
     fun addParser(player: Player) {
-        parsers[player.id] = CommandParser(player)
+        parsers[player.name] = CommandParser(player)
     }
 
     fun getParser(player: Player) : CommandParser {
-        if (!parsers.containsKey(player.id)) {
-            parsers[player.id] = CommandParser(player)
+        if (!parsers.containsKey(player.name)) {
+            parsers[player.name] = CommandParser(player)
         }
-        return parsers[player.id]!!
+        return parsers[player.name]!!
     }
 
     private fun loadCommands(): NameSearchableList<Command> {
@@ -36,12 +42,6 @@ object CommandParsers {
         }
 
         return commands
-    }
-
-    fun reset() {
-        parsers.clear()
-        commands = loadCommands()
-        parsers[0] = CommandParser(GameState.player)
     }
 
     fun findCommand(alias: String): Command {
@@ -79,24 +79,24 @@ object CommandParsers {
     }
 
     fun parseInitialCommand(player: Player, args: Array<String>) {
-        parseInitialCommand(args, player.id)
+        parseInitialCommand(args, player.name)
     }
 
     //TODO - delete these and just use player version
-    fun parseInitialCommand(args: Array<String>, id: Int) {
-        parsers[id]?.parseInitialCommand(args)
+    fun parseInitialCommand(args: Array<String>, name: String) {
+        parsers[name]?.parseInitialCommand(args)
     }
 
     fun parseCommand(player: Player, line: String) {
-        parseCommand(line, player.id)
+        parseCommand(line, player.name)
     }
 
-    fun parseCommand(line: String, id: Int) {
-        parsers[id]?.parseCommand(line)
+    fun parseCommand(line: String, name: String) {
+        parsers[name]?.parseCommand(line)
     }
 
     fun setResponseRequest(player: Player, responseRequest: ResponseRequest?) {
-        parsers[player.id]?.setResponseRequest(responseRequest)
+        parsers[player.name]?.setResponseRequest(responseRequest)
     }
 
     fun cleanLine(line: String): List<String> {

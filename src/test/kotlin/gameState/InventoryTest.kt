@@ -38,7 +38,7 @@ class InventoryTest {
         DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
-        GameState.player = GameManager.newPlayer()
+        GameState.putPlayer(GameManager.newPlayer())
     }
 
     @Test

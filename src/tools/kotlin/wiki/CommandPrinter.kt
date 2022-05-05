@@ -4,7 +4,7 @@ import core.commands.Command
 import core.commands.CommandParsers
 import java.io.File
 
-private const val filePath = "../quest_command.wiki/Commands.md"
+private const val filePath = "../wiki/Commands.md"
 
 internal fun printCommands() {
     val existing = getExistingText(filePath, "## Command List")

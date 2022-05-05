@@ -14,6 +14,10 @@ class Conversation(private val firstSpeaker: Thing, private val firstListener: T
         return getListener(getLatestSpeaker())
     }
 
+    fun containsParticipant(participant: Thing): Boolean {
+        return firstSpeaker == participant || firstListener == participant
+    }
+
     private fun getListener(speaker: Thing): Thing {
         return if (firstSpeaker == speaker) {
             firstListener

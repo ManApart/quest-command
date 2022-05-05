@@ -13,11 +13,11 @@ import traveling.location.network.LocationNode
 import traveling.position.Vector
 
 class ReadMapTest {
-    val player = Player(1, Thing("Bob"))
+    val player = Player("Bob", Thing("Bob"))
 
     @Before
     fun setup() {
-        GameState.player = player
+        GameState.putPlayer(player)
         GameLogger.reset()
         GameLogger.track(player)
         player.knownLocations.clear()

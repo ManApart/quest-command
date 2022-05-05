@@ -20,6 +20,13 @@ fun Player.asSubject(listener: Player): String {
 }
 
 /**
+ * Returns S on the end if you are NOT the subject, otherwise without the s (bob travels, you travel)
+ */
+fun Thing.withS(word: String, listener: Player): String {
+    return (this === listener.thing).then(word, "${word}s")
+}
+
+/**
  * Returns Your if you are the listener, otherwise the thing's name as a possessive
  */
 fun Thing.asSubjectPossessive(listener: Player): String {

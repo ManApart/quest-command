@@ -11,7 +11,7 @@ import use.UseListener
 class UseIngredientOnActivatorRecipe : UseListener() {
 
     override fun shouldExecute(event: UseEvent): Boolean {
-        return if (event.used.properties.isItem() && event.usedOn.properties.isActivator()){
+        return if (event.used.properties.isItem() && event.usedOn.properties.isActivator()) {
             RecipeManager.findCraftableRecipes(event.source, listOf(event.used), event.usedOn).isNotEmpty()
         } else {
             false
@@ -23,7 +23,7 @@ class UseIngredientOnActivatorRecipe : UseListener() {
 
         when {
             recipes.size > 1 -> event.source.displayToMe("What do you want to craft? ${recipes.joinToString(" or ") { it.name }}")
-            else -> EventManager.postEvent(CraftRecipeEvent(GameState.getPlayer(event.source), recipes.first(), event.usedOn))
+            else -> GameState.getPlayer(event.source)?.let { EventManager.postEvent(CraftRecipeEvent(it, recipes.first(), event.usedOn)) }
         }
     }
 }

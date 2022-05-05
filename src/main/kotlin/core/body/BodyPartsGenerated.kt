@@ -1,5 +1,5 @@
 package core.body
 
 class BodyPartsGenerated : BodyPartsCollection {
-    override val values = listOf<BodyPartResource>(resources.body.CommonBodyParts()).flatMap { it.values }
+    override val values by lazy { listOf<BodyPartResource>(resources.body.CommonBodyParts()).flatMap { it.values }}
 }

@@ -51,6 +51,7 @@ class DebugCommand : Command() {
                 "lvlreq" -> sendDebugToggleEvent(source, DebugType.LEVEL_REQ, arguments)
                 "statchanges" -> sendDebugToggleEvent(source, DebugType.STAT_CHANGES, arguments)
                 "random" -> sendDebugToggleEvent(source, DebugType.RANDOM_SUCCEED, arguments)
+                "poll" -> sendDebugToggleEvent(source, DebugType.POLL_CONNECTION, arguments)
                 "map" -> sendDebugToggleEvent(source, DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
                 "recipe" -> sendDebugToggleEvent(source, DebugType.RECIPE_SHOW_ALL, arguments)
                 "clarity" -> sendDebugToggleEvent(source, DebugType.CLARITY, arguments)

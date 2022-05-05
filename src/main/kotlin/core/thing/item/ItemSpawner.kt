@@ -2,7 +2,7 @@ package core.thing.item
 
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
+import core.history.displayGlobal
 import core.properties.COUNT
 import traveling.position.NO_VECTOR
 import traveling.scope.spawn.ItemSpawnedEvent
@@ -18,7 +18,7 @@ class ItemSpawner : EventListener<SpawnItemEvent>() {
             }
             EventManager.postEvent(ItemSpawnedEvent(item, event.thing, event.thingLocation ?: event.thing!!.location))
         } else {
-            display("Could not spawn ${event.itemName} because it could not be found.")
+            displayGlobal("Could not spawn ${event.itemName} because it could not be found.")
         }
     }
 }

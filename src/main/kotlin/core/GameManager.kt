@@ -9,6 +9,7 @@ import core.thing.item.ItemManager
 import core.thing.thing
 import quests.QuestManager
 import status.stat.*
+import system.debug.DebugType
 import system.persistance.getGameNames
 import system.persistance.getGamesMetaData
 import system.persistance.loading.LoadEvent
@@ -36,23 +37,23 @@ object GameManager {
     }
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
-        GameState.reset()
         //Set initial time to day
         GameState.timeManager.setTime(50)
 
         QuestManager.reset()
         LocationManager.reset()
         EventManager.reset()
+
         GameState.reset()
         setDefaultProperties(testing)
-
         GameState.gameName = gameName
-        GameState.player = newPlayer(playerName)
+        val player = newPlayer(playerName)
+        GameState.putPlayer(player, true)
         CommandParsers.reset()
         GameLogger.reset()
 
-        giveStartingItems(GameState.player.thing)
-        EventManager.postEvent(ArriveEvent(GameState.player.thing, destination = LocationPoint(GameState.player.thing.location), method = "wake"))
+        giveStartingItems(player.thing)
+        EventManager.postEvent(ArriveEvent(player.thing, destination = LocationPoint(player.thing.location), method = "wake"))
         playing = true
         EventManager.postEvent(GameStartEvent())
     }
@@ -60,6 +61,8 @@ object GameManager {
     private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
         GameState.properties.values.put(AUTO_LOAD, !testing)
+        GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
+        GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
     }
@@ -97,10 +100,10 @@ object GameManager {
             add("Creature")
         }
 
-        return Player(0, player)
+        return Player(name, player)
     }
 
-    private fun giveStartingItems(player: Thing) {
+    fun giveStartingItems(player: Thing) {
         val inventory = player.inventory
         val body = player.body
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {

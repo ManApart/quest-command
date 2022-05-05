@@ -16,7 +16,7 @@ class CreateNewGame : EventListener<CreateNewGameEvent>() {
             event.source.displayToMe("$gameName already exists!")
         } else {
             GameManager.newGame(event.saveName)
-            save(GameState.gameName, event.source)
+            save(GameState.gameName)
             println("Saved ${event.source.thing.name} to a new game: ${GameState.gameName}.")
         }
 

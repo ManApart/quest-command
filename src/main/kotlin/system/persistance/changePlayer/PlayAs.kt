@@ -4,19 +4,24 @@ import core.GameState
 import core.Player
 import core.commands.respond
 import core.events.EventListener
-import core.history.displayToMe
+import core.history.TerminalPrinter
+import core.history.displayGlobal
 import system.persistance.clean
 import system.persistance.getCharacterSaves
-import system.persistance.save
 
 class PlayAs : EventListener<PlayAsEvent>() {
     override fun execute(event: PlayAsEvent) {
-        save(GameState.gameName, event.source)
-        loadCharacter(event.source, GameState.gameName, event.saveName)
-        event.source.displayToMe("Now playing ${event.source.thing.name} in ${GameState.gameName}.")
+        val newCharacter = GameState.players.values.firstOrNull { it.name.lowercase() == event.characterName.lowercase() } ?: loadCharacter(event.source, GameState.gameName, event.characterName)
+        if (newCharacter != null) {
+            GameState.player = newCharacter
+            TerminalPrinter.reset()
+            displayGlobal("${event.source.name} is now playing ${newCharacter.name} in ${GameState.gameName}.")
+        }
+
     }
 
-    private fun loadCharacter(source: Player, gameName: String, characterName: String) {
+    //TODO - I don't think loading a character makes sense
+    private fun loadCharacter(source: Player, gameName: String, characterName: String): Player? {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }
@@ -31,8 +36,9 @@ class PlayAs : EventListener<PlayAsEvent>() {
                 options(saves)
                 command { "be $it" }
             }
-            else -> system.persistance.loadCharacter(gameName, saves.first())
+            else -> return system.persistance.loadCharacter(gameName, saves.first(), source.name)
         }
+        return null
     }
 
 

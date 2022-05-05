@@ -3,7 +3,7 @@ package core.ai
 import conversation.dialogue.DialogueEvent
 import core.history.display
 import core.history.displayToMe
-import core.history.displayToOthers
+import core.history.displayToOthersGlobal
 
 const val PLAYER_CONTROLLED_ID = "Player Controlled"
 
@@ -13,8 +13,8 @@ class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
     }
 
     override fun takeAction() {
-        creature.displayToMe("What do you do?")
-        creature.displayToOthers("${creature.name} does what?")
+        creature.displayToMe("What do you do, ${creature.name}?")
+        creature.displayToOthersGlobal("${creature.name} does what?")
     }
 
 }

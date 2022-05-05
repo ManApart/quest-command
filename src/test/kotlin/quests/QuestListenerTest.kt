@@ -3,6 +3,7 @@ package quests
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
+import core.GameState.player
 import core.body.*
 import core.thing.Thing
 import org.junit.BeforeClass
@@ -29,7 +30,7 @@ class QuestListenerTest {
             DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
             LocationManager.reset()
 
-            GameState.player = GameManager.newPlayer()
+            GameState.putPlayer(GameManager.newPlayer())
         }
     }
 

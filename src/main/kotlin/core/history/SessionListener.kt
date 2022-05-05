@@ -11,6 +11,7 @@ class SessionListener : EventListener<Event>() {
     override fun execute(event: Event) {
         SessionHistory.incEventCount(event)
         if (GameState.properties.values.getBoolean(AUTO_SAVE)){
+            //TODO - need to save _all_ characters
             EventManager.postEvent(SaveEvent(GameState.player))
         }
     }

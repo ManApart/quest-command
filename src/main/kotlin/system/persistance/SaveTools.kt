@@ -6,7 +6,6 @@ import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
 import core.properties.PropertiesP
-import core.thing.Thing
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -15,15 +14,18 @@ import traveling.location.location.LocationManager
 import traveling.location.network.NOWHERE_NODE
 import java.io.File
 
-private const val directory = "./saves/"
 private val ignoredNames = listOf("games", "gameState")
 
+private fun getSaveFolder(): String {
+    return if (GameState.properties.values.getBoolean(TEST_SAVE_FOLDER)) "./savesTest/" else "./saves/"
+}
+
 fun getGameNames(): List<String> {
-    return getFolders(directory).map { it.name }
+    return getFolders(getSaveFolder()).map { it.name }
 }
 
 fun getCharacterSaves(gameName: String): List<String> {
-    return getFiles(clean(directory, gameName))
+    return getFiles(clean(getSaveFolder(), gameName))
         .map { it.name }
         .filter { it.endsWith(".json") }
         .map { it.substring(0, it.length - ".json".length) }
@@ -60,13 +62,15 @@ private fun getFilesAndFolders(path: String, ignoredFileNames: List<String> = li
 }
 
 
-fun save(rawGameName: String, player: Player) {
+fun save(rawGameName: String) {
     val gameName = cleanPathPart(rawGameName)
-    val gamePath = clean(directory, gameName)
+    val gamePath = clean(getSaveFolder(), gameName)
     saveSessionStats()
-    persist(player, gamePath)
+    GameState.players.values.forEach {
+        persist(it, gamePath)
+    }
     LocationManager.getNetworks().forEach { save(gamePath, it) }
-    saveGameState(player.thing, gamePath)
+    saveGameState(gamePath)
     saveTopLevelMetadata(gameName)
 }
 
@@ -76,8 +80,7 @@ private fun saveSessionStats() {
     }
 }
 
-private fun saveGameState(player: Thing, path: String) {
-    GameState.properties.values.put(LAST_SAVE_CHARACTER_NAME, cleanPathPart(player.name))
+private fun saveGameState(path: String) {
     GameState.properties.values.put(AUTO_LOAD, true)
     val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
     val json = Json.encodeToString(GameStateP())
@@ -89,7 +92,7 @@ private fun saveTopLevelMetadata(gameName: String) {
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
     gameMetaData.values.put(AUTO_LOAD, true)
     val json = Json.encodeToString(PropertiesP(gameMetaData))
-    writeSave(directory, cleanPathToFile(".json", directory, "games"), json)
+    writeSave(getSaveFolder(), cleanPathToFile(".json", getSaveFolder(), "games"), json)
 }
 
 fun save(gameName: String, network: Network) {
@@ -106,28 +109,32 @@ fun save(gameName: String, network: Network) {
 //Instead of saving character at top level, save the path to the character's location and load that?
 fun loadGame(gameName: String) {
     loadGameState(gameName)
-    val characterName = GameState.properties.values.getString(LAST_SAVE_CHARACTER_NAME, getCharacterSaves(gameName).first())
     GameLogger.stopTracking(GameState.player)
-    loadCharacter(gameName, characterName)
-    GameLogger.trackNewMain(GameState.player)
-    CommandParsers.addParser(GameState.player)
+    val newPlayers = GameState.players.values.map { player ->
+        loadCharacter(gameName, player.thing.name, player.name)
+    }
+    GameState.players.clear()
+    newPlayers.forEach { GameState.putPlayer(it) }
+    GameState.player = newPlayers.first()
+    GameLogger.reset()
+    CommandParsers.reset()
     GameManager.playing = true
 }
 
 fun loadGameState(gameName: String) {
-    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", directory, gameName, "gameState"))!!
+    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
     gameStateData.updateGameState()
 }
 
-fun loadCharacter(gameName: String, saveName: String) {
-    val path = cleanPathToFile(".json", directory, gameName, saveName)
+fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
+    val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    GameState.player = json.parsed(path, null)
+    return json.parsed(playerName, path, null)
 }
 
 fun getGamesMetaData(): Properties {
-    return loadFromPath(cleanPathToFile(".json", directory, "games")) ?: Properties()
-
+    val props: PropertiesP? = loadFromPath(cleanPathToFile(".json", getSaveFolder(), "games"))
+    return props?.parsed() ?: Properties()
 }
 
 fun writeSave(directoryName: String, saveName: String, json: String) {

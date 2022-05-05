@@ -3,6 +3,7 @@ package traveling.travel
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
+import core.history.displayToOthers
 import core.thing.Thing
 import status.stat.STAMINA
 import status.stat.getStaminaCost
@@ -30,6 +31,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.creature.getEncumbrance() >= 1 -> event.creature.displayToMe("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
+                    event.creature.displayToOthers { "${event.creature.name} leaves ${event.currentLocation}."  }
                     event.creature.displayToMe("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 }
                 postArriveEvent(event.creature, connection.destination, requiredStamina, event.quiet)
@@ -39,6 +41,6 @@ class TravelStart : EventListener<TravelStartEvent>() {
 }
 
 fun postArriveEvent(source: Thing, destination: LocationPoint, requiredStamina: Int, quiet: Boolean) {
-    EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -requiredStamina, silent = quiet))
     EventManager.postEvent(ArriveEvent(source, destination = destination, method = "travel", quiet = quiet))
+    EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -requiredStamina, silent = quiet))
 }

@@ -21,6 +21,7 @@ class CommonActions : AIActionResource {
 }
 
 private fun ratAttack(owner: Thing): Event {
+    //TODO - grab nearest person, not player
     val playerBody = GameState.player.thing.body
     val possibleParts = listOf(
         playerBody.getPart("Right Foot"),

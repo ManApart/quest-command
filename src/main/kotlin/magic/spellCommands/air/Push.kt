@@ -1,6 +1,5 @@
 package magic.spellCommands.air
 
-import core.GameState.player
 import core.Player
 import core.commands.Args
 import core.commands.CommandParsers
@@ -41,13 +40,12 @@ class Push : SpellCommand() {
         val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
         val direction = parseDirection(argsWithTowards.getGroup("towards"))
 
-
         if (power == null) {
             val message = "Push ${things.toCommandString()} how hard?"
             val options = listOf("1", "3", "5", "10", "50")
             val response = ResponseRequest(message,
                 options.associateWith { "push $it towards ${direction.name} on ${things.toCommandString()}}" })
-             CommandParsers.setResponseRequest(player, response)
+             CommandParsers.setResponseRequest(source, response)
         } else {
             val hitCount = things.count()
             val perThingCost = power / 10

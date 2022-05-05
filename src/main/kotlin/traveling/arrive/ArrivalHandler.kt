@@ -8,7 +8,9 @@ class ArrivalHandler : EventListener<ArriveEvent>() {
         event.origin.location.getLocation().removeThing(event.creature)
         event.destination.location.getLocation().addThing(event.creature, listOf("me", "self"))
         if (event.creature.isPlayer()) {
-            event.destination.location.discoverSelfAndNeighbors(GameState.getPlayer(event.creature))
+            GameState.getPlayer(event.creature)?.let {
+                event.destination.location.discoverSelfAndNeighbors(it)
+            }
         }
     }
 }
