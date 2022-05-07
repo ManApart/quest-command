@@ -55,6 +55,10 @@ class LeveledStat(
         return LeveledStat(name, level, maxMultiplier, expExponential, max, current, xp)
     }
 
+    fun resetCurrent(){
+        current = max
+    }
+
     fun addEXP(amount: Int) {
         if (amount > 0) {
             xp += amount

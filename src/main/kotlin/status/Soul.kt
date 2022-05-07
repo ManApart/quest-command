@@ -22,6 +22,11 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
         return Soul(newStats)
     }
 
+    fun resetStatsAndConditions() {
+        leveledStats.forEach { it.resetCurrent() }
+        conditions.clear()
+    }
+
     private fun levelUp(stat: LeveledStat, newLevel: Int) {
         EventManager.postEvent(LevelUpEvent(parent, stat, newLevel))
     }
