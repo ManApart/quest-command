@@ -16,8 +16,8 @@ class Condition(
         val permanent: Boolean = false,
         age: Int? = null,
         isCritical: Boolean? = null,
-        isFirstApply: Boolean? = null
-
+        isFirstApply: Boolean? = null,
+        val silent: Boolean = false
 ) : Named {
     val effects = NameSearchableList(effects)
     val criticalEffects = NameSearchableList(criticalEffects)
@@ -45,7 +45,7 @@ class Condition(
     fun apply(soul: Soul) {
         getEffects().forEach { effect ->
             if (permanent || age < effect.duration) {
-                effect.apply(soul, isFirstApply)
+                effect.apply(soul, isFirstApply, silent)
             }
         }
 
@@ -54,7 +54,7 @@ class Condition(
     }
 
     fun removeEffects(soul: Soul) {
-        getEffects().forEach { it.remove(soul) }
+        getEffects().forEach { it.remove(soul, silent) }
     }
 
     fun hasEffect(name: String): Boolean {

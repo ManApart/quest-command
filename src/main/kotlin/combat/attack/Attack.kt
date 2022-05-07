@@ -83,7 +83,7 @@ class Attack : EventListener<AttackEvent>() {
     private fun processSound(event: AttackEvent, attackedParts: List<Location>) {
         val soundLevel = if (attackedParts.isEmpty()) 10 else 30
 
-        val condition = Condition("Attacking", Element.AIR, 20, listOf(EffectManager.getEffect("Attacking", soundLevel, 2)))
+        val condition = Condition("Attacking", Element.AIR, 20, listOf(EffectManager.getEffect("Attacking", soundLevel, 2)), silent = true)
         event.source.soul.addNewCondition(condition)
     }
 
