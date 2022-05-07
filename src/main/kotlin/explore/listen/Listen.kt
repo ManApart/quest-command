@@ -32,7 +32,7 @@ class Listen : EventListener<ListenEvent>() {
         } else {
             val soundText = filteredSounds.joinToStringAnd {
                 if (it.distance == NO_VECTOR) it.description else {
-                    "${it.description} ${it.distance.direction.directionString()}"
+                    "${it.description.replace(".", "")} ${it.distance.direction.directionString()}"
                 }
             }
             event.source.displayToMe("You hear $soundText.")

@@ -139,7 +139,7 @@ class CommonLocations : LocationResource {
 
         location("Barren Patch") {
             extends("Outside")
-            description("The surrounding grasses yellow and thin. Towards the center the ground is nothing more than packed dirt.")
+            description("The surrounding grasses are yellow and thin. Towards the center the ground is nothing more than packed dirt.")
             creature("Rat")
         }
 

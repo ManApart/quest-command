@@ -89,7 +89,7 @@ class CommandComboTest {
         CommandParsers.parseCommand(GameState.player, input)
         assertTrue(GameLogger.getMainHistory().contains("You climb to Apple Tree Branches."))
         assertTrue(GameLogger.getMainHistory().contains("It is neighbored by Apple Tree (BELOW)."))
-        assertTrue(GameLogger.getMainHistory().getLastOutputs().contains("You climb back off Apple Tree."))
+        assertTrue(GameLogger.getMainHistory().contains("You climb back off Apple Tree."))
     }
 
     @Test
@@ -97,9 +97,9 @@ class CommandComboTest {
         CommandParsers.parseCommand(GameState.player, "s")
         val input = "slash torso of rat && r && r"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("Rat has died.", GameLogger.getMainHistory().getLastOutput())
+        assertTrue(GameLogger.getMainHistory().contains("Rat has died."))
         CommandParsers.parseCommand(GameState.player, "ex")
-        assertEquals("It contains Poor Quality Meat.", GameLogger.getMainHistory().getLastOutput())
+        assertTrue(GameLogger.getMainHistory().contains("It contains Poor Quality Meat."))
     }
 
     @Test

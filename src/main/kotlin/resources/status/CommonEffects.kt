@@ -137,7 +137,13 @@ class CommonEffects : EffectResource {
         }
 
         effect("Talking"){
-            description("You hear them talking.")
+            description("The sound of voices")
+            boost()
+            propertyValue(SOUND_LEVEL)
+        }
+
+        effect("Attacking"){
+            description("the din of battle")
             boost()
             propertyValue(SOUND_LEVEL)
         }
