@@ -11,9 +11,9 @@ class RestrictLocation : EventListener<RestrictLocationEvent>() {
 
         if (!event.silent) {
             if (event.makeRestricted) {
-                event.triggeringThing.display("You can no longer access ${event.destination.locationName} from ${event.source.locationName}.")
+                event.triggeringThing.display("${event.destination.locationName} is no longer accessible from ${event.source.locationName}.")
             } else {
-                event.triggeringThing.display("You can now access ${event.destination.locationName} from ${event.source.locationName}.")
+                event.triggeringThing.display("${event.destination.locationName} is now available from ${event.source.locationName}.")
             }
         }
     }

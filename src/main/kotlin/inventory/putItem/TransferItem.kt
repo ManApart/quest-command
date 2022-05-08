@@ -17,8 +17,8 @@ class TransferItem : EventListener<TransferItemEvent>() {
         when {
             isPlacing && !event.destination.isWithinRangeOf(event.mover) -> event.source.display{event.mover.asSubject(it) + " " + event.mover.isAre(it) + " too far away to place in ${event.destination.name}."}
             isTaking && !event.source.isWithinRangeOf(event.mover) -> event.source.display{event.mover.asSubject(it) + " " + event.mover.isAre(it) + " too far away to take from ${event.source.name}."}
-            !isOpen(event.source) -> event.source.display("Can't take ${event.item.name} from ${event.source.name} because it's not an open container.")
-            !isOpen(event.destination) -> event.source.display("Can't place ${event.item.name} in ${event.destination.name} because it's not an open container.")
+            !isOpen(event.source) -> event.source.displayToMe("Can't take ${event.item.name} from ${event.source.name} because it's not an open container.")
+            !isOpen(event.destination) -> event.source.displayToMe("Can't place ${event.item.name} in ${event.destination.name} because it's not an open container.")
             else -> moveItemFromSourceToDest(event.source, event.item, event.destination, event.silent)
         }
     }

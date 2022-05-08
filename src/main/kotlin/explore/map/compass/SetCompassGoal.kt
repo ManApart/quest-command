@@ -3,7 +3,7 @@ package explore.map.compass
 import core.Player
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import traveling.location.RouteFinder
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
@@ -13,10 +13,10 @@ class SetCompassGoal : EventListener<SetCompassEvent>() {
         val sourceT = event.source.thing
         val destination = LocationManager.findLocationInAnyNetwork(sourceT, event.locationName)
         if (destination == null) {
-            sourceT.display("Could not find ${event.locationName} on the map.")
+            sourceT.displayToMe("Could not find ${event.locationName} on the map.")
         } else if (destination == sourceT.location) {
             event.source.findRoute(destination, event.depth)
-            sourceT.display("You are at ${destination.name}.")
+            sourceT.displayToMe("You are at ${destination.name}.")
         } else {
             event.source.findRoute(destination, event.depth)
             if (event.source.compassRoute != null) {
@@ -38,7 +38,7 @@ fun Player.findRoute(destination: LocationNode, depth: Int) {
             compassRoute = routeFinder.getRoute()
         } else {
             compassRoute = null
-            display("Could not find a route to ${destination.name}.")
+            displayToMe("Could not find a route to ${destination.name}.")
         }
     }
 }

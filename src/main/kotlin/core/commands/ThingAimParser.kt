@@ -1,6 +1,6 @@
 package core.commands
 
-import core.history.display
+import core.history.displayToMe
 import core.thing.Thing
 import core.utility.NameSearchableList
 import traveling.location.location.Location
@@ -28,7 +28,7 @@ private fun parseThingsInGroup(source: Thing, arguments: List<String>, things: N
         args.hasBase() && args.hasGroup("of") -> parseThingAndParts(args, things)
         args.hasBase() -> parseThingOnly(args.fullString, things)
         else -> {
-            source.display("Could not parse things for: ${arguments.joinToString(" ")}")
+            source.displayToMe("Could not parse things for: ${arguments.joinToString(" ")}")
             null
         }
     }

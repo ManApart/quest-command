@@ -5,7 +5,7 @@ import core.Player
 import core.commands.Command
 import core.commands.respond
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import crafting.RecipeManager
 import system.debug.DebugType
 
@@ -37,7 +37,7 @@ class RecipeCommand : Command() {
             args.size == 1 && args[0] == "recipe" -> clarifyWhichRecipe(source)
             source.knownRecipes.exists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, source.knownRecipes.get(argString)))
             GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL) && RecipeManager.recipeExists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, RecipeManager.getRecipe(argString)))
-            else -> source.display("Couldn't find recipe ${args.joinToString(" ")}.")
+            else -> source.displayToMe("Couldn't find recipe ${args.joinToString(" ")}.")
         }
     }
 

@@ -2,7 +2,6 @@ package inventory
 
 import core.body.Body
 import core.events.EventListener
-import core.history.display
 import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
@@ -13,7 +12,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
     override fun execute(event: ListInventoryEvent) {
         when {
             !event.thing.properties.tags.has("Container") -> {
-                event.thing.display("Cannot view inventory of ${event.thing.name}")
+                event.thing.displayToMe("Cannot view inventory of ${event.thing.name}")
             }
             !event.source.thing.perceives(event.thing) -> event.source.displayToMe("You know it's there; you just can't see it.")
             else -> {
@@ -28,7 +27,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
                         }"
                     )
                 } else {
-                    event.thing.display("${event.thing.name} has no items.")
+                    event.thing.displayToMe("${event.thing.name} has no items.")
                 }
             }
         }

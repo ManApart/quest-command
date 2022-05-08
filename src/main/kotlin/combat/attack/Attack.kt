@@ -31,7 +31,7 @@ class Attack : EventListener<AttackEvent>() {
             val offensiveDamage = getOffensiveDamage(source, event.sourcePart, event.type)
 
             when {
-                weaponRange < thingDistance -> event.source.display("${event.aim} is too far away to be hit by $damageSource.")
+                weaponRange < thingDistance -> event.source.displayToMe("${event.aim} is too far away to be hit by $damageSource.")
                 offensiveDamage > 0 -> processAttack(event, damageSource, offensiveDamage)
                 event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(
                     UseEvent(

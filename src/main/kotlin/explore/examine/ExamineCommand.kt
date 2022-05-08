@@ -5,7 +5,7 @@ import core.commands.Command
 import core.commands.parseThings
 import core.commands.respond
 import core.events.EventManager
-import core.history.display
+import core.history.displayToMe
 import traveling.position.ThingAim
 
 class ExamineCommand : Command() {
@@ -42,7 +42,7 @@ class ExamineCommand : Command() {
     private fun tryAndGetThing(args: List<String>, source: Player) {
         val thing = getThing(args, source)
         when {
-            thing == null -> source.display("Couldn't find ${args.joinToString(" ")}.")
+            thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
             thing.isLookingAtBody() -> EventManager.postEvent(ExamineEvent(source, thing.thing, body = thing.thing.body))
             thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(ExamineEvent(source, location = thing.bodyPartThings.firstOrNull()))
             else -> EventManager.postEvent(ExamineEvent(source, thing = thing.thing))
