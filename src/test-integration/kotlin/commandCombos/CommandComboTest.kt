@@ -124,7 +124,7 @@ class CommandComboTest {
     fun useGate() {
         val input = "$travelToGate && use gate"
         CommandParsers.parseCommand(GameState.player, input)
-        assertEquals("You can now access Kanbara City from Kanbara Gate.", GameLogger.getMainHistory().getLastOutput())
+        assertEquals("Kanbara City is now available from Kanbara Gate.", GameLogger.getMainHistory().getLastOutput())
     }
 
     @Test

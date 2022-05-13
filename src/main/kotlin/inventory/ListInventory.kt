@@ -12,7 +12,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
     override fun execute(event: ListInventoryEvent) {
         when {
             !event.thing.properties.tags.has("Container") -> {
-                event.thing.displayToMe("Cannot view inventory of ${event.thing.name}")
+                event.source.displayToMe("Cannot view inventory of ${event.thing.name}")
             }
             !event.source.thing.perceives(event.thing) -> event.source.displayToMe("You know it's there; you just can't see it.")
             else -> {
@@ -27,7 +27,7 @@ class ListInventory : EventListener<ListInventoryEvent>() {
                         }"
                     )
                 } else {
-                    event.thing.displayToMe("${event.thing.name} has no items.")
+                    event.source.displayToMe("${event.thing.name} has no items.")
                 }
             }
         }
