@@ -6,7 +6,7 @@ import core.history.displayToMe
 
 class ConnectionCommandInterceptor : CommandInterceptor {
     override fun ignoredCommands(): List<String> {
-        return listOf("Disconnect", "Connect", "Play", "Be")
+        return listOf("Disconnect", "Connect", "Play", "Be", "Quit")
     }
 
     override fun parseCommand(source: Player, line: String) {

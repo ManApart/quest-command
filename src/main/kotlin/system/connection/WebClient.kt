@@ -28,7 +28,7 @@ data class ServerResponse(val latestResponse: Int, val latestSubResponse: Int, v
 object WebClient {
     private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
     var doPolling = false
-    var host = "localhost"
+    var host = "http://localhost"
     var port = "8080"
     var latestResponse = 0
     var latestSubResponse = 0
@@ -92,7 +92,7 @@ object WebClient {
                     runBlocking {
                         launch {
                             val updates = getServerUpdates()
-                            if (updates.isNotEmpty()) {
+                            if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
                                 updates.forEach { displayGlobal(it) }
                                 GameLogger.endCurrent()
                                 TerminalPrinter.print()
