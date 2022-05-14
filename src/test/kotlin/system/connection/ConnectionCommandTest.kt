@@ -38,6 +38,17 @@ class ConnectionCommandTest {
     }
 
     @Test
+    fun noName() {
+        command.execute(player, "connect", "google.com 8081".split(" "))
+
+        val expected = ConnectEvent(player, "Player", "http://google.com", "8081")
+
+        val events = EventManager.getUnexecutedEvents()
+        assertEquals(1, events.size)
+        assertEquals(expected, events.first())
+    }
+
+    @Test
     fun defaults() {
         command.execute(player, "connect", "Jim".split(" "))
 

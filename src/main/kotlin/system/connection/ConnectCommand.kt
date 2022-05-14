@@ -2,6 +2,7 @@ package system.connection
 
 import core.Player
 import core.commands.Command
+import core.commands.removeAll
 import core.events.EventManager
 import core.history.displayToMe
 import system.connection.WebClient.port
@@ -37,12 +38,23 @@ class ConnectCommand : Command() {
     }
 
     private fun parseConnectArgs(args: List<String>): ConnectionInfo {
-        val name = args.first()
-        val port = if (args.last().toIntOrNull() != null) args.last() else "8080"
-        val host = if (args.size > 1) args[1] else "localhost"
-        val cleanHost = if (host.startsWith("http")) host else "http://$host"
-        return ConnectionInfo(name, cleanHost, port)
+        val port = args.firstOrNull { it.toIntOrNull() != null } ?: "8080"
+        val host = findHost(args)
+        val name = findName(args, host, port)
+        return ConnectionInfo(name, host, port)
     }
+
+    private fun findHost(args: List<String>): String {
+        val host = if (args.size == 3) args[1] else args.firstOrNull { it.contains(".") } ?: "localhost"
+        return if (host.startsWith("http")) host else "http://$host"
+    }
+
+    private fun findName(args: List<String>, host: String, port: String): String {
+        val unused = args.removeAll(listOf(host, host.replace("http://", ""), port))
+        return if (unused.isNotEmpty()) unused.first() else "Player"
+    }
+
+
 
 }
 

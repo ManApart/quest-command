@@ -17,7 +17,7 @@ class Connect : EventListener<ConnectEvent>() {
             updates.takeLast(10).forEach { event.source.displayToMe(it) }
             if (GameState.getDebugBoolean(DebugType.POLL_CONNECTION)) WebClient.pollForUpdates()
         } else {
-            event.source.displayToMe("Could not connect to ${event.host}:${event.port}")
+            event.source.displayToMe("Could not connect to ${event.playerName} on ${event.host}:${event.port}")
         }
     }
 }
