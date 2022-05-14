@@ -6,6 +6,7 @@ import core.commands.respond
 import core.events.EventListener
 import core.history.TerminalPrinter
 import core.history.displayGlobal
+import core.history.displayToMe
 import system.persistance.clean
 import system.persistance.getCharacterSaves
 
@@ -26,6 +27,10 @@ class PlayAs : EventListener<PlayAsEvent>() {
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }
         when {
+            allSaves.isEmpty() -> {
+                source.displayToMe("Could not find a save for $characterName")
+                return null
+            }
             saves.isEmpty() -> source.respond {
                 message("Could not find a match for $playerSaveName. What character would you like to play?")
                 options(allSaves)
