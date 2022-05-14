@@ -33,9 +33,9 @@ private fun printTurnStatus(source: Player, creatures: List<Thing>) {
         when {
             it.ai.isActionReady() -> ""
             it.ai.getActionPoints() == 0 -> ""
-            it.ai.canChooseAction() -> "$it is making a choice"
-            it.ai.action != null -> "$it is preforming an action with ${it.ai.action!!.timeLeft} time left"
-            else -> "$it is getting ready to make a choice: ${it.ai.getActionPoints()}/100"
+            it.ai.canChooseAction() -> "${it.name} is making a choice"
+            it.ai.action != null -> "${it.name} is preforming an action with ${it.ai.action!!.timeLeft} time left"
+            else -> "${it.name} is getting ready to make a choice: ${it.ai.getActionPoints()}/100"
         }
     }.filter { it.isNotBlank() }.joinToString("\n")
 
