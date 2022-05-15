@@ -6,11 +6,12 @@ import core.ai.action.dsl.AIActionsCollection
 import core.ai.dsl.AIsCollection
 import core.startupLog
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import core.utility.toNameSearchableList
 
 object AIManager {
-    private var AIs = loadAIs()
-    private var actions = loadActions()
+    private var AIs by lazyM { loadAIs() }
+    private var actions by lazyM { loadActions() }
     private val defaultAI = AIBase("NONE")
     private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
 

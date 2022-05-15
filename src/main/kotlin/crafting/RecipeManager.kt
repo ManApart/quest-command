@@ -6,11 +6,12 @@ import core.Player
 import core.startupLog
 import core.thing.Thing
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import core.utility.toNameSearchableList
 import system.debug.DebugType
 
 object RecipeManager {
-    private var recipes = loadRecipes()
+    private var recipes by lazyM { loadRecipes() }
 
     private fun loadRecipes(): NameSearchableList<Recipe> {
         startupLog("Loading Recipes")

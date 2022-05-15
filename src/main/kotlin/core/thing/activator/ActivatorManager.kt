@@ -9,14 +9,15 @@ import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.build
 import core.thing.thing
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import traveling.location.location.LocationThing
 
 const val ACTIVATOR_TAG = "Activator"
 
 object ActivatorManager {
-    private var activators = loadActivators()
+    private var activators by lazyM { loadActivators() }
 
-    private fun loadActivators(): NameSearchableList<Thing>{
+    private fun loadActivators(): NameSearchableList<Thing> {
         startupLog("Loading Activators.")
         val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class)
         return activatorsCollection.values.build(ACTIVATOR_TAG)
@@ -27,7 +28,7 @@ object ActivatorManager {
     }
 
     fun getActivator(name: String): Thing {
-        return thing(name){
+        return thing(name) {
             extends(activators.get(name))
         }.build()
     }
@@ -38,7 +39,7 @@ object ActivatorManager {
 
     fun getActivatorsFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
-            val activator = thing(it.name){
+            val activator = thing(it.name) {
                 extends(activators.get(it.name))
                 param(it.params)
             }.build()

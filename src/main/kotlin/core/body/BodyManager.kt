@@ -3,6 +3,7 @@ package core.body
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import traveling.location.Network
 import traveling.location.location.LocationRecipe
 import traveling.location.location.build
@@ -12,7 +13,7 @@ import traveling.location.network.LocationNode
 import traveling.location.network.build
 
 object BodyManager {
-    private var bodies = createBodies()
+    private var bodies by lazyM { createBodies() }
 
     fun reset() {
         bodies = createBodies()
@@ -41,11 +42,11 @@ object BodyManager {
         return NameSearchableList(bodies)
     }
 
-    private fun createLocations(bodyParts: List<LocationRecipe>, locationNodes: List<LocationNode>) : NameSearchableList<LocationRecipe> {
+    private fun createLocations(bodyParts: List<LocationRecipe>, locationNodes: List<LocationNode>): NameSearchableList<LocationRecipe> {
         val locations = NameSearchableList(bodyParts)
 
         locationNodes.forEach { node ->
-            if (locations.getOrNull(node.locationName) == null){
+            if (locations.getOrNull(node.locationName) == null) {
                 locations.add(LocationRecipe(node.locationName))
             }
         }

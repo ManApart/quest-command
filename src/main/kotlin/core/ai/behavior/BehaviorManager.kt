@@ -2,12 +2,13 @@ package core.ai.behavior
 
 import core.DependencyInjector
 import core.startupLog
+import core.utility.lazyM
 
 
 object BehaviorManager {
-    private var behaviors = loadBehaviors()
+    private var behaviors by lazyM { loadBehaviors() }
 
-    private fun loadBehaviors(): List<Behavior<*>>{
+    private fun loadBehaviors(): List<Behavior<*>> {
         return DependencyInjector.getImplementation(BehaviorsCollection::class).values
     }
 
@@ -25,7 +26,7 @@ object BehaviorManager {
         return behaviors.filter { recipeNames.contains(it.name) }
     }
 
-    fun getBehavior(recipe: BehaviorRecipe) : Behavior<*>{
+    fun getBehavior(recipe: BehaviorRecipe): Behavior<*> {
         return behaviors.firstOrNull { it.name == recipe.name }?.copy(recipe.params) ?: throw IllegalArgumentException("Could not find behavior for ${recipe.name}")
     }
 

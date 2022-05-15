@@ -3,10 +3,11 @@ package quests
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
+import core.utility.lazyM
 
 object QuestManager {
-    private var storyEvents = loadStoryEvents()
-    var quests = parseQuests(storyEvents)
+    var storyEvents by lazyM { loadStoryEvents() }
+    var quests by lazyM { parseQuests(storyEvents) }
 
     private fun loadStoryEvents(): List<StoryEvent> {
         startupLog("Loading Story Events.")

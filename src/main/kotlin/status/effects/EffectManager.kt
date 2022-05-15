@@ -3,11 +3,12 @@ package status.effects
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import core.utility.toNameSearchableList
 import traveling.location.location.Location
 
 object EffectManager {
-    private var effects = loadEffects()
+    private var effects by lazyM { loadEffects() }
 
     fun reset() {
         effects = loadEffects()
@@ -20,7 +21,7 @@ object EffectManager {
     }
 
     // should effects be parsable from json as well as effect bases?
-    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartThings: List<Location> = listOf()) : Effect {
+    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartThings: List<Location> = listOf()): Effect {
         return Effect(effects.get(baseName), amount, duration, bodyPartThings)
     }
 

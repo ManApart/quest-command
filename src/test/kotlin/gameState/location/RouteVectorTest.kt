@@ -2,7 +2,8 @@ package gameState.location
 
 import org.junit.Test
 import traveling.location.RouteNeighborFinder
-import traveling.location.location.LocationHelper
+import traveling.location.location.buildInitialMap
+import traveling.location.location.createNeighborsAndNeighborLinks
 import traveling.location.network.LocationNode
 import traveling.location.network.NetworkBuilder
 import traveling.location.network.network

@@ -4,12 +4,13 @@ import core.DependencyInjector
 import core.startupLog
 import core.thing.Thing
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import core.utility.toNameSearchableList
 import traveling.location.Network
 import traveling.location.network.*
 
 object LocationManager {
-    private var networks = loadNetworks()
+    private var networks by lazyM { loadNetworks() }
 
     fun reset() {
         networks = loadNetworks()

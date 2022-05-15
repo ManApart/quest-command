@@ -6,13 +6,14 @@ import core.thing.Thing
 import core.thing.build
 import core.thing.thing
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import core.utility.toNameSearchableList
 import traveling.location.location.LocationThing
 
 const val CREATURE_TAG = "Creature"
 
 object CreatureManager {
-    private var creatures = loadCreatures()
+    private var creatures by lazyM { loadCreatures() }
 
     fun reset() {
         creatures = loadCreatures()
@@ -25,7 +26,7 @@ object CreatureManager {
     }
 
     private fun getCreature(name: String): Thing {
-        return thing(name){
+        return thing(name) {
             extends(creatures.get(name))
         }.build()
     }
@@ -40,7 +41,7 @@ object CreatureManager {
 
     fun getCreaturesFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
-            val creature = thing(it.name){
+            val creature = thing(it.name) {
                 extends(creatures.get(it.name))
                 param(it.params)
             }.build()

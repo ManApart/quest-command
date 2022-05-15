@@ -3,6 +3,7 @@ package status.conditions
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import core.utility.toNameSearchableList
 import status.effects.Effect
 import status.effects.EffectManager
@@ -10,7 +11,7 @@ import status.effects.EffectRecipe
 import traveling.location.location.Location
 
 object ConditionManager {
-    private var conditionRecipes = loadConditions()
+    private var conditionRecipes by lazyM { loadConditions() }
 
     fun reset() {
         conditionRecipes = loadConditions()

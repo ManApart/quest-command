@@ -6,14 +6,15 @@ import core.thing.Thing
 import core.thing.build
 import core.thing.thing
 import core.utility.NameSearchableList
+import core.utility.lazyM
 import traveling.location.location.LocationThing
 
 const val ITEM_TAG = "Item"
 
 object ItemManager {
-    private var items = loadItems()
+    private var items by lazyM { loadItems() }
 
-    private fun loadItems() : NameSearchableList<Thing>{
+    private fun loadItems(): NameSearchableList<Thing> {
         startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
         return itemsCollection.values.build(ITEM_TAG)
@@ -28,7 +29,7 @@ object ItemManager {
     }
 
     fun getItem(name: String): Thing {
-        return thing(name){
+        return thing(name) {
             extends(items.get(name))
         }.build()
     }
@@ -43,7 +44,7 @@ object ItemManager {
 
     fun getItemsFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
-            val item = thing(it.name){
+            val item = thing(it.name) {
                 extends(items.get(it.name))
                 param(it.params)
             }.build()
