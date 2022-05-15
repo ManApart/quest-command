@@ -1,6 +1,7 @@
 package status.conditions
 
 import core.DependencyInjector
+import core.startupLog
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import status.effects.Effect
@@ -16,6 +17,7 @@ object ConditionManager {
     }
 
     private fun loadConditions(): NameSearchableList<ConditionRecipe> {
+        startupLog("Loading Conditions.")
         val parser = DependencyInjector.getImplementation(ConditionsCollection::class)
         return parser.values.toNameSearchableList()
     }

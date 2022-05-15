@@ -1,6 +1,7 @@
 package traveling.location.weather
 
 import core.DependencyInjector
+import core.startupLog
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 
@@ -10,6 +11,7 @@ object WeatherManager {
     private var weather = loadWeather()
 
     private fun loadWeather(): NameSearchableList<Weather> {
+        startupLog("Loading Weather")
         val collection = DependencyInjector.getImplementation(WeathersCollection::class)
         return collection.values.toNameSearchableList()
     }

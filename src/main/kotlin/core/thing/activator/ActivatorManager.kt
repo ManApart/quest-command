@@ -1,6 +1,9 @@
 package core.thing.activator
 
 import core.DependencyInjector
+import core.GameState
+import core.VERBOSE_STARTUP
+import core.startupLog
 import core.thing.Thing
 import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.build
@@ -14,6 +17,7 @@ object ActivatorManager {
     private var activators = loadActivators()
 
     private fun loadActivators(): NameSearchableList<Thing>{
+        startupLog("Loading Activators.")
         val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class)
         return activatorsCollection.values.build(ACTIVATOR_TAG)
     }

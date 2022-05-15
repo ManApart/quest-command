@@ -4,23 +4,29 @@ import core.DependencyInjector
 import core.ai.action.AIAction
 import core.ai.action.dsl.AIActionsCollection
 import core.ai.dsl.AIsCollection
+import core.startupLog
+import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 
 object AIManager {
-    private var aIsCollection = DependencyInjector.getImplementation(AIsCollection::class)
-    private var actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class)
-
-    private var AIs = aIsCollection.values.toNameSearchableList()
-    private var actions = actionsCollection.values.toNameSearchableList()
+    private var AIs = loadAIs()
+    private var actions = loadActions()
     private val defaultAI = AIBase("NONE")
     private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
 
-    fun reset() {
-        aIsCollection = DependencyInjector.getImplementation(AIsCollection::class)
-        actionsCollection = DependencyInjector.getImplementation(AIActionsCollection::class)
+    private fun loadAIs(): NameSearchableList<AIBase> {
+        startupLog("Loading AI Bases.")
+        return DependencyInjector.getImplementation(AIsCollection::class).values.toNameSearchableList()
+    }
 
-        AIs = aIsCollection.values.toNameSearchableList()
-        actions = actionsCollection.values.toNameSearchableList()
+    private fun loadActions(): NameSearchableList<AIAction> {
+        startupLog("Loading AI Actions.")
+        return DependencyInjector.getImplementation(AIActionsCollection::class).values.toNameSearchableList()
+    }
+
+    fun reset() {
+        AIs = loadAIs()
+        actions = loadActions()
     }
 
     fun getAI(name: String?): AI {

@@ -3,25 +3,29 @@ package crafting
 import core.DependencyInjector
 import core.GameState
 import core.Player
+import core.startupLog
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import system.debug.DebugType
 
 object RecipeManager {
-    private var parser = DependencyInjector.getImplementation(RecipesCollection::class)
-    private var recipes = parser.values.build()
+    private var recipes = loadRecipes()
+
+    private fun loadRecipes(): NameSearchableList<Recipe> {
+        startupLog("Loading Recipes")
+        return DependencyInjector.getImplementation(RecipesCollection::class).values.build()
+    }
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(RecipesCollection::class)
-        recipes = parser.values.build()
+        recipes = loadRecipes()
     }
 
     fun getRecipe(name: String): Recipe {
         return recipes.get(name)
     }
 
-    fun recipeExists(name: String): Boolean{
+    fun recipeExists(name: String): Boolean {
         return recipes.exists(name)
     }
 

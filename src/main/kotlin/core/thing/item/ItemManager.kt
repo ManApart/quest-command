@@ -1,6 +1,7 @@
 package core.thing.item
 
 import core.DependencyInjector
+import core.startupLog
 import core.thing.Thing
 import core.thing.build
 import core.thing.thing
@@ -13,6 +14,7 @@ object ItemManager {
     private var items = loadItems()
 
     private fun loadItems() : NameSearchableList<Thing>{
+        startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
         return itemsCollection.values.build(ITEM_TAG)
     }

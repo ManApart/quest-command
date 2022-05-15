@@ -1,6 +1,7 @@
 package traveling.location.location
 
 import core.DependencyInjector
+import core.startupLog
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
@@ -8,7 +9,6 @@ import traveling.location.Network
 import traveling.location.network.*
 
 object LocationManager {
-    private val locationHelper = LocationHelper()
     private var networks = loadNetworks()
 
     fun reset() {
@@ -16,14 +16,15 @@ object LocationManager {
     }
 
     private fun loadNetworks(): NameSearchableList<Network> {
+        startupLog("Loading Networks.")
         val nodeCollection = DependencyInjector.getImplementation(NetworksCollection::class)
         val locationCollection = DependencyInjector.getImplementation(LocationsCollection::class)
         val locations = locationCollection.values.build().toNameSearchableList()
         val nodes = nodeCollection.values.build()
 
 
-        val nodeMap = locationHelper.buildInitialMap(nodes)
-        locationHelper.createNeighborsAndNeighborLinks(nodeMap)
+        val nodeMap = buildInitialMap(nodes)
+        createNeighborsAndNeighborLinks(nodeMap)
         createLocationIfNeeded(nodeMap, locations)
 
         val networks = nodeMap.map { entry ->

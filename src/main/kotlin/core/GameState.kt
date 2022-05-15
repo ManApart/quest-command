@@ -56,9 +56,13 @@ fun eventWithPlayer(creature: Thing, event: (Player) -> Event): Event? {
     return GameState.getPlayer(creature)?.let { event(it) }
 }
 
+fun startupLog(message: String){
+    if (GameState.properties.values.getBoolean(VERBOSE_STARTUP)) println(message)
+}
 
 const val AUTO_SAVE = "autosave"
 const val AUTO_LOAD = "autoload"
+const val VERBOSE_STARTUP = "verbose startup"
 const val TEST_SAVE_FOLDER = "use test save folder"
 const val SKIP_SAVE_STATS = "skip save stats"
 const val LAST_SAVE_GAME_NAME = "last save character name"

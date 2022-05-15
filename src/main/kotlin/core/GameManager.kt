@@ -37,6 +37,7 @@ object GameManager {
     }
 
     fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
+        startupLog("Creating New Game.")
         //Set initial time to day
         GameState.timeManager.setTime(50)
 

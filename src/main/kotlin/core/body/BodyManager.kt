@@ -1,16 +1,17 @@
 package core.body
 
 import core.DependencyInjector
+import core.startupLog
 import core.utility.NameSearchableList
 import traveling.location.Network
-import traveling.location.location.LocationHelper
 import traveling.location.location.LocationRecipe
 import traveling.location.location.build
+import traveling.location.location.buildInitialMap
+import traveling.location.location.createNeighborsAndNeighborLinks
 import traveling.location.network.LocationNode
 import traveling.location.network.build
 
 object BodyManager {
-    private val locationHelper = LocationHelper()
     private var bodies = createBodies()
 
     fun reset() {
@@ -18,13 +19,14 @@ object BodyManager {
     }
 
     private fun createBodies(): NameSearchableList<Body> {
+        startupLog("Creating Bodies.")
         val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class)
         val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class)
         val nodes = bodyCollection.values.build()
         val bodyParts = bodyPartCollection.values.build()
 
-        val nodeMap = locationHelper.buildInitialMap(nodes)
-        locationHelper.createNeighborsAndNeighborLinks(nodeMap)
+        val nodeMap = buildInitialMap(nodes)
+        createNeighborsAndNeighborLinks(nodeMap)
         val locations = createLocations(bodyParts, nodeMap.values.flatten())
 
         val networks = nodeMap.map { entry ->

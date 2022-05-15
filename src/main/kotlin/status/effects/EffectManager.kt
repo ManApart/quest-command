@@ -1,6 +1,7 @@
 package status.effects
 
 import core.DependencyInjector
+import core.startupLog
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.location.Location
@@ -13,6 +14,7 @@ object EffectManager {
     }
 
     private fun loadEffects(): NameSearchableList<EffectBase> {
+        startupLog("Loading Effects")
         val parser = DependencyInjector.getImplementation(EffectsCollection::class)
         return parser.values.toNameSearchableList()
     }

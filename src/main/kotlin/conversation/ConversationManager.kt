@@ -3,14 +3,18 @@ package conversation
 import conversation.dsl.Dialogue
 import conversation.dsl.DialoguesCollection
 import core.DependencyInjector
+import core.startupLog
 
 object ConversationManager {
-    private var parser = DependencyInjector.getImplementation(DialoguesCollection::class)
-    private var dialogues = parser.values
+    private var dialogues = loadDialogue()
+
+    private fun loadDialogue(): List<Dialogue>{
+        startupLog("Loading Dialogue.")
+        return DependencyInjector.getImplementation(DialoguesCollection::class).values
+    }
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(DialoguesCollection::class)
-        dialogues = parser.values
+        dialogues = loadDialogue()
     }
 
     fun getMatchingDialogue(conversation: Conversation): List<Dialogue> {

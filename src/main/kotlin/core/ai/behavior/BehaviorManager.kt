@@ -1,15 +1,19 @@
 package core.ai.behavior
 
 import core.DependencyInjector
+import core.startupLog
 
 
 object BehaviorManager {
-    private var parser = DependencyInjector.getImplementation(BehaviorsCollection::class)
-    private var behaviors = parser.values
+    private var behaviors = loadBehaviors()
+
+    private fun loadBehaviors(): List<Behavior<*>>{
+        return DependencyInjector.getImplementation(BehaviorsCollection::class).values
+    }
 
     fun reset() {
-        parser = DependencyInjector.getImplementation(BehaviorsCollection::class)
-        behaviors = parser.values
+        startupLog("Loading Behaviors.")
+        behaviors = loadBehaviors()
     }
 
     fun behaviorExists(recipe: BehaviorRecipe): Boolean {

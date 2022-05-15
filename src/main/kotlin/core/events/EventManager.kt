@@ -4,9 +4,6 @@ import core.DependencyInjector
 import kotlin.reflect.KClass
 import kotlin.reflect.full.allSupertypes
 
-//import java.lang.reflect.ParameterizedType
-
-
 object EventManager {
     private val listenerMap = HashMap<KClass<*>, ArrayList<EventListener<*>>>()
     private val eventQueue = mutableListOf<Event>()

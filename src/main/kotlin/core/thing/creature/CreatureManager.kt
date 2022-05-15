@@ -1,6 +1,7 @@
 package core.thing.creature
 
 import core.DependencyInjector
+import core.startupLog
 import core.thing.Thing
 import core.thing.build
 import core.thing.thing
@@ -18,6 +19,7 @@ object CreatureManager {
     }
 
     private fun loadCreatures(): NameSearchableList<Thing> {
+        startupLog("Loading Creatures.")
         val collection = DependencyInjector.getImplementation(CreaturesCollection::class)
         return collection.values.build(CREATURE_TAG).toNameSearchableList()
     }
