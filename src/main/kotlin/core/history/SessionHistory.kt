@@ -1,6 +1,5 @@
 package core.history
 
-import core.GameState
 import core.events.Event
 import java.io.File
 import java.text.SimpleDateFormat
@@ -12,13 +11,13 @@ object SessionHistory {
     private const val directory = "./saves/"
     private val fileName = "./saves/session-stats-$date.md"
 
-    private val unknownCommands = mutableListOf<String>()
+    private val unknownCommands = mutableMapOf<String, Int>()
     private val eventCounts = mutableListOf<EventCount>()
 
     fun incEventCount(event: Event) {
         val name = event::class.simpleName!!
         val last = eventCounts.lastOrNull()
-        if (last != null && last.name == name){
+        if (last != null && last.name == name) {
             last.count++
         } else {
             eventCounts.add(EventCount(name))
@@ -26,7 +25,7 @@ object SessionHistory {
     }
 
     fun addUnknownCommand(command: String) {
-        unknownCommands.add(command)
+        unknownCommands[command] = (unknownCommands[command] ?: 0) + 1
     }
 
     fun saveSessionStats() {
@@ -36,22 +35,28 @@ object SessionHistory {
         }
         File(fileName).printWriter().use { out ->
 
-            out.println("\n## Unknown Commands")
-            unknownCommands.forEach { line ->
-                out.println(line)
+            out.println("\n## Unknown Commands"+
+                    "\n\nCommand | Count" +
+                    "\n---|---")
+            unknownCommands.entries.sortedBy { it.key }.forEach { (command, count) ->
+                out.println("$command | $count")
             }
 
-            out.println("\n## Input History" +
-                    "\n\nTime in seconds | Command" +
-                    "\n---|---")
+            out.println(
+                "\n## Input History" +
+                        "\n\nTime in seconds | Command" +
+                        "\n---|---"
+            )
             //We could print _all_ histories, but for now just print the main one
             GameLogger.getMainHistory().history.forEach { inOut ->
                 out.println("${inOut.timeTaken / 1000f} | ${inOut.input}")
             }
 
-            out.println("## Event Counts" +
-                    "\n\nEvent | Count" +
-                    "\n---|---")
+            out.println(
+                "## Event Counts" +
+                        "\n\nEvent | Count" +
+                        "\n---|---"
+            )
             eventCounts.forEach { event ->
                 out.println("${event.name} | ${event.count}")
             }
