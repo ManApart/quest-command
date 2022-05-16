@@ -2,6 +2,7 @@ package explore.look
 
 import core.Player
 import core.history.displayToMe
+import core.history.displayToOthers
 import core.thing.perceivedBy
 import core.thing.toThingString
 import core.utility.joinToStringOr
@@ -14,6 +15,7 @@ import traveling.scope.getLightLevel
 fun describeLocation(source: Player, location: Location) {
     describePosition(source, location)
     describePerceivedThings(source, location)
+    source.displayToOthers("${source.name} looks around.")
 }
 
 private fun describePosition(source: Player, location: Location) {
@@ -54,11 +56,12 @@ fun describeLocationDetailed(source: Player, location: Location) {
 
     if (location.weather != DEFAULT_WEATHER) source.displayToMe(location.weather.description)
 
-    val light = location.getLightLevel()
+    val light = location.getLightLevel(source.thing)
     val heat = getHeatLevel(location)
     if (light != 0 || heat != 0) source.displayToMe("It is $light light and $heat hot.")
 
     if (locationRecipe.slots.isNotEmpty()) source.displayToMe("It can be equipped to at ${locationRecipe.slots.joinToStringOr()}.")
 
     describePerceivedThings(source, location)
+    source.displayToOthers("${source.name} examines their surroundings.")
 }

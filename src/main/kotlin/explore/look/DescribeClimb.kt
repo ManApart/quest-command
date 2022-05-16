@@ -4,6 +4,7 @@ import core.GameState
 import core.Player
 import core.history.StringTable
 import core.history.displayToMe
+import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.wrapNonEmpty
 import system.debug.DebugType
@@ -24,6 +25,7 @@ fun describeClimbJourney(source: Player) {
 
     source.displayToMe("You are on ${location.name}, ${distance}above the ground.$exitString")
     source.displayToMe(getRoutesString(source, location))
+    source.displayToOthers("${source.name} looks around.")
 }
 
 private fun getDistance(location: LocationNode): String {

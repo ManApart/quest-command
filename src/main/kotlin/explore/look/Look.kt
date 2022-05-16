@@ -3,6 +3,7 @@ package explore.look
 import core.Player
 import core.events.EventListener
 import core.history.displayToMe
+import core.history.displayToOthers
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 
@@ -11,7 +12,7 @@ class Look : EventListener<LookEvent>() {
     override fun execute(event: LookEvent) {
         when {
             event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(event.source)
-            event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBody(event.source, event.body) }
+            event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBody(event.source, event.thing) }
             event.thing != null -> describePerceived(event.source, event.thing) { describeThing(event.source, event.thing) }
             event.location != null -> describeLocation(event.source, event.location)
             event.source.ai.aggroThing != null -> describeBattle(event.source)

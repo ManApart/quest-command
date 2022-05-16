@@ -20,7 +20,9 @@ class CommonLocations : LocationResource {
 
         location("Inside Building") {
             extends("Inside")
-            activator("Wall Scone")
+            activator("Wall Scone", x = 10)
+            activator("Wall Scone", x = -10)
+            lightLevel(2)
         }
 
         location("Outside") {

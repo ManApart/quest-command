@@ -8,6 +8,7 @@ import core.history.displayUpdateEnd
 import core.thing.Thing
 import status.stat.HEALTH
 
+//TODO - only display to me?
 fun describeBattle(source: Player) {
     val creatures = source.location.getLocation().getCreatures(source.thing)
     creatures.filter { it !== source.thing }.forEach {

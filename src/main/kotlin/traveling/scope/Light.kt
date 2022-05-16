@@ -4,8 +4,9 @@ import core.GameState
 import core.thing.Thing
 import core.utility.clamp
 import traveling.location.location.Location
+import kotlin.math.roundToInt
 
-const val LIGHT_FALLOFF_RATE = 1
+const val LIGHT_FALLOFF_RATE = .1f
 const val MAX_LIGHT = 10
 const val LIGHT = "light"
 const val LIT_LIGHT = "litLight"
@@ -42,6 +43,6 @@ fun getLightCastOn(thing: Thing, lightSources: List<Thing>): Int {
 
 fun getLightCastOn(thing: Thing, lightSource: Thing): Int {
     val distance = thing.position.getDistance(lightSource.position)
-    val light = lightSource.properties.values.getInt(LIGHT) - (LIGHT_FALLOFF_RATE * distance)
+    val light = lightSource.properties.values.getInt(LIGHT) - (LIGHT_FALLOFF_RATE * distance).roundToInt()
     return light.clamp(0, MAX_LIGHT)
 }
