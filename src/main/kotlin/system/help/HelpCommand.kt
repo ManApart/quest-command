@@ -79,10 +79,15 @@ class HelpCommand : Command() {
     }
 
     private fun clarifyCommandHelp(source: Player, group: String) {
-        source.respond {
-            message("Help about what command?")
-            options(getCommands(group).map { it.name })
-            command { "help $it" }
+        val commands = getCommands(group)
+        if (commands.isEmpty()) {
+            clarifyCommandFromGroupHelp(source)
+        } else {
+            source.respond {
+                message("Help about what command?")
+                options(commands.map { it.name })
+                command { "help $it" }
+            }
         }
     }
 
