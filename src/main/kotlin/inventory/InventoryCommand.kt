@@ -42,10 +42,14 @@ class InventoryCommand : Command() {
     }
 
     private fun clarifyThing(source: Player, things: List<Thing>) {
-        source.respond {
-            message("View whose inventory?")
-            options(things)
-            command { "bag $it" }
+        if (things.isEmpty()) {
+            EventManager.postEvent(ListInventoryEvent(source, source.thing))
+        } else {
+            source.respond {
+                message("View whose inventory?")
+                options(things)
+                command { "bag $it" }
+            }
         }
     }
 

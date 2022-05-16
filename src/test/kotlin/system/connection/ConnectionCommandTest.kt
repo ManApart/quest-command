@@ -3,6 +3,7 @@ package system.connection
 import core.GameState.player
 import core.events.EventManager
 import createMockedGame
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -13,6 +14,11 @@ class ConnectionCommandTest {
     @Before
     fun setup() {
         createMockedGame()
+    }
+
+    @After
+    fun teardown() {
+        EventManager.clear()
     }
 
     @Test
