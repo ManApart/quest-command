@@ -3,7 +3,9 @@ package traveling.jump
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayToMe
 import core.utility.asSubject
+import core.utility.withS
 import status.stat.AGILITY
 import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
@@ -17,8 +19,8 @@ class PlayerFall : EventListener<FallEvent>() {
     }
 
     override fun execute(event: FallEvent) {
-        if (event.reason != null) event.creature.display(event.reason)
-        event.creature.display{"${event.creature.asSubject(it)} fall ${event.fallHeight}ft."}
+        if (event.reason != null) event.creature.displayToMe(event.reason)
+        event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("fall", it)} ${event.fallHeight}ft."}
         takeDamage(event)
         if (event.creature.location != event.destination){
             EventManager.postEvent(ArriveEvent(event.creature, destination = LocationPoint(event.destination), method = "fall"))

@@ -3,6 +3,8 @@ package use.eat
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayToMe
+import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.then
 import status.statChanged.StatChangeEvent
@@ -10,8 +12,8 @@ import status.statChanged.StatChangeEvent
 class EatFood : EventListener<EatFoodEvent>() {
 
     override fun execute(event: EatFoodEvent) {
-        val thing = event.creature.isPlayer().then("You eat", event.creature.name +" eats")
-        event.creature.display("$thing ${event.food.name}")
+        event.creature.displayToMe("You eat ${event.food.name}.")
+        event.creature.displayToOthers("${event.creature.name} eats ${event.food.name}.")
         val healAmount = getHealAmount(event.food)
         EventManager.postEvent(StatChangeEvent(event.creature, event.food.name, "Health", healAmount))
         event.creature.currentLocation().removeThingIncludingPlayerInventory(event.creature, event.food)

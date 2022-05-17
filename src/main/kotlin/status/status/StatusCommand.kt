@@ -30,8 +30,8 @@ class StatusCommand : Command() {
         val argsString = args.joinToString(" ")
         when {
             args.isEmpty() && keyword == "status" -> clarifyStatus(source)
-            args.isEmpty() -> EventManager.postEvent(StatusEvent(source.thing))
-            source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
+            args.isEmpty() -> EventManager.postEvent(StatusEvent(source, source.thing))
+            source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source, source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
             else -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
         }
     }

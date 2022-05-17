@@ -2,6 +2,8 @@ package status.status
 
 import core.events.EventListener
 import core.history.display
+import core.history.displayToMe
+import core.history.displayToOthers
 import core.properties.ENCUMBRANCE
 import core.utility.asSubjectPossessive
 import core.utility.capitalize2
@@ -16,19 +18,20 @@ class Status : EventListener<StatusEvent>() {
         printImportantStats(event)
         printOtherStats(event)
         printOtherConditions(event)
+        event.source.displayToOthers("${event.source.name} examines ${event.creature.name}'s stats.")
     }
 
     private fun printImportantStats(event: StatusEvent) {
         val soul = event.creature.soul
         if (soul.hasStat(HEALTH) || soul.hasStat(STAMINA) || soul.hasStat(FOCUS)) {
             val youHave =
-                event.creature.isPlayer().then("You (${event.creature.name}) have", "${event.creature.name} has")
-            val youAre = event.creature.isPlayer().then("You are", "${event.creature.name} is")
+                (event.creature == event.source.thing).then("You (${event.creature.name}) have", "${event.creature.name} has")
+            val youAre = (event.creature == event.source.thing).then("You are", "${event.creature.name} is")
             val encumbrancePercent = (event.creature.getEncumbrance() * 100).toInt()
             val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0)
             val encumberedStats =
                 "${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
-            event.creature.display(
+            event.source.displayToMe(
                 "$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${
                     soul.getCurrent(
                         FOCUS

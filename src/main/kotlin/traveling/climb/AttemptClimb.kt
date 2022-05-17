@@ -7,6 +7,7 @@ import core.thing.Thing
 import core.utility.RandomManager
 import core.utility.asSubject
 import core.utility.isAre
+import core.utility.withS
 import status.ExpGainedEvent
 import status.stat.CLIMBING
 import status.stat.STAMINA
@@ -28,7 +29,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     override fun execute(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
-            event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.thing.name}."}
+            event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.thing.name}." }
         } else {
             val distance = getDistance(event.creature.location, event.thingPart)
             val chance = getChance(event.creature, distance)
@@ -73,8 +74,8 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         val directionString = getDirectionString(event.desiredDirection)
         when {
             distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.thingPart.name}.")
-            distance == 0 -> event.creature.display("You climb ${event.thingPart.name}.")
-            else -> event.creature.display("You climb $distance ft$directionString towards ${event.thingPart.name}.")
+            distance == 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${event.thingPart.name}."}
+            else -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString towards ${event.thingPart.name}."}
         }
 
         event.creature.setClimbing(event.thing)
