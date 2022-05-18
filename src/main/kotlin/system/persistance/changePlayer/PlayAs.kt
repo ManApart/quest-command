@@ -31,12 +31,12 @@ class PlayAs : EventListener<PlayAsEvent>() {
                 source.displayToMe("Could not find a save for $characterName")
                 return null
             }
-            saves.isEmpty() -> source.respond {
+            saves.isEmpty() -> source.respond("No characters found to play.") {
                 message("Could not find a match for $playerSaveName. What character would you like to play?")
                 options(allSaves)
                 command { "be $it" }
             }
-            saves.size > 1 -> source.respond {
+            saves.size > 1 -> source.respond("No characters found to play.") {
                 message("What character would you like to play?")
                 options(saves)
                 command { "be $it" }

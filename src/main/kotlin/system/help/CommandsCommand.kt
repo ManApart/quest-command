@@ -33,14 +33,14 @@ class CommandsCommand : Command() {
     }
 
     private fun clarifyCommandGroup(source: Player) {
-        source.respond {
+        source.respond({}) {
             options(getCommandGroups())
             command { "commands $it" }
         }
     }
 
     private fun clarifyCommand(source: Player, group: String) {
-        source.respond {
+        source.respond({}) {
             options(getCommands(group))
         }
     }

@@ -39,7 +39,7 @@ class ReadMapCommand : Command() {
     }
 
     private fun clarifyDepth(player: Player) {
-        player.respond {
+        player.respond({}) {
             message("View how many hops?")
             options("1", "3", "5", "10", "20")
             command { "map $it" }

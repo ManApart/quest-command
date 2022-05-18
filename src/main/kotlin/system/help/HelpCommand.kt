@@ -38,15 +38,27 @@ class HelpCommand : Command() {
             args.isEmpty() && keyword == "help" -> clarifyHelp(source)
             args.isEmpty() -> EventManager.postEvent(ViewHelpEvent(source))
 
-            args.size == 1 && args[0] == "commands" -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true))
-            args.size == 2 && argsArray.contentEquals(arrayOf("commands", "extended")) -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true, args = listOf("all")))
+            args.size == 1 && args[0] == "commands" -> EventManager.postEvent(
+                ViewHelpEvent(
+                    source,
+                    commandGroups = true
+                )
+            )
+            args.size == 2 && argsArray.contentEquals(arrayOf("commands", "extended")) -> EventManager.postEvent(
+                ViewHelpEvent(source, commandGroups = true, args = listOf("all"))
+            )
 
             args.size == 2 && argsArray.contentEquals(arrayOf("command", "group")) -> clarifyCommandGroupHelp(source)
 
             args.size == 1 && args[0] == "command" -> clarifyCommandFromGroupHelp(source)
             args.size == 2 && args[0] == "command" -> clarifyCommandHelp(source, args[1])
 
-            isCommand(args) -> EventManager.postEvent(ViewHelpEvent(source, commandManual = CommandParsers.findCommand(args[0])))
+            isCommand(args) -> EventManager.postEvent(
+                ViewHelpEvent(
+                    source,
+                    commandManual = CommandParsers.findCommand(args[0])
+                )
+            )
             isCommandGroup(args) -> EventManager.postEvent(ViewHelpEvent(source, commandGroups = true, args = args))
 
             else -> EventManager.postEvent(ViewHelpEvent(source))
@@ -54,16 +66,22 @@ class HelpCommand : Command() {
     }
 
     private fun clarifyHelp(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Help about what?")
-            displayedOptions("General Help", "List Commands", "List Commands (extended)", "A Command Group", "A Command")
+            displayedOptions(
+                "General Help",
+                "List Commands",
+                "List Commands (extended)",
+                "A Command Group",
+                "A Command"
+            )
             options("All", "Commands", "Commands extended", "Command Group", "Command")
             command { "help $it" }
         }
     }
 
     private fun clarifyCommandGroupHelp(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Help about which command group?")
             options(getCommandGroups())
             command { "help $it" }
@@ -71,7 +89,7 @@ class HelpCommand : Command() {
     }
 
     private fun clarifyCommandFromGroupHelp(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Help about a command from which command group?")
             options(getCommandGroups())
             command { "help command $it" }
@@ -80,14 +98,10 @@ class HelpCommand : Command() {
 
     private fun clarifyCommandHelp(source: Player, group: String) {
         val commands = getCommands(group)
-        if (commands.isEmpty()) {
-            clarifyCommandFromGroupHelp(source)
-        } else {
-            source.respond {
-                message("Help about what command?")
-                options(commands.map { it.name })
-                command { "help $it" }
-            }
+        source.respond({ clarifyCommandFromGroupHelp(source) }) {
+            message("Help about what command?")
+            options(commands.map { it.name })
+            command { "help $it" }
         }
     }
 

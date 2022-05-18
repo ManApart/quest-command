@@ -40,12 +40,10 @@ class PutItemCommand : core.commands.Command() {
     }
 
     private fun clarifyItemToPlace(source: Player) {
-        source.respond({
+        source.respond("You don't have any items to give."){
             message("Give what item?")
             options(source.inventory.getItems())
             command { "place $it in" }
-        }) {
-            source.displayToMe("You don't have any items to give.")
         }
     }
 

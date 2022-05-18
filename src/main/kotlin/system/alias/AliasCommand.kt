@@ -57,7 +57,7 @@ class AliasCommand : Command() {
 
     private fun deleteAlias(source: Player, args: List<String>) {
         if (args.size != 2) {
-            source.respond {
+            source.respond("No aliases to delete.") {
                 message("Delete which alias?")
                 //TODO - get from command parser
                 options("alias1", "alias2")

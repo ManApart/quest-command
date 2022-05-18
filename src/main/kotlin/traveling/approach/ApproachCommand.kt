@@ -60,7 +60,7 @@ class ApproachCommand : Command() {
     private fun clarifyAmount(source: Player, thing: Thing) {
         val thingRange = source.position.getDistance(thing.position)
 
-        source.respond {
+        source.respond({}) {
             message("Move how much?")
             displayedOptions("minimum", "halfway", "all the way")
             options(Distances.MIN_RANGE.toString(), (thingRange/2).toString(), thingRange.toString())
@@ -72,7 +72,7 @@ class ApproachCommand : Command() {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to approach.")
         } else {
-            source.respond {
+            source.respond("There is nothing to approach.") {
                 message("Approach what?")
                 options(creatures)
                 command { "approach $it" }

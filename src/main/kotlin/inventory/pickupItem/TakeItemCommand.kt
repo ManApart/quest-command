@@ -70,7 +70,7 @@ class TakeItemCommand : core.commands.Command() {
     }
 
     private fun takeFromWhat(source: Player, creatures: List<Thing>, itemName: String) {
-        source.respond {
+        source.respond("Nothing to take from.") {
             message("Take $itemName from what?")
             options(creatures)
             command { "take $itemName from $it." }

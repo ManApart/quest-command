@@ -58,7 +58,7 @@ class RetreatCommand : Command() {
     }
 
     private fun clarifyAmount(player: Player, thing: Thing) {
-        player.respond {
+        player.respond({}) {
             message("Retreat how much?")
             options("1", "3", "5", "10", "50", "#")
             command { "retreat from $thing by $it" }
@@ -69,7 +69,7 @@ class RetreatCommand : Command() {
         if (creatures.isEmpty()) {
             source.displayToMe("Couldn't find anything to retreat from. You must be really frightened.")
         } else {
-            source.respond {
+            source.respond("There is nothing to retreat from.") {
                 message("Retreat from what?")
                 options(creatures)
                 command { "retreat from $it" }
