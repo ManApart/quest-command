@@ -61,14 +61,14 @@ class TravelInDirectionCommand : Command() {
     }
 
     private fun clarifyDirection(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Travel in which direction?")
             options(Direction.values().map { it.name })
         }
     }
 
     private fun requestLocation(source: Player, openNeighbors: List<LocationNode>) {
-        source.respond {
+        source.respond("There aren't any locations to travel towards.") {
             message("Travel towards what location?")
             options(openNeighbors)
             command { "travel $it" }

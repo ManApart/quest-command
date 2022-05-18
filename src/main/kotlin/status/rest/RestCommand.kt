@@ -38,7 +38,7 @@ class RestCommand : Command() {
     }
 
     private fun clarifyHours(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Rest for how many hours?")
             options("1", "3", "5", "10")
             command { "rest $it" }

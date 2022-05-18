@@ -84,7 +84,7 @@ class HoldItemCommand : Command() {
     }
 
     private fun suggestEquippableItems(source: Player) {
-        source.respond {
+        source.respond("There is nothing for you to hold.") {
             message("What do you want to hold?")
             options(getEquipableItems(source.thing))
             command { "hold $it" }
@@ -98,7 +98,7 @@ class HoldItemCommand : Command() {
     }
 
     private fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
-        source.respond {
+        source.respond("There is no place you can hold ${item.name}.") {
             message("Could not find attach point $attachPointGuess. Where would you like to hold ${item.name}?")
             val options = source.thing.body.getParts().filter { it.hasAttachPoint("Grip") }
             options(options)
@@ -109,7 +109,7 @@ class HoldItemCommand : Command() {
 
     private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
         val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
-        source.respond {
+        source.respond({}) {
             message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
             yesNoOptions("hold ${newEquip.name}$toPart f", "")
         }

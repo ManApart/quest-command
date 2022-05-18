@@ -148,12 +148,12 @@ class ClimbCommand : Command() {
                 "Unable to climb ${options.first().name}."
             )
             climbOptions.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
-            desiredDirection != Direction.NONE -> player.respond {
+            desiredDirection != Direction.NONE -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
                 displayedOptions(climbOptions.map { "${it.thing.name} (${it.direction})" })
                 options(climbOptions.map { "climb ${it.direction} ${it.thing.name}" })
             }
-            else -> player.respond {
+            else -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
                 options(options)
                 command { "climb $it" }
@@ -167,7 +167,7 @@ class ClimbCommand : Command() {
         if (options.isEmpty()) {
             player.displayToMe("${thing.name} doesn't seem to have anything to climb.")
         } else {
-            player.respond {
+            player.respond("No parts of ${thing.name} to climb.") {
                 message("Climb what part of ${thing.name}?")
                 options(options)
                 command { "climb $it of ${thing.name}" }

@@ -45,7 +45,7 @@ class InventoryCommand : Command() {
         if (things.isEmpty()) {
             EventManager.postEvent(ListInventoryEvent(source, source.thing))
         } else {
-            source.respond {
+            source.respond("There aren't any inventories to view.") {
                 message("View whose inventory?")
                 options(things)
                 command { "bag $it" }

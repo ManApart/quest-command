@@ -50,7 +50,7 @@ class JournalCommand : Command() {
     }
 
     private fun clarifyQuest(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Info about what type?")
             options("Active", "All", "Quest")
             command { "quest $it" }
@@ -58,7 +58,7 @@ class JournalCommand : Command() {
     }
 
     private fun clarifyWhichQuest(source: Player) {
-        source.respond {
+        source.respond("You don't have any quests.") {
             message("Info about which quest?")
             options(QuestManager.getAllPlayerQuests())
             command { "quest $it" }

@@ -1,7 +1,6 @@
 package system.persistance.loading
 
 import core.GameState
-import core.commands.CommandParsers
 import core.commands.respond
 import core.events.EventListener
 import core.history.displayToMe
@@ -15,12 +14,12 @@ class Load : EventListener<LoadEvent>() {
         val saves = allSaves.filter { it.lowercase().contains(gameName.lowercase()) }
 
         when {
-            saves.isEmpty() -> event.source.respond {
+            saves.isEmpty() -> event.source.respond("No saves found.") {
                 message("Could not find a match for $gameName. What game would you like to load?")
                 options(allSaves)
                 command { "load $it" }
             }
-            saves.size > 1 -> event.source.respond {
+            saves.size > 1 -> event.source.respond("No saves found.") {
                 message("What game would you like to load?")
                 options(saves)
                 command { "load $it" }

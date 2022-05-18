@@ -42,7 +42,7 @@ class EatCommand : Command() {
     }
 
     private fun eatWhat(source: Player, food: List<Thing>) {
-        source.respond {
+        source.respond("There is nothing you can eat.") {
             message("Eat what?")
             options(food)
             command { "eat $it" }

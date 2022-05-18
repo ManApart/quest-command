@@ -42,7 +42,7 @@ class RecipeCommand : Command() {
     }
 
     private fun clarifyRecipe(player: Player) {
-        player.respond {
+        player.respond({}) {
             message("List all or read a specific recipe?")
             options("All", "Recipe")
             command { "recipe $it" }
@@ -50,7 +50,7 @@ class RecipeCommand : Command() {
     }
 
     private fun clarifyWhichRecipe(player: Player) {
-        player.respond {
+        player.respond("You don't know any recipes.") {
             message("Read what recipe?")
             options(player.knownRecipes)
             command { "recipe $it" }

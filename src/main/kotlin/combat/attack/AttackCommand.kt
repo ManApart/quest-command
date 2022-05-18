@@ -105,7 +105,7 @@ class AttackCommand : Command() {
     }
 
     private fun clarifyThings(player: Player, keyword: String, options: List<ThingAim>, weaponName: String) {
-        player.respond {
+        player.respond("Unable to find something to attack.") {
             message("$keyword which one with $weaponName?")
             options(options.map { it.thing.name })
             command { "$keyword $it" }
@@ -113,7 +113,7 @@ class AttackCommand : Command() {
     }
 
     private fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
-        player.respond {
+        player.respond("Unable to find a part of ${thing.thing.name} to attack.") {
             message("$keyword what part of ${thing.thing.name} with $weaponName?")
             options(thing.thing.body.getParts())
             command { "$keyword $it of ${thing.thing.name}" }

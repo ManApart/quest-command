@@ -44,7 +44,7 @@ class ViewCompassCommand : Command() {
     }
 
     private fun clarifyDepth(source: Player, locationArgs: String) {
-        source.respond {
+        source.respond({}) {
             message("Search how far?")
             options("1", "3", "5", "10", "20")
             command { "compass $locationArgs $it" }

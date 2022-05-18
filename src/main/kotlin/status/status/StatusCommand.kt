@@ -37,7 +37,7 @@ class StatusCommand : Command() {
     }
 
     private fun clarifyStatus(source: Player) {
-        source.respond {
+        source.respond("There is nothing to get a status of.") {
             message("Status of what?")
             options(source.thing.currentLocation().getCreatures())
             command { "status $it" }

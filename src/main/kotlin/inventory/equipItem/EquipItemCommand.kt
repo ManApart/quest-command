@@ -84,7 +84,7 @@ class EquipItemCommand : Command() {
     }
 
     private fun suggestEquippableItems(source: Player) {
-        source.respond {
+        source.respond("There is nothing you can equip.") {
             message("What do you want to equip?")
             options(getEquipableItems(source.thing))
             command { "equip $it" }
@@ -106,7 +106,7 @@ class EquipItemCommand : Command() {
 
     private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
         val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
-        source.respond {
+        source.respond({}) {
             message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
             yesNoOptions("equip ${newEquip.name}$toPart f", "")
         }

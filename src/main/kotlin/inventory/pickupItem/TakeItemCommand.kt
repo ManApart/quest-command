@@ -52,7 +52,7 @@ class TakeItemCommand : core.commands.Command() {
         if (items.isEmpty()) {
             source.displayToMe("Nothing to pickup!")
         } else {
-            source.respond {
+            source.respond("There are no items for you to take.") {
                 message("Take which item?")
                 options(items)
                 command { "take $it" }

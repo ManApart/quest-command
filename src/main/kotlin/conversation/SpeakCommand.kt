@@ -48,7 +48,7 @@ class SpeakCommand : Command() {
         if (things.size == 1) {
             EventManager.postEvent(StartConversationEvent(speaker, things.first()))
         } else {
-            speaker.respond {
+            speaker.respond("There is no one to speak to.") {
                 message( "Speak to who?")
                 options(speaker.location.getLocation().getCreatures(speaker.thing))
                 command { "speak to $it" }

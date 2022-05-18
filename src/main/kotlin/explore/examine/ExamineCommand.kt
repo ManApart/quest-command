@@ -67,7 +67,7 @@ class ExamineCommand : Command() {
     }
 
     private fun clarifyThing(source: Player) {
-        source.respond {
+        source.respond({}) {
             message("Examine what?")
             options(listOf("all") + source.thing.currentLocation().getThings().map { it.name })
             command { "examine $it" }
@@ -75,7 +75,7 @@ class ExamineCommand : Command() {
     }
 
     private fun clarifyThings(source: Player, options: List<ThingAim>) {
-        source.respond {
+        source.respond("There isn't anything to examine.") {
             message("Examine what?")
             options(options.map { it.toString() })
             command { "examine $it" }
