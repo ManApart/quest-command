@@ -89,7 +89,7 @@ class AttackCommand : Command() {
     }
 
     private fun clarifyAttackType(player: Player, args: List<String>) {
-        player.respond {
+        player.respond({}) {
             message("Attack how?")
             options("Chop", "Crush", "Slash", "Stab")
             command { "$it ${args.joinToString(" ")}" }
@@ -97,7 +97,7 @@ class AttackCommand : Command() {
     }
 
     private fun clarifyThing(player: Player, keyword: String, weaponName: String) {
-        player.respond {
+        player.respond("Unable to find a weapon.") {
             message("$keyword what with $weaponName?")
             options(player.thing.currentLocation().getThings())
             command { "$keyword $it" }
