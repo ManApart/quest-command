@@ -7,6 +7,7 @@ import core.history.displayToMe
 import core.thing.Thing
 import core.utility.asSubject
 import core.utility.isAre
+import core.utility.joinToStringOr
 import inventory.pickupItem.ItemPickedUpEvent
 
 class TransferItem : EventListener<TransferItemEvent>() {
@@ -33,7 +34,9 @@ class TransferItem : EventListener<TransferItemEvent>() {
             removeFromSource(source, item)
             EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
         } else {
-            source.displayToMe("Could not find a place for $item.")
+            source.displayToMe("Could not find a place for ${item.name}.")
+            val canHold = destination.body.getRootPart().properties.values.getString("CanHold").split(",")
+            if (canHold.isNotEmpty()) source.displayToMe("${destination.name} can only hold items that are ${canHold.joinToStringOr()}.")
         }
     }
 

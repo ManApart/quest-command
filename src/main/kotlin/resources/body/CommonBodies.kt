@@ -73,8 +73,12 @@ class CommonBodies : BodyResource {
         }
 
         network("Stairs")
-        network("Grain Bin")
         network("Sack")
+        network("Grain Bin") {
+            locationNode {
+                isRoot(true)
+            }
+        }
         network("Grain Chute") {
             locationNode {
                 isRoot(true)
