@@ -40,10 +40,12 @@ class PutItemCommand : core.commands.Command() {
     }
 
     private fun clarifyItemToPlace(source: Player) {
-        source.respond {
+        source.respond({
             message("Give what item?")
             options(source.inventory.getItems())
             command { "place $it in" }
+        }){
+            source.displayToMe("You don't have any items to give.")
         }
     }
 
@@ -63,10 +65,12 @@ class PutItemCommand : core.commands.Command() {
     }
 
     private fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
-        source.respond {
+        source.respond({
             message("Give $itemName to what?")
             options(creatures)
             command { "give $itemName to $it" }
+        }) {
+            source.displayToMe("Couldn't find something to give $itemName to.")
         }
     }
 

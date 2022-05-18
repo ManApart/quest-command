@@ -3,7 +3,7 @@ package core.commands
 import core.Player
 import core.utility.Named
 
-class RequestResponseBuilder {
+class RequestResponseBuilder(private val defaultBehavior: () -> Unit) {
     private var message: String = ""
     private val options = mutableListOf<String>()
     private val displayedOptions = mutableListOf<String>()
@@ -12,8 +12,11 @@ class RequestResponseBuilder {
     private var value: String? = null
     private var defaultValue: String? = null
 
-    fun build(): ResponseRequest {
-        if (options.isEmpty()) throw Exception("Response must have options.")
+    fun build(): ResponseRequest? {
+        if (options.isEmpty()) {
+            defaultBehavior()
+            return null
+        }
         if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
 
         val optionsForMessage = displayedOptions.ifEmpty { options }
@@ -92,7 +95,6 @@ class RequestResponseBuilder {
 
 }
 
-fun Player.respond(initializer: RequestResponseBuilder.() -> Unit) {
-    val response = RequestResponseBuilder().apply(initializer).build()
-    CommandParsers.setResponseRequest(this, response)
+fun Player.respond(initializer: RequestResponseBuilder.() -> Unit, defaultBehavior: () -> Unit) {
+    RequestResponseBuilder(defaultBehavior).apply(initializer).build()?.let { CommandParsers.setResponseRequest(this, it) }
 }
