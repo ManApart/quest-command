@@ -74,21 +74,9 @@ class CommonBodies : BodyResource {
 
         network("Stairs")
         network("Sack")
-        network("Grain Bin") {
-            locationNode {
-                isRoot(true)
-            }
-        }
-        network("Grain Chute") {
-            locationNode {
-                isRoot(true)
-            }
-        }
-        network("Sack") {
-            locationNode {
-                isRoot(true)
-            }
-        }
+        network("Grain Bin")
+        network("Grain Chute")
+        network("Sack")
         network("Wall Crack") {
             locationNode {
                 isRoot(true)
@@ -96,10 +84,6 @@ class CommonBodies : BodyResource {
             }
             locationNode("Top")
         }
-        network("Medium Container") {
-            locationNode("Medium Container") {
-                isRoot(true)
-            }
-        }
+        network("Medium Container")
     }
 }
