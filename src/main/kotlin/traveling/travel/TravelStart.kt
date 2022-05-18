@@ -31,7 +31,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.creature.getEncumbrance() >= 1 -> event.creature.displayToMe("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
-                    event.creature.displayToOthers { "${event.creature.name} leaves ${event.currentLocation}."  }
+                    event.creature.displayToOthers { "${event.creature.name} leaves ${event.currentLocation} heading ${connection.vector.direction.name.lowercase()}."  }
                     event.creature.displayToMe("You leave ${event.currentLocation} travelling towards ${event.destination}.")
                 }
                 postArriveEvent(event.creature, connection.destination, requiredStamina, event.quiet)

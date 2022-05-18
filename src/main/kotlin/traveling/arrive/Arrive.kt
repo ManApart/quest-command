@@ -3,14 +3,13 @@ package traveling.arrive
 import core.events.EventListener
 import core.history.display
 import core.history.displayToMe
+import core.history.displayToOthers
 import core.utility.asSubject
 import core.utility.withS
 
 class Arrive : EventListener<ArriveEvent>() {
 
-    override fun getPriorityRank(): Int {
-        return 10
-    }
+    override fun getPriorityRank() = 10
 
     override fun execute(event: ArriveEvent) {
         with(event) {
@@ -22,9 +21,7 @@ class Arrive : EventListener<ArriveEvent>() {
                     val part = climbThing.body.getPartLocation(destination.partName)
                     player.location = part
                     player.setClimbing(climbThing)
-                    if (!silent) {
-                        creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
-                    }
+                    if (!silent) creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
                 } else {
                     player.location = destination.location
                     if (!silent) {
