@@ -1,6 +1,8 @@
 package core.commands
 
+import core.GameState.player
 import core.Player
+import core.history.displayToMe
 import core.utility.Named
 
 class RequestResponseBuilder(private val defaultBehavior: () -> Unit) {
@@ -97,4 +99,8 @@ class RequestResponseBuilder(private val defaultBehavior: () -> Unit) {
 
 fun Player.respond(initializer: RequestResponseBuilder.() -> Unit, defaultBehavior: () -> Unit) {
     RequestResponseBuilder(defaultBehavior).apply(initializer).build()?.let { CommandParsers.setResponseRequest(this, it) }
+}
+
+fun Player.respond(noOptionMessage: String, initializer: RequestResponseBuilder.() -> Unit) {
+    RequestResponseBuilder { displayToMe(noOptionMessage) }.apply(initializer).build()?.let { CommandParsers.setResponseRequest(this, it) }
 }
