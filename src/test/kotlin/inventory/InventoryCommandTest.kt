@@ -4,11 +4,17 @@ import core.Player
 import core.events.EventManager
 import core.thing.Thing
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 
 class InventoryCommandTest{
+
+    @Before
+    fun setup() {
+        EventManager.clear()
+    }
 
     @After
     fun teardown() {
