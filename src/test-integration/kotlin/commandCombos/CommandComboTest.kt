@@ -212,13 +212,13 @@ class CommandComboTest {
     fun poisonSelf() {
         CommandParsers.parseCommand(GameState.player, "poison 1 for 5 on head of self")
         assertEquals(1, GameState.player.thing.soul.getConditions().size)
-        assertEquals("Poison decreases Your Health by 1 (9/10).", GameLogger.getMainHistory().getLastOutput())
+        assertTrue(GameLogger.getMainHistory().contains("Poison decreases Your Health by 1 (9/10)."))
 
         CommandParsers.parseCommand(GameState.player, "wait 5")
         CommandParsers.parseCommand(GameState.player, "wait 1")
         assertEquals(0, GameState.player.thing.soul.getConditions().size)
         assertEquals(5, GameState.player.thing.soul.getCurrent(HEALTH))
-        assertEquals("Player is no longer Poisoned.", GameLogger.getMainHistory().getLastOutput())
+        assertTrue(GameLogger.getMainHistory().contains("Player is no longer Poisoned."))
     }
 
     @Test
