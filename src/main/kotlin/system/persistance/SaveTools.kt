@@ -109,10 +109,11 @@ fun save(gameName: String, network: Network) {
 
 //Instead of saving character at top level, save the path to the character's location and load that?
 fun loadGame(gameName: String) {
-    loadGameState(gameName)
+    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
+    gameStateData.updateGameState()
     GameLogger.stopTracking(GameState.player)
-    val newPlayers = GameState.players.values.map { player ->
-        loadCharacter(gameName, player.thing.name, player.name)
+    val newPlayers = gameStateData.characterNames.map { name ->
+        loadCharacter(gameName, name, name)
     }
     GameState.players.clear()
     newPlayers.forEach {
@@ -126,10 +127,6 @@ fun loadGame(gameName: String) {
     GameManager.playing = true
 }
 
-fun loadGameState(gameName: String) {
-    val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
-    gameStateData.updateGameState()
-}
 
 fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
