@@ -2,7 +2,9 @@ package inventory
 
 import core.events.EventListener
 import core.history.displayToMe
+import core.history.displayToOthers
 import core.utility.asSubject
+import core.utility.asSubjectPossessive
 import core.utility.ifYouWord
 
 class ViewEquipped : EventListener<ViewEquippedEvent>() {
@@ -20,6 +22,7 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
                 val has = target.ifYouWord(source, "have", "has")
                 source.displayToMe("$subject $has the following items equipped:\n\t$itemList")
             }
+            source.displayToOthers{"${source.name} looks at ${target.asSubjectPossessive(it)} gear."}
         }
     }
 
