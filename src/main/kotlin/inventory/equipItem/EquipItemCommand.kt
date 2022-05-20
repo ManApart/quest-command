@@ -10,7 +10,7 @@ import core.thing.Thing
 
 class EquipItemCommand : Command() {
     override fun getAliases(): List<String> {
-        return listOf("Equip")
+        return listOf("Equip", "eq")
     }
 
     override fun getDescription(): String {

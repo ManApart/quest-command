@@ -33,23 +33,19 @@ class InventoryCommand : Command() {
         val thing = location.getThingsIncludingInventories(argString).firstOrNull()
 
         when {
-            args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ListInventoryEvent(source, allInventories.first()))
+            args.isEmpty() && allInventories.size == 1 -> EventManager.postEvent(ViewInventoryEvent(source, allInventories.first()))
             args.isEmpty() && keyword == "bag" -> clarifyThing(source, allInventories)
-            args.isEmpty() -> EventManager.postEvent(ListInventoryEvent(source, source.thing))
-            thing != null -> EventManager.postEvent(ListInventoryEvent(source, thing))
+            args.isEmpty() -> EventManager.postEvent(ViewInventoryEvent(source, source.thing))
+            thing != null -> EventManager.postEvent(ViewInventoryEvent(source, thing))
             else -> source.displayToMe("Could not find $argString")
         }
     }
 
     private fun clarifyThing(source: Player, things: List<Thing>) {
-        if (things.isEmpty()) {
-            EventManager.postEvent(ListInventoryEvent(source, source.thing))
-        } else {
-            source.respond("There aren't any inventories to view.") {
-                message("View whose inventory?")
-                options(things)
-                command { "bag $it" }
-            }
+        source.respond({ EventManager.postEvent(ViewInventoryEvent(source, source.thing)) }) {
+            message("View whose inventory?")
+            options(things)
+            command { "bag $it" }
         }
     }
 

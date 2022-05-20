@@ -29,6 +29,7 @@ class CommonCreatures : CreatureResource {
             props {
                 tag("Human", "Commoner")
             }
+            item("Brown Pants", "Old Shirt")
         }
 
         thing("Magical Dummy") {

@@ -1,0 +1,27 @@
+package inventory
+
+import core.events.EventListener
+import core.history.displayToMe
+import core.history.displayToOthers
+import core.utility.asSubjectPossessive
+import core.utility.ifYouWord
+
+class ViewEquipped : EventListener<ViewEquippedEvent>() {
+
+    override fun execute(event: ViewEquippedEvent) {
+        with(event) {
+            val body = target.body
+            val items = body.getEquippedItems()
+            val subject = target.asSubjectPossessive(source)
+            if (items.isEmpty()) {
+                val doesNot = target.ifYouWord(source, "don't", "doesn't")
+                source.displayToMe("$subject $doesNot have anything equipped!")
+            } else {
+                val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
+                val has = target.ifYouWord(source, "have", "has")
+                source.displayToMe("$subject $has the following items equipped:\n\t$itemList")
+            }
+        }
+    }
+
+}

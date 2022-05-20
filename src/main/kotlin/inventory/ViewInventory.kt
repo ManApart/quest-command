@@ -7,27 +7,27 @@ import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.then
 
-class ListInventory : EventListener<ListInventoryEvent>() {
+class ViewInventory : EventListener<ViewInventoryEvent>() {
 
-    override fun execute(event: ListInventoryEvent) {
+    override fun execute(event: ViewInventoryEvent) {
         when {
-            !event.thing.properties.tags.has("Container") -> {
-                event.source.displayToMe("Cannot view inventory of ${event.thing.name}")
+            !event.target.properties.tags.has("Container") -> {
+                event.source.displayToMe("Cannot view inventory of ${event.target.name}")
             }
-            !event.source.thing.perceives(event.thing) -> event.source.displayToMe("You know it's there; you just can't see it.")
+            !event.source.thing.perceives(event.target) -> event.source.displayToMe("You know it's there; you just can't see it.")
             else -> {
-                if (event.thing.inventory.getItems().isNotEmpty()) {
-                    event.source.displayToOthers("${event.source.name} looks at ${event.thing.name}'s inventory.")
+                if (event.target.inventory.getItems().isNotEmpty()) {
+                    event.source.displayToOthers("${event.source.name} looks at ${event.target.name}'s inventory.")
                     event.source.displayToMe(
-                        "${event.thing.name} has:${
+                        "${event.target.name} has:${
                             inventoryToString(
-                                event.thing.inventory,
-                                event.thing.body
+                                event.target.inventory,
+                                event.target.body
                             )
                         }"
                     )
                 } else {
-                    event.source.displayToMe("${event.thing.name} has no items.")
+                    event.source.displayToMe("${event.target.name} has no items.")
                 }
             }
         }

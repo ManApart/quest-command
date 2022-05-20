@@ -28,7 +28,7 @@ class InventoryCommandTest{
         player.thing.properties.tags.remove("Container")
         InventoryCommand().execute(player, "bag", listOf())
 
-        val expected = ListInventoryEvent(player, player.thing)
+        val expected = ViewInventoryEvent(player, player.thing)
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
         assertEquals(expected, events.first())

@@ -16,10 +16,9 @@ import org.junit.Before
 import org.junit.Test
 import system.debug.DebugType
 import traveling.location.location.locationRecipe
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class ListInventoryTest {
+class ViewInventoryTest {
 
     @Before
     fun setup() {
@@ -31,16 +30,16 @@ class ListInventoryTest {
     fun listInventory() {
         val creature = createClosedChest()
         creature.inventory.add(createItem())
-        val event = ListInventoryEvent(GameState.player, creature)
-        ListInventory().execute(event)
+        val event = ViewInventoryEvent(GameState.player, creature)
+        ViewInventory().execute(event)
         assertTrue(GameLogger.getMainHistory().contains("Closed Chest has:\n\tApple"))
     }
 
     @Test
     fun listNoItemsInventory() {
         val creature = createClosedChest()
-        val event = ListInventoryEvent(GameState.player, creature)
-        ListInventory().execute(event)
+        val event = ViewInventoryEvent(GameState.player, creature)
+        ViewInventory().execute(event)
         assertTrue(GameLogger.getMainHistory().contains("Closed Chest has no items."))
     }
 
@@ -59,8 +58,8 @@ class ListInventoryTest {
         val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
         creature.body.equip(item)
-        val event = ListInventoryEvent(GameState.player, creature)
-        ListInventory().execute(event)
+        val event = ViewInventoryEvent(GameState.player, creature)
+        ViewInventory().execute(event)
         assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Chestplate"))
     }
 
@@ -83,8 +82,8 @@ class ListInventoryTest {
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 
-        val event = ListInventoryEvent(GameState.player, creature)
-        ListInventory().execute(event)
+        val event = ViewInventoryEvent(GameState.player, creature)
+        ViewInventory().execute(event)
         assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Pouch\n\t\tApple"))
     }
 
@@ -92,8 +91,8 @@ class ListInventoryTest {
     fun creatureWithoutTagDoesNotListInventory() {
         val creature = Thing("Chest")
         creature.inventory.add(Thing("Apple"))
-        val event = ListInventoryEvent(GameState.player, creature)
-        ListInventory().execute(event)
+        val event = ViewInventoryEvent(GameState.player, creature)
+        ViewInventory().execute(event)
         assertTrue(GameLogger.getMainHistory().contains("Cannot view inventory of Chest"))
     }
 

@@ -1,12 +1,14 @@
 package inventory
 
+import core.Player
 import core.commands.Command
-import core.history.displayToMe
+import core.commands.respond
+import core.events.EventManager
 import core.thing.Thing
 
 class EquippedCommand : Command() {
     override fun getAliases(): List<String> {
-        return listOf("Equipped")
+        return listOf("Equipped", "eqd")
     }
 
     override fun getDescription(): String {
@@ -15,29 +17,35 @@ class EquippedCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Equipped - View what you currently have equipped"""
+	Equipped - View what you currently have equipped
+	Equipped <target> - View what <target> currently has equipped
+    """
     }
 
     override fun getCategory(): List<String> {
         return listOf("Inventory")
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
-        if (args.isEmpty()) {
-            listEquipped(source)
+    override fun execute(source: Player, keyword: String, args: List<String>) {
+        val argString = args.joinToString(" ")
+        val possibleTargets = if (argString.isEmpty()) {
+            source.thing.currentLocation().getCreatures()
         } else {
-            source.displayToMe("Unknown command: equip ${args.joinToString(" ")}")
+            source.thing.currentLocation().getCreatures(argString)
+        }
+
+        when {
+            possibleTargets.size == 1 -> EventManager.postEvent(ViewEquippedEvent(source, possibleTargets.first()))
+            possibleTargets.size > 1 && (keyword == "equipped" || args.isNotEmpty()) -> clarifyThing(source, possibleTargets)
+            else -> EventManager.postEvent(ViewEquippedEvent(source, source.thing))
         }
     }
 
-    private fun listEquipped(source: Thing) {
-        val body = source.body
-        val items = body.getEquippedItems()
-        if (items.isEmpty()) {
-            source.displayToMe("You don't have anything equipped!")
-        } else {
-            val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
-            source.displayToMe("You have following items equipped:\n\t$itemList")
+    private fun clarifyThing(source: Player, things: List<Thing>) {
+        source.respond({ EventManager.postEvent(ViewEquippedEvent(source, source.thing)) }) {
+            message("View whose equipped items?")
+            options(things)
+            command { "equipped $it" }
         }
     }
 
