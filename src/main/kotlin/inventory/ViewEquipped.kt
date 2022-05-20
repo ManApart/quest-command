@@ -2,8 +2,7 @@ package inventory
 
 import core.events.EventListener
 import core.history.displayToMe
-import core.history.displayToOthers
-import core.utility.asSubjectPossessive
+import core.utility.asSubject
 import core.utility.ifYouWord
 
 class ViewEquipped : EventListener<ViewEquippedEvent>() {
@@ -12,7 +11,7 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
         with(event) {
             val body = target.body
             val items = body.getEquippedItems()
-            val subject = target.asSubjectPossessive(source)
+            val subject = target.asSubject(source)
             if (items.isEmpty()) {
                 val doesNot = target.ifYouWord(source, "don't", "doesn't")
                 source.displayToMe("$subject $doesNot have anything equipped!")

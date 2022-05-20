@@ -4,6 +4,7 @@ import core.*
 import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.SessionHistory
+import core.history.TerminalPrinter
 import core.properties.Properties
 import core.properties.PropertiesP
 import kotlinx.serialization.decodeFromString
@@ -114,10 +115,14 @@ fun loadGame(gameName: String) {
         loadCharacter(gameName, player.thing.name, player.name)
     }
     GameState.players.clear()
-    newPlayers.forEach { GameState.putPlayer(it) }
+    newPlayers.forEach {
+        GameState.putPlayer(it)
+        it.location.getLocation().addThing(it.thing)
+    }
     GameState.player = newPlayers.first()
     GameLogger.reset()
     CommandParsers.reset()
+    TerminalPrinter.reset()
     GameManager.playing = true
 }
 
