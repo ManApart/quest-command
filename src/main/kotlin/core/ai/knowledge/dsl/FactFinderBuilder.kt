@@ -13,12 +13,15 @@ class FactFinderBuilder(private val kind: String) {
         return FactFinder(kind, relevantSource, findFact)
     }
 
-    fun relevantSource(){
-
+    fun relevant(relevantSource: (Subject) -> Boolean){
+        this.relevantSource = relevantSource
+    }
+    fun relevant(name: String){
+        this.relevantSource = { source -> source.name.equals(name, ignoreCase = true)}
     }
 
-    fun find(){
-
+    fun find(findFact: ((mind: Mind, source: Subject, kind: String) -> Fact)){
+        this.findFact = findFact
     }
 
 }

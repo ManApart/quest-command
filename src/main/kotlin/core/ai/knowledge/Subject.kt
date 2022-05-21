@@ -3,8 +3,6 @@ package core.ai.knowledge
 import core.thing.Thing
 import traveling.location.network.LocationNode
 
-enum class SubjectType {THING, LOCATION, }
-
 data class Subject(
     val name: String,
     val thing: Thing? = null,

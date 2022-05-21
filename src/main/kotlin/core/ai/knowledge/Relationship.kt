@@ -9,8 +9,17 @@ fun Int.confidence(): Confidence {
     return Confidence.values().filter { it.amount < this }.maxOrNull()!!
 }
 
+data class Fact(val source: Subject, val kind: String, val confidence: Int, val amount: Int = 0) {
+    operator fun plus(other: Fact): Fact {
+        return Fact(source, kind, confidence + other.confidence, amount + other.amount)
+    }
+}
+
+fun List<Fact>.sum(source: Subject, kind: String): Fact{
+    return Fact(source, kind, sumOf { it.confidence }, sumOf { it.amount })
+}
+
 data class Relationship(val source: Subject, val kind: String, val relatesTo: Subject, val confidence: Int, val amount: Int = 0)
-data class Fact(val source: Subject, val kind: String, val confidence: Int, val amount: Int = 0)
 
 //Extract to somewhere else
 private val bob = Subject(Thing("Bob"))

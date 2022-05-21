@@ -4,8 +4,8 @@ import core.thing.Thing
 
 class Mind {
     lateinit var creature: Thing
-    private val personalFacts = mutableMapOf<String, List<Fact>>()
-    private val personalRelationships = mutableMapOf<String, List<Relationship>>()
+    val personalFacts = mutableMapOf<String, List<Fact>>()
+    val personalRelationships = mutableMapOf<String, List<Relationship>>()
 
     fun knows(kind: String, relatesTo: Subject) = knows(Subject(creature), kind, relatesTo)
     fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
