@@ -7,13 +7,13 @@ class KnowledgeFindersBuilder {
     private val relationships = mutableListOf<RelationshipFinderBuilder>()
     private val kindChildren = mutableListOf<KnowledgeFindersKindBuilder>()
 
-    fun fact(kind: String, initializer: FactFinderBuilder.() -> Unit) {
-        facts.add(FactFinderBuilder(kind).apply(initializer))
+    fun fact(initializer: FactFinderBuilder.() -> Unit) {
+        facts.add(FactFinderBuilder().apply(initializer))
     }
-
-    fun relationship(kind: String, initializer: RelationshipFinderBuilder.() -> Unit) {
-        relationships.add(RelationshipFinderBuilder(kind).apply(initializer))
-    }
+//
+//    fun relationship(kind: String, initializer: RelationshipFinderBuilder.() -> Unit) {
+//        relationships.add(RelationshipFinderBuilder(kind).apply(initializer))
+//    }
 
     fun kind(kind: String, initializer: KnowledgeFindersKindBuilder.() -> Unit) {
         kindChildren.add(KnowledgeFindersKindBuilder(kind).apply(initializer))
@@ -32,7 +32,7 @@ class KnowledgeFindersKindBuilder(private val kind: String) {
     private val relationships = mutableListOf<RelationshipFinderBuilder>()
 
     fun fact(initializer: FactFinderBuilder.() -> Unit) {
-        facts.add(FactFinderBuilder(kind).apply(initializer))
+        facts.add(FactFinderBuilder().apply { kind(kind) }.apply(initializer))
     }
 
     fun relationship(initializer: RelationshipFinderBuilder.() -> Unit) {

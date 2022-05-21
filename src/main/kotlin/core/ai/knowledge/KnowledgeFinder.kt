@@ -3,13 +3,13 @@ package core.ai.knowledge
 data class KnowledgeFinder(val factFinder: FactFinder? = null, val relationshipFinder: RelationshipFinder? = null)
 
 class FactFinder(
-    private val kind: String,
+    private val relevantKind: (String) -> Boolean = { true },
     private val relevantSource: (Subject) -> Boolean = { true },
     val findFact: ((mind: Mind, source: Subject, kind: String) -> Fact),
 ) {
 
     fun matches(source: Subject, kind: String): Boolean {
-        return this.kind.equals(kind, ignoreCase = true) && relevantSource(source)
+        return relevantKind(kind) && relevantSource(source)
     }
 }
 

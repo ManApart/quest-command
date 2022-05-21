@@ -5,18 +5,28 @@ import core.ai.knowledge.FactFinder
 import core.ai.knowledge.Mind
 import core.ai.knowledge.Subject
 
-class FactFinderBuilder(private val kind: String) {
+class FactFinderBuilder {
+    private var relevantKind: (String) -> Boolean = { true }
     private var relevantSource: (Subject) -> Boolean = { true }
     private var findFact: ((mind: Mind, source: Subject, kind: String) -> Fact) = {_, source, kind -> Fact(source, kind, 0, 0) }
 
     fun build(): FactFinder {
-        return FactFinder(kind, relevantSource, findFact)
+        return FactFinder(relevantKind, relevantSource, findFact)
     }
 
-    fun relevant(relevantSource: (Subject) -> Boolean){
+    fun kind(kind: (String) -> Boolean){
+        this.relevantKind = kind
+    }
+
+    fun kind(name: String){
+        this.relevantKind = { kind -> name.equals(kind, ignoreCase = true)}
+    }
+
+    fun source(relevantSource: (Subject) -> Boolean){
         this.relevantSource = relevantSource
     }
-    fun relevant(name: String){
+
+    fun source(name: String){
         this.relevantSource = { source -> source.name.equals(name, ignoreCase = true)}
     }
 
@@ -26,6 +36,6 @@ class FactFinderBuilder(private val kind: String) {
 
 }
 
-fun fact(kind: String, initializer: FactFinderBuilder.() -> Unit): FactFinder {
-    return FactFinderBuilder(kind).apply(initializer).build()
+fun fact(initializer: FactFinderBuilder.() -> Unit): FactFinder {
+    return FactFinderBuilder().apply(initializer).build()
 }
