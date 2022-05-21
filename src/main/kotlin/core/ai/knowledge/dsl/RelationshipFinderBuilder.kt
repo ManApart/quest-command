@@ -9,9 +9,9 @@ class RelationshipFinderBuilder(private val kind: String) {
     private var relevantSource: (Subject) -> Boolean = { true }
     private var findFact: ((mind: Mind, source: Subject, kind: String) -> Fact) = {_, source, kind -> Fact(source, kind, 0, 0) }
 
-    fun build(): FactFinder {
-        return FactFinder(kind, relevantSource, findFact)
-    }
+//    fun build(): Relat {
+//        return FactFinder(kind, relevantSource, findFact)
+//    }
 
     fun relevantSource(){
 
@@ -23,6 +23,6 @@ class RelationshipFinderBuilder(private val kind: String) {
 
 }
 
-fun relationship(kind: String, initializer: RelationshipFinderBuilder.() -> Unit): FactFinder {
-    return RelationshipFinderBuilder(kind).apply(initializer).build()
-}
+//fun relationship(kind: String, initializer: RelationshipFinderBuilder.() -> Unit): FactFinder {
+//    return RelationshipFinderBuilder(kind).apply(initializer).build()
+//}
