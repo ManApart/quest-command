@@ -6,6 +6,7 @@ import core.ai.knowledge.Subject
 import core.ai.knowledge.dsl.KnowledgeFinderResource
 import core.ai.knowledge.dsl.knowledgeFinders
 import core.ai.knowledge.sum
+import jdk.nashorn.internal.objects.NativeRegExp.source
 
 class CommonKnowledgeFinders : KnowledgeFinderResource {
     override val values = knowledgeFinders {
@@ -13,7 +14,7 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
         fact {
             find { mind, source, kind -> mind.personalFacts[kind]?.filter { it.source == source }?.sum(source, kind) ?: Fact(source, kind, 0, 0) }
         }
-        
+
         kind("Is") {
 
             fact {
@@ -22,6 +23,22 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
             }
         }
     }
+
+    //Not sure that this works for relationships
+//     val stuff = knowledgeFinders {
+//        //Get any fact about any kind from the relevant mind
+//        fact { mind, source, kind -> mind.personalFacts[kind]?.filter { it.source == source }?.sum(source, kind) ?: Fact(source, kind, 0, 0) }
+//
+//        kind("Is") {
+//            source ({ it.thing != null }){
+//                fact { _: Mind, source: Subject, kind: String -> Fact(source, kind, 0, 0) }
+//                source ({ it.propertyTag == "Rich" }){
+//                    fact { _: Mind, source: Subject, kind: String -> Fact(source, kind, 0, 0) }
+//                    relationship { _: Mind, source: Subject, kind: String -> Fact(source, kind, 0, 0) }
+//                }
+//            }
+//        }
+//    }
 }
 
 //TODO - reorder so relevance can be nested
