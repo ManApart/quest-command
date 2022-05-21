@@ -13,8 +13,8 @@ class Mind {
         return Relationship(source, kind, relatesTo, foundFacts.sumOf { it.confidence }, foundFacts.sumOf { it.amount })
     }
 
-    fun knowsFact(kind: String) = knowsFact(Subject(creature), kind)
-    fun knowsFact(source: Subject, kind: String): Fact {
+    fun knows(kind: String) = knows(Subject(creature), kind)
+    fun knows(source: Subject, kind: String): Fact {
         val foundFacts = KnowledgeManager.factFinders.filter { it.matches(source, kind) }.map { it.findFact.invoke(this, source, kind) }
         return Fact(source, kind, foundFacts.sumOf { it.confidence }, foundFacts.sumOf { it.amount })
     }
