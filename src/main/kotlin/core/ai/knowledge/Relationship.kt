@@ -12,13 +12,14 @@ fun Int.confidence(): Confidence {
 data class Relationship(val source: Subject, val kind: String, val relatesTo: Subject, val confidence: Int, val amount: Int = 0)
 data class Fact(val source: Subject, val kind: String, val confidence: Int, val amount: Int = 0)
 
+//Extract to somewhere else
 private val bob = Subject(Thing("Bob"))
 private val player = Subject(Thing("Player"))
 private val loc = Subject(LocationNode("Kanbara Home"))
 
 //In the player's mind
 val houseOwnership = Relationship(bob, "Owns", loc, 100)
-val location = Fact(loc, "Exists", 100)
+val location = Fact(loc, "Exists", 100, 100) //0 would mean confident it does NOT exist
 val shopKeeperIsRich = Fact(Subject(bob.name, bob.thing, propertyTag = "Rich"), "Is", 50, 100)
 val playerLikesBob = Relationship(player, "Likes", bob, 100, 25)
 
