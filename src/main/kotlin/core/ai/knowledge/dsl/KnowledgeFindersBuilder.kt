@@ -1,14 +1,14 @@
 package core.ai.knowledge.dsl
 
-import core.ai.knowledge.KnowledgeFinder
+import core.ai.knowledge.*
 
-class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }) {
-    private val facts = mutableListOf<FactFinderBuilder>()
+class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: ((Subject) -> Boolean)? = null, private val relatesTo: ((Subject) -> Boolean)? = null) {
+    private val facts = mutableListOf<((mind: Mind, source: Subject, kind: String) -> Fact)>()
     private val relationships = mutableListOf<RelationshipFinderBuilder>()
-    private val kindChildren = mutableListOf<KnowledgeFindersBuilder>()
+    private val children = mutableListOf<KnowledgeFindersBuilder>()
 
-    fun fact(initializer: FactFinderBuilder.() -> Unit) {
-        facts.add(FactFinderBuilder().apply { kind(kind) }.apply(initializer))
+    fun fact(finder: (mind: Mind, source: Subject, kind: String) -> Fact) {
+        facts.add(finder)
     }
 
 //
@@ -17,13 +17,36 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }) 
 //    }
 
     fun kind(kind: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
-        kindChildren.add(KnowledgeFindersBuilder { kind.equals(it, ignoreCase = true) }.apply(initializer))
+        children.add(KnowledgeFindersBuilder({ kind.equals(it, ignoreCase = true) }).apply(initializer))
     }
 
-    fun build(): List<KnowledgeFinder> {
-        return facts.map { KnowledgeFinder(it.build()) } +
-//                relationships.map { KnowledgeFinder(it.build()) } +
-                kindChildren.flatMap { it.build() }
+    fun kind(kind: (String) -> Boolean, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        children.add(KnowledgeFindersBuilder(kind).apply(initializer))
+    }
+
+    fun source(name: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        this.source({ source -> source.name.equals(name, ignoreCase = true) }, initializer)
+    }
+
+    fun source(relevantSource: (Subject) -> Boolean, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        children.add(KnowledgeFindersBuilder(kind, relevantSource).apply(initializer))
+    }
+
+    fun relatesTo(name: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        this.relatesTo({ relatesTo -> relatesTo.name.equals(name, ignoreCase = true) }, initializer)
+    }
+
+    fun relatesTo(relatesTo: (Subject) -> Boolean, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        children.add(KnowledgeFindersBuilder(kind, relatesTo = relatesTo).apply(initializer))
+    }
+
+    fun build(parentSources: List<((Subject) -> Boolean)> = emptyList(), parentRelatesTo: List<((Subject) -> Boolean)> = emptyList()): List<KnowledgeFinder> {
+        val sources = (parentSources + listOfNotNull(source))
+        val relatesTo = (parentRelatesTo + listOfNotNull(relatesTo))
+
+        return facts.map { KnowledgeFinder(FactFinder(kind, sources, it)) } +
+//                relationships.map { KnowledgeFinder(RelationshipFinder()) } +
+                children.flatMap { it.build(sources, relatesTo) }
     }
 }
 
