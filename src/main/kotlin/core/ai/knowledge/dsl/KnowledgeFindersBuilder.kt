@@ -4,17 +4,30 @@ import core.ai.knowledge.*
 
 class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: ((Subject) -> Boolean)? = null, private val relatesTo: ((Subject) -> Boolean)? = null) {
     private val facts = mutableListOf<((mind: Mind, source: Subject, kind: String) -> Fact)>()
-    private val relationships = mutableListOf<RelationshipFinderBuilder>()
+    private val relationships = mutableListOf<((mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Relationship)>()
     private val children = mutableListOf<KnowledgeFindersBuilder>()
 
-    fun fact(finder: (mind: Mind, source: Subject, kind: String) -> Fact) {
+    fun factFull(finder: (mind: Mind, source: Subject, kind: String) -> Fact) {
         facts.add(finder)
     }
 
-//
-//    fun relationship(kind: String, initializer: RelationshipFinderBuilder.() -> Unit) {
-//        relationships.add(RelationshipFinderBuilder(kind).apply(initializer))
-//    }
+    fun fact(finder: (mind: Mind, source: Subject, kind: String) -> Pair<Int, Int>) {
+        facts.add { mind: Mind, source: Subject, kind: String ->
+            val (confidence, amount) = finder(mind, source, kind)
+            Fact(source, kind, confidence, amount)
+        }
+    }
+
+    fun relationshipFull(finder: (mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Relationship) {
+        relationships.add(finder)
+    }
+
+    fun relationship(finder: (mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Pair<Int, Int>) {
+        relationships.add { mind: Mind, source: Subject, kind: String, relatesTo: Subject ->
+            val (confidence, amount) = finder(mind, source, kind, relatesTo)
+            Relationship(source, kind, relatesTo, confidence, amount)
+        }
+    }
 
     fun kind(kind: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
         children.add(KnowledgeFindersBuilder({ kind.equals(it, ignoreCase = true) }).apply(initializer))
@@ -45,7 +58,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         val relatesTo = (parentRelatesTo + listOfNotNull(relatesTo))
 
         return facts.map { KnowledgeFinder(FactFinder(kind, sources, it)) } +
-//                relationships.map { KnowledgeFinder(RelationshipFinder()) } +
+                relationships.map { KnowledgeFinder(relationshipFinder = RelationshipFinder(kind, sources, relatesTo, it)) } +
                 children.flatMap { it.build(sources, relatesTo) }
     }
 }

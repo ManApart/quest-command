@@ -9,18 +9,18 @@ class FactFinder(
 ) {
 
     fun matches(source: Subject, kind: String): Boolean {
-        return relevantKind(kind) && relevantSources.all { it(source)}
+        return relevantKind(kind) && relevantSources.all { it(source) }
     }
 }
 
 class RelationshipFinder(
-    private val kind: String,
-    private val relevantSource: (Subject) -> Boolean = { true },
-    private val relevantRelatesTo: (Subject) -> Boolean = { true },
+    private val relevantKind: (String) -> Boolean = { true },
+    private val relevantSource: List<(Subject) -> Boolean> = listOf { true },
+    private val relevantRelatesTo: List<(Subject) -> Boolean> = listOf { true },
     val findRelationship: ((mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Relationship)
 ) {
 
     fun matches(source: Subject, kind: String, relatesTo: Subject): Boolean {
-        return this.kind.equals(kind, ignoreCase = true) && relevantSource(source) && relevantRelatesTo(relatesTo)
+        return relevantKind(kind) && relevantSource.all { it(source) } && relevantRelatesTo.all { it(relatesTo) }
     }
 }
