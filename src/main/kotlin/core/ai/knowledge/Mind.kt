@@ -9,14 +9,18 @@ class Mind {
 
     fun knows(kind: String, relatesTo: Subject) = knows(Subject(creature), kind, relatesTo)
     fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
-        val foundFacts = KnowledgeManager.relationshipFinders.filter { it.matches(source, kind, relatesTo) }.map { it.findRelationship.invoke(this, source, kind, relatesTo) }
-        return Relationship(source, kind, relatesTo, foundFacts.sumOf { it.confidence }, foundFacts.sumOf { it.amount })
+        return KnowledgeManager.relationshipFinders
+            .filter { it.matches(source, kind, relatesTo) }
+            .map { it.findRelationship.invoke(this, source, kind, relatesTo) }
+            .average()
     }
 
     fun knows(kind: String) = knows(Subject(creature), kind)
     fun knows(source: Subject, kind: String): Fact {
-        val foundFacts = KnowledgeManager.factFinders.filter { it.matches(source, kind) }.map { it.findFact.invoke(this, source, kind) }
-        return Fact(source, kind, foundFacts.sumOf { it.confidence }, foundFacts.sumOf { it.amount })
+        return KnowledgeManager.factFinders
+            .filter { it.matches(source, kind) }
+            .map { it.findFact.invoke(this, source, kind) }
+            .average()
     }
 
 }

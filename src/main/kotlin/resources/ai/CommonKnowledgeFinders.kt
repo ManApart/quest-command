@@ -6,8 +6,8 @@ import core.ai.knowledge.dsl.knowledgeFinders
 
 class CommonKnowledgeFinders : KnowledgeFinderResource {
     override val values = knowledgeFinders {
-        //Get any fact about any kind from the relevant mind
-        factFull { mind, source, kind -> mind.personalFacts[kind]?.filter { it.source == source }?.sum(source, kind) ?: Fact(source, kind, 0, 0) }
+        factFull(::getPersonalFact)
+        relationshipFull(::getPersonalRelationship)
 
         kind("Is") {
             source({ it.thing != null }) {
@@ -19,5 +19,19 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
                 }
             }
         }
+    }
+
+    private fun getPersonalFact(mind: Mind, source: Subject, kind: String): Fact {
+        return mind.personalFacts[kind]
+            ?.filter { it.source == source }
+            ?.average()
+            ?: Fact(source, kind, 0, 0)
+    }
+
+    private fun getPersonalRelationship(mind: Mind, source: Subject, kind: String, relatesTo: Subject): Relationship {
+        return mind.personalRelationships[kind]
+            ?.filter { it.source == source && it.relatesTo == relatesTo }
+            ?.average()
+            ?: Relationship(source, kind, relatesTo, 0, 0)
     }
 }

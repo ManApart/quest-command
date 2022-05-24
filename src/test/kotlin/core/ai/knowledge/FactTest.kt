@@ -1,14 +1,29 @@
 package core.ai.knowledge
 
 import core.thing.Thing
+import traveling.location.network.LocationNode
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
 class FactTest {
+    //Examples of Facts and Relationships
+    private val bob = Subject(Thing("Bob"))
+    private val player = Subject(Thing("Player"))
+    private val loc = Subject(LocationNode("Kanbara Home"))
+
+    //In the player's mind
+    val houseOwnership = Relationship(bob, "Owns", loc, 100)
+    val location = Fact(loc, "Exists", 100, 100) //0 would mean confident it does NOT exist
+    val shopKeeperIsRich = Fact(Subject(bob.name, bob.thing, propertyTag = "Rich"), "Is", 50, 100)
+    val playerLikesBob = Relationship(player, "Likes", bob, 100, 25)
+
+    //In the NPC's mind
+    val npcBelievesPlayerLovesThem = Relationship(player, "Likes", bob, 50, 100)
+
 
     @Test
-    fun singleEntry() {
+    fun singleEntryAverage() {
         val actual = average(6 to 10)
         assertEquals(6, actual.confidence)
         assertEquals(10, actual.amount)
@@ -21,15 +36,14 @@ class FactTest {
     }
 
     @Test
-    fun amountIsWeightedAverage() {
+    fun amountIsWeightedAveraged() {
         val actual = average(2 to 10, 5 to 50, 3 to 40)
         assertEquals(39, actual.amount)
     }
 
     private fun average(vararg facts: Pair<Int, Int>): Fact {
-        val input = facts.map { (confidence, amount) -> fact(confidence, amount) }
-        return input.average(input.first().source, input.first().kind)
+        return facts.map { (confidence, amount) -> fact(confidence, amount) }.average()
     }
 
-    private fun fact(confidence: Int = 0, amount: Int = 0) = Fact(Subject(Thing("Bob")), "test", confidence, amount)
+    private fun fact(confidence: Int = 0, amount: Int = 0) = Fact(bob, "test", confidence, amount)
 }
