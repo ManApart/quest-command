@@ -3,7 +3,7 @@ package core.ai.knowledge
 import core.thing.Thing
 import traveling.location.network.LocationNode
 
-enum class Confidence(val amount: Int){ UNKNOWN(0), GUESS(25), ESTIMATE(50), CONFIDENT(75), POSITIVE(100)}
+enum class Confidence(val amount: Int) { UNKNOWN(0), GUESS(25), ESTIMATE(50), CONFIDENT(75), POSITIVE(100) }
 
 fun Int.confidence(): Confidence {
     return Confidence.values().filter { it.amount < this }.maxOrNull()!!
@@ -15,8 +15,13 @@ data class Fact(val source: Subject, val kind: String, val confidence: Int, val 
     }
 }
 
-fun List<Fact>.sum(source: Subject, kind: String): Fact{
+fun List<Fact>.sum(source: Subject, kind: String): Fact {
     return Fact(source, kind, sumOf { it.confidence }, sumOf { it.amount })
+}
+
+fun List<Fact>.average(source: Subject, kind: String): Fact {
+    val summedConfidence = sumOf { it.confidence }
+    return Fact(source, kind, summedConfidence / size, sumOf { it.amount * it.confidence } / summedConfidence)
 }
 
 data class Relationship(val source: Subject, val kind: String, val relatesTo: Subject, val confidence: Int, val amount: Int = 0)
