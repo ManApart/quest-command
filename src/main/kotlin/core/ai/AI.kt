@@ -38,6 +38,7 @@ abstract class AI(val name: String) {
     }
 
     fun chooseAction() {
+//        creature.mind.forgetShortTermMemory()
         if (!creature.isPlayer()) {
             takeAction()
         }

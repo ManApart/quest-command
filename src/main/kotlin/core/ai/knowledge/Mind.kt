@@ -6,6 +6,7 @@ class Mind {
     lateinit var creature: Thing
     val personalFacts = mutableMapOf<String, List<Fact>>()
     val personalRelationships = mutableMapOf<String, List<Relationship>>()
+    private val shortTermMemory = ShortTermMemory()
 
     fun knows(kind: String, relatesTo: Subject) = knows(Subject(creature), kind, relatesTo)
     fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
@@ -17,10 +18,15 @@ class Mind {
 
     fun knows(kind: String) = knows(Subject(creature), kind)
     fun knows(source: Subject, kind: String): Fact {
-        return KnowledgeManager.factFinders
+        return shortTermMemory.getFact(source, kind) ?: KnowledgeManager.factFinders
             .filter { it.matches(source, kind) }
             .map { it.findFact.invoke(this, source, kind) }
             .average()
+            .also { shortTermMemory.remember(it) }
+    }
+
+    fun forgetShortTermMemory(){
+        shortTermMemory.forget()
     }
 
 }
