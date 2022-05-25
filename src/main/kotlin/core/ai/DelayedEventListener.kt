@@ -9,7 +9,7 @@ import time.gameTick.GameTickEvent
 class DelayedEventListener : EventListener<Event>() {
     override fun execute(event: Event) {
         if (event is DelayedEvent){
-            event.source.ai.action = event
+            event.source.mind.ai.action = event
             EventManager.postEvent(GameTickEvent())
         }
     }

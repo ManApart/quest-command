@@ -26,17 +26,17 @@ fun describeBattle(source: Player) {
 }
 
 private fun status(thing: Thing): String {
-    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.ai.getActionPoints()}/100 AP, ${thing.ai.action?.javaClass?.simpleName ?: "None"}."
+    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.mind.ai.getActionPoints()}/100 AP, ${thing.mind.ai.action?.javaClass?.simpleName ?: "None"}."
 }
 
 private fun printTurnStatus(source: Player, creatures: List<Thing>) {
     val combatantString = creatures.map {
         when {
-            it.ai.isActionReady() -> ""
-            it.ai.getActionPoints() == 0 -> ""
-            it.ai.canChooseAction() -> "${it.name} is making a choice"
-            it.ai.action != null -> "${it.name} is preforming an action with ${it.ai.action!!.timeLeft} time left"
-            else -> "${it.name} is getting ready to make a choice: ${it.ai.getActionPoints()}/100"
+            it.mind.ai.isActionReady() -> ""
+            it.mind.ai.getActionPoints() == 0 -> ""
+            it.mind.ai.canChooseAction() -> "${it.name} is making a choice"
+            it.mind.ai.action != null -> "${it.name} is preforming an action with ${it.mind.ai.action!!.timeLeft} time left"
+            else -> "${it.name} is getting ready to make a choice: ${it.mind.ai.getActionPoints()}/100"
         }
     }.filter { it.isNotBlank() }.joinToString("\n")
 
@@ -47,8 +47,8 @@ private fun printTurnStatus(source: Player, creatures: List<Thing>) {
 
 fun printUpdatingStatus(creatures: List<Thing>) {
     val combatantString = creatures.joinToString("\t\t") {
-        val points = it.ai.getActionPoints()
-        val timeLeft = it.ai.action?.timeLeft ?: 0
+        val points = it.mind.ai.getActionPoints()
+        val timeLeft = it.mind.ai.action?.timeLeft ?: 0
         "${it.getDisplayName()}: $points AP, $timeLeft action time left"
     }
     displayUpdate(combatantString)
@@ -56,8 +56,8 @@ fun printUpdatingStatus(creatures: List<Thing>) {
 
 fun printUpdatingStatusEnd(creatures: List<Thing>) {
     val combatantString = creatures.joinToString("\t\t") {
-        val points = it.ai.getActionPoints()
-        val timeLeft = it.ai.action?.timeLeft ?: 0
+        val points = it.mind.ai.getActionPoints()
+        val timeLeft = it.mind.ai.action?.timeLeft ?: 0
         "${it.getDisplayName()}: $points AP, $timeLeft action time left"
     }
     displayUpdateEnd(combatantString)

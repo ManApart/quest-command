@@ -351,7 +351,7 @@ data class Location(
 
     fun isSafeFor(creature: Thing): Boolean {
         //No one is hostile towards the creature
-        return creatures.none { it.ai.aggroThing == creature }
+        return creatures.none { it.mind.ai.aggroThing == creature }
     }
 
     private fun calcBounds(): Shape{

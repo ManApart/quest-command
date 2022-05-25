@@ -61,7 +61,7 @@ class ThingBuilder(internal val name: String) {
         val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
         val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
         val ai = discernAI(possibleAI, possibleAIName)
-        val mind = this.mind ?: Mind()
+        val mind = this.mind ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
 
@@ -70,7 +70,6 @@ class ThingBuilder(internal val name: String) {
             desc,
             loc,
             parent,
-            ai = ai,
             mind = mind,
             params = params,
             soul = actualSoul,
@@ -200,7 +199,7 @@ class ThingBuilder(internal val name: String) {
             description(t.description)
             location(t.location)
             t.parent?.let { parent(t.parent) }
-            ai(t.ai)
+            mind(Mind(t.mind.ai, t.mind.personalFacts, t.mind.personalRelationships))
             body(Body(t.body))
             equipSlotOptions(t.equipSlots)
             item(t.inventory.getAllItems().map { it.name })

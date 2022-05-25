@@ -49,7 +49,7 @@ data class ThingP(
     @kotlinx.serialization.Transient
     private val bodyReference: Body? = null
 ){
-    internal constructor(b: Thing): this(b.name, b.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), PropertiesP(b.properties), b.body.name, b.body)
+    internal constructor(b: Thing): this(b.name, b.mind.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), PropertiesP(b.properties), b.body.name, b.body)
 
     fun parsed(path: String, parentLocation: Network? = null): Thing {
         val folderPath = path.removeSuffix(".json")

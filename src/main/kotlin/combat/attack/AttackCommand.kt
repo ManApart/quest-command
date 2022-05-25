@@ -126,7 +126,7 @@ class AttackCommand : Command() {
             thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
             thing != null && !thing.thing.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing.thing))
             thing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, thing, attackType.damageType))
-            source.ai.aggroThing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, ThingAim(source.ai.aggroThing!!), attackType.damageType))
+            source.mind.ai.aggroThing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, ThingAim(source.mind.ai.aggroThing!!), attackType.damageType))
             else -> source.displayToMe("Couldn't find ${arguments.getBaseString()}.")
         }
     }

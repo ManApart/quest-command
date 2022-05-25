@@ -30,7 +30,8 @@ data class Player(
     val soul get() = thing.soul
     val body get() = thing.body
     val properties get() = thing.properties
-    val ai get() = thing.ai
+    val mind get() = thing.mind
+    val ai get() = thing.mind.ai
     val inventory get() = thing.inventory
     val location get() = thing.location
     val position get() = thing.position

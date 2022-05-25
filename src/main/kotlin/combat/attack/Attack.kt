@@ -54,7 +54,7 @@ class Attack : EventListener<AttackEvent>() {
         val source = event.source
         val attackedParts = getAttackedParts(source, event.sourcePart, event.aim)
         if (source != event.aim.thing) {
-            source.ai.aggroThing = event.aim.thing
+            source.mind.ai.aggroThing = event.aim.thing
         }
 
         if (attackedParts.isEmpty()) {

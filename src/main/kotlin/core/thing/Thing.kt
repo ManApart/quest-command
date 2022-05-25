@@ -36,7 +36,6 @@ data class Thing(
     val description: String = name,
     var location: LocationNode = NOWHERE_NODE,
     val parent: Thing? = null,
-    val ai: AI = DumbAI(),
     val mind: Mind = Mind(),
     val body: Body = Body("None"),
     val equipSlots: List<Slot> = listOf(),
@@ -51,7 +50,7 @@ data class Thing(
     var route: Route? = null
 
     init {
-        ai.creature = this
+        mind.updateCreature(this)
         soul.parent = this
     }
 
@@ -171,7 +170,7 @@ data class Thing(
         val inventory = Inventory(inventory.name, body)
         val soul = soul.copy()
 
-        return Thing(name, description, location, parent, ai, mind, body, equipSlots, inventory, props, soul, behaviors, params)
+        return Thing(name, description, location, parent, mind, body, equipSlots, inventory, props, soul, behaviors, params)
     }
 
     fun getPositionInLocation(part: Location): Vector {

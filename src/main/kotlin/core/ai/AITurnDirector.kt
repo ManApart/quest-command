@@ -15,7 +15,7 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
 
         //If only one creature, instantly fill their action points to avoid all the looping
         if (creatures.size == 1) {
-            creatures.first().ai.maxActionPoints()
+            creatures.first().mind.ai.maxActionPoints()
         }
 
         if (creatures.isNotEmpty()) {
@@ -34,7 +34,7 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
 
     private fun takeATurn(creatures: List<Thing>): Boolean {
         //Sort by action points and give players 1 extra point so they always come before npcs
-        val allAIs = creatures.map { it.ai }.sortedByDescending { it.getActionPoints() + if (it.creature.isPlayer()) 1 else 0 }
+        val allAIs = creatures.map { it.mind.ai }.sortedByDescending { it.getActionPoints() + if (it.creature.isPlayer()) 1 else 0 }
         allAIs.forEach { it.tick() }
         var executedEvent = false
 
