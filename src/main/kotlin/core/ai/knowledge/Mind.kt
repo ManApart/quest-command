@@ -14,6 +14,7 @@ class Mind {
             .filter { it.matches(source, kind, relatesTo) }
             .map { it.findRelationship.invoke(this, source, kind, relatesTo) }
             .average()
+            .also { shortTermMemory.remember(it) }
     }
 
     fun knows(kind: String) = knows(Subject(creature), kind)
