@@ -83,9 +83,6 @@ data class LocationNode(
             location != null -> location!!
             loadPath != null -> {
                 location = load(loadPath!!, this)
-                if (location == null) {
-                    location = Location(this)
-                }
                 location!!
             }
             else -> {

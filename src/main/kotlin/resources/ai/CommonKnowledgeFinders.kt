@@ -14,13 +14,17 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
                 source({ it.propertyTag == "Rich" }) {
                     fact { _, _, _ -> Pair(0, 0) }
                 }
+
+                relatesTo({ it.thing != null }) {
+                    relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Pair(0, 0) }
+                }
+
                 relatesTo({ it.location != null }) {
                     relationship { _, _, _, _ -> Pair(0, 0) }
                 }
             }
 
             source({ it.location != null }) {
-
             }
         }
     }
