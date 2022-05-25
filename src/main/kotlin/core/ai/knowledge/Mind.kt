@@ -1,12 +1,21 @@
 package core.ai.knowledge
 
+import core.ai.AI
+import core.ai.DumbAI
 import core.thing.Thing
 
-class Mind {
-    lateinit var creature: Thing
-    val personalFacts = mutableMapOf<String, MutableList<Fact>>()
-    val personalRelationships = mutableMapOf<String, MutableList<Relationship>>()
+data class Mind(
+    val ai: AI = DumbAI(),
+    val personalFacts: MutableMap<String, MutableList<Fact>> = mutableMapOf(),
+    val personalRelationships: MutableMap<String, MutableList<Relationship>> = mutableMapOf(),
+){
     private val shortTermMemory = ShortTermMemory()
+    lateinit var creature: Thing; private set
+
+    fun updateCreature(creature: Thing){
+        this.creature = creature
+        ai.creature = creature
+    }
 
     fun knows(kind: String, relatesTo: Subject) = knows(Subject(creature), kind, relatesTo)
     fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {

@@ -4,6 +4,7 @@ import core.GameState
 import core.ai.AI
 import core.ai.DumbAI
 import core.ai.behavior.Behavior
+import core.ai.knowledge.Mind
 import core.body.Body
 import core.body.Slot
 import core.events.Event
@@ -36,6 +37,7 @@ data class Thing(
     var location: LocationNode = NOWHERE_NODE,
     val parent: Thing? = null,
     val ai: AI = DumbAI(),
+    val mind: Mind = Mind(),
     val body: Body = Body("None"),
     val equipSlots: List<Slot> = listOf(),
     val inventory: Inventory = Inventory(name, body),
@@ -169,7 +171,7 @@ data class Thing(
         val inventory = Inventory(inventory.name, body)
         val soul = soul.copy()
 
-        return Thing(name, description, location, parent, ai, body, equipSlots, inventory, props, soul, behaviors, params)
+        return Thing(name, description, location, parent, ai, mind, body, equipSlots, inventory, props, soul, behaviors, params)
     }
 
     fun getPositionInLocation(part: Location): Vector {
