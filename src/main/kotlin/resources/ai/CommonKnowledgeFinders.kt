@@ -18,6 +18,10 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
                     relationship { _, _, _, _ -> Pair(0, 0) }
                 }
             }
+
+            source({ it.location != null }) {
+
+            }
         }
     }
 
