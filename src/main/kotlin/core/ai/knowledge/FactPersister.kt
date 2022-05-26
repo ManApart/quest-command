@@ -1,8 +1,10 @@
 package core.ai.knowledge
 
+// TODO - only allow persisting named subject filters?
+
 @kotlinx.serialization.Serializable
 data class FactP(
-    val source: SubjectP,
+    val sourceFilter: String,
     val kind: String,
     val confidence: Int,
     val amount: Int,

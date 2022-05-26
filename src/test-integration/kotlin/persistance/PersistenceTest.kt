@@ -37,7 +37,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-//TODO - test remembering a fact + relationship
 class PersistenceTest {
     @Before
     fun reset() {
@@ -143,6 +142,8 @@ class PersistenceTest {
         EventManager.executeEvents()
 
         preLoadPlayer.thing.properties.tags.add("Saved")
+        //subject: thingIsSelf
+        //subject: locationIsName
         val fact = Fact(Subject(preLoadPlayer.thing), "Neat", 100, 70)
         val relationship = Relationship(Subject(preLoadPlayer.thing), "Home", Subject(preLoadPlayer.location), 100, 1)
         preLoadPlayer.mind.learn(fact)

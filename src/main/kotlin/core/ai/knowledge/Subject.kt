@@ -3,6 +3,8 @@ package core.ai.knowledge
 import core.thing.Thing
 import traveling.location.network.LocationNode
 
+typealias SubjectFilter = (Subject) -> Boolean
+
 data class Subject(
     val name: String,
     val thing: Thing? = null,

@@ -36,7 +36,7 @@ data class Mind(
     }
 
     fun learn(fact: Fact) = learn(fact.source, fact.kind, fact.confidence, fact.amount)
-    fun learn(source: Subject, kind: String, confidenceIncrease: Int, amountIncrease: Int) {
+    fun learn(source: SubjectFilter, kind: String, confidenceIncrease: Int, amountIncrease: Int) {
         val existing = personalFacts[kind]?.firstOrNull { it.source == source }
         val confidence = (existing?.confidence ?: 0) + amountIncrease
         val amount = (existing?.confidence ?: 0) + confidenceIncrease
@@ -46,7 +46,7 @@ data class Mind(
     }
 
     fun learn(relationship: Relationship) = learn(relationship.source, relationship.kind, relationship.relatesTo, relationship.confidence, relationship.amount)
-    fun learn(source: Subject, kind: String, relatesTo: Subject, confidenceIncrease: Int, amountIncrease: Int) {
+    fun learn(source: SubjectFilter, kind: String, relatesTo: SubjectFilter, confidenceIncrease: Int, amountIncrease: Int) {
         val existing = personalRelationships[kind]?.firstOrNull { it.source == source }
         val confidence = (existing?.confidence ?: 0) + amountIncrease
         val amount = (existing?.confidence ?: 0) + confidenceIncrease

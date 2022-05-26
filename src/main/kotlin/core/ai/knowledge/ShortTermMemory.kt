@@ -1,14 +1,15 @@
 package core.ai.knowledge
 
 class ShortTermMemory {
-    private val cachedFacts = mutableMapOf<String, MutableMap<Subject, Fact>>()
-    private val cachedRelationships = mutableMapOf<String, MutableMap<Subject, MutableMap<Subject, Relationship>>>()
+    private val cachedFacts = mutableMapOf<String, MutableMap<SubjectFilter, Fact>>()
+    private val cachedRelationships = mutableMapOf<String, MutableMap<SubjectFilter, MutableMap<SubjectFilter, Relationship>>>()
 
-    fun getFact(source: Subject, kind: String): Fact? {
+    //Average all that match?
+    fun getFact(source: SubjectFilter, kind: String): Fact? {
         return cachedFacts[kind]?.get(source)
     }
 
-    fun getRelationship(source: Subject, kind: String, relatesTo: Subject): Relationship? {
+    fun getRelationship(source: SubjectFilter, kind: String, relatesTo: SubjectFilter): Relationship? {
         return cachedRelationships[kind]?.get(source)?.get(relatesTo)
     }
 
