@@ -2,7 +2,7 @@ package core.ai.knowledge.dsl
 
 import core.ai.knowledge.*
 
-class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: ((Subject) -> Boolean)? = null, private val relatesTo: ((Subject) -> Boolean)? = null) {
+class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: (SubjectFilter)? = null, private val relatesTo: (SubjectFilter)? = null) {
     private val facts = mutableListOf<((mind: Mind, source: Subject, kind: String) -> Fact)>()
     private val relationships = mutableListOf<((mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Relationship)>()
     private val children = mutableListOf<KnowledgeFindersBuilder>()
@@ -14,7 +14,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
     fun fact(finder: (mind: Mind, source: Subject, kind: String) -> Pair<Int, Int>) {
         facts.add { mind: Mind, source: Subject, kind: String ->
             val (confidence, amount) = finder(mind, source, kind)
-            Fact(source, kind, confidence, amount)
+            Fact(SimpleSubject(source), kind, confidence, amount)
         }
     }
 
@@ -25,7 +25,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
     fun relationship(finder: (mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Pair<Int, Int>) {
         relationships.add { mind: Mind, source: Subject, kind: String, relatesTo: Subject ->
             val (confidence, amount) = finder(mind, source, kind, relatesTo)
-            Relationship(source, kind, relatesTo, confidence, amount)
+            Relationship(SimpleSubject(source), kind, SimpleSubject(relatesTo), confidence, amount)
         }
     }
 
@@ -41,7 +41,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         this.source({ source -> source.name.equals(name, ignoreCase = true) }, initializer)
     }
 
-    fun source(relevantSource: (Subject) -> Boolean, initializer: KnowledgeFindersBuilder.() -> Unit) {
+    fun source(relevantSource: SubjectFilter, initializer: KnowledgeFindersBuilder.() -> Unit) {
         children.add(KnowledgeFindersBuilder(kind, relevantSource).apply(initializer))
     }
 
@@ -49,11 +49,11 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         this.relatesTo({ relatesTo -> relatesTo.name.equals(name, ignoreCase = true) }, initializer)
     }
 
-    fun relatesTo(relatesTo: (Subject) -> Boolean, initializer: KnowledgeFindersBuilder.() -> Unit) {
+    fun relatesTo(relatesTo: SubjectFilter, initializer: KnowledgeFindersBuilder.() -> Unit) {
         children.add(KnowledgeFindersBuilder(kind, relatesTo = relatesTo).apply(initializer))
     }
 
-    fun build(parentSources: List<((Subject) -> Boolean)> = emptyList(), parentRelatesTo: List<((Subject) -> Boolean)> = emptyList()): List<KnowledgeFinder> {
+    fun build(parentSources: List<(SubjectFilter)> = emptyList(), parentRelatesTo: List<(SubjectFilter)> = emptyList()): List<KnowledgeFinder> {
         val sources = (parentSources + listOfNotNull(source))
         val relatesTo = (parentRelatesTo + listOfNotNull(relatesTo))
 

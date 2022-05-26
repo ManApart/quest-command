@@ -6,10 +6,9 @@ import core.thing.Thing
 
 data class Mind(
     val ai: AI = DumbAI(),
-    val personalFacts: MutableMap<String, MutableList<Fact>> = mutableMapOf(),
-    val personalRelationships: MutableMap<String, MutableList<Relationship>> = mutableMapOf(),
+    val memory: CreatureMemory = CreatureMemory()
 ){
-    private val shortTermMemory = ShortTermMemory()
+    private val shortTermMemory = CreatureMemory()
     lateinit var creature: Thing; private set
 
     fun updateCreature(creature: Thing){
@@ -36,23 +35,19 @@ data class Mind(
     }
 
     fun learn(fact: Fact) = learn(fact.source, fact.kind, fact.confidence, fact.amount)
-    fun learn(source: SubjectFilter, kind: String, confidenceIncrease: Int, amountIncrease: Int) {
-        val existing = personalFacts[kind]?.firstOrNull { it.source == source }
-        val confidence = (existing?.confidence ?: 0) + amountIncrease
-        val amount = (existing?.confidence ?: 0) + confidenceIncrease
-        personalFacts.putIfAbsent(kind, mutableListOf())
-        personalFacts[kind]?.remove(existing)
-        personalFacts[kind]?.add(Fact(source, kind, confidence, amount))
+    fun learn(source: SimpleSubject, kind: String, confidenceIncrease: Int, amountIncrease: Int) {
+        val existing = memory.getFact(source, kind)
+        val confidence = (existing?.confidence ?: 0) + confidenceIncrease
+        val amount = (existing?.confidence ?: 0) + amountIncrease
+        memory.remember(Fact(source, kind, confidence, amount))
     }
 
     fun learn(relationship: Relationship) = learn(relationship.source, relationship.kind, relationship.relatesTo, relationship.confidence, relationship.amount)
-    fun learn(source: SubjectFilter, kind: String, relatesTo: SubjectFilter, confidenceIncrease: Int, amountIncrease: Int) {
-        val existing = personalRelationships[kind]?.firstOrNull { it.source == source }
-        val confidence = (existing?.confidence ?: 0) + amountIncrease
-        val amount = (existing?.confidence ?: 0) + confidenceIncrease
-        personalRelationships.putIfAbsent(kind, mutableListOf())
-        personalRelationships[kind]?.remove(existing)
-        personalRelationships[kind]?.add(Relationship(source, kind, relatesTo, confidence, amount))
+    fun learn(source: SimpleSubject, kind: String, relatesTo: SimpleSubject, confidenceIncrease: Int, amountIncrease: Int) {
+        val existing = memory.getRelationship(source, kind, relatesTo)
+        val confidence = (existing?.confidence ?: 0) + confidenceIncrease
+        val amount = (existing?.confidence ?: 0) + amountIncrease
+        memory.remember(Relationship(source, kind, relatesTo, confidence, amount))
     }
 
     fun forgetShortTermMemory() {

@@ -2,11 +2,10 @@ package persistance
 
 import core.GameManager
 import core.GameState
-import core.PRINT_WITHOUT_FLUSH
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Fact
 import core.ai.knowledge.Relationship
-import core.ai.knowledge.Subject
+import core.ai.knowledge.SimpleSubject
 import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
@@ -25,7 +24,6 @@ import status.effects.EffectBase
 import status.effects.EffectP
 import status.stat.LeveledStat
 import status.stat.LeveledStatP
-import system.persistance.changePlayer.PlayAsEvent
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
 import traveling.location.Network
@@ -144,8 +142,8 @@ class PersistenceTest {
         preLoadPlayer.thing.properties.tags.add("Saved")
         //subject: thingIsSelf
         //subject: locationIsName
-        val fact = Fact(Subject(preLoadPlayer.thing), "Neat", 100, 70)
-        val relationship = Relationship(Subject(preLoadPlayer.thing), "Home", Subject(preLoadPlayer.location), 100, 1)
+        val fact = Fact(SimpleSubject(preLoadPlayer.thing), "Neat", 100, 70)
+        val relationship = Relationship(SimpleSubject(preLoadPlayer.thing), "Home", SimpleSubject(preLoadPlayer.location), 100, 1)
         preLoadPlayer.mind.learn(fact)
         preLoadPlayer.mind.learn(relationship)
 
@@ -161,8 +159,8 @@ class PersistenceTest {
         assertEquals("Saved Player", postLoadPlayer.thing.name)
         assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
         assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
-        assertEquals(fact, postLoadPlayer.mind.personalFacts.values.first().first())
-        assertEquals(relationship, postLoadPlayer.mind.personalRelationships.values.first().first())
+        assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
+        assertEquals(relationship, postLoadPlayer.mind.memory.getRelationship(relationship.source, relationship.kind, relationship.relatesTo))
 
         CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
         val location = postLoadPlayer.thing.location.getLocation()

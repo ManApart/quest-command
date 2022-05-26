@@ -12,16 +12,23 @@ data class Subject(
     val propertyValue: String? = null,
     val propertyTag: String? = null
 ) {
-    constructor(creature: Thing): this(creature.name, creature)
-    constructor(location: LocationNode): this(location.name, location = location)
+    constructor(creature: Thing) : this(creature.name, creature)
+    constructor(location: LocationNode) : this(location.name, location = location)
+
     init {
         require(thing != null || location != null) { "Thing or location most not be null!" }
     }
 }
 
-//This subject is used in facts, the other is used to filter matches
-data class SubjectType(
+//This simplified subject is stored within facts and relationships
+@kotlinx.serialization.Serializable
+data class SimpleSubject(
     val thingName: String? = null,
     val locationName: String? = null,
     val topicName: String? = null,
-)
+) {
+    constructor(b: Subject) : this(b.thing?.name, b.location?.name)
+    constructor(b: Thing) : this(thingName = b.name)
+    constructor(b: LocationNode) : this(locationName = b.name)
+    constructor(b: String) : this(topicName = b)
+}

@@ -5,6 +5,7 @@ import core.ai.AIManager
 import core.ai.DumbAI
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
+import core.ai.knowledge.CreatureMemory
 import core.ai.knowledge.Mind
 import core.ai.knowledge.MindP
 import core.body.Body
@@ -63,7 +64,7 @@ class ThingBuilder(internal val name: String) {
         val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
         val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
         val ai = discernAI(possibleAI, possibleAIName)
-        val mindParsed = mindP?.let { Mind(discernAI(possibleAI, mindP!!.aiName), mindP!!.parsedFacts(), mindP!!.parsedRelationships()) }
+        val mindParsed = mindP?.let { Mind(discernAI(possibleAI, mindP!!.aiName), CreatureMemory(mindP!!.personalFacts, mindP!!.personalRelationships)) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
@@ -206,7 +207,7 @@ class ThingBuilder(internal val name: String) {
             description(t.description)
             location(t.location)
             t.parent?.let { parent(t.parent) }
-            mind(Mind(t.mind.ai, t.mind.personalFacts, t.mind.personalRelationships))
+            mind(Mind(t.mind.ai, CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllRelationships())))
             body(Body(t.body))
             equipSlotOptions(t.equipSlots)
             item(t.inventory.getAllItems().map { it.name })

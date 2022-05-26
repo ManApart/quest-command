@@ -30,16 +30,12 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
     }
 
     private fun getPersonalFact(mind: Mind, source: Subject, kind: String): Fact {
-        return mind.personalFacts[kind]
-            ?.filter { it.source == source }
-            ?.average()
-            ?: Fact(source, kind, 0, 0)
+        return mind.memory.getFact(source, kind)
+            ?: Fact(SimpleSubject(source), kind, 0, 0)
     }
 
     private fun getPersonalRelationship(mind: Mind, source: Subject, kind: String, relatesTo: Subject): Relationship {
-        return mind.personalRelationships[kind]
-            ?.filter { it.source == source && it.relatesTo == relatesTo }
-            ?.average()
-            ?: Relationship(source, kind, relatesTo, 0, 0)
+        return mind.memory.getRelationship(source, kind, relatesTo)
+            ?: Relationship(SimpleSubject(source), kind, SimpleSubject(relatesTo), 0, 0)
     }
 }
