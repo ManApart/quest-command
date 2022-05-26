@@ -65,20 +65,20 @@ object LocationManager {
 
     fun findLocationInAnyNetwork(source: Thing, name: String): LocationNode? {
         val network = getNetwork(source.location.parent)
-        var thing = findThing(name, network)
+        var location = findLocation(name, network)
         var i = 0
-        while (thing == null && i < getNetworks().size) {
-            thing = findThing(name, getNetworks()[i])
+        while (location == null && i < getNetworks().size) {
+            location = findLocation(name, getNetworks()[i])
             i++
         }
-        return thing
+        return location
     }
 
     fun findLocationsInAnyNetwork(name: String): List<LocationNode> {
         return getNetworks().flatMap { it.findLocations(name) }
     }
 
-    private fun findThing(name: String, network: Network): LocationNode? {
+    private fun findLocation(name: String, network: Network): LocationNode? {
         return if (network.locationRecipeExists(name)) {
             network.findLocation(name)
         } else {

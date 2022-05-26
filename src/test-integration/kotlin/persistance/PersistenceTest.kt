@@ -4,6 +4,9 @@ import core.GameManager
 import core.GameState
 import core.PRINT_WITHOUT_FLUSH
 import core.ai.behavior.BehaviorRecipe
+import core.ai.knowledge.Fact
+import core.ai.knowledge.Relationship
+import core.ai.knowledge.Subject
 import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
@@ -34,6 +37,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+//TODO - test remembering a fact + relationship
 class PersistenceTest {
     @Before
     fun reset() {
@@ -137,7 +141,12 @@ class PersistenceTest {
         val preLoadPlayer = GameState.getPlayer("Saved Player")!!
         CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
         EventManager.executeEvents()
+
         preLoadPlayer.thing.properties.tags.add("Saved")
+        val fact = Fact(Subject(preLoadPlayer.thing), "Neat", 100, 70)
+        val relationship = Relationship(Subject(preLoadPlayer.thing), "Home", Subject(preLoadPlayer.location), 100, 1)
+        preLoadPlayer.mind.learn(fact)
+        preLoadPlayer.mind.learn(relationship)
 
         EventManager.postEvent(SaveEvent(preLoadPlayer))
         EventManager.executeEvents()
@@ -151,6 +160,8 @@ class PersistenceTest {
         assertEquals("Saved Player", postLoadPlayer.thing.name)
         assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
         assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
+        assertEquals(fact, postLoadPlayer.mind.personalFacts.values.first().first())
+        assertEquals(relationship, postLoadPlayer.mind.personalRelationships.values.first().first())
 
         CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
         val location = postLoadPlayer.thing.location.getLocation()

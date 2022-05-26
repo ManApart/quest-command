@@ -1,6 +1,7 @@
 package core.thing
 
 import core.ai.behavior.BehaviorRecipe
+import core.ai.knowledge.MindP
 import core.body.Body
 import core.body.Slot
 import core.properties.Properties
@@ -36,7 +37,7 @@ fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
 @kotlinx.serialization.Serializable
 data class ThingP(
     val name: String,
-    val aiName: String,
+    val mind: MindP,
     val behaviorRecipes: List<BehaviorRecipe>,
     val equipSlots: List<List<String>>,
     val description: String,
@@ -49,7 +50,7 @@ data class ThingP(
     @kotlinx.serialization.Transient
     private val bodyReference: Body? = null
 ){
-    internal constructor(b: Thing): this(b.name, b.mind.ai.name, b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), PropertiesP(b.properties), b.body.name, b.body)
+    internal constructor(b: Thing): this(b.name, MindP(b.mind), b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), PropertiesP(b.properties), b.body.name, b.body)
 
     fun parsed(path: String, parentLocation: Network? = null): Thing {
         val folderPath = path.removeSuffix(".json")
@@ -60,7 +61,7 @@ data class ThingP(
 
         return thing(name) {
             param(mutableMapOf<String, String>())
-            ai(aiName)
+            mind(mind)
             behavior(behaviorRecipes)
             body(body)
             description(description)

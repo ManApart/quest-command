@@ -1,17 +1,20 @@
 package core.ai.knowledge
 
 import core.thing.Thing
-import traveling.location.network.LocationNode
 
 private val unknownSubject = Subject(Thing("Unknown"))
 val UNKNOWN_FACT = Fact(unknownSubject, "Unknown", 0, 0)
 val UNKNOWN_RELATIONSHIP = Relationship(unknownSubject, "Unknown", unknownSubject, 0, 0)
 
-enum class Confidence(val amount: Int) { UNKNOWN(0), GUESS(25), ESTIMATE(50), CONFIDENT(75), POSITIVE(100) }
-fun Int.confidence() = Confidence.values().filter { it.amount < this }.maxOrNull()!!
+enum class ConfidenceLevel(val amount: Int) { UNKNOWN(0), GUESS(25), ESTIMATE(50), CONFIDENT(75), POSITIVE(100) }
+fun Int.confidence() = ConfidenceLevel.values().filter { it.amount < this }.maxOrNull()!!
+fun Int.atLeast(level: ConfidenceLevel) = level.amount <= this
+fun Int.atMost(level: ConfidenceLevel) = level.amount >= this
 
-enum class Affection(val amount: Int) { HATES(-10), DISLIKES(-5), NEUTRAL(0), LIKES(5), LOVES(10) }
-fun Int.affection() = Affection.values().filter { it.amount < this }.maxOrNull()!!
+enum class AffectionLevel(val amount: Int) { HATES(-10), DISLIKES(-5), NEUTRAL(0), LIKES(5), LOVES(10) }
+fun Int.affection() = AffectionLevel.values().filter { it.amount < this }.maxOrNull()!!
+fun Int.atLeast(level: AffectionLevel) = level.amount <= this
+fun Int.atMost(level: AffectionLevel) = level.amount >= this
 
 data class Fact(val source: Subject, val kind: String, val confidence: Int, val amount: Int = 0) {
     operator fun plus(other: Fact): Fact {

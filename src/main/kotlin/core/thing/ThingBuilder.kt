@@ -6,6 +6,7 @@ import core.ai.DumbAI
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Mind
+import core.ai.knowledge.MindP
 import core.body.Body
 import core.body.BodyManager
 import core.body.Slot
@@ -36,6 +37,7 @@ class ThingBuilder(internal val name: String) {
     private var aiName: String? = null
     private var ai: AI? = null
     private var mind: Mind? = null
+    private var mindP: MindP? = null
     private var body: Body? = null
     private var bodyName: String? = null
     private var location: LocationNode? = null
@@ -61,7 +63,8 @@ class ThingBuilder(internal val name: String) {
         val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
         val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
         val ai = discernAI(possibleAI, possibleAIName)
-        val mind = this.mind ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
+        val mindParsed = mindP?.let { Mind(discernAI(possibleAI, mindP!!.aiName), mindP!!.parsedFacts(), mindP!!.parsedRelationships()) }
+        val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
 
@@ -146,6 +149,10 @@ class ThingBuilder(internal val name: String) {
 
     fun mind(mind: Mind) {
         this.mind = mind
+    }
+
+    fun mind(mind: MindP) {
+        this.mindP = mind
     }
 
     fun body(body: String) {
