@@ -1,7 +1,6 @@
 package core
 
 import core.thing.ThingP
-import crafting.RecipeManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import system.persistance.clean
@@ -21,25 +20,12 @@ fun persist(dataObject: Player, path: String) {
 
 @kotlinx.serialization.Serializable
 data class PlayerP(
-    val recipes: List<String>,
-    val knownLocations: Map<String, Set<String>>,
     val thing: ThingP,
 ) {
-    constructor(b: Player) : this(b.knownRecipes.map { it.name }, b.knownLocations, ThingP(b.thing))
+    constructor(b: Player) : this(ThingP(b.thing))
 
     fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
-        val player = Player(playerName, thing.parsed(path, parentLocation))
-        recipes.forEach { recipeName ->
-            player.knownRecipes.add(RecipeManager.getRecipe(recipeName))
-        }
-        knownLocations.entries.forEach { (network, locations) ->
-            player.knownLocations.putIfAbsent(network, mutableSetOf())
-            locations.forEach { location ->
-                player.knownLocations[network]?.add(location)
-            }
-        }
-
-        return player
+        return Player(playerName, thing.parsed(path, parentLocation))
     }
 
     fun persistReferences(path: String) {

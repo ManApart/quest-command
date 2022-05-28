@@ -10,9 +10,6 @@ data class Player(
     val name: String,
     val thing: Thing
 ) {
-    //Map of Network to Location Node Name. Presence means it's discovered
-    val knownLocations = mutableMapOf<String, MutableSet<String>>()
-    val knownRecipes: NameSearchableList<Recipe> = NameSearchableList()
     var compassRoute: Route? = null
 
     override fun equals(other: Any?): Boolean {

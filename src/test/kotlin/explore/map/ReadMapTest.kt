@@ -20,7 +20,8 @@ class ReadMapTest {
         GameState.putPlayer(player)
         GameLogger.reset()
         GameLogger.track(player)
-        player.knownLocations.clear()
+        player.mind.forgetShortTermMemory()
+        player.mind.forgetLongTermMemory()
     }
 
     @Test

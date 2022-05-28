@@ -16,6 +16,10 @@ data class CreatureMemory(
         return facts.values.flatMap { it.values }
     }
 
+    fun getAllFacts(kind: String): List<Fact> {
+        return facts[kind]?.values?.toList() ?: listOf()
+    }
+
     fun getRelationship(source: Subject, kind: String, relatesTo: Subject) = getRelationship(SimpleSubject(source), kind, SimpleSubject(relatesTo))
     fun getRelationship(source: SimpleSubject, kind: String, relatesTo: SimpleSubject): Relationship? {
         return relationships[source]?.get(kind)?.get(relatesTo)
@@ -34,6 +38,14 @@ data class CreatureMemory(
         relationships.putIfAbsent(relationship.source, mutableMapOf())
         relationships[relationship.source]?.putIfAbsent(relationship.kind, mutableMapOf())
         relationships[relationship.source]?.get(relationship.kind)?.put(relationship.relatesTo, relationship)
+    }
+
+    fun forget(fact: Fact) {
+        facts[fact.kind]?.remove(fact.source)
+    }
+
+    fun forget(relationship: Relationship) {
+        relationships[relationship.source]?.get(relationship.kind)?.remove(relationship.relatesTo)
     }
 
     fun forget() {

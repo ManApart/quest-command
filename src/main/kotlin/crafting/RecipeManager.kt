@@ -39,7 +39,8 @@ object RecipeManager {
     }
 
     fun getKnownRecipes(source: Player): NameSearchableList<Recipe> {
-        return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) getAllRecipes() else source.knownRecipes
+        val recipes = getAllRecipes()
+        return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) recipes else recipes.filter { source.mind.knows(it) }
     }
 
     fun getRecipes(names: List<String>): List<Recipe> {

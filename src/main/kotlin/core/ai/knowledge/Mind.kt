@@ -3,6 +3,7 @@ package core.ai.knowledge
 import core.ai.AI
 import core.ai.DumbAI
 import core.thing.Thing
+import crafting.Recipe
 import traveling.location.network.LocationNode
 
 data class Mind(
@@ -40,7 +41,9 @@ data class Mind(
         val existing = memory.getFact(source, kind)
         val confidence = (existing?.confidence ?: 0) + confidenceIncrease
         val amount = (existing?.confidence ?: 0) + amountIncrease
-        memory.remember(Fact(source, kind, confidence, amount))
+        val fact = Fact(source, kind, confidence, amount)
+        memory.remember(fact)
+        shortTermMemory.forget(fact)
     }
 
     fun learn(relationship: Relationship) = learn(relationship.source, relationship.kind, relationship.relatesTo, relationship.confidence, relationship.amount)
@@ -48,20 +51,35 @@ data class Mind(
         val existing = memory.getRelationship(source, kind, relatesTo)
         val confidence = (existing?.confidence ?: 0) + confidenceIncrease
         val amount = (existing?.confidence ?: 0) + amountIncrease
-        memory.remember(Relationship(source, kind, relatesTo, confidence, amount))
+        val relationship = Relationship(source, kind, relatesTo, confidence, amount)
+        memory.remember(relationship)
+        shortTermMemory.forget(relationship)
     }
 
     fun forgetShortTermMemory() {
         shortTermMemory.forget()
     }
 
-    fun knowsLocationExists(location: LocationNode): Boolean {
+    fun forgetLongTermMemory() {
+        memory.forget()
+    }
+
+    fun knows(location: LocationNode): Boolean {
         val fact = knows(Subject(location), "Exists")
+        return fact.confident() && fact.amount != 0
+    }
+
+    fun knows(recipe: Recipe): Boolean {
+        val fact = knows(Subject(recipe.name), "Recipe")
         return fact.confident() && fact.amount != 0
     }
 
     fun discover(location: LocationNode){
         learn(Fact(SimpleSubject(location), "Exists", 100, 100))
+    }
+
+    fun discover(recipe: Recipe){
+        learn(Fact(SimpleSubject(recipe.name), "Recipe", 100, 100))
     }
 
 }

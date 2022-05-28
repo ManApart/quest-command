@@ -10,8 +10,8 @@ class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
 
     override fun execute(event: DiscoverRecipeEvent) {
         if (event.source.thing.isPlayer()) {
-            if (!event.source.knownRecipes.contains(event.recipe)) {
-                event.source.knownRecipes.add(event.recipe)
+            if (!event.source.mind.knows(event.recipe)) {
+                event.source.mind.discover(event.recipe)
 
                 val amount = event.recipe.skills.values.maxOrNull() ?: 1
                 EventManager.postEvent(ExpGainedEvent(event.source.thing, COOKING, amount))

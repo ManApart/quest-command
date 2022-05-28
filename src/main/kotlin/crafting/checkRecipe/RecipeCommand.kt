@@ -35,7 +35,7 @@ class RecipeCommand : Command() {
             args.isEmpty() -> EventManager.postEvent(CheckRecipeEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(CheckRecipeEvent(source))
             args.size == 1 && args[0] == "recipe" -> clarifyWhichRecipe(source)
-            source.knownRecipes.exists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, source.knownRecipes.get(argString)))
+            RecipeManager.getKnownRecipes(source).exists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, RecipeManager.getKnownRecipes(source).get(argString)))
             GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL) && RecipeManager.recipeExists(argString) -> EventManager.postEvent(CheckRecipeEvent(source, RecipeManager.getRecipe(argString)))
             else -> source.displayToMe("Couldn't find recipe ${args.joinToString(" ")}.")
         }
@@ -52,7 +52,7 @@ class RecipeCommand : Command() {
     private fun clarifyWhichRecipe(player: Player) {
         player.respond("You don't know any recipes.") {
             message("Read what recipe?")
-            options(player.knownRecipes)
+            options(RecipeManager.getKnownRecipes(player))
             command { "recipe $it" }
         }
     }

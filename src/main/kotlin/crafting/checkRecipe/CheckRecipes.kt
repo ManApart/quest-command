@@ -14,7 +14,7 @@ class CheckRecipes : EventListener<CheckRecipeEvent>() {
 
     override fun execute(event: CheckRecipeEvent) {
         when {
-            event.source.knownRecipes.isEmpty() && !GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL) -> event.source.displayToMe("You don't know any recipes yet.")
+            RecipeManager.getKnownRecipes(event.source).isEmpty() && !GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL) -> event.source.displayToMe("You don't know any recipes yet.")
             event.recipe == null -> printRecipes(event.source)
             else -> event.source.displayToMe(event.recipe.read())
         }

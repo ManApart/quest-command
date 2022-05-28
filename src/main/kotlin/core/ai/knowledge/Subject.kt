@@ -18,6 +18,16 @@ data class Subject(
     init {
         require(thing != null || location != null || topic != null) { "Thing or location most not be null!" }
     }
+
+    override fun toString(): String {
+        return listOfNotNull(
+            thing?.let { "Thing: ${it.name}" },
+            location?.let { "Location: ${it.name}" },
+            topic?.let { "Topic: $it" },
+            propertyValue?.let { "PropVal: $it" },
+            propertyTag?.let { "Tag: $it" },
+        ).joinToString(", ")
+    }
 }
 
 //This simplified subject is stored within facts and relationships
@@ -32,4 +42,13 @@ data class SimpleSubject(
     constructor(b: Thing) : this(b.name, b.location.name, b.location.network.name)
     constructor(b: LocationNode) : this(locationName = b.name, networkName = b.network.name)
     constructor(b: String) : this(topic = b)
+
+    override fun toString(): String {
+        return listOfNotNull(
+            thingName?.let { "Thing: $it" },
+            locationName?.let { "Location: $it" },
+            networkName?.let { "Network: $it" },
+            topic?.let { "Topic: $it" },
+        ).joinToString(", ")
+    }
 }
