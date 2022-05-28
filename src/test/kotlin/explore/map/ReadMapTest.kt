@@ -44,7 +44,7 @@ class ReadMapTest {
                 LocationPoint(LocationNode("Destination"))
             )
         )
-        thing.getNeighborConnections().forEach { player.discover(it.destination.location) }
+        thing.getNeighborConnections().forEach { player.thing.mind.discover(it.destination.location) }
         val event = ReadMapEvent(player, thing)
 
         val listener = ReadMap()
@@ -66,7 +66,7 @@ class ReadMapTest {
             addConnection(Vector(0, -10, 0), "south")
             addConnection(Vector(10, 0, 0), "east")
             addConnection(Vector(-10, 0, 0), "west")
-            getNeighborConnections().forEach { player.discover(it.destination.location) }
+            getNeighborConnections().forEach { player.thing.mind.discover(it.destination.location) }
         }
 
         val event = ReadMapEvent(player, thing)

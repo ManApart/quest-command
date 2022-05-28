@@ -3,6 +3,7 @@ package core.ai.knowledge
 import core.ai.AI
 import core.ai.DumbAI
 import core.thing.Thing
+import traveling.location.network.LocationNode
 
 data class Mind(
     val ai: AI = DumbAI(),
@@ -52,6 +53,15 @@ data class Mind(
 
     fun forgetShortTermMemory() {
         shortTermMemory.forget()
+    }
+
+    fun knowsLocationExists(location: LocationNode): Boolean {
+        val fact = knows(Subject(location), "Exists")
+        return fact.confident() && fact.amount != 0
+    }
+
+    fun discover(location: LocationNode){
+        learn(Fact(SimpleSubject(location), "Exists", 100, 100))
     }
 
 }

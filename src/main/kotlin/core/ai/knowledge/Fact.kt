@@ -21,6 +21,10 @@ data class Fact(val source: SimpleSubject, val kind: String, val confidence: Int
     operator fun plus(other: Fact): Fact {
         return Fact(source, kind, confidence + other.confidence, amount + other.amount)
     }
+
+    fun confident(): Boolean {
+        return confidence.atLeast(ConfidenceLevel.CONFIDENT)
+    }
 }
 
 fun List<Fact>.sum(): Fact {
@@ -30,7 +34,8 @@ fun List<Fact>.sum(): Fact {
 
 fun List<Fact>.average(): Fact {
     if (this.isEmpty()) return UNKNOWN_FACT
-    val summedConfidence = sumOf { it.confidence }
+    var summedConfidence = sumOf { it.confidence }
+    if (summedConfidence == 0) summedConfidence = 1
     return Fact(first().source, first().kind, summedConfidence / size, sumOf { it.amount * it.confidence } / summedConfidence)
 }
 

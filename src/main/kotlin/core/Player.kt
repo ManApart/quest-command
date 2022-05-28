@@ -35,15 +35,4 @@ data class Player(
     val inventory get() = thing.inventory
     val location get() = thing.location
     val position get() = thing.position
-
-    fun discover(location: LocationNode){
-        val network = location.network.name
-        knownLocations.putIfAbsent(network, mutableSetOf())
-        knownLocations[network]?.add(location.name)
-    }
-
-    fun knows(location: LocationNode): Boolean{
-        val network = location.network.name
-        return knownLocations[network]?.contains(location.name) ?: false
-    }
 }

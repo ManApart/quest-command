@@ -1,6 +1,7 @@
 package traveling.location.network
 
 import core.Player
+import core.thing.Thing
 import core.utility.Named
 import kotlinx.serialization.SerialName
 import traveling.direction.Direction
@@ -167,10 +168,10 @@ data class LocationNode(
         return direction != Direction.NONE && (furthestNodes.isEmpty() || furthestNodes.contains(this))
     }
 
-    fun discoverSelfAndNeighbors(player: Player) {
-        player.discover(this)
+    fun discoverSelfAndNeighbors(creature: Thing) {
+        creature.mind.discover(this)
         connections.filter { !it.hidden }.map { it.destination.location }.forEach { neighbor ->
-            player.discover(neighbor)
+            creature.mind.discover(neighbor)
         }
     }
 

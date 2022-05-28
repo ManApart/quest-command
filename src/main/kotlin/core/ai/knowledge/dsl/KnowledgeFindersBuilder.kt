@@ -37,16 +37,16 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         children.add(KnowledgeFindersBuilder(kind).apply(initializer))
     }
 
-    fun source(name: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
-        this.source({ source -> source.name.equals(name, ignoreCase = true) }, initializer)
+    fun source(topic: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        this.source({ source -> source.topic.equals(topic, ignoreCase = true) }, initializer)
     }
 
     fun source(relevantSource: SubjectFilter, initializer: KnowledgeFindersBuilder.() -> Unit) {
         children.add(KnowledgeFindersBuilder(kind, relevantSource).apply(initializer))
     }
 
-    fun relatesTo(name: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
-        this.relatesTo({ relatesTo -> relatesTo.name.equals(name, ignoreCase = true) }, initializer)
+    fun relatesTo(topic: String, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        this.relatesTo({ relatesTo -> relatesTo.topic.equals(topic, ignoreCase = true) }, initializer)
     }
 
     fun relatesTo(relatesTo: SubjectFilter, initializer: KnowledgeFindersBuilder.() -> Unit) {

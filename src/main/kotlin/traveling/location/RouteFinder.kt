@@ -78,7 +78,7 @@ class RouteFinder(
             } else connections
         }.let { connections ->
             if (ignoreUndiscoveredLocations && player != null){
-                connections.filter { player.knows(it.destination.location) }
+                connections.filter { player.mind.knowsLocationExists(it.destination.location) }
             } else connections
         }
     }
