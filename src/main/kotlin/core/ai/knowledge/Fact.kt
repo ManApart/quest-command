@@ -2,6 +2,7 @@ package core.ai.knowledge
 
 private val unknownSubject = SimpleSubject()
 val UNKNOWN_FACT = Fact(unknownSubject, "Unknown", 0, 0)
+val UNKNOWN_LIST_FACT = ListFact("Unknown", unknownSubject)
 val UNKNOWN_RELATIONSHIP = Relationship(unknownSubject, "Unknown", unknownSubject, 0, 0)
 
 enum class ConfidenceLevel(val amount: Int) { UNKNOWN(0), GUESS(25), ESTIMATE(50), CONFIDENT(75), POSITIVE(100) }
@@ -37,6 +38,16 @@ fun List<Fact>.average(): Fact {
     var summedConfidence = sumOf { it.confidence }
     if (summedConfidence == 0) summedConfidence = 1
     return Fact(first().source, first().kind, summedConfidence / size, sumOf { it.amount * it.confidence } / summedConfidence)
+}
+
+@kotlinx.serialization.Serializable
+data class ListFact(val kind: String, val sources: List<SimpleSubject>) {
+    constructor(kind: String, source: SimpleSubject): this(kind, listOf(source))
+}
+
+fun List<ListFact>.sum(): ListFact {
+    if (this.isEmpty()) return UNKNOWN_LIST_FACT
+    return ListFact(first().kind, flatMap { it.sources })
 }
 
 @kotlinx.serialization.Serializable

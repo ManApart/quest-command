@@ -7,6 +7,7 @@ import core.ai.knowledge.dsl.knowledgeFinders
 class CommonKnowledgeFinders : KnowledgeFinderResource {
     override val values = knowledgeFinders {
         factFull(::getPersonalFact)
+        listFactFull(::getPersonalListFact)
         relationshipFull(::getPersonalRelationship)
 
         kind("Is") {
@@ -32,6 +33,11 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
     private fun getPersonalFact(mind: Mind, source: Subject, kind: String): Fact {
         return mind.memory.getFact(source, kind)
             ?: Fact(SimpleSubject(source), kind, 0, 0)
+    }
+
+    private fun getPersonalListFact(mind: Mind, kind: String): ListFact {
+        return mind.memory.getListFact(kind)
+            ?: ListFact(kind, emptyList())
     }
 
     private fun getPersonalRelationship(mind: Mind, source: Subject, kind: String, relatesTo: Subject): Relationship {

@@ -3,6 +3,7 @@ package crafting
 import core.DependencyInjector
 import core.GameState
 import core.Player
+import core.ai.knowledge.SimpleSubject
 import core.startupLog
 import core.thing.Thing
 import core.utility.NameSearchableList
@@ -39,8 +40,11 @@ object RecipeManager {
     }
 
     fun getKnownRecipes(source: Player): NameSearchableList<Recipe> {
-        val recipes = getAllRecipes()
-        return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) recipes else recipes.filter { source.mind.knows(it) }
+        return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) getAllRecipes() else {
+            source.mind.memory.getListFact("Recipe")?.sources
+                ?.mapNotNull { it.topic }?.let { getRecipes(it) }?.toNameSearchableList()
+                ?: NameSearchableList()
+        }
     }
 
     fun getRecipes(names: List<String>): List<Recipe> {

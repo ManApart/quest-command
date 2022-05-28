@@ -1,6 +1,6 @@
 package core.ai.knowledge
 
-data class KnowledgeFinder(val factFinder: FactFinder? = null, val relationshipFinder: RelationshipFinder? = null)
+data class KnowledgeFinder(val factFinder: FactFinder? = null, val listFactFinder: ListFactFinder? = null, val relationshipFinder: RelationshipFinder? = null)
 
 class FactFinder(
     private val relevantKind: (String) -> Boolean = { true },
@@ -10,6 +10,16 @@ class FactFinder(
 
     fun matches(source: Subject, kind: String): Boolean {
         return relevantKind(kind) && relevantSources.all { it(source) }
+    }
+}
+
+class ListFactFinder(
+    private val relevantKind: (String) -> Boolean = { true },
+    val findFact: ((mind: Mind, kind: String) -> ListFact),
+) {
+
+    fun matches(kind: String): Boolean {
+        return relevantKind(kind)
     }
 }
 

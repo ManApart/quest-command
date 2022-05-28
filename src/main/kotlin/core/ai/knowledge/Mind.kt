@@ -18,20 +18,26 @@ data class Mind(
         ai.creature = creature
     }
 
-    fun knows(kind: String, relatesTo: Subject) = knows(Subject(creature), kind, relatesTo)
-    fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
-        return KnowledgeManager.relationshipFinders
-            .filter { it.matches(source, kind, relatesTo) }
-            .map { it.findRelationship.invoke(this, source, kind, relatesTo) }
-            .average()
+    fun knows(kind: String): ListFact {
+        return shortTermMemory.getListFact(kind) ?: KnowledgeManager.listFactFinders
+            .filter { it.matches( kind) }
+            .map { it.findFact.invoke(this, kind) }
+            .sum()
             .also { shortTermMemory.remember(it) }
     }
 
-    fun knows(kind: String) = knows(Subject(creature), kind)
     fun knows(source: Subject, kind: String): Fact {
         return shortTermMemory.getFact(source, kind) ?: KnowledgeManager.factFinders
             .filter { it.matches(source, kind) }
             .map { it.findFact.invoke(this, source, kind) }
+            .average()
+            .also { shortTermMemory.remember(it) }
+    }
+
+    fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
+        return KnowledgeManager.relationshipFinders
+            .filter { it.matches(source, kind, relatesTo) }
+            .map { it.findRelationship.invoke(this, source, kind, relatesTo) }
             .average()
             .also { shortTermMemory.remember(it) }
     }
@@ -42,6 +48,14 @@ data class Mind(
         val confidence = (existing?.confidence ?: 0) + confidenceIncrease
         val amount = (existing?.confidence ?: 0) + amountIncrease
         val fact = Fact(source, kind, confidence, amount)
+        memory.remember(fact)
+        shortTermMemory.forget(fact)
+    }
+
+    fun learn(kind: String, addition: SimpleSubject) = learn(kind, listOf(addition))
+    fun learn(kind: String, additions: List<SimpleSubject>) {
+        val existing = memory.getListFact(kind)
+        val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))
         memory.remember(fact)
         shortTermMemory.forget(fact)
     }
@@ -65,21 +79,21 @@ data class Mind(
     }
 
     fun knows(location: LocationNode): Boolean {
-        val fact = knows(Subject(location), "Exists")
-        return fact.confident() && fact.amount != 0
+        val fact = knows("Location")
+        return fact.sources.contains(SimpleSubject(location))
     }
 
     fun knows(recipe: Recipe): Boolean {
-        val fact = knows(Subject(recipe.name), "Recipe")
-        return fact.confident() && fact.amount != 0
+        val fact = knows("Recipe")
+        return fact.sources.contains(SimpleSubject(recipe.name))
     }
 
     fun discover(location: LocationNode){
-        learn(Fact(SimpleSubject(location), "Exists", 100, 100))
+        learn("Location", SimpleSubject(location))
     }
 
     fun discover(recipe: Recipe){
-        learn(Fact(SimpleSubject(recipe.name), "Recipe", 100, 100))
+        learn("Recipe", SimpleSubject(recipe.name))
     }
 
 }
