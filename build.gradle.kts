@@ -40,17 +40,19 @@ kotlin {
                     testClassesDirs = output.classesDirs
                 }
             }
-//            val tools by compilations.creating {
-//                defaultSourceSet {
-//                    dependencies {
-//                        implementation(main.compileDependencyFiles + main.output.classesDirs)
-//                    }
-//                }
-//                tasks.register<JavaExec>("buildData") {
-//                    group = "build"
-//                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-//                }
-//            }
+            val tools by compilations.creating {
+                defaultSourceSet {
+                    dependencies {
+                        implementation(main.compileDependencyFiles + main.output.classesDirs)
+                    }
+                }
+                tasks.register<JavaExec>("buildData") {
+                    group = "build"
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    //        main = "building.AppBuilder"
+//        classpath = sourceSets["jvmTools"].kotlin
+                }
+            }
         }
     }
     js(LEGACY) {
@@ -82,14 +84,6 @@ kotlin {
             }
         }
         val jvmTest by getting
-//        val jvmTools by creating {
-//            dependsOn(jvmMain)
-//            jvm()
-//            //TODO - can't run main functions in this source set
-//
-//            //    compileClasspath += main.output + main.compileClasspath
-//            //    runtimeClasspath += output + compileClasspath
-//        }
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
@@ -97,12 +91,6 @@ kotlin {
         }
         val jsTest by getting
     }
-
-//    task("buildData", type = JavaExec::class) {
-//        group = "build"
-//        main = "building.AppBuilder"
-//        classpath = sourceSets["jvmTools"].kotlin
-//    }
 
     task("test-all") {
         description = "Run unit AND integration tests"
