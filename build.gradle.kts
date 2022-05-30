@@ -48,9 +48,9 @@ kotlin {
                 }
                 tasks.register<JavaExec>("buildData") {
                     group = "build"
+                    description = "Apply reflection to do build time code generation."
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-                    //        main = "building.AppBuilder"
-//        classpath = sourceSets["jvmTools"].kotlin
+                    setMain("building.AppBuilder")
                 }
             }
         }

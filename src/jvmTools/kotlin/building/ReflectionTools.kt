@@ -39,13 +39,15 @@ import java.io.File
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
 
+private const val srcRoot = "./src/jvmMain/kotlin"
+private const val testRoot = "./src/jvmTest/kotlin"
 
 object ReflectionTools {
     private val topLevelPackages = getPrefixes()
     private val reflections = Reflections(topLevelPackages, SubTypesScanner(false))
 
     private fun getPrefixes(): List<String> {
-        return File("./src/main/kotlin").listFiles()!!.filter { it.isDirectory }.map { it.name }.sorted()
+        return File(srcRoot).listFiles()!!.filter { it.isDirectory }.map { it.name }.sorted()
     }
 
     fun generateFiles() {
@@ -130,7 +132,7 @@ object ReflectionTools {
         //TODO - use qualified name instead of package name?
         //resourceInterface.qualifiedName
         val packageName = resourceInterface.java.packageName.replace(".", "/")
-        File("./src/main/kotlin/$packageName/${newClassName}sCollection.kt").printWriter().use {
+        File("$srcRoot/$packageName/${newClassName}sCollection.kt").printWriter().use {
             it.print(
                 """
                 package ${resourceInterface.java.packageName}
@@ -146,7 +148,7 @@ object ReflectionTools {
 
     private fun writeGeneratedFile(collectedClass: KClass<*>, typeSuffix: String, classes: String) {
         val packageName = collectedClass.java.packageName.replace(".", "/")
-        File("./src/main/kotlin/$packageName/${collectedClass.simpleName}sGenerated.kt").printWriter().use {
+        File("$srcRoot/$packageName/${collectedClass.simpleName}sGenerated.kt").printWriter().use {
             it.print(
                 """
                 package ${collectedClass.java.packageName}
@@ -162,7 +164,7 @@ object ReflectionTools {
     private fun writeGeneratedResourceFile(resourceInterface: KClass<*>, classes: String, newClassName: String) {
         val packageName = resourceInterface.java.packageName.replace(".", "/")
 
-        File("./src/main/kotlin/$packageName/${newClassName}sGenerated.kt").printWriter().use {
+        File("$srcRoot/$packageName/${newClassName}sGenerated.kt").printWriter().use {
             it.print(
                 """
                 package ${resourceInterface.java.packageName}
@@ -182,7 +184,7 @@ object ReflectionTools {
         newClassName: String
     ) {
         val packageName = resourceInterface.java.packageName.replace(".", "/")
-        val file = File("./src/test/kotlin/$packageName/${newClassName}sMock.kt")
+        val file = File("$testRoot/$packageName/${newClassName}sMock.kt")
         file.parentFile.mkdirs()
         //Only generate an initial sketch, but let the user update it and keep their changes
         if (!file.exists()) {
