@@ -19,6 +19,39 @@ kotlin {
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
+
+        sourceSets {
+            val jvmTestIntegration by creating {}
+            val jvmTools by creating {}
+        }
+        compilations {
+            val main by getting
+            val testIntegration by compilations.creating {
+                defaultSourceSet {
+                    dependencies {
+                        implementation(main.compileDependencyFiles + main.output.classesDirs)
+                        implementation(kotlin("test-junit"))
+                    }
+                }
+                tasks.register<Test>("test-integration") {
+                    group = "verification"
+                    description = "Runs the integration tests."
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    testClassesDirs = output.classesDirs
+                }
+            }
+//            val tools by compilations.creating {
+//                defaultSourceSet {
+//                    dependencies {
+//                        implementation(main.compileDependencyFiles + main.output.classesDirs)
+//                    }
+//                }
+//                tasks.register<JavaExec>("buildData") {
+//                    group = "build"
+//                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+//                }
+//            }
+        }
     }
     js(LEGACY) {
         binaries.executable()
@@ -49,19 +82,21 @@ kotlin {
             }
         }
         val jvmTest by getting
-        val jvmTestIntegration by creating {
-            dependsOn(jvmMain)
-            dependsOn(jvmTest)
-            jvm()
-        }
-        val jvmTools by creating {
-            dependsOn(jvmMain)
-            jvm()
-            //TODO - can't run main functions in this source set
-
-            //    compileClasspath += main.output + main.compileClasspath
-            //    runtimeClasspath += output + compileClasspath
-        }
+//        val jvmTestIntegration by creating {
+//            dependsOn(jvmMain)
+//            dependsOn(jvmTest)
+//            jvm()
+////            kotlin.srcDir("src/jvmTestIntegration/kotlin")
+////            resources.srcDir("src/jvmTestIntegration/resource")
+//        }
+//        val jvmTools by creating {
+//            dependsOn(jvmMain)
+//            jvm()
+//            //TODO - can't run main functions in this source set
+//
+//            //    compileClasspath += main.output + main.compileClasspath
+//            //    runtimeClasspath += output + compileClasspath
+//        }
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
@@ -70,26 +105,26 @@ kotlin {
         val jsTest by getting
     }
 
-    task("buildData", type = JavaExec::class) {
-        group = "build"
-        main = "building.AppBuilder"
-        classpath = sourceSets["jvmTools"].kotlin
-    }
+//    task("buildData", type = JavaExec::class) {
+//        group = "build"
+//        main = "building.AppBuilder"
+//        classpath = sourceSets["jvmTools"].kotlin
+//    }
 
-    task("test-integration", type = Test::class) {
-        val integration = sourceSets["jvmTestIntegration"]
-        group = "verification"
-        description = "Runs the integration tests."
-//        testClassesDirs = integration.kotlin.destinationDirectory
-        //testClassesDirs = integration.output.classesDirs
-        classpath = integration.kotlin
-        testLogging {
-            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-        }
-
-        outputs.upToDateWhen { false }
-        mustRunAfter(tasks["test"])
-    }
+//    task("test-integration", type = Test::class) {
+//        val integration = sourceSets["jvmTestIntegration"]
+//        group = "verification"
+//        description = "Runs the integration tests."
+//        //testClassesDirs = integration.output.classesDirs
+//        classpath = integration.kotlin
+//        testClassesDirs = integration.kotlin
+//        testLogging {
+//            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+//        }
+//
+//        outputs.upToDateWhen { false }
+//        mustRunAfter(tasks["jvmTest"])
+//    }
 
     task("test-all") {
         description = "Run unit AND integration tests"
