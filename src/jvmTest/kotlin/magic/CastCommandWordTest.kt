@@ -7,6 +7,7 @@ import createMockedGame
 import magic.castSpell.CastCommand
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
+import org.junit.jupiter.api.BeforeAll
 
 import kotlin.test.*
 
@@ -18,7 +19,7 @@ class CastCommandWordTest {
         private val spellC = SpellCommandMock("testSpellC")
         private val player = GameManager.newPlayer()
 
-        @BeforeTest
+        @BeforeAll
         @JvmStatic
         fun setupAll() {
             createMockedGame()

@@ -6,6 +6,7 @@ import core.GameState
 import core.GameState.player
 import core.body.*
 import core.thing.Thing
+import org.junit.jupiter.api.BeforeAll
 import kotlin.test.Test
 import kotlin.test.BeforeTest
 
@@ -21,7 +22,7 @@ class QuestListenerTest {
 
     companion object {
         @JvmStatic
-        @BeforeTest
+        @BeforeAll
         fun setup() {
             DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
             DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
