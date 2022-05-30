@@ -1,5 +1,6 @@
 package traveling.location.location
 
+import core.utility.putAbsent
 import traveling.location.Connection
 import traveling.location.network.LocationNode
 
@@ -7,7 +8,7 @@ fun buildInitialMap(nodes: List<LocationNode>): HashMap<String, MutableList<Loca
     val nodeMap = HashMap<String, MutableList<LocationNode>>()
 
     nodes.forEach { node ->
-        nodeMap.putIfAbsent(node.parent, mutableListOf())
+        nodeMap.putAbsent(node.parent, mutableListOf())
         nodeMap[node.parent]?.add(node)
     }
     return nodeMap

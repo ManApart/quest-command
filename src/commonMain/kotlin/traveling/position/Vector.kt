@@ -1,5 +1,6 @@
 package traveling.position
 
+import core.utility.Math
 import traveling.direction.Direction
 import kotlin.math.*
 

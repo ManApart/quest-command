@@ -6,6 +6,7 @@ import core.commands.CommandParsers
 import core.events.EventListener
 import core.history.displayToMe
 import core.utility.removeFirstItem
+import core.utility.toSortedMap
 
 //TODO - can this and ViewWordHelp share code?
 class ViewHelp : EventListener<ViewHelpEvent>() {

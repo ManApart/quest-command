@@ -1,5 +1,7 @@
 package core.ai.knowledge
 
+import core.utility.putAbsent
+
 data class CreatureMemory(
     private val facts: MutableMap<String, MutableMap<SimpleSubject, Fact>> = mutableMapOf(),
     private val listFacts: MutableMap<String, ListFact> = mutableMapOf(),
@@ -38,7 +40,7 @@ data class CreatureMemory(
     }
 
     fun remember(fact: Fact) {
-        facts.putIfAbsent(fact.kind, mutableMapOf())
+        facts.putAbsent(fact.kind, mutableMapOf())
         facts[fact.kind]?.put(fact.source, fact)
     }
 
@@ -47,8 +49,8 @@ data class CreatureMemory(
     }
 
     fun remember(relationship: Relationship) {
-        relationships.putIfAbsent(relationship.source, mutableMapOf())
-        relationships[relationship.source]?.putIfAbsent(relationship.kind, mutableMapOf())
+        relationships.putAbsent(relationship.source, mutableMapOf())
+        relationships[relationship.source]?.putAbsent(relationship.kind, mutableMapOf())
         relationships[relationship.source]?.get(relationship.kind)?.put(relationship.relatesTo, relationship)
     }
 
@@ -73,7 +75,7 @@ data class CreatureMemory(
 private fun List<Fact>.parsedFacts(): MutableMap<String, MutableMap<SimpleSubject, Fact>> {
     val facts = mutableMapOf<String, MutableMap<SimpleSubject, Fact>>()
     forEach { fact ->
-        facts.putIfAbsent(fact.kind, mutableMapOf())
+        facts.putAbsent(fact.kind, mutableMapOf())
         facts[fact.kind]?.put(fact.source, fact)
     }
     return facts
@@ -86,8 +88,8 @@ private fun List<ListFact>.parsedListFacts(): MutableMap<String, ListFact> {
 private fun List<Relationship>.parsed(): MutableMap<SimpleSubject, MutableMap<String, MutableMap<SimpleSubject, Relationship>>> {
     val relationships = mutableMapOf<SimpleSubject, MutableMap<String, MutableMap<SimpleSubject, Relationship>>>()
     forEach { relationship ->
-        relationships.putIfAbsent(relationship.source, mutableMapOf())
-        relationships[relationship.source]?.putIfAbsent(relationship.kind, mutableMapOf())
+        relationships.putAbsent(relationship.source, mutableMapOf())
+        relationships[relationship.source]?.putAbsent(relationship.kind, mutableMapOf())
         relationships[relationship.source]?.get(relationship.kind)?.put(relationship.relatesTo, relationship)
     }
     return relationships

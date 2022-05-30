@@ -55,17 +55,17 @@ class NestedValues(properties: Map<String, Map<String, String>> = mapOf()) {
     }
 
     fun put(group: String, key: String, value: String) {
-        properties.putIfAbsent(group, mutableMapOf())
+        properties.putAbsent(group, mutableMapOf())
         properties[group.lowercase()]!![key.lowercase()] = value
     }
 
     fun put(group: String, key: String, value: Int) {
-        properties.putIfAbsent(group, mutableMapOf())
+        properties.putAbsent(group, mutableMapOf())
         properties[group.lowercase()]!![key.lowercase()] = value.toString()
     }
 
     fun put(group: String, key: String, value: Boolean) {
-        properties.putIfAbsent(group, mutableMapOf())
+        properties.putAbsent(group, mutableMapOf())
         properties[group.lowercase()]!![key.lowercase()] = value.toString()
     }
 

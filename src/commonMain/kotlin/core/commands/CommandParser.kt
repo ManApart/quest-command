@@ -6,6 +6,7 @@ import core.commands.CommandParsers.cleanLine
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.displayToMe
+import core.utility.currentTime
 import core.utility.removeFirstItem
 
 class CommandParser(private val commandSource: Player) {
@@ -22,7 +23,7 @@ class CommandParser(private val commandSource: Player) {
     }
 
     fun parseCommand(line: String) {
-        val startTime = System.currentTimeMillis()
+        val startTime = currentTime()
 
         if (interceptorShouldParse(line)) {
             GameLogger.addInput(line)
@@ -32,7 +33,7 @@ class CommandParser(private val commandSource: Player) {
             splitAndParseCommand(line)
         }
 
-        val time = System.currentTimeMillis() - startTime
+        val time = currentTime() - startTime
         GameLogger.setTimeTaken(time)
     }
 
