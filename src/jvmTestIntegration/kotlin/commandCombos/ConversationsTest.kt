@@ -6,14 +6,14 @@ import core.GameState
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
-import org.junit.Before
-import org.junit.Test
 import system.debug.DebugType
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ConversationsTest {
 
-    @Before
+    @BeforeTest
     fun reset() {
         EventManager.clear()
         EventManager.registerListeners()

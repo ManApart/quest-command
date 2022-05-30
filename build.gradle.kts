@@ -48,10 +48,19 @@ kotlin {
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
             }
         }
-        val jvmTest by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
-            }
+        val jvmTest by getting
+        val jvmTestIntegration by creating {
+            dependsOn(jvmMain)
+            dependsOn(jvmTest)
+            jvm()
+        }
+        val jvmTools by creating {
+            dependsOn(jvmMain)
+            jvm()
+            //TODO - can't run main functions in this source set
+
+            //    compileClasspath += main.output + main.compileClasspath
+            //    runtimeClasspath += output + compileClasspath
         }
         val jsMain by getting {
             dependencies {
@@ -60,81 +69,40 @@ kotlin {
         }
         val jsTest by getting
     }
+
+    task("buildData", type = JavaExec::class) {
+        group = "build"
+        main = "building.AppBuilder"
+        classpath = sourceSets["jvmTools"].kotlin
+    }
+
+    task("test-integration", type = Test::class) {
+        val integration = sourceSets["jvmTestIntegration"]
+        group = "verification"
+        description = "Runs the integration tests."
+//        testClassesDirs = integration.kotlin.destinationDirectory
+        //testClassesDirs = integration.output.classesDirs
+        classpath = integration.kotlin
+        testLogging {
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        }
+
+        outputs.upToDateWhen { false }
+        mustRunAfter(tasks["test"])
+    }
+
+    task("test-all") {
+        description = "Run unit AND integration tests"
+        dependsOn("test")
+        dependsOn("test-integration")
+    }
 }
-//sourceSets.getByName("main") {
-//    java.srcDir("src/main/kotlin")
-//    resources.srcDir("src/main/resource")
-//}
-//
-//sourceSets.getByName("test") {
-//    java.srcDir("src/test/kotlin")
-//    resources.srcDir("src/test/resource")
-//}
-//
-//sourceSets.create("tools") {
-//    val main = sourceSets["main"]
-//    java.srcDir("src/tools/kotlin")
-//
-//    compileClasspath += main.output + main.compileClasspath
-//    runtimeClasspath += output + compileClasspath
-//}
-//
-//sourceSets.create("integrationTest") {
-//    val main = sourceSets["main"]
-//    val tools = sourceSets["tools"]
-//
-//    java.srcDir("src/test-integration/kotlin")
-//    resources.srcDir("src/test-integration/resource")
-//
-//    compileClasspath += main.output + tools.output + main.compileClasspath + tools.compileClasspath + configurations["testRuntimeClasspath"]
-//    runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
-//}
-//
-//
-//task("buildData", type = JavaExec::class) {
-//    main = "building.AppBuilder"
-//    classpath = sourceSets["tools"].runtimeClasspath
-//}
-//
-//tasks.getByName<Test>("test"){
-//    testLogging {
-//        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-//    }
-//}
-//
-//
-//task("test-integration", type = Test::class) {
-//    val integration = sourceSets["integrationTest"]
-//    description = "Runs the integration tests."
-//    group = "verification"
-//    testClassesDirs = integration.output.classesDirs
-//    classpath = integration.runtimeClasspath
-//    testLogging {
-//        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-//    }
-//
-//    outputs.upToDateWhen { false }
-//    mustRunAfter(tasks["test"])
-//}
-//
-//task("test-all") {
-//    description = "Run unit AND integration tests"
-//    dependsOn("test")
-//    dependsOn("test-integration")
-//}
-//
-//tasks.withType<Jar> {
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    manifest {
-//        attributes["Main-Class"] = "QuestCommandKt"
-//    }
-//    from(sourceSets.main.get().output)
-//    dependsOn(configurations.runtimeClasspath)
-//    from({
-//        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-//    })
-//
-//}
+
+tasks.getByName<Test>("test") {
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
 
 publishing {
     repositories {

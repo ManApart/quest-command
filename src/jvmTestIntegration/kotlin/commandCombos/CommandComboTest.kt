@@ -5,20 +5,15 @@ import core.GameState
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
-import org.junit.Before
-import org.junit.Test
 import quests.QuestManager
 import status.stat.COOKING
 import status.stat.HEALTH
 import system.debug.DebugType
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class CommandComboTest {
 
-    @Before
+    @BeforeTest
     fun reset() {
         EventManager.clear()
         EventManager.registerListeners()

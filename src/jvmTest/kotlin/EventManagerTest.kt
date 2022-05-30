@@ -1,9 +1,9 @@
 import core.events.Event
 import core.events.EventListener
 import core.events.EventManager
-import org.junit.Assert.assertEquals
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 
 class EventManagerTest {
     private val resultList = mutableListOf<String>()
@@ -26,7 +26,7 @@ class EventManagerTest {
     class TestChildListener(parent: EventManagerTest, priorityLevel: Int, id: String) : TestListener(parent, priorityLevel, id)
 
     companion object {
-        @BeforeClass
+        @BeforeTest
         @JvmStatic fun setupAll() {
             createMockedGame()
         }
