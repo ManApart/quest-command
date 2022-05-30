@@ -82,13 +82,6 @@ kotlin {
             }
         }
         val jvmTest by getting
-//        val jvmTestIntegration by creating {
-//            dependsOn(jvmMain)
-//            dependsOn(jvmTest)
-//            jvm()
-////            kotlin.srcDir("src/jvmTestIntegration/kotlin")
-////            resources.srcDir("src/jvmTestIntegration/resource")
-//        }
 //        val jvmTools by creating {
 //            dependsOn(jvmMain)
 //            jvm()
@@ -109,21 +102,6 @@ kotlin {
 //        group = "build"
 //        main = "building.AppBuilder"
 //        classpath = sourceSets["jvmTools"].kotlin
-//    }
-
-//    task("test-integration", type = Test::class) {
-//        val integration = sourceSets["jvmTestIntegration"]
-//        group = "verification"
-//        description = "Runs the integration tests."
-//        //testClassesDirs = integration.output.classesDirs
-//        classpath = integration.kotlin
-//        testClassesDirs = integration.kotlin
-//        testLogging {
-//            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-//        }
-//
-//        outputs.upToDateWhen { false }
-//        mustRunAfter(tasks["jvmTest"])
 //    }
 
     task("test-all") {
