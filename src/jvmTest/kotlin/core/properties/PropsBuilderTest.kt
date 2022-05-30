@@ -1,7 +1,6 @@
 package core.properties
 
-
-
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class PropsBuilderTest {

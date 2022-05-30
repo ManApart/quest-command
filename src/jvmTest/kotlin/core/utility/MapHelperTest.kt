@@ -1,7 +1,6 @@
 package core.utility
 
-
-
+import kotlin.test.Test
 import traveling.location.location.LocationThing
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

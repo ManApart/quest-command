@@ -1,7 +1,6 @@
 package core.properties
 
-
-
+import kotlin.test.Test
 import status.stat.AIR_MAGIC
 import status.stat.HEALTH
 import status.stat.WATER_MAGIC

@@ -6,7 +6,7 @@ import core.properties.Tags
 
 import status.stat.COOKING
 import kotlin.test.assertEquals
-
+import kotlin.test.Test
 
 class RecipeBuilderTest {
 

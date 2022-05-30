@@ -23,7 +23,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-
+import kotlin.test.Test
 class InventoryTest {
 
     @BeforeTest

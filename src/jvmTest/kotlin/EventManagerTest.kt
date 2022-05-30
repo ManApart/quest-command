@@ -1,6 +1,7 @@
 import core.events.Event
 import core.events.EventListener
 import core.events.EventManager
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 import kotlin.test.BeforeTest
@@ -27,7 +28,7 @@ class EventManagerTest {
     class TestChildListener(parent: EventManagerTest, priorityLevel: Int, id: String) : TestListener(parent, priorityLevel, id)
 
     companion object {
-        @BeforeTest
+        @BeforeAll
         @JvmStatic fun setupAll() {
             createMockedGame()
         }

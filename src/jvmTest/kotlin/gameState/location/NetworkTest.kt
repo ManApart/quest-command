@@ -1,7 +1,6 @@
 package gameState.location
 
-
-
+import kotlin.test.Test
 import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.Network

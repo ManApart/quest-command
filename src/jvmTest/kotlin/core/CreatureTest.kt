@@ -7,9 +7,7 @@ import core.thing.Thing
 import core.thing.item.ITEM_TAG
 import createMockedGame
 import inventory.createInventoryBody
-
-
-
+import kotlin.test.Test
 import status.stat.STRENGTH
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals

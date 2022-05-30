@@ -21,6 +21,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import kotlin.test.Test
 
 class CraftTest {
 

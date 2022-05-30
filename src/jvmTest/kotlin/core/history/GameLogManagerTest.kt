@@ -8,6 +8,7 @@ import kotlin.test.BeforeTest
 
 
 import kotlin.test.assertEquals
+import kotlin.test.Test
 
 class GameLogManagerTest {
 

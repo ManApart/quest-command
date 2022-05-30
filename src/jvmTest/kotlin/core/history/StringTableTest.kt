@@ -1,7 +1,6 @@
 package core.history
 
-
-
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class StringTableTest {

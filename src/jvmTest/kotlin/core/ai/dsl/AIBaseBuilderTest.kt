@@ -7,8 +7,7 @@ import core.ai.action.dsl.AIActionsCollection
 import core.ai.action.dsl.AIActionsMock
 
 import kotlin.test.BeforeTest
-
-
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertTrue

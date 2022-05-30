@@ -8,6 +8,7 @@ import core.thing.thing
 import createMockedGame
 
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class AttackCommandTest {

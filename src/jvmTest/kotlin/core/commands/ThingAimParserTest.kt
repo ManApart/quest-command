@@ -1,5 +1,6 @@
 package core.commands
 
+import kotlin.test.Test
 import assertContainsByName
 import assertEqualsByName
 import core.DependencyInjector

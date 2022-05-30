@@ -1,9 +1,7 @@
 package core.conditional
 
-
-
+import kotlin.test.Test
 import kotlin.test.assertEquals
-
 
 class ConditionalStringBuilderTest{
 

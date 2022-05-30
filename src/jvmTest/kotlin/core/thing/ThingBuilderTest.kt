@@ -12,6 +12,7 @@ import explore.look.LookEvent
 import quests.ConditionalEvents
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
+import kotlin.test.Test
 
 //TODO - test extends
 

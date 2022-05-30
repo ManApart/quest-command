@@ -3,9 +3,10 @@ package conversation.parsing
 import conversation.dialogue.ParsedDialogue
 import core.thing.Thing
 import createMockedGame
+import org.junit.jupiter.api.BeforeAll
 
 import kotlin.test.BeforeTest
-
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SentenceParserTest {
@@ -15,7 +16,7 @@ class SentenceParserTest {
         private val listener by lazy { Thing("listener") }
 
         @JvmStatic
-        @BeforeTest
+        @BeforeAll
         fun setup() {
             createMockedGame()
 

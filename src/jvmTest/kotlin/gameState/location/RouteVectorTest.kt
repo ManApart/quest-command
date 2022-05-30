@@ -1,7 +1,6 @@
 package gameState.location
 
-
-
+import kotlin.test.Test
 import traveling.location.RouteNeighborFinder
 import traveling.location.location.buildInitialMap
 import traveling.location.location.createNeighborsAndNeighborLinks
