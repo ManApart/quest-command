@@ -6,14 +6,17 @@ import core.properties.Properties
 import core.properties.Tags
 import core.thing.Thing
 import createMockedGame
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+
+
 import status.stat.COOKING
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class RecipeManagerTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
     }
@@ -36,7 +39,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertEquals(recipe, results.first())
+        assertEquals(recipe, results.first())
     }
 
     @Test
@@ -55,7 +58,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertEquals(recipe, results.first())
+        assertEquals(recipe, results.first())
     }
 
     @Test
@@ -76,7 +79,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertEquals(recipe, results.first())
+        assertEquals(recipe, results.first())
     }
 
     @Test
@@ -96,7 +99,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertTrue(results.isEmpty())
+        assertTrue(results.isEmpty())
     }
 
     @Test
@@ -116,7 +119,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertTrue(results.isEmpty())
+        assertTrue(results.isEmpty())
     }
 
     @Test
@@ -136,7 +139,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertTrue(results.isEmpty())
+        assertTrue(results.isEmpty())
     }
 
     @Test
@@ -156,7 +159,7 @@ class RecipeManagerTest {
         RecipeManager.reset()
 
         val results = RecipeManager.findCraftableRecipes(baker.thing, ingredients, tool)
-        Assert.assertTrue(results.isEmpty())
+        assertTrue(results.isEmpty())
     }
 
 

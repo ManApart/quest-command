@@ -2,10 +2,11 @@ package system
 
 import core.DependencyInjector
 import core.body.*
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+
 
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class BodyManagerTest {
 
@@ -20,7 +21,7 @@ class BodyManagerTest {
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
 
-        Assert.assertTrue(BodyManager.bodyExists("Human"))
+        assertTrue(BodyManager.bodyExists("Human"))
     }
 
 }

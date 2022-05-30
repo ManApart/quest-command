@@ -6,16 +6,18 @@ import core.properties.Values
 import core.thing.Thing
 import core.utility.toNameSearchableList
 import createMockedGame
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+
+
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class LocationTest {
-    @Before
+    @BeforeTest
     fun setup(){
         createMockedGame()
     }

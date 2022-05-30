@@ -4,18 +4,20 @@ import core.GameState
 import core.Player
 import core.history.GameLogger
 import core.thing.Thing
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+
+
 import traveling.location.Connection
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
 import traveling.position.Vector
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
 
 class ReadMapTest {
     val player = Player("Bob", Thing("Bob"))
 
-    @Before
+    @BeforeTest
     fun setup() {
         GameState.putPlayer(player)
         GameLogger.reset()
@@ -33,7 +35,7 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = GameLogger.getHistory(player).getLastOutput()
-        Assert.assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
+        assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
 
     @Test
@@ -51,7 +53,7 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = GameLogger.getHistory(player).getLastOutput()
-        Assert.assertEquals(
+        assertEquals(
             "My Place is a part of Wilderness. It is neighbored by:\n" +
                     "  Name         Distance  Direction Path  \n" +
                     "  Destination  10        N               \n", actual
@@ -74,7 +76,7 @@ class ReadMapTest {
         val listener = ReadMap()
         listener.execute(event)
         val actual = GameLogger.getHistory(player).getLastOutput()
-        Assert.assertEquals(
+        assertEquals(
             "My Place is a part of Wilderness. It is neighbored by:\n" +
                     "  Name   Distance  Direction Path  \n" +
                     "  north  10        N               \n" +

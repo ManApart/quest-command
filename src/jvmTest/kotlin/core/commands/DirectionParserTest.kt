@@ -1,6 +1,7 @@
 package core.commands
 
-import org.junit.Test
+
+
 import traveling.direction.Direction
 import traveling.position.Vector
 import kotlin.test.assertEquals

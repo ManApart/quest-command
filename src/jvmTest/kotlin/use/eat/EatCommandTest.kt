@@ -9,18 +9,13 @@ import core.thing.Thing
 import core.thing.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
 import createMockedGame
-import org.junit.Before
-import org.junit.Test
 import traveling.location.network.NOWHERE_NODE
 import use.StartUseEvent
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class EatCommandTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
 

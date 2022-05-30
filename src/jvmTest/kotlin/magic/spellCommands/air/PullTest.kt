@@ -11,8 +11,9 @@ import core.thing.Thing
 import createMockedGame
 import magic.castSpell.StartCastSpellEvent
 import magic.spells.MoveThingSpell
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+
+
 import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
@@ -23,6 +24,7 @@ import status.stat.StatEffect
 import traveling.position.NO_VECTOR
 import traveling.position.ThingAim
 import traveling.position.Vector
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -48,7 +50,7 @@ class PullTest {
 
     }
 
-    @Before
+    @BeforeTest
     fun setup() {
         EventManager.clear()
         caster.thing.position = NO_VECTOR

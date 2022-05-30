@@ -3,20 +3,22 @@ package system.connection
 import core.GameState.player
 import core.events.EventManager
 import createMockedGame
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+
+
 import kotlin.test.assertEquals
 
 class ConnectionCommandTest {
     private val command = ConnectCommand()
 
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
     }
 
-    @After
+    @AfterTest
     fun teardown() {
         EventManager.clear()
     }

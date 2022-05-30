@@ -1,6 +1,7 @@
 package gameState.location
 
-import org.junit.Test
+
+
 import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.Network

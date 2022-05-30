@@ -1,7 +1,7 @@
 package quests
 
-import org.junit.Test
 import use.interaction.InteractEvent
+import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

@@ -2,6 +2,7 @@ import core.events.Event
 import core.events.EventListener
 import core.events.EventManager
 import org.junit.jupiter.api.Test
+
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 

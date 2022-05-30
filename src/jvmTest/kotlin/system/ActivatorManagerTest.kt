@@ -8,8 +8,9 @@ import core.thing.activator.ActivatorManager
 import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.activator.dsl.ActivatorsMock
 import core.thing.thing
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+
+
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationThing
 import traveling.location.location.LocationsCollection
@@ -19,11 +20,12 @@ import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
 import traveling.location.network.networks
 import traveling.position.NO_VECTOR
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ActivatorManagerTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         val networksMock = NetworksMock(networks {
             network(DEFAULT_NETWORK.name){

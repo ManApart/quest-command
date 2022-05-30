@@ -8,20 +8,20 @@ import core.body.*
 import core.thing.Thing
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
+import kotlin.test.BeforeTest
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class PlaceItemTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())

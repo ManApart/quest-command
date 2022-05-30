@@ -14,15 +14,17 @@ import createItemBuilder
 import createMockedGame
 import createPouch
 import inventory.pickupItem.TakeItem
-import org.junit.Before
-import org.junit.Test
+
+import kotlin.test.BeforeTest
+
+
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CraftTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
     }

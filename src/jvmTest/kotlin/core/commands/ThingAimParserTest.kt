@@ -7,7 +7,8 @@ import core.GameState
 import core.body.*
 import core.thing.thing
 import createMockedGame
-import org.junit.Test
+
+
 import traveling.location.location.LocationRecipe
 import traveling.location.location.locations
 import traveling.location.network.networks

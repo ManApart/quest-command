@@ -6,14 +6,14 @@ import core.GameManager
 import core.events.EventManager
 import core.thing.thing
 import createMockedGame
-import org.junit.Before
-import org.junit.Test
+
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class AttackCommandTest {
     private val command = AttackCommand()
 
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
         EventManager.clear()

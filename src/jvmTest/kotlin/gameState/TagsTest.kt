@@ -1,7 +1,8 @@
 package gameState
 
 import core.properties.Tags
-import org.junit.Test
+import kotlin.test.Test
+
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

@@ -2,18 +2,20 @@ package system.location
 
 import core.DependencyInjector
 import createMockedGame
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+
+
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
 import traveling.location.network.*
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 
 class LocationRecipeManagerTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         //Run before other tests so object is initialized and we're testing a fresh clear each time
 //            val fakeParser = LocationFakeParser(locationNodes = NameSearchableList(listOf()))

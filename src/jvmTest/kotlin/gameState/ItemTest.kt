@@ -4,7 +4,9 @@ import core.properties.Properties
 import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
-import org.junit.Test
+import kotlin.test.Test
+
+
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

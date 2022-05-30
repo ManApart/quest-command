@@ -6,8 +6,9 @@ import core.GameState
 import core.GameState.player
 import core.body.*
 import core.thing.Thing
-import org.junit.BeforeClass
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.BeforeTest
+
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
@@ -20,7 +21,7 @@ class QuestListenerTest {
 
     companion object {
         @JvmStatic
-        @BeforeClass
+        @BeforeTest
         fun setup() {
             DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
             DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())

@@ -2,7 +2,8 @@ package crafting
 
 import core.properties.Properties
 import core.properties.Tags
-import org.junit.Test
+
+
 import status.stat.COOKING
 import kotlin.test.assertEquals
 

@@ -10,11 +10,13 @@ import magic.castSpell.CastCommand
 import magic.castSpell.getThingedPartsOrAll
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+
+
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
 import traveling.position.ThingAim
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -37,7 +39,7 @@ class CastCommandCastTest {
 
     }
 
-    @Before
+    @BeforeTest
     fun setup() {
         EventManager.clear()
     }

@@ -1,7 +1,10 @@
 package crafting
 
 import core.thing.Thing
-import org.junit.Test
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.Test
+
+
 import status.stat.COOKING
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
@@ -20,7 +23,7 @@ class RecipeIngredientBuilderTest {
             toolProps {
                 tag("Sharp")
             }
-            matches{ crafter, _, _ ->
+            matches { crafter, _, _ ->
                 crafter.name.lowercase() == "Bob the Baker".lowercase()
             }
         }
@@ -34,22 +37,28 @@ class RecipeIngredientBuilderTest {
         assertNull(recipeIngredient.findMatchingIngredient(thief, ingredients, tool))
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun recipeErrorsIfNoCriteria() {
-        ingredient {}
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun recipeErrorsIfNoNameAndEmptyTags() {
-        ingredient {
-            tag()
+        assertThrows<IllegalArgumentException> {
+            ingredient {}
         }
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
+    fun recipeErrorsIfNoNameAndEmptyTags() {
+        assertThrows<IllegalArgumentException> {
+            ingredient {
+                tag()
+            }
+        }
+    }
+
+    @Test
     fun recipeErrorsIfBlankNameAndNoTags() {
-        ingredient {
-            name(" ")
+        assertThrows<IllegalArgumentException> {
+            ingredient {
+                name(" ")
+            }
         }
     }
 

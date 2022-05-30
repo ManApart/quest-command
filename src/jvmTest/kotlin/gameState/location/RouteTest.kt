@@ -1,6 +1,9 @@
 package gameState.location
 
-import org.junit.Test
+
+
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.Test
 import traveling.direction.Direction
 import traveling.location.Connection
 import traveling.location.Route
@@ -23,12 +26,14 @@ class RouteTest {
         assertEquals(destination, route.destination)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun routeDoesNotAcceptLinksOutOfOrder() {
         val source = LocationNode("source")
         val destination = LocationNode("destination")
         val route = Route(source)
-        route.addLink(Connection(LocationPoint(destination), LocationPoint(source)))
+        assertThrows<IllegalArgumentException> {
+            route.addLink(Connection(LocationPoint(destination), LocationPoint(source)))
+        }
     }
 
     @Test

@@ -12,15 +12,17 @@ import core.thing.thing
 import createClosedChest
 import createItem
 import createMockedGame
-import org.junit.Before
-import org.junit.Test
+
+
+
 import system.debug.DebugType
 import traveling.location.location.locationRecipe
+import kotlin.test.BeforeTest
 import kotlin.test.assertTrue
 
 class ViewInventoryTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
         GameState.putDebug(DebugType.CLARITY, true)

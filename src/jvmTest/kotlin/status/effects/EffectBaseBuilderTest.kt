@@ -1,6 +1,8 @@
 package status.effects
 
-import org.junit.Test
+
+
+import kotlin.test.Test
 import status.stat.StatEffect
 import kotlin.test.assertEquals
 

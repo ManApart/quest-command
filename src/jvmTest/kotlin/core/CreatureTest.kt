@@ -7,13 +7,15 @@ import core.thing.Thing
 import core.thing.item.ITEM_TAG
 import createMockedGame
 import inventory.createInventoryBody
-import org.junit.Before
-import org.junit.Test
+
+
+
 import status.stat.STRENGTH
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class CreatureTest {
-    @Before
+    @BeforeTest
     fun setup() {
         createMockedGame()
     }

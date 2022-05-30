@@ -3,7 +3,9 @@ package traveling.location.location
 import core.conditional.ConditionalString
 import core.properties.Properties
 import core.properties.Tags
-import org.junit.Test
+import kotlin.test.Test
+
+
 import kotlin.test.assertEquals
 
 

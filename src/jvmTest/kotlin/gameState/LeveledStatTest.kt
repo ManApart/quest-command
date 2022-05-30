@@ -1,6 +1,7 @@
 package gameState
 
-import org.junit.Test
+
+import kotlin.test.Test
 import status.stat.LeveledStat
 import kotlin.test.assertEquals
 

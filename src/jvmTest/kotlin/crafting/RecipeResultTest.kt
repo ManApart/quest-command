@@ -1,7 +1,10 @@
 package crafting
 
 import core.thing.Thing
-import org.junit.Test
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.Test
+
+
 import status.stat.COOKING
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -33,13 +36,15 @@ class RecipeResultTest {
         assertFalse(result.properties.tags.has("Stale"))
     }
 
-    @Test(expected = IllegalStateException::class)
+    @Test
     fun recipeErrorsIfNoNameOrReference() {
-        result {
-            description("This is a test result")
-            addTag("Tasty", "Fresh")
-            removeTag("Stale")
-        }.build()
+        assertThrows<IllegalStateException> {
+            result {
+                description("This is a test result")
+                addTag("Tasty", "Fresh")
+                removeTag("Stale")
+            }.build()
+        }
     }
 
     private fun ingredient(initializer: RecipeIngredientBuilder.() -> Unit): RecipeIngredient {

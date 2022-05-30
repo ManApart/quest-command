@@ -1,6 +1,7 @@
 package core.properties
 
-import org.junit.Test
+
+
 import status.stat.AIR_MAGIC
 import status.stat.HEALTH
 import status.stat.WATER_MAGIC

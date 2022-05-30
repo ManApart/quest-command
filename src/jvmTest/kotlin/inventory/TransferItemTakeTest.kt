@@ -9,21 +9,21 @@ import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class TransferItemTakeTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
@@ -36,7 +36,7 @@ class TransferItemTakeTest {
         NOWHERE_NODE.getLocation().clear()
     }
     
-    @After
+    @AfterTest
     fun tearDown() {
         NOWHERE_NODE.getLocation().clear()
     }

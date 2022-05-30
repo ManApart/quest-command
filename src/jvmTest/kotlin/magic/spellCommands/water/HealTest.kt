@@ -13,8 +13,8 @@ import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
 import magic.spells.Spell
-import org.junit.Before
-import org.junit.Test
+
+
 import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
@@ -23,9 +23,7 @@ import status.stat.FOCUS
 import status.stat.StatEffect
 import status.stat.WATER_MAGIC
 import traveling.position.ThingAim
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class HealTest {
     companion object {
@@ -48,7 +46,7 @@ class HealTest {
 
     }
 
-    @Before
+    @BeforeTest
     fun setup() {
         EventManager.clear()
         thingA.soul.setStat(WATER_MAGIC, 20)

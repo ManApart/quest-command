@@ -3,20 +3,21 @@ package inventory
 import core.Player
 import core.events.EventManager
 import core.thing.Thing
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+
 import kotlin.test.assertEquals
 
 
 class InventoryCommandTest{
 
-    @Before
+    @BeforeTest
     fun setup() {
         EventManager.clear()
     }
 
-    @After
+    @AfterTest
     fun teardown() {
         EventManager.clear()
     }

@@ -11,23 +11,17 @@ import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.pickupItem.TakeItem
 import inventory.pickupItem.TakeItemEvent
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import kotlin.test.*
 
 class TakeItemTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
@@ -40,7 +34,7 @@ class TakeItemTest {
         NOWHERE_NODE.getLocation().clear()
     }
     
-    @After
+    @AfterTest
     fun tearDown() {
         NOWHERE_NODE.getLocation().clear()
     }

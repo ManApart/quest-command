@@ -7,9 +7,7 @@ import createMockedGame
 import magic.castSpell.CastCommand
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
+
 import kotlin.test.*
 
 class CastCommandWordTest {
@@ -20,7 +18,7 @@ class CastCommandWordTest {
         private val spellC = SpellCommandMock("testSpellC")
         private val player = GameManager.newPlayer()
 
-        @BeforeClass
+        @BeforeTest
         @JvmStatic
         fun setupAll() {
             createMockedGame()
@@ -32,7 +30,7 @@ class CastCommandWordTest {
 
     }
 
-    @Before
+    @BeforeTest
     fun setup() {
         EventManager.clear()
     }

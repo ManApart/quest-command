@@ -6,16 +6,18 @@ import core.body.*
 import core.properties.Properties
 import core.properties.Tags
 import explore.look.LookEvent
-import org.junit.Before
-import org.junit.Test
+
+
+
 import quests.ConditionalEvents
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 //TODO - test extends
 
 class ThingBuilderTest {
 
-    @Before
+    @BeforeTest
     fun setup() {
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
         DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())

@@ -3,13 +3,15 @@ package core.history
 import core.GameState
 import core.Player
 import core.thing.Thing
-import org.junit.Before
-import org.junit.Test
+
+import kotlin.test.BeforeTest
+
+
 import kotlin.test.assertEquals
 
 class GameLogManagerTest {
 
-    @Before
+    @BeforeTest
     fun setup(){
         GameLogger.reset()
     }

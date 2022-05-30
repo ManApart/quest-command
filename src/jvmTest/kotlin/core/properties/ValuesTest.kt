@@ -1,6 +1,7 @@
 package core.properties
 
-import org.junit.Test
+
+
 import kotlin.test.assertEquals
 
 class ValuesTest {
