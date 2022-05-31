@@ -3,7 +3,6 @@ package crafting
 import core.DependencyInjector
 import core.GameState
 import core.Player
-import core.ai.knowledge.SimpleSubject
 import core.startupLog
 import core.thing.Thing
 import core.utility.NameSearchableList

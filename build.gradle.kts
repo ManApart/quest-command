@@ -52,6 +52,11 @@ kotlin {
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
                     setMain("building.AppBuilder")
                 }
+                tasks.register<JavaExec>("runApp") {
+                    group = "build"
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    setMain("QuestCommand2")
+                }
             }
         }
     }

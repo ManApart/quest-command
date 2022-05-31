@@ -1,7 +1,6 @@
 package core.commands
 
-import core.utility.NameSearchableList
-import core.utility.toNameSearchableList
+import core.utility.toNameSearchableListOfStrings
 
 class ResponseRequest(
     val message: String,
@@ -11,7 +10,7 @@ class ResponseRequest(
     private val defaultValue: String? = null
 ) {
     private val responses: Map<String, String> = processResponses(responses)
-    private val responseKeys = this.responses.keys.map { it.lowercase() }.toNameSearchableList()
+    private val responseKeys = this.responses.keys.map { it.lowercase() }.toNameSearchableListOfStrings()
 
     private fun processResponses(responses: Map<String, String>): Map<String, String> {
         val newMap = mutableMapOf<String, String>()

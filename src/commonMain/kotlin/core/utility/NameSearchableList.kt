@@ -33,7 +33,7 @@ fun <T : Named> Iterable<T>.toNameSearchableList(): NameSearchableList<T> {
     return NameSearchableList(this)
 }
 
-fun Iterable<String>.toNameSearchableList(): NameSearchableList<NamedString> {
+fun Iterable<String>.toNameSearchableListOfStrings(): NameSearchableList<NamedString> {
     return NameSearchableList(map { NamedString(it) })
 }
 
