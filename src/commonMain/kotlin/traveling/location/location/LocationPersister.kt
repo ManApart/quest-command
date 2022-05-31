@@ -1,6 +1,5 @@
 package traveling.location.location
 
-import core.properties.Properties
 import core.properties.PropertiesP
 import core.thing.Thing
 import core.utility.NameSearchableList
@@ -8,12 +7,8 @@ import core.utility.toNameSearchableList
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import system.persistance.clean
-import system.persistance.cleanPathToFile
-import system.persistance.getFiles
-import system.persistance.writeSave
+import system.persistance.*
 import traveling.location.network.LocationNode
-import java.io.File
 
 fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = listOf()) {
     val prefix = clean(path, dataObject.name)

@@ -1,7 +1,9 @@
 package core.properties
 
+import core.utility.Integer
 import core.utility.hasAllOf
 import core.utility.matches
+import core.utility.putAbsent
 
 class NestedValues(properties: Map<String, Map<String, String>> = mapOf()) {
 //    constructor(base: NestedValues, params: Map<String, Map<String, String>> = mapOf()) : this(base.properties.apply(params))

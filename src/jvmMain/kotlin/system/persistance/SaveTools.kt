@@ -13,7 +13,23 @@ import kotlinx.serialization.json.Json
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import traveling.location.network.NOWHERE_NODE
-import java.io.File
+import java.io.PrintWriter
+import java.io.File as JFile
+
+actual class File actual constructor(pathIn: String) {
+    constructor(jFile: JFile): this(jFile.path)
+    private val implementation = JFile(pathIn)
+    actual val path: String = implementation.path
+    actual val nameWithoutExtension: String = implementation.nameWithoutExtension
+    actual fun readText(): String = implementation.readText()
+    val name: String = implementation.name
+    fun exists(): Boolean = implementation.exists()
+    val isDirectory: Boolean = implementation.isDirectory
+    fun listFiles(): List<File> = implementation.listFiles().map { File(it) }
+    fun mkdirs(): Boolean = implementation.mkdirs()
+    fun endsWith(text: String): Boolean = implementation.endsWith(text)
+    fun printWriter(): PrintWriter = implementation.printWriter()
+}
 
 private val ignoredNames = listOf("games", "gameState")
 
@@ -40,11 +56,11 @@ actual inline fun <reified T> loadFromPath(path: String): T? {
     } else null
 }
 
-fun getFiles(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
+actual fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
     return getFilesAndFolders(path, ignoredFileNames).filter { !it.isDirectory }
 }
 
-fun getFolders(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
+private fun getFolders(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
     return getFilesAndFolders(path, ignoredFileNames).filter { it.isDirectory }
 }
 
