@@ -155,7 +155,7 @@ class ClimbCommand : Command() {
             }
             else -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
-                options(options)
+                optionsNamed(options)
                 command { "climb $it" }
             }
         }
@@ -169,7 +169,7 @@ class ClimbCommand : Command() {
         } else {
             player.respond("No parts of ${thing.name} to climb.") {
                 message("Climb what part of ${thing.name}?")
-                options(options)
+                optionsNamed(options)
                 command { "climb $it of ${thing.name}" }
             }
         }

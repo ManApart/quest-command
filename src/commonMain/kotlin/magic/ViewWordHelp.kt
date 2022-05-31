@@ -5,6 +5,7 @@ import core.events.EventListener
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.NameSearchableList
+import core.utility.toSortedMap
 import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
 

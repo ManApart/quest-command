@@ -26,7 +26,6 @@ expect class NameSearchableList<N : Named>() : MutableList<N> {
     fun getOrNull(name: String): N?
     fun getAny(names: List<String>): NameSearchableList<N>
     override fun remove(element: N): Boolean
-
 }
 
 fun <T : Named> Iterable<T>.toNameSearchableList(): NameSearchableList<T> {

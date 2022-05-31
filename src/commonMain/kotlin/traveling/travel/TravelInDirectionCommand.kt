@@ -70,7 +70,7 @@ class TravelInDirectionCommand : Command() {
     private fun requestLocation(source: Player, openNeighbors: List<LocationNode>) {
         source.respond("There aren't any locations to travel towards.") {
             message("Travel towards what location?")
-            options(openNeighbors)
+            optionsNamed(openNeighbors)
             command { "travel $it" }
         }
     }

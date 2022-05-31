@@ -2,7 +2,6 @@ package core.events
 
 import core.DependencyInjector
 import kotlin.reflect.KClass
-import kotlin.reflect.full.allSupertypes
 
 object EventManager {
     private val listenerMap = HashMap<KClass<*>, ArrayList<EventListener<*>>>()
@@ -91,7 +90,8 @@ object EventManager {
     }
 
     private fun getListenedForClass(listener: EventListener<*>): KClass<*> {
-        return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
+        return listener.event!!::class //TODO - pretty sure this won't work as I believe the listener will be null
+//        return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
     }
 
 }

@@ -74,7 +74,7 @@ class ApproachCommand : Command() {
         } else {
             source.respond("There is nothing to approach.") {
                 message("Approach what?")
-                options(creatures)
+                optionsNamed(creatures)
                 command { "approach $it" }
             }
         }

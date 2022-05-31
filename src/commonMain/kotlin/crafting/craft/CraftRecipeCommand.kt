@@ -44,7 +44,7 @@ class CraftRecipeCommand : Command() {
     private fun chooseRecipe(source: Player, recipes: List<Recipe>) {
         source.respond("Unable to find recipe options.") {
             message("Craft what recipe?")
-            options(recipes)
+            optionsNamed(recipes)
             command { "craft $it" }
         }
     }

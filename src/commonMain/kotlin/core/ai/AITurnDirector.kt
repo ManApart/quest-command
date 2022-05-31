@@ -4,7 +4,6 @@ import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.thing.Thing
-import explore.look.printUpdatingStatusEnd
 
 private const val turnLimit = 1000
 
@@ -42,16 +41,10 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
             val isPlayer = it.creature.isPlayer()
             if (!executedEvent || isPlayer) {
                 if (it.isActionReady()) {
-                    if (it.aggroThing != null) {
-                        printUpdatingStatusEnd(creatures)
-                    }
                     EventManager.postEvent(it.action!!.getActionEvent())
                     it.action = null
                     executedEvent = true
                 } else if (it.canChooseAction()) {
-                    if (it.aggroThing != null) {
-                        printUpdatingStatusEnd(creatures)
-                    }
                     it.creature.body.blockHelper.resetStance()
                     it.chooseAction()
                     executedEvent = true

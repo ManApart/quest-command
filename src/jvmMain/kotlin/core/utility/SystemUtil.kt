@@ -1,4 +1,10 @@
 package core.utility
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
+import java.util.*
+import kotlin.system.exitProcess
 import kotlin.collections.toSortedMap as sorted
 
 actual fun currentTime(): Long {
@@ -13,6 +19,14 @@ actual fun <K,V> MutableMap<K,V>.putAbsent(key: K, value: V) {
     this.putIfAbsent(key, value)
 }
 
+actual fun exit() {
+    exitProcess(0)
+}
+
+actual fun buildWebClient() : HttpClient {
+    return HttpClient(CIO) { install(ContentNegotiation) { json() } }
+}
+
 actual object Math {
     actual val PI = java.lang.Math.PI
 
@@ -22,6 +36,10 @@ actual object Math {
 
     actual fun toDegrees(radians: Double): Double {
         return java.lang.Math.toDegrees(radians)
+    }
+
+    actual fun nextInt(current: Int): Int {
+        return Random().nextInt(current)
     }
 }
 

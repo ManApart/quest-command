@@ -64,7 +64,7 @@ class UseCommand : Command() {
     private fun clarifyItem(source: Player) {
         source.respond("There isn't anything here to use.") {
             message("Use what?")
-            options(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
+            optionsNamed(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
             command { "use $it" }
         }
     }
@@ -72,7 +72,7 @@ class UseCommand : Command() {
     private fun clarifyItemForThing(source: Player) {
         source.respond("There isn't anything to use.") {
             message("Use what?")
-            options(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
+            optionsNamed(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
             command { "use $it on" }
         }
     }
@@ -80,7 +80,7 @@ class UseCommand : Command() {
     private fun clarifyThing(source: Player, used: String) {
         source.respond("There isn't anything to use $used on.") {
             message("Use $used on what?")
-            options(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
+            optionsNamed(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
             command { "use $used on $it" }
         }
     }

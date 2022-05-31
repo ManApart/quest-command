@@ -3,9 +3,9 @@ package system.connection
 import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.displayGlobal
+import core.utility.buildWebClient
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
@@ -26,7 +26,7 @@ data class ServerInfo(val gameName: String = "Game", val playerNames: List<Strin
 data class ServerResponse(val latestResponse: Int, val latestSubResponse: Int, val history: List<String>)
 
 object WebClient {
-    private val client by lazy { HttpClient(CIO) { install(ContentNegotiation) { json() } } }
+    private val client by lazy { buildWebClient() }
     var doPolling = false
     var host = "http://localhost"
     var port = "8080"

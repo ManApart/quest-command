@@ -71,7 +71,7 @@ class RetreatCommand : Command() {
         } else {
             source.respond("There is nothing to retreat from.") {
                 message("Retreat from what?")
-                options(creatures)
+                optionsNamed(creatures)
                 command { "retreat from $it" }
             }
         }

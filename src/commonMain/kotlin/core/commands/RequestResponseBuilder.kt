@@ -45,8 +45,7 @@ class RequestResponseBuilder(private val defaultBehavior: () -> Unit) {
         this.options.addAll(options)
     }
 
-    @JvmName("optionsNamed")
-    fun options(options: List<Named>) {
+    fun optionsNamed(options: List<Named>) {
         this.options.addAll(options.map { it.name })
     }
 

@@ -4,7 +4,7 @@ data class KnowledgeFinder(val factFinder: FactFinder? = null, val listFactFinde
 
 class FactFinder(
     private val relevantKind: (String) -> Boolean = { true },
-    private val relevantSources: List<(Subject) -> Boolean> = listOf { true },
+    private val relevantSources: List<(Subject) -> Boolean> = listOf({ true }),
     val findFact: ((mind: Mind, source: Subject, kind: String) -> Fact),
 ) {
 
@@ -25,8 +25,8 @@ class ListFactFinder(
 
 class RelationshipFinder(
     private val relevantKind: (String) -> Boolean = { true },
-    private val relevantSource: List<(Subject) -> Boolean> = listOf { true },
-    private val relevantRelatesTo: List<(Subject) -> Boolean> = listOf { true },
+    private val relevantSource: List<(Subject) -> Boolean> = listOf ({ true }),
+    private val relevantRelatesTo: List<(Subject) -> Boolean> = listOf ({ true }),
     val findRelationship: ((mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Relationship)
 ) {
 

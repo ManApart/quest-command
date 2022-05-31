@@ -70,17 +70,3 @@ fun Thing.displayToOthers(message: (Player) -> String) {
             history.print(messageText)
         }
 }
-
-//TODO - how does this work with chat history? Is this valueable?
-fun displayUpdate(message: String, sleep: Long = 50) {
-    if (GameState.getDebugBoolean(DebugType.DISPLAY_UPDATES)) {
-        print("\r$message                                ")
-        System.out.flush()
-        Thread.sleep(sleep)
-    }
-}
-
-fun displayUpdateEnd(message: String) {
-    print("\r$message                                \n")
-    System.out.flush()
-}

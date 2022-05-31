@@ -44,7 +44,7 @@ class EquippedCommand : Command() {
     private fun clarifyThing(source: Player, things: List<Thing>) {
         source.respond({ EventManager.postEvent(ViewEquippedEvent(source, source.thing)) }) {
             message("View whose equipped items?")
-            options(things)
+            optionsNamed(things)
             command { "equipped $it" }
         }
     }

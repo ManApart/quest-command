@@ -50,7 +50,7 @@ class SpeakCommand : Command() {
         } else {
             speaker.respond("There is no one to speak to.") {
                 message( "Speak to who?")
-                options(speaker.location.getLocation().getCreatures(speaker.thing))
+                optionsNamed(speaker.location.getLocation().getCreatures(speaker.thing))
                 command { "speak to $it" }
             }
         }

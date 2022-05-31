@@ -52,11 +52,6 @@ kotlin {
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
                     setMain("building.AppBuilder")
                 }
-                tasks.register<JavaExec>("runApp") {
-                    group = "build"
-                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-                    setMain("QuestCommand2")
-                }
             }
         }
     }
@@ -75,7 +70,6 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("io.ktor:ktor-client-core:2.0.1")
-                implementation("io.ktor:ktor-client-cio:2.0.1")
                 implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
             }
@@ -89,12 +83,7 @@ kotlin {
             dependencies {
                 implementation("org.reflections:reflections:0.10.2")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-                implementation("io.ktor:ktor-client-core:2.0.1")
                 implementation("io.ktor:ktor-client-cio:2.0.1")
-                implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
             }
         }
         val jvmTest by getting

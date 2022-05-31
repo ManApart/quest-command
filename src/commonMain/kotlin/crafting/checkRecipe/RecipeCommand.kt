@@ -52,7 +52,7 @@ class RecipeCommand : Command() {
     private fun clarifyWhichRecipe(player: Player) {
         player.respond("You don't know any recipes.") {
             message("Read what recipe?")
-            options(RecipeManager.getKnownRecipes(player))
+            optionsNamed(RecipeManager.getKnownRecipes(player))
             command { "recipe $it" }
         }
     }

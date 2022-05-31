@@ -3,7 +3,7 @@ package system
 import core.commands.Command
 import core.history.displayGlobal
 import core.thing.Thing
-import kotlin.system.exitProcess
+import core.utility.exit
 
 class ExitCommand : Command() {
     override fun getAliases(): List<String> {
@@ -26,6 +26,6 @@ class ExitCommand : Command() {
     override fun execute(source: Thing, keyword: String, args: List<String>) {
         //TODO - move to event / system manager
         displayGlobal("Exiting")
-        exitProcess(0)
+        exit()
     }
 }

@@ -73,7 +73,7 @@ class UnEquipItemCommand : Command() {
     private fun clarifyItem(source: Player) {
         source.respond("There are no items you can unequip.") {
             message("What do you want to un-equip?")
-            options(source.body.getEquippedItems())
+            optionsNamed(source.body.getEquippedItems())
             command { "unequip $it" }
         }
     }

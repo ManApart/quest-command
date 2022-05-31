@@ -60,7 +60,7 @@ class JournalCommand : Command() {
     private fun clarifyWhichQuest(source: Player) {
         source.respond("You don't have any quests.") {
             message("Info about which quest?")
-            options(QuestManager.getAllPlayerQuests())
+            optionsNamed(QuestManager.getAllPlayerQuests())
             command { "quest $it" }
         }
     }

@@ -86,7 +86,7 @@ class EquipItemCommand : Command() {
     private fun suggestEquippableItems(source: Player) {
         source.respond("There is nothing you can equip.") {
             message("What do you want to equip?")
-            options(getEquipableItems(source.thing))
+            optionsNamed(getEquipableItems(source.thing))
             command { "equip $it" }
         }
     }

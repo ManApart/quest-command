@@ -41,7 +41,7 @@ class CommandsCommand : Command() {
 
     private fun clarifyCommand(source: Player, group: String) {
         source.respond({}) {
-            options(getCommands(group))
+            optionsNamed(getCommands(group))
         }
     }
 

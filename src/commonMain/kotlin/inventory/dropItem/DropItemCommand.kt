@@ -42,7 +42,7 @@ class DropItemCommand : core.commands.Command() {
     private fun clarifyItemToDrop(source: Player) {
         source.respond("You have nothing you can drop.") {
             message("Drop what item?")
-            options(source.inventory.getItems())
+            optionsNamed(source.inventory.getItems())
             command { "drop $it" }
         }
     }

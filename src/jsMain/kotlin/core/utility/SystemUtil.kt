@@ -1,5 +1,9 @@
 package core.utility
 
+import io.ktor.client.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
+
 actual fun currentTime(): Long {
     throw NotImplementedError()
 }
@@ -10,6 +14,14 @@ actual fun <K : Comparable<K>, V> Map<out K, V>.toSortedMap(): Map<K, V> {
 
 actual fun <K,V> MutableMap<K,V>.putAbsent(key: K, value: V) {
     throw NotImplementedError()
+}
+
+actual fun exit(){
+    println("Exited")
+}
+
+actual fun buildWebClient() : HttpClient {
+    TODO("Not yet implemented")
 }
 
 actual object Math {
@@ -23,10 +35,14 @@ actual object Math {
     actual fun toDegrees(radians: Double): Double {
         TODO("Not yet implemented")
     }
+
+    actual fun nextInt(current: Int): Int {
+        TODO("Not yet implemented")
+    }
 }
 
 object Integer {
-    fun parseInt(value: String?): Int {
+    actual fun parseInt(value: String?): Int {
         throw NotImplementedError()
     }
 }

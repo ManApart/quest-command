@@ -3,8 +3,6 @@ package explore.look
 import core.Player
 import core.history.display
 import core.history.displayToMe
-import core.history.displayUpdate
-import core.history.displayUpdateEnd
 import core.thing.Thing
 import status.stat.HEALTH
 
@@ -26,7 +24,8 @@ fun describeBattle(source: Player) {
 }
 
 private fun status(thing: Thing): String {
-    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.mind.ai.getActionPoints()}/100 AP, ${thing.mind.ai.action?.javaClass?.simpleName ?: "None"}."
+    val actionName = thing.mind.ai.action?.let { it::class.simpleName } ?: "None"
+    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.mind.ai.getActionPoints()}/100 AP, $actionName."
 }
 
 private fun printTurnStatus(source: Player, creatures: List<Thing>) {
@@ -43,22 +42,4 @@ private fun printTurnStatus(source: Player, creatures: List<Thing>) {
     if (combatantString.isNotBlank()) {
         source.displayToMe(combatantString)
     }
-}
-
-fun printUpdatingStatus(creatures: List<Thing>) {
-    val combatantString = creatures.joinToString("\t\t") {
-        val points = it.mind.ai.getActionPoints()
-        val timeLeft = it.mind.ai.action?.timeLeft ?: 0
-        "${it.getDisplayName()}: $points AP, $timeLeft action time left"
-    }
-    displayUpdate(combatantString)
-}
-
-fun printUpdatingStatusEnd(creatures: List<Thing>) {
-    val combatantString = creatures.joinToString("\t\t") {
-        val points = it.mind.ai.getActionPoints()
-        val timeLeft = it.mind.ai.action?.timeLeft ?: 0
-        "${it.getDisplayName()}: $points AP, $timeLeft action time left"
-    }
-    displayUpdateEnd(combatantString)
 }

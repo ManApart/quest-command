@@ -1,7 +1,5 @@
 package core.utility
 
-import java.util.*
-
 fun String.wrapNonEmpty(prefix: String, suffix: String): String {
     return if (isBlank()) {
         this
@@ -28,7 +26,7 @@ fun String.repeat(times: Int): String {
 }
 
 fun String.capitalize2(): String {
-    return replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+    return replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }
 
 fun <T> List<T>.joinToStringAnd(transform: ((T) -> CharSequence)? = null): String {

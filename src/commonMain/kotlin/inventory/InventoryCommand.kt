@@ -44,7 +44,7 @@ class InventoryCommand : Command() {
     private fun clarifyThing(source: Player, things: List<Thing>) {
         source.respond({ EventManager.postEvent(ViewInventoryEvent(source, source.thing)) }) {
             message("View whose inventory?")
-            options(things)
+            optionsNamed(things)
             command { "bag $it" }
         }
     }

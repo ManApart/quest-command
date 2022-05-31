@@ -101,7 +101,7 @@ class CastCommand : Command() {
     private fun clarifyWord(source: Player) {
         source.respond("There are no spells you can cast.") {
             message("Cast what?")
-            options(spellCommands)
+            optionsNamed(spellCommands)
             command { "cast $it" }
         }
     }
