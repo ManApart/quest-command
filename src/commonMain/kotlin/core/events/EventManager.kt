@@ -1,6 +1,7 @@
 package core.events
 
 import core.DependencyInjector
+import core.utility.getListenedForClass
 import kotlin.reflect.KClass
 
 object EventManager {
@@ -87,11 +88,6 @@ object EventManager {
                 }
         listeners.sortBy { it.getPriorityRank() }
         listeners.forEach { it.execute() }
-    }
-
-    private fun getListenedForClass(listener: EventListener<*>): KClass<*> {
-        return listener.event!!::class //TODO - pretty sure this won't work as I believe the listener will be null
-//        return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
     }
 
 }

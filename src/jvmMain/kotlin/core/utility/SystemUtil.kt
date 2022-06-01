@@ -1,9 +1,13 @@
 package core.utility
+
+import core.events.EventListener
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import java.util.*
+import kotlin.reflect.KClass
+import kotlin.reflect.full.allSupertypes
 import kotlin.system.exitProcess
 import kotlin.collections.toSortedMap as sorted
 
@@ -15,7 +19,7 @@ actual fun <K : Comparable<K>, V> Map<out K, V>.toSortedMap(): Map<K, V> {
     return this.sorted()
 }
 
-actual fun <K,V> MutableMap<K,V>.putAbsent(key: K, value: V) {
+actual fun <K, V> MutableMap<K, V>.putAbsent(key: K, value: V) {
     this.putIfAbsent(key, value)
 }
 
@@ -23,8 +27,12 @@ actual fun exit() {
     exitProcess(0)
 }
 
-actual fun buildWebClient() : HttpClient {
+actual fun buildWebClient(): HttpClient {
     return HttpClient(CIO) { install(ContentNegotiation) { json() } }
+}
+
+actual fun getListenedForClass(listener: EventListener<*>): KClass<*> {
+    return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
 }
 
 actual object Math {
