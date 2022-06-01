@@ -1,3 +1,5 @@
+@file:JvmName("QuestCommand")
+
 import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
