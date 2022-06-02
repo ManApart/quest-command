@@ -42,7 +42,7 @@ private fun cleanDescription(line: String, description: String, aliases: List<St
 }
 
 private fun clean(clazz: KClass<*>, description: String, aliases: List<String>) {
-    val classFile = File("./src/main/kotlin/" + clazz.simpleName!!.replace(".", "/") + ".kt")
+    val classFile = File("./src/commonMain/kotlin/" + clazz.qualifiedName!!.replace(".", "/") + ".kt")
     val classText = classFile.readText().split("\n").toMutableList()
 
     val descriptionSignature = classText.lineOf("override fun getDescription(): String {")
