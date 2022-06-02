@@ -1,18 +1,30 @@
+:root {
+  --background: rgb(34, 34, 34);
+  --text: rgb(238, 238, 238);
+  --mid: rgb(65, 65, 65);
+  --prompt: rgb(56, 87, 146);
+  --highlight: gray
+}
+
+::-webkit-scrollbar {
+  width: 20px;
+}
+
 ::-webkit-scrollbar-track {
-  background: black;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: gray;
+  background: var(--mid);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: lightgray;
+  background: var(--highlight);
 }
 
 body {
-  color: rgb(157, 226, 157);
-  background-color: black;
+  color: var(--text);
+  background-color: var(--background);
   font-size: 1.3em;
   margin: 0px;
 }
@@ -32,8 +44,8 @@ body {
 }
 
 #prompt {
-  color: rgb(157, 226, 157);
-  background-color: black;
+  color: var(--text);
+  background-color: var(--background);
   font-size: 1.3em;
   width: 96%;
   height: 30px;
@@ -42,11 +54,6 @@ body {
   border: 0px;
   padding-bottom: 10px;
   padding-left: 2px;
-}
-
-input:focus {
-  background-color: yellow;
-  border-color: red;
 }
 
 input:focus-visible {
