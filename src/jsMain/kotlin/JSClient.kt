@@ -1,8 +1,13 @@
+import core.GameState
+import core.commands.CommandParsers
+import core.history.GameLogger
+import core.history.InputOutput
 import kotlinx.browser.document
 import kotlinx.browser.window
-import org.w3c.dom.Node
 import kotlinx.html.div
 import kotlinx.html.dom.append
+import org.w3c.dom.Element
+import org.w3c.dom.Node
 
 fun main() {
     window.onload = { document.body?.startClient() }
@@ -27,6 +32,34 @@ fun Node.startClient() {
     - Autocomplete
      */
     outputDiv.innerHTML = text + text + text + text
+
+//    EventManager.registerListeners()
+//    GameManager.newOrLoadGame()
+//    EventManager.executeEvents()
+//    CommandParsers.parseInitialCommand(GameState.player)
+//    print(outputDiv)
+    window.onkeypress = { keyboardEvent ->
+        println(keyboardEvent.key)
+        if (keyboardEvent.key == "Enter") {
+            println("Submitting: " + prompt.textContent)
+//            CommandParsers.parseCommand(GameState.player, prompt.textContent ?: "")
+//            print(outputDiv)
+        }
+    }
+    scrollToBottom()
+}
+
+private fun print(outputDiv: Element) {
+    outputDiv.innerHTML = GameLogger.getMainHistory().history.joinToString("<br>") { it.toHtml() }
+    scrollToBottom()
+}
+
+private fun InputOutput.toHtml(): String {
+    return "> $input<br/>${outPut.joinToString("<br/>")}"
+}
+
+private fun scrollToBottom() {
+    window.scrollTo(0.0, document.body?.scrollHeight?.toDouble() ?: 100.0)
 }
 
 private val sampleText = """

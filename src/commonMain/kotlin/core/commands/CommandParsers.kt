@@ -79,7 +79,7 @@ object CommandParsers {
         return groups.toSortedMap()
     }
 
-    fun parseInitialCommand(player: Player, args: Array<String>) {
+    fun parseInitialCommand(player: Player, args: Array<String> = arrayOf()) {
         parseInitialCommand(args, player.name)
     }
 
