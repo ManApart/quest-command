@@ -1,0 +1,54 @@
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: gray;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: lightgray;
+}
+
+body {
+  color: rgb(157, 226, 157);
+  background-color: black;
+  font-size: 1.3em;
+  margin: 0px;
+}
+
+#terminal {
+
+}
+
+#output-block {
+  padding: 10px; 
+}
+
+#input-block {
+  position: float;
+  bottom: 0;
+  width: 100%;
+}
+
+#prompt {
+  color: rgb(157, 226, 157);
+  background-color: black;
+  font-size: 1.3em;
+  width: 96%;
+  height: 30px;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  padding-bottom: 10px;
+  padding-left: 2px;
+}
+
+input:focus {
+  background-color: yellow;
+  border-color: red;
+}
+
+input:focus-visible {
+  outline: 0px;
+}
