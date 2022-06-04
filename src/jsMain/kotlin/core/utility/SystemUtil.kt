@@ -22,10 +22,6 @@ actual fun exit(){
     println("Exited")
 }
 
-actual fun buildWebClient() : HttpClient {
-    TODO("Not yet implemented")
-}
-
 actual fun getListenedForClass(listener: EventListener<*>): KClass<*> {
     TODO("Not yet implemented")
 }

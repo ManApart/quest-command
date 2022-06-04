@@ -27,10 +27,6 @@ actual fun exit() {
     exitProcess(0)
 }
 
-actual fun buildWebClient(): HttpClient {
-    return HttpClient(CIO) { install(ContentNegotiation) { json() } }
-}
-
 actual fun getListenedForClass(listener: EventListener<*>): KClass<*> {
     return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
 }

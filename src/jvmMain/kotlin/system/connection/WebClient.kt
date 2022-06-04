@@ -4,8 +4,12 @@ import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.displayGlobal
 import core.utility.buildWebClient
+import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,6 +24,11 @@ actual object WebClient {
     actual var latestSubResponse = 0
     actual var playerName = "Player"
     actual var latestInfo = ServerInfo()
+
+    private fun buildWebClient(): HttpClient {
+        return HttpClient(CIO) { install(ContentNegotiation) { json() } }
+    }
+
 
     actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
         latestInfo = getServerInfo(host, port)
