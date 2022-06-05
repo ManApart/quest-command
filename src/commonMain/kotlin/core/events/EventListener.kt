@@ -1,7 +1,7 @@
 package core.events
 
 abstract class EventListener<T : Event> {
-    //Is this event needed?
+    //TODO - move this to just be passed into the execute instead of being a var
     var event: T? = null
     fun execute() {
         if (event != null) {

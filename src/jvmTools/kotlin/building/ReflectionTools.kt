@@ -38,8 +38,9 @@ import traveling.location.weather.WeatherResource
 import java.io.File
 import java.lang.reflect.Modifier
 import kotlin.reflect.KClass
+import kotlin.reflect.full.allSupertypes
 
-private const val srcRoot = "./src/jvmMain/kotlin"
+private const val srcRoot = "./src/commonMain/kotlin"
 private const val testRoot = "./src/jvmTest/kotlin"
 
 object ReflectionTools {
@@ -53,7 +54,7 @@ object ReflectionTools {
     fun generateFiles() {
         generateCollectionsFile(Command::class)
         generateCollectionsFile(SpellCommand::class)
-        generateCollectionsFile(EventListener::class)
+        generateListenerMapFile()
 
         generateResourcesFile(AIResource::class, AIBase::class)
         generateResourcesFile(AIActionResource::class, AIAction::class)
@@ -199,6 +200,54 @@ object ReflectionTools {
                 )
             }
         }
+    }
+
+    private fun generateListenerMapFile() {
+        val allListeners = getClasses(EventListener::class)
+        println("Creating listener map for ${allListeners.size} listeners.")
+
+        val classes = allListeners.joinToString(", ") { "\"${it.qualifiedName}\" to ${it.qualifiedName}()".replace("$", ".") }
+        val eventMapString = buildEventMap(allListeners).entries.joinToString(", ") { (eventName, listenerList) ->
+            val valueString = listenerList.joinToString(",") { "listenerMap[\"$it\"]!!" }
+            "\"$eventName\" to listOf($valueString)".replace("$", ".")
+        }
+
+        val file = File("$srcRoot/core/events/EventListenerMapGenerated.kt")
+        file.parentFile.mkdirs()
+        file.printWriter().use {
+            it.print(
+                """
+                package core.events
+
+                class EventListenerMapGenerated : EventListenerMapCollection {
+                    private val listenerMap: Map<String, EventListener<*>> = mapOf($classes)
+                    
+                    override val values: Map<String, List<EventListener<*>>> = mapOf($eventMapString)
+                }
+                """.trimIndent()
+            )
+        }
+    }
+
+    private fun buildEventMap(allListeners: List<KClass<*>>): Map<String, List<String>> {
+        val result = mutableMapOf<String, MutableList<String>>()
+
+        allListeners.forEach { listener ->
+            val eventName = getListenedForClassName(listener)
+            result.putIfAbsent(eventName, mutableListOf())
+            result[eventName]?.add(listener.qualifiedName!!)
+        }
+
+        return result
+    }
+
+    private fun getListenedForClassName(listener: KClass<*>): String {
+        val clazz = listener.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
+        return clazz.qualifiedName!!
+    }
+
+    private fun getListenedForClass(listener: EventListener<*>): KClass<*> {
+        return listener::class.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
     }
 
 

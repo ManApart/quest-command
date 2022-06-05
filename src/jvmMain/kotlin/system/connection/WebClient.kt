@@ -3,7 +3,6 @@ package system.connection
 import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.displayGlobal
-import core.utility.buildWebClient
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*

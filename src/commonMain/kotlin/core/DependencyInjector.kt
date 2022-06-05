@@ -16,9 +16,7 @@ import core.body.BodysCollection
 import core.body.BodysGenerated
 import core.commands.CommandsCollection
 import core.commands.CommandsGenerated
-import core.events.EventListener
-import core.events.EventListenersCollection
-import core.events.EventListenersGenerated
+import core.events.*
 import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.activator.dsl.ActivatorsGenerated
 import core.thing.creature.CreaturesCollection
@@ -94,6 +92,7 @@ object DependencyInjector {
             DialoguesCollection::class to DialoguesGenerated(),
             EffectsCollection::class to EffectsGenerated(),
             EventListenersCollection::class to EventListenersGenerated(),
+            EventListenerMapCollection::class to EventListenerMapGenerated(),
             ItemsCollection::class to ItemsGenerated(),
             KnowledgeFindersCollection::class to KnowledgeFindersGenerated(),
             LocationsCollection::class to LocationsGenerated(),

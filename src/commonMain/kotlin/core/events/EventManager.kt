@@ -61,12 +61,7 @@ object EventManager {
 
     @Suppress("UNCHECKED_CAST")
     fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
-        val listeners = mutableListOf<EventListener<*>>()
-        listenerMap[event::class]?.filter { (it as EventListener<E>).shouldExecute(event) }
-                ?.forEach {
-                    listeners.add(it)
-                }
-        return listeners.size
+        return listenerMap[event::class]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
     }
 
     fun getUnexecutedEvents(): List<Event> {
@@ -75,19 +70,20 @@ object EventManager {
 
     @Suppress("UNCHECKED_CAST")
     private fun <E : Event> executeEvent(event: E) {
-        val listeners = mutableListOf<EventListener<*>>()
-        listenerMap[event::class]?.filter { (it as EventListener<E>).shouldExecute(event) }
-                ?.forEach {
-                    (it as EventListener<E>).event = event
-                    listeners.add(it)
-                }
-        listenerMap[Event::class]?.filter { (it as EventListener<Event>).shouldExecute(event) }
-                ?.forEach {
-                    (it as EventListener<Event>).event = event
-                    listeners.add(it)
-                }
-        listeners.sortBy { it.getPriorityRank() }
-        listeners.forEach { it.execute() }
+        val specificEvents: List<EventListener<Event>> = (listenerMap[event::class]?.filter { (it as EventListener<E>).shouldExecute(event) }
+            ?.map {
+                (it as EventListener<E>).event = event
+                it
+            } ?: emptyList()) as List<EventListener<Event>>
+        val genericEventListeners: List<EventListener<Event>> = (listenerMap[Event::class]?.filter { (it as EventListener<Event>).shouldExecute(event) }
+            ?.map {
+                (it as EventListener<Event>).event = event
+                it
+            } ?: emptyList())
+
+        (specificEvents + genericEventListeners)
+            .sortedBy { it.getPriorityRank() }
+            .forEach { it.execute() }
     }
 
 }
