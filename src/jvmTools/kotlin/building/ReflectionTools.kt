@@ -206,7 +206,8 @@ object ReflectionTools {
         val allListeners = getClasses(EventListener::class)
         println("Creating listener map for ${allListeners.size} listeners.")
 
-        val classes = allListeners.joinToString(", ") { "\"${it.qualifiedName}\" to ${it.qualifiedName}()".replace("$", ".") }
+        //I'd prefer to use qualified name but the JS api doesn't support that yet. This has a higher chance of name collisions, so it should be updated to use qualified name once supported
+        val classes = allListeners.joinToString(", ") { "\"${it.simpleName}\" to ${it.qualifiedName}()".replace("$", ".") }
         val eventMapString = buildEventMap(allListeners).entries.joinToString(", ") { (eventName, listenerList) ->
             val valueString = listenerList.joinToString(",") { "listenerMap[\"$it\"]!!" }
             "\"$eventName\" to listOf($valueString)".replace("$", ".")
@@ -235,7 +236,7 @@ object ReflectionTools {
         allListeners.forEach { listener ->
             val eventName = getListenedForClassName(listener)
             result.putIfAbsent(eventName, mutableListOf())
-            result[eventName]?.add(listener.qualifiedName!!)
+            result[eventName]?.add(listener.simpleName!!)
         }
 
         return result
@@ -243,7 +244,7 @@ object ReflectionTools {
 
     private fun getListenedForClassName(listener: KClass<*>): String {
         val clazz = listener.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
-        return clazz.qualifiedName!!
+        return clazz.simpleName!!
     }
 
     private fun getListenedForClass(listener: EventListener<*>): KClass<*> {

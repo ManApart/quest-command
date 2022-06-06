@@ -10,6 +10,8 @@ See the [wiki](https://github.com/ManApart/QuestCommand/wiki) for more informati
 
 ### Building
 
+ > Needs Updating with Multiplatform
+
 Run `gradlew buildData`. This generates json files etc so that they don't need to be done at runtime. This only needs to be re-run when you change certain files (like adding new commands, events, event listeners, changing json, etc)
 
 Run `gradlew build jar` to build a jar. This should be found in `QuestCommand/build/libs` (`quest-command-1.0-SNAPSHOT`)
@@ -28,15 +30,21 @@ Run `./gradlew dependencyUpdates` to check for later versions of dependencies
 ### Running
 Try any one of the below: 
 
+> Needs updated per multiplatform!
+
 A) Grab a release from [github](https://github.com/ManApart/QuestCommand/releases) and run `java -jar ./quest-command-dev.jar`
 
 B) Grab the image from [docker hub](https://hub.docker.com/repository/docker/manapart/quest-command) and run `docker run -it manapart/quest-command:stable`
 
 C) Clone the project and build it.
 ```
-./gradlew build jar
+./gradlew build jvmJar
 java -jar ./build/libs/quest-command-dev.jar
 ```
+
+#### Running in the browser
+
+`gradlew jsBrowserDevelopmentRun`
 
 ### Visual Git Log
 

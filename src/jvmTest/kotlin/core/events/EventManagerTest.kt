@@ -15,7 +15,7 @@ class EventManagerTest {
     private val second = TestListener(this, 1, "second")
     private val child = TestChildListener(this, 2, "child")
     private val eventListenerMap = EventListenerMapMock(mapOf(
-        "core.events.EventManagerTest.TestEvent" to listOf(first, second, child)
+        "TestEvent" to listOf(first, second, child)
     ))
 
     class TestEvent : Event

@@ -3,6 +3,7 @@ package core.events
 import core.DependencyInjector
 import core.utility.getListenedForClass
 import kotlin.reflect.KClass
+import kotlin.reflect.typeOf
 
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
@@ -40,7 +41,7 @@ object EventManager {
 
     @Suppress("UNCHECKED_CAST")
     fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
-        return listenerMap[event::class.qualifiedName]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
+        return listenerMap[event::class.simpleName!!]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
     }
 
     fun getUnexecutedEvents(): List<Event> {
@@ -49,11 +50,11 @@ object EventManager {
 
     @Suppress("UNCHECKED_CAST")
     private fun <E : Event> executeEvent(event: E) {
-        val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.qualifiedName]?.filter { (it as EventListener<E>).shouldExecute(event) }
+        val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.simpleName]?.filter { (it as EventListener<E>).shouldExecute(event) }
             ?.map {
                 it
             } ?: emptyList()) as List<EventListener<Event>>
-        val genericEventListeners: List<EventListener<Event>> = (listenerMap[Event::class.qualifiedName]?.filter { (it as EventListener<Event>).shouldExecute(event) }
+        val genericEventListeners: List<EventListener<Event>> = (listenerMap[Event::class.simpleName]?.filter { (it as EventListener<Event>).shouldExecute(event) }
             ?.map {
                 (it as EventListener<Event>)
             } ?: emptyList())

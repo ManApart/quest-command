@@ -1,3 +1,4 @@
+import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
 import core.history.GameLogger
@@ -33,8 +34,7 @@ fun Node.startClient() {
      */
     outputDiv.innerHTML = text + text + text + text
 
-//    EventManager.registerListeners()
-//    GameManager.newOrLoadGame()
+    GameManager.newOrLoadGame()
 //    EventManager.executeEvents()
 //    CommandParsers.parseInitialCommand(GameState.player)
 //    print(outputDiv)
