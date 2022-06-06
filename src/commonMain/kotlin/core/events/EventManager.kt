@@ -51,18 +51,16 @@ object EventManager {
     private fun <E : Event> executeEvent(event: E) {
         val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.qualifiedName]?.filter { (it as EventListener<E>).shouldExecute(event) }
             ?.map {
-                (it as EventListener<E>).event = event
                 it
             } ?: emptyList()) as List<EventListener<Event>>
         val genericEventListeners: List<EventListener<Event>> = (listenerMap[Event::class.qualifiedName]?.filter { (it as EventListener<Event>).shouldExecute(event) }
             ?.map {
-                (it as EventListener<Event>).event = event
-                it
+                (it as EventListener<Event>)
             } ?: emptyList())
 
         (specificEvents + genericEventListeners)
             .sortedBy { it.getPriorityRank() }
-            .forEach { it.execute() }
+            .forEach { it.execute(event) }
     }
 
 }

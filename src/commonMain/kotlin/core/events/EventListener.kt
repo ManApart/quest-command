@@ -1,16 +1,6 @@
 package core.events
 
 abstract class EventListener<T : Event> {
-    //TODO - move this to just be passed into the execute instead of being a var
-    var event: T? = null
-    fun execute() {
-        if (event != null) {
-            execute(this.event!!)
-        } else {
-            println("$this had a null event, which shouldn't happen!")
-        }
-    }
-
     abstract fun execute(event: T)
 
     open fun shouldExecute(event: T): Boolean {
