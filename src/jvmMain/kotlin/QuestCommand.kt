@@ -7,7 +7,6 @@ import core.events.EventManager
 import core.history.TerminalPrinter
 
 fun main(args: Array<String>) {
-    EventManager.registerListeners()
     GameManager.newOrLoadGame()
     EventManager.executeEvents()
     CommandParsers.parseInitialCommand(GameState.player, args)

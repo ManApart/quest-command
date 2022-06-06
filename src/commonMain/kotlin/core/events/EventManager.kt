@@ -5,37 +5,16 @@ import core.utility.getListenedForClass
 import kotlin.reflect.KClass
 
 object EventManager {
-    private val listenerMap = HashMap<KClass<*>, ArrayList<EventListener<*>>>()
+    private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
     private val eventQueue = mutableListOf<Event>()
-    private var eventListenersCollection = DependencyInjector.getImplementation(EventListenersCollection::class)
-
-    fun registerListeners() {
-        eventListenersCollection.values.forEach { registerListener(it) }
-    }
 
     fun reset() {
+        listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
         listenerMap.values.forEach { list -> list.forEach { listener -> listener.reset() } }
     }
 
     fun clear() {
-        listenerMap.clear()
         eventQueue.clear()
-    }
-
-    fun <E : Event> registerListener(listener: EventListener<E>) {
-        val listenerClass = getListenedForClass(listener)
-        if (!listenerMap.containsKey(listenerClass)) {
-            listenerMap[listenerClass] = ArrayList()
-        }
-        listenerMap[listenerClass]?.add(listener)
-//        listenerMap[listenerClass] = ArrayList(listenerMap[listenerClass]?.sortedWith(compareBy { it.getPriorityRank() }))
-    }
-
-    fun <E : Event> unRegisterListener(listener: EventListener<E>) {
-        val listenerClass = getListenedForClass(listener)
-        if (listenerMap.containsKey(listenerClass)) {
-            listenerMap[listenerClass]?.remove(listener)
-        }
     }
 
     /**
@@ -61,7 +40,7 @@ object EventManager {
 
     @Suppress("UNCHECKED_CAST")
     fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
-        return listenerMap[event::class]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
+        return listenerMap[event::class.qualifiedName]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
     }
 
     fun getUnexecutedEvents(): List<Event> {
@@ -70,12 +49,12 @@ object EventManager {
 
     @Suppress("UNCHECKED_CAST")
     private fun <E : Event> executeEvent(event: E) {
-        val specificEvents: List<EventListener<Event>> = (listenerMap[event::class]?.filter { (it as EventListener<E>).shouldExecute(event) }
+        val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.qualifiedName]?.filter { (it as EventListener<E>).shouldExecute(event) }
             ?.map {
                 (it as EventListener<E>).event = event
                 it
             } ?: emptyList()) as List<EventListener<Event>>
-        val genericEventListeners: List<EventListener<Event>> = (listenerMap[Event::class]?.filter { (it as EventListener<Event>).shouldExecute(event) }
+        val genericEventListeners: List<EventListener<Event>> = (listenerMap[Event::class.qualifiedName]?.filter { (it as EventListener<Event>).shouldExecute(event) }
             ?.map {
                 (it as EventListener<Event>).event = event
                 it

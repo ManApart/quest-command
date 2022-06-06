@@ -3,7 +3,7 @@ package crafting
 import core.DependencyInjector
 import core.GameManager
 import core.Player
-import core.events.EventManager
+import core.events.*
 import core.thing.item.ItemManager
 import core.thing.item.ItemsCollection
 import core.thing.item.ItemsMock
@@ -14,6 +14,7 @@ import createItemBuilder
 import createMockedGame
 import createPouch
 import inventory.pickupItem.TakeItem
+import inventory.pickupItem.TakeItemEvent
 
 import kotlin.test.BeforeTest
 
@@ -40,14 +41,16 @@ class CraftTest {
 
         val resultItemName1 = "Silver"
         val resultItemName2 = "Gold"
+        val craftEvent = CraftRecipeEvent(baker, recipe)
+
         val fakeParser = ItemsMock(listOf(createItemBuilder(resultItemName1), createItemBuilder(resultItemName2)))
         DependencyInjector.setImplementation(ItemsCollection::class, fakeParser)
         ItemManager.reset()
 
-        EventManager.registerListener(TakeItem())
+        DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapGenerated())
+        EventManager.reset()
 
-        Craft().execute(CraftRecipeEvent(baker, recipe))
-
+        Craft().execute(craftEvent)
         EventManager.executeEvents()
 
         assertFalse(baker.inventory.exists(ingredient))
@@ -60,15 +63,17 @@ class CraftTest {
         val baker = createBaker()
         val ingredient = createItemBuilder("Apple")
         baker.inventory.add(ingredient.build())
+        val recipe = Recipe("Apples of Silver and Gold", mapOf("Fruit" to RecipeIngredient("Apple")), results = listOf(RecipeResult("Fruit", listOf("Cooked"), listOf())))
+        val craftEvent = CraftRecipeEvent(baker, recipe)
 
         val fakeParser = ItemsMock(listOf(ingredient))
         DependencyInjector.setImplementation(ItemsCollection::class, fakeParser)
         ItemManager.reset()
 
-        EventManager.registerListener(TakeItem())
+        DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapGenerated())
+        EventManager.reset()
 
-        val recipe = Recipe("Apples of Silver and Gold", mapOf("Fruit" to RecipeIngredient("Apple")), results = listOf(RecipeResult("Fruit", listOf("Cooked"), listOf())))
-        Craft().execute(CraftRecipeEvent(baker, recipe))
+        Craft().execute(craftEvent)
 
         EventManager.executeEvents()
 

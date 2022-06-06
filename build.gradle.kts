@@ -23,7 +23,9 @@ kotlin {
         }
 
         sourceSets {
-            val jvmTestIntegration by creating {}
+            val jvmTestIntegration by creating {
+                dependsOn(sourceSets["jvmMain"])
+            }
             val jvmTools by creating {
                 dependsOn(sourceSets["jvmMain"])
             }

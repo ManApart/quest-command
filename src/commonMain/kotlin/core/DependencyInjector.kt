@@ -74,10 +74,6 @@ object DependencyInjector {
         }
     }
 
-    inline fun <reified T : EventListener<*>> getListener(): T {
-        return getImplementation(EventListenersCollection::class).values.first { it::class == T::class } as T
-    }
-
     private fun createDefaultImplementations(): Map<KClass<*>, Any> {
         return mapOf(
             ActivatorsCollection::class to ActivatorsGenerated(),
@@ -91,7 +87,6 @@ object DependencyInjector {
             CommandsCollection::class to CommandsGenerated(),
             DialoguesCollection::class to DialoguesGenerated(),
             EffectsCollection::class to EffectsGenerated(),
-            EventListenersCollection::class to EventListenersGenerated(),
             EventListenerMapCollection::class to EventListenerMapGenerated(),
             ItemsCollection::class to ItemsGenerated(),
             KnowledgeFindersCollection::class to KnowledgeFindersGenerated(),

@@ -15,8 +15,8 @@ import core.body.*
 import core.commands.CommandParsers
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
-import core.events.EventListenersCollection
-import core.events.EventListenersMock
+import core.events.EventListenerMapGenerated
+import core.events.EventListenerMapMock
 import core.events.EventManager
 import core.history.GameLogger
 import core.properties.*
@@ -143,7 +143,7 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock())
     EffectManager.reset()
 
-    DependencyInjector.setImplementation(EventListenersCollection::class, EventListenersMock())
+    DependencyInjector.setImplementation(EventListenerMapMock::class, EventListenerMapMock())
     EventManager.reset()
 
     DependencyInjector.setImplementation(ItemsCollection::class, ItemsMock())

@@ -16,7 +16,6 @@ class CommandComboTest {
     @BeforeTest
     fun reset() {
         EventManager.clear()
-        EventManager.registerListeners()
         GameManager.newGame(testing = true)
         EventManager.executeEvents()
     }

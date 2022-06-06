@@ -15,7 +15,7 @@ class StartupTest {
     fun startupPerformanceTest() {
         val timer = PoorMansInstrumenter(10000)
         timer.printElapsed("Starting")
-        EventManager.registerListeners()
+        EventManager.reset()
         timer.printElapsed("Listeners Registered")
         GameManager.newGame()
         timer.printElapsed("New Game Started")

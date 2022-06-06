@@ -39,7 +39,7 @@ class PersistenceTest {
     @Before
     fun reset() {
         EventManager.clear()
-        EventManager.registerListeners()
+        EventManager.reset()
         GameManager.newGame(playerName = "Saved Player", testing = true)
         EventManager.executeEvents()
         File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }

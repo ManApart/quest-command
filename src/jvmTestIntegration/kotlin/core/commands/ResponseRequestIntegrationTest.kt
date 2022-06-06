@@ -4,23 +4,13 @@ import core.GameManager
 import core.GameState
 import core.events.EventManager
 import core.history.GameLogger
-import core.properties.Properties
 import core.properties.Tags
 import core.thing.Thing
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class ResponseRequestIntegrationTest {
-
-    companion object {
-        @BeforeClass
-        @JvmStatic
-        fun setup() {
-            EventManager.registerListeners()
-        }
-    }
 
     @Before
     fun reset() {
@@ -30,7 +20,7 @@ class ResponseRequestIntegrationTest {
 
     @Test
     fun takeSecondObject() {
-        val props = Properties(tags = Tags("Item"))
+        val props = core.properties.Properties(tags = Tags("Item"))
         GameState.player.thing.currentLocation().addThing(Thing("Wheat Bundle", properties = props))
         GameState.player.thing.currentLocation().addThing(Thing("Wheat Flour", properties = props))
 
