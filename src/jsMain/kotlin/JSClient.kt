@@ -1,6 +1,7 @@
 import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
+import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
 import kotlinx.browser.document
@@ -35,15 +36,15 @@ fun Node.startClient() {
     outputDiv.innerHTML = text + text + text + text
 
     GameManager.newOrLoadGame()
-//    EventManager.executeEvents()
-//    CommandParsers.parseInitialCommand(GameState.player)
-//    print(outputDiv)
+    EventManager.executeEvents()
+    CommandParsers.parseInitialCommand(GameState.player)
+    print(outputDiv)
     window.onkeypress = { keyboardEvent ->
-        println(keyboardEvent.key)
         if (keyboardEvent.key == "Enter") {
             println("Submitting: " + prompt.textContent)
-//            CommandParsers.parseCommand(GameState.player, prompt.textContent ?: "")
-//            print(outputDiv)
+            CommandParsers.parseCommand(GameState.player, prompt.textContent ?: "")
+//            EventManager.executeEvents()
+            print(outputDiv)
         }
     }
     scrollToBottom()

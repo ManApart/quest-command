@@ -17,11 +17,11 @@ actual class File actual constructor(pathIn: String) {
 }
 
 actual fun getGameNames(): List<String> {
-    throw NotImplementedError()
+    return emptyList()
 }
 
 actual fun getCharacterSaves(gameName: String): List<String> {
-    throw NotImplementedError()
+    return emptyList()
 }
 
 actual inline fun <reified T> loadFromPath(path: String): T? {
@@ -45,7 +45,7 @@ actual fun loadCharacter(gameName: String, saveName: String, playerName: String)
 }
 
 actual fun getGamesMetaData(): Properties {
-    throw NotImplementedError()
+    return Properties()
 }
 
 actual fun writeSave(directoryName: String, saveName: String, json: String) {
@@ -55,7 +55,3 @@ actual fun writeSave(directoryName: String, saveName: String, json: String) {
 actual fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
     throw NotImplementedError()
 }
-//
-//actual fun getFolders(path: String, ignoredFileNames: List<String>): List<String> {
-//    throw NotImplementedError()
-//}
