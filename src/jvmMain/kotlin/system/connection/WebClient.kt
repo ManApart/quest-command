@@ -28,7 +28,6 @@ actual object WebClient {
         return HttpClient(CIO) { install(ContentNegotiation) { json() } }
     }
 
-
     actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
         latestInfo = getServerInfo(host, port)
         if (latestInfo.validServer) {

@@ -96,6 +96,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
+                implementation("io.ktor:ktor-client-js:2.0.1")
             }
         }
         val jsTest by getting

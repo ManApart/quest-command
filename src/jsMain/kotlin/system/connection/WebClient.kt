@@ -1,8 +1,17 @@
 package system.connection
 
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 
 actual object WebClient {
-//    private val client by lazy { buildWebClient() }
+    private val client by lazy { buildWebClient() }
     actual var doPolling = false
     actual var host = "http://localhost"
     actual var port = "8080"
@@ -10,6 +19,10 @@ actual object WebClient {
     actual var latestSubResponse = 0
     actual var playerName = "Player"
     actual var latestInfo = ServerInfo()
+
+    private fun buildWebClient(): HttpClient {
+        return HttpClient { install(ContentNegotiation) { json() } }
+    }
 
     actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
         latestInfo = getServerInfo(host, port)
@@ -25,6 +38,15 @@ actual object WebClient {
     }
 
     actual fun getServerInfo(host: String, port: String): ServerInfo {
+//        GlobalScope.launch(Dispatchers.Default) {
+//            try {
+//                client.get("$host:$port/info").body()
+//            } catch (e: Exception) {
+//                ServerInfo()
+//            }.also {
+//                this.latestInfo = it
+//            }
+//        }
         throw NotImplementedError()
     }
 
