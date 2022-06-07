@@ -13,6 +13,7 @@ import core.ai.knowledge.dsl.KnowledgeFinderResource
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command
+import core.events.Event
 import core.events.EventListener
 import core.thing.ThingBuilder
 import core.thing.activator.dsl.ActivatorResource
@@ -206,8 +207,9 @@ object ReflectionTools {
         val allListeners = getClasses(EventListener::class)
         println("Creating listener map for ${allListeners.size} listeners.")
 
-        //I'd prefer to use qualified name but the JS api doesn't support that yet. This has a higher chance of name collisions, so it should be updated to use qualified name once supported
-        val classes = allListeners.joinToString(", ") { "\"${it.simpleName}\" to ${it.qualifiedName}()".replace("$", ".") }
+        assertNoDuplicateEventNames()
+
+        val classes = allListeners.joinToString(", ") { "\"${it.qualifiedName}\" to ${it.qualifiedName}()".replace("$", ".") }
         val eventMapString = buildEventMap(allListeners).entries.joinToString(", ") { (eventName, listenerList) ->
             val valueString = listenerList.joinToString(",") { "listenerMap[\"$it\"]!!" }
             "\"$eventName\" to listOf($valueString)".replace("$", ".")
@@ -230,18 +232,34 @@ object ReflectionTools {
         }
     }
 
+    //This can be removed when JS can use qualified name
+    private fun assertNoDuplicateEventNames(){
+        val allEvents = getClasses(Event::class)
+        val existing = mutableMapOf<String, String>()
+        allEvents.forEach { event ->
+            val simpleName = event.simpleName!!
+            val qualifiedName = event.qualifiedName!!
+            if (existing.containsKey(simpleName)){
+                throw IllegalArgumentException("Found Duplicate Event. Both ${existing[simpleName]} and $qualifiedName have the same simple name!")
+            }
+            existing[simpleName] = qualifiedName
+        }
+
+    }
+
     private fun buildEventMap(allListeners: List<KClass<*>>): Map<String, List<String>> {
         val result = mutableMapOf<String, MutableList<String>>()
 
         allListeners.forEach { listener ->
             val eventName = getListenedForClassName(listener)
             result.putIfAbsent(eventName, mutableListOf())
-            result[eventName]?.add(listener.simpleName!!)
+            result[eventName]?.add(listener.qualifiedName!!)
         }
 
         return result
     }
 
+    //I'd prefer to use qualified name but the JS api doesn't support that yet. This has a higher chance of name collisions, so it should be updated to use qualified name once supported
     private fun getListenedForClassName(listener: KClass<*>): String {
         val clazz = listener.allSupertypes.first { it.classifier == EventListener::class }.arguments.first().type!!.classifier as KClass<*>
         return clazz.simpleName!!
