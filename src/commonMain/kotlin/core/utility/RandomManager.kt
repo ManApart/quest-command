@@ -21,7 +21,7 @@ object RandomManager {
             GameState.getDebugBoolean(DebugType.RANDOM_SUCCEED) -> true
             GameState.getDebugBoolean(DebugType.RANDOM_FAIL) -> false
             chance <= 0 -> false
-            else -> chance >= Math.random()
+            else -> chance >= random()
         }
     }
 

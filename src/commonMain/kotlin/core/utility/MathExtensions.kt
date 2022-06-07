@@ -11,6 +11,10 @@ fun max(vararg numbers: Int): Int {
     return max
 }
 
+fun random(): Double {
+    return nextInt(0, 100) / 100.0
+}
+
 fun getRandomRange(max: Int, min: Int = 0): Int {
     return nextInt(max - min) + min
 }
