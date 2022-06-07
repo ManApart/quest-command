@@ -1,9 +1,6 @@
 package core.events
 
 import core.DependencyInjector
-import core.utility.getListenedForClass
-import kotlin.reflect.KClass
-import kotlin.reflect.typeOf
 
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values

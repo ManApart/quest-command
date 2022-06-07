@@ -1,8 +1,9 @@
 package traveling.position
 
-import core.utility.Math
+import core.utility.toDegrees
 import traveling.direction.Direction
 import kotlin.math.*
+import kotlin.math.abs
 
 val NO_VECTOR: Vector = Vector()
 
@@ -176,9 +177,9 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         val adjustedRads = if (rads < 0)
             abs(rads)
         else
-            2 * Math.PI - rads
+            2 * PI - rads
 
-        val degrees = Math.toDegrees(adjustedRads).toInt()
+        val degrees = toDegrees(adjustedRads).toInt()
         return if (degrees >= 270) {
             degrees - 270
         } else {

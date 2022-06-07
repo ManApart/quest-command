@@ -1,6 +1,7 @@
 package core.utility
 
 import kotlin.math.min
+import kotlin.random.Random.Default.nextInt
 
 fun max(vararg numbers: Int): Int {
     var max = numbers[0]
@@ -10,10 +11,14 @@ fun max(vararg numbers: Int): Int {
     return max
 }
 
-fun getRandomRange(max: Int, min: Int = 0) : Int {
-    return Math.nextInt(max-min) + min
+fun getRandomRange(max: Int, min: Int = 0): Int {
+    return nextInt(max - min) + min
 }
 
-fun Int.clamp(min: Int, max: Int): Int{
+fun toDegrees(radians: Double): Double {
+    return radians * 57.29577951308232
+}
+
+fun Int.clamp(min: Int, max: Int): Int {
     return max(min, min(max, this))
 }
