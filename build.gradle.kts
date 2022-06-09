@@ -98,6 +98,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
                 implementation("io.ktor:ktor-client-js:2.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
             }
         }
         val jsTest by getting
@@ -127,16 +128,16 @@ publishing {
             }
         }
     }
-    publications {
-        register<MavenPublication>("gpr") {
-            from(components["java"])
-        }
-
-        create<MavenPublication>("maven") {
-            groupId = "org.rak.manapart"
-            artifactId = "quest-command"
-            version = "SNAPSHOT"
-            from(components["java"])
-        }
-    }
+//    publications {
+//        register<MavenPublication>("gpr") {
+//            from(components["java"])
+//        }
+//
+//        create<MavenPublication>("maven") {
+//            groupId = "org.rak.manapart"
+//            artifactId = "quest-command"
+//            version = "SNAPSHOT"
+//            from(components["java"])
+//        }
+//    }
 }

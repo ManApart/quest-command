@@ -5,6 +5,7 @@ import core.history.TerminalPrinter
 import core.history.displayGlobal
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.engine.js.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
@@ -25,44 +26,72 @@ actual object WebClient {
     actual var latestInfo = ServerInfo()
 
     private fun buildWebClient(): HttpClient {
-        return HttpClient { install(ContentNegotiation) { json() } }
+        return HttpClient(Js) { install(ContentNegotiation) { json() } }
     }
 
-    actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
-        latestInfo = getServerInfo(host, port)
-        if (latestInfo.validServer) {
-            this.host = host
-            this.port = port
-            this.playerName = playerName
-            if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
-                latestInfo = createPlayer(playerName)
+
+    actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
+        getServerInfo(host, port) { info ->
+            latestInfo = info
+            if (latestInfo.validServer) {
+                this.host = host
+                this.port = port
+                this.playerName = playerName
+                if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
+                    GlobalScope.launch {
+                        latestInfo = createPlayer(playerName)
+                        callback(latestInfo)
+                    }
+                } else {
+                    callback(latestInfo)
+                }
+            } else {
+                callback(latestInfo)
             }
         }
-        return latestInfo
     }
 
-    actual fun getServerInfo(host: String, port: String): ServerInfo {
+    actual fun getServerInfo(host: String, port: String, callback: (ServerInfo) -> Unit) {
         latestInfo = ServerInfo()
-        try {
-            launch {
+        GlobalScope.launch {
+            try {
                 println("Launching")
                 latestInfo = client.get("$host:$port/info").body()
                 println("Got info: $latestInfo")
+            } catch (e: Exception) {
+                println("Caught exception $e")
+                ServerInfo()
             }
+            println("returning $latestInfo")
+            callback(latestInfo)
+        }
+    }
+
+    private suspend fun createPlayer(name: String): ServerInfo {
+        return try {
+            client.post("$host:$port/$name").body()
         } catch (e: Exception) {
-            println("Caught exception $e")
             ServerInfo()
         }
-        println("returning $latestInfo")
-        return latestInfo
     }
 
-    private fun createPlayer(name: String): ServerInfo {
-        throw NotImplementedError()
-    }
+    actual fun sendCommand(line: String, callback: (List<String>) -> Unit) {
+        GlobalScope.launch {
+            val responses = try {
+                val response: ServerResponse = client.post("$host:$port/$playerName/command") {
+                    parameter("start", latestResponse)
+                    parameter("startSub", latestSubResponse)
+                    setBody(line)
+                }.body()
 
-    actual fun sendCommand(line: String): List<String> {
-        throw NotImplementedError()
+                this@WebClient.latestResponse = response.latestResponse
+                this@WebClient.latestSubResponse = response.latestSubResponse
+                response.history
+            } catch (e: Exception) {
+                listOf("Unable to hit server.")
+            }
+            callback(responses)
+        }
     }
 
     actual fun pollForUpdates() {
@@ -84,8 +113,10 @@ actual object WebClient {
         }
     }
 
-    actual fun getServerHistory(): List<String> {
-        throw NotImplementedError()
+    actual fun getServerHistory(callback: (List<String>) -> Unit) {
+        GlobalScope.launch {
+            callback(getServerUpdates())
+        }
     }
 
     private suspend fun getServerUpdates(): List<String> {
@@ -104,24 +135,23 @@ actual object WebClient {
     }
 }
 
-suspend fun <T> Promise<T>.await(): T = suspendCoroutine<T> { cont ->
-    then { cont.resume(it) }
-}
+//suspend fun <T> Promise<T>.await(): T = suspendCoroutine<T> { cont ->
+//    then { cont.resume(it) }
+//}
+//
+//fun <T> async2(block: suspend () -> T) = Promise<T> { resolve, reject ->
+//    block.startCoroutine(object : Continuation<T> {
+//        override val context: CoroutineContext = EmptyCoroutineContext
+//
+//        override fun resumeWith(result: Result<T>) {
+//            resolve(result.getOrNull()!!)
+//        }
+//    })
+//}
 
-fun <T> async2(block: suspend () -> T) = Promise<T> { resolve, reject ->
-    block.startCoroutine(object : Continuation<T> {
-        override val context: CoroutineContext = EmptyCoroutineContext
-
-        override fun resumeWith(result: Result<T>) {
-            resolve(result.getOrNull()!!)
-        }
-    })
-}
-
-//This did not work
-fun launch(block: suspend () -> Unit): Unit {
-    block.startCoroutine(object : Continuation<Unit> {
-        override val context = EmptyCoroutineContext
-        override fun resumeWith(result: Result<Unit>) {}
-    })
-}
+//fun launch(block: suspend () -> Unit): Unit {
+//    block.startCoroutine(object : Continuation<Unit> {
+//        override val context = EmptyCoroutineContext
+//        override fun resumeWith(result: Result<Unit>) {}
+//    })
+//}

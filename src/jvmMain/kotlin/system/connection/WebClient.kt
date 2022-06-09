@@ -28,27 +28,30 @@ actual object WebClient {
         return HttpClient(CIO) { install(ContentNegotiation) { json() } }
     }
 
-    actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
-        latestInfo = getServerInfo(host, port)
-        if (latestInfo.validServer) {
-            this.host = host
-            this.port = port
-            this.playerName = playerName
-            if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
-                latestInfo = createPlayer(playerName)
+    actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
+        getServerInfo(host, port) { info ->
+            if (latestInfo.validServer) {
+                this.host = host
+                this.port = port
+                this.playerName = playerName
+                if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
+                    latestInfo = createPlayer(playerName)
+                }
             }
+            latestInfo = info
+            callback(latestInfo)
         }
-        return latestInfo
     }
 
-    actual fun getServerInfo(host: String, port: String): ServerInfo {
-        return try {
+    actual fun getServerInfo(host: String, port: String, callback: (ServerInfo) -> Unit) {
+        val info = try {
             runBlocking { client.get("$host:$port/info").body() }
         } catch (e: Exception) {
             ServerInfo()
         }.also {
             this.latestInfo = it
         }
+        callback(info)
     }
 
     private fun createPlayer(name: String): ServerInfo {
@@ -59,8 +62,8 @@ actual object WebClient {
         }
     }
 
-    actual fun sendCommand(line: String): List<String> {
-        return try {
+    actual fun sendCommand(line: String, callback: (List<String>) -> Unit) {
+        val responses = try {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
                     parameter("start", latestResponse)
@@ -74,6 +77,7 @@ actual object WebClient {
         } catch (e: Exception) {
             listOf("Unable to hit server.")
         }
+        callback(responses)
     }
 
     actual fun pollForUpdates() {
@@ -97,8 +101,8 @@ actual object WebClient {
         }
     }
 
-    actual fun getServerHistory(): List<String> {
-        return runBlocking { getServerUpdates() }
+    actual fun getServerHistory(callback: (List<String>) -> Unit) {
+        callback(runBlocking { getServerUpdates() })
     }
 
     private suspend fun getServerUpdates(): List<String> {

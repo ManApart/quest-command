@@ -21,10 +21,10 @@ expect object WebClient {
     var playerName: String
     var latestInfo: ServerInfo
 
-    fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo
-    fun getServerInfo(host: String = this.host, port: String = this.port): ServerInfo
-    fun sendCommand(line: String): List<String>
+    fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit)
+    fun getServerInfo(host: String = this.host, port: String = this.port, callback: (ServerInfo) -> Unit)
+    fun sendCommand(line: String, callback: (List<String>) -> Unit)
     fun pollForUpdates()
-    fun getServerHistory(): List<String>
+    fun getServerHistory(callback: (List<String>) -> Unit)
 
 }
