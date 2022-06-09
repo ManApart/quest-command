@@ -134,24 +134,3 @@ actual object WebClient {
         }
     }
 }
-
-//suspend fun <T> Promise<T>.await(): T = suspendCoroutine<T> { cont ->
-//    then { cont.resume(it) }
-//}
-//
-//fun <T> async2(block: suspend () -> T) = Promise<T> { resolve, reject ->
-//    block.startCoroutine(object : Continuation<T> {
-//        override val context: CoroutineContext = EmptyCoroutineContext
-//
-//        override fun resumeWith(result: Result<T>) {
-//            resolve(result.getOrNull()!!)
-//        }
-//    })
-//}
-
-//fun launch(block: suspend () -> Unit): Unit {
-//    block.startCoroutine(object : Continuation<Unit> {
-//        override val context = EmptyCoroutineContext
-//        override fun resumeWith(result: Result<Unit>) {}
-//    })
-//}

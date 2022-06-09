@@ -133,11 +133,5 @@ publishing {
 //            from(components["java"])
 //        }
 //
-//        create<MavenPublication>("maven") {
-//            groupId = "org.rak.manapart"
-//            artifactId = "quest-command"
-//            version = "SNAPSHOT"
-//            from(components["java"])
-//        }
 //    }
 }
