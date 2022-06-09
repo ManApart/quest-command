@@ -28,7 +28,6 @@ fun Document.startClient() {
         if (keyboardEvent.key == "Enter") {
             CommandParsers.parseCommand(GameState.player, prompt.value)
             prompt.value = ""
-            EventManager.executeEvents()
             print(outputDiv)
         }
     }

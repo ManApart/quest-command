@@ -15,7 +15,7 @@ class CommandParser(private val commandSource: Player) {
 
     fun parseInitialCommand(args: Array<String>) {
         val initialCommand = if (args.isEmpty()) {
-            "look all"
+            "help general"
         } else {
             args.joinToString(" ")
         }
