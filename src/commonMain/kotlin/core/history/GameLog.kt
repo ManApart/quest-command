@@ -32,7 +32,6 @@ class GameLog(val listener: Player) {
     }
 
     fun print(message: String) {
-        println("Got message $message")
         if (current == null) current = InputOutput()
         current!!.outPut.add(message)
         if (GameState.properties.values.getBoolean(PRINT_WITHOUT_FLUSH) && GameLogger.getMainHistory() == this) println(message)

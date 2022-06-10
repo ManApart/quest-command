@@ -4,8 +4,6 @@ import core.Player
 import core.commands.Command
 import core.commands.removeAll
 import core.events.EventManager
-import core.history.displayToMe
-import system.connection.WebClient.port
 
 class ConnectCommand : Command() {
     override fun getAliases(): List<String> {

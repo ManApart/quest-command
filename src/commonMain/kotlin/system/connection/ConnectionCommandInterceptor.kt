@@ -2,19 +2,11 @@ package system.connection
 
 import core.Player
 import core.commands.CommandInterceptor
-import core.history.displayToMe
 
-class ConnectionCommandInterceptor : CommandInterceptor {
-    override fun ignoredCommands(): List<String> {
-        return listOf("Disconnect", "Connect", "Play", "Be", "Quit")
-    }
+val ignoredConnectionCommands = listOf("Disconnect", "Connect", "Play", "Be", "Quit")
 
-    override fun parseCommand(source: Player, line: String) {
-        WebClient.sendCommand(line) { history ->
-            history.forEach {
-                source.displayToMe(it)
-            }
-        }
-    }
+expect class ConnectionCommandInterceptor : CommandInterceptor {
+    override fun ignoredCommands(): List<String>
+    override fun parseCommand(source: Player, line: String)
 
 }

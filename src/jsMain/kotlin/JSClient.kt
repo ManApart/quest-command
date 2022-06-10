@@ -7,11 +7,13 @@ import core.history.InputOutput
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
+import kotlin.js.Promise
 
 fun main() {
     window.onload = { document.startClient() }

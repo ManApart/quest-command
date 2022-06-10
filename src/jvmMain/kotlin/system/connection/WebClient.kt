@@ -14,44 +14,41 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-actual object WebClient {
+ object WebClient {
     private val client by lazy { buildWebClient() }
-    actual var doPolling = false
-    actual var host = "http://localhost"
-    actual var port = "8080"
-    actual var latestResponse = 0
-    actual var latestSubResponse = 0
-    actual var playerName = "Player"
-    actual var latestInfo = ServerInfo()
+     var doPolling = false
+     var host = "http://localhost"
+     var port = "8080"
+     var latestResponse = 0
+     var latestSubResponse = 0
+     var playerName = "Player"
+     var latestInfo = ServerInfo()
 
     private fun buildWebClient(): HttpClient {
         return HttpClient(CIO) { install(ContentNegotiation) { json() } }
     }
 
-    actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
-        getServerInfo(host, port) { info ->
-            if (latestInfo.validServer) {
-                this.host = host
-                this.port = port
-                this.playerName = playerName
-                if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
-                    latestInfo = createPlayer(playerName)
-                }
+     fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
+        latestInfo = getServerInfo(host, port)
+        if (latestInfo.validServer) {
+            this.host = host
+            this.port = port
+            this.playerName = playerName
+            if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
+                latestInfo = createPlayer(playerName)
             }
-            latestInfo = info
-            callback(latestInfo)
         }
+        return latestInfo
     }
 
-    actual fun getServerInfo(host: String, port: String, callback: (ServerInfo) -> Unit) {
-        val info = try {
+     fun getServerInfo(host: String = this.host, port: String = this.port): ServerInfo {
+        return try {
             runBlocking { client.get("$host:$port/info").body() }
         } catch (e: Exception) {
             ServerInfo()
         }.also {
             this.latestInfo = it
         }
-        callback(info)
     }
 
     private fun createPlayer(name: String): ServerInfo {
@@ -62,8 +59,8 @@ actual object WebClient {
         }
     }
 
-    actual fun sendCommand(line: String, callback: (List<String>) -> Unit) {
-        val responses = try {
+     fun sendCommand(line: String): List<String> {
+        return try {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
                     parameter("start", latestResponse)
@@ -77,10 +74,10 @@ actual object WebClient {
         } catch (e: Exception) {
             listOf("Unable to hit server.")
         }
-        callback(responses)
     }
 
-    actual fun pollForUpdates() {
+    //Currently not working correctly
+     fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {
             while (doPolling) {
@@ -101,8 +98,8 @@ actual object WebClient {
         }
     }
 
-    actual fun getServerHistory(callback: (List<String>) -> Unit) {
-        callback(runBlocking { getServerUpdates() })
+     fun getServerHistory(): List<String> {
+        return runBlocking { getServerUpdates() }
     }
 
     private suspend fun getServerUpdates(): List<String> {

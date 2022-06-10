@@ -12,22 +12,22 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.*
 
 
-actual object WebClient {
+ object WebClient {
     private val client by lazy { buildWebClient() }
-    actual var doPolling = false
-    actual var host = "http://localhost"
-    actual var port = "8080"
-    actual var latestResponse = 0
-    actual var latestSubResponse = 0
-    actual var playerName = "Player"
-    actual var latestInfo = ServerInfo()
+     var doPolling = false
+     var host = "http://localhost"
+     var port = "8080"
+     var latestResponse = 0
+     var latestSubResponse = 0
+     var playerName = "Player"
+     var latestInfo = ServerInfo()
 
     private fun buildWebClient(): HttpClient {
         return HttpClient(Js) { install(ContentNegotiation) { json() } }
     }
 
 
-    actual fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
+     fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
         getServerInfo(host, port) { info ->
             latestInfo = info
             if (latestInfo.validServer) {
@@ -48,7 +48,7 @@ actual object WebClient {
         }
     }
 
-    actual fun getServerInfo(host: String, port: String, callback: (ServerInfo) -> Unit) {
+     fun getServerInfo(host: String = this.host, port: String = this.port, callback: (ServerInfo) -> Unit) {
         latestInfo = ServerInfo()
         GlobalScope.launch {
             try {
@@ -68,7 +68,7 @@ actual object WebClient {
         }
     }
 
-    actual fun sendCommand(line: String, callback: (List<String>) -> Unit) {
+     fun sendCommand(line: String, callback: (List<String>) -> Unit) {
         GlobalScope.launch {
             val responses = try {
                 val response: ServerResponse = client.post("$host:$port/$playerName/command") {
@@ -88,7 +88,7 @@ actual object WebClient {
         }
     }
 
-    actual fun pollForUpdates() {
+     fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {
             while (doPolling) {
@@ -105,7 +105,7 @@ actual object WebClient {
         }
     }
 
-    actual fun getServerHistory(callback: (List<String>) -> Unit) {
+     fun getServerHistory(callback: (List<String>) -> Unit) {
         GlobalScope.launch {
             callback(getServerUpdates())
         }
