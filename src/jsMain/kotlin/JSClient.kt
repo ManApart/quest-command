@@ -4,23 +4,24 @@ import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
+import core.history.displayToMe
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
-import kotlin.js.Promise
+
+private lateinit var outputDiv: Element
 
 fun main() {
     window.onload = { document.startClient() }
 }
 
 fun Document.startClient() {
-    val outputDiv = getElementById("output-block")!!
+    outputDiv = getElementById("output-block")!!
     val prompt = getElementById("prompt")!! as HTMLInputElement
     // TODO Autocomplete
     outputDiv.innerHTML = "Loading..."
@@ -28,26 +29,28 @@ fun Document.startClient() {
     GameManager.newOrLoadGame()
     EventManager.executeEvents()
     CommandParsers.parseInitialCommand(GameState.player)
-    print(outputDiv)
+    updateOutput()
     window.onkeypress = { keyboardEvent ->
-        println(keyboardEvent.key)
         if (keyboardEvent.key == "Enter") {
             CommandParsers.parseCommand(GameState.player, prompt.value)
             prompt.value = ""
-            print(outputDiv)
-        }
-    }
-    //Poll log for updates from callbacks
-    GlobalScope.launch {
-        while (true){
-            print(outputDiv)
-            delay(500)
+            updateOutput()
         }
     }
     scrollToBottom()
 }
 
-private fun print(outputDiv: Element) {
+fun addHistoryMessageAfterCallback(message: String){
+    /*
+        The history was closed while we were doing the callback, so we need to add to the previous history
+        Then refresh the page with the output
+     */
+    val histories = GameLogger.getMainHistory().history
+    histories[histories.size-1].outPut.add(message)
+    updateOutput()
+}
+
+fun updateOutput() {
     outputDiv.innerHTML = GameLogger.getMainHistory().history.joinToString("<br>") { it.toHtml() }
     scrollToBottom()
 }

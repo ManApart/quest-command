@@ -1,8 +1,8 @@
 package system.connection
 
+import addHistoryMessageAfterCallback
 import core.Player
 import core.commands.CommandInterceptor
-import core.history.displayToMe
 
 actual class ConnectionCommandInterceptor : CommandInterceptor {
     actual override fun ignoredCommands(): List<String> {
@@ -12,8 +12,7 @@ actual class ConnectionCommandInterceptor : CommandInterceptor {
     actual override fun parseCommand(source: Player, line: String) {
         WebClient.sendCommand(line) { responses ->
             responses.forEach {
-                source.displayToMe(it)
-                //TODO - instead add to list of current output
+                addHistoryMessageAfterCallback(it)
             }
         }
     }

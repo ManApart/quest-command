@@ -1,5 +1,6 @@
 package system.connection
 
+import addHistoryMessageAfterCallback
 import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.displayGlobal
@@ -84,7 +85,6 @@ import kotlinx.coroutines.*
                 listOf("Unable to hit server.")
             }
             callback(responses)
-            GameLogger.endCurrent()
         }
     }
 
@@ -95,9 +95,7 @@ import kotlinx.coroutines.*
                 if (latestInfo.validServer) {
                     val updates = getServerUpdates()
                     if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
-                        updates.forEach { displayGlobal(it) }
-                        GameLogger.endCurrent()
-                        TerminalPrinter.print()
+                        updates.forEach { addHistoryMessageAfterCallback(it) }
                     }
                     delay(1000)
                 }
