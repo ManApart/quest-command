@@ -10,9 +10,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.*
-import system.connection.WebClient.doPolling
-import kotlin.coroutines.*
-import kotlin.js.Promise
 
 
 actual object WebClient {
@@ -55,14 +52,10 @@ actual object WebClient {
         latestInfo = ServerInfo()
         GlobalScope.launch {
             try {
-                println("Launching")
                 latestInfo = client.get("$host:$port/info").body()
-                println("Got info: $latestInfo")
             } catch (e: Exception) {
-                println("Caught exception $e")
                 ServerInfo()
             }
-            println("returning $latestInfo")
             callback(latestInfo)
         }
     }
@@ -91,6 +84,7 @@ actual object WebClient {
                 listOf("Unable to hit server.")
             }
             callback(responses)
+            GameLogger.endCurrent()
         }
     }
 
@@ -99,15 +93,13 @@ actual object WebClient {
         GlobalScope.launch {
             while (doPolling) {
                 if (latestInfo.validServer) {
-                    withContext(Dispatchers.Default) {
-                        val updates = getServerUpdates()
-                        if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
-                            updates.forEach { displayGlobal(it) }
-                            GameLogger.endCurrent()
-                            TerminalPrinter.print()
-                        }
-                        delay(1000)
+                    val updates = getServerUpdates()
+                    if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
+                        updates.forEach { displayGlobal(it) }
+                        GameLogger.endCurrent()
+                        TerminalPrinter.print()
                     }
+                    delay(1000)
                 }
             }
         }

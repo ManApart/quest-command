@@ -6,6 +6,9 @@ import core.history.GameLogger
 import core.history.InputOutput
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
@@ -25,10 +28,18 @@ fun Document.startClient() {
     CommandParsers.parseInitialCommand(GameState.player)
     print(outputDiv)
     window.onkeypress = { keyboardEvent ->
+        println(keyboardEvent.key)
         if (keyboardEvent.key == "Enter") {
             CommandParsers.parseCommand(GameState.player, prompt.value)
             prompt.value = ""
             print(outputDiv)
+        }
+    }
+    //Poll log for updates from callbacks
+    GlobalScope.launch {
+        while (true){
+            print(outputDiv)
+            delay(500)
         }
     }
     scrollToBottom()
