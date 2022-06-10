@@ -1,9 +1,6 @@
 package system.connection
 
 import addHistoryMessageAfterCallback
-import core.history.GameLogger
-import core.history.TerminalPrinter
-import core.history.displayGlobal
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.js.*

@@ -46,6 +46,13 @@ java -jar ./build/libs/quest-command-dev.jar
 
 `gradlew jsBrowserDevelopmentRun`
 
+
+### Pushing to web
+
+```
+aws s3 sync build/distributions/ s3://austinkucera.com/games/quest-command/
+```
+
 ### Visual Git Log
 
 `gource -a 1 -s 1 --file-idle-time 0 --key -f`

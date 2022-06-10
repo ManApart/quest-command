@@ -76,6 +76,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+                implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
             }
         }
         val commonTest by getting {
@@ -86,6 +89,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("org.reflections:reflections:0.10.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
                 implementation("io.ktor:ktor-client-cio:2.0.1")
             }
@@ -96,7 +100,6 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
                 implementation("io.ktor:ktor-client-js:2.0.1")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
             }
         }
         val jsTest by getting
