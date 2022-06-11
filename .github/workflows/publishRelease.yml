@@ -32,7 +32,7 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ./build/libs/quest-command-dev.jar
+          artifacts: ./build/libs/quest-command-jvm-dev.jar
           token: ${{ secrets.RELEASE_TOKEN }}
       - name: Publish package
         env:
