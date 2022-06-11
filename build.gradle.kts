@@ -129,8 +129,8 @@ publishing {
             }
         }
     }
-    publications {
-        register<MavenPublication>("gpr") {
-        }
-    }
+//    publications {
+//        register<MavenPublication>("gpr") {
+//        }
+//    }
 }
