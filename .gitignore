@@ -139,3 +139,4 @@ bin/
 
 .idea/
 hidden-gradle.properties
+kotlin-js-store/

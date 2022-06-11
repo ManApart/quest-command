@@ -1,107 +1,121 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+@file:Suppress("UNUSED_VARIABLE")
 
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("multiplatform") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
     `maven-publish`
-    kotlin("plugin.serialization") version "1.6.10"
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
+    maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
 
-dependencies {
-    implementation("org.reflections:reflections:0.10.2")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("io.ktor:ktor-client-core:2.0.0")
-    implementation("io.ktor:ktor-client-cio:2.0.0")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+kotlin {
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+        withJava()
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.10")
+        sourceSets {
+            val jvmTestIntegration by creating {
+                dependsOn(sourceSets["jvmMain"])
+            }
+            val jvmTools by creating {
+                dependsOn(sourceSets["jvmMain"])
+            }
+        }
+        compilations {
+            val main by getting
+            val testIntegration by compilations.creating {
+                defaultSourceSet {
+                    dependencies {
+                        implementation(main.compileDependencyFiles + main.output.classesDirs)
+                        implementation(kotlin("test-junit"))
+                    }
+                }
+                tasks.register<Test>("test-integration") {
+                    group = "verification"
+                    description = "Runs the integration tests."
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    testClassesDirs = output.classesDirs
+                }
+            }
+            val tools by compilations.creating {
+                defaultSourceSet {
+                    dependencies {
+                        implementation(main.compileDependencyFiles + main.output.classesDirs)
+                    }
+                }
+                tasks.register<JavaExec>("buildData") {
+                    group = "build"
+                    description = "Apply reflection to do build time code generation."
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    setMain("building.AppBuilder")
+                }
+            }
+        }
+    }
+    js(LEGACY) {
+        binaries.executable()
+        browser {
+            commonWebpackConfig {
+                cssSupport.enabled = true
+            }
+            runTask {
+                devServer = devServer?.copy(port = 3000)
+            }
+        }
+    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+                implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation("org.reflections:reflections:0.10.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+                implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
+                implementation("io.ktor:ktor-client-cio:2.0.1")
+            }
+        }
+        val jvmTest by getting
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
+                implementation("io.ktor:ktor-client-js:2.0.1")
+            }
+        }
+        val jsTest by getting
+    }
+
+    task("test-all") {
+        description = "Run unit AND integration tests"
+        dependsOn("test")
+        dependsOn("test-integration")
+    }
 }
 
-sourceSets.getByName("main") {
-    java.srcDir("src/main/kotlin")
-    resources.srcDir("src/main/resource")
-}
-
-sourceSets.getByName("test") {
-    java.srcDir("src/test/kotlin")
-    resources.srcDir("src/test/resource")
-}
-
-sourceSets.create("tools") {
-    val main = sourceSets["main"]
-    java.srcDir("src/tools/kotlin")
-
-    compileClasspath += main.output + main.compileClasspath
-    runtimeClasspath += output + compileClasspath
-}
-
-sourceSets.create("integrationTest") {
-    val main = sourceSets["main"]
-    val tools = sourceSets["tools"]
-
-    java.srcDir("src/test-integration/kotlin")
-    resources.srcDir("src/test-integration/resource")
-
-    compileClasspath += main.output + tools.output + main.compileClasspath + tools.compileClasspath + configurations["testRuntimeClasspath"]
-    runtimeClasspath += output + compileClasspath + sourceSets["test"].runtimeClasspath
-}
-
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    languageVersion = "1.5"
-    jvmTarget = "11"
-}
-
-task("buildData", type = JavaExec::class) {
-    main = "building.AppBuilder"
-    classpath = sourceSets["tools"].runtimeClasspath
-}
-
-tasks.getByName<Test>("test"){
+tasks.getByName<Test>("test") {
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
-}
-
-
-task("test-integration", type = Test::class) {
-    val integration = sourceSets["integrationTest"]
-    description = "Runs the integration tests."
-    group = "verification"
-    testClassesDirs = integration.output.classesDirs
-    classpath = integration.runtimeClasspath
-    testLogging {
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-    }
-
-    outputs.upToDateWhen { false }
-    mustRunAfter(tasks["test"])
-}
-
-task("test-all") {
-    description = "Run unit AND integration tests"
-    dependsOn("test")
-    dependsOn("test-integration")
-}
-
-tasks.withType<Jar> {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    manifest {
-        attributes["Main-Class"] = "QuestCommandKt"
-    }
-    from(sourceSets.main.get().output)
-    dependsOn(configurations.runtimeClasspath)
-    from({
-        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
-    })
-
 }
 
 publishing {
@@ -117,14 +131,6 @@ publishing {
     }
     publications {
         register<MavenPublication>("gpr") {
-            from(components["java"])
-        }
-
-        create<MavenPublication>("maven") {
-            groupId = "org.rak.manapart"
-            artifactId = "quest-command"
-            version = "SNAPSHOT"
-            from(components["java"])
         }
     }
 }
