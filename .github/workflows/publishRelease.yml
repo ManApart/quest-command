@@ -34,13 +34,13 @@ jobs:
         with:
           artifacts: ./build/libs/quest-command-jvm-dev.jar
           token: ${{ secrets.RELEASE_TOKEN }}
-      - name: Publish package
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
-          echo "New version: ${NEW_VERSION}"
-          ./gradlew -Pversion=${NEW_VERSION} publish
+#      - name: Publish package
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
+#          echo "New version: ${NEW_VERSION}"
+#          ./gradlew -Pversion=${NEW_VERSION} publish
       - name: Docker Build
         run: docker build . -t manapart/quest-command:${GITHUB_REF#refs/*/}
       - name: Login to DockerHub
