@@ -10,13 +10,11 @@ See the [wiki](https://github.com/ManApart/QuestCommand/wiki) for more informati
 
 ### Building
 
- > Needs Updating with Multiplatform
+Run `gradlew buildData`. This creates and updates some files via reflection so that they don't need to be done at runtime. This only needs to be re-run when you change certain files (like adding new commands, events, event listeners, etc)
 
-Run `gradlew buildData`. This generates json files etc so that they don't need to be done at runtime. This only needs to be re-run when you change certain files (like adding new commands, events, event listeners, changing json, etc)
+Run `gradlew build` to build a jar. This should be found in `QuestCommand/build/libs`
 
-Run `gradlew build jar` to build a jar. This should be found in `QuestCommand/build/libs` (`quest-command-1.0-SNAPSHOT`)
-
-Run `gradlew publishToMavenLocal` to push to local maven for other projects to consume
+Run `gradlew publishToMavenLocal` to push to local maven for other projects to consume. `implementation("org.rak.manapart:quest-command:dev")`
 
 #### Gradle failing to build
 `./gradlew: 68: Syntax error: word unexpected (expecting "in")` is due to [differences between windows and linux](https://stackoverflow.com/questions/55342922/gradle-gradlew-expecting-in) and can be solved by `sed -i.bak 's/\r$//' gradlew`
@@ -24,22 +22,17 @@ Run `gradlew publishToMavenLocal` to push to local maven for other projects to c
 #### PackageName Unresolved
 Getting `Unresolved reference: packageName`? You're probably running gradle on something less than 11. Check `java -version` on the terminal and Settings > Build Execution Deployment > Gradle has Gradle JVM set appropriately
 
-#### Checking for later versions
-Run `./gradlew dependencyUpdates` to check for later versions of dependencies
-
 ### Running
 Try any one of the below: 
 
-> Needs updated per multiplatform!
-
-A) Grab a release from [github](https://github.com/ManApart/QuestCommand/releases) and run `java -jar ./quest-command-dev.jar`
+A) Grab a release from [github](https://github.com/ManApart/QuestCommand/releases) and run `java -jar ./quest-command-jvm-dev.jar`
 
 B) Grab the image from [docker hub](https://hub.docker.com/repository/docker/manapart/quest-command) and run `docker run -it manapart/quest-command:stable`
 
 C) Clone the project and build it.
 ```
-./gradlew build jvmJar
-java -jar ./build/libs/quest-command-dev.jar
+./gradlew build
+java -jar ./build/libs/quest-command-jvm-dev.jar
 ```
 
 #### Running in the browser
@@ -50,6 +43,7 @@ java -jar ./build/libs/quest-command-dev.jar
 ### Pushing to web
 
 ```
+./gradlew jsBrowserDistribution 
 aws s3 sync build/distributions/ s3://austinkucera.com/games/quest-command/
 ```
 
