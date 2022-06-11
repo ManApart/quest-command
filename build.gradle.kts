@@ -129,10 +129,8 @@ publishing {
             }
         }
     }
-//    publications {
-//        register<MavenPublication>("gpr") {
-//            from(components["java"])
-//        }
-//
-//    }
+    publications {
+        register<MavenPublication>("gpr") {
+        }
+    }
 }
