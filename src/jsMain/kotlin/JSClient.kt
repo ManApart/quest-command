@@ -1,6 +1,7 @@
 import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
+import core.commands.suggestions
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
@@ -78,17 +79,6 @@ private fun clearScreen() {
     updateOutput()
 }
 
-private fun tabHint() {
-    val input = prompt.value.lowercase().split(" ").lastOrNull()
-    if (!input.isNullOrBlank()) {
-        suggestions = listOf("Option", "Option2", "Suggestion", "Idea").filter {
-            val option = it.lowercase()
-            option.startsWith(input)
-        }
-        suggestionsDiv.innerHTML = suggestions.joinToString(" ")
-    }
-}
-
 private fun tabComplete() {
     prompt.focus()
     val input = prompt.value.split(" ").lastOrNull()
@@ -101,6 +91,17 @@ private fun tabComplete() {
             else -> {}
         }
         tabHint()
+    }
+}
+
+private fun tabHint() {
+    val input = prompt.value.lowercase().split(" ").lastOrNull()
+    if (!input.isNullOrBlank()) {
+        suggestions = suggestions(prompt.value.lowercase()).filter {
+            val option = it.lowercase()
+            option.startsWith(input)
+        }
+        suggestionsDiv.innerHTML = suggestions.joinToString(" ")
     }
 }
 
