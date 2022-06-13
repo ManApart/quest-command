@@ -9,7 +9,16 @@ import core.history.TerminalPrinter
 fun main(args: Array<String>) {
     GameManager.newOrLoadGame()
     EventManager.executeEvents()
-    CommandParsers.parseInitialCommand(GameState.player, args)
+        runInGui()
+//    if (args.contains("windowed")) {
+//        runInGui()
+//    } else {
+//        runInTerminal()
+//    }
+}
+
+private fun runInTerminal() {
+    CommandParsers.parseInitialCommand(GameState.player)
     TerminalPrinter.print()
     while (GameManager.playing) {
         CommandParsers.parseCommand(GameState.player, readLine() ?: "")

@@ -19,7 +19,7 @@ class StartupTest {
         timer.printElapsed("Listeners Registered")
         GameManager.newGame()
         timer.printElapsed("New Game Started")
-        CommandParsers.parseInitialCommand(GameState.player, arrayOf())
+        CommandParsers.parseInitialCommand(GameState.player)
         timer.printElapsed("Initial Command Parsed")
     }
 

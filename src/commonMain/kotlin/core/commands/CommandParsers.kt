@@ -82,13 +82,8 @@ object CommandParsers {
         return groups.toSortedMap()
     }
 
-    fun parseInitialCommand(player: Player, args: Array<String> = arrayOf()) {
-        parseInitialCommand(args, player.name)
-    }
-
-    //TODO - delete these and just use player version
-    fun parseInitialCommand(args: Array<String>, name: String) {
-        parsers[name]?.parseInitialCommand(args)
+    fun parseInitialCommand(player: Player) {
+        parsers[player.name]?.parseInitialCommand()
     }
 
     fun parseCommand(player: Player, line: String) {

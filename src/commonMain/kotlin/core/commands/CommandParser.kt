@@ -13,13 +13,8 @@ class CommandParser(private val commandSource: Player) {
     private var responseRequest: ResponseRequest? = null
     var commandInterceptor: CommandInterceptor? = null
 
-    fun parseInitialCommand(args: Array<String>) {
-        val initialCommand = if (args.isEmpty()) {
-            "help general"
-        } else {
-            args.joinToString(" ")
-        }
-        parseCommand(initialCommand)
+    fun parseInitialCommand() {
+        parseCommand("help general")
     }
 
     fun parseCommand(line: String) {
