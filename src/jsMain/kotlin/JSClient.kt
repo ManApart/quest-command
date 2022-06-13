@@ -1,10 +1,10 @@
 import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
-import core.commands.suggestions
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
+import core.utility.minOverlap
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.Document
@@ -31,7 +31,7 @@ fun Document.startClient() {
     CommandParsers.parseInitialCommand(GameState.player)
     updateOutput()
     window.onkeyup = { keyboardEvent ->
-        println("Pressed " + keyboardEvent.key)
+//        println("Pressed " + keyboardEvent.key)
         when (keyboardEvent.key) {
             "Enter" -> {
                 val input = prompt.value
@@ -85,29 +85,28 @@ private fun tabComplete() {
     if (!input.isNullOrBlank()) {
         val prePrompt = prompt.value.substring(0, prompt.value.indexOf(input))
         val overlap = suggestions.minOverlap()
+        println("Suggestions: ${suggestions.joinToString()}")
         when {
             suggestions.size == 1 -> prompt.value = prePrompt + suggestions.first()
             suggestions.size > 1 && overlap.length > input.length -> prompt.value = prePrompt + overlap
-            else -> {}
         }
         tabHint()
     }
 }
 
 private fun tabHint() {
-    val input = prompt.value.lowercase().split(" ").lastOrNull()
-    if (!input.isNullOrBlank()) {
-        suggestions = suggestions(prompt.value.lowercase()).filter {
-            val option = it.lowercase()
-            option.startsWith(input)
+    val input = prompt.value.lowercase()
+    val lastInput = input.split(" ").lastOrNull()
+    if (input.isNotBlank()) {
+        val allSuggestions = CommandParsers.suggestions(GameState.player, input)
+        suggestions = if (lastInput.isNullOrBlank()) {
+            allSuggestions
+        } else {
+            allSuggestions.filter {
+                val option = it.lowercase()
+                option.startsWith(lastInput)
+            }
         }
         suggestionsDiv.innerHTML = suggestions.joinToString(" ")
     }
-}
-
-private fun List<String>.minOverlap(): String {
-    if (isEmpty()) return ""
-    val example = first().toCharArray()
-    val overlap = minOf { it.toCharArray().mapIndexed { i, c -> if (example[i] == c) 1 else 0 }.count() }
-    return first().substring(0, overlap)
 }

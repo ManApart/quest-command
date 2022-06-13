@@ -11,6 +11,10 @@ abstract class Command : Named {
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>
 
+    open fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
+    }
+
     //Temporarily make both open until we phase this one out
     open fun execute(source: Thing, keyword: String, args: List<String>){}
 

@@ -4,6 +4,8 @@ import core.DependencyInjector
 import core.GameState
 import core.Player
 import core.utility.NameSearchableList
+import core.utility.removeFirstItem
+import core.utility.removeLastItem
 import core.utility.toSortedMap
 import magic.castSpell.CastCommand
 
@@ -13,6 +15,7 @@ object CommandParsers {
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private val parsers = mutableMapOf<String, CommandParser>()
+    private val commandNameList by lazy { commands.map { it.getAliases().first() } }
 
     init {
         GameState.players.values.forEach { addParser(it) }
@@ -28,7 +31,7 @@ object CommandParsers {
         parsers[player.name] = CommandParser(player)
     }
 
-    fun getParser(player: Player) : CommandParser {
+    fun getParser(player: Player): CommandParser {
         if (!parsers.containsKey(player.name)) {
             parsers[player.name] = CommandParser(player)
         }
@@ -102,6 +105,15 @@ object CommandParsers {
 
     fun cleanLine(line: String): List<String> {
         return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+    }
+
+    fun suggestions(player: Player, args: String): List<String> {
+        val input = cleanLine(args)
+        return if (commandNameList.map { it.lowercase() }.contains(input.first())) {
+            findCommand(input.first()).suggest(player, input.first(), input.removeFirstItem().removeLastItem())
+        } else {
+            commandNameList
+        }
     }
 
 }

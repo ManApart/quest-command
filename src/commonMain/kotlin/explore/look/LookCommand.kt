@@ -29,6 +29,11 @@ class LookCommand : Command() {
         return listOf("Explore")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        println("Suggesting")
+        return listOf("all", "body", "hand") + source.thing.currentLocation().getThings().map { it.name }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         when {
             keyword == "look" && args.isEmpty() -> clarifyThing(source)
