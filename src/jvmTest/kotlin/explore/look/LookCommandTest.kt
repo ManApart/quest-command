@@ -17,8 +17,32 @@ class LookCommandTest {
 
     @Test
     fun blankSuggest(){
-        val expected = listOf("all", "body", "hand", "Bob")
         val args = listOf<String>()
+        val expected = listOf("all", "body", "hand", "Player", "Bob")
+        val actual = LookCommand().suggest(GameState.player, "look", args)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun ofBody(){
+        val args = listOf("body")
+        val expected = listOf("of")
+        val actual = LookCommand().suggest(GameState.player, "look", args)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun ofHand(){
+        val args = listOf("hand")
+        val expected = listOf("of")
+        val actual = LookCommand().suggest(GameState.player, "look", args)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun ofThing(){
+        val args = listOf("hand", "of")
+        val expected = listOf("Player", "Bob")
         val actual = LookCommand().suggest(GameState.player, "look", args)
         assertEquals(expected, actual)
     }
