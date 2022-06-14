@@ -29,4 +29,8 @@ object WeatherManager {
         return weather.getOrNull(name) ?: DEFAULT_WEATHER
     }
 
+    fun getAllWeather(): List<Weather>{
+        return weather.toList()
+    }
+
 }

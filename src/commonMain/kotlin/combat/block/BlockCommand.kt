@@ -1,6 +1,7 @@
 package combat.block
 
 import combat.HandHelper
+import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseBodyParts
@@ -18,12 +19,20 @@ class BlockCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Block <direction> with <hand> - Attempt to block a direction with the item in your left/right hand. (Only works in battle).
+	Block <part> with <hand> - Attempt to block a direction with the item in your left/right hand. (Only works in battle).
 	You stop blocking next time you choose an action."""
     }
 
     override fun getCategory(): List<String> {
         return listOf("Combat")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> source.body.getParts().map { it.name }
+            args.last() == "with" -> listOf("right", "left") + source.body.getEquippedItems().map { it.name }
+            else -> listOf("with")
+        }
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

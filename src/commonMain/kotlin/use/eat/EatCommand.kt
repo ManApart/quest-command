@@ -6,6 +6,7 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import traveling.location.weather.WeatherManager
 import use.StartUseEvent
 
 class EatCommand : Command() {
@@ -24,6 +25,13 @@ class EatCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Interact")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> source.inventory.getAllItems().map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

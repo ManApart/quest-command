@@ -35,6 +35,10 @@ class TravelInDirectionCommand : Command() {
         return listOf("Traveling")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return Direction.values().map { it.name }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         if (keyword.lowercase() == "direction") {
             clarifyDirection(source)

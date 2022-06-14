@@ -9,6 +9,7 @@ import core.history.displayToMe
 import core.thing.Thing
 import core.thing.item.ItemManager
 import crafting.RecipeManager
+import traveling.direction.Direction
 
 class CookCommand : Command() {
 
@@ -27,6 +28,13 @@ class CookCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Crafting")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.contains("on") -> source.location.getLocation().findThingsByTag("Range").map { it.name }
+            else -> source.location.getLocation().getItemsIncludingPlayerInventory(source.thing).filter { source.thing.perceives(it) }.map { it.name }
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

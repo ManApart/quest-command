@@ -7,6 +7,7 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import traveling.location.weather.WeatherManager
 import traveling.position.Vector
 
 class DropItemCommand : core.commands.Command() {
@@ -27,6 +28,14 @@ class DropItemCommand : core.commands.Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Inventory")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> source.inventory.getAllItems().map { it.name }
+            args.size == 1 -> listOf("at")
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

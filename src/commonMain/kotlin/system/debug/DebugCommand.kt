@@ -1,6 +1,7 @@
 package system.debug
 
 import core.GameState
+import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.parseThingsFromLocation
@@ -8,6 +9,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import status.stat.StatKind
+import traveling.location.weather.WeatherManager
 
 class DebugCommand : Command() {
 
@@ -38,6 +40,16 @@ class DebugCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Debugging")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> listOf("list", "levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "stat", "prop", "tag", "weather")
+            args.last() in listOf("levelreq", "statchanges", "random", "map", "clarity", "displayupdates") -> listOf("on", "off")
+            args.last() == "weather" -> WeatherManager.getAllWeather().map { it.name }
+            args.last() == "on" -> source.location.getLocation().getThings().map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

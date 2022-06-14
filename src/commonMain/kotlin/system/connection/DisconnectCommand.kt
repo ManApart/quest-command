@@ -3,6 +3,7 @@ package system.connection
 import core.Player
 import core.commands.Command
 import core.events.EventManager
+import traveling.location.weather.WeatherManager
 
 class DisconnectCommand : Command() {
     override fun getAliases(): List<String> {
@@ -19,6 +20,10 @@ class DisconnectCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("System")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

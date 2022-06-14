@@ -35,6 +35,15 @@ class ClimbCommand : Command() {
         return listOf("Traveling")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() && source.thing.climbThing == null -> source.getPerceivedThingNames() + source.getPerceivedPartNames()
+            args.isEmpty() -> Direction.values().map { it.name } + listOf("to")
+            args.last() == "to" -> source.getPerceivedPartNames()
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)

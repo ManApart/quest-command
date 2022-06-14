@@ -22,11 +22,14 @@ class AliasCommand : Command() {
     Alias delete <word> - remove that alias.
     Hint: When creating a command you can use a single & to pipe multiple commands together. The single & will be replaced by && when the command is used.
         """
-
     }
 
     override fun getCategory(): List<String> {
         return listOf("System")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+            return listOf("list", "create", "delete")
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

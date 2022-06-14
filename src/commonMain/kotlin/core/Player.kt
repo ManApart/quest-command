@@ -32,4 +32,12 @@ data class Player(
     val inventory get() = thing.inventory
     val location get() = thing.location
     val position get() = thing.position
+
+    fun getPerceivedThingNames(): List<String> {
+        return location.getLocation().getThings().filter { thing.perceives(it) }.map { it.name }
+    }
+
+    fun getPerceivedPartNames(): List<String> {
+        return location.getLocation().getThings().filter { thing.perceives(it) }.flatMap { thing -> thing.body.getParts().map { it.name } }.toSet().toList()
+    }
 }
