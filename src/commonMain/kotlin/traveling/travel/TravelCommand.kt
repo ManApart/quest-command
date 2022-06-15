@@ -6,6 +6,7 @@ import core.commands.Command
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.displayToMe
+import traveling.location.RouteNeighborFinder
 import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
@@ -30,6 +31,14 @@ class TravelCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Traveling")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> listOf("to")
+            args.last() == "to" -> source.location.getNeighbors().map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

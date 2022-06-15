@@ -39,6 +39,17 @@ class AttackCommand : Command() {
         return listOf("Combat")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> source.getPerceivedThingNames() + source.getPerceivedPartNames()
+            args.last() == "with" -> listOf("right", "left") + source.body.getEquippedItems().map { it.name }
+            args.last() == "of" -> listOf("right", "left") + source.getPerceivedThingNames()
+            source.getPerceivedThingNames().contains(args.last()) -> listOf("with")
+            source.getPerceivedPartNames().contains(args.last()) -> listOf("of")
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val sourceT = source.thing
         if (keyword.lowercase() == "attack") {

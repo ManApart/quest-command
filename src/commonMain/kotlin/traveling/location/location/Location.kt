@@ -39,7 +39,7 @@ data class Location(
         NameSearchableList<Thing>(),
         NameSearchableList<Thing>(),
         Properties()
-    ){
+    ) {
         populateFromProtoLocation()
     }
 
@@ -179,6 +179,7 @@ data class Location(
         val baseThings = getThings()
         return baseThings + baseThings.flatMap { it.inventory.getAllItems() }
     }
+
     fun getThingsIncludingInventories(name: String): NameSearchableList<Thing> {
         return getThingsByName(getThingsIncludingInventories(), name)
     }
@@ -354,7 +355,7 @@ data class Location(
         return creatures.none { it.mind.ai.aggroThing == creature }
     }
 
-    private fun calcBounds(): Shape{
+    private fun calcBounds(): Shape {
         return Shape(locationNode.getNeighborConnections().map { it.source.vector } + getActivators().map { it.position })
     }
 
