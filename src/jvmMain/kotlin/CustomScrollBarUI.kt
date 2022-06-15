@@ -1,4 +1,3 @@
-import CSS.background
 import java.awt.*
 import javax.swing.JButton
 import javax.swing.JComponent

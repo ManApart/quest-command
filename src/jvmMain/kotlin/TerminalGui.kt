@@ -1,7 +1,4 @@
-import java.awt.BorderLayout
-import java.awt.Color
-import java.awt.Dimension
-import java.awt.Toolkit
+import java.awt.*
 import java.awt.event.*
 import javax.swing.JFrame
 import javax.swing.JPanel
@@ -15,6 +12,7 @@ object CSS {
     val text = Color(238, 238, 238)
     val mid = Color(65, 65, 65)
     val highlight = Color.gray
+    val font = Font("Monaco", Font.PLAIN, 20)
 }
 fun runInGui() {
     TerminalGui()
@@ -36,6 +34,7 @@ class TerminalGui : JFrame(){
             background = CSS.background
             foreground = CSS.text
             border = EmptyBorder(10, 10, 10, 10)
+            font = CSS.font
         }
         val outputScroll = JScrollPane(output).apply {
             verticalScrollBarPolicy = JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
@@ -52,6 +51,8 @@ class TerminalGui : JFrame(){
             background = CSS.background
             foreground = CSS.text
             border = EmptyBorder(10, 10, 10, 10)
+            font = CSS.font
+
             addFocusListener(object : FocusListener{
                 override fun focusGained(e: FocusEvent?) {
                     println("Focus gained")
@@ -76,6 +77,7 @@ class TerminalGui : JFrame(){
             background = CSS.background
             foreground = CSS.text
             border = EmptyBorder(10, 10, 10, 10)
+            font = CSS.font
         }
         bottomPart.add(suggestions, BorderLayout.SOUTH)
 
