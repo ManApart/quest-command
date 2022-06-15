@@ -9,12 +9,11 @@ import core.history.TerminalPrinter
 fun main(args: Array<String>) {
     GameManager.newOrLoadGame()
     EventManager.executeEvents()
+    if (args.contains("windowed")) {
         runInGui()
-//    if (args.contains("windowed")) {
-//        runInGui()
-//    } else {
-//        runInTerminal()
-//    }
+    } else {
+        runInTerminal()
+    }
 }
 
 private fun runInTerminal() {

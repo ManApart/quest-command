@@ -21,7 +21,7 @@ object CSS {
 }
 
 fun runInGui() {
-    CommandParsers.parseInitialCommand(GameState.player)
+    println("Starting gui")
     TerminalGui()
 }
 
@@ -83,7 +83,7 @@ class TerminalGui : JFrame() {
                 override fun keyTyped(e: KeyEvent) {}
                 override fun keyPressed(e: KeyEvent) {}
                 override fun keyReleased(e: KeyEvent) {
-                    println("released ${e.keyChar}")
+//                    println("released ${e.keyChar}")
                     tabHint()
                 }
             })
@@ -114,6 +114,7 @@ class TerminalGui : JFrame() {
             override fun focusLost(e: FocusEvent?) {}
         })
 
+        CommandParsers.parseInitialCommand(GameState.player)
         updateOutput()
         prompt.grabFocus()
         pack()
