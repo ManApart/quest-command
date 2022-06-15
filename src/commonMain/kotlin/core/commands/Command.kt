@@ -18,10 +18,6 @@ abstract class Command : Named {
     //Temporarily make both open until we phase this one out
     open fun execute(source: Thing, keyword: String, args: List<String>){}
 
-    open fun suggest(source: Player, keyword: String, args: List<String>): List<String>{
-        return listOf()
-    }
-
     open fun execute(source: Player, keyword: String, args: List<String>){
         execute(source.thing, keyword, args)
     }
