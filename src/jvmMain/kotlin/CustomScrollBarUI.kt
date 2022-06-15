@@ -25,21 +25,20 @@ class CustomScrollBarUI : BasicScrollBarUI() {
     override fun paintThumb(g: Graphics, c: JComponent, r: Rectangle) {
         val g2 = g.create() as Graphics2D
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
-        var color: Color? = null
         val sb = c as JScrollBar
-        color = if (!sb.isEnabled || r.width > r.height) {
-            return
-        } else if (isDragging) {
-            Color.DARK_GRAY // change color
-        } else if (isThumbRollover) {
-            Color.LIGHT_GRAY // change color
-        } else {
-            Color.GRAY // change color
+        if (!sb.isEnabled || r.width > r.height) return
+        val color = when {
+            isDragging -> mid
+            isThumbRollover -> highlight
+            else -> mid
         }
+
+        //Poor man's set background
+        g2.paint = background
+        g2.fillRect(0,0, 1000, 1000)
+
         g2.paint = color
         g2.fillRoundRect(r.x, r.y, r.width, r.height, 10, 10)
-        g2.paint = Color.WHITE
-        g2.drawRoundRect(r.x, r.y, r.width, r.height, 10, 10)
         g2.dispose()
     }
 

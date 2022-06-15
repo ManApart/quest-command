@@ -2,6 +2,7 @@ import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Toolkit
+import java.awt.event.*
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JScrollPane
@@ -9,15 +10,20 @@ import javax.swing.JTextArea
 import javax.swing.JTextField
 import javax.swing.border.EmptyBorder
 
+val background = Color(34, 34, 34)
+val text = Color(238, 238, 238)
+val mid = Color(65, 65, 65)
+val highlight = Color.gray
+
 fun runInGui() {
     TerminalGui()
 }
 
-class TerminalGui : JFrame() {
+class TerminalGui : JFrame(){
     init {
         title = "Quest Command"
         iconImage = Toolkit.getDefaultToolkit().getImage(this::class.java.getResource("favicon.png"))
-        setSize(1920, 1080)
+        setSize(1000, 500)
         isVisible = true
         defaultCloseOperation = EXIT_ON_CLOSE
         layout = BorderLayout()
@@ -44,6 +50,21 @@ class TerminalGui : JFrame() {
             background = Color.BLACK
             foreground = Color.WHITE
             border = EmptyBorder(10, 10, 10, 10)
+            addFocusListener(object : FocusListener{
+                override fun focusGained(e: FocusEvent?) {
+                    println("Focus gained")
+                }
+
+                override fun focusLost(e: FocusEvent?) {
+                    this@apply.grabFocus()
+                }
+
+            })
+            addActionListener {
+                println("action performend $it")
+                output.append(text)
+                text = ""
+            }
         }
         bottomPart.add(prompt, BorderLayout.CENTER)
 
