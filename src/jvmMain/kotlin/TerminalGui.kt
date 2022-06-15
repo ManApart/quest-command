@@ -2,8 +2,6 @@ import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Dimension
 import java.awt.Toolkit
-import javax.swing.GroupLayout
-import javax.swing.ImageIcon
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JScrollPane
@@ -30,12 +28,13 @@ class TerminalGui : JFrame() {
             lineWrap = true
             background = Color.black
             foreground = Color.white
-            border = EmptyBorder(10,10,10,10)
+            border = EmptyBorder(10, 10, 10, 10)
         }
         val outputScroll = JScrollPane(output).apply {
             verticalScrollBarPolicy = JScrollPane.VERTICAL_SCROLLBAR_ALWAYS
             preferredSize = Dimension(400, 400)
             border = null
+            verticalScrollBar.setUI(CustomScrollBarUI())
         }
         contentPane.add(outputScroll, BorderLayout.CENTER)
 
@@ -44,7 +43,7 @@ class TerminalGui : JFrame() {
         val prompt = JTextField("Inital").apply {
             background = Color.BLACK
             foreground = Color.WHITE
-            border = EmptyBorder(10,10,10,10)
+            border = EmptyBorder(10, 10, 10, 10)
         }
         bottomPart.add(prompt, BorderLayout.CENTER)
 
@@ -53,7 +52,7 @@ class TerminalGui : JFrame() {
             lineWrap = true
             background = Color.black
             foreground = Color.white
-            border = EmptyBorder(10,10,10,10)
+            border = EmptyBorder(10, 10, 10, 10)
         }
         bottomPart.add(suggestions, BorderLayout.SOUTH)
 
