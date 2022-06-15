@@ -1,3 +1,4 @@
+import CSS.background
 import java.awt.*
 import javax.swing.JButton
 import javax.swing.JComponent
@@ -28,14 +29,10 @@ class CustomScrollBarUI : BasicScrollBarUI() {
         val sb = c as JScrollBar
         if (!sb.isEnabled || r.width > r.height) return
         val color = when {
-            isDragging -> mid
-            isThumbRollover -> highlight
-            else -> mid
+            isDragging -> CSS.mid
+            isThumbRollover -> CSS.highlight
+            else -> CSS.mid
         }
-
-        //Poor man's set background
-        g2.paint = background
-        g2.fillRect(0,0, 1000, 1000)
 
         g2.paint = color
         g2.fillRoundRect(r.x, r.y, r.width, r.height, 10, 10)

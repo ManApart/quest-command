@@ -10,11 +10,12 @@ import javax.swing.JTextArea
 import javax.swing.JTextField
 import javax.swing.border.EmptyBorder
 
-val background = Color(34, 34, 34)
-val text = Color(238, 238, 238)
-val mid = Color(65, 65, 65)
-val highlight = Color.gray
-
+object CSS {
+    val background = Color(34, 34, 34)
+    val text = Color(238, 238, 238)
+    val mid = Color(65, 65, 65)
+    val highlight = Color.gray
+}
 fun runInGui() {
     TerminalGui()
 }
@@ -32,8 +33,8 @@ class TerminalGui : JFrame(){
         val output = JTextArea(sampleText).apply {
             isEditable = false
             lineWrap = true
-            background = Color.black
-            foreground = Color.white
+            background = CSS.background
+            foreground = CSS.text
             border = EmptyBorder(10, 10, 10, 10)
         }
         val outputScroll = JScrollPane(output).apply {
@@ -41,14 +42,15 @@ class TerminalGui : JFrame(){
             preferredSize = Dimension(400, 400)
             border = null
             verticalScrollBar.setUI(CustomScrollBarUI())
+            verticalScrollBar.background = CSS.background
         }
         contentPane.add(outputScroll, BorderLayout.CENTER)
 
         val bottomPart = JPanel().apply { layout = BorderLayout() }
 
         val prompt = JTextField("Inital").apply {
-            background = Color.BLACK
-            foreground = Color.WHITE
+            background = CSS.background
+            foreground = CSS.text
             border = EmptyBorder(10, 10, 10, 10)
             addFocusListener(object : FocusListener{
                 override fun focusGained(e: FocusEvent?) {
@@ -71,8 +73,8 @@ class TerminalGui : JFrame(){
         val suggestions = JTextArea("option option option").apply {
             isEditable = false
             lineWrap = true
-            background = Color.black
-            foreground = Color.white
+            background = CSS.background
+            foreground = CSS.text
             border = EmptyBorder(10, 10, 10, 10)
         }
         bottomPart.add(suggestions, BorderLayout.SOUTH)
