@@ -35,13 +35,12 @@ class TerminalGui : JFrame() {
     init {
         title = "Quest Command"
         iconImage = Toolkit.getDefaultToolkit().getImage(this::class.java.getResource("favicon.png"))
-        setSize(1000, 500)
+        setSize(1920, 1080)
         isVisible = true
         defaultCloseOperation = EXIT_ON_CLOSE
         layout = BorderLayout()
 
-        val sampleText = (1..100).joinToString { "This is some text" }
-        output = JTextArea(sampleText).apply {
+        output = JTextArea("Loading...").apply {
             isEditable = false
             lineWrap = true
             background = CSS.background
@@ -83,16 +82,12 @@ class TerminalGui : JFrame() {
             addKeyListener(object : KeyListener {
                 override fun keyTyped(e: KeyEvent) {}
                 override fun keyPressed(e: KeyEvent) {}
-                override fun keyReleased(e: KeyEvent) = tabHint()
-            })
-
-            addFocusListener(object : FocusListener {
-                override fun focusGained(e: FocusEvent?) {}
-                override fun focusLost(e: FocusEvent?) {
-                    tabComplete()
-                    this@apply.grabFocus()
+                override fun keyReleased(e: KeyEvent) {
+                    println("released ${e.keyChar}")
+                    tabHint()
                 }
             })
+
             addActionListener {
                 CommandParsers.parseCommand(GameState.player, text)
                 text = ""
@@ -109,6 +104,15 @@ class TerminalGui : JFrame() {
         }, BorderLayout.WEST)
 
         contentPane.add(bottomPart, BorderLayout.SOUTH)
+
+        suggestionsArea.addFocusListener(object : FocusListener {
+            override fun focusGained(e: FocusEvent?) {
+                tabComplete()
+                prompt.grabFocus()
+            }
+
+            override fun focusLost(e: FocusEvent?) {}
+        })
 
         updateOutput()
         prompt.grabFocus()
