@@ -35,7 +35,6 @@ class TerminalGui : JFrame() {
     init {
         title = "Quest Command"
         iconImage = Toolkit.getDefaultToolkit().getImage(this::class.java.getResource("favicon.png"))
-        setSize(1920, 1080)
         isVisible = true
         defaultCloseOperation = EXIT_ON_CLOSE
         layout = BorderLayout()
@@ -118,6 +117,7 @@ class TerminalGui : JFrame() {
         updateOutput()
         prompt.grabFocus()
         pack()
+        setSize(1000, 800)
     }
 
     private fun updateOutput() {

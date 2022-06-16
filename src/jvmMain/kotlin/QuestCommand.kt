@@ -9,7 +9,7 @@ import core.history.TerminalPrinter
 fun main(args: Array<String>) {
     GameManager.newOrLoadGame()
     EventManager.executeEvents()
-    if (args.contains("windowed")) {
+    if (args.map { it.lowercase().replace("-", "") }.contains("windowed")) {
         runInGui()
     } else {
         runInTerminal()

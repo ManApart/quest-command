@@ -3,10 +3,7 @@ package core.commands
 import core.DependencyInjector
 import core.GameState
 import core.Player
-import core.utility.NameSearchableList
-import core.utility.removeFirstItem
-import core.utility.removeLastItem
-import core.utility.toSortedMap
+import core.utility.*
 import magic.castSpell.CastCommand
 
 object CommandParsers {
@@ -108,7 +105,7 @@ object CommandParsers {
             findCommand(input.first()).suggest(player, input.first(), input.removeFirstItem().removeLastItem())
         } else {
             commandNameList
-        }
+        }.map { it.capitalize2() }.sorted()
     }
 
 }
