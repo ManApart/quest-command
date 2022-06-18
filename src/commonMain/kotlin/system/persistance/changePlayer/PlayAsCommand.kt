@@ -1,5 +1,6 @@
 package system.persistance.changePlayer
 
+import core.GameState
 import core.Player
 import core.commands.Command
 import core.events.EventManager
@@ -17,14 +18,21 @@ class PlayAsCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Be ls - List characters in the current game
-	Be <name> - Play as a specific character.
-    Note that this doesn't work on servers. To change your server character disconnect and reconnect as that player
-"""
+        Be ls - List characters in the current game
+        Be <name> - Play as a specific character.
+        Note that this doesn't work on servers. To change your server character disconnect and reconnect as that player
+        """
     }
 
     override fun getCategory(): List<String> {
         return listOf("System")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> listOf("ls") + GameState.players.values.map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

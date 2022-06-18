@@ -163,12 +163,16 @@ data class Location(
         return (creatures + items + activators + other)
     }
 
-    fun getThings(source: Thing): NameSearchableList<Thing> {
-        return getThings().sortedBy { source.position.getDistance(it.position) }
+    fun getThings(perceivedBy: Thing?): NameSearchableList<Thing> {
+        return getThings().filter { perceivedBy?.perceives(it) ?: true }
     }
 
-    fun getThings(name: String, source: Thing): NameSearchableList<Thing> {
-        return getThingsByName(getThings(), name, source)
+    fun getThings(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+        return getThings(perceivedBy = perceivedBy).sortedBy { source.position.getDistance(it.position) }
+    }
+
+    fun getThings(name: String, source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+        return getThingsByName(getThings(perceivedBy = perceivedBy), name, source)
     }
 
     fun getThings(name: String): NameSearchableList<Thing> {
@@ -205,24 +209,24 @@ data class Location(
         }
     }
 
-    fun getThingsIncludingPlayerInventory(source: Thing): List<Thing> {
-        return source.inventory.getItems() + getThings(source)
+    fun getThingsIncludingPlayerInventory(source: Thing, perceivedBy: Thing? = null): List<Thing> {
+        return source.inventory.getItems() + getThings(source, perceivedBy)
     }
 
-    fun getThingsIncludingPlayerInventory(source: Thing, name: String): NameSearchableList<Thing> {
-        return source.inventory.getItems(name) + getThings(name, source)
+    fun getThingsIncludingPlayerInventory(source: Thing, name: String, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return source.inventory.getItems(name) + getThings(name, source, perceivedBy)
     }
 
-    fun getCreaturesExcludingPlayer(source: Thing): NameSearchableList<Thing> {
-        return getCreatures(source).also { it.remove(source) }
+    fun getCreaturesExcludingPlayer(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return getCreatures(source, perceivedBy).also { it.remove(source) }
     }
 
-    fun getCreatures(source: Thing): NameSearchableList<Thing> {
-        return creatures.sortedBy { source.position.getDistance(it.position) }
+    fun getCreatures(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return getCreatures(perceivedBy).sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getCreatures(): NameSearchableList<Thing> {
-        return creatures
+    fun getCreatures(perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return creatures.filter { perceivedBy?.perceives(it) ?: true }
     }
 
     fun getCreatures(name: String, source: Thing): NameSearchableList<Thing> {
@@ -241,20 +245,24 @@ data class Location(
         return getThingsByName(activators, name)
     }
 
-    fun getActivators(source: Thing): NameSearchableList<Thing> {
-        return activators.sortedBy { source.position.getDistance(it.position) }
-    }
-
     fun getActivators(): NameSearchableList<Thing> {
         return activators
+    }
+
+    fun getActivators(perceivedBy: Thing?): NameSearchableList<Thing> {
+        return getActivators().filter { perceivedBy?.perceives(it) ?: true }
     }
 
     fun getItems(): NameSearchableList<Thing> {
         return items
     }
 
-    fun getItems(source: Thing): NameSearchableList<Thing> {
-        return items.sortedBy { source.position.getDistance(it.position) }
+    fun getItems(perceivedBy: Thing?): NameSearchableList<Thing> {
+        return items.filter { perceivedBy?.perceives(it) ?: true }
+    }
+
+    fun getItems(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return getItems(perceivedBy).sortedBy { source.position.getDistance(it.position) }
     }
 
     fun getItems(source: Thing, name: String): NameSearchableList<Thing> {
@@ -265,6 +273,10 @@ data class Location(
         return getThingsByName(items, name)
     }
 
+    fun getItemsIncludingPlayerInventory(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+        return source.inventory.getItems() + getItems(source, perceivedBy)
+    }
+
     fun getItemsIncludingPlayerInventory(source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems() + getItems(source)
     }
@@ -273,12 +285,8 @@ data class Location(
         return source.inventory.getItems(name) + getItems(source, name)
     }
 
-    fun getOther(source: Thing): NameSearchableList<Thing> {
-        return other.sortedBy { source.position.getDistance(it.position) }
-    }
-
-    fun getOther(): NameSearchableList<Thing> {
-        return other
+    fun getOther(perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return other.filter { perceivedBy?.perceives(it) ?: true }
     }
 
     fun findThingsByTag(tag: String): NameSearchableList<Thing> {

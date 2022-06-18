@@ -48,6 +48,13 @@ class CastCommand : Command() {
         return spellCommands.exists(keyword)
     }
 
+    //TODO
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         when (keyword) {
             "word" -> executeWord(source.thing, args)

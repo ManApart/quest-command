@@ -11,14 +11,6 @@ class HistoryCommand : Command() {
         return listOf("History")
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
-        val arguments = Args(args)
-        val showResponses = arguments.contains("responses")
-        val numberOfLinesToShow = arguments.getNumber() ?: 10
-
-        EventManager.postEvent(ViewGameLogEvent(source, numberOfLinesToShow, showResponses))
-    }
-
     override fun getDescription(): String {
         return "View the chat history."
     }
@@ -34,5 +26,19 @@ class HistoryCommand : Command() {
         return listOf("Debugging")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("1", "5", "10", "responses")
+            else -> listOf()
+        }
+    }
+
+    override fun execute(source: Player, keyword: String, args: List<String>) {
+        val arguments = Args(args)
+        val showResponses = arguments.contains("responses")
+        val numberOfLinesToShow = arguments.getNumber() ?: 10
+
+        EventManager.postEvent(ViewGameLogEvent(source, numberOfLinesToShow, showResponses))
+    }
 
 }

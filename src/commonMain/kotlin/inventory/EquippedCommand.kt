@@ -26,6 +26,13 @@ class EquippedCommand : Command() {
         return listOf("Inventory")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> source.thing.currentLocation().getActivators().map { it.name } + source.thing.currentLocation().getCreatures().map { it.name }
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         val possibleTargets = if (argString.isEmpty()) {

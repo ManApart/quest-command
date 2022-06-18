@@ -1,5 +1,6 @@
 package time
 
+import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.thing.Thing
@@ -20,6 +21,10 @@ class ViewTimeCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Debugging")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

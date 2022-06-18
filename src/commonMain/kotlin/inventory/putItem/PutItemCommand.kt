@@ -29,6 +29,15 @@ class PutItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> source.inventory.getAllItems().map { it.name } + source.location.getLocation().getItems(perceivedBy = source.thing).map { it.name }
+            args.size == 1 -> listOf("in")
+            args.last() == "in" -> source.getPerceivedThingNames()
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "in")))
         val arguments = Args(args, delimiters)

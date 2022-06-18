@@ -25,6 +25,10 @@ class UnknownCommand : Command() {
         return listOf("")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
+    }
+
     fun execute(source: Player, args: List<String>) {
         execute(source.thing, "", args)
     }

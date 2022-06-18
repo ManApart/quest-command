@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
+import system.persistance.getGameNames
 
 class LoadCommand : Command() {
     override fun getAliases(): List<String> {
@@ -23,6 +24,13 @@ class LoadCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("System")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("ls") + getGameNames()
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

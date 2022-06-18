@@ -3,6 +3,7 @@ package explore.look
 import core.GameState
 import core.thing.Thing
 import createMockedGame
+import system.debug.DebugType
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -18,7 +19,7 @@ class LookCommandTest {
     @Test
     fun blankSuggest(){
         val args = listOf<String>()
-        val expected = listOf("all", "body", "hand", "Player", "Bob")
+        val expected = listOf("all", "body", "hand", "Player")
         val actual = LookCommand().suggest(GameState.player, "look", args)
         assertEquals(expected, actual)
     }
@@ -43,7 +44,9 @@ class LookCommandTest {
     fun ofThing(){
         val args = listOf("hand", "of")
         val expected = listOf("Player", "Bob")
+        GameState.putDebug(DebugType.CLARITY, true)
         val actual = LookCommand().suggest(GameState.player, "look", args)
         assertEquals(expected, actual)
+        GameState.putDebug(DebugType.CLARITY, false)
     }
 }

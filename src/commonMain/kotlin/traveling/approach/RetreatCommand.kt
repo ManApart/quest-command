@@ -30,6 +30,16 @@ class RetreatCommand : Command() {
         return listOf("Traveling")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> listOf("from")
+            args.last() == "from" -> source.getPerceivedThingNames()
+            args.size == 2 -> listOf("by")
+            args.last() == "by" -> listOf("1", "5", "10")
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from", "by"))
         val creatures = source.location.getLocation().getCreaturesExcludingPlayer(source.thing)
