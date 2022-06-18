@@ -35,6 +35,8 @@ class Pull : SpellCommand() {
         return listOf("Air")
     }
 
+    
+
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
         val direction = parseDirection(argsWithTowards.getGroup("towards"))

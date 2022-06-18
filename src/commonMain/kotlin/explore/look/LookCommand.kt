@@ -31,7 +31,7 @@ class LookCommand : Command() {
 
     override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
-            args.isEmpty() -> listOf("all", "body", "hand") + source.thing.currentLocation().getThings(perceivedBy = source.thing).map { it.name }
+            args.isEmpty() -> listOf("all", "body", "hand") + source.getPerceivedThingNames()
             args.last() == "body" || args.last() == "hand" -> listOf("of")
             args.last() == "of" -> source.thing.currentLocation().getThings(perceivedBy = source.thing).map { it.name }
             else -> listOf()

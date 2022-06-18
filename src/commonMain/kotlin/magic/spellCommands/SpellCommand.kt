@@ -13,6 +13,10 @@ abstract class SpellCommand : Named {
     abstract fun getDescription(): String
     abstract fun getManual(): String
     abstract fun getCategory(): List<String>
+//    abstract fun suggest(source: Player, keyword: String, args: List<String>): List<String>
+    open fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return  listOf()
+    }
     abstract fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean)
 
     fun executeWithWarns(source: Player, levelStat: String, levelRequirement: Int, totalCost: Int, things: List<ThingAim>, minThingCount: Int = 1, maxThingCount: Int = 100, execute: () -> Unit) {

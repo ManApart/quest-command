@@ -132,12 +132,14 @@ class TerminalGui : JFrame() {
         if (!input.isNullOrBlank()) {
             val prePrompt = prompt.text.substring(0, prompt.text.indexOf(input))
             val overlap = suggestions.minOverlap()
-            println("Suggestions: ${suggestions.joinToString()}")
+//            println("Suggestions: ${suggestions.joinToString()}")
             when {
                 suggestions.size == 1 -> prompt.text = prePrompt + suggestions.first()
                 suggestions.size > 1 && overlap.length > input.length -> prompt.text = prePrompt + overlap
             }
             tabHint()
+        } else if (suggestions.size == 1){
+            prompt.text = prompt.text + suggestions.first()
         }
     }
 

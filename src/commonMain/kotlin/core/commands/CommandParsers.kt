@@ -101,11 +101,12 @@ object CommandParsers {
 
     fun suggestions(player: Player, args: String): List<String> {
         val input = cleanLine(args)
-        return if (commandNameList.map { it.lowercase() }.contains(input.first())) {
-            findCommand(input.first()).suggest(player, input.first(), input.removeFirstItem().removeLastItem())
+        return if (commandNameList.any { it.lowercase() == input.first() }){
+            val cleanedArgs = if (args.endsWith(" ")) input.removeFirstItem() else input.removeFirstItem().removeLastItem()
+            findCommand(input.first()).suggest(player, input.first(), cleanedArgs)
         } else {
             commandNameList
-        }.map { it.capitalize2() }.sorted()
+        }.map { it.capitalize2() }.sorted().toSet().toList()
     }
 
 }

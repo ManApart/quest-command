@@ -39,14 +39,14 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
             it.value.sort()
             groupList += "${it.key}:\n\t${it.value.joinToString(", ")}\n"
         }
-        source.displayToMe("Help <Group Name> to learn about one of the following groups:\n$groupList")
+        source.displayToMe("Word <Group Name> to learn about one of the following groups:\n$groupList")
     }
 
     private fun printWordGroup(source: Thing, group: String) {
-        var description = "Help <Word> to learn more about on of the following topics:\n"
+        var description = "Word <Word> to learn more about on of the following topics:\n"
         wordsOfPower.forEach { word ->
             if (word.getCategory().map { it.lowercase() }.contains(group)) {
-                description += word.getDescription() + "\n"
+                description += word.name + "\n\t" + word.getDescription() + "\n"
             }
         }
         source.displayToMe(description)
