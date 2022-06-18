@@ -1,6 +1,7 @@
 package crafting.checkRecipe
 
 import core.GameState
+import core.GameState.player
 import core.Player
 import core.commands.Command
 import core.commands.respond
@@ -26,6 +27,13 @@ class RecipeCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Crafting")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> listOf("all") + RecipeManager.getKnownRecipes(source).map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

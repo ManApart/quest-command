@@ -34,6 +34,13 @@ class SpeakCommand : Command() {
         return listOf("Interact")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("with", "to") + source.getPerceivedThingNames()
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("to", "with"))
         when {

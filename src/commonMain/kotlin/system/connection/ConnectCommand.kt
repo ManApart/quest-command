@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.commands.removeAll
 import core.events.EventManager
+import traveling.direction.Direction
 
 class ConnectCommand : Command() {
     override fun getAliases(): List<String> {
@@ -24,6 +25,15 @@ class ConnectCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("System")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> listOf("Player")
+            args.size == 1 -> listOf("localhost")
+            args.size == 2 -> listOf("8080")
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

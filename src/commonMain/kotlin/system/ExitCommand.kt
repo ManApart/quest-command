@@ -1,5 +1,6 @@
 package system
 
+import core.Player
 import core.commands.Command
 import core.history.displayGlobal
 import core.thing.Thing
@@ -21,6 +22,10 @@ class ExitCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("System")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

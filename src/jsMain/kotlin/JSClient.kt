@@ -4,6 +4,7 @@ import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
+import core.utility.minOverlap
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.Document
@@ -11,6 +12,9 @@ import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
 
 private lateinit var outputDiv: Element
+private lateinit var prompt: HTMLInputElement
+private lateinit var suggestionsDiv: Element
+private var suggestions = listOf<String>()
 private var historyStart = 0
 
 fun main() {
@@ -19,24 +23,28 @@ fun main() {
 
 fun Document.startClient() {
     outputDiv = getElementById("output-block")!!
-    val prompt = getElementById("prompt")!! as HTMLInputElement
-    // TODO Autocomplete
-    outputDiv.innerHTML = "Loading..."
+    prompt = getElementById("prompt")!! as HTMLInputElement
+    suggestionsDiv = getElementById("suggestions")!!
 
     GameManager.newOrLoadGame()
     EventManager.executeEvents()
     CommandParsers.parseInitialCommand(GameState.player)
     updateOutput()
-    window.onkeypress = { keyboardEvent ->
-        if (keyboardEvent.key == "Enter") {
-            val input = prompt.value
-            prompt.value = ""
-            if (input.lowercase() == "clear") {
-                clearScreen()
-            } else {
-                CommandParsers.parseCommand(GameState.player, input)
-                updateOutput()
+    window.onkeyup = { keyboardEvent ->
+//        println("Pressed " + keyboardEvent.key)
+        when (keyboardEvent.key) {
+            "Enter" -> {
+                val input = prompt.value
+                prompt.value = ""
+                if (input.lowercase() == "clear") {
+                    clearScreen()
+                } else {
+                    CommandParsers.parseCommand(GameState.player, input)
+                    updateOutput()
+                }
             }
+            "Tab" -> tabComplete()
+            else -> tabHint()
         }
     }
     scrollToBottom()
@@ -69,4 +77,36 @@ private fun scrollToBottom() {
 private fun clearScreen() {
     historyStart = GameLogger.getMainHistory().history.size
     updateOutput()
+}
+
+private fun tabComplete() {
+    prompt.focus()
+    val input = prompt.value.split(" ").lastOrNull()
+    if (!input.isNullOrBlank()) {
+        val prePrompt = prompt.value.substring(0, prompt.value.indexOf(input))
+        val overlap = suggestions.minOverlap()
+        println("Suggestions: ${suggestions.joinToString()}")
+        when {
+            suggestions.size == 1 -> prompt.value = prePrompt + suggestions.first()
+            suggestions.size > 1 && overlap.length > input.length -> prompt.value = prePrompt + overlap
+        }
+        tabHint()
+    }
+}
+
+private fun tabHint() {
+    val input = prompt.value.lowercase()
+    val lastInput = input.split(" ").lastOrNull()
+    if (input.isNotBlank()) {
+        val allSuggestions = CommandParsers.suggestions(GameState.player, input)
+        suggestions = if (lastInput.isNullOrBlank()) {
+            allSuggestions
+        } else {
+            allSuggestions.filter {
+                val option = it.lowercase()
+                option.startsWith(lastInput)
+            }
+        }
+        suggestionsDiv.innerHTML = suggestions.joinToString(" ")
+    }
 }

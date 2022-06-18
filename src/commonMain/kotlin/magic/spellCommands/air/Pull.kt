@@ -35,6 +35,16 @@ class Pull : SpellCommand() {
         return listOf("Air")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("1", "5", "10")
+            args.size == 1 && args.last().toIntOrNull() != null -> listOf("on")
+            args.last() == "on" -> source.getPerceivedThingNames()
+            args.last() == "towards" -> Direction.values().map { it.name }
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
         val direction = parseDirection(argsWithTowards.getGroup("towards"))

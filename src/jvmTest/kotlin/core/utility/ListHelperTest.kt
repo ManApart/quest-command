@@ -83,4 +83,10 @@ class ListHelperTest {
         assertEquals(listOf(), sublist)
     }
 
+    @Test
+    fun minOverlap() {
+        val actual = listOf("look", "load").minOverlap()
+        assertEquals("lo", actual)
+    }
+
 }

@@ -1,9 +1,12 @@
 package combat.dodge
 
+import core.Player
 import core.commands.Command
 import core.commands.parseDirection
 import core.events.EventManager
 import core.thing.Thing
+import traveling.direction.Direction
+import traveling.location.weather.WeatherManager
 import traveling.move.StartMoveEvent
 
 class DodgeCommand : Command() {
@@ -22,6 +25,13 @@ class DodgeCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Combat")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> Direction.values().map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

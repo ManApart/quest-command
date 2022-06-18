@@ -26,6 +26,13 @@ class StatusCommand : Command() {
         return listOf("Character")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> source.getPerceivedThingNames()
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         when {

@@ -7,6 +7,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.filterUniqueByName
+import core.utility.map
 import inventory.putItem.TransferItemEvent
 
 class TakeItemCommand : core.commands.Command() {
@@ -28,6 +29,16 @@ class TakeItemCommand : core.commands.Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Inventory")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        val things = source.location.getLocation().getThings(source.thing)
+        return when {
+            args.isEmpty() -> listOf("all") + things.map { it.name } + things.flatMap { it.inventory.getAllItems() }.map { it.name }
+            args.size == 1 -> listOf("from")
+            args.last() == "from" -> things.map { it.name }
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, keyword: String, args: List<String>) {

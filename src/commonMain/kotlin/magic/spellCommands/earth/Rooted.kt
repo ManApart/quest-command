@@ -31,6 +31,17 @@ class Rooted : SpellCommand() {
         return listOf("Earth")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("1", "5", "10")
+            args.size == 1 && args.last().toIntOrNull() != null -> listOf("for")
+            args.last() == "for" -> listOf("1", "5", "10")
+            args.size == 3 && args.last().toIntOrNull() != null -> listOf("on")
+            args.last() == "on" -> source.getPerceivedThingNames()
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialPower = spellArgs.getBaseNumber()

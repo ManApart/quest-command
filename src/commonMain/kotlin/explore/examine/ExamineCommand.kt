@@ -21,7 +21,7 @@ class ExamineCommand : Command() {
         return """
 	Examine all - Look more closely at your surroundings. Gives more detailed information than look, based on how perceptive you are.
 	Examine <thingAim> - Look closely at a specific thing.
-    Look body of <thing> - Look at the body of a thing.
+    Examine body of <thing> - Look closely at the body of a thing.
     Examine hand of player - Look closely at the player's right hand.
     """
     }
@@ -36,6 +36,15 @@ class ExamineCommand : Command() {
             args.isEmpty() -> EventManager.postEvent(ExamineEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent(source))
             else -> tryAndGetThing(args, source)
+        }
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("all", "body", "hand") + source.getPerceivedThingNames()
+            args.last() == "body" || args.last() == "hand" -> listOf("of")
+            args.last() == "of" -> source.getPerceivedThingNames()
+            else -> listOf()
         }
     }
 

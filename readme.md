@@ -6,7 +6,9 @@ An open world rpg with intense levels of interaction, experienced through the co
 
 See the [wiki](https://github.com/ManApart/QuestCommand/wiki) for more information
 
-## Building / Running
+See [Ways to Play](https://github.com/ManApart/quest-command/wiki/WaysToPlay) for the different ways you can play the game right now, or just try it right now [on the web](https://austinkucera.com/games/quest-command)!
+
+## Building 
 
 ### Building
 
@@ -22,23 +24,9 @@ Run `gradlew publishToMavenLocal` to push to local maven for other projects to c
 #### PackageName Unresolved
 Getting `Unresolved reference: packageName`? You're probably running gradle on something less than 11. Check `java -version` on the terminal and Settings > Build Execution Deployment > Gradle has Gradle JVM set appropriately
 
-### Running
-Try any one of the below: 
-
-A) Grab a release from [github](https://github.com/ManApart/QuestCommand/releases) and run `java -jar ./quest-command-jvm-dev.jar`
-
-B) Grab the image from [docker hub](https://hub.docker.com/repository/docker/manapart/quest-command) and run `docker run -it manapart/quest-command:stable`
-
-C) Clone the project and build it.
-```
-./gradlew build
-java -jar ./build/libs/quest-command-jvm-dev.jar
-```
-
 #### Running in the browser
 
 `gradlew jsBrowserDevelopmentRun`
-
 
 ### Pushing to web
 

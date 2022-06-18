@@ -14,7 +14,6 @@ import traveling.location.location.Location
 import traveling.position.ThingAim
 
 class CastCommand : Command() {
-    //Should this go to the command parser?
     private val spellCommands by lazy { loadSpellCommands() }
 
     private fun loadSpellCommands(): NameSearchableList<SpellCommand> {
@@ -31,8 +30,6 @@ class CastCommand : Command() {
 
     override fun getManual(): String {
         return """
-    word list - list known words. 
-    word <word> - view the manual for that word.
     cast <word> <word args> on *<thing> - cast a spell with specific arguments on a thing
     Simple Example:
         Cast shard 5 on bandit - This would cast an ice shard with 5 points of damage at a random body part of the bandit.
@@ -48,38 +45,17 @@ class CastCommand : Command() {
         return spellCommands.exists(keyword)
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when {
+            args.isEmpty() -> spellCommands.map { it.name }
+            spellCommands.exists(args.first()) -> spellCommands.get(args.first()).suggest(source, args.first(), args.subList(1, args.size))
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
-        when (keyword) {
-            "word" -> executeWord(source.thing, args)
-            else -> castWord(source, keyword != "cast", args, keyword == "c")
-        }
-    }
-
-    private fun executeWord(source: Thing, args: List<String>) {
-        if (args.size <= 1) {
-            if (args.isEmpty() || args.first() == "list") {
-                EventManager.postEvent(ViewWordHelpEvent(source))
-            } else if (isCategory(args)) {
-                EventManager.postEvent(ViewWordHelpEvent(source, args.first(), true))
-            } else {
-                EventManager.postEvent(ViewWordHelpEvent(source, args.first()))
-            }
-        } else {
-            source.displayToMe("Unknown command: ${args.joinToString(" ")}")
-        }
-    }
-
-    private fun isCategory(args: List<String>): Boolean {
-        val word = args.first().lowercase()
-        val categories = spellCommands.map { command ->
-            command.getCategory().map { category ->
-                category.lowercase()
-            }
-        }.flatten()
-        return categories.contains(word)
-    }
-
-    private fun castWord(source: Player, isAlias: Boolean, args: List<String>, useDefaults: Boolean) {
+        val isAlias = keyword != "cast"
+        val useDefaults = keyword == "c"
         if (args.isEmpty()) {
             clarifyWord(source)
         } else {

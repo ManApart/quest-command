@@ -168,6 +168,7 @@ fun createMockedGame() {
     GameState.reset()
     CommandParsers.reset()
     CommandParsers.setResponseRequest(GameState.player, null)
+    GameState.player.location.getLocation().addThing(GameState.player.thing)
 
     GameLogger.reset()
 

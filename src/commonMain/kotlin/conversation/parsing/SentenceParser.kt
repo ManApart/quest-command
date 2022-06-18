@@ -84,7 +84,7 @@ class SentenceParser(private val speaker: Thing, private val listener: Thing, se
     }
 
     private fun findNamed(subjectName: String): List<Named> {
-        val subjects = speaker.location.getLocation().getThings(subjectName, speaker)
+        val subjects = speaker.location.getLocation().getThings(subjectName, speaker, speaker)
         val exact = subjects.getExact(subjectName)
         if (exact != null) {
             return listOf(exact)

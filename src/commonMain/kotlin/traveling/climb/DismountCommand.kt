@@ -1,11 +1,13 @@
 package traveling.climb
 
+import core.Player
 import core.commands.Command
 import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 import traveling.location.location.LocationPoint
+import traveling.location.weather.WeatherManager
 import traveling.position.NO_VECTOR
 
 class DismountCommand : Command() {
@@ -24,6 +26,10 @@ class DismountCommand : Command() {
 
     override fun getCategory(): List<String> {
         return listOf("Traveling")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
     }
 
     override fun execute(source: Thing, keyword: String, args: List<String>) {

@@ -3,8 +3,7 @@ package core.commands
 import core.DependencyInjector
 import core.GameState
 import core.Player
-import core.utility.NameSearchableList
-import core.utility.toSortedMap
+import core.utility.*
 import magic.castSpell.CastCommand
 
 object CommandParsers {
@@ -13,6 +12,7 @@ object CommandParsers {
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private val parsers = mutableMapOf<String, CommandParser>()
+    private val commandNameList by lazy { commands.map { it.getAliases().first() } }
 
     init {
         GameState.players.values.forEach { addParser(it) }
@@ -28,7 +28,7 @@ object CommandParsers {
         parsers[player.name] = CommandParser(player)
     }
 
-    fun getParser(player: Player) : CommandParser {
+    fun getParser(player: Player): CommandParser {
         if (!parsers.containsKey(player.name)) {
             parsers[player.name] = CommandParser(player)
         }
@@ -79,13 +79,8 @@ object CommandParsers {
         return groups.toSortedMap()
     }
 
-    fun parseInitialCommand(player: Player, args: Array<String> = arrayOf()) {
-        parseInitialCommand(args, player.name)
-    }
-
-    //TODO - delete these and just use player version
-    fun parseInitialCommand(args: Array<String>, name: String) {
-        parsers[name]?.parseInitialCommand(args)
+    fun parseInitialCommand(player: Player) {
+        parsers[player.name]?.parseInitialCommand()
     }
 
     fun parseCommand(player: Player, line: String) {
@@ -102,6 +97,16 @@ object CommandParsers {
 
     fun cleanLine(line: String): List<String> {
         return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
+    }
+
+    fun suggestions(player: Player, args: String): List<String> {
+        val input = cleanLine(args)
+        return if (commandNameList.any { it.lowercase() == input.first() }){
+            val cleanedArgs = if (args.endsWith(" ")) input.removeFirstItem() else input.removeFirstItem().removeLastItem()
+            findCommand(input.first()).suggest(player, input.first(), cleanedArgs)
+        } else {
+            commandNameList
+        }.map { it.capitalize2() }.sorted().toSet().toList()
     }
 
 }

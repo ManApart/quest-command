@@ -33,6 +33,13 @@ class RouteCommand : Command() {
         return listOf("Traveling")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> source.location.getNeighbors().map { it.name }
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val depth = arguments.getNumber() ?: 5
