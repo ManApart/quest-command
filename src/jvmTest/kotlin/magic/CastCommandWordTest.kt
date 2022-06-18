@@ -5,6 +5,7 @@ import core.GameManager
 import core.events.EventManager
 import createMockedGame
 import magic.castSpell.CastCommand
+import magic.castSpell.WordCommand
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
 import org.junit.jupiter.api.BeforeAll
@@ -38,7 +39,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWords() {
-        CastCommand().execute(player,"word", listOf("list"))
+        WordCommand().execute(player,"word", listOf("list"))
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -50,7 +51,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWordsWithoutArgs() {
-        CastCommand().execute(player,"word", listOf())
+        WordCommand().execute(player,"word", listOf())
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -62,7 +63,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWordsInCategory() {
-        CastCommand().execute(player,"word", listOf("catA"))
+        WordCommand().execute(player,"word", listOf("catA"))
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -74,7 +75,7 @@ class CastCommandWordTest {
 
     @Test
     fun helpSpecificWord() {
-        CastCommand().execute(player,"word", listOf("spellB"))
+        WordCommand().execute(player,"word", listOf("spellB"))
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)

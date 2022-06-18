@@ -12,6 +12,7 @@ import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
 import status.stat.EARTH_MAGIC
+import traveling.direction.Direction
 import traveling.position.ThingAim
 import traveling.position.toCommandString
 import kotlin.math.max
@@ -31,6 +32,17 @@ class Rock : SpellCommand() {
 
     override fun getCategory(): List<String> {
         return listOf("Earth")
+    }
+
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("1", "5", "10")
+            args.size == 1 && args.last().toIntOrNull() != null -> listOf("size")
+            args.last() == "size" -> listOf("1", "5", "10")
+            args.size == 3 && args.last().toIntOrNull() != null -> listOf("on")
+            args.last() == "on" -> source.getPerceivedThingNames()
+            else -> listOf()
+        }
     }
 
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {

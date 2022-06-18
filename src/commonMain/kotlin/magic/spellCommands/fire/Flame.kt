@@ -36,6 +36,15 @@ class Flame : SpellCommand() {
         return listOf("Fire")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return when{
+            args.isEmpty() -> listOf("1", "5", "10")
+            args.size == 1 && args.last().toIntOrNull() != null -> listOf("on")
+            args.last() == "on" -> source.getPerceivedThingNames()
+            else -> listOf()
+        }
+    }
+
     override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val initialPower = args.getBaseNumber()
 
