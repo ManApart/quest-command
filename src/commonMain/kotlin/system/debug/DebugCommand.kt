@@ -47,7 +47,7 @@ class DebugCommand : Command() {
             args.isEmpty() -> listOf("list", "levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "stat", "prop", "tag", "weather")
             args.last() in listOf("levelreq", "statchanges", "random", "map", "clarity", "displayupdates") -> listOf("on", "off")
             args.last() == "weather" -> WeatherManager.getAllWeather().map { it.name }
-            args.last() == "on" -> source.location.getLocation().getThings().map { it.name }
+            args.last() == "on" -> source.getPerceivedThingNames()
             else -> listOf()
         }
     }

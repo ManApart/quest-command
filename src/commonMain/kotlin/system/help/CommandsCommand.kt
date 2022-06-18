@@ -23,6 +23,10 @@ class CommandsCommand : Command() {
         return listOf("System")
     }
 
+    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        return listOf()
+    }
+
     override fun execute(source: Player, keyword: String, args: List<String>) {
         when {
             args.isEmpty() -> clarifyCommandGroup(source)

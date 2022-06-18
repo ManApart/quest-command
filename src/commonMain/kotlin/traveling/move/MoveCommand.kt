@@ -33,7 +33,7 @@ class MoveCommand : Command() {
     override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("to", "0,0,0", "10")
-            args.last() == "to" -> source.thing.currentLocation().getThings(perceivedBy = source.thing).map { it.name }
+            args.last() == "to" -> source.getPerceivedThingNames()
             args.last() == "towards" -> Direction.values().map { it.name }
             args.last().toIntOrNull() != null -> listOf("towards")
             else -> listOf()

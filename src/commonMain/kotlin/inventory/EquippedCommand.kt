@@ -28,7 +28,7 @@ class EquippedCommand : Command() {
 
     override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
-            args.isEmpty() -> source.thing.currentLocation().getActivators().map { it.name } + source.thing.currentLocation().getCreatures().map { it.name }
+            args.isEmpty() -> source.thing.currentLocation().getActivators(perceivedBy = source.thing).map { it.name } + source.thing.currentLocation().getCreatures(perceivedBy = source.thing).map { it.name }
             else -> listOf()
         }
     }

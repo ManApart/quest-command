@@ -32,7 +32,7 @@ class CookCommand : Command() {
 
     override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.contains("on") -> source.location.getLocation().findThingsByTag("Range").map { it.name }
+            args.contains("on") -> source.location.getLocation().findThingsByTag("Range").filter { source.thing.perceives(it) }.map { it.name }
             else -> source.location.getLocation().getItemsIncludingPlayerInventory(source.thing).filter { source.thing.perceives(it) }.map { it.name }
         }
     }

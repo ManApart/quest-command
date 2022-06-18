@@ -28,7 +28,7 @@ class StatusCommand : Command() {
 
     override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
-            args.isEmpty() -> source.thing.currentLocation().getThings(perceivedBy = source.thing).map { it.name }
+            args.isEmpty() -> source.getPerceivedThingNames()
             else -> listOf()
         }
     }
