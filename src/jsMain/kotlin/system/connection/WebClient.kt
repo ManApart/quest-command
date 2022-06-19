@@ -8,24 +8,24 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.*
+import system.connection.WebClient.host
 
 
- object WebClient {
+object WebClient {
     private val client by lazy { buildWebClient() }
-     var doPolling = false
-     var host = "http://localhost"
-     var port = "8080"
-     var latestResponse = 0
-     var latestSubResponse = 0
-     var playerName = "Player"
-     var latestInfo = ServerInfo()
+    var doPolling = false
+    var host = "http://localhost"
+    var port = "8080"
+    var latestResponse = 0
+    var latestSubResponse = 0
+    var playerName = "Player"
+    var latestInfo = ServerInfo()
 
     private fun buildWebClient(): HttpClient {
         return HttpClient(Js) { install(ContentNegotiation) { json() } }
     }
 
-
-     fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
+    fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
         getServerInfo(host, port) { info ->
             latestInfo = info
             if (latestInfo.validServer) {
@@ -46,7 +46,7 @@ import kotlinx.coroutines.*
         }
     }
 
-     fun getServerInfo(host: String = this.host, port: String = this.port, callback: (ServerInfo) -> Unit) {
+    fun getServerInfo(host: String = this.host, port: String = this.port, callback: (ServerInfo) -> Unit) {
         latestInfo = ServerInfo()
         GlobalScope.launch {
             try {
@@ -66,7 +66,20 @@ import kotlinx.coroutines.*
         }
     }
 
-     fun sendCommand(line: String, callback: (List<String>) -> Unit) {
+    fun getSuggestions(line: String, callback: (List<String>) -> Unit) {
+        GlobalScope.launch {
+            try {
+                val suggestions: List<String> = client.post("$host:$port/$playerName/suggestion") {
+                    setBody(line)
+                }.body()
+                callback(suggestions)
+            } catch (e: Exception) {
+                callback(listOf())
+            }
+        }
+    }
+
+    fun sendCommand(line: String, callback: (List<String>) -> Unit) {
         GlobalScope.launch {
             val responses = try {
                 val response: ServerResponse = client.post("$host:$port/$playerName/command") {
@@ -85,7 +98,7 @@ import kotlinx.coroutines.*
         }
     }
 
-     fun pollForUpdates() {
+    fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {
             while (doPolling) {
@@ -100,7 +113,7 @@ import kotlinx.coroutines.*
         }
     }
 
-     fun getServerHistory(callback: (List<String>) -> Unit) {
+    fun getServerHistory(callback: (List<String>) -> Unit) {
         GlobalScope.launch {
             callback(getServerUpdates())
         }

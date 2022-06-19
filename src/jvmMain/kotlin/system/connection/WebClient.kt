@@ -89,7 +89,6 @@ object WebClient {
         }
     }
 
-    //Currently not working correctly
     fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {

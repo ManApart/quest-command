@@ -10,6 +10,7 @@ import kotlinx.browser.window
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
+import system.connection.WebClient
 
 private lateinit var outputDiv: Element
 private lateinit var prompt: HTMLInputElement
@@ -36,6 +37,7 @@ fun Document.startClient() {
             "Enter" -> {
                 val input = prompt.value
                 prompt.value = ""
+                suggestionsDiv.innerHTML = ""
                 if (input.lowercase() == "clear") {
                     clearScreen()
                 } else {
@@ -98,15 +100,24 @@ private fun tabHint() {
     val input = prompt.value.lowercase()
     val lastInput = input.split(" ").lastOrNull()
     if (input.isNotBlank()) {
-        val allSuggestions = CommandParsers.suggestions(GameState.player, input)
-        suggestions = if (lastInput.isNullOrBlank()) {
-            allSuggestions
-        } else {
-            allSuggestions.filter {
-                val option = it.lowercase()
-                option.startsWith(lastInput)
+        if (CommandParsers.getParser(GameState.player).commandInterceptor != null) {
+            WebClient.getSuggestions(input) { suggestions ->
+                updateSuggestions(lastInput, suggestions)
             }
+        } else {
+            updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
         }
-        suggestionsDiv.innerHTML = suggestions.joinToString(" ")
     }
+}
+
+private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) {
+    suggestions = if (lastInput.isNullOrBlank()) {
+        allSuggestions
+    } else {
+        allSuggestions.filter {
+            val option = it.lowercase()
+            option.startsWith(lastInput)
+        }
+    }
+    suggestionsDiv.innerHTML = suggestions.joinToString(" ")
 }
