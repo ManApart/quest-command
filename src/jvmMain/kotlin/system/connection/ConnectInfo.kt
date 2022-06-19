@@ -2,7 +2,6 @@ package system.connection
 
 import core.commands.CommandParsers
 import core.events.EventListener
-import core.history.display
 import core.history.displayToMe
 
 actual class ConnectInfo : EventListener<ConnectInfoEvent>() {

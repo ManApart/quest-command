@@ -14,21 +14,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
- object WebClient {
+object WebClient {
     private val client by lazy { buildWebClient() }
-     var doPolling = false
-     var host = "http://localhost"
-     var port = "8080"
-     var latestResponse = 0
-     var latestSubResponse = 0
-     var playerName = "Player"
-     var latestInfo = ServerInfo()
+    var doPolling = false
+    var host = "http://localhost"
+    var port = "8080"
+    var latestResponse = 0
+    var latestSubResponse = 0
+    var playerName = "Player"
+    var latestInfo = ServerInfo()
 
     private fun buildWebClient(): HttpClient {
         return HttpClient(CIO) { install(ContentNegotiation) { json() } }
     }
 
-     fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
+    fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
         latestInfo = getServerInfo(host, port)
         if (latestInfo.validServer) {
             this.host = host
@@ -41,7 +41,7 @@ import kotlinx.coroutines.runBlocking
         return latestInfo
     }
 
-     fun getServerInfo(host: String = this.host, port: String = this.port): ServerInfo {
+    fun getServerInfo(host: String = this.host, port: String = this.port): ServerInfo {
         return try {
             runBlocking { client.get("$host:$port/info").body() }
         } catch (e: Exception) {
@@ -59,7 +59,20 @@ import kotlinx.coroutines.runBlocking
         }
     }
 
-     fun sendCommand(line: String): List<String> {
+    fun getSuggestions(line: String, callback: (List<String>) -> Unit) {
+        try {
+            val suggestions: List<String> = runBlocking {
+                client.post("$host:$port/$playerName/suggestion") {
+                    setBody(line)
+                }.body()
+            }
+            callback(suggestions)
+        } catch (e: Exception) {
+            callback(listOf())
+        }
+    }
+
+    fun sendCommand(line: String): List<String> {
         return try {
             val response: ServerResponse = runBlocking {
                 client.post("$host:$port/$playerName/command") {
@@ -77,7 +90,7 @@ import kotlinx.coroutines.runBlocking
     }
 
     //Currently not working correctly
-     fun pollForUpdates() {
+    fun pollForUpdates() {
         doPolling = true
         GlobalScope.launch {
             while (doPolling) {
@@ -98,7 +111,7 @@ import kotlinx.coroutines.runBlocking
         }
     }
 
-     fun getServerHistory(): List<String> {
+    fun getServerHistory(): List<String> {
         return runBlocking { getServerUpdates() }
     }
 
