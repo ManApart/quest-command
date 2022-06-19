@@ -10,9 +10,7 @@ actual class ConnectionCommandInterceptor : CommandInterceptor {
     }
 
     actual override fun parseCommand(source: Player, line: String) {
-        WebClient.sendCommand(line).forEach {
-            source.displayToMe(it)
-        }
+        WebClient.sendCommand(line)
     }
 
 }

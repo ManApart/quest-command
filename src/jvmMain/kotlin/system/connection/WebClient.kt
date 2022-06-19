@@ -3,117 +3,84 @@ package system.connection
 import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.displayGlobal
+import core.history.displayToMe
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
+import io.ktor.client.plugins.websocket.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import io.ktor.websocket.*
+import kotlinx.coroutines.*
+import kotlinx.serialization.json.Json
 
- object WebClient {
+object WebClient {
     private val client by lazy { buildWebClient() }
-     var doPolling = false
-     var host = "http://localhost"
-     var port = "8080"
-     var latestResponse = 0
-     var latestSubResponse = 0
-     var playerName = "Player"
-     var latestInfo = ServerInfo()
+    var host = "http://localhost"
+    var port = "8080"
+    var playerName = "Player"
+    var connected = false
+    var activeSession: DefaultClientWebSocketSession? = null
 
     private fun buildWebClient(): HttpClient {
-        return HttpClient(CIO) { install(ContentNegotiation) { json() } }
-    }
-
-     fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
-        latestInfo = getServerInfo(host, port)
-        if (latestInfo.validServer) {
-            this.host = host
-            this.port = port
-            this.playerName = playerName
-            if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
-                latestInfo = createPlayer(playerName)
-            }
-        }
-        return latestInfo
-    }
-
-     fun getServerInfo(host: String = this.host, port: String = this.port): ServerInfo {
-        return try {
-            runBlocking { client.get("$host:$port/info").body() }
-        } catch (e: Exception) {
-            ServerInfo()
-        }.also {
-            this.latestInfo = it
+        return HttpClient(CIO) {
+            install(WebSockets) { contentConverter = KotlinxWebsocketSerializationConverter(Json) }
+            install(ContentNegotiation) { json() }
         }
     }
 
-    private fun createPlayer(name: String): ServerInfo {
-        return try {
-            runBlocking { client.post("$host:$port/$name").body() }
-        } catch (e: Exception) {
-            ServerInfo()
-        }
-    }
+    fun getInfo() = "$playerName on $host:$port"
 
-     fun sendCommand(line: String): List<String> {
-        return try {
-            val response: ServerResponse = runBlocking {
-                client.post("$host:$port/$playerName/command") {
-                    parameter("start", latestResponse)
-                    parameter("startSub", latestSubResponse)
-                    setBody(line)
-                }.body()
-            }
-            this@WebClient.latestResponse = response.latestResponse
-            this@WebClient.latestSubResponse = response.latestSubResponse
-            response.history
-        } catch (e: Exception) {
-            listOf("Unable to hit server.")
-        }
-    }
-
-    //Currently not working correctly
-     fun pollForUpdates() {
-        doPolling = true
+    fun connectToServer(host: String, port: String, playerName: String) {
+        this.host = host
+        this.port = port
+        this.playerName = playerName
+        //Don't block main thread
         GlobalScope.launch {
-            while (doPolling) {
-                if (latestInfo.validServer) {
-                    runBlocking {
-                        launch {
-                            val updates = getServerUpdates()
-                            if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
-                                updates.forEach { displayGlobal(it) }
-                                GameLogger.endCurrent()
-                                TerminalPrinter.print()
-                            }
-                        }
-                        delay(1000)
-                    }
+            try {
+                client.webSocket(method = HttpMethod.Get, "localhost", port.toIntOrNull(), path = "/$playerName/command") {
+                    activeSession = this
+                    connected = true
+                    println("Connected. Server info: ${getInfo()}")
+                    val messageOutputRoutine = launch { receiveServerUpdates() }
+                    val keepAlive = launch { keepAlive() }
+
+                    keepAlive.join() // Wait for completion; either "exit" or error
+                    messageOutputRoutine.cancelAndJoin()
+                }
+            } catch (e: Exception) {
+                println("Failed to connect to server at $host:$port: ${e.message ?: e.stackTrace.firstOrNull().toString()}")
+            }
+        }
+    }
+
+    fun sendCommand(line: String) {
+        if (activeSession == null) connectToServer(host, port, playerName)
+
+        if (activeSession != null) {
+            runBlocking { activeSession?.send(line) }
+        } else {
+            println("Could not connect to server!")
+        }
+    }
+
+    private suspend fun keepAlive() {
+        while (connected) delay(100)
+    }
+
+    private suspend fun DefaultClientWebSocketSession.receiveServerUpdates() {
+        try {
+            for (message in incoming) {
+                val updates = receiveDeserialized<List<String>>()
+                if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
+                    updates.forEach { displayGlobal(it) }
+                    GameLogger.endCurrent()
+                    TerminalPrinter.print()
                 }
             }
-        }
-    }
-
-     fun getServerHistory(): List<String> {
-        return runBlocking { getServerUpdates() }
-    }
-
-    private suspend fun getServerUpdates(): List<String> {
-        return try {
-            val response: ServerResponse = client.get("$host:$port/$playerName/history") {
-                parameter("start", latestResponse)
-                parameter("startSub", latestSubResponse)
-            }.body()
-
-            this@WebClient.latestResponse = response.latestResponse
-            this@WebClient.latestSubResponse = response.latestSubResponse
-            response.history
         } catch (e: Exception) {
-            listOf("Unable to hit server")
+            println("Error while receiving: " + e.localizedMessage)
         }
     }
 

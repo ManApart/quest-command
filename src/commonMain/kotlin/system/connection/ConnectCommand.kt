@@ -53,8 +53,7 @@ class ConnectCommand : Command() {
     }
 
     private fun findHost(args: List<String>): String {
-        val host = if (args.size == 3) args[1] else args.firstOrNull { it.contains(".") } ?: "localhost"
-        return if (host.startsWith("http")) host else "http://$host"
+        return if (args.size == 3) args[1] else args.firstOrNull { it.contains(".") } ?: "localhost"
     }
 
     private fun findName(args: List<String>, host: String, port: String): String {

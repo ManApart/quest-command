@@ -8,8 +8,7 @@ actual class Disconnect : EventListener<DisconnectEvent>() {
 
     actual override fun execute(event: DisconnectEvent) {
         if (CommandParsers.getParser(event.source).commandInterceptor is ConnectionCommandInterceptor) {
-            WebClient.doPolling = false
-            WebClient.latestResponse = 0
+            WebClient.connected = false
             CommandParsers.getParser(event.source).commandInterceptor = null
             event.source.displayToMe("Disconnected.")
         } else {
