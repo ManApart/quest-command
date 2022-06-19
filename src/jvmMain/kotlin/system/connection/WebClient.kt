@@ -25,7 +25,9 @@ object WebClient {
 
     private fun buildWebClient(): HttpClient {
         return HttpClient(CIO) {
-            install(WebSockets) { contentConverter = KotlinxWebsocketSerializationConverter(Json) }
+            install(WebSockets) {
+                contentConverter = KotlinxWebsocketSerializationConverter(Json)
+            }
             install(ContentNegotiation) { json() }
         }
     }
@@ -38,20 +40,25 @@ object WebClient {
         this.playerName = playerName
         //Don't block main thread
         GlobalScope.launch {
-            try {
-                client.webSocket(method = HttpMethod.Get, "localhost", port.toIntOrNull(), path = "/$playerName/command") {
-                    activeSession = this
-                    connected = true
-                    println("Connected. Server info: ${getInfo()}")
-                    val messageOutputRoutine = launch { receiveServerUpdates() }
-                    val keepAlive = launch { keepAlive() }
+            runBlocking {
+                try {
+                    client.webSocket(method = HttpMethod.Get, host, port.toIntOrNull(), path = "/$playerName/command") {
+                        activeSession = this
+//                        activeSession?.timeoutMillis = 1000 * 1000
+                        connected = true
+                        println("Connected. Server info: ${getInfo()}")
+                        val messageOutputRoutine = launch { receiveServerUpdates() }
+                        val keepAlive = launch { keepAlive() }
 
-                    keepAlive.join() // Wait for completion; either "exit" or error
-                    messageOutputRoutine.cancelAndJoin()
+                        keepAlive.join() // Wait for completion; either "exit" or error
+                        messageOutputRoutine.cancelAndJoin()
+                    }
+                } catch (e: Exception) {
+                    println("Failed to connect to server at $host:$port: ${e.message ?: e.stackTrace.firstOrNull().toString()}")
                 }
-            } catch (e: Exception) {
-                println("Failed to connect to server at $host:$port: ${e.message ?: e.stackTrace.firstOrNull().toString()}")
+                println("Websocket completed")
             }
+//            client.close()
         }
     }
 
@@ -70,17 +77,22 @@ object WebClient {
     }
 
     private suspend fun DefaultClientWebSocketSession.receiveServerUpdates() {
-        try {
-            for (message in incoming) {
+        while (connected) {
+            try {
+//            for (message in incoming) {
+                println("Got Message")
                 val updates = receiveDeserialized<List<String>>()
+                println("Got Got updates")
                 if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
                     updates.forEach { displayGlobal(it) }
                     GameLogger.endCurrent()
                     TerminalPrinter.print()
                 }
+                println("Processed update")
+//            }
+            } catch (e: Exception) {
+                println("Error while receiving: " + e.localizedMessage)
             }
-        } catch (e: Exception) {
-            println("Error while receiving: " + e.localizedMessage)
         }
     }
 
