@@ -133,7 +133,6 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun continueClimbing(event: AttemptClimbEvent) {
         EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.thingPart), "Climb", silent = true))
-        EventManager.postEvent(ViewTimeEvent(event.creature))
     }
 
     private fun fall(event: AttemptClimbEvent) {
