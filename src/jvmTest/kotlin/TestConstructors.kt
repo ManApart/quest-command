@@ -1,7 +1,6 @@
 import conversation.dsl.DialoguesCollection
 import conversation.dsl.DialoguesMock
 import core.DependencyInjector
-import core.GameManager
 import core.GameState
 import core.ai.AIManager
 import core.ai.action.dsl.AIActionsCollection
@@ -15,7 +14,6 @@ import core.body.*
 import core.commands.CommandParsers
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
-import core.events.EventListenerMapGenerated
 import core.events.EventListenerMapMock
 import core.events.EventManager
 import core.history.GameLogger

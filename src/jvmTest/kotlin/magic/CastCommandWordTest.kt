@@ -2,6 +2,7 @@ package magic
 
 import core.DependencyInjector
 import core.GameManager
+import core.GameState.player
 import core.events.EventManager
 import createMockedGame
 import magic.castSpell.CastCommand
@@ -18,7 +19,6 @@ class CastCommandWordTest {
         private val spellA = SpellCommandMock("testSpellA", listOf("catA"))
         private val spellB = SpellCommandMock("testSpellB", listOf("catA"))
         private val spellC = SpellCommandMock("testSpellC")
-        private val player = GameManager.newPlayer()
 
         @BeforeAll
         @JvmStatic
