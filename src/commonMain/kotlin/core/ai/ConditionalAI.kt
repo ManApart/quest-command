@@ -9,7 +9,7 @@ import core.utility.RandomManager
 import use.interaction.nothing.NothingEvent
 
 class ConditionalAI(name: String, private val actions: List<AIAction>) : AI(name) {
-    private val defaultAction by lazy { AIAction("Default", listOf(), { listOf(NothingEvent(creature)) }) }
+    private val defaultAction by lazy { AIAction("Default", mapOf(), listOf(), { _,_ -> listOf(NothingEvent(creature)) }) }
 
     override fun takeAction() {
         determineAction().execute(creature)

@@ -1,47 +1,59 @@
 package core.ai.action.dsl
+
 import core.ai.action.AIAction
+import core.ai.action.Context
 import core.events.Event
 import core.thing.Thing
 
-class AIActionBuilder(val condition: (Thing) -> Boolean) {
+class AIActionBuilder(val condition: (Thing, Context) -> Boolean, val context: MutableMap<String, (Thing) -> Any?> = mutableMapOf()) {
     var priority: Int? = null
     val depthScale: Int = 2
     private val children: MutableList<AIActionBuilder> = mutableListOf()
-    private var actionRecipes: MutableList<ActionRecipe> = mutableListOf()
+    private val actionRecipes: MutableList<ActionRecipe> = mutableListOf()
 
-    fun cond(condition: (Thing) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit) {
-        children.add(AIActionBuilder(condition).apply(initializer))
+
+    fun cond(condition: (Thing, Context) -> Boolean = { _, _ -> true }, initializer: AIActionBuilder.() -> Unit) {
+        children.add(AIActionBuilder(condition, context.toMutableMap()).apply(initializer))
     }
 
-    fun action(name: String, result: ((Thing) -> Event)) {
-        this.actionRecipes.add(ActionRecipe(name) { listOf(result(it)) })
+    fun context(name: String, accessor: (Thing) -> Any?) {
+        context[name] = accessor
     }
 
-    fun actions(name: String, results: ((Thing) -> List<Event>)) {
+    fun action(name: String, result: ((Thing, Context) -> Event)) {
+        this.actionRecipes.add(ActionRecipe(name) { thing, context -> listOf(result(thing, context)) })
+    }
+
+    fun actions(name: String, results: ((Thing, Context) -> List<Event>)) {
         this.actionRecipes.add(ActionRecipe(name, results))
     }
 
     internal fun build(): List<AIAction> {
-        return build(listOf())
+        return build(listOf(), mapOf())
     }
 
-    private fun build(parentConditions: List<(Thing) -> Boolean>, depth: Int = 0): List<AIAction> {
+    private fun build(parentConditions: List<(Thing, Context) -> Boolean>, parentContext: Context, depth: Int = 0): List<AIAction> {
         val conditions = parentConditions + listOf(condition)
         val evaluations = mutableListOf<AIAction>()
         val usedPriority = priority ?: (10 + depthScale * depth)
+        context.putAll(parentContext)
 
         actionRecipes.forEach { protoAction ->
-            evaluations.add(AIAction(protoAction.name, conditions, protoAction.createEvents, usedPriority))
+            evaluations.add(AIAction(protoAction.name, context, conditions, protoAction.createEvents, usedPriority))
         }
 
         if (children.isNotEmpty()) {
-            evaluations.addAll(children.flatMap { it.build(conditions, depth + 1) })
+            evaluations.addAll(children.flatMap { it.build(conditions, context, depth + 1) })
         }
 
         return evaluations
     }
 }
 
-fun actions(condition: (Thing) -> Boolean = { true }, initializer: AIActionBuilder.() -> Unit): List<AIAction> {
-    return AIActionBuilder(condition).apply(initializer).build()
+fun actions(
+    condition: (Thing, Context) -> Boolean = { _, _ -> true },
+    context: MutableMap<String, (Thing) -> Any?> = mutableMapOf(),
+    initializer: AIActionBuilder.() -> Unit
+): List<AIAction> {
+    return AIActionBuilder(condition, context).apply(initializer).build()
 }
