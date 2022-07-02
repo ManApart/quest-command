@@ -3,13 +3,14 @@ package core.ai
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
 import core.ai.action.AIAction
+import core.conditional.Context
 import core.events.EventManager
 import core.history.display
 import core.utility.RandomManager
 import use.interaction.nothing.NothingEvent
 
 class ConditionalAI(name: String, private val actions: List<AIAction>) : AI(name) {
-    private val defaultAction by lazy { AIAction("Default", mapOf(), listOf(), { _,_ -> listOf(NothingEvent(creature)) }) }
+    private val defaultAction by lazy { AIAction("Default", Context(), listOf(), { _, _ -> listOf(NothingEvent(creature)) }) }
 
     override fun takeAction() {
         determineAction().execute(creature)

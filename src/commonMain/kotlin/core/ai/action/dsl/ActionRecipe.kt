@@ -1,6 +1,6 @@
 package core.ai.action.dsl
 
-import core.ai.action.Context
+import core.conditional.Context
 import core.events.Event
 import core.thing.Thing
 
