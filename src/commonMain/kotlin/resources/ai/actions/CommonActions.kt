@@ -16,18 +16,20 @@ import use.interaction.nothing.NothingEvent
 class CommonActions : AIActionResource {
     private val defaultAction = AIAction("Nothing", Context(), listOf(), { creature, _ -> listOf(NothingEvent(creature)) }, 1)
     override val values = actions {
-        context("creatures") {source, _ -> source.location.getLocation().getCreatures(perceivedBy = source)}
-        context("target") {source, c -> c.things("creatures")?.firstOrNull{ source.mind.knows(source, "likes", it).amount < 10 }}
+        context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
 
-        cond({ _, c -> c.thing("target") != null }) {
-            action("Rat Attack", ::ratAttack)
+        cond({ source, _ -> source.properties.tags.has("Predator") }) {
+            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { source.mind.knows(source, "likes", it).amount < 10 } }
+            cond({ s, c -> c.thing("target", s) != null }) {
+                action("Rat Attack", ::ratAttack)
+            }
         }
 
     } + listOf(defaultAction)
 }
 
 private fun ratAttack(owner: Thing, context: Context): Event {
-    val target = context.thing("target")!!
+    val target = context.thing("target", owner)!!
     val playerBody = target.body
     val possibleParts = listOf(
         playerBody.getPart("Right Foot"),

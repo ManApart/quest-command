@@ -35,8 +35,7 @@ fun List<Fact>.sum(): Fact {
 
 fun List<Fact>.average(): Fact {
     if (this.isEmpty()) return UNKNOWN_FACT
-    var summedConfidence = sumOf { it.confidence }
-    if (summedConfidence == 0) summedConfidence = 1
+    val summedConfidence = sumOf { it.confidence }.takeIf { it != 0 } ?: 1
     return Fact(first().source, first().kind, summedConfidence / size, sumOf { it.amount * it.confidence } / summedConfidence)
 }
 
@@ -60,6 +59,6 @@ fun List<Relationship>.sum(): Relationship {
 
 fun List<Relationship>.average(): Relationship {
     if (this.isEmpty()) return UNKNOWN_RELATIONSHIP
-    val summedConfidence = sumOf { it.confidence }
+    val summedConfidence = sumOf { it.confidence }.takeIf { it != 0 } ?: 1
     return Relationship(first().source, first().kind, first().relatesTo, summedConfidence / size, sumOf { it.amount * it.confidence } / summedConfidence)
 }

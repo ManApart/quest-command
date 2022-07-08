@@ -5,6 +5,7 @@ import core.conditional.Context
 import core.conditional.ContextData
 import core.events.Event
 import core.thing.Thing
+import core.utility.putAbsent
 
 class AIActionBuilder(val condition: (Thing, Context) -> Boolean?, private val context: MutableMap<String, (Thing, Context) -> Any?> = mutableMapOf()) {
     var priority: Int? = null
@@ -37,7 +38,8 @@ class AIActionBuilder(val condition: (Thing, Context) -> Boolean?, private val c
         val conditions = parentConditions + listOf(condition)
         val evaluations = mutableListOf<AIAction>()
         val usedPriority = priority ?: (10 + depthScale * depth)
-        context.putAll(parentContext)
+        //This context overrides parent context
+        parentContext.entries.forEach { (key, value) -> context.putAbsent(key, value) }
 
         actionRecipes.forEach { protoAction ->
             evaluations.add(AIAction(protoAction.name, Context(context), conditions, protoAction.createEvents, usedPriority))
