@@ -8,8 +8,6 @@ import core.ai.action.dsl.AIActionsMock
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.ai.dsl.AIsCollection
-import core.ai.dsl.AIsMock
 import core.body.*
 import core.commands.CommandParsers
 import core.commands.CommandsCollection
@@ -121,7 +119,6 @@ fun createMockedGame() {
     ActivatorManager.reset()
 
     DependencyInjector.setImplementation(AIActionsCollection::class, AIActionsMock())
-    DependencyInjector.setImplementation(AIsCollection::class, AIsMock())
     AIManager.reset()
 
     DependencyInjector.setImplementation(BehaviorsCollection::class, BehaviorsMock())

@@ -20,15 +20,14 @@ fun things(initializer: ThingsBuilder.() -> Unit): List<ThingBuilder> {
 }
 
 fun List<ThingBuilder>.build(tagToApply: String? = null): NameSearchableList<Thing> {
+    val tags = tagToApply?.let { listOf(it) } ?: listOf()
     val builders = associateBy { it.name }
     return builders.values.map {
         try {
-            it.buildWithBase(builders)
+            it.buildWithBase(builders, tags)
         } catch (e: Exception) {
             println("Failed to build ${it.name}: ${e.message ?: e.cause ?: e.toString()}")
             throw  e
         }
-    }.toNameSearchableList().also { list ->
-        if (tagToApply != null) list.forEach { it.properties.tags.add(tagToApply) }
-    }
+    }.toNameSearchableList()
 }

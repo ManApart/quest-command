@@ -1,8 +1,6 @@
 package core.thing
 
-import core.ai.AI
-import core.ai.AIManager
-import core.ai.DumbAI
+import core.ai.*
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.CreatureMemory
@@ -13,6 +11,7 @@ import core.body.BodyManager
 import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
+import core.thing.creature.CREATURE_TAG
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested
@@ -35,7 +34,6 @@ class ThingBuilder(internal val name: String) {
     private var baseNames = mutableListOf<String>()
     private var bases = mutableListOf<ThingBuilder>()
     private val slots = mutableListOf<List<String>>()
-    private var aiName: String? = null
     private var ai: AI? = null
     private var mind: Mind? = null
     private var mindP: MindP? = null
@@ -44,11 +42,11 @@ class ThingBuilder(internal val name: String) {
     private var location: LocationNode? = null
     private var parent: Thing? = null
 
-    fun build(additionalBases: List<ThingBuilder> = listOf()): Thing {
+    fun build(additionalBases: List<ThingBuilder> = listOf(), tagsToApply: List<String> = listOf()): Thing {
         val bases = bases + additionalBases
         val basesR = bases.reversed()
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })
-        val props = propsBuilder.build(bases.map { it.propsBuilder }, params)
+        val props = propsBuilder.build(bases.map { it.propsBuilder }, params).apply { tags.addAll(tagsToApply) }
         val soulStats = soulBuilder.build(bases.map { it.soulBuilder }).mapValues { it.value.toInt() }
         val actualSoul = soulBuilt ?: Soul(soulStats)
         val desc = (description ?: basesR.firstNotNullOfOrNull { it.description } ?: "").apply(params)
@@ -61,10 +59,8 @@ class ThingBuilder(internal val name: String) {
         val allItems = itemNames + bases.flatMap { it.itemNames }
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
-        val possibleAI = ai ?: basesR.firstNotNullOfOrNull { it.ai }
-        val possibleAIName = aiName ?: basesR.firstNotNullOfOrNull { it.aiName }
-        val ai = discernAI(possibleAI, possibleAIName)
-        val mindParsed = mindP?.let { Mind(discernAI(possibleAI, mindP!!.aiName), CreatureMemory(mindP!!.personalFacts, mindP!!.personalListFacts, mindP!!.personalRelationships)) }
+        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if(tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
+        val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.personalFacts, mindP!!.personalListFacts, mindP!!.personalRelationships)) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
@@ -93,9 +89,9 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    fun buildWithBase(builders: Map<String, ThingBuilder>): Thing {
+    fun buildWithBase(builders: Map<String, ThingBuilder>, tagsToApply: List<String> = listOf()): Thing {
         val bases = baseNames.map { builders[it]!! }
-        return build(bases)
+        return build(bases, tagsToApply)
     }
 
     /**
@@ -140,8 +136,16 @@ class ThingBuilder(internal val name: String) {
     fun behavior(vararg recipes: BehaviorRecipe) = behaviors.addAll(recipes)
     fun behavior(recipes: List<BehaviorRecipe>) = behaviors.addAll(recipes)
 
-    fun ai(name: String) {
-        this.aiName = name
+    fun playerAI(){
+        this.ai = PlayerControlledAI()
+    }
+
+    fun conditionalAI(){
+        this.ai = ConditionalAI()
+    }
+
+    fun dumbAI(){
+        this.ai = DumbAI()
     }
 
     fun ai(ai: AI) {
@@ -216,14 +220,6 @@ class ThingBuilder(internal val name: String) {
             soul(t.soul.getStats().map { it.name to it.level })
             behavior(t.behaviors.map { BehaviorRecipe(it.name, it.params) })
             param(t.params)
-        }
-    }
-
-    private fun discernAI(ai: AI?, aiName: String?): AI {
-        return when {
-            ai != null -> ai
-            aiName != null -> AIManager.getAI(aiName)
-            else -> DumbAI()
         }
     }
 

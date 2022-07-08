@@ -2,12 +2,13 @@ package core.ai
 
 import conversation.dialogue.DialogueEvent
 
-const val DUMB_AI_ID = "No AI"
-
-class DumbAI : AI(DUMB_AI_ID) {
+class DumbAI : AI() {
     override fun hear(event: DialogueEvent) {}
     override fun takeAction() {}
     override fun equals(other: Any?): Boolean {
         return other is DumbAI
+    }
+    override fun hashCode(): Int {
+        return this::class.hashCode()
     }
 }

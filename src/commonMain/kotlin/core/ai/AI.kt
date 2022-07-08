@@ -6,7 +6,7 @@ import core.properties.ACTION_POINTS
 import core.thing.Thing
 import status.stat.WISDOM
 
-abstract class AI(val name: String) {
+abstract class AI {
     lateinit var creature: Thing
     abstract fun hear(event: DialogueEvent)
     abstract fun takeAction()

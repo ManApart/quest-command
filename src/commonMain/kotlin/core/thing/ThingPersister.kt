@@ -4,7 +4,6 @@ import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.MindP
 import core.body.Body
 import core.body.Slot
-import core.properties.Properties
 import core.properties.PropertiesP
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

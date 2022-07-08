@@ -5,9 +5,7 @@ import core.history.display
 import core.history.displayToMe
 import core.history.displayToOthersGlobal
 
-const val PLAYER_CONTROLLED_ID = "Player Controlled"
-
-class PlayerControlledAI : AI(PLAYER_CONTROLLED_ID) {
+class PlayerControlledAI : AI() {
     override fun hear(event: DialogueEvent) {
         event.speaker.display("" + event.speaker.name + ": " + event.line)
     }

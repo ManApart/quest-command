@@ -6,8 +6,6 @@ import core.ai.action.dsl.AIActionsCollection
 import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
-import core.ai.dsl.AIsCollection
-import core.ai.dsl.AIsGenerated
 import core.ai.knowledge.dsl.KnowledgeFindersCollection
 import core.ai.knowledge.dsl.KnowledgeFindersGenerated
 import core.body.BodyPartsCollection
@@ -77,7 +75,6 @@ object DependencyInjector {
     private fun createDefaultImplementations(): Map<KClass<*>, Any> {
         return mapOf(
             ActivatorsCollection::class to ActivatorsGenerated(),
-            AIsCollection::class to AIsGenerated(),
             AIActionsCollection::class to AIActionsGenerated(),
             BehaviorsCollection::class to BehaviorsGenerated(),
             BodysCollection::class to BodysGenerated(),

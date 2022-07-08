@@ -9,7 +9,7 @@ import core.history.display
 import core.utility.RandomManager
 import use.interaction.nothing.NothingEvent
 
-class ConditionalAI(name: String, private val actions: List<AIAction>) : AI(name) {
+class ConditionalAI : AI() {
     private val defaultAction by lazy { AIAction("Default", Context(), listOf(), { _, _ -> listOf(NothingEvent(creature)) }) }
 
     override fun takeAction() {
@@ -17,7 +17,7 @@ class ConditionalAI(name: String, private val actions: List<AIAction>) : AI(name
     }
 
     private fun determineAction(): AIAction {
-        val matches = actions.filter { it.canRun(creature) }
+        val matches = AIManager.getAIActions().filter { it.canRun(creature) }
         val priority = matches.maxOfOrNull { it.priority } ?: 0
         val topMatches = matches.filter { it.priority == priority }
         return RandomManager.getRandomOrNull(topMatches) ?: defaultAction
