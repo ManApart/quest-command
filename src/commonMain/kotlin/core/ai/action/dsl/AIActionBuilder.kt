@@ -54,6 +54,6 @@ fun actions(
     condition: (Thing, Context) -> Boolean? = { _, _ -> true },
     context: MutableMap<String, (Thing, Context) -> Any?> = mutableMapOf(),
     initializer: AIActionBuilder.() -> Unit
-): AIActionTree {
-    return AIActionBuilder(condition, context).apply(initializer).build()
+): List<AIActionTree> {
+    return listOf( AIActionBuilder(condition, context).apply(initializer).build())
 }

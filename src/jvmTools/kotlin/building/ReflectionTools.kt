@@ -2,7 +2,7 @@ package building
 
 import conversation.dsl.Dialogue
 import conversation.dsl.DialogueResource
-import core.ai.action.AIAction
+import core.ai.action.AIActionTree
 import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
@@ -55,7 +55,7 @@ object ReflectionTools {
         generateCollectionsFile(SpellCommand::class)
         generateListenerMapFile()
 
-        generateResourcesFile(AIActionResource::class, AIAction::class)
+        generateResourcesFile(AIActionResource::class, AIActionTree::class)
         generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
         generateResourcesFile(BodyResource::class, NetworkBuilder::class)
