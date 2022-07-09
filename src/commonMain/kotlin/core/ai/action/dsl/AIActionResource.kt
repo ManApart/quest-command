@@ -1,7 +1,7 @@
 package core.ai.action.dsl
 
-import core.ai.action.AIAction
+import core.ai.action.AIActionTree
 
 interface AIActionResource {
-    val values: List<AIAction>
+    val values: List<AIActionTree>
 }

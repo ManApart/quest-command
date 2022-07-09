@@ -14,7 +14,7 @@ import traveling.position.ThingAim
 import use.interaction.nothing.NothingEvent
 
 class CommonActions : AIActionResource {
-    private val defaultAction = AIAction("Nothing", Context(), listOf(), { creature, _ -> listOf(NothingEvent(creature)) }, 1)
+    private val defaultAction = AIAction("Nothing", Context(), { creature, _ -> listOf(NothingEvent(creature)) }, 1)
     override val values = actions {
         context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
 
@@ -24,8 +24,9 @@ class CommonActions : AIActionResource {
                 action("Rat Attack", ::ratAttack)
             }
         }
+        action("Nothing") { creature, _ -> NothingEvent(creature) }
 
-    } + listOf(defaultAction)
+    }
 }
 
 private fun ratAttack(owner: Thing, context: Context): Event {

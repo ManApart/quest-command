@@ -1,6 +1,7 @@
 package core.ai.action.dsl
 
 import core.ai.action.AIAction
+import core.ai.action.AIActionTree
 import core.conditional.Context
 import core.conditional.ContextData
 import core.events.Event
@@ -9,7 +10,7 @@ import core.utility.putAbsent
 
 class AIActionBuilder(val condition: (Thing, Context) -> Boolean?, private val context: MutableMap<String, (Thing, Context) -> Any?> = mutableMapOf()) {
     var priority: Int? = null
-    val depthScale: Int = 2
+    private val depthScale: Int = 2
     private val children: MutableList<AIActionBuilder> = mutableListOf()
     private val actionRecipes: MutableList<ActionRecipe> = mutableListOf()
 
@@ -30,26 +31,22 @@ class AIActionBuilder(val condition: (Thing, Context) -> Boolean?, private val c
         this.actionRecipes.add(ActionRecipe(name, results))
     }
 
-    internal fun build(): List<AIAction> {
-        return build(listOf(), mapOf())
+    internal fun build(): AIActionTree {
+        return build(mapOf())
     }
 
-    private fun build(parentConditions: List<(Thing, Context) -> Boolean?>, parentContext: ContextData, depth: Int = 0): List<AIAction> {
-        val conditions = parentConditions + listOf(condition)
-        val evaluations = mutableListOf<AIAction>()
+    private fun build(parentContext: ContextData, depth: Int = 0): AIActionTree {
         val usedPriority = priority ?: (10 + depthScale * depth)
         //This context overrides parent context
         parentContext.entries.forEach { (key, value) -> context.putAbsent(key, value) }
+        val usedContext = Context(context)
 
-        actionRecipes.forEach { protoAction ->
-            evaluations.add(AIAction(protoAction.name, Context(context), conditions, protoAction.createEvents, usedPriority))
+        val actions = actionRecipes.map { protoAction ->
+            AIAction(protoAction.name, usedContext, protoAction.createEvents, usedPriority)
         }
+        val usedChildren = children.map { it.build(context, depth + 1) }
 
-        if (children.isNotEmpty()) {
-            evaluations.addAll(children.flatMap { it.build(conditions, context, depth + 1) })
-        }
-
-        return evaluations
+        return AIActionTree(condition, actions, usedContext, usedChildren)
     }
 }
 
@@ -57,6 +54,6 @@ fun actions(
     condition: (Thing, Context) -> Boolean? = { _, _ -> true },
     context: MutableMap<String, (Thing, Context) -> Any?> = mutableMapOf(),
     initializer: AIActionBuilder.() -> Unit
-): List<AIAction> {
+): AIActionTree {
     return AIActionBuilder(condition, context).apply(initializer).build()
 }
