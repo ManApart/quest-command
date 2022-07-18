@@ -2,6 +2,7 @@ package resources.ai
 
 import core.ai.knowledge.*
 import core.ai.knowledge.dsl.KnowledgeFinderResource
+import core.ai.knowledge.dsl.Opinion
 import core.ai.knowledge.dsl.knowledgeFinders
 
 class CommonKnowledgeFinders : KnowledgeFinderResource {
@@ -13,15 +14,18 @@ class CommonKnowledgeFinders : KnowledgeFinderResource {
         kind("Is") {
             source({ it.thing != null }) {
                 source({ it.propertyTag == "Rich" }) {
-                    fact { _, _, _ -> Pair(0, 0) }
+                    fact { _, _, _ -> Opinion() }
                 }
 
                 relatesTo({ it.thing != null }) {
-                    relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Pair(0, 0) }
+                    kind("likes"){
+                        relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Opinion(100, 0) }
+                    }
+                    relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Opinion() }
                 }
 
                 relatesTo({ it.location != null }) {
-                    relationship { _, _, _, _ -> Pair(0, 0) }
+                    relationship { _, _, _, _ -> Opinion() }
                 }
             }
 

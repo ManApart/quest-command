@@ -2,6 +2,8 @@ package core.ai.knowledge.dsl
 
 import core.ai.knowledge.*
 
+data class Opinion(val confidence: Int= 0, val amount: Int = 0)
+
 class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: (SubjectFilter)? = null, private val relatesTo: (SubjectFilter)? = null) {
     private val facts = mutableListOf<((mind: Mind, source: Subject, kind: String) -> Fact)>()
     private val listFacts = mutableListOf<((mind: Mind, kind: String) -> ListFact)>()
@@ -12,7 +14,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         facts.add(finder)
     }
 
-    fun fact(finder: (mind: Mind, source: Subject, kind: String) -> Pair<Int, Int>) {
+    fun fact(finder: (mind: Mind, source: Subject, kind: String) -> Opinion) {
         facts.add { mind: Mind, source: Subject, kind: String ->
             val (confidence, amount) = finder(mind, source, kind)
             Fact(SimpleSubject(source), kind, confidence, amount)
@@ -34,7 +36,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         relationships.add(finder)
     }
 
-    fun relationship(finder: (mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Pair<Int, Int>) {
+    fun relationship(finder: (mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Opinion) {
         relationships.add { mind: Mind, source: Subject, kind: String, relatesTo: Subject ->
             val (confidence, amount) = finder(mind, source, kind, relatesTo)
             Relationship(SimpleSubject(source), kind, SimpleSubject(relatesTo), confidence, amount)
