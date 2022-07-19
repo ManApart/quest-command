@@ -10,7 +10,8 @@ import core.utility.lazyM
 import core.utility.toNameSearchableList
 
 object AIManager {
-    private var actions by lazyM { loadActions() }
+    var actions by lazyM { loadActions() }
+        private set
 
     private fun loadActions(): List<AIActionTree> {
         startupLog("Loading AI Actions.")
@@ -19,10 +20,6 @@ object AIManager {
 
     fun reset() {
         actions = loadActions()
-    }
-
-    fun getAIActions(): List<AIActionTree> {
-        return actions.toList()
     }
 
 }

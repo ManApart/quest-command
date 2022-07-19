@@ -17,7 +17,7 @@ class ConditionalAI : AI() {
     }
 
     private fun determineAction(): AIAction {
-        val matches = AIManager.getAIActions().flatMap { it.getActions(creature) }
+        val matches = AIManager.actions.flatMap { it.getActions(creature) }
         val priority = matches.maxOfOrNull { it.priority } ?: 0
         val topMatches = matches.filter { it.priority == priority }
         return RandomManager.getRandomOrNull(topMatches) ?: defaultAction

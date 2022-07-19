@@ -67,7 +67,7 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         children.add(KnowledgeFindersBuilder(kind, relatesTo = relatesTo).apply(initializer))
     }
 
-    fun build(parentSources: List<(SubjectFilter)> = emptyList(), parentRelatesTo: List<(SubjectFilter)> = emptyList()): List<KnowledgeFinder> {
+    fun build(parentSources: List<(SubjectFilter)> = emptyList(), parentRelatesTo: List<(SubjectFilter)> = emptyList()): KnowledgeFinderTree {
         val sources = (parentSources + listOfNotNull(source))
         val relatesTo = (parentRelatesTo + listOfNotNull(relatesTo))
 

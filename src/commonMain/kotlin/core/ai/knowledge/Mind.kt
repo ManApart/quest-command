@@ -18,28 +18,24 @@ data class Mind(
         ai.creature = creature
     }
 
-    //TODO - use tree like action finders
     fun knows(kind: String): ListFact {
-        return shortTermMemory.getListFact(kind) ?: KnowledgeManager.listFactFinders
-            .filter { it.matches( kind) }
-            .map { it.findFact.invoke(this, kind) }
+        return shortTermMemory.getListFact(kind) ?: KnowledgeManager.knowledgeFinders
+            .flatMap { it.getListFacts(this, kind) }
             .sum()
             .also { shortTermMemory.remember(it) }
     }
 
     fun knows(source: Subject, kind: String): Fact {
-        return shortTermMemory.getFact(source, kind) ?: KnowledgeManager.factFinders
-            .filter { it.matches(source, kind) }
-            .map { it.findFact.invoke(this, source, kind) }
+        return shortTermMemory.getFact(source, kind) ?: KnowledgeManager.knowledgeFinders
+            .flatMap { it.getFacts(this, source, kind) }
             .average()
             .also { shortTermMemory.remember(it) }
     }
 
     fun knows(source: Thing, kind: String, relatesTo: Thing) = knows(Subject(source), kind, Subject(relatesTo))
     fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
-        return KnowledgeManager.relationshipFinders
-            .filter { it.matches(source, kind, relatesTo) }
-            .map { it.findRelationship.invoke(this, source, kind, relatesTo) }
+        return KnowledgeManager.knowledgeFinders
+            .flatMap { it.getRelationships(this, source, kind, relatesTo) }
             .average()
             .also { shortTermMemory.remember(it) }
     }
