@@ -3,7 +3,6 @@ package resources.ai.actions
 import combat.DamageType
 import combat.attack.StartAttackEvent
 import core.GameState
-import core.ai.action.AIAction
 import core.conditional.Context
 import core.ai.action.dsl.AIActionResource
 import core.ai.action.dsl.actions

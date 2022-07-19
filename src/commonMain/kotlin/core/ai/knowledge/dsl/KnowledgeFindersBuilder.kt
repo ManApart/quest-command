@@ -2,7 +2,7 @@ package core.ai.knowledge.dsl
 
 import core.ai.knowledge.*
 
-data class Opinion(val confidence: Int= 0, val amount: Int = 0)
+data class Opinion(val confidence: Int = 0, val amount: Int = 0)
 
 class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: (SubjectFilter)? = null, private val relatesTo: (SubjectFilter)? = null) {
     private val facts = mutableListOf<((mind: Mind, source: Subject, kind: String) -> Fact)>()
@@ -71,13 +71,10 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         val sources = (parentSources + listOfNotNull(source))
         val relatesTo = (parentRelatesTo + listOfNotNull(relatesTo))
 
-        return facts.map { KnowledgeFinder(FactFinder(kind, sources, it)) } +
-                listFacts.map { KnowledgeFinder(listFactFinder = ListFactFinder(kind, it)) } +
-                relationships.map { KnowledgeFinder(relationshipFinder = RelationshipFinder(kind, sources, relatesTo, it)) } +
-                children.flatMap { it.build(sources, relatesTo) }
+        return KnowledgeFinderTree(kind, sources, relatesTo, children.map { it.build(sources, relatesTo) }, facts, listFacts, relationships)
     }
 }
 
-fun knowledgeFinders(initializer: KnowledgeFindersBuilder.() -> Unit): List<KnowledgeFinder> {
-    return KnowledgeFindersBuilder().apply(initializer).build()
+fun knowledgeFinders(initializer: KnowledgeFindersBuilder.() -> Unit): List<KnowledgeFinderTree> {
+    return listOf(KnowledgeFindersBuilder().apply(initializer).build())
 }

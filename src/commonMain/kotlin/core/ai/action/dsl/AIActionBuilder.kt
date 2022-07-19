@@ -55,5 +55,5 @@ fun actions(
     context: MutableMap<String, (Thing, Context) -> Any?> = mutableMapOf(),
     initializer: AIActionBuilder.() -> Unit
 ): List<AIActionTree> {
-    return listOf( AIActionBuilder(condition, context).apply(initializer).build())
+    return listOf(AIActionBuilder(condition, context).apply(initializer).build())
 }
