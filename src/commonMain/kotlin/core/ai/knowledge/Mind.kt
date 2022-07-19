@@ -18,6 +18,7 @@ data class Mind(
         ai.creature = creature
     }
 
+    //TODO - use tree like action finders
     fun knows(kind: String): ListFact {
         return shortTermMemory.getListFact(kind) ?: KnowledgeManager.listFactFinders
             .filter { it.matches( kind) }
