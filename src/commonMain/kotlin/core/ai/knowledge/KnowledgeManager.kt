@@ -1,7 +1,7 @@
 package core.ai.knowledge
 
 import core.DependencyInjector
-import core.ai.knowledge.dsl.KnowledgeFindersCollection
+import core.ai.knowledge.dsl.KnowledgeFinderTreesCollection
 import core.startupLog
 import core.utility.lazyM
 
@@ -11,7 +11,7 @@ object KnowledgeManager {
 
     private fun loadFinders(): List<KnowledgeFinderTree> {
         startupLog("Loading Knowledge.")
-        return DependencyInjector.getImplementation(KnowledgeFindersCollection::class).values
+        return DependencyInjector.getImplementation(KnowledgeFinderTreesCollection::class).values
     }
 
     fun reset() {

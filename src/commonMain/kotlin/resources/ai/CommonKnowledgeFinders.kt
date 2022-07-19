@@ -1,11 +1,11 @@
 package resources.ai
 
 import core.ai.knowledge.*
-import core.ai.knowledge.dsl.KnowledgeFinderResource
+import core.ai.knowledge.dsl.KnowledgeFinderTreeResource
 import core.ai.knowledge.dsl.Opinion
 import core.ai.knowledge.dsl.knowledgeFinders
 
-class CommonKnowledgeFinders : KnowledgeFinderResource {
+class CommonKnowledgeFinders : KnowledgeFinderTreeResource {
     override val values = knowledgeFinders {
         factFull(::getPersonalFact)
         listFactFull(::getPersonalListFact)
