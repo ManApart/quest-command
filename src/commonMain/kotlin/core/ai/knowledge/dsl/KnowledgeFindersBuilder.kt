@@ -4,7 +4,12 @@ import core.ai.knowledge.*
 
 data class Opinion(val confidence: Int = 0, val amount: Int = 0)
 
-class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, private val source: (SubjectFilter)? = null, private val relatesTo: (SubjectFilter)? = null) {
+class KnowledgeFindersBuilder(
+    private val kind: (String) -> Boolean = { true },
+    private val source: (SubjectFilter)? = null,
+    private val relatesTo: (SubjectFilter)? = null,
+    private val comparison: (Subject, Subject) -> Boolean = { _, _ -> true }
+) {
     private val facts = mutableListOf<((mind: Mind, source: Subject, kind: String) -> Fact)>()
     private val listFacts = mutableListOf<((mind: Mind, kind: String) -> ListFact)>()
     private val relationships = mutableListOf<((mind: Mind, source: Subject, kind: String, relatesTo: Subject) -> Relationship)>()
@@ -67,11 +72,20 @@ class KnowledgeFindersBuilder(private val kind: (String) -> Boolean = { true }, 
         children.add(KnowledgeFindersBuilder(kind, relatesTo = relatesTo).apply(initializer))
     }
 
-    fun build(parentSources: List<(SubjectFilter)> = emptyList(), parentRelatesTo: List<(SubjectFilter)> = emptyList()): KnowledgeFinderTree {
+    fun compare(comparison: (Subject, Subject) -> Boolean, initializer: KnowledgeFindersBuilder.() -> Unit) {
+        children.add(KnowledgeFindersBuilder(kind, comparison = comparison).apply(initializer))
+    }
+
+    fun build(
+        parentSources: List<(SubjectFilter)> = emptyList(),
+        parentRelatesTo: List<(SubjectFilter)> = emptyList(),
+        parentComparison: List<((Subject, Subject) -> Boolean)> = emptyList(),
+    ): KnowledgeFinderTree {
         val sources = (parentSources + listOfNotNull(source))
         val relatesTo = (parentRelatesTo + listOfNotNull(relatesTo))
+        val comparison = (parentComparison + listOfNotNull(comparison))
 
-        return KnowledgeFinderTree(kind, sources, relatesTo, children.map { it.build(sources, relatesTo) }, facts, listFacts, relationships)
+        return KnowledgeFinderTree(kind, sources, relatesTo, comparison, children.map { it.build(sources, relatesTo) }, facts, listFacts, relationships)
     }
 }
 

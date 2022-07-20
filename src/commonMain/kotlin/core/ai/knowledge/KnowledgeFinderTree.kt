@@ -2,8 +2,9 @@ package core.ai.knowledge
 
 data class KnowledgeFinderTree(
     private val relevantKind: (String) -> Boolean = { true },
-    private val relevantSource: List<(Subject) -> Boolean> = listOf({ true }),
-    private val relevantRelatesTo: List<(Subject) -> Boolean> = listOf({ true }),
+    private val relevantSource: List<SubjectFilter> = listOf({ true }),
+    private val relevantRelatesTo: List<SubjectFilter> = listOf({ true }),
+    private val comparison: List<(Subject, Subject) -> Boolean> = listOf({_,_ -> true }),
     private val children: List<KnowledgeFinderTree> = listOf(),
     private val factFinders: List<(mind: Mind, source: Subject, kind: String) -> Fact> = emptyList(),
     private val listFactFinders: List<(mind: Mind, kind: String) -> ListFact> = emptyList(),
@@ -22,7 +23,7 @@ data class KnowledgeFinderTree(
     }
 
     fun getRelationships(mind: Mind, source: Subject, kind: String, relatesTo: Subject): List<Relationship> {
-        return if (relevantKind(kind) && relevantSource.all { it(source) } && relevantRelatesTo.all { it(relatesTo) }){
+        return if (relevantKind(kind) && relevantSource.all { it(source) } && relevantRelatesTo.all { it(relatesTo) } && comparison.all { it(source, relatesTo) }){
             relationshipFinders.map { it(mind, source, kind, relatesTo) } + children.flatMap { it.getRelationships(mind, source, kind, relatesTo) }
         } else listOf()
     }

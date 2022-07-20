@@ -18,8 +18,10 @@ class CommonKnowledgeFinders : KnowledgeFinderTreeResource {
                 }
 
                 relatesTo({ it.thing != null }) {
-                    kind("likes"){
-                        relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Opinion(100, 0) }
+                    kind("likes") {
+                        compare({ source, relatesTo -> source.thing?.body?.name == relatesTo.thing?.body?.name }) {
+                            relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Opinion(100, 50) }
+                        }
                     }
                     relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Opinion() }
                 }

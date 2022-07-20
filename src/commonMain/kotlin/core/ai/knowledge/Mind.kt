@@ -32,6 +32,7 @@ data class Mind(
             .also { shortTermMemory.remember(it) }
     }
 
+    //TODO - make these sum instead?
     fun knows(source: Thing, kind: String, relatesTo: Thing) = knows(Subject(source), kind, Subject(relatesTo))
     fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
         return KnowledgeManager.knowledgeFinders
