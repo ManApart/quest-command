@@ -18,6 +18,7 @@ class CommonKnowledgeFinders : KnowledgeFinderTreeResource {
                 }
 
                 relatesTo({ it.thing != null }) {
+                    //TODO - nested params like this will not be triggered
                     kind("likes") {
                         compare({ source, relatesTo -> source.thing?.body?.name == relatesTo.thing?.body?.name }) {
                             relationship { mind: Mind, source: Subject, kind: String, relatesTo: Subject -> Opinion(100, 50) }

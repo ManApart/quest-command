@@ -2,6 +2,7 @@ package core.ai.knowledge
 
 data class KnowledgeFinderTree(
     private val relevantKind: (String) -> Boolean = { true },
+    //TODO - these shouldn't need to be lists anymore
     private val relevantSource: List<SubjectFilter> = listOf({ true }),
     private val relevantRelatesTo: List<SubjectFilter> = listOf({ true }),
     private val comparison: List<(Subject, Subject) -> Boolean> = listOf({_,_ -> true }),

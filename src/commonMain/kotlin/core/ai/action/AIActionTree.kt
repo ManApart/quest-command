@@ -3,6 +3,7 @@ package core.ai.action
 import core.conditional.Context
 import core.thing.Thing
 
+//TODO - write tests for this plus builder
 data class AIActionTree(
     private val condition: (Thing, Context) -> Boolean?,
     private val actions: List<AIAction> = listOf(),

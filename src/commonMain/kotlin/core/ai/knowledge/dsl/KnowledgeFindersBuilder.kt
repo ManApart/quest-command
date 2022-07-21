@@ -4,6 +4,7 @@ import core.ai.knowledge.*
 
 data class Opinion(val confidence: Int = 0, val amount: Int = 0)
 
+//TODO - add context
 class KnowledgeFindersBuilder(
     private val kind: (String) -> Boolean = { true },
     private val source: (SubjectFilter)? = null,
