@@ -24,7 +24,7 @@ data class Subject(
             thing?.let { "Thing: ${it.name}" },
             location?.let { "Location: ${it.name}" },
             topic?.let { "Topic: $it" },
-            propertyValue?.let { "PropVal: $it" },
+            propertyValue?.let { "PropVal: $it" }, //Should these be actual props so you can get on multiple tags? These should have some tests / examples
             propertyTag?.let { "Tag: $it" },
         ).joinToString(", ")
     }
