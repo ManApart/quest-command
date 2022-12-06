@@ -11,14 +11,8 @@ class FactTest {
     private val loc = SimpleSubject(locationName = "Kanbara Home")
 
     //In the player's mind
-    val houseOwnership = Relationship(bob, "Owns", loc, 100)
     val location = Fact(loc, "Exists", 100, 1) //0 would mean confident it does NOT exist
     val shopKeeperIsRich = Fact(bob, "Rich", 50, 100)
-    val playerLikesBob = Relationship(player, "Likes", bob, 100, 25)
-
-    //In the NPC's mind
-    val npcBelievesPlayerLovesThem = Relationship(player, "Likes", bob, 50, 100)
-
 
     @Test
     fun singleEntryAverage() {

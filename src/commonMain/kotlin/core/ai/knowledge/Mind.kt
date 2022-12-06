@@ -19,26 +19,11 @@ data class Mind(
     }
 
     fun knows(kind: String): ListFact {
-        return shortTermMemory.getListFact(kind) ?: KnowledgeManager.knowledgeFinders
-            .flatMap { it.getListFacts(this, kind) }
-            .sum()
-            .also { shortTermMemory.remember(it) }
+        return shortTermMemory.getListFact(kind) ?: UNKNOWN_LIST_FACT //TODO - ok to return this?
     }
 
     fun knows(source: Subject, kind: String): Fact {
-        return shortTermMemory.getFact(source, kind) ?: KnowledgeManager.knowledgeFinders
-            .flatMap { it.getFacts(this, source, kind) }
-            .average()
-            .also { shortTermMemory.remember(it) }
-    }
-
-    //TODO - make these sum instead?
-    fun knows(source: Thing, kind: String, relatesTo: Thing) = knows(Subject(source), kind, Subject(relatesTo))
-    fun knows(source: Subject, kind: String, relatesTo: Subject): Relationship {
-        return KnowledgeManager.knowledgeFinders
-            .flatMap { it.getRelationships(this, source, kind, relatesTo) }
-            .average()
-            .also { shortTermMemory.remember(it) }
+        return shortTermMemory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
     }
 
     fun learn(fact: Fact) = learn(fact.source, fact.kind, fact.confidence, fact.amount)
@@ -57,16 +42,6 @@ data class Mind(
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))
         memory.remember(fact)
         shortTermMemory.forget(fact)
-    }
-
-    fun learn(relationship: Relationship) = learn(relationship.source, relationship.kind, relationship.relatesTo, relationship.confidence, relationship.amount)
-    fun learn(source: SimpleSubject, kind: String, relatesTo: SimpleSubject, confidenceIncrease: Int, amountIncrease: Int) {
-        val existing = memory.getRelationship(source, kind, relatesTo)
-        val confidence = (existing?.confidence ?: 0) + confidenceIncrease
-        val amount = (existing?.confidence ?: 0) + amountIncrease
-        val relationship = Relationship(source, kind, relatesTo, confidence, amount)
-        memory.remember(relationship)
-        shortTermMemory.forget(relationship)
     }
 
     fun forgetShortTermMemory() {

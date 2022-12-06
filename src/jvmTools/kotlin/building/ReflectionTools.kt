@@ -6,8 +6,6 @@ import core.ai.action.AIActionTree
 import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
-import core.ai.knowledge.KnowledgeFinderTree
-import core.ai.knowledge.dsl.KnowledgeFinderTreeResource
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command
@@ -62,7 +60,6 @@ object ReflectionTools {
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
         generateResourcesFile(CreatureResource::class, ThingBuilder::class)
         generateResourcesFile(ItemResource::class, ThingBuilder::class)
-        generateResourcesFile(KnowledgeFinderTreeResource::class, KnowledgeFinderTree::class)
         generateResourcesFile(BehaviorResource::class, Behavior::class)
         generateResourcesFile(DialogueResource::class, Dialogue::class)
         generateResourcesFile(EffectResource::class, EffectBase::class)

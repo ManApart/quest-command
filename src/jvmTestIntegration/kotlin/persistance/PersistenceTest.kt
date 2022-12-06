@@ -4,7 +4,6 @@ import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Fact
-import core.ai.knowledge.Relationship
 import core.ai.knowledge.SimpleSubject
 import core.body.Body
 import core.commands.CommandParsers
@@ -143,9 +142,7 @@ class PersistenceTest {
         //subject: thingIsSelf
         //subject: locationIsName
         val fact = Fact(SimpleSubject(preLoadPlayer.thing), "Neat", 100, 70)
-        val relationship = Relationship(SimpleSubject(preLoadPlayer.thing), "Home", SimpleSubject(preLoadPlayer.location), 100, 1)
         preLoadPlayer.mind.learn(fact)
-        preLoadPlayer.mind.learn(relationship)
 
         EventManager.postEvent(SaveEvent(preLoadPlayer))
         EventManager.executeEvents()
@@ -160,7 +157,6 @@ class PersistenceTest {
         assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
         assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
         assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
-        assertEquals(relationship, postLoadPlayer.mind.memory.getRelationship(relationship.source, relationship.kind, relationship.relatesTo))
 
         CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
         val location = postLoadPlayer.thing.location.getLocation()

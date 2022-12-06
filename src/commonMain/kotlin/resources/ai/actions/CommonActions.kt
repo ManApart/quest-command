@@ -19,7 +19,7 @@ class CommonActions : AIActionResource {
         context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
 
         cond({ source, _ -> source.properties.tags.has("Predator") }) {
-            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { source.mind.knows(source, "likes", it).amount < 10 } }
+//            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { source.mind.knows(source, "likes", it).amount < 10 } } //TODO
             cond({ s, c -> c.thing("target", s) != null }) {
                 action("Rat Attack", ::ratAttack)
             }

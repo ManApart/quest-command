@@ -6,8 +6,6 @@ import core.ai.action.dsl.AIActionsCollection
 import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
-import core.ai.knowledge.dsl.KnowledgeFinderTreesCollection
-import core.ai.knowledge.dsl.KnowledgeFinderTreesGenerated
 import core.body.BodyPartsCollection
 import core.body.BodyPartsGenerated
 import core.body.BodysCollection
@@ -86,7 +84,6 @@ object DependencyInjector {
             EffectsCollection::class to EffectsGenerated(),
             EventListenerMapCollection::class to EventListenerMapGenerated(),
             ItemsCollection::class to ItemsGenerated(),
-            KnowledgeFinderTreesCollection::class to KnowledgeFinderTreesGenerated(),
             LocationsCollection::class to LocationsGenerated(),
             NetworksCollection::class to NetworksGenerated(),
             RecipesCollection::class to RecipesGenerated(),
