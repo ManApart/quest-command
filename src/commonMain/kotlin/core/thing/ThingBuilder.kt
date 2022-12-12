@@ -60,7 +60,7 @@ class ThingBuilder(internal val name: String) {
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if(tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
-        val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.personalFacts, mindP!!.personalListFacts)) }
+        val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts, mindP!!.listFacts)) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE

@@ -141,7 +141,7 @@ class PersistenceTest {
         preLoadPlayer.thing.properties.tags.add("Saved")
         //subject: thingIsSelf
         //subject: locationIsName
-        val fact = Fact(SimpleSubject(preLoadPlayer.thing), "Neat", 100, 70)
+        val fact = Fact(SimpleSubject(preLoadPlayer.thing), "Neat")
         preLoadPlayer.mind.learn(fact)
 
         EventManager.postEvent(SaveEvent(preLoadPlayer))

@@ -27,14 +27,21 @@ data class Mind(
 
     fun learn(source: SimpleSubject, kind: String) {
         val fact = memory.getFact(source, kind) ?: Fact(source, kind)
-        memory.remember(fact)
-        memory.forget(fact)
+        learn(fact)
     }
 
     fun learn(kind: String, addition: SimpleSubject) = learn(kind, listOf(addition))
     fun learn(kind: String, additions: List<SimpleSubject>) {
         val existing = memory.getListFact(kind)
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))
+        memory.remember(fact)
+    }
+
+    fun learn(fact: Fact) {
+        memory.remember(fact)
+    }
+
+    fun learn(fact: ListFact) {
         memory.remember(fact)
     }
 

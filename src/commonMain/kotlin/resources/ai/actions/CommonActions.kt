@@ -19,7 +19,8 @@ class CommonActions : AIActionResource {
         context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
 
         cond({ source, _ -> source.properties.tags.has("Predator") }) {
-//            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { source.mind.knows(source, "likes", it).amount < 10 } } //TODO
+            //Eventually use factions + actions to create how much something likes something else
+            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { !it.properties.tags.has("Predator") } }
             cond({ s, c -> c.thing("target", s) != null }) {
                 action("Rat Attack", ::ratAttack)
             }

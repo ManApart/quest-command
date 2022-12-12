@@ -1,5 +1,7 @@
 package core.ai.knowledge
 
+import core.properties.Properties
+
 private val unknownSubject = SimpleSubject()
 val UNKNOWN_FACT = Fact(unknownSubject, "Unknown")
 val UNKNOWN_LIST_FACT = ListFact("Unknown", unknownSubject)
@@ -12,6 +14,8 @@ fun Int.atMost(level: AffectionLevel) = level.amount >= this
 
 @kotlinx.serialization.Serializable
 data class Fact(val source: SimpleSubject, val kind: String)
+
+data class Fact2(val source: Subject, val kind: String, val props: Properties) //TODO
 
 @kotlinx.serialization.Serializable
 data class ListFact(val kind: String, val sources: List<SimpleSubject>) {
