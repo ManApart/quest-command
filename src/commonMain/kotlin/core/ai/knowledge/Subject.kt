@@ -14,7 +14,7 @@ data class Subject(
     constructor(topic: String) : this(null, null, topic)
 
     init {
-        require(thing != null || location != null || topic != null) { "Thing or location most not be null!" }
+        require(thing != null || location != null || topic != null) { "Thing, location or topic must not be null!" }
     }
 
     override fun toString(): String {
@@ -28,6 +28,7 @@ data class Subject(
     }
 }
 
+//TODO - do we need this instead of subject P?
 //This simplified subject is stored within facts and relationships
 @kotlinx.serialization.Serializable
 data class SimpleSubject(

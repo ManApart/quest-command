@@ -12,12 +12,8 @@ fun Int.affection() = AffectionLevel.values().filter { it.amount < this }.maxOrN
 fun Int.atLeast(level: AffectionLevel) = level.amount <= this
 fun Int.atMost(level: AffectionLevel) = level.amount >= this
 
-@kotlinx.serialization.Serializable
-data class Fact(val source: SimpleSubject, val kind: String)
+data class Fact(val source: SimpleSubject, val kind: String, val props: Properties = Properties())
 
-data class Fact2(val source: Subject, val kind: String, val props: Properties) //TODO
-
-@kotlinx.serialization.Serializable
-data class ListFact(val kind: String, val sources: List<SimpleSubject>) {
-    constructor(kind: String, source: SimpleSubject): this(kind, listOf(source))
+data class ListFact(val kind: String, val sources: List<SimpleSubject>, val props: Properties = Properties()) {
+    constructor(kind: String, source: SimpleSubject, props: Properties = Properties()): this(kind, listOf(source), props)
 }

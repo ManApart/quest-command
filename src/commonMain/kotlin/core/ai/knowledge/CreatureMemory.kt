@@ -8,7 +8,6 @@ data class CreatureMemory(
 ) {
     constructor(facts: List<Fact>, listFacts: List<ListFact>) : this(facts.parsedFacts(), listFacts.parsedListFacts())
 
-    fun getFact(source: Subject, kind: String) = getFact(SimpleSubject(source), kind)
     fun getFact(source: SimpleSubject, kind: String): Fact? {
         return facts[kind]?.get(source)
     }

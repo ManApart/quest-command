@@ -11,7 +11,7 @@ data class SubjectP(
     val propertyValue: String?,
     val propertyTag: String?
 ) {
-    constructor(b: Subject) : this(b.thing?.name, b.location?.name, b.location?.network?.name, b.topic, b.propertyValue, b.propertyTag)
+    constructor(b: Subject) : this(b.thing?.name, b.location?.name ?: b.thing?.location?.name, b.location?.network?.name ?: b.thing?.location?.network?.name, b.topic, b.propertyValue, b.propertyTag)
 
     fun parsed(): Subject {
         val thing = if (thingName != null && locationName != null && networkName != null) {

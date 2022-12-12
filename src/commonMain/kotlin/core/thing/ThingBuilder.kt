@@ -59,8 +59,8 @@ class ThingBuilder(internal val name: String) {
         val allItems = itemNames + bases.flatMap { it.itemNames }
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
-        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if(tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
-        val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts, mindP!!.listFacts)) }
+        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if (tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
+        val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
@@ -136,15 +136,15 @@ class ThingBuilder(internal val name: String) {
     fun behavior(vararg recipes: BehaviorRecipe) = behaviors.addAll(recipes)
     fun behavior(recipes: List<BehaviorRecipe>) = behaviors.addAll(recipes)
 
-    fun playerAI(){
+    fun playerAI() {
         this.ai = PlayerControlledAI()
     }
 
-    fun conditionalAI(){
+    fun conditionalAI() {
         this.ai = ConditionalAI()
     }
 
-    fun dumbAI(){
+    fun dumbAI() {
         this.ai = DumbAI()
     }
 

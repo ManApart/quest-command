@@ -21,7 +21,7 @@ data class Mind(
         return memory.getListFact(kind) ?: UNKNOWN_LIST_FACT //TODO - ok to return this?
     }
 
-    fun knows(source: Subject, kind: String): Fact {
+    fun knows(source: SimpleSubject, kind: String): Fact {
         return memory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
     }
 

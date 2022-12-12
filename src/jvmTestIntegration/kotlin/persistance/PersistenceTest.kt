@@ -5,6 +5,7 @@ import core.GameState
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Fact
 import core.ai.knowledge.SimpleSubject
+import core.ai.knowledge.Subject
 import core.body.Body
 import core.commands.CommandParsers
 import core.events.EventManager
