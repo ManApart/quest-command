@@ -25,12 +25,8 @@ data class Mind(
         return memory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
     }
 
-    fun learn(fact: Fact) = learn(fact.source, fact.kind, fact.confidence, fact.amount)
-    fun learn(source: SimpleSubject, kind: String, confidenceIncrease: Int, amountIncrease: Int) {
-        val existing = memory.getFact(source, kind)
-        val confidence = (existing?.confidence ?: 0) + confidenceIncrease
-        val amount = (existing?.confidence ?: 0) + amountIncrease
-        val fact = Fact(source, kind, confidence, amount)
+    fun learn(source: SimpleSubject, kind: String) {
+        val fact = memory.getFact(source, kind) ?: Fact(source, kind)
         memory.remember(fact)
         memory.forget(fact)
     }

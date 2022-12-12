@@ -61,5 +61,5 @@ private fun List<Fact>.parsedFacts(): MutableMap<String, MutableMap<SimpleSubjec
 }
 
 private fun List<ListFact>.parsedListFacts(): MutableMap<String, ListFact> {
-    return groupBy { it.kind }.mapValues { it.value.sum() }.toMutableMap()
+    return groupBy { it.kind }.mapValues { it.value.first() }.toMutableMap()
 }
