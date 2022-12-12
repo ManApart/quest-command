@@ -10,7 +10,6 @@ data class Mind(
     val ai: AI = DumbAI(),
     val memory: CreatureMemory = CreatureMemory()
 ){
-    private val shortTermMemory = CreatureMemory()
     lateinit var creature: Thing; private set
 
     fun updateCreature(creature: Thing){
@@ -19,11 +18,11 @@ data class Mind(
     }
 
     fun knows(kind: String): ListFact {
-        return shortTermMemory.getListFact(kind) ?: UNKNOWN_LIST_FACT //TODO - ok to return this?
+        return memory.getListFact(kind) ?: UNKNOWN_LIST_FACT //TODO - ok to return this?
     }
 
     fun knows(source: Subject, kind: String): Fact {
-        return shortTermMemory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
+        return memory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
     }
 
     fun learn(fact: Fact) = learn(fact.source, fact.kind, fact.confidence, fact.amount)
@@ -33,7 +32,7 @@ data class Mind(
         val amount = (existing?.confidence ?: 0) + amountIncrease
         val fact = Fact(source, kind, confidence, amount)
         memory.remember(fact)
-        shortTermMemory.forget(fact)
+        memory.forget(fact)
     }
 
     fun learn(kind: String, addition: SimpleSubject) = learn(kind, listOf(addition))
@@ -41,11 +40,6 @@ data class Mind(
         val existing = memory.getListFact(kind)
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))
         memory.remember(fact)
-        shortTermMemory.forget(fact)
-    }
-
-    fun forgetShortTermMemory() {
-        shortTermMemory.forget()
     }
 
     fun forgetLongTermMemory() {

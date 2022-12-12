@@ -22,7 +22,6 @@ class ReadMapTest {
         GameState.putPlayer(player)
         GameLogger.reset()
         GameLogger.track(player)
-        player.mind.forgetShortTermMemory()
         player.mind.forgetLongTermMemory()
     }
 

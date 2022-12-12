@@ -7,12 +7,10 @@ import kotlin.test.assertEquals
 class FactTest {
     //Examples of Facts and Relationships
     private val bob = SimpleSubject("Bob")
-    private val player = SimpleSubject("Player")
     private val loc = SimpleSubject(locationName = "Kanbara Home")
 
     //In the player's mind
     val location = Fact(loc, "Exists", 100, 1) //0 would mean confident it does NOT exist
-    val shopKeeperIsRich = Fact(bob, "Rich", 50, 100)
 
     @Test
     fun singleEntryAverage() {

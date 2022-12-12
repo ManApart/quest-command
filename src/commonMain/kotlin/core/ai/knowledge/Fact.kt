@@ -1,5 +1,7 @@
 package core.ai.knowledge
 
+import core.properties.Properties
+
 private val unknownSubject = SimpleSubject()
 val UNKNOWN_FACT = Fact(unknownSubject, "Unknown", 0, 0)
 val UNKNOWN_LIST_FACT = ListFact("Unknown", unknownSubject)
