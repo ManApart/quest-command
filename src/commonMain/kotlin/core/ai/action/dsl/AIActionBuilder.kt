@@ -19,7 +19,6 @@ class AIActionBuilder(val condition: (Thing, Context) -> Boolean?, private val c
         children.add(AIActionBuilder(condition, context.toMutableMap()).apply(initializer))
     }
 
-//    infix fun String.context(accessor: (Thing, Context) -> Any?) {
     fun context(name: String, accessor: (Thing, Context) -> Any?) {
         context[name] = accessor
     }

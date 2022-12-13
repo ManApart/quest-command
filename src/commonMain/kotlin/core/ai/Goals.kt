@@ -3,18 +3,30 @@ package core.ai
 import core.ai.action.AIAction
 import core.conditional.Context
 import core.thing.Thing
+import core.utility.Named
 
 
-interface Goal
-
-
-//Lists of agendas can be created and then a creature can take combine those lists as its set of desires
-data class Personality(val desires: List<Agenda>) {
-    constructor(vararg desires: List<Agenda>): this(desires.toList().flatten())
+interface GoalStep {
+    fun actions(): List<AIAction>
 }
 
-//High level goal with a list of tasks and sub goals to accomplish
-//TODO - combine with AIActionTree
-data class Agenda(val criteria: List<(Thing, Context) -> Boolean?>, val steps: List<Goal>) : Goal
 
-data class Plan(val tasks: List<AIAction>): Goal
+//Goals have steps and sub goals to be done in order
+//TODO - combine with AIActionTree
+data class Goal(
+    override val name: String,
+    val criteria: List<(Thing, Context) -> Boolean?>,
+    val priority: Int,
+    val steps: List<GoalStep>
+) : Named, GoalStep {
+    constructor(id: String, criteria: List<(Thing, Context) -> Boolean?>, priority: Int, steps: List<AIAction>) : this(id, criteria, priority, listOf(Plan(steps)))
+
+    override fun actions(): List<AIAction> {
+        return steps.flatMap { it.actions() }
+    }
+
+}
+
+data class Plan(private val steps: List<AIAction>) : GoalStep {
+    override fun actions() = steps
+}

@@ -12,6 +12,7 @@ import core.utility.RandomManager
 import traveling.position.ThingAim
 import use.interaction.nothing.NothingEvent
 
+//TODO - this should return goals, not actions
 class CommonActions : AIActionResource {
     override val values = actions {
         action("Nothing") { creature, _ -> NothingEvent(creature) }
