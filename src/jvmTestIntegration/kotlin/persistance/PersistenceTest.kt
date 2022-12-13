@@ -4,7 +4,6 @@ import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Fact
-import core.ai.knowledge.SimpleSubject
 import core.ai.knowledge.Subject
 import core.body.Body
 import core.commands.CommandParsers
@@ -142,7 +141,7 @@ class PersistenceTest {
         preLoadPlayer.thing.properties.tags.add("Saved")
         //subject: thingIsSelf
         //subject: locationIsName
-        val fact = Fact(SimpleSubject(preLoadPlayer.thing), "Neat")
+        val fact = Fact(Subject(preLoadPlayer.thing), "Neat")
         preLoadPlayer.mind.learn(fact)
 
         EventManager.postEvent(SaveEvent(preLoadPlayer))

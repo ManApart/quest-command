@@ -13,7 +13,7 @@ data class MindP(
 }
 
 @kotlinx.serialization.Serializable
-data class FactP(val source: SimpleSubject, val kind: String, val props: PropertiesP) {
+data class FactP(val source: Subject, val kind: String, val props: PropertiesP) {
     constructor(b: Fact) : this(b.source, b.kind, PropertiesP(b.props))
     fun parsed(): Fact{
         return Fact(source, kind, props.parsed())
@@ -21,7 +21,7 @@ data class FactP(val source: SimpleSubject, val kind: String, val props: Propert
 }
 
 @kotlinx.serialization.Serializable
-data class ListFactP(val kind: String, val sources: List<SimpleSubject>, val props: PropertiesP) {
+data class ListFactP(val kind: String, val sources: List<Subject>, val props: PropertiesP) {
     constructor(b: ListFact) : this(b.kind, b.sources, PropertiesP(b.props))
     fun parsed(): ListFact{
         return ListFact(kind, sources, props.parsed())

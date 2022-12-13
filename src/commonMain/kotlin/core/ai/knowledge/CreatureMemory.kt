@@ -3,12 +3,12 @@ package core.ai.knowledge
 import core.utility.putAbsent
 
 data class CreatureMemory(
-    private val facts: MutableMap<String, MutableMap<SimpleSubject, Fact>> = mutableMapOf(),
+    private val facts: MutableMap<String, MutableMap<Subject, Fact>> = mutableMapOf(),
     private val listFacts: MutableMap<String, ListFact> = mutableMapOf(),
 ) {
     constructor(facts: List<Fact>, listFacts: List<ListFact>) : this(facts.parsedFacts(), listFacts.parsedListFacts())
 
-    fun getFact(source: SimpleSubject, kind: String): Fact? {
+    fun getFact(source: Subject, kind: String): Fact? {
         return facts[kind]?.get(source)
     }
 
@@ -50,8 +50,8 @@ data class CreatureMemory(
     }
 }
 
-private fun List<Fact>.parsedFacts(): MutableMap<String, MutableMap<SimpleSubject, Fact>> {
-    val facts = mutableMapOf<String, MutableMap<SimpleSubject, Fact>>()
+private fun List<Fact>.parsedFacts(): MutableMap<String, MutableMap<Subject, Fact>> {
+    val facts = mutableMapOf<String, MutableMap<Subject, Fact>>()
     forEach { fact ->
         facts.putAbsent(fact.kind, mutableMapOf())
         facts[fact.kind]?.put(fact.source, fact)

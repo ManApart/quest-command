@@ -21,17 +21,17 @@ data class Mind(
         return memory.getListFact(kind) ?: UNKNOWN_LIST_FACT //TODO - ok to return this?
     }
 
-    fun knows(source: SimpleSubject, kind: String): Fact {
+    fun knows(source: Subject, kind: String): Fact {
         return memory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
     }
 
-    fun learn(source: SimpleSubject, kind: String) {
+    fun learn(source: Subject, kind: String) {
         val fact = memory.getFact(source, kind) ?: Fact(source, kind)
         learn(fact)
     }
 
-    fun learn(kind: String, addition: SimpleSubject) = learn(kind, listOf(addition))
-    fun learn(kind: String, additions: List<SimpleSubject>) {
+    fun learn(kind: String, addition: Subject) = learn(kind, listOf(addition))
+    fun learn(kind: String, additions: List<Subject>) {
         val existing = memory.getListFact(kind)
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))
         memory.remember(fact)
@@ -51,20 +51,20 @@ data class Mind(
 
     fun knows(location: LocationNode): Boolean {
         val fact = knows("Location")
-        return fact.sources.contains(SimpleSubject(location))
+        return fact.sources.contains(Subject(location))
     }
 
     fun knows(recipe: Recipe): Boolean {
         val fact = knows("Recipe")
-        return fact.sources.contains(SimpleSubject(recipe.name))
+        return fact.sources.contains(Subject(recipe.name))
     }
 
     fun discover(location: LocationNode){
-        learn("Location", SimpleSubject(location))
+        learn("Location", Subject(location))
     }
 
     fun discover(recipe: Recipe){
-        learn("Recipe", SimpleSubject(recipe.name))
+        learn("Recipe", Subject(recipe.name))
     }
 
 }
