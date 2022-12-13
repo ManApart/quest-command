@@ -24,12 +24,12 @@ data class Agenda(
     override val name: String,
     val steps: List<GoalStep>
 ) : Named, GoalStep {
-    constructor(name: String, steps: List<AIAction>) : this(name, listOf(Plan(steps)))
 
     override fun actions(): List<AIAction> {
         return steps.flatMap { it.actions() }
     }
 }
+fun agenda(name: String, steps: List<AIAction>) = Agenda(name,  listOf(Plan(steps)))
 
 data class Goal(
     override val name: String,
