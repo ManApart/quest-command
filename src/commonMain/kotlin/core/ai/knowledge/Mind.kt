@@ -17,12 +17,12 @@ data class Mind(
         ai.creature = creature
     }
 
-    fun knows(kind: String): ListFact {
-        return memory.getListFact(kind) ?: UNKNOWN_LIST_FACT //TODO - ok to return this?
+    fun knows(kind: String): ListFact? {
+        return memory.getListFact(kind)
     }
 
-    fun knows(source: Subject, kind: String): Fact {
-        return memory.getFact(source, kind) ?: UNKNOWN_FACT //TODO
+    fun knows(source: Subject, kind: String): Fact? {
+        return memory.getFact(source, kind)
     }
 
     fun learn(source: Subject, kind: String) {
@@ -50,12 +50,12 @@ data class Mind(
     }
 
     fun knows(location: LocationNode): Boolean {
-        val fact = knows("Location")
+        val fact = knows("Location") ?: return false
         return fact.sources.contains(Subject(location))
     }
 
     fun knows(recipe: Recipe): Boolean {
-        val fact = knows("Recipe")
+        val fact = knows("Recipe") ?: return false
         return fact.sources.contains(Subject(recipe.name))
     }
 
