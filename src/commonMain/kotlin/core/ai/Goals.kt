@@ -10,20 +10,34 @@ interface GoalStep {
     fun actions(): List<AIAction>
 }
 
+//TODO - combine with AIActionTree (see wiki)
 
 //Goals have steps and sub goals to be done in order
-//TODO - combine with AIActionTree
-data class Goal(
+data class Desire(
     override val name: String,
     val criteria: List<(Thing, Context) -> Boolean?>,
     val priority: Int,
+    val agenda: Agenda // Can this be a hard reference or does it need to be by string
+) : Named
+
+data class Agenda(
+    override val name: String,
     val steps: List<GoalStep>
 ) : Named, GoalStep {
-    constructor(id: String, criteria: List<(Thing, Context) -> Boolean?>, priority: Int, steps: List<AIAction>) : this(id, criteria, priority, listOf(Plan(steps)))
+    constructor(name: String, steps: List<AIAction>) : this(name, listOf(Plan(steps)))
 
     override fun actions(): List<AIAction> {
         return steps.flatMap { it.actions() }
     }
+}
+
+data class Goal(
+    override val name: String,
+    val priority: Int,
+    val progress: Int,
+    val steps: List<AIAction>
+) : Named {
+    constructor(desire: Desire, agenda: Agenda): this(desire.name, desire.priority, 0, agenda.steps.flatMap { it.actions() })
 
 }
 
