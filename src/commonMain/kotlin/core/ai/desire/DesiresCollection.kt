@@ -1,5 +1,5 @@
 package core.ai.desire
 
 interface DesiresCollection {
-    val values: List<Desire>
+    val values: List<DesireTree>
 }

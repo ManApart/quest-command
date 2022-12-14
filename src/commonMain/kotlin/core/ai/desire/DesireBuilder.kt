@@ -1,19 +1,15 @@
 package core.ai.desire
 
-import core.ai.AIManager.actions
-import core.ai.action.AIAction
-import core.ai.action.dsl.ActionRecipe
 import core.conditional.Context
 import core.conditional.ContextData
 import core.thing.Thing
 import core.utility.putAbsent
-import crafting.result
 
 class DesireBuilder(val condition: (Thing, Context) -> Boolean?, private val context: MutableMap<String, (Thing, Context) -> Any?> = mutableMapOf()) {
     var priority: Int? = null
     private val depthScale: Int = 2
     private val children: MutableList<DesireBuilder> = mutableListOf()
-    private val desires: MutableList<Pair<String, String>> = mutableListOf()
+    private val agendas: MutableList<String> = mutableListOf()
 
 
     fun cond(condition: (Thing, Context) -> Boolean? = { _, _ -> true }, initializer: DesireBuilder.() -> Unit) {
@@ -24,8 +20,8 @@ class DesireBuilder(val condition: (Thing, Context) -> Boolean?, private val con
         context[name] = accessor
     }
 
-    fun desire(name: String, agenda: String) {
-        desires.add(Pair(name, agenda))
+    fun agenda(agenda: String) {
+        agendas.add(agenda)
     }
 
     internal fun build(): DesireTree {
@@ -38,12 +34,10 @@ class DesireBuilder(val condition: (Thing, Context) -> Boolean?, private val con
         parentContext.entries.forEach { (key, value) -> context.putAbsent(key, value) }
         val usedContext = Context(context)
 
-        val usedDesires = desires.map { (name, agenda) ->
-            Desire(name, usedPriority, agenda)
-        }
+        val usedAgendas = agendas.map { Pair(it, usedPriority) }
         val usedChildren = children.map { it.build(context, depth + 1) }
 
-        return DesireTree(condition, usedDesires, usedContext, usedChildren)
+        return DesireTree(condition, usedAgendas, usedContext, usedChildren)
     }
 }
 

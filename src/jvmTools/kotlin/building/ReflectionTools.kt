@@ -3,13 +3,13 @@ package building
 import conversation.dsl.Dialogue
 import conversation.dsl.DialogueResource
 import core.ai.action.AIActionTree
-import core.ai.action.DesireTree
 import core.ai.action.dsl.AIActionResource
 import core.ai.agenda.Agenda
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.ai.agenda.AgendaResource
 import core.ai.desire.DesireResource
+import core.ai.desire.DesireTree
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command

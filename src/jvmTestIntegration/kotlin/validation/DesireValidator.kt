@@ -15,10 +15,12 @@ class DesireValidator {
 
     private fun noGoalsWithoutAgendas(): Int {
         var warnings = 0
-        desires.forEach { desire ->
-            if (agendas.getOrNull(desire.name) == null) {
-                println("WARN: Could not find agenda '${desire.agenda}' for desire '${desire.name}'.")
-                warnings++
+        desires.forEach { desireTree ->
+            desireTree.getAllDesires().map { it.first }.forEach { desire ->
+                if (agendas.getOrNull(desire) == null) {
+                    println("WARN: Could not find agenda '${desire}' for desire '${desire}'.")
+                    warnings++
+                }
             }
         }
         return warnings

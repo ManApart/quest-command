@@ -2,7 +2,6 @@ package core.ai
 
 import core.ai.action.AIAction
 import core.ai.agenda.Agenda
-import core.ai.desire.Desire
 import core.utility.Named
 
 data class Goal(
@@ -11,7 +10,7 @@ data class Goal(
     val progress: Int,
     val steps: List<AIAction>
 ) : Named {
-    constructor(desire: Desire, agenda: Agenda): this(desire.name, desire.priority, 0, agenda.steps.flatMap { it.actions() })
+    constructor(agenda: Agenda, priority: Int): this(agenda.name, priority, 0, agenda.steps.flatMap { it.actions() })
 
 }
 
