@@ -3,7 +3,7 @@ package resources.ai.agenda
 import combat.DamageType
 import combat.attack.StartAttackEvent
 import core.GameState
-import core.ai.Agenda
+import core.ai.agenda.Agenda
 import core.ai.agenda.AgendaResource
 import core.conditional.Context
 import core.events.Event
@@ -15,7 +15,6 @@ class CommonAgendas : AgendaResource {
     override val values = listOf(
         Agenda("FindAndAttack", listOf())
     )
-
 }
 
 private fun ratAttack(owner: Thing, context: Context): Event {

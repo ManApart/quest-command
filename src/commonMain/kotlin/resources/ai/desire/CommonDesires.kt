@@ -1,10 +1,20 @@
 package resources.ai.desire
 
-import core.ai.desire.Desire
 import core.ai.desire.DesireResource
+import core.ai.desire.desires
 
-class CommonGoals : DesireResource {
-    override val values = listOf(
-        Desire("PredatorAttack", listOf({ s, c -> c.thing("target", s) != null }), 10, "FindAndAttack")
-    )
+class CommonDesires : DesireResource {
+    override val values = desires {
+        desire("Nothing", "Nothing")
+
+        context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
+
+        cond({ source, _ -> source.properties.tags.has("Predator") }) {
+            //Eventually use factions + actions to create how much something likes something else
+            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { !it.properties.tags.has("Predator") } }
+            cond({ s, c -> c.thing("target", s) != null }) {
+                desire("Rat Attack", "FindAndAttack")
+            }
+        }
+    }
 }

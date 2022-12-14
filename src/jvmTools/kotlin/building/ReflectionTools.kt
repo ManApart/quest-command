@@ -2,10 +2,10 @@ package building
 
 import conversation.dsl.Dialogue
 import conversation.dsl.DialogueResource
-import core.ai.Agenda
-import core.ai.Desire
 import core.ai.action.AIActionTree
+import core.ai.action.DesireTree
 import core.ai.action.dsl.AIActionResource
+import core.ai.agenda.Agenda
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.ai.agenda.AgendaResource
@@ -64,7 +64,7 @@ object ReflectionTools {
         generateResourcesFile(BodyResource::class, NetworkBuilder::class)
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
         generateResourcesFile(CreatureResource::class, ThingBuilder::class)
-        generateResourcesFile(DesireResource::class, Desire::class)
+        generateResourcesFile(DesireResource::class, DesireTree::class)
         generateResourcesFile(ItemResource::class, ThingBuilder::class)
         generateResourcesFile(BehaviorResource::class, Behavior::class)
         generateResourcesFile(DialogueResource::class, Dialogue::class)
