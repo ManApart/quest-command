@@ -1,6 +1,7 @@
 package core.ai
 
 import core.ai.action.AIAction
+import core.ai.desire.Desire
 import core.conditional.Context
 import core.thing.Thing
 import core.utility.Named
@@ -12,13 +13,8 @@ interface GoalStep {
 
 //TODO - combine with AIActionTree (see wiki)
 
-//Goals have steps and sub goals to be done in order
-data class Desire(
-    override val name: String,
-    val criteria: List<(Thing, Context) -> Boolean?>,
-    val priority: Int,
-    val agenda: Agenda // Can this be a hard reference or does it need to be by string
-) : Named
+//Desires have steps and sub goals to be done in order
+
 
 data class Agenda(
     override val name: String,

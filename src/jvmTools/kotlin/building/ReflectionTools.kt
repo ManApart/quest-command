@@ -2,10 +2,14 @@ package building
 
 import conversation.dsl.Dialogue
 import conversation.dsl.DialogueResource
+import core.ai.Agenda
+import core.ai.Desire
 import core.ai.action.AIActionTree
 import core.ai.action.dsl.AIActionResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
+import core.ai.agenda.AgendaResource
+import core.ai.desire.DesireResource
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command
@@ -55,10 +59,12 @@ object ReflectionTools {
 
         generateResourcesFile(AIActionResource::class, AIActionTree::class)
         generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
+        generateResourcesFile(AgendaResource::class, Agenda::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
         generateResourcesFile(BodyResource::class, NetworkBuilder::class)
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
         generateResourcesFile(CreatureResource::class, ThingBuilder::class)
+        generateResourcesFile(DesireResource::class, Desire::class)
         generateResourcesFile(ItemResource::class, ThingBuilder::class)
         generateResourcesFile(BehaviorResource::class, Behavior::class)
         generateResourcesFile(DialogueResource::class, Dialogue::class)
