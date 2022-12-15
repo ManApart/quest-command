@@ -23,3 +23,10 @@ data class AIAction(
         }
     }
 }
+
+data class AIAction2(
+    override val name: String,
+    private val context: Context = Context(),
+    private val createEvents: (Thing, Context) -> List<Event> = { _, _ -> listOf() },
+    val priority: Int = 10
+) : Named

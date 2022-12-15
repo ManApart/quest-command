@@ -5,8 +5,13 @@ import core.utility.Named
 
 interface GoalStep {
     fun actions(): List<AIAction>
+//    val optional: Boolean
+//    fun canComplete
 }
 
+//interface GoalStep {
+//
+//}
 
 data class Agenda(
     override val name: String,
@@ -17,7 +22,7 @@ data class Agenda(
         return steps.flatMap { it.actions() }
     }
 }
-fun agenda(name: String, steps: List<AIAction>) = Agenda(name,  listOf(Plan(steps)))
+//fun agenda(name: String, steps: List<AIAction>) = Agenda(name,  listOf(Plan(steps)))
 
 data class Plan(private val steps: List<AIAction>) : GoalStep {
     override fun actions() = steps
