@@ -1,29 +1,41 @@
 package core.ai.agenda
 
-import core.ai.action.AIAction
+import core.ai.AIManager
+import core.ai.action.AIAction2
 import core.utility.Named
 
 interface GoalStep {
-    fun actions(): List<AIAction>
-//    val optional: Boolean
-//    fun canComplete
+    fun actions(): List<AIAction2>
 }
 
-//interface GoalStep {
-//
-//}
+data class GoalStep2(val agendaName: String?, val step: AIAction2?) {
+    constructor(agendaName: String) : this(agendaName, null)
+    constructor(step: AIAction2) : this(null, step)
+
+    fun getActions(): List<AIAction2> {
+        return step?.let { listOf(it) } ?: AIManager.agendas[agendaName]!!.getActions()
+    }
+}
 
 data class Agenda(
     override val name: String,
-    val steps: List<GoalStep>
-) : Named, GoalStep {
-
-    override fun actions(): List<AIAction> {
-        return steps.flatMap { it.actions() }
+    val steps: List<GoalStep2>
+) : Named {
+    fun getActions(): List<AIAction2> {
+        return steps.flatMap { it.getActions() }
     }
 }
-//fun agenda(name: String, steps: List<AIAction>) = Agenda(name,  listOf(Plan(steps)))
 
-data class Plan(private val steps: List<AIAction>) : GoalStep {
+//data class Agenda(
+//    override val name: String,
+//    val steps: List<GoalStep>
+//) : Named, GoalStep {
+//
+//    override fun actions(): List<AIAction2> {
+//        return steps.flatMap { it.actions() }
+//    }
+//}
+
+data class Plan(private val steps: List<AIAction2>) : GoalStep {
     override fun actions() = steps
 }

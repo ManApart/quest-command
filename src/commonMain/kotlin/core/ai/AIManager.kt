@@ -24,9 +24,9 @@ object AIManager {
         return DependencyInjector.getImplementation(DesiresCollection::class).values
     }
 
-    private fun loadAgendas(): List<Agenda> {
+    private fun loadAgendas(): Map<String, Agenda> {
         startupLog("Loading AI Agendas.")
-        return DependencyInjector.getImplementation(AgendasCollection::class).values
+        return DependencyInjector.getImplementation(AgendasCollection::class).values.associateBy { it.name }
     }
 
     private fun loadActions(): List<AIActionTree> {

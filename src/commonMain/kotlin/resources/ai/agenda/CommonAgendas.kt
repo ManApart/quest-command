@@ -5,9 +5,6 @@ import combat.attack.StartAttackEvent
 import core.GameState
 import core.ai.agenda.AgendaResource
 import core.ai.agenda.agendas
-import core.conditional.Context
-import core.events.Event
-import core.thing.Thing
 import core.utility.RandomManager
 import traveling.position.ThingAim
 import use.interaction.nothing.NothingEvent
@@ -18,8 +15,18 @@ class CommonAgendas : AgendaResource {
             action("Nothing") { creature, _ -> NothingEvent(creature) }
         }
 
+//        agenda("FindEnemy") {
+//            action("FindEnemy") { _, context ->
+//                 { source, c -> c.things("creatures", source)?.firstOrNull { !it.properties.tags.has("Predator") } }
+        //Event for source to learn a fact of where the enemy is
+//            }
+//        }
+
         agenda("FindAndAttack") {
+//            agenda("FindEnemy")
             action("Attack") { owner, context ->
+                //Instead of context, use what player knows
+                //TODO -remove context and use knowledge instead
                 val target = context.thing("target", owner)!!
                 val playerBody = target.body
                 val possibleParts = listOf(
