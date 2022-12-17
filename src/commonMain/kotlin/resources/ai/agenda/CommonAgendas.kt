@@ -17,11 +17,11 @@ import use.interaction.nothing.NothingEvent
 class CommonAgendas : AgendaResource {
     override val values = agendas {
         agenda("Nothing") {
-            action("Nothing") { creature, _ -> NothingEvent(creature) }
+            action("Nothing") { creature -> NothingEvent(creature) }
         }
 
         agenda("SearchForEnemy") {
-            action("SearchForEnemy") { owner, _ ->
+            action("SearchForEnemy") { owner ->
                 val enemy = owner.location.getLocation().getCreatures(perceivedBy = owner).firstOrNull { !it.properties.tags.has("Predator") }
                 enemy?.let {
                     DiscoverFactEvent(owner, Fact(Subject(enemy), "aggroTarget"))
@@ -30,7 +30,7 @@ class CommonAgendas : AgendaResource {
         }
 
         agenda("Attack"){
-            action("Attack") { owner, _ ->
+            action("Attack") { owner ->
                 owner.mind.getAggroTarget()?.let { target ->
                     val enemyBody = target.body
                     val possibleParts = listOf(
