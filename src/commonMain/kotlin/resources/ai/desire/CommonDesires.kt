@@ -13,7 +13,7 @@ class CommonDesires : DesireResource {
             //Eventually use factions + actions to create how much something likes something else
             context("target") { source, c -> c.things("creatures", source)?.firstOrNull { !it.properties.tags.has("Predator") } }
             cond({ s, c -> c.thing("target", s) != null }) {
-                agenda("FindAndAttack")
+                agenda("FindAndKill")
             }
         }
     }

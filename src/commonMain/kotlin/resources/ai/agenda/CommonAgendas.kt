@@ -29,9 +29,7 @@ class CommonAgendas : AgendaResource {
             }
         }
 
-        agenda("FindAndAttack") {
-            agenda("SearchForEnemy")
-
+        agenda("Attack"){
             action("Attack") { owner, _ ->
                 owner.mind.knowsThingByKind("target")?.let { target ->
                     val enemyBody = target.body
@@ -48,6 +46,13 @@ class CommonAgendas : AgendaResource {
                     StartAttackEvent(owner, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
                 }
             }
+        }
+
+        agenda("FindAndKill") {
+            agenda("SearchForEnemy")
+            agenda("Attack")
+            agenda("Attack")
+            agenda("Attack") // TODO - conditional agendas
         }
     }
 }
