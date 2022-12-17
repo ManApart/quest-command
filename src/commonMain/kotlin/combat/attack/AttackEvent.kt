@@ -9,5 +9,4 @@ import traveling.position.ThingAim
 
 class AttackEvent(val source: Thing, val sourcePart: Location, val aim: ThingAim, val type: DamageType) : Event {
     override fun gameTicks(): Int = 1
-    override fun isExecutableByAI(): Boolean = true
 }

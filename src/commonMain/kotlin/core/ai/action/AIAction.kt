@@ -26,6 +26,6 @@ data class AIAction(
 
 data class AIAction2(
     override val name: String,
-    private val createEvents: (Thing, Context) -> List<Event>? = { _, _ -> listOf() },
+    val createEvents: (Thing, Context) -> List<Event>? = { _, _ -> listOf() },
     val optional: Boolean = false //Could make this a function based on what's current etc
 ) : Named

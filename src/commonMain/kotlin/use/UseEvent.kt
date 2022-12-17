@@ -8,5 +8,4 @@ import core.thing.Thing
  */
 class UseEvent(val source: Thing, val used: Thing, val usedOn: Thing) : Event {
     override fun gameTicks(): Int = 1
-    override fun isExecutableByAI(): Boolean = true
 }
