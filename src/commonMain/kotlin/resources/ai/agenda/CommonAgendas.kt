@@ -5,7 +5,12 @@ import combat.attack.StartAttackEvent
 import core.GameState
 import core.ai.agenda.AgendaResource
 import core.ai.agenda.agendas
+import core.ai.knowledge.DiscoverFactEvent
+import core.ai.knowledge.Fact
+import core.ai.knowledge.Subject
+import core.events.Event
 import core.utility.RandomManager
+import crafting.DiscoverRecipeEvent
 import traveling.position.ThingAim
 import use.interaction.nothing.NothingEvent
 
@@ -15,31 +20,33 @@ class CommonAgendas : AgendaResource {
             action("Nothing") { creature, _ -> NothingEvent(creature) }
         }
 
-//        agenda("FindEnemy") {
-//            action("FindEnemy") { _, context ->
-//                 { source, c -> c.things("creatures", source)?.firstOrNull { !it.properties.tags.has("Predator") } }
-        //Event for source to learn a fact of where the enemy is
-//            }
-//        }
+        agenda("SearchForEnemy") {
+            action("SearchForEnemy") { owner, _ ->
+                val enemy = owner.location.getLocation().getCreatures(perceivedBy = owner).firstOrNull { !it.properties.tags.has("Predator") }
+                enemy?.let {
+                    DiscoverFactEvent(owner, Fact(Subject(enemy), "target"))
+                }
+            }
+        }
 
         agenda("FindAndAttack") {
-//            agenda("FindEnemy")
-            action("Attack") { owner, context ->
-                //Instead of context, use what player knows
-                //TODO -remove context and use knowledge instead
-                val target = context.thing("target", owner)!!
-                val playerBody = target.body
-                val possibleParts = listOf(
-                    playerBody.getPart("Right Foot"),
-                    playerBody.getPart("Left Foot")
-                )
-                val thingPart = listOf(RandomManager.getRandom(possibleParts))
-                val partToAttackWith = if (owner.body.hasPart("Small Claws")) {
-                    owner.body.getPart("Small Claws")
-                } else {
-                    owner.body.getRootPart()
+            agenda("SearchForEnemy")
+
+            action("Attack") { owner, _ ->
+                owner.mind.knowsThingByKind("target")?.let { target ->
+                    val enemyBody = target.body
+                    val possibleParts = listOf(
+                        enemyBody.getPart("Right Foot"),
+                        enemyBody.getPart("Left Foot")
+                    )
+                    val thingPart = listOf(RandomManager.getRandom(possibleParts))
+                    val partToAttackWith = if (owner.body.hasPart("Small Claws")) {
+                        owner.body.getPart("Small Claws")
+                    } else {
+                        owner.body.getRootPart()
+                    }
+                    StartAttackEvent(owner, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
                 }
-                StartAttackEvent(owner, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
             }
         }
     }

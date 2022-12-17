@@ -25,6 +25,10 @@ data class Mind(
         return memory.getFact(source, kind)
     }
 
+    fun knowsThingByKind(kind: String): Thing? {
+        return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
+    }
+
     fun learn(source: Subject, kind: String) {
         val fact = memory.getFact(source, kind) ?: Fact(source, kind)
         learn(fact)

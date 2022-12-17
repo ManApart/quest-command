@@ -28,6 +28,10 @@ data class CreatureMemory(
         return listFacts.values.toList()
     }
 
+    fun getSubjects(kind: String) : List<Subject> {
+        return facts[kind]?.keys?.toList() ?: listOf()
+    }
+
     fun remember(fact: Fact) {
         facts.putAbsent(fact.kind, mutableMapOf())
         facts[fact.kind]?.put(fact.source, fact)

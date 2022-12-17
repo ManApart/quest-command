@@ -12,7 +12,7 @@ data class Goal(
     val steps: List<AIAction2>,
     val context: Context = Context(),
 ) : Named {
-    constructor(agenda: Agenda, priority: Int): this(agenda.name, priority, 0, agenda.steps.flatMap { it.actions() })
+    constructor(agenda: Agenda, priority: Int): this(agenda.name, priority, 0, agenda.steps.flatMap { it.getActions() })
 
 }
 
