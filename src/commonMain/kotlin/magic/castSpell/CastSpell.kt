@@ -13,8 +13,8 @@ class CastSpell : EventListener<CastSpellEvent>() {
         if (canCast(event)) {
             event.spell.cast(event)
             if (event.spell.isHostile && event.thing.thing.soul.hasStat(HEALTH) && event.thing.thing != event.source){
-                event.source.mind.ai.aggroThing = event.thing.thing
-                event.thing.thing.mind.ai.aggroThing = event.source
+                event.source.mind.ai.aggroTarget = event.thing.thing
+                event.thing.thing.mind.ai.aggroTarget = event.source
             }
         }
     }

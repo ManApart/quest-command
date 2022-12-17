@@ -1,6 +1,6 @@
 package core.ai
 
-import core.ai.action.AIAction2
+import core.ai.action.AIAction
 import core.ai.agenda.Agenda
 import core.conditional.Context
 import core.events.EventManager
@@ -11,7 +11,7 @@ data class Goal(
     override val name: String,
     val priority: Int,
     private var progress: Int,
-    val steps: List<AIAction2>,
+    val steps: List<AIAction>,
     val context: Context = Context(),
 ) : Named {
     constructor(agenda: Agenda, priority: Int) : this(agenda.name, priority, 0, agenda.steps.flatMap { it.getActions() })

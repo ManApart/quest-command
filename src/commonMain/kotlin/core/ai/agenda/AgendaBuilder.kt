@@ -1,6 +1,6 @@
 package core.ai.agenda
 
-import core.ai.action.AIAction2
+import core.ai.action.AIAction
 import core.conditional.Context
 import core.events.Event
 import core.thing.Thing
@@ -10,13 +10,13 @@ class AgendaBuilder(private val name: String) {
     private val steps: MutableList<GoalStep> = mutableListOf()
 
     fun action(name: String, result: (Thing, Context) -> Event?) {
-        this.steps.add(GoalStep(AIAction2(name, { thing, context ->
+        this.steps.add(GoalStep(AIAction(name, { thing, context ->
             result(thing, context)?.let { listOf(it) }
         })))
     }
 
     fun actions(name: String, result: (Thing, Context) -> List<Event>?) {
-        this.steps.add(GoalStep(AIAction2(name, result)))
+        this.steps.add(GoalStep(AIAction(name, result)))
     }
 
     fun agenda(name: String) {

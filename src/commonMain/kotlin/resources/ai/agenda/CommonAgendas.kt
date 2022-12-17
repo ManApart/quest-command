@@ -48,11 +48,9 @@ class CommonAgendas : AgendaResource {
             }
         }
 
-        agenda("FindAndKill") {
+        agenda("FindAndAttack") {
             agenda("SearchForEnemy")
             agenda("Attack")
-            agenda("Attack")
-            agenda("Attack") // TODO - conditional agendas
         }
     }
 }
