@@ -2,24 +2,26 @@ package resources.ai.desire
 
 import core.ai.desire.DesireResource
 import core.ai.desire.desires
+import core.thing.Thing
 
 class CommonDesires : DesireResource {
     override val values = desires {
         agenda("Nothing")
 
-        context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
-
-        cond({ source, _ -> source.mind.getAggroTarget() != null }) {
+        cond({ source -> source.mind.getAggroTarget() != null }) {
             priority = 70
             agenda("Attack")
         }
 
-        cond({ source, _ -> source.properties.tags.has("Predator") }) {
+        cond({ source -> source.properties.tags.has("Predator") }) {
             //Eventually use factions + actions to create how much something likes something else
-            context("target") { source, c -> c.things("creatures", source)?.firstOrNull { !it.properties.tags.has("Predator") } }
-            cond({ s, c -> c.thing("target", s) != null }) {
+            cond({ s -> s.creatures().firstOrNull { !it.properties.tags.has("Predator") } != null }) {
                 agenda("FindAndAttack")
             }
         }
     }
+}
+
+private fun Thing.creatures(): List<Thing> {
+    return location.getLocation().getCreatures(perceivedBy = this).filter { it != this }
 }
