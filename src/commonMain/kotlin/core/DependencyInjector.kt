@@ -2,8 +2,6 @@ package core
 
 import conversation.dsl.DialoguesCollection
 import conversation.dsl.DialoguesGenerated
-import core.ai.action.dsl.AIActionsCollection
-import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.ai.agenda.AgendasCollection
@@ -77,7 +75,6 @@ object DependencyInjector {
     private fun createDefaultImplementations(): Map<KClass<*>, Any> {
         return mapOf(
             ActivatorsCollection::class to ActivatorsGenerated(),
-            AIActionsCollection::class to AIActionsGenerated(),
             AgendasCollection::class to AgendasGenerated(),
             BehaviorsCollection::class to BehaviorsGenerated(),
             BodysCollection::class to BodysGenerated(),

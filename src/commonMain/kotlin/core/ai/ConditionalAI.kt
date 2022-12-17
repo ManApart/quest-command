@@ -2,17 +2,13 @@ package core.ai
 
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
-import core.ai.action.AIAction
-import core.conditional.Context
 import core.events.EventManager
 import core.history.display
 import core.history.displayGlobal
 import core.utility.RandomManager
-import use.interaction.nothing.NothingEvent
 
 class ConditionalAI : AI() {
     private val defaultAgenda = Pair("Nothing", 0)
-    private val defaultAction by lazy { AIAction("Default", Context(), { _, _ -> listOf(NothingEvent(creature)) }) }
     private var goal: Goal? = null
 
     override fun takeAction() {

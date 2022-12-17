@@ -1,8 +1,6 @@
 package core.ai
 
 import core.DependencyInjector
-import core.ai.action.AIActionTree
-import core.ai.action.dsl.AIActionsCollection
 import core.ai.agenda.Agenda
 import core.ai.agenda.AgendasCollection
 import core.ai.desire.DesireTree
@@ -15,9 +13,6 @@ object AIManager {
         private set
     var agendas by lazyM { loadAgendas() }
         private set
-    //TODO - delete
-    var actions by lazyM { loadActions() }
-        private set
 
     private fun loadDesires(): List<DesireTree> {
         startupLog("Loading AI Desires.")
@@ -29,15 +24,9 @@ object AIManager {
         return DependencyInjector.getImplementation(AgendasCollection::class).values.associateBy { it.name }
     }
 
-    private fun loadActions(): List<AIActionTree> {
-        startupLog("Loading AI Actions.")
-        return DependencyInjector.getImplementation(AIActionsCollection::class).values
-    }
-
     fun reset() {
         desires = loadDesires()
         agendas = loadAgendas()
-        actions = loadActions()
     }
 
 }
