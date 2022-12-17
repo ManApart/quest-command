@@ -18,8 +18,8 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         val creature = event.thing
 
         creature.location.getLocation().getCreatures()
-            .filter { it.mind.ai.aggroThing == creature }
-            .forEach { it.mind.ai.aggroThing = null }
+            .filter { it.mind.getAggroTarget() == creature }
+            .forEach { it.mind.clearAggroTarget() }
 
         creature.inventory.getAllItems().forEach {
             EventManager.postEvent(PlaceItemEvent(creature, it, silent = true))

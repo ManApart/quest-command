@@ -12,7 +12,7 @@ class Examine : EventListener<ExamineEvent>() {
             event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBodyDetailed(event.source, event.thing) }
             event.thing != null -> describePerceived(event.source, event.thing) { describeThingDetailed(event.source, event.thing) }
             event.location != null -> describeLocationDetailed(event.source, event.location)
-            event.source.ai.aggroThing != null -> describeBattle(event.source)
+            event.source.mind.getAggroTarget() != null -> describeBattle(event.source)
             else -> describeLocationDetailed(event.source, event.source.thing.currentLocation())
         }
     }

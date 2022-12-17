@@ -13,7 +13,8 @@ class ValidationTest {
         val warnings =
                 ActivatorValidator().validate() +
                         CommandValidator().validate() +
-                        QuestValidator().validate()
+                        QuestValidator().validate() +
+                        DesireValidator().validate()
 
         assertEquals(0, warnings)
     }

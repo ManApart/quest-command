@@ -2,14 +2,12 @@ package core
 
 import conversation.dsl.DialoguesCollection
 import conversation.dsl.DialoguesGenerated
-import core.ai.action.dsl.AIActionsCollection
-import core.ai.action.dsl.AIActionsGenerated
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
-import core.ai.dsl.AIsCollection
-import core.ai.dsl.AIsGenerated
-import core.ai.knowledge.dsl.KnowledgeFindersCollection
-import core.ai.knowledge.dsl.KnowledgeFindersGenerated
+import core.ai.agenda.AgendasCollection
+import core.ai.agenda.AgendasGenerated
+import core.ai.desire.DesiresCollection
+import core.ai.desire.DesiresGenerated
 import core.body.BodyPartsCollection
 import core.body.BodyPartsGenerated
 import core.body.BodysCollection
@@ -77,8 +75,7 @@ object DependencyInjector {
     private fun createDefaultImplementations(): Map<KClass<*>, Any> {
         return mapOf(
             ActivatorsCollection::class to ActivatorsGenerated(),
-            AIsCollection::class to AIsGenerated(),
-            AIActionsCollection::class to AIActionsGenerated(),
+            AgendasCollection::class to AgendasGenerated(),
             BehaviorsCollection::class to BehaviorsGenerated(),
             BodysCollection::class to BodysGenerated(),
             BodyPartsCollection::class to BodyPartsGenerated(),
@@ -89,7 +86,7 @@ object DependencyInjector {
             EffectsCollection::class to EffectsGenerated(),
             EventListenerMapCollection::class to EventListenerMapGenerated(),
             ItemsCollection::class to ItemsGenerated(),
-            KnowledgeFindersCollection::class to KnowledgeFindersGenerated(),
+            DesiresCollection::class to DesiresGenerated(),
             LocationsCollection::class to LocationsGenerated(),
             NetworksCollection::class to NetworksGenerated(),
             RecipesCollection::class to RecipesGenerated(),

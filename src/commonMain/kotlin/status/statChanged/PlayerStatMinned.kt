@@ -33,14 +33,14 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
 
         with(source.thing) {
             location.getLocation().getCreatures()
-                .filter { it.mind.ai.aggroThing == this }
-                .forEach { it.mind.ai.aggroThing = null }
+                .filter { it.mind.getAggroTarget() == this }
+                .forEach { it.mind.clearAggroTarget() }
 
             inventory.getAllItems().forEach {
                 EventManager.postEvent(PlaceItemEvent(this, it, silent = true))
             }
 
-            mind.ai.aggroThing = null
+            mind.clearAggroTarget()
             soul.resetStatsAndConditions()
 
             val respawnNode = LocationManager.getNetwork(PLAYER_START_NETWORK).findLocation(PLAYER_START_LOCATION)

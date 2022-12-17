@@ -1,45 +1,32 @@
 package core.ai
 
 import core.DependencyInjector
-import core.ai.action.AIAction
-import core.ai.action.dsl.AIActionsCollection
-import core.ai.dsl.AIsCollection
+import core.ai.agenda.Agenda
+import core.ai.agenda.AgendasCollection
+import core.ai.desire.DesireTree
+import core.ai.desire.DesiresCollection
 import core.startupLog
-import core.utility.NameSearchableList
 import core.utility.lazyM
-import core.utility.toNameSearchableList
 
 object AIManager {
-    private var AIs by lazyM { loadAIs() }
-    private var actions by lazyM { loadActions() }
-    private val defaultAI = AIBase("NONE")
-    private val playerControlledAI = AIBase(PLAYER_CONTROLLED_ID)
+    var desires by lazyM { loadDesires() }
+        private set
+    var agendas by lazyM { loadAgendas() }
+        private set
 
-    private fun loadAIs(): NameSearchableList<AIBase> {
-        startupLog("Loading AI Bases.")
-        return DependencyInjector.getImplementation(AIsCollection::class).values.toNameSearchableList()
+    private fun loadDesires(): List<DesireTree> {
+        startupLog("Loading AI Desires.")
+        return DependencyInjector.getImplementation(DesiresCollection::class).values
     }
 
-    private fun loadActions(): NameSearchableList<AIAction> {
-        startupLog("Loading AI Actions.")
-        return DependencyInjector.getImplementation(AIActionsCollection::class).values.toNameSearchableList()
+    private fun loadAgendas(): Map<String, Agenda> {
+        startupLog("Loading AI Agendas.")
+        return DependencyInjector.getImplementation(AgendasCollection::class).values.associateBy { it.name }
     }
 
     fun reset() {
-        AIs = loadAIs()
-        actions = loadActions()
-    }
-
-    fun getAI(name: String?): AI {
-        return when {
-            name == PLAYER_CONTROLLED_ID -> playerControlledAI.createPlayerControlled()
-            name != null && AIs.exists(name) -> AIs.get(name).createConditional()
-            else -> defaultAI.createConditional()
-        }
-    }
-
-    fun getAIAction(name: String): AIAction {
-        return actions.get(name)
+        desires = loadDesires()
+        agendas = loadAgendas()
     }
 
 }

@@ -1,8 +1,6 @@
 package core.thing.activator
 
 import core.DependencyInjector
-import core.GameState
-import core.VERBOSE_STARTUP
 import core.startupLog
 import core.thing.Thing
 import core.thing.activator.dsl.ActivatorsCollection

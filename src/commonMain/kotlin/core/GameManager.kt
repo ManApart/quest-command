@@ -1,6 +1,5 @@
 package core
 
-import core.ai.PLAYER_CONTROLLED_ID
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
@@ -76,7 +75,7 @@ object GameManager {
     ): Player {
         val player = thing(name){
             description(description)
-            ai(PLAYER_CONTROLLED_ID)
+            playerAI()
             body(body)
             location(location)
         }.build()

@@ -13,8 +13,6 @@ import createItem
 import createItemBuilder
 import createMockedGame
 import createPouch
-import inventory.pickupItem.TakeItem
-import inventory.pickupItem.TakeItemEvent
 
 import kotlin.test.BeforeTest
 

@@ -2,24 +2,33 @@ package core.ai
 
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
-import core.ai.action.AIAction
 import core.events.EventManager
 import core.history.display
+import core.history.displayGlobal
 import core.utility.RandomManager
-import use.interaction.nothing.NothingEvent
 
-class ConditionalAI(name: String, private val actions: List<AIAction>) : AI(name) {
-    private val defaultAction by lazy { AIAction("Default", listOf(), { listOf(NothingEvent(creature)) }) }
+class ConditionalAI : AI() {
+    private val defaultAgenda = Pair("Nothing", 0)
+    private var goal: Goal? = null
 
     override fun takeAction() {
-        determineAction().execute(creature)
+        if (goal == null) {
+            goal = determineGoal()
+        }
+        goal?.step(creature)
+        if (goal?.canContinue() == false) {
+            goal = null
+        }
     }
 
-    private fun determineAction(): AIAction {
-        val matches = actions.filter { it.canRun(creature) }
-        val priority = matches.maxOfOrNull { it.priority } ?: 0
-        val topMatches = matches.filter { it.priority == priority }
-        return RandomManager.getRandomOrNull(topMatches) ?: defaultAction
+    private fun determineGoal(): Goal {
+        val matches = AIManager.desires.flatMap { it.getDesires(creature) }
+        val priority = matches.maxOfOrNull { it.second } ?: 0
+        val topMatches = matches.filter { it.second == priority }
+        val desire = (RandomManager.getRandomOrNull(topMatches) ?: defaultAgenda).first
+        val agenda = AIManager.agendas[desire] ?: AIManager.agendas[defaultAgenda.first]!!.also { displayGlobal("Couldn't find agenda for ${desire}!") }
+
+        return Goal(agenda, priority)
     }
 
     override fun hear(event: DialogueEvent) {

@@ -54,7 +54,7 @@ class RetreatCommand : Command() {
     }
 
     private fun determineThing(source: Thing, args: Args, creatures: List<Thing>): Thing? {
-        val parsedThing = parseThingsFromLocation(source, args.getBaseGroup()).firstOrNull()?.thing ?: parseThingsFromLocation(source, args.getGroup("from")).firstOrNull()?.thing ?: source.mind.ai.aggroThing
+        val parsedThing = parseThingsFromLocation(source, args.getBaseGroup()).firstOrNull()?.thing ?: parseThingsFromLocation(source, args.getGroup("from")).firstOrNull()?.thing ?: source.mind.getAggroTarget()
         return when {
             parsedThing != null -> parsedThing
             creatures.size == 1 -> creatures.first()

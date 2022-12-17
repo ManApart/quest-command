@@ -1,21 +1,11 @@
 package core.ai.action
 
 import core.events.Event
-import core.events.EventManager
 import core.thing.Thing
 import core.utility.Named
 
-class AIAction(
+data class AIAction(
     override val name: String,
-    private val conditions: List<(Thing) -> Boolean> = listOf(),
-    private val createEvents: (Thing) -> List<Event> = { listOf()},
-    val priority: Int = 10
-) : Named {
-    fun canRun(owner: Thing): Boolean {
-        return conditions.all { it(owner) }
-    }
-
-    fun execute(owner: Thing) {
-        createEvents(owner).forEach { EventManager.postEvent(it) }
-    }
-}
+    val createEvents: (Thing) -> List<Event>? = { _ -> listOf() },
+    val optional: Boolean = false //TODO Could make this a function based on what's current etc
+) : Named

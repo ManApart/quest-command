@@ -6,12 +6,11 @@ import core.properties.ACTION_POINTS
 import core.thing.Thing
 import status.stat.WISDOM
 
-abstract class AI(val name: String) {
+abstract class AI {
     lateinit var creature: Thing
     abstract fun hear(event: DialogueEvent)
     abstract fun takeAction()
 
-    var aggroThing: Thing? = null
     var action: DelayedEvent? = null
 
     private var actionPoints = 0
@@ -38,7 +37,6 @@ abstract class AI(val name: String) {
     }
 
     fun chooseAction() {
-        creature.mind.forgetShortTermMemory()
         if (!creature.isPlayer()) {
             takeAction()
         }

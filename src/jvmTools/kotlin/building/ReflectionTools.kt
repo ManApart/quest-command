@@ -2,14 +2,14 @@ package building
 
 import conversation.dsl.Dialogue
 import conversation.dsl.DialogueResource
-import core.ai.AIBase
-import core.ai.action.AIAction
+import core.ai.action.AIActionTree
 import core.ai.action.dsl.AIActionResource
+import core.ai.agenda.Agenda
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
-import core.ai.dsl.AIResource
-import core.ai.knowledge.KnowledgeFinder
-import core.ai.knowledge.dsl.KnowledgeFinderResource
+import core.ai.agenda.AgendaResource
+import core.ai.desire.DesireResource
+import core.ai.desire.DesireTree
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.commands.Command
@@ -57,15 +57,15 @@ object ReflectionTools {
         generateCollectionsFile(SpellCommand::class)
         generateListenerMapFile()
 
-        generateResourcesFile(AIResource::class, AIBase::class)
-        generateResourcesFile(AIActionResource::class, AIAction::class)
+        generateResourcesFile(AIActionResource::class, AIActionTree::class)
         generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
+        generateResourcesFile(AgendaResource::class, Agenda::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
         generateResourcesFile(BodyResource::class, NetworkBuilder::class)
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
         generateResourcesFile(CreatureResource::class, ThingBuilder::class)
+        generateResourcesFile(DesireResource::class, DesireTree::class)
         generateResourcesFile(ItemResource::class, ThingBuilder::class)
-        generateResourcesFile(KnowledgeFinderResource::class, KnowledgeFinder::class)
         generateResourcesFile(BehaviorResource::class, Behavior::class)
         generateResourcesFile(DialogueResource::class, Dialogue::class)
         generateResourcesFile(EffectResource::class, EffectBase::class)

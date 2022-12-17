@@ -8,7 +8,6 @@ class CommonCreatures : CreatureResource {
     override val values = things {
         thing("Rat") {
             description("Mangy and red eyed.")
-            ai("Cowardly Predator")
             body("Rat")
             soul("Health", 3)
             soul("Strength", 1)
@@ -21,20 +20,20 @@ class CommonCreatures : CreatureResource {
 
         thing("Farmer") {
             description("Salt of the earth; he's good people.")
-            ai("Commoner")
             body("Human")
             soul("Health", 10)
             soul("Strength", 3)
             soul("Bare Handed", 2)
             props {
-                tag("Human", "Commoner")
+                tag("Commoner")
+                value("Race", "Human")
             }
             item("Brown Pants", "Old Shirt")
         }
 
         thing("Magical Dummy") {
             description("It's jerky movement is deeply unsettling.")
-            ai("Player Controlled")
+            playerAI()
             body("Human")
             soul("Health", 10)
             soul("Stamina", 100)

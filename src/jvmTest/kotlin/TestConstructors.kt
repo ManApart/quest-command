@@ -3,13 +3,13 @@ import conversation.dsl.DialoguesMock
 import core.DependencyInjector
 import core.GameState
 import core.ai.AIManager
-import core.ai.action.dsl.AIActionsCollection
-import core.ai.action.dsl.AIActionsMock
+import core.ai.agenda.AgendasCollection
+import core.ai.agenda.AgendasMock
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.ai.dsl.AIsCollection
-import core.ai.dsl.AIsMock
+import core.ai.desire.DesiresCollection
+import core.ai.desire.DesiresMock
 import core.body.*
 import core.commands.CommandParsers
 import core.commands.CommandsCollection
@@ -120,8 +120,8 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(ActivatorsCollection::class, ActivatorsMock())
     ActivatorManager.reset()
 
-    DependencyInjector.setImplementation(AIActionsCollection::class, AIActionsMock())
-    DependencyInjector.setImplementation(AIsCollection::class, AIsMock())
+    DependencyInjector.setImplementation(DesiresCollection::class, DesiresMock())
+    DependencyInjector.setImplementation(AgendasCollection::class, AgendasMock())
     AIManager.reset()
 
     DependencyInjector.setImplementation(BehaviorsCollection::class, BehaviorsMock())
