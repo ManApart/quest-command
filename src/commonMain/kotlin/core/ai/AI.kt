@@ -11,7 +11,6 @@ abstract class AI {
     abstract fun hear(event: DialogueEvent)
     abstract fun takeAction()
 
-    var aggroTarget: Thing? = null
     var action: DelayedEvent? = null
 
     private var actionPoints = 0

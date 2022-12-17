@@ -9,10 +9,10 @@ import traveling.location.network.LocationNode
 data class Mind(
     val ai: AI = DumbAI(),
     val memory: CreatureMemory = CreatureMemory()
-){
+) {
     lateinit var creature: Thing; private set
 
-    fun updateCreature(creature: Thing){
+    fun updateCreature(creature: Thing) {
         this.creature = creature
         ai.creature = creature
     }
@@ -63,12 +63,26 @@ data class Mind(
         return fact.sources.contains(Subject(recipe.name))
     }
 
-    fun discover(location: LocationNode){
+    fun discover(location: LocationNode) {
         learn("Location", Subject(location))
     }
 
-    fun discover(recipe: Recipe){
+    fun discover(recipe: Recipe) {
         learn("Recipe", Subject(recipe.name))
+    }
+
+    fun setAggroTarget(enemy: Thing) {
+        learn(Fact(Subject(enemy), "aggroTarget"))
+    }
+
+    fun getAggroTarget(): Thing? {
+        return knowsThingByKind("aggroTarget")
+    }
+
+    fun clearAggroTarget() {
+        getAggroTarget()?.let {
+            memory.forget(Fact(Subject(it), "aggroTarget"))
+        }
     }
 
 }

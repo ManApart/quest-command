@@ -360,7 +360,7 @@ data class Location(
 
     fun isSafeFor(creature: Thing): Boolean {
         //No one is hostile towards the creature
-        return creatures.none { it.mind.ai.aggroTarget == creature }
+        return creatures.none { it.mind.getAggroTarget() == creature }
     }
 
     private fun calcBounds(): Shape {

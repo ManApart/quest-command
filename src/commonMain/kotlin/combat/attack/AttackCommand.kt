@@ -90,7 +90,7 @@ class AttackCommand : Command() {
                 null
             }
             things.isEmpty() -> {
-                source.ai.aggroTarget?.let { ThingAim(it) }
+                source.mind.getAggroTarget()?.let { ThingAim(it) }
             }
             else -> {
                 clarifyThing(source, keyword, weaponName)
@@ -137,7 +137,7 @@ class AttackCommand : Command() {
             thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
             thing != null && !thing.thing.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing.thing))
             thing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, thing, attackType.damageType))
-            source.mind.ai.aggroTarget != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, ThingAim(source.mind.ai.aggroTarget!!), attackType.damageType))
+            source.mind.getAggroTarget() != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, ThingAim(source.mind.getAggroTarget()!!), attackType.damageType))
             else -> source.displayToMe("Couldn't find ${arguments.getBaseString()}.")
         }
     }

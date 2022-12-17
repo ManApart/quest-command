@@ -9,7 +9,7 @@ class CommonDesires : DesireResource {
 
         context("creatures") { source, _ -> source.location.getLocation().getCreatures(perceivedBy = source).filter { it != source } }
 
-        cond({ source, _ -> source.mind.ai.aggroTarget != null }) {
+        cond({ source, _ -> source.mind.getAggroTarget() != null }) {
             priority = 70
             agenda("Attack")
         }

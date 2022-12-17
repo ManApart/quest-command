@@ -14,7 +14,7 @@ class Look : EventListener<LookEvent>() {
             event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBody(event.source, event.thing) }
             event.thing != null -> describePerceived(event.source, event.thing) { describeThing(event.source, event.thing) }
             event.location != null -> describeLocation(event.source, event.location)
-            event.source.ai.aggroTarget != null -> describeBattle(event.source)
+            event.source.mind.getAggroTarget() != null -> describeBattle(event.source)
             else -> describeLocation(event.source, event.source.thing.currentLocation())
         }
     }

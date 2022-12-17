@@ -52,7 +52,7 @@ class ApproachCommand : Command() {
     }
 
     private fun determineThing(source: Thing, args: Args, creatures: List<Thing>) : Thing? {
-        val parsedThing = parseThingsFromLocation(source, args.getBaseGroup()).firstOrNull()?.thing ?: source.mind.ai.aggroTarget
+        val parsedThing = parseThingsFromLocation(source, args.getBaseGroup()).firstOrNull()?.thing ?: source.mind.getAggroTarget()
         return when {
             parsedThing != null -> parsedThing
             creatures.size == 1 -> creatures.first()
