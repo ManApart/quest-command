@@ -7,6 +7,11 @@ import core.thing.Thing
 
 private val sampleConvo by lazy { buildSampleConvo() }
 
+class Dialogue2(
+    val result: (Conversation) -> List<Event>,
+    val priority: Int = 10
+)
+
 class Dialogue(
     val conditions: List<(Conversation) -> Boolean>,
     val result: (Conversation) -> List<Event>,
