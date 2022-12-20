@@ -2,19 +2,36 @@ package conversation.dsl
 
 import conversation.Conversation
 import conversation.dialogue.DialogueEvent
+import conversation.parsing.QuestionType
+import conversation.parsing.Verb
 import core.events.Event
+import core.utility.Named
 
-//TODO - allow multiple conditions per level
-class DialogueBuilder2(val condition: (Conversation) -> Boolean) {
+class DialogueBuilder2 {
     var priority: Int? = null
     private val depthScale: Int = 2
+    private val conditions: MutableList<(Conversation) -> Boolean> = mutableListOf()
     private val children: MutableList<DialogueBuilder2> = mutableListOf()
     private var results: MutableList<((Conversation) -> List<Event>)> = mutableListOf()
 
     fun cond(condition: (Conversation) -> Boolean) {
+        conditions.add(condition)
+    }
+
+    fun question(questionType: QuestionType) {
+        cond { it.question() == questionType }
+    }
+
+    fun verb(verb: Verb) {
+        cond { it.verb() == verb }
+    }
+
+    fun subject(condition: (Conversation) -> Named) {
+        cond { it.subject() == condition(it) }
     }
 
     fun child(initializer: DialogueBuilder2.() -> Unit) {
+        children.add(DialogueBuilder2().apply(initializer))
     }
 
     fun line(line: ((Conversation) -> String)) {
@@ -31,7 +48,7 @@ class DialogueBuilder2(val condition: (Conversation) -> Boolean) {
 
     internal fun build(depth: Int = 0): DialogueTree {
         val usedPriority = priority ?: (10 + depthScale * depth)
-
+        val condition: (Conversation) -> Boolean = { convo -> conditions.all { it(convo) } }
         val dialogues = results.map { Dialogue2(it, usedPriority) }
         val trees = children.map { it.build(depth + 1) }
 
@@ -40,8 +57,7 @@ class DialogueBuilder2(val condition: (Conversation) -> Boolean) {
 }
 
 fun conversations2(
-    condition: (Conversation) -> Boolean = { true },
     initializer: DialogueBuilder2.() -> Unit
-): List<DialogueTree> {
-    return listOf(DialogueBuilder2(condition).apply(initializer).build())
+): DialogueTree {
+    return DialogueBuilder2().apply(initializer).build()
 }

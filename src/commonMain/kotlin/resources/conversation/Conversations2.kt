@@ -16,23 +16,23 @@ class GenericConversations2 {
         }
 
         child {
-            cond { it.question() == QuestionType.WHERE }
-            cond { it.verb() == Verb.BE }
+            question(QuestionType.WHERE)
+            verb(Verb.BE)
 
             child {
-                cond { it.subject() == it.getLatestListener() }
+                subject { it.getLatestListener() }
                 line { "I be here." }
                 line { "I be with you." }
             }
             child {
-                cond { it.subject() == it.getLatestSpeaker() }
+                subject { it.getLatestSpeaker() }
                 line { "You be in ${it.getLatestSpeaker().location}." }
             }
         }
 
         child {
-            cond { it.question() == QuestionType.WHAT }
-            cond { it.verb() == Verb.BE }
+            question(QuestionType.WHAT)
+            verb(Verb.BE)
             cond { it.subject().hasTag("City") }
             line { "${it.subject()} be a city." }
         }
