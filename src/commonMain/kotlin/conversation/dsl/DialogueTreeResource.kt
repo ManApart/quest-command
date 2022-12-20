@@ -1,5 +1,5 @@
 package conversation.dsl
 
-interface DialoguesCollection {
+interface DialogueTreeResource {
     val values: List<DialogueTree>
 }

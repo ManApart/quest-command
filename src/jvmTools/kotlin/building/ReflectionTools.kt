@@ -1,13 +1,11 @@
 package building
 
-import conversation.dsl.Dialogue
-import conversation.dsl.DialogueResource
-import core.ai.action.AIActionTree
-import core.ai.action.dsl.AIActionResource
+import conversation.dsl.DialogueTree
+import conversation.dsl.DialogueTreeResource
 import core.ai.agenda.Agenda
+import core.ai.agenda.AgendaResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
-import core.ai.agenda.AgendaResource
 import core.ai.desire.DesireResource
 import core.ai.desire.DesireTree
 import core.body.BodyPartResource
@@ -57,7 +55,6 @@ object ReflectionTools {
         generateCollectionsFile(SpellCommand::class)
         generateListenerMapFile()
 
-        generateResourcesFile(AIActionResource::class, AIActionTree::class)
         generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
         generateResourcesFile(AgendaResource::class, Agenda::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
@@ -67,7 +64,7 @@ object ReflectionTools {
         generateResourcesFile(DesireResource::class, DesireTree::class)
         generateResourcesFile(ItemResource::class, ThingBuilder::class)
         generateResourcesFile(BehaviorResource::class, Behavior::class)
-        generateResourcesFile(DialogueResource::class, Dialogue::class)
+        generateResourcesFile(DialogueTreeResource::class, DialogueTree::class)
         generateResourcesFile(EffectResource::class, EffectBase::class)
         generateResourcesFile(LocationResource::class, LocationRecipeBuilder::class)
         generateResourcesFile(NetworkResource::class, NetworkBuilder::class)

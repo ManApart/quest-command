@@ -7,24 +7,13 @@ import core.thing.Thing
 
 private val sampleConvo by lazy { buildSampleConvo() }
 
-class Dialogue2(
-    val result: (Conversation) -> List<Event>,
-    val priority: Int = 10
-)
-
 class Dialogue(
-    val conditions: List<(Conversation) -> Boolean>,
     val result: (Conversation) -> List<Event>,
     val priority: Int = 10
 ) {
-
     override fun toString(): String {
         val sample = result(sampleConvo).first()
         return "Priority: $priority, Sample: $sample"
-    }
-
-    fun matches(conversation: Conversation): Boolean {
-        return conditions.all { it(conversation) }
     }
 }
 

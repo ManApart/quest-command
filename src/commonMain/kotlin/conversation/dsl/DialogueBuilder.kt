@@ -9,54 +9,59 @@ import core.thing.Thing
 import core.utility.Named
 import traveling.location.network.LocationNode
 
-class DialogueBuilder(val condition: (Conversation) -> Boolean) {
+class DialogueBuilder {
     var priority: Int? = null
-    val depthScale: Int = 2
+    private val depthScale: Int = 2
+    private val conditions: MutableList<(Conversation) -> Boolean> = mutableListOf()
     private val children: MutableList<DialogueBuilder> = mutableListOf()
     private var results: MutableList<((Conversation) -> List<Event>)> = mutableListOf()
 
-    fun cond(condition: (Conversation) -> Boolean = { true }, initializer: DialogueBuilder.() -> Unit) {
-        children.add(DialogueBuilder(condition).apply(initializer))
+    fun cond(condition: (Conversation) -> Boolean) {
+        conditions.add(condition)
     }
 
-    fun resultLine(line: ((Conversation) -> String)) {
+    fun question(questionType: QuestionType) {
+        cond { it.question() == questionType }
+    }
+
+    fun verb(verb: Verb) {
+        cond { it.verb() == verb }
+    }
+
+    fun subject(condition: (Conversation) -> Named) {
+        cond { it.subject() == condition(it) }
+    }
+
+    fun branch(initializer: DialogueBuilder.() -> Unit) {
+        children.add(DialogueBuilder().apply(initializer))
+    }
+
+    fun line(line: ((Conversation) -> String)) {
         this.results.add { listOf(DialogueEvent(it.getLatestListener(), it, line(it))) }
     }
 
-    fun result(result: ((Conversation) -> Event)) {
+    fun event(result: ((Conversation) -> Event)) {
         this.results.add { listOf(result(it)) }
     }
 
-    fun results(results: ((Conversation) -> List<Event>)) {
+    fun events(results: ((Conversation) -> List<Event>)) {
         this.results.add(results)
     }
 
-    internal fun build(): List<Dialogue> {
-        return build(listOf())
-    }
-
-    private fun build(parentConditions: List<(Conversation) -> Boolean>, depth: Int = 0): List<Dialogue> {
-        val conditions = parentConditions + listOf(condition)
-        val evaluations = mutableListOf<Dialogue>()
+    internal fun build(depth: Int = 0): DialogueTree {
         val usedPriority = priority ?: (10 + depthScale * depth)
+        val condition: (Conversation) -> Boolean = { convo -> conditions.all { it(convo) } }
+        val dialogues = results.map { Dialogue(it, usedPriority) }
+        val trees = children.map { it.build(depth + 1) }
 
-        results.forEach { result ->
-            evaluations.add(Dialogue(conditions, result, usedPriority))
-        }
-
-        if (children.isNotEmpty()) {
-            evaluations.addAll(children.flatMap { it.build(conditions, depth + 1) })
-        }
-
-        return evaluations
+        return DialogueTree(condition, dialogues, trees)
     }
 }
 
 fun conversations(
-    condition: (Conversation) -> Boolean = { true },
     initializer: DialogueBuilder.() -> Unit
-): List<Dialogue> {
-    return DialogueBuilder(condition).apply(initializer).build()
+): List<DialogueTree> {
+    return listOf(DialogueBuilder().apply(initializer).build())
 }
 
 fun Conversation.question(): QuestionType? {
