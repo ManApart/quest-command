@@ -7,5 +7,5 @@ import core.utility.Named
 data class AIAction(
     override val name: String,
     val createEvents: (Thing) -> List<Event>? = { _ -> listOf() },
-    val isOptional: (Thing) -> Boolean = {false}
+    val shouldSkip: (Thing) -> Boolean? = { false }
 ) : Named

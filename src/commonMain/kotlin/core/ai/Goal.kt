@@ -18,18 +18,20 @@ data class Goal(
 
     fun step(owner: Thing) {
         val step = steps[progress]
-        val events = try {
-            step.createEvents(owner)
-        } catch (e: Exception) {
-            println("Failed to create event actions for ${owner.name}. This shouldn't happen!")
-            println(e.message)
-            e.printStackTrace()
-            null
+        if (step.shouldSkip(owner) != true) {
+            val events = try {
+                step.createEvents(owner)
+            } catch (e: Exception) {
+                println("Failed to create event actions for ${owner.name}. This shouldn't happen!")
+                println(e.message)
+                e.printStackTrace()
+                null
+            }
+            if (events == null) {
+                aborted = true
+            }
+            events?.forEach { EventManager.postEvent(it) }
         }
-        if (events == null && !step.isOptional(owner)) {
-            aborted = true
-        }
-        events?.forEach { EventManager.postEvent(it) }
         progress++
     }
 

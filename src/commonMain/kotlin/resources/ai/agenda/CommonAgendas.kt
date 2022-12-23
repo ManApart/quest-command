@@ -20,11 +20,9 @@ import use.interaction.nothing.NothingEvent
 class CommonAgendas : AgendaResource {
     override val values = agendas {
 
-        agenda("Attack") {
-            action("Attack") { creature ->
-                creature.mind.getAggroTarget()?.let { target ->
-                    clawAttack(target, creature)
-                }
+        agendaAction("Attack") { creature ->
+            creature.mind.getAggroTarget()?.let { target ->
+                clawAttack(target, creature)
             }
         }
 
@@ -34,11 +32,9 @@ class CommonAgendas : AgendaResource {
             agenda("Eat Targeted Food")
         }
 
-        agenda("Eat Targeted Food") {
-            action("Eat Targeted Food"){ creature ->
-                creature.mind.getUseTarget()?.let { target ->
-                    EatFoodEvent(creature, target)
-                }
+        agendaAction("Eat Targeted Food") { creature ->
+            creature.mind.getUseTarget()?.let { target ->
+                EatFoodEvent(creature, target)
             }
         }
 
@@ -49,17 +45,31 @@ class CommonAgendas : AgendaResource {
         }
 
         agenda("Move to Aggro Target") {
-            action("Move to Aggro Target") { creature ->
-                creature.mind.getAggroTarget()?.position?.let {
-                    MoveEvent(creature, destination = it)
+            actionDetailed("Move to Aggro Target") {
+                shouldSkip { creature ->
+                    creature.mind.getAggroTarget()?.position?.let {
+                        creature.canReach(it)
+                    }
+                }
+                result { creature ->
+                    creature.mind.getAggroTarget()?.position?.let {
+                        MoveEvent(creature, destination = it)
+                    }
                 }
             }
         }
 
         agenda("Move to Use Target") {
-            action("Move to Use Target") { creature ->
-                creature.mind.getUseTarget()?.position?.let {
-                    MoveEvent(creature, destination = it)
+            actionDetailed("Move to Use Target") {
+                shouldSkip { creature ->
+                    creature.mind.getUseTarget()?.position?.let {
+                        creature.canReach(it)
+                    }
+                }
+                result { creature ->
+                    creature.mind.getUseTarget()?.position?.let {
+                        MoveEvent(creature, destination = it)
+                    }
                 }
             }
         }
@@ -85,21 +95,17 @@ class CommonAgendas : AgendaResource {
             }
         }
 
-        agenda("Search For Enemy") {
-            action("Search For Enemy") { owner ->
-                val target = owner.location.getLocation().getCreatures(perceivedBy = owner).firstOrNull { !it.properties.tags.has("Predator") }
-                target?.let {
-                    owner.discover(target, "aggroTarget")
-                }
+        agendaAction("Search For Enemy") { owner ->
+            val target = owner.location.getLocation().getCreatures(perceivedBy = owner).firstOrNull { !it.properties.tags.has("Predator") }
+            target?.let {
+                owner.discover(target, "aggroTarget")
             }
         }
 
-        agenda("Search For Food") {
-            action("Search For Food") { owner ->
-                val target = owner.location.getLocation().getItems(perceivedBy = owner).firstOrNull { it.properties.tags.has("Food") }
-                target?.let {
-                    owner.discover(target, "useTarget")
-                }
+        agendaAction("Search For Food") { owner ->
+            val target = owner.location.getLocation().getItems(perceivedBy = owner).firstOrNull { it.properties.tags.has("Food") }
+            target?.let {
+                owner.discover(target, "useTarget")
             }
         }
 
@@ -107,11 +113,9 @@ class CommonAgendas : AgendaResource {
             action("Rest") { creature -> RestEvent(creature, 2) }
         }
 
-        agenda("Wander") {
-            action("Wander") { creature ->
-                val additional = Vector(RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10))
-                MoveEvent(creature, destination = creature.position + additional)
-            }
+        agendaAction("Wander") { creature ->
+            val additional = Vector(RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10))
+            MoveEvent(creature, destination = creature.position + additional)
         }
 
     }
