@@ -10,12 +10,12 @@ import status.stat.AmountType
 import status.stat.StatEffect
 import status.stat.StatKind
 
-fun Thing.addSoundEffect(name: String, description: String, amount: Int, duration: Int = 2) {
+fun Thing.addSoundEffect(name: String, description: String, amount: Int = SOUND_LEVEL_DEFAULT, duration: Int = 2) {
     soul.addNewCondition(soundCondition(name, description, amount, duration))
 }
 
 fun soundCondition(name: String, description: String, amount: Int, duration: Int = 2): Condition{
-    return Condition(name, Element.AIR, 20, listOf(soundEffect(name, description, amount, duration)), silent = true)
+    return Condition("Sound:$name", Element.SOUND, 1, listOf(soundEffect(name, description, amount, duration)), silent = true)
 }
 
 fun soundEffect(name: String, description: String, amount: Int, duration: Int): Effect  {

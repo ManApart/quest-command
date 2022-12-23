@@ -52,6 +52,8 @@ enum class Element(val damageType: DamageType, val getReaction: (strength: Int, 
 
     STONE(DamageType.STONE, { _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
 
+    SOUND(DamageType.SOUND, { _: Int, _: Element, _: Int -> ElementInteraction.NONE }),
+
     WATER(DamageType.WATER, { strength: Int, other: Element, otherStrength: Int ->
         when {
             other in listOf(FIRE, AIR) && strength >= otherStrength -> ElementInteraction.STRONGER

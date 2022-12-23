@@ -10,6 +10,7 @@ enum class DamageType {
     LIGHTNING,
     NONE,
     SLASH,
+    SOUND,
     STONE,
     STAB,
     WATER;

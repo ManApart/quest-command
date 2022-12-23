@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.utility.asSubject
+import explore.listen.addSoundEffect
 import status.stat.AGILITY
 import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
@@ -29,6 +30,7 @@ class PlayerJump : EventListener<JumpEvent>() {
             event.creature.display{"${event.creature.asSubject(it)} land without taking damage."}
         }
 
+        event.creature.addSoundEffect("Jumping", "a sharp thud", 20)
         EventManager.postEvent(ArriveEvent(event.creature, destination = LocationPoint(event.destination), method = "fall"))
     }
 

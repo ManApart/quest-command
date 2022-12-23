@@ -2,10 +2,6 @@ package conversation.dialogue
 
 import core.events.EventListener
 import explore.listen.addSoundEffect
-import explore.listen.soundCondition
-import magic.Element
-import status.conditions.Condition
-import status.effects.EffectManager
 
 
 class DialogueListener : EventListener<DialogueEvent>() {

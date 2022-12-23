@@ -2,6 +2,7 @@ package explore.map.compass
 
 import core.events.EventListener
 import core.history.displayToMe
+import explore.listen.addSoundEffect
 import traveling.direction.Direction
 import traveling.location.Route
 
@@ -17,6 +18,7 @@ class ViewCompass : EventListener<ViewCompassEvent>() {
             } else {
                 event.source.displayToMe("${route.destination.name} is $direction of you.")
             }
+            event.source.thing.addSoundEffect("Trinkets", "small clicks and whirring", 1)
         }
     }
 

@@ -3,6 +3,7 @@ package status
 import core.events.EventManager
 import core.thing.Thing
 import core.utility.NameSearchableList
+import magic.Element
 import magic.ElementInteraction
 import status.conditions.Condition
 import status.stat.LeveledStat
@@ -90,6 +91,10 @@ data class Soul(private val leveledStats: MutableList<LeveledStat> = mutableList
 
     fun getConditions(): List<Condition> {
         return conditions.toList()
+    }
+
+    fun getNonSoundConditions(): List<Condition> {
+        return conditions.filter { it.element != Element.SOUND }
     }
 
     fun getCondition(name: String): Condition {

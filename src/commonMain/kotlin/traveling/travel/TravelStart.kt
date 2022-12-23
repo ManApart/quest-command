@@ -5,12 +5,16 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
+import core.utility.clamp
+import explore.listen.addSoundEffect
+import status.stat.SNEAK
 import status.stat.STAMINA
 import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationPoint
 import traveling.move.MoveEvent
+import kotlin.math.max
 
 class TravelStart : EventListener<TravelStartEvent>() {
     override fun execute(event: TravelStartEvent) {
@@ -41,6 +45,8 @@ class TravelStart : EventListener<TravelStartEvent>() {
 }
 
 fun postArriveEvent(source: Thing, destination: LocationPoint, requiredStamina: Int, quiet: Boolean) {
+    val soundLevel = (max(10, (source.getEncumbrance() * 100).toInt()) - source.soul.getCurrent(SNEAK)).clamp(0, 20)
+    source.addSoundEffect("Moving", "the sound of footfalls", soundLevel)
     EventManager.postEvent(ArriveEvent(source, destination = destination, method = "travel", quiet = quiet))
     EventManager.postEvent(StatChangeEvent(source, "The journey", STAMINA, -requiredStamina, silent = quiet))
 }

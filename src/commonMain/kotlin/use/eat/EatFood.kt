@@ -7,6 +7,7 @@ import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.then
+import explore.listen.addSoundEffect
 import status.statChanged.StatChangeEvent
 
 class EatFood : EventListener<EatFoodEvent>() {
@@ -21,6 +22,7 @@ class EatFood : EventListener<EatFoodEvent>() {
         if (event.food.canConsume(event)){
             event.food.consume(event)
         }
+        event.creature.addSoundEffect("Eating", "a soft crunching sound, mixed with smacks and spurts", 2)
     }
 
     private fun getHealAmount(item: Thing): Int {

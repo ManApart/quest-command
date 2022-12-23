@@ -4,6 +4,7 @@ import core.GameState
 import core.events.EventListener
 import core.history.StringTable
 import core.history.displayToMe
+import explore.listen.addSoundEffect
 import system.debug.DebugType
 import traveling.location.RouteNeighborFinder
 
@@ -15,6 +16,7 @@ class ReadMap : EventListener<ReadMapEvent>() {
         }
         val name = "${event.thing.name} is a part of ${event.thing.parent}. It"
         event.source.displayToMe("$name ${getRoutesString(event)}")
+        event.source.thing.addSoundEffect("Reading", "the soft rustle of paper", 1)
     }
 
     private fun getRoutesString(event: ReadMapEvent): String {

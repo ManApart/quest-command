@@ -3,6 +3,7 @@ package status.statChanged
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import explore.listen.addSoundEffect
 import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
 import status.stat.HEALTH
@@ -26,6 +27,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         }
         EventManager.postEvent(RemoveScopeEvent(creature))
         EventManager.postEvent(CreatureDiedEvent(creature))
+        event.thing.addSoundEffect("Death", "a sharp cry, cut short", 1)
     }
 
 }

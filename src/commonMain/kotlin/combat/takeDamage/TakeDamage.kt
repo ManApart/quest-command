@@ -4,6 +4,7 @@ import combat.DamageType
 import core.events.EventListener
 import core.events.EventManager
 import core.thing.Thing
+import explore.listen.addSoundEffect
 import status.stat.HEALTH
 import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
@@ -18,6 +19,7 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
         } else if (event.source.soul.hasStat(HEALTH)) {
             EventManager.postEvent(StatChangeEvent(event.source, event.damageSource, HEALTH, -undefendedDamage))
         }
+        event.source.addSoundEffect("Pain", "a sharp intake of breath")
     }
 
     private fun getUndefendedDamage(source: Thing, damage: Int, attackedPart: Location, attackType: DamageType): Int {

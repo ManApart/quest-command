@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
 import core.utility.then
+import explore.listen.addSoundEffect
 import status.stat.HEALTH
 import status.stat.LeveledStat
 import status.stat.STAMINA
@@ -34,6 +35,7 @@ class Rest : EventListener<RestEvent>() {
                 EventManager.postEvent(StatChangeEvent(event.creature, "Resting", it.name, event.hoursRested))
             }
         }
+        event.creature.addSoundEffect("Resting", "slow, steady breathing", 2)
     }
 
     private fun isRecoverable(leveledStat: LeveledStat): Boolean {

@@ -4,7 +4,6 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
-import core.properties.ENCUMBRANCE
 import core.utility.asSubject
 import core.utility.clamp
 import core.utility.isAre

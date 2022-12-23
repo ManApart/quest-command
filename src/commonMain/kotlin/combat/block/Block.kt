@@ -4,6 +4,7 @@ import combat.DamageType
 import core.events.EventListener
 import core.properties.DEFENSE
 import core.thing.Thing
+import explore.listen.addSoundEffect
 import traveling.location.location.Location
 
 class Block : EventListener<BlockEvent>() {
@@ -12,6 +13,7 @@ class Block : EventListener<BlockEvent>() {
         val blockHelper = event.source.body.blockHelper
         blockHelper.blockBodyPart = event.partThatWillShield
         blockHelper.blockedBodyParts.addAll(getBlockedParts(event))
+        event.source.addSoundEffect("Block", "the tightening of straps and sinew", 1)
     }
 
     private fun getBlockedParts(event: BlockEvent): List<Location> {

@@ -6,6 +6,7 @@ import core.history.display
 import core.thing.Thing
 import core.utility.asSubject
 import core.utility.isAre
+import explore.listen.addSoundEffect
 import traveling.position.Vector
 
 class PlaceItem : EventListener<PlaceItemEvent>() {
@@ -27,5 +28,6 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         item.position = position
         source.location.getLocation().addThing(item)
         EventManager.postEvent(ItemDroppedEvent(source, item, silent))
+        source.addSoundEffect("Placed Item", "a soft thud", 1)
     }
 }

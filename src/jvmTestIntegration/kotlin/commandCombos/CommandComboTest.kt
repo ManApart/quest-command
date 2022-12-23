@@ -5,6 +5,7 @@ import core.GameState
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
+import magic.Element
 import quests.QuestManager
 import status.stat.COOKING
 import status.stat.HEALTH
@@ -205,12 +206,12 @@ class CommandComboTest {
     @Test
     fun poisonSelf() {
         CommandParsers.parseCommand(GameState.player, "poison 1 for 5 on head of self")
-        assertEquals(1, GameState.player.thing.soul.getConditions().size)
+        assertEquals(1, GameState.player.thing.soul.getNonSoundConditions().size)
         assertTrue(GameLogger.getMainHistory().contains("Poison decreases Your Health by 1 (9/10)."))
 
         CommandParsers.parseCommand(GameState.player, "wait 5")
         CommandParsers.parseCommand(GameState.player, "wait 1")
-        assertEquals(0, GameState.player.thing.soul.getConditions().size)
+        assertEquals(0, GameState.player.thing.soul.getNonSoundConditions().size)
         assertEquals(5, GameState.player.thing.soul.getCurrent(HEALTH))
         assertTrue(GameLogger.getMainHistory().contains("Player is no longer Poisoned."))
     }
@@ -218,8 +219,7 @@ class CommandComboTest {
     @Test
     fun feelTheRain() {
         CommandParsers.parseCommand(GameState.player, "rest 1 && debug weather gentle rain && rest 1")
-        assertEquals(1, GameState.player.thing.soul.getConditions().size)
-        assertEquals("Rain Wet", GameState.player.thing.soul.getConditions().first().name)
+        assertEquals(1, GameState.player.thing.soul.getConditions().filter{it.name == "Rain Wet"}.size)
     }
 
     @Test

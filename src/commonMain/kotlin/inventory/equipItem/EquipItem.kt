@@ -5,6 +5,7 @@ import core.events.EventManager
 import core.history.display
 import core.utility.asSubject
 import core.utility.isAre
+import explore.listen.addSoundEffect
 
 class EquipItem : EventListener<EquipItemEvent>() {
     override fun execute(event: EquipItemEvent) {
@@ -17,6 +18,7 @@ class EquipItem : EventListener<EquipItemEvent>() {
                 event.creature.body.equip(event.item)
             }
             EventManager.postEvent(ItemEquippedEvent(event.creature, event.item, event.item.getEquippedSlot(event.creature.body)))
+            event.creature.addSoundEffect("Equipping", "the tightening of straps and muscle")
         }
     }
 }

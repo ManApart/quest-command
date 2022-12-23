@@ -4,6 +4,7 @@ import core.events.EventListener
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.NameSearchableList
+import explore.listen.addSoundEffect
 import quests.Quest
 import quests.QuestManager
 
@@ -36,6 +37,7 @@ class ViewQuestList : EventListener<ViewQuestListEvent>() {
             }
         } else {
             source.displayToMe(message)
+            event.source.addSoundEffect("Reading", "the soft rustle of paper", 1)
         }
     }
 

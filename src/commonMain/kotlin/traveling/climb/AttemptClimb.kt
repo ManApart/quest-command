@@ -8,6 +8,7 @@ import core.utility.RandomManager
 import core.utility.asSubject
 import core.utility.isAre
 import core.utility.withS
+import explore.listen.addSoundEffect
 import status.ExpGainedEvent
 import status.stat.CLIMBING
 import status.stat.STAMINA
@@ -34,6 +35,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
             val distance = getDistance(event.creature.location, event.thingPart)
             val chance = getChance(event.creature, distance)
 
+            event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
             EventManager.postEvent(StatChangeEvent(event.creature, "Climbing", STAMINA, -distance, event.quiet))
             if (event.creature.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
                 advance(event, distance, chance)

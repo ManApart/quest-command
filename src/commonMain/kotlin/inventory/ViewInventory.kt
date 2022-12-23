@@ -6,6 +6,7 @@ import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.then
+import explore.listen.addSoundEffect
 
 class ViewInventory : EventListener<ViewInventoryEvent>() {
 
@@ -26,6 +27,7 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
                             )
                         }"
                     )
+                    event.source.thing.addSoundEffect("Inventory", "the jostling of leather and metal", 2)
                 } else {
                     event.source.displayToMe("${event.target.name} has no items.")
                 }

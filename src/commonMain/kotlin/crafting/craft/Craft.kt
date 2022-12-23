@@ -9,6 +9,7 @@ import core.utility.asSubject
 import core.utility.isAre
 import core.utility.joinToStringAnd
 import crafting.DiscoverRecipeEvent
+import explore.listen.addSoundEffect
 import inventory.Inventory
 import inventory.pickupItem.TakeItemEvent
 
@@ -32,6 +33,8 @@ class Craft : EventListener<CraftRecipeEvent>() {
 //            TODO - Add XP
                 val ingredientNames = usedIngredientList.joinToStringAnd { it.name }
                 val resultNames = results.joinToString(", ") { it.name }
+                //TODO - make sound description materially based
+                event.source.thing.addSoundEffect("Crafting", "jingles of metal, the scraping of leather, and the pinging of hammers", 20)
                 event.source.displayToMe("You ${event.recipe.craftVerb} $ingredientNames together and produce $resultNames.")
             }
             else -> event.source.displayToMe("You aren't able to craft ${event.recipe.name}.")
