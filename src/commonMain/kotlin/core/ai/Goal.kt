@@ -26,7 +26,7 @@ data class Goal(
             e.printStackTrace()
             null
         }
-        if (events == null && !step.optional) {
+        if (events == null && !step.isOptional(owner)) {
             aborted = true
         }
         events?.forEach { EventManager.postEvent(it) }
