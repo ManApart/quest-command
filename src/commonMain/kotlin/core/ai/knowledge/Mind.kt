@@ -85,4 +85,18 @@ data class Mind(
         }
     }
 
+    fun setUseTarget(enemy: Thing) {
+        learn(Fact(Subject(enemy), "useTarget"))
+    }
+
+    fun getUseTarget(): Thing? {
+        return knowsThingByKind("useTarget")
+    }
+
+    fun clearUseTarget() {
+        getAggroTarget()?.let {
+            memory.forget(Fact(Subject(it), "useTarget"))
+        }
+    }
+
 }

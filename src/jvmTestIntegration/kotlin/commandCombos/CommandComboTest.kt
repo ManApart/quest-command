@@ -101,7 +101,7 @@ class CommandComboTest {
     fun ratFightsBack() {
         GameState.putDebug(DebugType.RANDOM_SUCCEED, true)
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
-        CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing")
+        CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing")
         assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
     }
 

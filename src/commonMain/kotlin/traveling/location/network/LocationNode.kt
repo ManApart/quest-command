@@ -1,6 +1,5 @@
 package traveling.location.network
 
-import core.Player
 import core.thing.Thing
 import core.utility.Named
 import kotlinx.serialization.SerialName
