@@ -51,7 +51,7 @@ kotlin {
                         implementation(main.compileDependencyFiles + main.output.classesDirs)
                     }
                 }
-                tasks.register<JavaExec>("buildData") {
+                tasks.register<JavaExec>("build-data") {
                     group = "build"
                     description = "Apply reflection to do build time code generation."
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs

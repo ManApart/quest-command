@@ -12,7 +12,7 @@ See [Ways to Play](https://github.com/ManApart/quest-command/wiki/WaysToPlay) fo
 
 ### Building
 
-Run `gradlew buildData`. This creates and updates some files via reflection so that they don't need to be done at runtime. This only needs to be re-run when you change certain files (like adding new commands, events, event listeners, etc)
+Run `gradlew build-data`. This creates and updates some files via reflection so that they don't need to be done at runtime. This only needs to be re-run when you change certain files (like adding new commands, events, event listeners, etc)
 
 Run `gradlew build` to build a jar. This should be found in `QuestCommand/build/libs`
 

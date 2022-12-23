@@ -5,7 +5,6 @@ import core.GameState
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
-import magic.Element
 import quests.QuestManager
 import status.stat.COOKING
 import status.stat.HEALTH
