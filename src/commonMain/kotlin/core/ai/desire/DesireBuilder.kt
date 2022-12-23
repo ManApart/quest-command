@@ -3,7 +3,7 @@ package core.ai.desire
 import core.thing.Thing
 import core.utility.RandomManager
 
-class DesireBuilder(val condition: (Thing) -> Boolean?, private val context: MutableMap<String, (Thing) -> Any?> = mutableMapOf()) {
+class DesireBuilder(val condition: (Thing) -> Boolean?) {
     //Set priority to an exact amount
     var priority: Int? = null
     //Give some additional priority to actions at the top level of this branch. Not recursive
@@ -14,12 +14,12 @@ class DesireBuilder(val condition: (Thing) -> Boolean?, private val context: Mut
 
 
     fun cond(condition: (Thing) -> Boolean? = { _ -> true }, initializer: DesireBuilder.() -> Unit) {
-        children.add(DesireBuilder(condition, context.toMutableMap()).apply(initializer))
+        children.add(DesireBuilder(condition).apply(initializer))
     }
 
     fun cond(randomChance: Int, condition: (Thing) -> Boolean? = { _ -> true }, initializer: DesireBuilder.() -> Unit) {
         val newCondition: (Thing) -> Boolean? = { thing ->  if (RandomManager.isSuccess(randomChance)) condition(thing) else null }
-        children.add(DesireBuilder(newCondition, context.toMutableMap()).apply(initializer))
+        children.add(DesireBuilder(newCondition).apply(initializer))
     }
 
     fun agenda(agenda: String) {
