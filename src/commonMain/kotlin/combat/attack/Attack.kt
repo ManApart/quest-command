@@ -10,6 +10,8 @@ import core.thing.Thing
 import core.utility.asSubject
 import core.utility.asSubjectPossessive
 import core.utility.then
+import explore.listen.addSoundEffect
+import explore.listen.soundCondition
 import magic.Element
 import status.conditions.Condition
 import status.effects.EffectManager
@@ -83,8 +85,7 @@ class Attack : EventListener<AttackEvent>() {
     private fun processSound(event: AttackEvent, attackedParts: List<Location>) {
         val soundLevel = if (attackedParts.isEmpty()) 10 else 30
 
-        val condition = Condition("Attacking", Element.AIR, 20, listOf(EffectManager.getEffect("Attacking", soundLevel, 2)), silent = true)
-        event.source.soul.addNewCondition(condition)
+        event.source.addSoundEffect("Attacking", "the din of battle", soundLevel)
     }
 
     private fun getAttackedParts(source: Thing, sourcePart: Location, thing: ThingAim): List<Location> {

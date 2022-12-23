@@ -4,9 +4,13 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.display
 import core.history.displayToMe
+import core.properties.ENCUMBRANCE
 import core.utility.asSubject
+import core.utility.clamp
 import core.utility.isAre
 import core.utility.then
+import explore.listen.addSoundEffect
+import status.stat.SNEAK
 import status.stat.STAMINA
 import status.stat.getMaxPossibleMovement
 import status.stat.getStaminaCost
@@ -17,6 +21,7 @@ import traveling.location.network.LocationNode
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import traveling.travel.postArriveEvent
+import kotlin.math.max
 import kotlin.math.min
 
 class Move : EventListener<MoveEvent>() {
@@ -41,7 +46,7 @@ class Move : EventListener<MoveEvent>() {
             actualDestination.z > 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air." }
             stamina == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} too tired to move." }
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, staminaRequired, event.silent)
-            event.creature.position == boundedDestination-> event.creature.displayToMe("You cannot move that far in that direction.")
+            event.creature.position == boundedDestination -> event.creature.displayToMe("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, boundedDestination)
         }
     }
@@ -68,6 +73,9 @@ class Move : EventListener<MoveEvent>() {
 
     private fun move(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
         event.creature.position = actualDestination
+        //TODO - make materially based description + possibly sound level?
+        val soundLevel = (max(10, (event.creature.getEncumbrance() * 100).toInt()) - event.creature.soul.getCurrent(SNEAK)).clamp(0, 20)
+        event.creature.addSoundEffect("Moving", "the sound of footfalls", soundLevel)
         displayMovement(event, desiredDistance, actualDistance, actualDestination)
         if (event.staminaScalar != 0f) {
             EventManager.postEvent(StatChangeEvent(event.creature, "moving", STAMINA, -getStaminaCost(actualDistance, event.staminaScalar), true))
