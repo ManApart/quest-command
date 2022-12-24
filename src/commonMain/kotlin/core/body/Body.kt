@@ -6,21 +6,24 @@ import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
+import crafting.material.DEFAULT_MATERIAL
+import crafting.material.Material
 import traveling.direction.Direction
 import traveling.location.Network
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
 import traveling.position.Vector
 
-val NONE = Body("None")
+val NONE = Body("None", DEFAULT_MATERIAL)
 
 data class Body(
     override val name: String = "None",
+    val material: Material = DEFAULT_MATERIAL,
     val layout: Network = Network(name),
     private val slotMap: MutableMap<String, String> = mutableMapOf()
 ) : Named {
 
-    constructor(base: Body) : this(base.name, Network(base.layout))
+    constructor(base: Body) : this(base.name, base.material, Network(base.layout))
 
     private val parts: NameSearchableList<Location> by lazy { createParts() }
     val blockHelper = BlockHelper()

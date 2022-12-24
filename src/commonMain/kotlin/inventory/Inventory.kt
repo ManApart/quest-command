@@ -9,6 +9,7 @@ import core.thing.Thing
 import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
+import crafting.material.DEFAULT_MATERIAL
 import traveling.location.location.Location
 
 

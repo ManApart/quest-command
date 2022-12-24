@@ -10,6 +10,7 @@ class Weapons : ItemResource {
         thing(burnable)
 
         thing("Rusty Dagger") {
+            material("Iron")
             description("It once held a cutting edge, but those days are little remembered.")
             equipSlotOptions("Right Hand Grip")
             equipSlotOptions("Left Hand Grip")
@@ -23,6 +24,7 @@ class Weapons : ItemResource {
         }
 
         thing("Dulled Hatchet") {
+            material("Iron")
             description("The handle has been polished through much use.")
             equipSlotOptions("Right Hand Grip")
             equipSlotOptions("Left Hand Grip")

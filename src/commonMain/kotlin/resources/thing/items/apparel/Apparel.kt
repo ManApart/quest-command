@@ -9,6 +9,7 @@ class Apparel : ItemResource {
     override val values = things {
         thing("Brown Pants") {
             extends(burnable)
+            material("Cloth")
             description("These pants used to be white.")
             param("fireHealth" to 1)
             param("itemName" to "Brown Pants")
@@ -21,6 +22,7 @@ class Apparel : ItemResource {
 
         thing("Old Shirt") {
             extends(burnable)
+            material("Cloth")
             description("A faint scent of soil oozes from the worn cloth.")
             param("fireHealth" to 1)
             param("itemName" to "Old Shirt")
@@ -32,6 +34,7 @@ class Apparel : ItemResource {
         }
 
         thing("Small Pouch") {
+            material("Leather")
             description("A pouch for storing small items.")
             param("fireHealth" to 1)
             param("itemName" to "Brown Pants")

@@ -15,6 +15,9 @@ import core.thing.creature.CREATURE_TAG
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested
+import crafting.material.DEFAULT_MATERIAL
+import crafting.material.Material
+import crafting.material.MaterialManager
 import explore.listen.SOUND_DESCRIPTION
 import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
@@ -38,6 +41,7 @@ class ThingBuilder(internal val name: String) {
     private var mind: Mind? = null
     private var mindP: MindP? = null
     private var body: Body? = null
+    private var bodyMaterial: String = DEFAULT_MATERIAL.name
     private var bodyName: String? = null
     private var location: LocationNode? = null
     private var parent: Thing? = null
@@ -53,7 +57,8 @@ class ThingBuilder(internal val name: String) {
 
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
         val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
-        val body = discernBody(possibleBody, possibleBodyName)
+        val bodyMat = (listOf(bodyMaterial) + basesR.map { it.bodyMaterial }).firstOrNull { it != DEFAULT_MATERIAL.name } ?: DEFAULT_MATERIAL.name
+        val body = discernBody(possibleBody, possibleBodyName, MaterialManager.getMaterial(bodyMat))
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
@@ -168,6 +173,10 @@ class ThingBuilder(internal val name: String) {
         this.body = body
     }
 
+    fun material(material: String){
+        this.bodyMaterial = material
+    }
+
     fun location(location: LocationNode) {
         this.location = location
     }
@@ -223,11 +232,11 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    private fun discernBody(possibleBody: Body?, possibleBodyName: String?): Body {
+    private fun discernBody(possibleBody: Body?, possibleBodyName: String?, bodyMaterial: Material): Body {
         return when {
             possibleBody != null -> possibleBody
             possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
-            else -> Body()
+            else -> Body(material = bodyMaterial)
         }
     }
 

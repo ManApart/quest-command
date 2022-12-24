@@ -1,5 +1,6 @@
 package core.body
 
+import crafting.material.MaterialManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import system.persistance.*
@@ -30,16 +31,17 @@ fun load(path: String, name: String): Body {
 @kotlinx.serialization.Serializable
 data class BodyP(
     val name: String,
+    val material: String,
     val slots: Map<String, String>,
 ) {
-    constructor(b: Body) : this(b.name, b.getSlotMap())
+    constructor(b: Body) : this(b.name, b.material.name, b.getSlotMap())
 
     fun parsed(path: String): Body {
         val filePath = cleanPathToFile(".json", path, name)
         val networkFolderPath = clean(path, name)
         val network = traveling.location.load(networkFolderPath, name)
         val equippedItems = getFiles(path, listOf(filePath)).map { core.thing.loadFromDisk(it.path, network) }
-        return Body(name, network, slots.toMutableMap()).apply {
+        return Body(name, MaterialManager.getMaterial(material), network, slots.toMutableMap()).apply {
             equipItems(equippedItems)
         }
     }

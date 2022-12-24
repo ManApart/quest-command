@@ -54,6 +54,7 @@ class Food : ItemResource {
         }
 
         thing("Poor Quality Meat") {
+            material("Flesh")
             description("It's pale and oily.")
             props {
                 value("weight", 1)

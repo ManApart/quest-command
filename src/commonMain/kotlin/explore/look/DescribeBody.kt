@@ -1,12 +1,12 @@
 package explore.look
 
 import core.Player
-import core.body.Body
 import core.body.NONE
 import core.history.StringTable
 import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
+import crafting.material.DEFAULT_MATERIAL
 import traveling.location.RouteNeighborFinder
 
 fun describeBody(source: Player, thing: Thing) {
@@ -21,8 +21,9 @@ fun describeBody(source: Player, thing: Thing) {
         table.getString()
     } else ""
 
-    if (body == NONE) {
-        source.displayToMe("This has no body.")
+    if (body.name == NONE.name) {
+        val materialString = if (body.material.name != DEFAULT_MATERIAL.name) " It is made of ${body.material.name}." else ""
+        source.displayToMe("This has no body.$materialString")
     } else {
         source.displayToMe("${body.name} body:\n$routeTable")
     }

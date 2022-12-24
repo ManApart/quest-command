@@ -4,6 +4,7 @@ import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
 import core.utility.lazyM
+import crafting.material.MaterialManager
 import traveling.location.Network
 import traveling.location.location.LocationRecipe
 import traveling.location.location.build
@@ -37,7 +38,7 @@ object BodyManager {
             network
         }
 
-        val bodies = (networks.map { Body(it.name, it) }).plus(NONE)
+        val bodies = (networks.map { Body(it.name, MaterialManager.getMaterial(it.rootNode.getLocationRecipe().material), it) }).plus(NONE)
 
         return NameSearchableList(bodies)
     }
