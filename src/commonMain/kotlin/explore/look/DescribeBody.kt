@@ -15,6 +15,7 @@ fun describeBody(source: Player, thing: Thing) {
 
     val routeTable = if (routes.isNotEmpty()) {
         val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))
+        input.add(listOf(body.layout.rootNode.name, "0", "N/A"))
         input.addAll(routes.map { it.getRouteString() })
         val table = StringTable(input, 2, rightPadding = 2)
 
