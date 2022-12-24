@@ -47,9 +47,12 @@ class CommonBodies : BodyResource {
         }
 
         network("Tree") {
-            locationNode("Branches")
+            locationNode("Branches"){
+                material("Wood")
+            }
             locationNode("Trunk") {
                 isRoot(true)
+                material("Wood")
                 connection("Branches", z = 15)
             }
         }
@@ -62,15 +65,20 @@ class CommonBodies : BodyResource {
                 connection("Scraggy Lower Shelf", x = 1, z = 1)
             }
             locationNode("Lower Shelf") {
+                material("Stone")
                 connection("Wall Mid", z = 1)
             }
             locationNode("Scraggy Lower Shelf") {
+                material("Stone")
                 connection("Wall Mid", z = 1)
             }
             locationNode("Wall Mid") {
+                material("Stone")
                 connection("Wall Top", z = 1)
             }
-            locationNode("Wall Top")
+            locationNode("Wall Top"){
+                material("Stone")
+            }
         }
 
         network("Stairs")

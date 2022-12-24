@@ -64,7 +64,6 @@ class CommonBodyParts : BodyPartResource {
             slot("Left Leg")
         }
 
-
         location("Canine Head") {
             material("Flesh")
             slot("Canine Head")

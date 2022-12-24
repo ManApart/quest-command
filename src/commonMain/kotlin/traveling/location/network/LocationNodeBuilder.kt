@@ -10,7 +10,7 @@ class LocationNodeBuilder(private val name: String) {
     private var parentName: String? = null
     private var network: Network? = null
     private var isRoot = false
-    private var recipe: LocationRecipe? = null
+    private var recipe: LocationRecipeBuilder? = null
     private val connectionBuilders = mutableListOf<ConnectionRecipeBuilder>()
 
     internal fun build(recipes: Map<String, LocationRecipe>, inheritedParent: String? = null): LocationNode {
@@ -18,7 +18,7 @@ class LocationNodeBuilder(private val name: String) {
         val parent = inheritedParent ?: parentName ?: DEFAULT_NETWORK.name
         val network = this.network ?: DEFAULT_NETWORK
         val connections = connectionBuilders.map { it.build() }
-        val usedRecipe = recipe ?: recipes[locName] ?: LocationRecipe(locName)
+        val usedRecipe = recipe?.build() ?: recipes[locName] ?: LocationRecipe(locName)
         return LocationNode(name, locName, parent, network, isRoot, usedRecipe, connections)
     }
 
@@ -27,13 +27,12 @@ class LocationNodeBuilder(private val name: String) {
     }
 
     fun location(name: String, initializer: LocationRecipeBuilder.() -> Unit = {}) {
-//        children.add(LocationRecipeBuilder(name).apply(initializer))
+        recipe = LocationRecipeBuilder(name).apply(initializer)
     }
 
-    fun material(material: String){
-
+    fun material(material: String) {
+        recipe = LocationRecipeBuilder(name).apply { material(material) }
     }
-
 
     fun parent(parent: String) {
         this.parentName = parent
