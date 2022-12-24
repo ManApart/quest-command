@@ -6,11 +6,9 @@ import core.utility.NameSearchableList
 import core.utility.lazyM
 import crafting.material.MaterialManager
 import traveling.location.Network
-import traveling.location.location.LocationRecipe
 import traveling.location.location.build
 import traveling.location.location.buildInitialMap
 import traveling.location.location.createNeighborsAndNeighborLinks
-import traveling.location.network.LocationNode
 import traveling.location.network.build
 
 object BodyManager {
@@ -24,11 +22,11 @@ object BodyManager {
         startupLog("Creating Bodies.")
         val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class)
         val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class)
-        val bodyParts = bodyPartCollection.values.build()
-        val nodes = bodyCollection.values.build(bodyParts.associateBy { it.name })
+        val bodyParts = bodyPartCollection.values.build().associateBy { it.name }
+        val nodes = bodyCollection.values.build(bodyParts)
 
         val nodeMap = buildInitialMap(nodes)
-        createNeighborsAndNeighborLinks(nodeMap)
+        createNeighborsAndNeighborLinks(nodeMap, bodyParts)
 
         val networks = nodeMap.map { (name, nodes) ->
             val network = Network(name, nodes)

@@ -11,7 +11,7 @@ fun createBody(part: LocationRecipe) : Body {
 
 fun createBody(parts: List<LocationRecipe>) : Body {
     val name = "None"
-    val nodes = parts.map { LocationNode(it.name, parent = name) }
+    val nodes = parts.map { LocationNode(it.name, parent = name, recipe = it) }
     val network = Network(name, nodes)
     network.getLocationNodes().forEach { it.network = network }
     return Body(name, MaterialManager.getMaterial(network.rootNode.getLocationRecipe().material), network)

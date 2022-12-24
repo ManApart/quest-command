@@ -14,7 +14,7 @@ fun buildInitialMap(nodes: List<LocationNode>): HashMap<String, MutableList<Loca
     return nodeMap
 }
 
-fun createNeighborsAndNeighborLinks(nodeMap: MutableMap<String, MutableList<LocationNode>>) {
+fun createNeighborsAndNeighborLinks(nodeMap: MutableMap<String, MutableList<LocationNode>>, locations: Map<String, LocationRecipe>) {
     nodeMap.keys.forEach { networkName ->
         val network = nodeMap[networkName]?.toList() ?: listOf()
         network.forEach { node ->
@@ -27,7 +27,9 @@ fun createNeighborsAndNeighborLinks(nodeMap: MutableMap<String, MutableList<Loca
                 var neighbor = getLocationNodeByExactName(protoConnection.connection.location, connectionNetwork)
 
                 if (neighbor == null) {
-                    neighbor = LocationNode(protoConnection.connection.location, parent = connectionNetworkName)
+                    val locName = protoConnection.connection.location
+                    val recipe = locations[locName] ?: LocationRecipe(locName)
+                    neighbor = LocationNode(locName, parent = connectionNetworkName, recipe = recipe)
                     connectionNetwork.add(neighbor)
                 }
 

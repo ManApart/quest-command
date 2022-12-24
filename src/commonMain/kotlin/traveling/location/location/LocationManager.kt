@@ -20,12 +20,11 @@ object LocationManager {
         startupLog("Loading Networks.")
         val nodeCollection = DependencyInjector.getImplementation(NetworksCollection::class)
         val locationCollection = DependencyInjector.getImplementation(LocationsCollection::class)
-        val locations = locationCollection.values.build().toNameSearchableList()
-        val nodes = nodeCollection.values.build(locations.associateBy { it.name })
+        val locations = locationCollection.values.build().toNameSearchableList().associateBy { it.name }
+        val nodes = nodeCollection.values.build(locations)
 
         val nodeMap = buildInitialMap(nodes)
-        createNeighborsAndNeighborLinks(nodeMap)
-        createLocationIfNeeded(nodeMap, locations)
+        createNeighborsAndNeighborLinks(nodeMap, locations)
 
         val networks = nodeMap.map { (name, nodes) ->
             val network = Network(name, nodes)
@@ -36,16 +35,6 @@ object LocationManager {
             DEFAULT_NETWORK.addLocationNode(NOWHERE_NODE)
         }
         return NameSearchableList(networks + DEFAULT_NETWORK)
-    }
-
-    private fun createLocationIfNeeded(nodeMap: Map<String, List<LocationNode>>, locationRecipes: NameSearchableList<LocationRecipe>) {
-        nodeMap.values.forEach { network ->
-            network.forEach { node ->
-                if (!locationRecipes.exists(node.locationName)) {
-                    locationRecipes.add(LocationRecipe(node.locationName))
-                }
-            }
-        }
     }
 
     fun networkExists(name: String): Boolean {

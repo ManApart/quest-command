@@ -121,9 +121,7 @@ class RouteVectorTest {
 
     private fun NetworkBuilder.buildRoutes(): List<LocationNode> {
         return build().also { nodes ->
-            with(LocationHelper()) {
-                createNeighborsAndNeighborLinks(buildInitialMap(nodes))
-            }
+            createNeighborsAndNeighborLinks(buildInitialMap(nodes), mapOf())
         }
     }
 }
