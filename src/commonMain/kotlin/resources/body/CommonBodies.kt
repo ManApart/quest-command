@@ -94,5 +94,23 @@ class CommonBodies : BodyResource {
             locationNode("Top")
         }
         network("Medium Container")
+        network("Dagger") {
+            locationNode("Handle") {
+                material("Leather")
+                isRoot(true)
+                connection("Pommel", z = -1)
+                connection("Guard", z = 1)
+            }
+            locationNode("Pommel") {
+                material("Iron")
+            }
+            locationNode("Guard") {
+                material("Iron")
+                connection("Blade", z = 1)
+            }
+            locationNode("Blade") {
+                material("Iron")
+            }
+        }
     }
 }

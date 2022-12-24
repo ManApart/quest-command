@@ -11,6 +11,7 @@ class Weapons : ItemResource {
 
         thing("Rusty Dagger") {
             material("Iron")
+            body("Dagger")
             description("It once held a cutting edge, but those days are little remembered.")
             equipSlotOptions("Right Hand Grip")
             equipSlotOptions("Left Hand Grip")
