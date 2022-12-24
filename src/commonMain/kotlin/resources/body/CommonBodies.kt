@@ -57,6 +57,7 @@ class CommonBodies : BodyResource {
         network("City Wall") {
             locationNode("Foundation") {
                 isRoot(true)
+                material("Stone")
                 connection("Lower Shelf", z = 1)
                 connection("Scraggy Lower Shelf", x = 1, z = 1)
             }

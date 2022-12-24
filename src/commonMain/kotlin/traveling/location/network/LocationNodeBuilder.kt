@@ -1,7 +1,9 @@
 package traveling.location.network
 
+import crafting.material.Material
 import traveling.location.ConnectionRecipeBuilder
 import traveling.location.Network
+import traveling.location.location.LocationRecipeBuilder
 
 class LocationNodeBuilder(private val name: String) {
     private var locationName: String? = null
@@ -21,6 +23,15 @@ class LocationNodeBuilder(private val name: String) {
     fun location(name: String) {
         this.locationName = name
     }
+
+    fun location(name: String, initializer: LocationRecipeBuilder.() -> Unit = {}) {
+//        children.add(LocationRecipeBuilder(name).apply(initializer))
+    }
+
+    fun material(material: String){
+
+    }
+
 
     fun parent(parent: String) {
         this.parentName = parent

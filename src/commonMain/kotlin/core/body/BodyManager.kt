@@ -31,10 +31,10 @@ object BodyManager {
         createNeighborsAndNeighborLinks(nodeMap)
         val locations = createLocations(bodyParts, nodeMap.values.flatten())
 
-        val networks = nodeMap.map { entry ->
-            val networkLocations = entry.value.map { locations.get(it.locationName) }.distinct()
-            val network = Network(entry.key, entry.value, networkLocations)
-            entry.value.forEach { it.network = network }
+        val networks = nodeMap.map { (name, nodes) ->
+            val networkLocations = nodes.map { locations.get(it.locationName) }.distinct()
+            val network = Network(name, nodes, networkLocations)
+            nodes.forEach { it.network = network }
             network
         }
 
