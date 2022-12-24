@@ -25,6 +25,7 @@ fun parseVector(arguments: List<String>): Vector? {
     return when {
         numbers.size == 3 && numbers.all { it != null } -> Vector(numbers[0]!!, numbers[1]!!, numbers[2]!!)
         numbers.size == 2 && numbers.all { it != null } -> Vector(numbers[0]!!, numbers[1]!!, 0)
+        numbers.size == 1 && numbers.all { it != null } -> Vector(numbers[0]!!, 0, 0)
         else -> null
     }
 }

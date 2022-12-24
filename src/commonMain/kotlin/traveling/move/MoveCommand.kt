@@ -8,7 +8,6 @@ import core.utility.asSubject
 import core.utility.isAre
 import traveling.direction.Direction
 
-//TODO - take optional ignore z
 class MoveCommand : Command() {
 
     override fun getAliases(): List<String> {
@@ -21,7 +20,8 @@ class MoveCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Move to 0,1,0 - Move to a specific place within a location.
+	Move to 0,1 - Move to a specific place within a location.
+	Move to 0,1,0 - Move to a specific place within a location, including a height.
 	Move to <thing> - Move to a thing within a location.
 	Move <distance> towards <direction> - Move a set distance in a direction."""
     }
