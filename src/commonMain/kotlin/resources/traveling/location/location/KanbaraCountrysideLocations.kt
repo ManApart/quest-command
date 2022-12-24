@@ -12,6 +12,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Kanbara City") {
             extends("Outside")
+            material("Gravel")
             description("The city of Kanbara is one of the most densely packed cities in all of Lenovia.")
             activator("City Wall")
             props {
@@ -21,6 +22,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Kanbara Gate") {
             extends("Outside")
+            material("Gravel")
             description("The large gate of Kanbara seems to be its only entrance point.")
             activator("Kanbara Gate (Closed)")
             props {
@@ -45,6 +47,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Clovenwood") {
             extends("Outside")
+            material("Grass")
             description("Mint and ginger float on the wind. The result of the unique plants that grow around and through the village lead to its name.")
         }
 
@@ -53,9 +56,5 @@ class KanbaraCountrysideLocations : LocationResource {
             description("Mint and ginger float on the wind. The unique plants that grow around and through the village prompted its name.")
         }
 
-        location("Cadeya") {
-            extends("Outside")
-            description("Mint and ginger float on the wind. The unique plants that grow around and through the village prompted its name.")
-        }
     }
 }

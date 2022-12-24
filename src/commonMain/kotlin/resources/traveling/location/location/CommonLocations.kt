@@ -7,9 +7,12 @@ import traveling.location.location.locations
 
 class CommonLocations : LocationResource {
     override val values = locations {
-        location("World")
+        location("World") {
+            material("Dirt")
+        }
 
         location("Inside") {
+            material("Dirt")
             props { tag("Inside") }
             weather {
                 option("Distant Rain") { RandomManager.isSuccess(40) }
@@ -20,12 +23,14 @@ class CommonLocations : LocationResource {
 
         location("Inside Building") {
             extends("Inside")
+            material("Wood")
             activator("Wall Scone", x = 10)
             activator("Wall Scone", x = -10)
             lightLevel(2)
         }
 
         location("Outside") {
+            material("Dirt")
             props { tag("Outside") }
             weather {
                 option("Windy") { RandomManager.isSuccess(20) }
@@ -43,6 +48,7 @@ class CommonLocations : LocationResource {
 
         location("City Wall") {
             extends("Outside")
+            material("Gravel")
             activator("City Wall")
             props {
                 tag("City")
@@ -116,6 +122,7 @@ class CommonLocations : LocationResource {
 
         location("Apple Tree") {
             extends("Outside")
+            material("Grass")
             description("The tree's leaves rustle in the wind, dusting it with the smell of apples.")
             sound(1, "the soft rustle of many leaves")
             activator("Apple Tree")
@@ -133,6 +140,7 @@ class CommonLocations : LocationResource {
 
         location("Apple Tree Branches") {
             extends("Outside")
+            material("Bark")
             description("The crisp smell of apples permeates the air.")
             activator("Apple Tree Branches")
             item("Apple")
@@ -154,6 +162,7 @@ class CommonLocations : LocationResource {
 
         location("Windmill") {
             extends("Inside Building")
+            material("Stone")
             description("Large hewed stone encircle encircle a patchwork floor. It smells of wheat and yeast.")
             activator("Grain Bin")
             activator("Stairs")
@@ -180,12 +189,14 @@ class CommonLocations : LocationResource {
 
         location("Cave Mouth") {
             extends("Inside")
+            material("Stone")
             description("The air is humid and heavy, interrupted by gasps of cooler wind from outside.")
             activator("Wall Crack")
         }
 
         location("Cave Tunnel") {
             extends("Inside")
+            material("Stone")
             description("The damp, cool stone runs along either side of the tunnel.")
         }
     }
