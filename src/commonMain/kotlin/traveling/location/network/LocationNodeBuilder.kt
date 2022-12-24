@@ -1,8 +1,8 @@
 package traveling.location.network
 
-import crafting.material.Material
 import traveling.location.ConnectionRecipeBuilder
 import traveling.location.Network
+import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationRecipeBuilder
 
 class LocationNodeBuilder(private val name: String) {
@@ -10,14 +10,16 @@ class LocationNodeBuilder(private val name: String) {
     private var parentName: String? = null
     private var network: Network? = null
     private var isRoot = false
+    private var recipe: LocationRecipe? = null
     private val connectionBuilders = mutableListOf<ConnectionRecipeBuilder>()
 
-    internal fun build(inheritedParent: String? = null): LocationNode {
+    internal fun build(recipes: Map<String, LocationRecipe>, inheritedParent: String? = null): LocationNode {
         val locName = locationName ?: name
         val parent = inheritedParent ?: parentName ?: DEFAULT_NETWORK.name
         val network = this.network ?: DEFAULT_NETWORK
         val connections = connectionBuilders.map { it.build() }
-        return LocationNode(name, locName, parent, network, isRoot, connections)
+        val usedRecipe = recipe ?: recipes[locName] ?: LocationRecipe(locName)
+        return LocationNode(name, locName, parent, network, isRoot, usedRecipe, connections)
     }
 
     fun location(name: String) {
@@ -60,8 +62,4 @@ class LocationNodeBuilder(private val name: String) {
         connectionBuilders.add(ConnectionRecipeBuilder().apply { name(name) }.apply(initializer))
     }
 
-}
-
-fun node(name: String, initializer: LocationNodeBuilder.() -> Unit): LocationNode {
-    return LocationNodeBuilder(name).apply(initializer).build()
 }

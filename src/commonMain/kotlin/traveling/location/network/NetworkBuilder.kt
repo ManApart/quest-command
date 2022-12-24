@@ -1,5 +1,7 @@
 package traveling.location.network
 
+import traveling.location.location.LocationRecipe
+
 class NetworkBuilder(private val networkName: String) {
     private val children = mutableListOf<LocationNodeBuilder>()
 
@@ -12,11 +14,11 @@ class NetworkBuilder(private val networkName: String) {
         children.add(LocationNodeBuilder(nameToUse).apply(initializer))
     }
 
-    fun build(): List<LocationNode> {
+    fun build(recipes: Map<String, LocationRecipe> = mapOf()): List<LocationNode> {
         return if (children.isEmpty()){
-            listOf(LocationNodeBuilder(networkName).apply { isRoot(true) }.build(networkName))
+            listOf(LocationNodeBuilder(networkName).apply { isRoot(true) }.build(recipes, networkName))
         } else {
-            children.map { it.build(networkName) }
+            children.map { it.build(recipes, networkName) }
         }
 
     }

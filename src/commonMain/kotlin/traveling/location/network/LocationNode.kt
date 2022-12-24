@@ -23,10 +23,11 @@ data class LocationNode(
     val parent: String = DEFAULT_NETWORK.name,
     var network: Network = DEFAULT_NETWORK,
     val isRoot: Boolean = false,
+    val recipe: LocationRecipe = LocationRecipe(name),
     @SerialName("locations") val connectionRecipes: List<ConnectionRecipe> = listOf(),
     private val connections: MutableList<Connection> = mutableListOf(),
 ) : Named {
-    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.connectionRecipes)
+    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.recipe, base.connectionRecipes)
 
     private var location: Location? = null
     var loadPath: String? = null
@@ -67,11 +68,9 @@ data class LocationNode(
             .map { it.destination.location }
     }
 
+    //TODO - cleanup / make val
     fun getLocationRecipe(): LocationRecipe {
-        if (!network.locationRecipeExists(locationName)) {
-            network.addLocationRecipe(LocationRecipe(locationName))
-        }
-        return network.getLocationRecipe(locationName)
+        return recipe
     }
 
     fun hasLoadedLocation(): Boolean {

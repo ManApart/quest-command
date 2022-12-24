@@ -10,14 +10,13 @@ import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.Vector
 
-class Network(override val name: String, locationNodes: List<LocationNode> = listOf(), locationRecipes: List<LocationRecipe> = listOf()) : Named {
+class Network(override val name: String, locationNodes: List<LocationNode> = listOf()) : Named {
 
-    constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes), base.locationRecipes.map { LocationRecipe(it) })
+    constructor(base: Network) : this(base.name, duplicateNodesAndConnections(base.locationNodes))
 
-    constructor(name: String, locationRecipe: LocationRecipe) : this(name, listOf(LocationNode(name, locationName = locationRecipe.name)), listOf(locationRecipe))
+    constructor(name: String, locationRecipe: LocationRecipe) : this(name, listOf(LocationNode(name, locationName = locationRecipe.name)))
 
     private val locationNodes = NameSearchableList(locationNodes, LocationNode(name, isRoot = true, network = this, parent = this.name))
-    private val locationRecipes = NameSearchableList(locationRecipes)
     val rootNode by lazy { findRootNode() }
     val rootNodeHeight by lazy { findRootNodeHeight() }
 
@@ -72,18 +71,6 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
         return locationNodes.size
     }
 
-    fun getLocationRecipe(name: String): LocationRecipe {
-        return locationRecipes.getOrNull(name) ?: NOWHERE
-    }
-
-    fun getLocationRecipes(): List<LocationRecipe> {
-        return locationRecipes.toList()
-    }
-
-    fun locationRecipeExists(name: String): Boolean {
-        return locationRecipes.exists(name)
-    }
-
     fun locationNodeExists(name: String): Boolean {
         return locationNodes.exists(name)
     }
@@ -122,10 +109,6 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
 
     fun addLocationNode(locationNode: LocationNode) {
         locationNodes.add(locationNode)
-    }
-
-    fun addLocationRecipe(recipe: LocationRecipe) {
-        this.locationRecipes.add(recipe)
     }
 
 }

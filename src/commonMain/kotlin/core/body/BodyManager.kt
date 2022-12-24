@@ -24,35 +24,21 @@ object BodyManager {
         startupLog("Creating Bodies.")
         val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class)
         val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class)
-        val nodes = bodyCollection.values.build()
         val bodyParts = bodyPartCollection.values.build()
+        val nodes = bodyCollection.values.build(bodyParts.associateBy { it.name })
 
         val nodeMap = buildInitialMap(nodes)
         createNeighborsAndNeighborLinks(nodeMap)
-        val locations = createLocations(bodyParts, nodeMap.values.flatten())
 
         val networks = nodeMap.map { (name, nodes) ->
-            val networkLocations = nodes.map { locations.get(it.locationName) }.distinct()
-            val network = Network(name, nodes, networkLocations)
+            val network = Network(name, nodes)
             nodes.forEach { it.network = network }
             network
         }
 
-        val bodies = (networks.map { Body(it.name, MaterialManager.getMaterial(it.rootNode.getLocationRecipe().material), it) }).plus(NONE)
+        val bodies = networks.map { Body(it.name, MaterialManager.getMaterial(it.rootNode.getLocationRecipe().material), it) }.plus(NONE)
 
         return NameSearchableList(bodies)
-    }
-
-    private fun createLocations(bodyParts: List<LocationRecipe>, locationNodes: List<LocationNode>): NameSearchableList<LocationRecipe> {
-        val locations = NameSearchableList(bodyParts)
-
-        locationNodes.forEach { node ->
-            if (locations.getOrNull(node.locationName) == null) {
-                locations.add(LocationRecipe(node.locationName))
-            }
-        }
-
-        return locations
     }
 
     fun bodyExists(name: String): Boolean {

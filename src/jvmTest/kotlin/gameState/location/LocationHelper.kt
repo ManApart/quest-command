@@ -12,9 +12,8 @@ class LocationHelper {
     fun createNetwork(depth: Int): Network {
         val source = LocationNode("Source")
         val locationNodes = addNeighbors(source, depth)
-        val locations = locationNodes.map { LocationRecipe(it.locationName) }
 
-        return Network("Network", locationNodes, locations)
+        return Network("Network", locationNodes)
     }
 
     fun createLocations(depth: Int): LocationNode {

@@ -1,5 +1,7 @@
 package traveling.location.network
 
+import traveling.location.location.LocationRecipe
+
 class NetworksBuilder {
     internal val children = mutableListOf<NetworkBuilder>()
 
@@ -16,6 +18,6 @@ fun networks(initializer: NetworksBuilder.() -> Unit): List<NetworkBuilder> {
     return NetworksBuilder().apply(initializer).children
 }
 
-fun List<NetworkBuilder>.build(): List<LocationNode> {
-    return flatMap { it.build() }
+fun List<NetworkBuilder>.build(recipes: Map<String, LocationRecipe>): List<LocationNode> {
+    return flatMap { it.build(recipes) }
 }
