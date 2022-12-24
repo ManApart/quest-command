@@ -33,6 +33,9 @@ import core.thing.thing
 import crafting.RecipeManager
 import crafting.RecipesCollection
 import crafting.RecipesMock
+import crafting.material.MaterialManager
+import crafting.material.MaterialsCollection
+import crafting.material.MaterialsMock
 import inventory.createInventoryBody
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
@@ -150,6 +153,9 @@ fun createMockedGame() {
     DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
     DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
     LocationManager.reset()
+
+    DependencyInjector.setImplementation(MaterialsCollection::class, MaterialsMock())
+    MaterialManager.reset()
 
     DependencyInjector.setImplementation(RecipesCollection::class, RecipesMock())
     RecipeManager.reset()

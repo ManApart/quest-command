@@ -10,6 +10,7 @@ import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.PropertiesP
 import core.properties.props
+import crafting.material.DEFAULT_MATERIAL
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -94,7 +95,7 @@ class PersistenceTest {
         val locationRecipe = locationRecipe("Head") { }.build()
         val location = Location(LocationNode("Head"), recipe = locationRecipe)
         val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
-        val body = Body("Head", Network("Head", locationRecipe))
+        val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
         val json = Json.encodeToString(EffectP(original))
         val parsed: EffectP = Json.decodeFromString(json)
         assertEffectMatches(original, parsed.parsed(body))
@@ -115,7 +116,7 @@ class PersistenceTest {
         val location = Location(LocationNode("Head"), recipe = locationRecipe)
         val effect = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
         val original = Condition("Fever", effects = listOf(effect))
-        val body = Body("Head", Network("Head", locationRecipe))
+        val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
 
         val json = Json.encodeToString(ConditionP(original))
         val parsed: ConditionP = Json.decodeFromString(json)

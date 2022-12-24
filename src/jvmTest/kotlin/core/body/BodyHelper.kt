@@ -1,5 +1,6 @@
 package core.body
 
+import crafting.material.MaterialManager
 import traveling.location.Network
 import traveling.location.location.LocationRecipe
 import traveling.location.network.LocationNode
@@ -13,5 +14,5 @@ fun createBody(parts: List<LocationRecipe>) : Body {
     val nodes = parts.map { LocationNode(it.name, parent = name) }
     val network = Network(name, nodes, parts)
     network.getLocationNodes().forEach { it.network = network }
-    return Body(name, network)
+    return Body(name, MaterialManager.getMaterial(network.rootNode.getLocationRecipe().material), network)
 }

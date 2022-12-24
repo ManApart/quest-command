@@ -13,6 +13,7 @@ class CommonActivators : ActivatorResource {
 
     override val values = things {
         thing("Apple Tree") {
+            material("Wood")
             description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")
             body("tree")
             props {
@@ -27,6 +28,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Apple Tree Branches") {
+            material("Bark")
             extends(burnable)
             description("The branches are too thin to sit on comfortably, but their leaves rustle contentedly.")
             param("fireHealth" to 5, "itemName" to "Apple Tree Branches")
@@ -37,6 +39,7 @@ class CommonActivators : ActivatorResource {
 
         thing("Wheat Field") {
             extends(burnable)
+            material("Grass")
             description("The golden shafts of wheat whisper as they brush against each other.")
             sound(5, "a faint rustling sound")
             param("fireHealth" to 2, "itemName" to "Wheat Field")
@@ -50,6 +53,7 @@ class CommonActivators : ActivatorResource {
 
         thing("Logs") {
             extends(burnable)
+            material("Wood")
             description("A pile of logs.")
             param("fireHealth" to 5, "itemName" to "Ash")
             props {
@@ -58,6 +62,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Well") {
+            material("Stone")
             description("The well's smoothed stones seem at once immovable and soft, as if they are a natural part of the terrain.")
             props {
                 tag("Water Source")
@@ -65,6 +70,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Kanbara Gate (Open)") {
+            material("Iron")
             description("The gate is large but not immovable.")
             props {
                 tag("Door")
@@ -82,6 +88,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Kanbara Gate (Closed)") {
+            material("Iron")
             description("The gate is large but not immovable.")
             props {
                 tag("Door")
@@ -99,6 +106,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Range") {
+            material("Iron")
             description("The old metal is pitted, but its belly glows a contented orange.")
             props {
                 value("fireHealth", 2)
@@ -108,6 +116,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Grain Chute") {
+            material("Stone")
             description("Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below.")
             body("Grain Chute")
             props {
@@ -124,6 +133,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Grain Bin") {
+            material("Stone")
             description("Place grain in the chute above to pick up the milled contents here.")
             body("Grain Bin")
             props {
@@ -133,6 +143,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Stairs") {
+            material("Wood")
             description("The stairs lead to another floor.")
             body("Stairs")
             props {
@@ -142,6 +153,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("City Wall") {
+            material("Stone")
             description("The squared stones rise high above you.")
             body("City Wall")
             props {
@@ -151,11 +163,13 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Wall Crack") {
+            material("Stone")
             description("This crack is large enough to squeeze through.")
             body("Wall Crack")
         }
 
         thing("Wall Scone") {
+            material("Iron")
             description("The torch is wrought with iron against the wall.")
             props {
                 value(LIGHT, 7)
@@ -163,6 +177,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Forge") {
+            material("Iron")
             description("The large plates of iron seethe and glow.")
             props {
                 value("fireHealth", 20)
@@ -171,6 +186,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Smithing Supply Chest") {
+            material("Wood")
             description("The over-thick iron banding is a giveaway that this is usually used for smithing supplies.")
             body("Medium Container")
             item("Iron Ingot", "Leather")

@@ -8,6 +8,7 @@ class Food : ItemResource {
 
     override val values = things {
         thing("Apple") {
+            material("Food")
             description("It glistens and smells of spring blossoms.")
             props {
                 value("healAmount", 1)
@@ -17,6 +18,7 @@ class Food : ItemResource {
         }
 
         thing("Apple Pie") {
+            material("Food")
             description("Its golden brown crust smells delicious.")
             props {
                 value("healAmount", 10)
@@ -27,6 +29,7 @@ class Food : ItemResource {
         }
 
         thing("Wheat Bundle") {
+            material("Food")
             description("It's stems lightly scratch your hands.")
             extends(burnable)
             param("fireHealth", 1)
@@ -39,6 +42,7 @@ class Food : ItemResource {
         }
 
         thing("Wheat Flour") {
+            material("Food")
             description("The finely ground wheat looks almost like silver sand.")
             props {
                 value("weight", 1)
@@ -47,6 +51,7 @@ class Food : ItemResource {
         }
 
         thing("Dough") {
+            material("Food")
             description("It may not be of much value alone, but it forms the base of many a great meal.")
             props {
                 value("weight", 1)
