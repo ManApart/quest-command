@@ -25,6 +25,8 @@ import core.utility.KotlinResourceHelper
 import core.utility.ResourceHelper
 import crafting.RecipesCollection
 import crafting.RecipesGenerated
+import crafting.material.MaterialsCollection
+import crafting.material.MaterialsGenerated
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsGenerated
 import quests.StoryEventsCollection
@@ -88,6 +90,7 @@ object DependencyInjector {
             ItemsCollection::class to ItemsGenerated(),
             DesiresCollection::class to DesiresGenerated(),
             LocationsCollection::class to LocationsGenerated(),
+            MaterialsCollection::class to MaterialsGenerated(),
             NetworksCollection::class to NetworksGenerated(),
             RecipesCollection::class to RecipesGenerated(),
             ResourceHelper::class to KotlinResourceHelper(),

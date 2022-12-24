@@ -1,5 +1,6 @@
 package magic
 
+//TODO - document
 enum class ElementInteraction {
     STRONGER,
     WEAKER,

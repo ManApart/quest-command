@@ -19,6 +19,8 @@ import core.thing.creature.CreatureResource
 import core.thing.item.ItemResource
 import crafting.RecipeBuilder
 import crafting.RecipeResource
+import crafting.material.Material
+import crafting.material.MaterialResource
 import magic.spellCommands.SpellCommand
 import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
@@ -67,6 +69,7 @@ object ReflectionTools {
         generateResourcesFile(DialogueTreeResource::class, DialogueTree::class)
         generateResourcesFile(EffectResource::class, EffectBase::class)
         generateResourcesFile(LocationResource::class, LocationRecipeBuilder::class)
+        generateResourcesFile(MaterialResource::class, Material::class)
         generateResourcesFile(NetworkResource::class, NetworkBuilder::class)
         generateResourcesFile(RecipeResource::class, RecipeBuilder::class)
         generateResourcesFile(StoryEventResource::class, StoryEvent::class)
