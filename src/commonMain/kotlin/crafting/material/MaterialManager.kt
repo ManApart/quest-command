@@ -14,7 +14,7 @@ object MaterialManager {
 
     private fun loadMaterials(): Map<String, Material> {
         startupLog("Loading Materials")
-        return DependencyInjector.getImplementation(MaterialsCollection::class).values.associateBy { it.name }
+        return (listOf(DEFAULT_MATERIAL) + DependencyInjector.getImplementation(MaterialsCollection::class).values).associateBy { it.name }
     }
 
     fun reset() {
@@ -23,7 +23,7 @@ object MaterialManager {
 
     fun getMaterial(name: String): Material {
         return materials[name] ?: DEFAULT_MATERIAL.also {
-            println("Could not find material $name. Using Default Material")
+            println("Could not find material $name. Using Default Material '${DEFAULT_MATERIAL.name}'.")
         }
     }
 

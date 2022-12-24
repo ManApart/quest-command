@@ -3,6 +3,7 @@ package traveling.location.location
 import core.conditional.ConditionalString
 import core.properties.Properties
 import core.utility.Named
+import crafting.material.Material
 
 val NOWHERE = LocationRecipe("Nowhere")
 
@@ -18,6 +19,7 @@ data class LocationRecipe(
     val items: List<LocationThing> = listOf(),
     val weatherChangeFrequency: Int = 5,
     val weather: ConditionalString = ConditionalString("Still"),
+    val material: String = "Void",
     val properties: Properties = Properties(),
     val slots: List<String> = listOf()
 ) : Named {
@@ -29,6 +31,7 @@ data class LocationRecipe(
             base.items.toList(),
             base.weatherChangeFrequency,
             base.weather,
+            base.material,
             Properties(base.properties),
             base.slots
     )

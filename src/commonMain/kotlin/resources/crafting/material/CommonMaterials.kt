@@ -7,6 +7,7 @@ class CommonMaterials : MaterialResource {
     override val values = materials {
         material("Air", 0, 0)
         material("Dirt", 50, 50)
+        material("Grass", 30, 40)
         material("Gravel", 60, 60)
         material("Gem", 80, 5)
         material("Iron", 80, 20)

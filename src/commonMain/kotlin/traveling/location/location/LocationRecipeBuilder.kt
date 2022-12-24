@@ -11,6 +11,7 @@ class LocationRecipeBuilder(val name: String) {
     private val propsBuilder = PropsBuilder()
     private val descriptionBuilder = ConditionalStringBuilder("")
     private val weatherBuilder = ConditionalStringBuilder("Still")
+    private var material = "Void"
     private val slots = mutableListOf<String>()
     private val activatorBuilders = mutableListOf<LocationThingBuilder>()
     private val creatureBuilders = mutableListOf<LocationThingBuilder>()
@@ -39,6 +40,7 @@ class LocationRecipeBuilder(val name: String) {
             creatures,
             items,
             weather = weatherChoice,
+            material = material,
             slots = slots,
             properties = props,
         )
@@ -48,6 +50,7 @@ class LocationRecipeBuilder(val name: String) {
         val props = propsBuilder.build(bases.map { it.propsBuilder })
         val desc = descriptionBuilder.build(bases.map { it.descriptionBuilder })
         val weatherChoice = weatherBuilder.build(bases.map { it.weatherBuilder })
+        val materialChoice = (listOf(material) +  bases.map { it.material }.reversed()).firstOrNull { it != "Void" } ?: "Void"
         val allActivators = activatorBuilders.build() + bases.flatMap { it.activatorBuilders.build() }
         val allCreatures = creatureBuilders.build() + bases.flatMap { it.creatureBuilders.build() }
         val allItems = itemBuilders.build() + bases.flatMap { it.itemBuilders.build() }
@@ -59,6 +62,7 @@ class LocationRecipeBuilder(val name: String) {
             allCreatures,
             allItems,
             weather = weatherChoice,
+            material = materialChoice,
             slots = slots,
             properties = props,
         )
@@ -109,6 +113,10 @@ class LocationRecipeBuilder(val name: String) {
 
     fun item(name: String, initializer: LocationThingBuilder.() -> Unit = {}) {
         itemBuilders.add(LocationThingBuilder(name).apply(initializer))
+    }
+
+    fun material(material: String){
+        this.material = material
     }
 
     fun weather(weather: String){

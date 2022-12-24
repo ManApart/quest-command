@@ -13,7 +13,7 @@ import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 import traveling.location.network.LocationNode
 
-fun describeClimbJourney(source: Player) {
+fun describeClimbJourney(source: Player, detailed: Boolean = false) {
     val location = source.thing.location
     val distance = getDistance(location).wrapNonEmpty("", " ")
     val exits = getExits(location, source.thing.climbThing!!)
@@ -24,6 +24,7 @@ fun describeClimbJourney(source: Player) {
     }
 
     source.displayToMe("You are on ${location.name}, ${distance}above the ground.$exitString")
+    if (detailed) source.displayToMe("${location.name} is made of ${location.getLocation().material.name}.")
     source.displayToMe(getRoutesString(source, location))
     source.displayToOthers("${source.name} looks around.")
 }
@@ -65,8 +66,8 @@ private fun getExits(location: LocationNode, climbThing: Thing): List<String> {
     }
 
     val things = climbThing.location.getNeighborConnections()
-            .filter { (it.source.thingName == climbThing.name && it.source.partName == location.name) }
-            .map { it.destination.location.name }
+        .filter { (it.source.thingName == climbThing.name && it.source.partName == location.name) }
+        .map { it.destination.location.name }
 
     return (things + dismountLocation).filterNotNull()
 }

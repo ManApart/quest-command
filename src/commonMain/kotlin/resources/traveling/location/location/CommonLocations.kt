@@ -100,6 +100,7 @@ class CommonLocations : LocationResource {
 
         location("Field") {
             extends("Outside")
+            material("Grass")
             description {
                 option("The red sun fills the waving grasses, making them glow. They sway like licks of flame.") {
                     GameState.timeManager.getHour() in 20..30 || GameState.timeManager.getHour() in 70..80

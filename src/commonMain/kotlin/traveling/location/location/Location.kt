@@ -13,6 +13,9 @@ import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.plus
+import crafting.material.DEFAULT_MATERIAL
+import crafting.material.Material
+import crafting.material.MaterialManager
 import inventory.Inventory
 import status.Soul
 import status.conditions.AddConditionEvent
@@ -43,6 +46,7 @@ data class Location(
         populateFromProtoLocation()
     }
 
+    var material: Material = DEFAULT_MATERIAL
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
     private var equippedItems: MutableMap<String, Thing?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
@@ -57,6 +61,7 @@ data class Location(
 
     private fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.getLocationRecipe().properties)
+        material = MaterialManager.getMaterial(recipe.material)
 
         if (recipe.activators.isNotEmpty()) {
             addThings(ActivatorManager.getActivatorsFromLocationThings(recipe.activators))

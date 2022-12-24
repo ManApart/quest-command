@@ -54,6 +54,8 @@ fun describeLocationDetailed(source: Player, location: Location) {
 
     if (locationRecipe.getDescription().isNotBlank()) source.displayToMe(locationRecipe.getDescription())
 
+    source.displayToMe("${location.name} is made of ${location.material.name}.")
+
     if (location.weather != DEFAULT_WEATHER) source.displayToMe(location.weather.description)
 
     val light = location.getLightLevel(source.thing)
