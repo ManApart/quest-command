@@ -6,6 +6,7 @@ import core.history.displayToOthers
 import core.thing.perceivedBy
 import core.thing.toThingString
 import core.utility.joinToStringOr
+import crafting.material.DEFAULT_MATERIAL
 import traveling.location.location.Location
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.position.NO_VECTOR
@@ -54,7 +55,7 @@ fun describeLocationDetailed(source: Player, location: Location) {
 
     if (locationRecipe.getDescription().isNotBlank()) source.displayToMe(locationRecipe.getDescription())
 
-    source.displayToMe("${location.name} is made of ${location.material.name}.")
+    if (location.material.name != DEFAULT_MATERIAL.name) source.displayToMe("${location.name} is made of ${location.material.name}.")
 
     if (location.weather != DEFAULT_WEATHER) source.displayToMe(location.weather.description)
 
