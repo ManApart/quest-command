@@ -33,7 +33,7 @@ data class Location(
     private val items: NameSearchableList<Thing> = NameSearchableList(),
     private val other: NameSearchableList<Thing> = NameSearchableList(),
     val properties: Properties = Properties(),
-    private val recipe: LocationRecipe = locationNode.getLocationRecipe()
+    private val recipe: LocationRecipe = locationNode.recipe
 ) : Named {
     constructor(locationNode: LocationNode) : this(
         locationNode,
@@ -60,7 +60,7 @@ data class Location(
     }
 
     private fun populateFromProtoLocation() {
-        properties.replaceWith(locationNode.getLocationRecipe().properties)
+        properties.replaceWith(locationNode.recipe.properties)
         material = MaterialManager.getMaterial(recipe.material)
 
         if (recipe.activators.isNotEmpty()) {

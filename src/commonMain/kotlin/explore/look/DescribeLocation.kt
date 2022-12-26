@@ -50,7 +50,7 @@ private fun describePerceivedThings(source: Player, location: Location) {
 }
 
 fun describeLocationDetailed(source: Player, location: Location) {
-    val locationRecipe = location.locationNode.getLocationRecipe()
+    val locationRecipe = location.locationNode.recipe
     describePosition(source, location)
 
     if (locationRecipe.getDescription().isNotBlank()) source.displayToMe(locationRecipe.getDescription())

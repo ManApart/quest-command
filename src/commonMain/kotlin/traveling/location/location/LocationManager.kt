@@ -65,7 +65,7 @@ object LocationManager {
     }
 
     private fun findLocation(name: String, network: Network): LocationNode? {
-        return if (network.getLocationNodes().map { it.getLocationRecipe() }.toNameSearchableList().exists(name)) {
+        return if (network.getLocationNodes().map { it.recipe }.toNameSearchableList().exists(name)) {
             network.findLocation(name)
         } else {
             null

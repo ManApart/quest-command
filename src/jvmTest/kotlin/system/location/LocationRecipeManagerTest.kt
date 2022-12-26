@@ -124,7 +124,7 @@ class LocationRecipeManagerTest {
         DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
-        assertEquals(source.name, source.getLocationRecipe().name)
+        assertEquals(source.name, source.recipe.name)
     }
 
 

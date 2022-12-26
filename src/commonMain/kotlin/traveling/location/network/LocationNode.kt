@@ -68,11 +68,6 @@ data class LocationNode(
             .map { it.destination.location }
     }
 
-    //TODO - cleanup / make val
-    fun getLocationRecipe(): LocationRecipe {
-        return recipe
-    }
-
     fun hasLoadedLocation(): Boolean {
         return location != null
     }

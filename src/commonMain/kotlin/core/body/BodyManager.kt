@@ -34,7 +34,7 @@ object BodyManager {
             network
         }
 
-        val bodies = networks.map { Body(it.name, MaterialManager.getMaterial(it.rootNode.getLocationRecipe().material), it) }.plus(NONE)
+        val bodies = networks.map { Body(it.name, MaterialManager.getMaterial(it.rootNode.recipe.material), it) }.plus(NONE)
 
         return NameSearchableList(bodies)
     }
