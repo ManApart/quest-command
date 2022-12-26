@@ -47,6 +47,10 @@ data class Location(
     }
 
     var material: Material = DEFAULT_MATERIAL
+    init {
+        material = MaterialManager.getMaterial(recipe.material)
+    }
+
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
     private var equippedItems: MutableMap<String, Thing?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
@@ -61,7 +65,6 @@ data class Location(
 
     private fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.recipe.properties)
-        material = MaterialManager.getMaterial(recipe.material)
 
         if (recipe.activators.isNotEmpty()) {
             addThings(ActivatorManager.getActivatorsFromLocationThings(recipe.activators))

@@ -26,11 +26,12 @@ data class LocationNode(
     val recipe: LocationRecipe = LocationRecipe(name),
     @SerialName("locations") val connectionRecipes: List<ConnectionRecipe> = listOf(),
     private val connections: MutableList<Connection> = mutableListOf(),
+    var loadPath: String? = null,
 ) : Named {
-    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.recipe, base.connectionRecipes)
+    constructor(base: LocationNode) : this(base.name, base.locationName, base.parent, base.network, base.isRoot, base.recipe, base.connectionRecipes, loadPath = base.loadPath)
 
     private var location: Location? = null
-    var loadPath: String? = null
+
 
     override fun toString(): String {
         return name

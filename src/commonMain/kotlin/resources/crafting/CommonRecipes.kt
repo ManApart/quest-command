@@ -2,8 +2,10 @@ package resources.crafting
 
 import core.thing.thing
 import crafting.RecipeResource
+import crafting.material.Material
 import crafting.recipes
 import status.stat.*
+import traveling.location.connection
 
 class CommonRecipes : RecipeResource {
     override val values = recipes {
@@ -115,6 +117,20 @@ class CommonRecipes : RecipeResource {
                     val inlay = usedIngredients["Inlay"]?.second
                     val inlayString = if (inlay != null) " inlaid with $inlay" else ""
                     thing("$metalUsed Dagger") {
+                        body("Dagger") {
+                            part("Handle") {
+                                material("Leather")
+                            }
+                            part("Pommel") {
+                                material("Iron")
+                            }
+                            part("Guard") {
+                                material("Iron")
+                            }
+                            part("Blade") {
+                                material("Iron")
+                            }
+                        }
                         description("A $metalUsed Dagger$inlayString.")
                         equipSlotOptions("Right Hand Grip")
                         equipSlotOptions("Left Hand Grip")

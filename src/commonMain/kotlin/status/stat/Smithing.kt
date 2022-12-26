@@ -3,6 +3,7 @@ package status.stat
 import core.thing.Thing
 import kotlin.math.max
 
+//TODO - incorporate into material
 val METAL_TAGS = listOf("Bronze", "Iron", "Steel", "Blackened Steel", "Adamant", "Mithril")
 
 fun canSmith(crafter: Thing, ingredient: Thing, difficultyScale: Float): Boolean {

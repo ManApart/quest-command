@@ -11,6 +11,8 @@ import core.events.EventManager
 import core.properties.PropertiesP
 import core.properties.props
 import crafting.material.DEFAULT_MATERIAL
+import crafting.material.Material
+import crafting.material.MaterialManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -145,6 +147,8 @@ class PersistenceTest {
         val fact = Fact(Subject(preLoadPlayer.thing), "Neat")
         preLoadPlayer.mind.learn(fact)
 
+        preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
+
         EventManager.postEvent(SaveEvent(preLoadPlayer))
         EventManager.executeEvents()
         preLoadPlayer.thing.properties.tags.remove("Saved")
@@ -158,6 +162,9 @@ class PersistenceTest {
         assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
         assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
         assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
+
+        val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material
+        assertEquals(MaterialManager.getMaterial("Stone"), daggerMat)
 
         CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
         val location = postLoadPlayer.thing.location.getLocation()

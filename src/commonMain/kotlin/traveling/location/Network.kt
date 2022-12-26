@@ -43,6 +43,9 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     fun getLocationNode(name: String): LocationNode {
         return locationNodes.get(name)
     }
+    fun getLocationNodeOrNull(name: String): LocationNode? {
+        return locationNodes.getOrNull(name)
+    }
 
     fun getLocationNodes(): List<LocationNode> {
         return locationNodes.toList()
