@@ -4,6 +4,7 @@ import core.properties.PropertiesP
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
+import crafting.material.MaterialManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -20,7 +21,7 @@ fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = lis
     dataObject.getCreatures().filter { !it.isPlayer() }.forEach { core.thing.persistToDisk(it, clean(prefix, "creatures")) }
     dataObject.getItems().filter { !ignoredThings.contains(it) }.forEach { core.thing.persistToDisk(it, clean(prefix, "items")) }
     dataObject.getOther().forEach { core.thing.persistToDisk(it, clean(prefix, "other")) }
-    //Persist weather
+    //Persist weather (conditional string)
     //Persist last weather change
 
 }
@@ -38,9 +39,10 @@ private fun getThings(folderPath: String, folderName: String, parent: LocationNo
 @kotlinx.serialization.Serializable
 data class LocationP(
     val name: String,
+    val materialName: String,
     val properties: PropertiesP,
     ){
-    constructor(b: Location): this(b.name, PropertiesP(b.properties))
+    constructor(b: Location): this(b.name, b.material.name, PropertiesP(b.properties))
 
     fun parsed(path: String, locationNode: LocationNode): Location {
         val folderPath = path.removeSuffix(".json")
@@ -49,6 +51,7 @@ data class LocationP(
         val creatures = getThings(folderPath, "creatures", locationNode)
         val items = getThings(folderPath, "items", locationNode)
         val other = getThings(folderPath, "other", locationNode)
-        return Location(locationNode, activators, creatures, items, other, properties.parsed())
+        val recipe = locationNode.recipe.copy(material = materialName)
+        return Location(locationNode, activators, creatures, items, other, properties.parsed(), recipe)
     }
 }
