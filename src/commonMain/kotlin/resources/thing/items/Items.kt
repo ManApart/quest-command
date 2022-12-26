@@ -82,11 +82,19 @@ class Items : ItemResource {
             }
         }
 
+        thing("Bronze Ingot") {
+            material("Bronze")
+            description("A bar of pure metal, ready to be worked into something more.")
+            props {
+                tag("Ingot", "Small")
+            }
+        }
+
         thing("Iron Ingot") {
             material("Iron")
             description("A bar of pure metal, ready to be worked into something more.")
             props {
-                tag("Metal", "Iron", "Ingot", "Small")
+                tag("Ingot", "Small")
             }
         }
 

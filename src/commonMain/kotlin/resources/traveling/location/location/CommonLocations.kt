@@ -106,7 +106,7 @@ class CommonLocations : LocationResource {
 
         location("Field") {
             extends("Outside")
-            material("Grass")
+            material("Plant")
             description {
                 option("The red sun fills the waving grasses, making them glow. They sway like licks of flame.") {
                     GameState.timeManager.getHour() in 20..30 || GameState.timeManager.getHour() in 70..80
@@ -122,7 +122,7 @@ class CommonLocations : LocationResource {
 
         location("Apple Tree") {
             extends("Outside")
-            material("Grass")
+            material("Plant")
             description("The tree's leaves rustle in the wind, dusting it with the smell of apples.")
             sound(1, "the soft rustle of many leaves")
             activator("Apple Tree")

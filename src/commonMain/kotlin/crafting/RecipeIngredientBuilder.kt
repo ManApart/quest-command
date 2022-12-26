@@ -15,6 +15,7 @@ class RecipeIngredientBuilder {
     private val tags = mutableListOf<String>()
     private val skills: MapBuilder = MapBuilder()
     private var toolProps = PropsBuilder()
+    private var materialProps = PropsBuilder()
     private var optional = false
 
     //Crafter, Ingredient, Tool?
@@ -34,6 +35,14 @@ class RecipeIngredientBuilder {
 
     fun tag(vararg tags: String) {
         this.tags.addAll(tags)
+    }
+
+    fun material(tag: String){
+        this.materialProps.apply { tag(tag) }
+    }
+
+    fun material(customizer: PropsBuilder.() -> Unit){
+        this.materialProps.apply(customizer)
     }
 
     fun skill(vararg values: Pair<String, Any>) = this.skills.entry(values.toList())
@@ -79,6 +88,9 @@ class RecipeIngredientBuilder {
 
         val properties = toolProps.build()
         if (properties.isNotEmpty()) criteria.add { _, _, tool -> matchesTool(tool, properties) }
+
+        val matProps = materialProps.build()
+        if (matProps.isNotEmpty()) criteria.add { _, ingredient, _ -> ingredient.body.material.properties.hasAll(matProps) }
 
         if (criteria.isEmpty()) throw IllegalArgumentException("Recipe must include at least one criteria.")
 

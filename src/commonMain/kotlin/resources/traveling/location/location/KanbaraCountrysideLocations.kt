@@ -47,7 +47,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Clovenwood") {
             extends("Outside")
-            material("Grass")
+            material("Plant")
             description("Mint and ginger float on the wind. The result of the unique plants that grow around and through the village lead to its name.")
         }
 

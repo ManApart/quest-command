@@ -91,14 +91,15 @@ class CommonRecipes : RecipeResource {
 
         recipe("Dagger") {
             ingredient("Ingot") {
-                tag("Metal", "Ingot")
+                tag("Ingot")
+                material("Metal")
                 matches { crafter, ingredient, _ ->
                     canSmith(crafter, ingredient, 2f)
                 }
             }
             ingredient("Inlay") {
                 optional()
-                tag("Gem")
+                material("Gem")
                 skill(SMITHING to 10)
             }
             ingredientNamed("Leather") {
@@ -112,23 +113,24 @@ class CommonRecipes : RecipeResource {
                 description("A dagger of the type of metal given, optionally with its handle inlaid with a gem.")
                 produces { _, _, usedIngredients ->
                     val ingot = usedIngredients["Ingot"]!!.second
-                    val metalUsed = ingot.getMetal()!!
-                    val metalQuality = ingot.getMetalQuality()
+                    val metalUsed = ingot.body.material.name
+                    val metalQuality = ingot.body.material.properties.values.getInt("Quality")
                     val inlay = usedIngredients["Inlay"]?.second
-                    val inlayString = if (inlay != null) " inlaid with $inlay" else ""
+                    val inlayUsed = inlay?.body?.material?.name ?: metalUsed
+                    val inlayString = if (inlay != null) " inlaid with ${inlay.name}" else ""
                     thing("$metalUsed Dagger") {
                         body("Dagger") {
                             part("Handle") {
                                 material("Leather")
                             }
                             part("Pommel") {
-                                material("Iron")
+                                material(inlayUsed)
                             }
                             part("Guard") {
-                                material("Iron")
+                                material(metalUsed)
                             }
                             part("Blade") {
-                                material("Iron")
+                                material(metalUsed)
                             }
                         }
                         description("A $metalUsed Dagger$inlayString.")

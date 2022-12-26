@@ -237,10 +237,10 @@ class CommandComboTest {
             "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger"
         )
 
-        val dagger = GameState.player.inventory.getItem("Iron Dagger")
+        val dagger = GameState.player.inventory.getItem("Bronze Dagger")
         assertNotNull(dagger)
 
         val tags = dagger.properties.tags
-        assertTrue(tags.hasAll(listOf("Iron", "Weapon")))
+        assertTrue(tags.hasAll(listOf("Bronze", "Weapon")))
     }
 }

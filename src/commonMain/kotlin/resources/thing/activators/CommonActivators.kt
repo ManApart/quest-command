@@ -39,7 +39,7 @@ class CommonActivators : ActivatorResource {
 
         thing("Wheat Field") {
             extends(burnable)
-            material("Grass")
+            material("Plant")
             description("The golden shafts of wheat whisper as they brush against each other.")
             sound(5, "a faint rustling sound")
             param("fireHealth" to 2, "itemName" to "Wheat Field")
@@ -189,7 +189,7 @@ class CommonActivators : ActivatorResource {
             material("Wood")
             description("The over-thick iron banding is a giveaway that this is usually used for smithing supplies.")
             body("Medium Container")
-            item("Iron Ingot", "Leather")
+            item("Bronze Ingot", "Leather")
             props {
                 value(SIZE to 10)
                 tag(CONTAINER, OPEN)
