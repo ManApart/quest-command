@@ -17,9 +17,7 @@ import traveling.position.ThingAim
 import traveling.position.Vector
 import traveling.routes.FindRouteEvent
 import traveling.travel.TravelStartEvent
-import use.UseEvent
 import use.eat.EatFoodEvent
-import use.interaction.Interact
 import use.interaction.InteractEvent
 import use.interaction.nothing.NothingEvent
 
@@ -156,8 +154,8 @@ class CommonAgendas : AgendaResource {
         }
 
         agendaAction("Wander") { creature ->
-            val additional = Vector(RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10))
-            MoveEvent(creature, destination = creature.position + additional)
+            val target = creature.location.getLocation().getThings(creature).random()
+            MoveEvent(creature, destination = target.position)
         }
 
         agenda("Travel to Job Site") {

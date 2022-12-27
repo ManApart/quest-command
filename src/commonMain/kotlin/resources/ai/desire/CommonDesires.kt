@@ -22,6 +22,10 @@ class CommonDesires : DesireResource {
         }
 
         tag("Commoner") {
+            cond{
+                priority = 100
+                agenda("Wander")
+            }
             cond({ _ -> GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) }) {
                 additionalPriority = 2
                 agenda("Eat Food")
