@@ -25,6 +25,9 @@ class CommonCreatures : CreatureResource {
             soul("Health", 10)
             soul("Strength", 3)
             soul("Bare Handed", 2)
+            mind{
+                learn("WorkTags", listOf("Farmable"))
+            }
             props {
                 tag("Commoner")
                 value("Race", "Human")

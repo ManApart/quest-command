@@ -165,7 +165,7 @@ class CommandComboTest {
 
     @Test
     fun makePie() {
-        val input = "move to wheat && slash wheat && pickup wheat && t farmer's hut && t farmer's hut && take bucket && mv to well && use bucket on well && t windmill && t" +
+        val input = "move to wheat && slash wheat && pickup wheat && t farmer's hut && take bucket && use bucket on well && t windmill && t" +
                 "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
                 "&& use dagger on apple && rs 10" +
                 "&& t interior && t && t && rest 10 && move to range && take pie tin" +

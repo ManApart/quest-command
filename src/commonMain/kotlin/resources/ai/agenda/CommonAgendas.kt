@@ -81,7 +81,7 @@ class CommonAgendas : AgendaResource {
                 shouldSkip { s ->
                     s.location == s.mind.knowsLocationByKind("LocationGoal")
                 }
-                result { s->
+                result { s ->
                     s.route?.let {
                         TravelStartEvent(s, destination = it.getNextStep(s.location).destination.location)
                     }
@@ -139,7 +139,7 @@ class CommonAgendas : AgendaResource {
             }
         }
 
-        agenda("Sleep On Ground") {
+        agenda("Rest") {
             action("Rest") { creature -> RestEvent(creature, 2) }
         }
 
@@ -170,9 +170,11 @@ class CommonAgendas : AgendaResource {
         }
 
         agenda("Work At Job Site") {
-            action("Find Workable Activator") { owner ->
-                owner.mind.knowsThingByKind("MyWorkplace")?.let { target ->
-                    owner.discover(target, "useTarget")
+            action("Find Workable Activator") { s ->
+                s.mind.knows("WorkTags")?.sources?.mapNotNull { it.topic }?.let { tags ->
+                    s.location.getLocation().getActivators(s).firstOrNull { it.properties.tags.hasAll(tags) }?.let { target ->
+                        s.discover(target, "useTarget")
+                    }
                 }
             }
             agenda("Move to Use Target")

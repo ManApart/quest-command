@@ -49,6 +49,9 @@ class CommonActivators : ActivatorResource {
                 "message" to "The wheat falls with little more than a whisper.",
                 "count" to 3
             )
+            props {
+                tag("Farmable")
+            }
         }
 
         thing("Logs") {

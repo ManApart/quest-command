@@ -5,6 +5,7 @@ import core.ai.DumbAI
 import core.thing.Thing
 import crafting.Recipe
 import traveling.location.network.LocationNode
+import kotlin.jvm.JvmName
 
 data class Mind(
     val ai: AI = DumbAI(),
@@ -47,6 +48,8 @@ data class Mind(
     }
 
     fun learn(kind: String, addition: Subject) = learn(kind, listOf(addition))
+    @JvmName("learnTopics")
+    fun learn(kind: String, additions: List<String>) = learn(kind, additions.map { Subject(topic = it) })
     fun learn(kind: String, additions: List<Subject>) {
         val existing = memory.getListFact(kind)
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))

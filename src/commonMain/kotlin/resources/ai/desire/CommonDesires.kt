@@ -13,7 +13,7 @@ class CommonDesires : DesireResource {
         agenda("Wander")
 
         cond({ s -> s.soul.getCurrent(STAMINA) < s.soul.getTotal(STAMINA) / 10 }) {
-            agenda("Sleep On Ground")
+            agenda("Rest")
         }
 
         cond({ source -> source.mind.getAggroTarget() != null }) {
@@ -38,13 +38,13 @@ class CommonDesires : DesireResource {
                 cond({ s -> s.mind.thingByKindExists("MyBed") }) {
                     agenda("Sleep In Bed")
                 }
-                agenda("Sleep On Ground")
+                agenda("Rest")
             }
         }
 
         tag("Predator") {
             cond({ _ -> !GameState.timeManager.isNight() }) {
-                agenda("Sleep On Ground")
+                agenda("Rest")
             }
 
             cond({ s -> s.items().firstOrNull { it.properties.tags.has("Food") } != null }) {

@@ -2,10 +2,12 @@ package core.ai
 
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
+import core.GameState
 import core.events.EventManager
 import core.history.display
 import core.history.displayGlobal
 import core.utility.RandomManager
+import system.debug.DebugType
 
 class ConditionalAI : AI() {
     private val defaultAgenda = Pair("Nothing", 0)
@@ -28,6 +30,8 @@ class ConditionalAI : AI() {
         val desire = (RandomManager.getRandomOrNull(topMatches) ?: defaultAgenda).first
         val agenda = AIManager.agendas[desire] ?: AIManager.agendas[defaultAgenda.first]!!.also { displayGlobal("Couldn't find agenda for ${desire}!") }
 
+
+        if (GameState.getDebugBoolean(DebugType.AI_Updates)) displayGlobal("${creature.name} picks ${agenda.name}.")
         return Goal(agenda, priority)
     }
 
