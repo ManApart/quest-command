@@ -4,6 +4,7 @@ import core.GameState
 import core.events.EventListener
 import core.events.EventManager
 import core.thing.Thing
+import time.gameTick.GameTickEvent
 
 private const val turnLimit = 1000
 
@@ -25,6 +26,12 @@ fun directAI() {
         if (turns >= turnLimit) {
             println("Got stuck in a loop taking turns. This shouldn't happen!")
         }
+    }
+
+    //Don't let the player choose another action until their delayed action is complete
+    val playerHasDelayedAction = creatures.any { it.isPlayer() && it.mind.ai.action != null }
+    if (playerHasDelayedAction) {
+        EventManager.postEvent(GameTickEvent())
     }
 
 }
