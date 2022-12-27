@@ -10,6 +10,11 @@ import time.TimeManager
 class CommonDesires : DesireResource {
     override val values = desires {
         agenda("Nothing")
+        agenda("Wander")
+
+        cond({ s -> s.soul.getCurrent(STAMINA) < s.soul.getTotal(STAMINA) / 10 }) {
+            agenda("Sleep On Ground")
+        }
 
         cond({ source -> source.mind.getAggroTarget() != null }) {
             priority = 70
@@ -17,26 +22,33 @@ class CommonDesires : DesireResource {
         }
 
         tag("Commoner") {
-            agenda("Wander")
-        }
+            cond({ _ -> GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) }) {
+                additionalPriority = 2
+                agenda("Eat Food")
+            }
 
-        tag("Farmer") {
-            agenda("Wander")
+            cond({ s -> GameState.timeManager.isWorkHours() && s.mind.locationByKindExists("MyWorkplace") }) {
+                cond({ s -> s.location !=  s.mind.knowsLocationByKind("MyWorkplace") }) {
+                    agenda("Travel to Job Site")
+                }
+                agenda("Work At Job Site")
+            }
+
+            cond({ _ -> !GameState.timeManager.isNight() }) {
+                cond({ s -> s.mind.thingByKindExists("MyBed") }) {
+                    agenda("Sleep In Bed")
+                }
+                agenda("Sleep On Ground")
+            }
         }
 
         tag("Predator") {
-            agenda("Wander")
-
             cond({ _ -> !GameState.timeManager.isNight() }) {
                 agenda("Sleep On Ground")
             }
 
-            cond({ s -> s.soul.getCurrent(STAMINA) < s.soul.getTotal(STAMINA) / 10 }) {
-                agenda("Sleep On Ground")
-            }
-
             cond({ s -> s.items().firstOrNull { it.properties.tags.has("Food") } != null }) {
-                agenda("Eat Food on Ground")
+                agenda("Eat Food")
             }
 
             cond(20, { s -> s.activators().firstOrNull { it.name.contains("Tree") } != null }) {

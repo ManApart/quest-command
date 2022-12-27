@@ -29,6 +29,18 @@ data class Mind(
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
     }
 
+    fun thingByKindExists(kind: String): Boolean {
+        return knowsThingByKind(kind) != null
+    }
+
+    fun knowsLocationByKind(kind: String): LocationNode? {
+        return memory.getSubjects(kind).firstNotNullOfOrNull { it.getLocation() }
+    }
+
+    fun locationByKindExists(kind: String): Boolean {
+        return knowsLocationByKind(kind) != null
+    }
+
     fun learn(source: Subject, kind: String) {
         val fact = memory.getFact(source, kind) ?: Fact(source, kind)
         learn(fact)

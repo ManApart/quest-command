@@ -1,6 +1,5 @@
 package resources.traveling.location.location
 
-import core.ai.knowledge.Subject
 import traveling.location.network.NetworkResource
 import traveling.location.network.networks
 
@@ -27,10 +26,8 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Farmer's Hut") {
                 location("Farmer's Hut") {
                     creature("Farmer") {
-                        transform {
-                            //TODO - Learn about owned bed for sleeping
-//                            it.mind.learn(Subject(it.location.getLocation().getA))
-                        }
+                        learnBedLocation("Simple Bed", "Farmer's Hut Interior")
+                        learnWorkLocation("An Open Field")
                     }
                 }
             }

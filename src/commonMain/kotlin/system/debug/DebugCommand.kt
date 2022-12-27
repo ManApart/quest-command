@@ -111,7 +111,12 @@ class DebugCommand : Command() {
 
     private fun sendDebugWeatherEvent(source: Thing, arguments: Args) {
         val weather = arguments.argsWithout(listOf("weather")).joinToString(" ")
-        EventManager.postEvent(DebugWeatherEvent(source, weather))
+        if (weather.isBlank()) {
+            source.displayToMe("Current weather is ${source.location.getLocation().weather.name}.")
+            source.displayToMe("Weathers are ${WeatherManager.getAllWeather().joinToString { it.name }}")
+        } else {
+            EventManager.postEvent(DebugWeatherEvent(source, weather))
+        }
     }
 
 }
