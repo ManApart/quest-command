@@ -16,7 +16,15 @@ class CommonDesires : DesireResource {
             agenda("Attack")
         }
 
-        cond({ source -> source.properties.tags.has("Predator") }) {
+        tag("Commoner") {
+            agenda("Wander")
+        }
+
+        tag("Farmer") {
+            agenda("Wander")
+        }
+
+        tag("Predator") {
             agenda("Wander")
 
             cond({ _ -> !GameState.timeManager.isNight() }) {

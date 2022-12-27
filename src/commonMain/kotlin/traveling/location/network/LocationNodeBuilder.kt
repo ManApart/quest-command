@@ -4,6 +4,7 @@ import traveling.location.ConnectionRecipeBuilder
 import traveling.location.Network
 import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationRecipeBuilder
+import traveling.location.location.unBuild
 
 class LocationNodeBuilder(private val name: String) {
     private var locationName: String? = null
@@ -18,7 +19,11 @@ class LocationNodeBuilder(private val name: String) {
         val parent = inheritedParent ?: parentName ?: DEFAULT_NETWORK.name
         val network = this.network ?: DEFAULT_NETWORK
         val connections = connectionBuilders.map { it.build() }
-        val usedRecipe = recipe?.build() ?: recipes[locName] ?: LocationRecipe(locName)
+        val usedRecipe = if (recipe != null){
+            recipe!!.build(listOf(recipes[locName]?.unBuild() ?: LocationRecipeBuilder(name)))
+        } else {
+            recipes[locName] ?: LocationRecipe(locName)
+        }
         return LocationNode(name, locName, parent, network, isRoot, usedRecipe, connections)
     }
 

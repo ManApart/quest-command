@@ -59,7 +59,6 @@ class CommonLocations : LocationResource {
             extends("Outside")
             description("The hut is small, but it's hewn logs are worn by the passage of time and polished by the passing of many caring hands.")
             activator("Well")
-            creature("Farmer")
             item("Bucket")
             props {
                 tag("City")

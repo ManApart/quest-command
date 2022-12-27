@@ -25,7 +25,7 @@ class CommonCreatures : CreatureResource {
             soul("Strength", 3)
             soul("Bare Handed", 2)
             props {
-                tag("Commoner")
+                tag("Commoner", "Farmer")
                 value("Race", "Human")
             }
             item("Brown Pants", "Old Shirt")

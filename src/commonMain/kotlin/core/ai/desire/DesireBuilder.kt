@@ -22,6 +22,10 @@ class DesireBuilder(val condition: (Thing) -> Boolean?) {
         children.add(DesireBuilder(newCondition).apply(initializer))
     }
 
+    fun tag(tag: String, initializer: DesireBuilder.() -> Unit) {
+        children.add(DesireBuilder { source -> source.properties.tags.has(tag) }.apply(initializer))
+    }
+
     fun agenda(agenda: String) {
         agendas.add(agenda)
     }

@@ -23,3 +23,11 @@ class ConditionalStringBuilder(private val defaultOption: String? = null) {
 fun conditionalString(initializer: ConditionalStringBuilder.() -> Unit = {}): ConditionalStringBuilder {
     return ConditionalStringBuilder().apply(initializer)
 }
+
+fun ConditionalString.unBuild(): ConditionalStringBuilder {
+    return conditionalString {
+        options.forEach {
+            option(it.option, it.condition)
+        }
+    }
+}

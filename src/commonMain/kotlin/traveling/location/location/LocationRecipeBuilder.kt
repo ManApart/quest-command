@@ -1,6 +1,9 @@
 package traveling.location.location
 
+import core.conditional.ConditionalString
 import core.conditional.ConditionalStringBuilder
+import core.conditional.unBuild
+import core.properties.Properties
 import core.properties.PropsBuilder
 import explore.listen.SOUND_DESCRIPTION
 import explore.listen.SOUND_LEVEL
@@ -9,8 +12,8 @@ import traveling.scope.LIGHT
 
 class LocationRecipeBuilder(val name: String) {
     private val propsBuilder = PropsBuilder()
-    private val descriptionBuilder = ConditionalStringBuilder("")
-    private val weatherBuilder = ConditionalStringBuilder("Still")
+    private var descriptionBuilder = ConditionalStringBuilder("")
+    private var weatherBuilder = ConditionalStringBuilder("Still")
     private var material = "Void"
     private val slots = mutableListOf<String>()
     private val activatorBuilders = mutableListOf<LocationThingBuilder>()
@@ -81,14 +84,22 @@ class LocationRecipeBuilder(val name: String) {
         propsBuilder.apply(initializer)
     }
 
+    fun props(properties: Properties) {
+        propsBuilder.props(properties)
+    }
+
     fun slot(vararg slot: String) = this.slots.addAll(slot.toList())
 
     fun description(description: String){
-        this.descriptionBuilder.option(description)
+        descriptionBuilder.option(description)
     }
 
-    fun description(initializer: ConditionalStringBuilder.() -> Unit): ConditionalStringBuilder {
-        return descriptionBuilder.apply(initializer)
+    fun description(initializer: ConditionalStringBuilder.() -> Unit){
+        descriptionBuilder.apply(initializer)
+    }
+
+    fun description(description: ConditionalString){
+        descriptionBuilder = description.unBuild()
     }
 
     fun activator(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
@@ -99,12 +110,20 @@ class LocationRecipeBuilder(val name: String) {
         activatorBuilders.add(LocationThingBuilder(name).apply(initializer))
     }
 
+    fun activator(builder: LocationThingBuilder) {
+        activatorBuilders.add(builder)
+    }
+
     fun creature(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
         creatureBuilders.add(LocationThingBuilder(name).apply{vector(x,y,z)})
     }
 
     fun creature(name: String, initializer: LocationThingBuilder.() -> Unit = {}) {
         creatureBuilders.add(LocationThingBuilder(name).apply(initializer))
+    }
+
+    fun creature(builder: LocationThingBuilder) {
+        creatureBuilders.add(builder)
     }
 
     fun item(name: String, x: Int = 0, y: Int = 0, z: Int = 0) {
@@ -115,16 +134,24 @@ class LocationRecipeBuilder(val name: String) {
         itemBuilders.add(LocationThingBuilder(name).apply(initializer))
     }
 
+    fun item(builder: LocationThingBuilder) {
+        itemBuilders.add(builder)
+    }
+
     fun material(material: String){
         this.material = material
     }
 
     fun weather(weather: String){
-        this.weatherBuilder.option(weather)
+        weatherBuilder.option(weather)
     }
 
-    fun weather(initializer: ConditionalStringBuilder.() -> Unit): ConditionalStringBuilder {
-        return weatherBuilder.apply(initializer)
+    fun weather(initializer: ConditionalStringBuilder.() -> Unit) {
+        weatherBuilder.apply(initializer)
+    }
+
+    fun weather(weather: ConditionalString){
+        weatherBuilder = weather.unBuild()
     }
 
     fun lightLevel(level: Int){
@@ -144,4 +171,17 @@ class LocationRecipeBuilder(val name: String) {
 
 fun locationRecipe(name: String, initializer: LocationRecipeBuilder.() -> Unit): LocationRecipeBuilder {
     return LocationRecipeBuilder(name).apply(initializer)
+}
+
+fun LocationRecipe.unBuild(): LocationRecipeBuilder {
+    return locationRecipe(name) {
+        description(description.options.first().option)
+        activators.forEach { activator(it.unBuild()) }
+        creatures.forEach { creature(it.unBuild()) }
+        items.forEach { item(it.unBuild()) }
+        weather(weather.options.first().option)
+        material(material)
+        props(properties)
+        slots.forEach { slot(it) }
+    }
 }

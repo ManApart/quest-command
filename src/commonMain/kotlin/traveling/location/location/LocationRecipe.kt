@@ -13,7 +13,7 @@ const val HEAT = "Heat"
 //only do equip check if slots exist
 data class LocationRecipe(
     override val name: String,
-    private val description: ConditionalString = ConditionalString(""),
+    val description: ConditionalString = ConditionalString(""),
     val activators: List<LocationThing> = listOf(),
     val creatures: List<LocationThing> = listOf(),
     val items: List<LocationThing> = listOf(),
