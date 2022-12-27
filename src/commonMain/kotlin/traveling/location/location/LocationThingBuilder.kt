@@ -26,11 +26,11 @@ class LocationThingBuilder(
         transformations.add(transformation)
     }
 
-    fun learnBedLocation(bedName: String, location: String, network: String? = null) {
+    fun learnBedLocation(bedName: String, location: String, network: String) {
         transformations.add { it.mind.learn(Subject(bedName, location, network), "MyBed") }
     }
 
-    fun learnWorkLocation(location: String, network: String? = null) {
+    fun learnWorkLocation(location: String, network: String) {
         transformations.add { it.mind.learn(Subject(null, location, network), "MyWorkplace") }
     }
 

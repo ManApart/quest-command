@@ -46,6 +46,7 @@ object CreatureManager {
                 extends(creatures.get(it.name))
                 param(it.params)
             }.build().startingStats()
+                .also { thing -> it.transform(thing) }
 
             if (!it.location.isNullOrBlank()) {
                 creature.properties.values.put("locationDescription", it.location)

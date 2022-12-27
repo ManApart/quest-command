@@ -26,8 +26,8 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Farmer's Hut") {
                 location("Farmer's Hut") {
                     creature("Farmer") {
-                        learnBedLocation("Simple Bed", "Farmer's Hut Interior")
-                        learnWorkLocation("An Open Field")
+                        learnBedLocation("Simple Bed", "Farmer's Hut Interior", "Kanbara Countryside")
+                        learnWorkLocation("An Open Field", "Kanbara Countryside")
                     }
                 }
             }
