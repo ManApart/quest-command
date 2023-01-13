@@ -1,8 +1,14 @@
 package system.persistance
 
+import LocalForage.config
+import LocalForageConfig
 import core.Player
 import core.properties.Properties
 import traveling.location.Network
+
+fun createDB() {
+    config(LocalForageConfig("quest-command"))
+}
 
 actual class File actual constructor(pathIn: String) {
     actual val path: String

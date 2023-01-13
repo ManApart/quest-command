@@ -100,6 +100,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.5")
                 implementation("io.ktor:ktor-client-js:2.0.1")
+                implementation(npm("localforage", "1.10.0"))
             }
         }
         val jsTest by getting

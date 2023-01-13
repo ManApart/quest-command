@@ -11,6 +11,7 @@ import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
 import system.connection.WebClient
+import system.persistance.createDB
 
 private lateinit var outputDiv: Element
 private lateinit var prompt: HTMLInputElement
@@ -19,7 +20,10 @@ private var suggestions = listOf<String>()
 private var historyStart = 0
 
 fun main() {
-    window.onload = { document.startClient() }
+    window.onload = {
+        createDB()
+        document.startClient()
+    }
 }
 
 fun Document.startClient() {
