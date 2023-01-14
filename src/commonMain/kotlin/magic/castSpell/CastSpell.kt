@@ -9,7 +9,7 @@ import system.debug.DebugType
 
 class CastSpell : EventListener<CastSpellEvent>() {
 
-    override fun execute(event: CastSpellEvent) {
+    override suspend fun execute(event: CastSpellEvent) {
         if (canCast(event)) {
             event.spell.cast(event)
             if (event.spell.isHostile && event.thing.thing.soul.hasStat(HEALTH) && event.thing.thing != event.source){

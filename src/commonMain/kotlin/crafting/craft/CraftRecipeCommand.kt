@@ -26,11 +26,11 @@ class CraftRecipeCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return RecipeManager.getKnownRecipes(source).map { it.name }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         val knownRecipes = RecipeManager.getKnownRecipes(source)
         val pickedRecipes = knownRecipes.getAll(argString)

@@ -33,7 +33,7 @@ class TravelCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> listOf("to")
             args.last() == "to" -> source.location.getNeighbors().map { it.name }
@@ -41,7 +41,7 @@ class TravelCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         if (source.thing.getEncumbrance() >=1){
             source.displayToMe("You are too encumbered to travel.")
         } else if (args.isEmpty()) {

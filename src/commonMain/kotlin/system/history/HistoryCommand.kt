@@ -26,14 +26,14 @@ class HistoryCommand : Command() {
         return listOf("Debugging")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("1", "5", "10", "responses")
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val showResponses = arguments.contains("responses")
         val numberOfLinesToShow = arguments.getNumber() ?: 10

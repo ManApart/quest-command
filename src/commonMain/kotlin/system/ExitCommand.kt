@@ -24,11 +24,11 @@ class ExitCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return listOf()
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         //TODO - move to event / system manager
         displayGlobal("Exiting")
         exit()

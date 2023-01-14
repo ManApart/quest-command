@@ -21,11 +21,11 @@ class SpellCommandMock(override val name: String = "testspell", private val cate
         return category
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return listOf()
     }
 
-    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override suspend fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         this.args = args
         this.things = things
     }

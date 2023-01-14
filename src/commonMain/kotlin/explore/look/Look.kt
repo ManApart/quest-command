@@ -8,7 +8,7 @@ import core.thing.Thing
 
 class Look : EventListener<LookEvent>() {
 
-    override fun execute(event: LookEvent) {
+    override suspend fun execute(event: LookEvent) {
         when {
             event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(event.source)
             event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBody(event.source, event.thing) }

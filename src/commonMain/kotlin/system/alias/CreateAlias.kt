@@ -7,7 +7,7 @@ import core.history.displayToMe
 import core.thing.Thing
 
 class CreateAlias : EventListener<CreateAliasEvent>() {
-    override fun execute(event: CreateAliasEvent) {
+    override suspend fun execute(event: CreateAliasEvent) {
         val alias = event.alias.lowercase()
         val existingCommand = CommandParsers.findCommand(alias)
         if (existingCommand != CommandParsers.unknownCommand) {

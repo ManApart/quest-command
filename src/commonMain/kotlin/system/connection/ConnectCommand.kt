@@ -27,7 +27,7 @@ class ConnectCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> listOf("Player")
             args.size == 1 -> listOf("localhost")
@@ -36,7 +36,7 @@ class ConnectCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             EventManager.postEvent(ConnectInfoEvent(source))
         } else {

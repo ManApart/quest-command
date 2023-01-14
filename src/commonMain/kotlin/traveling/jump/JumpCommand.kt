@@ -28,14 +28,14 @@ class JumpCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> source.thing.currentLocation().getActivators(perceivedBy = source.thing).map { it.name }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         if (source.properties.values.getBoolean(IS_CLIMBING)) {
             val playerLocation = source.location
             val thingLocation= source.climbThing!!.location

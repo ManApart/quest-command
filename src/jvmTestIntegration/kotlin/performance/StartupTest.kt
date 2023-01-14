@@ -5,6 +5,7 @@ import core.GameState
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.utility.PoorMansInstrumenter
+import kotlinx.coroutines.runBlocking
 import org.junit.Ignore
 import org.junit.Test
 
@@ -19,7 +20,7 @@ class StartupTest {
         timer.printElapsed("Listeners Registered")
         GameManager.newGame()
         timer.printElapsed("New Game Started")
-        CommandParsers.parseInitialCommand(GameState.player)
+        runBlocking { CommandParsers.parseInitialCommand(GameState.player) }
         timer.printElapsed("Initial Command Parsed")
     }
 

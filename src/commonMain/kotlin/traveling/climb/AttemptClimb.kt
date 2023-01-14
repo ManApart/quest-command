@@ -24,11 +24,11 @@ import traveling.position.NO_VECTOR
 import kotlin.math.max
 
 class AttemptClimb : EventListener<AttemptClimbEvent>() {
-    override fun shouldExecute(event: AttemptClimbEvent): Boolean {
+    override suspend fun shouldExecute(event: AttemptClimbEvent): Boolean {
         return event.creature.isPlayer() && event.thing.properties.tags.has("Climbable")
     }
 
-    override fun execute(event: AttemptClimbEvent) {
+    override suspend fun execute(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.thing.name}." }
         } else {

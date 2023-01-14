@@ -12,7 +12,7 @@ import status.statChanged.StatChangeEvent
 
 class Rest : EventListener<RestEvent>() {
 
-    override fun execute(event: RestEvent) {
+    override suspend fun execute(event: RestEvent) {
         if (!event.creature.isSafe()) {
             event.creature.displayToMe("You can't rest right now!")
         } else {

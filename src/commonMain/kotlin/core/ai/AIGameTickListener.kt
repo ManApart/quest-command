@@ -5,7 +5,7 @@ import core.events.EventManager
 import time.gameTick.GameTickEvent
 
 class AIGameTickListener : EventListener<GameTickEvent>() {
-    override fun execute(event: GameTickEvent) {
+    override suspend fun execute(event: GameTickEvent) {
         EventManager.postEvent(AIUpdateTick())
     }
 }

@@ -42,7 +42,7 @@ class DebugCommand : Command() {
         return listOf("Debugging")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> listOf("list", "levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "stat", "prop", "tag", "weather")
             args.last() in listOf("levelreq", "statchanges", "random", "map", "clarity", "displayupdates") -> listOf("on", "off")
@@ -52,7 +52,7 @@ class DebugCommand : Command() {
         }
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("on"))
 
         if (args.isEmpty()) {

@@ -25,7 +25,7 @@ object EventManager {
     /**
      * Called by the main method to execute the queue of events
      */
-    fun executeEvents() {
+    suspend fun executeEvents() {
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
         eventCopy.forEach { event ->
@@ -37,7 +37,7 @@ object EventManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
+    suspend fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
         return listenerMap[event::class.simpleName!!]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
     }
 
@@ -46,7 +46,7 @@ object EventManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <E : Event> executeEvent(event: E) {
+    private suspend fun <E : Event> executeEvent(event: E) {
         val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.simpleName]?.filter { (it as EventListener<E>).shouldExecute(event) }
             ?.map {
                 it

@@ -2,15 +2,14 @@ import core.GameState
 import core.commands.CommandParsers
 import core.history.GameLogger
 import core.utility.minOverlap
+import kotlinx.coroutines.runBlocking
 import system.connection.WebClient
 import java.awt.*
-import java.awt.event.*
-import javax.swing.JFrame
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.JTextArea
-import javax.swing.JTextField
+import java.awt.event.FocusEvent
+import java.awt.event.FocusListener
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
+import javax.swing.*
 import javax.swing.border.EmptyBorder
 
 object CSS {
@@ -84,15 +83,17 @@ class TerminalGui : JFrame() {
                 override fun keyPressed(e: KeyEvent) {}
                 override fun keyReleased(e: KeyEvent) {
 //                    println("released ${e.keyChar}")
-                    tabHint()
+                    runBlocking { tabHint() }
                 }
             })
 
             addActionListener {
-                CommandParsers.parseCommand(GameState.player, text)
-                text = ""
-                updateOutput()
-                suggestionsArea.text = ""
+                runBlocking {
+                    CommandParsers.parseCommand(GameState.player, text)
+                    text = ""
+                    updateOutput()
+                    suggestionsArea.text = ""
+                }
             }
         }
         bottomPart.add(prompt, BorderLayout.CENTER)
@@ -107,18 +108,22 @@ class TerminalGui : JFrame() {
 
         suggestionsArea.addFocusListener(object : FocusListener {
             override fun focusGained(e: FocusEvent?) {
-                tabComplete()
-                prompt.grabFocus()
+                runBlocking {
+                    tabComplete()
+                    prompt.grabFocus()
+                }
             }
 
             override fun focusLost(e: FocusEvent?) {}
         })
 
-        CommandParsers.parseInitialCommand(GameState.player)
-        updateOutput()
-        prompt.grabFocus()
-        pack()
-        setSize(1000, 800)
+        runBlocking {
+            CommandParsers.parseInitialCommand(GameState.player)
+            updateOutput()
+            prompt.grabFocus()
+            pack()
+            setSize(1000, 800)
+        }
     }
 
     private fun updateOutput() {
@@ -128,7 +133,7 @@ class TerminalGui : JFrame() {
         }
     }
 
-    private fun tabComplete() {
+    private suspend fun tabComplete() {
         val input = prompt.text.split(" ").lastOrNull()
         if (!input.isNullOrBlank()) {
             val prePrompt = prompt.text.substring(0, prompt.text.indexOf(input))
@@ -144,7 +149,7 @@ class TerminalGui : JFrame() {
         }
     }
 
-    private fun tabHint() {
+    private suspend fun tabHint() {
         val input = prompt.text.lowercase()
         val lastInput = input.split(" ").lastOrNull()
         if (input.isNotBlank()) {

@@ -15,7 +15,7 @@ import inventory.pickupItem.TakeItemEvent
 
 class Craft : EventListener<CraftRecipeEvent>() {
 
-    override fun execute(event: CraftRecipeEvent) {
+    override suspend fun execute(event: CraftRecipeEvent) {
         val sourceT = event.source.thing
         when {
             event.tool?.isWithinRangeOf(sourceT) == false -> event.source.display {

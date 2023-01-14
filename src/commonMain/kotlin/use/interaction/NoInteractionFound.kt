@@ -8,7 +8,7 @@ import core.history.displayToMe
 class NoInteractionFound : EventListener<InteractEvent>() {
     private var checkedEvent: Event? = null
 
-    override fun shouldExecute(event: InteractEvent): Boolean {
+    override suspend fun shouldExecute(event: InteractEvent): Boolean {
         if (event != checkedEvent) {
             checkedEvent = event
             return EventManager.getNumberOfMatchingListeners(event) == 0
@@ -16,7 +16,7 @@ class NoInteractionFound : EventListener<InteractEvent>() {
         return false
     }
 
-    override fun execute(event: InteractEvent) {
+    override suspend fun execute(event: InteractEvent) {
         if (event.source.canInteract()) {
             event.source.displayToMe("You don't seem to be able to do anything interesting with ${event.thing.name}.")
         } else {

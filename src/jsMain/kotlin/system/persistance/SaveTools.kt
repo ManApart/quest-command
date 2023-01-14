@@ -1,10 +1,12 @@
 package system.persistance
 
+import LocalForage
 import LocalForage.config
 import LocalForageConfig
 import core.Player
 import core.properties.Properties
 import traveling.location.Network
+import kotlin.js.Promise
 
 fun createDB() {
     config(LocalForageConfig("quest-command"))
@@ -22,8 +24,10 @@ actual class File actual constructor(pathIn: String) {
 
 }
 
-actual fun getGameNames(): List<String> {
-    return emptyList()
+actual suspend fun getGameNames(): List<String> {
+    return FakeSync.promise {
+        LocalForage.getItem("game-names") as Promise<List<String>>
+    }
 }
 
 actual fun getCharacterSaves(gameName: String): List<String> {

@@ -45,7 +45,7 @@ class CastCommand : Command() {
         return spellCommands.exists(keyword)
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> spellCommands.map { it.name }
             spellCommands.exists(args.first()) -> spellCommands.get(args.first()).suggest(source, args.first(), args.subList(1, args.size))
@@ -53,7 +53,7 @@ class CastCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val isAlias = keyword != "cast"
         val useDefaults = keyword == "c"
         if (args.isEmpty()) {

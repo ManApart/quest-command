@@ -4,6 +4,7 @@ import core.GameState
 import core.Player
 import core.history.GameLogger
 import core.thing.Thing
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
 
@@ -31,8 +32,7 @@ class ReadMapTest {
 
         val event = ReadMapEvent(player, thing)
 
-        val listener = ReadMap()
-        listener.execute(event)
+        runBlocking { ReadMap().execute(event) }
         val actual = GameLogger.getHistory(player).getLastOutput()
         assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
@@ -49,8 +49,7 @@ class ReadMapTest {
         thing.getNeighborConnections().forEach { player.thing.mind.discover(it.destination.location) }
         val event = ReadMapEvent(player, thing)
 
-        val listener = ReadMap()
-        listener.execute(event)
+        runBlocking { ReadMap().execute(event) }
         val actual = GameLogger.getHistory(player).getLastOutput()
         assertEquals(
             "My Place is a part of Wilderness. It is neighbored by:\n" +
@@ -72,8 +71,7 @@ class ReadMapTest {
         }
 
         val event = ReadMapEvent(player, thing)
-        val listener = ReadMap()
-        listener.execute(event)
+        runBlocking { ReadMap().execute(event) }
         val actual = GameLogger.getHistory(player).getLastOutput()
         assertEquals(
             "My Place is a part of Wilderness. It is neighbored by:\n" +

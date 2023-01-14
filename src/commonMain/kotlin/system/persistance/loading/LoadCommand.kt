@@ -26,14 +26,14 @@ class LoadCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("ls") + getGameNames()
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListSavesEvent(source))

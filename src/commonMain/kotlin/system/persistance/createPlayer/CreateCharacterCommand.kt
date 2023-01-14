@@ -27,11 +27,11 @@ class CreateCharacterCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return listOf()
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val saveNames = getCharacterSaves(GameState.gameName).map { it.lowercase() }
         val argString = args.joinToString(" ").lowercase()
         val properName = args.joinToString(" ") { it.capitalize2() }

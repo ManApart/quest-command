@@ -33,7 +33,7 @@ class Adrenaline : SpellCommand() {
         return listOf("Air")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("1", "5", "10")
             args.size == 1 && args.last().toIntOrNull() != null -> listOf("for")
@@ -44,7 +44,7 @@ class Adrenaline : SpellCommand() {
         }
     }
 
-    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override suspend fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val spellArgs = Args(args.getBaseGroup(), listOf("for"))
         val initialPower = spellArgs.getBaseNumber()
         val initialDuration = spellArgs.getNumber("for")

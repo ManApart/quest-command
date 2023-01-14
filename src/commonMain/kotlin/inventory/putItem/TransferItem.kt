@@ -12,7 +12,7 @@ import inventory.pickupItem.ItemPickedUpEvent
 
 class TransferItem : EventListener<TransferItemEvent>() {
 
-    override fun execute(event: TransferItemEvent) {
+    override suspend fun execute(event: TransferItemEvent) {
         val isTaking = event.mover == event.destination
         val isPlacing = event.mover == event.source
         when {

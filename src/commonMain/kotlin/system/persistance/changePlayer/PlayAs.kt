@@ -11,7 +11,7 @@ import system.persistance.clean
 import system.persistance.getCharacterSaves
 
 class PlayAs : EventListener<PlayAsEvent>() {
-    override fun execute(event: PlayAsEvent) {
+    override suspend fun execute(event: PlayAsEvent) {
         val newCharacter = GameState.players.values.firstOrNull { it.name.lowercase() == event.characterName.lowercase() } ?: loadCharacter(event.source, GameState.gameName, event.characterName)
         if (newCharacter != null) {
             GameState.player = newCharacter

@@ -6,7 +6,7 @@ import core.history.StringTable
 import core.history.displayToMe
 
 class ListAlias : EventListener<ListAliasesEvent>() {
-    override fun execute(event: ListAliasesEvent) {
+    override suspend fun execute(event: ListAliasesEvent) {
         if (GameState.aliases.isEmpty()) {
             event.source.displayToMe("There are currently no aliases.")
         } else {

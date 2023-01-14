@@ -11,7 +11,7 @@ class ConversationCommandInterceptor(val conversation: Conversation) : CommandIn
 
     override fun ignoredCommands() = listOf<String>()
 
-    override fun parseCommand(source: Player, line: String) {
+    override suspend fun parseCommand(source: Player, line: String) {
         val commandLine = CommandParsers.cleanLine(line).joinToString(" ")
 
         if (commandLine == "goodbye" || commandLine == "exit") {

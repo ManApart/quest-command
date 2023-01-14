@@ -30,14 +30,14 @@ class CookCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.contains("on") -> source.location.getLocation().findThingsByTag("Range").filter { source.thing.perceives(it) }.map { it.name }
             else -> source.location.getLocation().getItemsIncludingPlayerInventory(source.thing).filter { source.thing.perceives(it) }.map { it.name }
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(","), ArgDelimiter(listOf("with", "on")))
         val arguments = Args(args, delimiters)
         if (!isValidInput(arguments)) {

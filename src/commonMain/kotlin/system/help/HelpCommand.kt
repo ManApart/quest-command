@@ -32,7 +32,7 @@ class HelpCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("All", "Commands") + getCommandGroups() + getCommandGroups().flatMap { group -> getCommands(group).map { it.name } }
             args.last() == "Commands"  -> listOf("Extended")
@@ -40,7 +40,7 @@ class HelpCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val argsArray = args.toTypedArray()
         when {
             args.isEmpty() && keyword == "help" -> clarifyHelp(source)

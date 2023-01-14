@@ -8,16 +8,19 @@ import core.history.GameLogger
 import core.history.displayToMe
 import core.utility.currentTime
 import core.utility.removeFirstItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class CommandParser(private val commandSource: Player) {
     private var responseRequest: ResponseRequest? = null
     var commandInterceptor: CommandInterceptor? = null
 
-    fun parseInitialCommand() {
+    suspend fun parseInitialCommand() {
         parseCommand("help general")
     }
 
-    fun parseCommand(line: String) {
+    suspend fun parseCommand(line: String) {
         val startTime = currentTime()
 
         if (interceptorShouldParse(line)) {
@@ -36,7 +39,7 @@ class CommandParser(private val commandSource: Player) {
         return commandInterceptor != null && commandInterceptor?.ignoredCommands()?.none { line.startsWith(it, true) } ?: false
     }
 
-    private fun splitAndParseCommand(line: String) {
+    private suspend fun splitAndParseCommand(line: String) {
         val commands = line.split("&&")
         for (command in commands) {
             GameLogger.addInput(command)
@@ -52,7 +55,7 @@ class CommandParser(private val commandSource: Player) {
         }
     }
 
-    private fun parseSingleCommand(line: String) {
+    private suspend fun parseSingleCommand(line: String) {
         val args: List<String> = cleanLine(line)
         if (args.isEmpty()) {
             CommandParsers.unknownCommand.execute(commandSource, listOf(line))
@@ -75,7 +78,7 @@ class CommandParser(private val commandSource: Player) {
         }
     }
 
-    private fun executeCommand(command: Command, args: List<String>) {
+    private suspend fun executeCommand(command: Command, args: List<String>) {
         val trimmedArgs = args.removeFirstItem()
         command.execute(commandSource, args[0], trimmedArgs)
     }

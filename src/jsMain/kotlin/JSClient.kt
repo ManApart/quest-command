@@ -7,6 +7,9 @@ import core.history.InputOutput
 import core.utility.minOverlap
 import kotlinx.browser.document
 import kotlinx.browser.window
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
@@ -31,29 +34,34 @@ fun Document.startClient() {
     prompt = getElementById("prompt")!! as HTMLInputElement
     suggestionsDiv = getElementById("suggestions")!!
 
-    GameManager.newOrLoadGame()
-    EventManager.executeEvents()
-    CommandParsers.parseInitialCommand(GameState.player)
-    updateOutput()
-    window.onkeyup = { keyboardEvent ->
+    CoroutineScope(GlobalScope.coroutineContext).launch {
+        GameManager.newOrLoadGame()
+        EventManager.executeEvents()
+        CommandParsers.parseInitialCommand(GameState.player)
+        updateOutput()
+        window.onkeyup = { keyboardEvent ->
+            CoroutineScope(GlobalScope.coroutineContext).launch {
 //        println("Pressed " + keyboardEvent.key)
-        when (keyboardEvent.key) {
-            "Enter" -> {
-                val input = prompt.value
-                prompt.value = ""
-                suggestionsDiv.innerHTML = ""
-                if (input.lowercase() == "clear") {
-                    clearScreen()
-                } else {
-                    CommandParsers.parseCommand(GameState.player, input)
-                    updateOutput()
+                when (keyboardEvent.key) {
+                    "Enter" -> {
+                        val input = prompt.value
+                        prompt.value = ""
+                        suggestionsDiv.innerHTML = ""
+                        if (input.lowercase() == "clear") {
+                            clearScreen()
+                        } else {
+                            CommandParsers.parseCommand(GameState.player, input)
+                            updateOutput()
+                        }
+                    }
+
+                    "Tab" -> tabComplete()
+                    else -> tabHint()
                 }
             }
-            "Tab" -> tabComplete()
-            else -> tabHint()
         }
+        scrollToBottom()
     }
-    scrollToBottom()
 }
 
 fun addHistoryMessageAfterCallback(message: String) {
@@ -85,7 +93,7 @@ private fun clearScreen() {
     updateOutput()
 }
 
-private fun tabComplete() {
+private suspend fun tabComplete() {
     prompt.focus()
     val input = prompt.value.split(" ").lastOrNull()
     if (!input.isNullOrBlank()) {
@@ -100,7 +108,7 @@ private fun tabComplete() {
     }
 }
 
-private fun tabHint() {
+private suspend fun tabHint() {
     val input = prompt.value.lowercase()
     val lastInput = input.split(" ").lastOrNull()
     if (input.isNotBlank()) {

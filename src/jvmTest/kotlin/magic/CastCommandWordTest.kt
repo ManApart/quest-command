@@ -5,6 +5,7 @@ import core.GameManager
 import core.GameState.player
 import core.events.EventManager
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import magic.castSpell.CastCommand
 import magic.castSpell.WordCommand
 import magic.spellCommands.SpellCommandsCollection
@@ -24,9 +25,11 @@ class CastCommandWordTest {
         @JvmStatic
         fun setupAll() {
             createMockedGame()
-            val reflections = SpellCommandsMock(listOf(
+            val reflections = SpellCommandsMock(
+                listOf(
                     spellA, spellB, spellC
-            ))
+                )
+            )
             DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
         }
 
@@ -39,7 +42,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWords() {
-        WordCommand().execute(player,"word", listOf("list"))
+        runBlocking { WordCommand().execute(player, "word", listOf("list")) }
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -51,7 +54,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWordsWithoutArgs() {
-        WordCommand().execute(player,"word", listOf())
+        runBlocking { WordCommand().execute(player, "word", listOf()) }
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -63,7 +66,7 @@ class CastCommandWordTest {
 
     @Test
     fun listWordsInCategory() {
-        WordCommand().execute(player,"word", listOf("catA"))
+        runBlocking { WordCommand().execute(player, "word", listOf("catA")) }
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)
@@ -75,7 +78,7 @@ class CastCommandWordTest {
 
     @Test
     fun helpSpecificWord() {
-        WordCommand().execute(player,"word", listOf("spellB"))
+        runBlocking { WordCommand().execute(player, "word", listOf("spellB")) }
 
         val events = EventManager.getUnexecutedEvents()
         assertEquals(1, events.size)

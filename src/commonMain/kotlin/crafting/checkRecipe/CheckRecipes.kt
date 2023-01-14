@@ -8,11 +8,11 @@ import crafting.RecipeManager
 import system.debug.DebugType
 
 class CheckRecipes : EventListener<CheckRecipeEvent>() {
-    override fun shouldExecute(event: CheckRecipeEvent): Boolean {
+    override suspend fun shouldExecute(event: CheckRecipeEvent): Boolean {
         return event.source.thing.isPlayer()
     }
 
-    override fun execute(event: CheckRecipeEvent) {
+    override suspend fun execute(event: CheckRecipeEvent) {
         when {
             RecipeManager.getKnownRecipes(event.source).isEmpty() && !GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL) -> event.source.displayToMe("You don't know any recipes yet.")
             event.recipe == null -> printRecipes(event.source)

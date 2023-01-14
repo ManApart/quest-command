@@ -30,7 +30,7 @@ class MoveCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("to", "0,0,0", "10")
             args.last() == "to" -> source.getPerceivedThingNames()
@@ -40,7 +40,7 @@ class MoveCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         //Move this check to the listener
         if (source.thing.getEncumbrance() >= 1) {
             source.display { "${source.asSubject(it)} ${source.isAre(it)} too encumbered to move." }

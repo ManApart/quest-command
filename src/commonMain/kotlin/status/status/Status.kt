@@ -14,7 +14,7 @@ import status.stat.STAMINA
 
 class Status : EventListener<StatusEvent>() {
 
-    override fun execute(event: StatusEvent) {
+    override suspend fun execute(event: StatusEvent) {
         printImportantStats(event)
         printOtherStats(event)
         printOtherConditions(event)

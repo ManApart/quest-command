@@ -31,7 +31,7 @@ class TakeItemCommand : core.commands.Command() {
         return listOf("Inventory")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         val things = source.location.getLocation().getThings(source.thing)
         return when {
             args.isEmpty() -> listOf("all") + things.map { it.name } + things.flatMap { it.inventory.getAllItems() }.map { it.name }
@@ -41,7 +41,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("from"))
         when {
             args.isEmpty() -> pickupWhat(source, source.thing.currentLocation().getItems().filterUniqueByName())

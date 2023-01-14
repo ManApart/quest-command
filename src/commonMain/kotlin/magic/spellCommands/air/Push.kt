@@ -35,7 +35,7 @@ class Push : SpellCommand() {
         return listOf("Air")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("1", "5", "10")
             args.size == 1 && args.last().toIntOrNull() != null -> listOf("on", "towards")
@@ -45,7 +45,7 @@ class Push : SpellCommand() {
         }
     }
 
-    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override suspend fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val power = args.getNumber()
         val argsWithTowards = Args(args.args, delimiters = listOf("towards"))
         val direction = parseDirection(argsWithTowards.getGroup("towards"))

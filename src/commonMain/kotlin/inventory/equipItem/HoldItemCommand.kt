@@ -32,7 +32,7 @@ class HoldItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> source.thing.currentLocation().getThingsIncludingInventories().filter { source.thing.perceives(it) }.map { it.name }
             args.size == 1 -> listOf("in")
@@ -42,7 +42,7 @@ class HoldItemCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("in")))
         val arguments = Args(args, delimiters, flags = listOf("f"))
 

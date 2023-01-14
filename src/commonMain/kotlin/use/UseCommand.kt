@@ -28,7 +28,7 @@ class UseCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, source.thing).map { it.name }
             args.size == 1 -> listOf("on")
@@ -37,7 +37,7 @@ class UseCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "with", "on")))
         val arguments = Args(args, delimiters)
         val used = source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing, arguments.getBaseString()).firstOrNull()

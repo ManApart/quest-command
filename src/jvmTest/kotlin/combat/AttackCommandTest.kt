@@ -6,6 +6,7 @@ import core.GameManager
 import core.events.EventManager
 import core.thing.thing
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -23,12 +24,12 @@ class AttackCommandTest {
     @Test
     fun attackCreatureWithoutDirection() {
         val player = GameManager.newPlayer()
-        val rat = thing("Rat"){
+        val rat = thing("Rat") {
             body("human")
         }.build()
         player.thing.currentLocation().addThing(rat)
 
-        command.execute(player, "sl", "rat".split(" "))
+        runBlocking { command.execute(player, "sl", "rat".split(" ")) }
         val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
         assertEquals(rat, event.thing.thing)
     }

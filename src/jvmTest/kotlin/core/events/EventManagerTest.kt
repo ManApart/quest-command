@@ -2,6 +2,7 @@ package core.events
 
 import core.DependencyInjector
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import kotlin.test.AfterTest
@@ -14,9 +15,11 @@ class EventManagerTest {
     private val first = TestListener(this, 0, "first")
     private val second = TestListener(this, 1, "second")
     private val child = TestChildListener(this, 2, "child")
-    private val eventListenerMap = EventListenerMapMock(mapOf(
-        "TestEvent" to listOf(first, second, child)
-    ))
+    private val eventListenerMap = EventListenerMapMock(
+        mapOf(
+            "TestEvent" to listOf(first, second, child)
+        )
+    )
 
     class TestEvent : Event
     open class TestListener(private val parent: EventManagerTest, private val priorityLevel: Int, private val id: String) : EventListener<TestEvent>() {
@@ -24,7 +27,7 @@ class EventManagerTest {
             return priorityLevel
         }
 
-        override fun execute(event: TestEvent) {
+        override suspend fun execute(event: TestEvent) {
             parent.resultList.add(id)
         }
 
@@ -33,25 +36,27 @@ class EventManagerTest {
     class TestChildListener(parent: EventManagerTest, priorityLevel: Int, id: String) : TestListener(parent, priorityLevel, id)
 
     @BeforeTest
-    fun setup(){
+    fun setup() {
         DependencyInjector.setImplementation(EventListenerMapCollection::class, eventListenerMap)
         EventManager.reset()
     }
 
     @AfterTest
-    fun teardown(){
+    fun teardown() {
         EventManager.clear()
         resultList.clear()
     }
 
     @Test
-    fun higherPriorityRunsSooner(){
-        EventManager.postEvent(TestEvent())
-        EventManager.executeEvents()
+    fun higherPriorityRunsSooner() {
+        runBlocking {
+            EventManager.postEvent(TestEvent())
+            EventManager.executeEvents()
 
-        assertEquals("first", resultList[0])
-        assertEquals("second", resultList[1])
-        assertEquals("child", resultList[2])
+            assertEquals("first", resultList[0])
+            assertEquals("second", resultList[1])
+            assertEquals("child", resultList[2])
+        }
     }
 
 }

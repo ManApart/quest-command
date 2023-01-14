@@ -8,11 +8,11 @@ import core.utility.isAre
 
 class Interact : EventListener<InteractEvent>() {
 
-    override fun shouldExecute(event: InteractEvent): Boolean {
+    override suspend fun shouldExecute(event: InteractEvent): Boolean {
         return event.thing.canConsume(event)
     }
 
-    override fun execute(event: InteractEvent) {
+    override suspend fun execute(event: InteractEvent) {
         //TODO - should check if event.source can interact
 
         when {

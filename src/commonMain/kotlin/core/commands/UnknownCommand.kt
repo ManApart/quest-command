@@ -25,15 +25,15 @@ class UnknownCommand : Command() {
         return listOf("")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return listOf()
     }
 
-    fun execute(source: Player, args: List<String>) {
+    suspend fun execute(source: Player, args: List<String>) {
         execute(source.thing, "", args)
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val line = args.joinToString(" ")
         if (line.isNotBlank()) {
             SessionHistory.addUnknownCommand(line)

@@ -9,6 +9,7 @@ import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
@@ -35,7 +36,7 @@ class TransferItemTakeTest {
 
         NOWHERE_NODE.getLocation().clear()
     }
-    
+
     @AfterTest
     fun tearDown() {
         NOWHERE_NODE.getLocation().clear()
@@ -46,10 +47,10 @@ class TransferItemTakeTest {
         val creature = getCreatureWithCapacity()
 
         val chest = Thing("Chest", properties = Properties(tags = Tags("Container", "Open")))
-        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
-        TransferItem().execute(TransferItemEvent(creature, item, chest, creature))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, chest, creature)) }
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -60,10 +61,10 @@ class TransferItemTakeTest {
         val creature = getCreatureWithCapacity()
 
         val chest = Thing("Chest", properties = Properties(tags = Tags("Open")))
-        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -74,10 +75,10 @@ class TransferItemTakeTest {
         val creature = getCreatureWithCapacity()
 
         val chest = Thing("Chest", properties = Properties(tags = Tags("Container")))
-        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
         chest.inventory.add(item)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))

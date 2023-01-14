@@ -16,11 +16,11 @@ import traveling.location.location.LocationManager
 import traveling.location.location.LocationPoint
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
-    override fun shouldExecute(event: StatMinnedEvent): Boolean {
+    override suspend fun shouldExecute(event: StatMinnedEvent): Boolean {
         return event.thing.isPlayer()
     }
 
-    override fun execute(event: StatMinnedEvent) {
+    override suspend fun execute(event: StatMinnedEvent) {
         when (event.stat.lowercase()) {
             HEALTH.lowercase() -> GameState.getPlayer(event.thing)?.let { killPlayer(it) }
             STAMINA.lowercase() -> event.thing.displayToMe("You are completely exhausted.")

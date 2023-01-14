@@ -9,7 +9,7 @@ private const val turnLimit = 1000
 
 class AITurnDirector : EventListener<AIUpdateTick>() {
 
-    override fun execute(event: AIUpdateTick) {
+    override suspend fun execute(event: AIUpdateTick) {
         val creatures = GameState.players.values.flatMap { it.thing.location.getLocation().getCreatures(it.thing) }.toSet().toList()
 
         //If only one creature, instantly fill their action points to avoid all the looping

@@ -35,7 +35,7 @@ class ClimbCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() && source.thing.climbThing == null -> source.getPerceivedThingNames() + source.getPerceivedPartNames()
             args.isEmpty() -> Direction.values().map { it.name } + listOf("to")
@@ -44,7 +44,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
         val arguments = Args(args, delimiters)
         when {
@@ -59,7 +59,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun processNewClimb(player: Player, keyword: String, arguments: Args) {
+    private suspend fun processNewClimb(player: Player, keyword: String, arguments: Args) {
         val source = player.thing
         val thingName = if (arguments.getString("to") != "") {
             arguments.getString("to")
@@ -140,7 +140,7 @@ class ClimbCommand : Command() {
             .toList()
     }
 
-    private fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
+    private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
         val climbOptions = options.asSequence()
             .filter { getEntryPoints(player.thing, it).isNotEmpty() }
             .map { ClimbOption(it, getDirection(player.thing, it, getEntryPoints(player.thing, it).first())) }

@@ -9,6 +9,7 @@ import core.thing.Thing
 import core.thing.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import traveling.location.network.NOWHERE_NODE
 import use.StartUseEvent
 import kotlin.test.*
@@ -29,7 +30,7 @@ class EatCommandTest {
         timer.printElapsed("new item")
         player.inventory.add(item)
         timer.printElapsed("add item")
-        EatCommand().execute(player, "eat", listOf("Pear"))
+        runBlocking {EatCommand().execute(player, "eat", listOf("Pear"))}
         timer.printElapsed("execute event")
         val events = EventManager.getUnexecutedEvents()
         timer.printElapsed("get events")
@@ -47,7 +48,7 @@ class EatCommandTest {
         val pie = Thing("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
         player.inventory.add(fruit)
         player.inventory.add(pie)
-        EatCommand().execute(player, "eat", listOf("Pear"))
+        runBlocking {EatCommand().execute(player, "eat", listOf("Pear"))}
         val events = EventManager.getUnexecutedEvents()
 
         assertEquals(0, events.size)

@@ -9,7 +9,7 @@ import system.persistance.getGameNames
 import system.persistance.save
 
 class CreateNewGame : EventListener<CreateNewGameEvent>() {
-    override fun execute(event: CreateNewGameEvent) {
+    override suspend fun execute(event: CreateNewGameEvent) {
         val gameNames = getGameNames()
         val gameName = clean(event.saveName)
         if (gameNames.map { it.lowercase() }.contains(gameName.lowercase())) {

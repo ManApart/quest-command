@@ -8,11 +8,11 @@ import core.utility.then
 
 class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
 
-    override fun shouldExecute(event: PropertyStatChangeEvent): Boolean {
+    override suspend fun shouldExecute(event: PropertyStatChangeEvent): Boolean {
         return event.amount != 0
     }
 
-    override fun execute(event: PropertyStatChangeEvent) {
+    override suspend fun execute(event: PropertyStatChangeEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
         val values = event.thing.properties.values
         val beforeVal = values.getInt(event.statName)

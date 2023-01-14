@@ -30,7 +30,7 @@ class ExamineCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         when {
             keyword == "look" && args.isEmpty() -> clarifyThing(source)
             args.isEmpty() -> EventManager.postEvent(ExamineEvent(source))
@@ -39,7 +39,7 @@ class ExamineCommand : Command() {
         }
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("all", "body", "hand") + source.getPerceivedThingNames()
             args.last() == "body" || args.last() == "hand" -> listOf("of")

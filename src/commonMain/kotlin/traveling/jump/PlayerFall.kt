@@ -15,11 +15,11 @@ import traveling.location.location.LocationPoint
 import kotlin.math.max
 
 class PlayerFall : EventListener<FallEvent>() {
-    override fun shouldExecute(event: FallEvent): Boolean {
+    override suspend fun shouldExecute(event: FallEvent): Boolean {
         return event.creature.isPlayer()
     }
 
-    override fun execute(event: FallEvent) {
+    override suspend fun execute(event: FallEvent) {
         if (event.reason != null) event.creature.displayToMe(event.reason)
         event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("fall", it)} ${event.fallHeight}ft."}
         takeDamage(event)

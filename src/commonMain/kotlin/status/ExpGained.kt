@@ -4,11 +4,11 @@ import core.events.EventListener
 import core.history.displayToMe
 
 class ExpGained : EventListener<ExpGainedEvent>() {
-    override fun shouldExecute(event: ExpGainedEvent): Boolean {
+    override suspend fun shouldExecute(event: ExpGainedEvent): Boolean {
         return event.creature.isPlayer()
     }
 
-    override fun execute(event: ExpGainedEvent) {
+    override suspend fun execute(event: ExpGainedEvent) {
         val stat = event.creature.soul.getStatOrNull(event.stat)
         if (stat != null && event.amount > 0) {
             if (stat.expExponential > 1) {

@@ -19,7 +19,7 @@ data class Sound(val description: String, val level: Int, val distance: Vector, 
 
 class Listen : EventListener<ListenEvent>() {
 
-    override fun execute(event: ListenEvent) {
+    override suspend fun execute(event: ListenEvent) {
         val location = event.source.location.getLocation()
         val sounds =
             location.getThingSounds(event.source) + listOfNotNull(location.getSound(), location.weather.getSound())

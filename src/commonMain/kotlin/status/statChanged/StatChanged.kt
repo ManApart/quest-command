@@ -10,11 +10,11 @@ import kotlin.math.abs
 
 class StatChanged : EventListener<StatChangeEvent>() {
 
-    override fun shouldExecute(event: StatChangeEvent): Boolean {
+    override suspend fun shouldExecute(event: StatChangeEvent): Boolean {
         return event.amount != 0
     }
 
-    override fun execute(event: StatChangeEvent) {
+    override suspend fun execute(event: StatChangeEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
         val soul = event.thing.soul
 

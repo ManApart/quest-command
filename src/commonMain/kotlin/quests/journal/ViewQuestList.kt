@@ -10,7 +10,7 @@ import quests.QuestManager
 
 class ViewQuestList : EventListener<ViewQuestListEvent>() {
 
-    override fun execute(event: ViewQuestListEvent) {
+    override suspend fun execute(event: ViewQuestListEvent) {
         val quests = getQuests(event)
 
         val message = quests.joinToString("\n") {

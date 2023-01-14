@@ -9,7 +9,7 @@ actual class ConnectionCommandInterceptor : CommandInterceptor {
         return ignoredConnectionCommands
     }
 
-    actual override fun parseCommand(source: Player, line: String) {
+    actual override suspend fun parseCommand(source: Player, line: String) {
         WebClient.sendCommand(line).forEach {
             source.displayToMe(it)
         }

@@ -8,11 +8,11 @@ import kotlin.math.abs
 
 class StatBoosted : EventListener<StatBoostEvent>() {
 
-    override fun shouldExecute(event: StatBoostEvent): Boolean {
+    override suspend fun shouldExecute(event: StatBoostEvent): Boolean {
         return event.amount != 0
     }
 
-    override fun execute(event: StatBoostEvent) {
+    override suspend fun execute(event: StatBoostEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
 
         val soul = event.thing.soul

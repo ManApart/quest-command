@@ -29,14 +29,14 @@ class UnEquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.body.getEquippedItems().map { it.name } + source.body.getParts().map { it.name }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters)
 
         if (arguments.isEmpty()) {

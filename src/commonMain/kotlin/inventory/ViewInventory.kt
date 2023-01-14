@@ -10,7 +10,7 @@ import explore.listen.addSoundEffect
 
 class ViewInventory : EventListener<ViewInventoryEvent>() {
 
-    override fun execute(event: ViewInventoryEvent) {
+    override suspend fun execute(event: ViewInventoryEvent) {
         when {
             !event.target.properties.tags.has("Container") -> {
                 event.source.displayToMe("Cannot view inventory of ${event.target.name}")

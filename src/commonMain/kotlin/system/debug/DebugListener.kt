@@ -7,13 +7,13 @@ import status.stat.StatKind
 import traveling.location.weather.WeatherManager
 
 class DebugListListener : EventListener<DebugListEvent>() {
-    override fun execute(event: DebugListEvent) {
+    override suspend fun execute(event: DebugListEvent) {
         event.source.displayToMe("Gamestate properties are: " + GameState.properties.toString())
     }
 }
 
 class DebugToggleListener : EventListener<DebugToggleEvent>() {
-    override fun execute(event: DebugToggleEvent) {
+    override suspend fun execute(event: DebugToggleEvent) {
         if (event.debugType == DebugType.DEBUG_GROUP) {
             GameState.putDebug(DebugType.LEVEL_REQ, event.toggledOn)
             GameState.putDebug(DebugType.STAT_CHANGES, event.toggledOn)
@@ -27,7 +27,7 @@ class DebugToggleListener : EventListener<DebugToggleEvent>() {
 }
 
 class DebugStatListener : EventListener<DebugStatEvent>() {
-    override fun execute(event: DebugStatEvent) {
+    override suspend fun execute(event: DebugStatEvent) {
         if (event.statKind == StatKind.LEVELED) {
             event.thing.soul.setStat(event.statName, event.level)
             val newStat = event.thing.soul.getStatOrNull(event.statName)
@@ -40,7 +40,7 @@ class DebugStatListener : EventListener<DebugStatEvent>() {
 }
 
 class DebugTagListener : EventListener<DebugTagEvent>() {
-    override fun execute(event: DebugTagEvent) {
+    override suspend fun execute(event: DebugTagEvent) {
         if (event.isAddingTag) {
             event.thing.properties.tags.add(event.tag)
         } else {
@@ -51,7 +51,7 @@ class DebugTagListener : EventListener<DebugTagEvent>() {
 }
 
 class DebugWeatherListener : EventListener<DebugWeatherEvent>() {
-    override fun execute(event: DebugWeatherEvent) {
+    override suspend fun execute(event: DebugWeatherEvent) {
         if (WeatherManager.weatherExists(event.weather)) {
             val weather = WeatherManager.getWeather(event.weather)
             event.source.currentLocation().updateWeather(weather)

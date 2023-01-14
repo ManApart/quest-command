@@ -4,11 +4,11 @@ import core.events.EventListener
 import core.history.display
 
 class RemoveCondition : EventListener<RemoveConditionEvent>() {
-    override fun shouldExecute(event: RemoveConditionEvent): Boolean {
+    override suspend fun shouldExecute(event: RemoveConditionEvent): Boolean {
         return true
     }
 
-    override fun execute(event: RemoveConditionEvent) {
+    override suspend fun execute(event: RemoveConditionEvent) {
         if (event.thing.soul.hasCondition(event.condition)) {
             event.thing.soul.removeCondition(event.condition)
             if (!event.condition.silent) {

@@ -24,11 +24,11 @@ class CreateNewGameCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return listOf()
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val saveName = args.joinToString(" ")
         if (saveName.isBlank()) {
             source.displayToMe("You must give a name for the new game.")

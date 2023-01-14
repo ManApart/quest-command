@@ -4,7 +4,7 @@ import core.events.EventListener
 import core.history.display
 
 class ItemEquipped : EventListener<ItemEquippedEvent>() {
-    override fun execute(event: ItemEquippedEvent) {
+    override suspend fun execute(event: ItemEquippedEvent) {
        event.creature.display("${event.creature.name} equipped ${event.item.name} to ${event.slot.description}.")
     }
 }

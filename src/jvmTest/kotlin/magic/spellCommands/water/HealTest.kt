@@ -8,6 +8,7 @@ import core.commands.Args
 import core.events.EventManager
 import core.thing.Thing
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import magic.SpellCommandMock
 import magic.castSpell.StartCastSpellEvent
 import magic.spellCommands.SpellCommandsCollection
@@ -30,10 +31,14 @@ class HealTest {
         init {
             createMockedGame()
 
-            DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock(listOf(
-                    EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
-                    EffectBase("Wet", "", statThing = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
-            )))
+            DependencyInjector.setImplementation(
+                EffectsCollection::class, EffectsMock(
+                    listOf(
+                        EffectBase("Heal", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.WATER),
+                        EffectBase("Wet", "", statThing = "Agility", statEffect = StatEffect.DEPLETE, damageType = DamageType.WATER)
+                    )
+                )
+            )
             EffectManager.reset()
         }
 
@@ -88,7 +93,7 @@ class HealTest {
 
     private fun castHeal(input: String): Spell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
-        Heal().execute(thingA, args, listOf(ThingAim(thingA.thing)), true)
+        runBlocking { Heal().execute(thingA, args, listOf(ThingAim(thingA.thing)), true) }
         return (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell
     }
 

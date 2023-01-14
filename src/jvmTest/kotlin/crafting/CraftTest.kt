@@ -13,6 +13,7 @@ import createItem
 import createItemBuilder
 import createMockedGame
 import createPouch
+import kotlinx.coroutines.runBlocking
 
 import kotlin.test.BeforeTest
 
@@ -48,9 +49,10 @@ class CraftTest {
         DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapGenerated())
         EventManager.reset()
 
-        Craft().execute(craftEvent)
-        EventManager.executeEvents()
-
+        runBlocking {
+            Craft().execute(craftEvent)
+            EventManager.executeEvents()
+        }
         assertFalse(baker.inventory.exists(ingredient))
         assertNotNull(baker.inventory.getItem(resultItemName1))
         assertNotNull(baker.inventory.getItem(resultItemName2))
@@ -71,10 +73,11 @@ class CraftTest {
         DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapGenerated())
         EventManager.reset()
 
-        Craft().execute(craftEvent)
+        runBlocking {
+            Craft().execute(craftEvent)
 
-        EventManager.executeEvents()
-
+            EventManager.executeEvents()
+        }
         val result = baker.inventory.getItem(ingredient.name)
         assertNotNull(result)
         assertTrue(result.properties.tags.has("Cooked"))

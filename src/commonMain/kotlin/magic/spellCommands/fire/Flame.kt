@@ -36,7 +36,7 @@ class Flame : SpellCommand() {
         return listOf("Fire")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
             args.isEmpty() -> listOf("1", "5", "10")
             args.size == 1 && args.last().toIntOrNull() != null -> listOf("on")
@@ -45,7 +45,7 @@ class Flame : SpellCommand() {
         }
     }
 
-    override fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
+    override suspend fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean) {
         val initialPower = args.getBaseNumber()
 
         val clarifier = source.clarify {

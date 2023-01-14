@@ -26,14 +26,14 @@ class ReadMapCommand : Command() {
         return listOf("Explore")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> listOf("1", "5", "10") + source.location.getNeighbors().map { it.name }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args)
         val depth = arguments.getNumber() ?: 1
         val otherArgs = args.minus(depth.toString())

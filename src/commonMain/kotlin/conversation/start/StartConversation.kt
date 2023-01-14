@@ -10,7 +10,7 @@ import core.history.displayToMe
 
 class StartConversation : EventListener<StartConversationEvent>() {
 
-    override fun execute(event: StartConversationEvent) {
+    override suspend fun execute(event: StartConversationEvent) {
         val interceptor = ConversationCommandInterceptor(Conversation(event.speaker.thing, event.listener))
 
         CommandParsers.getParser(event.speaker).commandInterceptor = interceptor

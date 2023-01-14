@@ -5,7 +5,7 @@ import core.commands.CommandParsers
 import core.events.EventListener
 
 actual class ConnectInfo : EventListener<ConnectInfoEvent>() {
-    actual override fun execute(event: ConnectInfoEvent) {
+    actual override suspend fun execute(event: ConnectInfoEvent) {
         WebClient.getServerInfo { info ->
             when {
                 CommandParsers.getParser(event.source).commandInterceptor !is ConnectionCommandInterceptor -> addHistoryMessageAfterCallback("You're not connected to a server. You're targeting $info.")

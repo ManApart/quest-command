@@ -38,14 +38,14 @@ class WordCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> listOf("list") + spellCommands.flatMap { it.getCategory() + listOf(it.name) }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         if (args.size <= 1) {
             if (args.isEmpty() || args.first() == "list") {
                 EventManager.postEvent(ViewWordHelpEvent(source.thing))

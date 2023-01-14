@@ -12,6 +12,7 @@ import core.thing.thing
 import createClosedChest
 import createItem
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import system.debug.DebugType
 import traveling.location.location.locationRecipe
@@ -31,7 +32,7 @@ class ViewInventoryTest {
         val creature = createClosedChest()
         creature.inventory.add(createItem())
         val event = ViewInventoryEvent(GameState.player, creature)
-        ViewInventory().execute(event)
+        runBlocking { ViewInventory().execute(event) }
         assertTrue(GameLogger.getMainHistory().contains("Closed Chest has:\n\tApple"))
     }
 
@@ -39,7 +40,7 @@ class ViewInventoryTest {
     fun listNoItemsInventory() {
         val creature = createClosedChest()
         val event = ViewInventoryEvent(GameState.player, creature)
-        ViewInventory().execute(event)
+        runBlocking { ViewInventory().execute(event) }
         assertTrue(GameLogger.getMainHistory().contains("Closed Chest has no items."))
     }
 
@@ -53,13 +54,13 @@ class ViewInventoryTest {
 
         val creature = thing("Soldier") {
             body("body")
-            props { tag("Container")}
+            props { tag("Container") }
         }.build()
         val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
         creature.inventory.add(item)
         creature.body.equip(item)
         val event = ViewInventoryEvent(GameState.player, creature)
-        ViewInventory().execute(event)
+        runBlocking { ViewInventory().execute(event) }
         assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Chestplate"))
     }
 
@@ -77,13 +78,13 @@ class ViewInventoryTest {
 
         val creature = thing("Soldier") {
             body("body")
-            props { tag("Container")}
+            props { tag("Container") }
         }.build()
         creature.inventory.add(pouch)
         creature.body.equip(pouch)
 
         val event = ViewInventoryEvent(GameState.player, creature)
-        ViewInventory().execute(event)
+        runBlocking { ViewInventory().execute(event) }
         assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Pouch\n\t\tApple"))
     }
 
@@ -92,7 +93,7 @@ class ViewInventoryTest {
         val creature = Thing("Chest")
         creature.inventory.add(Thing("Apple"))
         val event = ViewInventoryEvent(GameState.player, creature)
-        ViewInventory().execute(event)
+        runBlocking { ViewInventory().execute(event) }
         assertTrue(GameLogger.getMainHistory().contains("Cannot view inventory of Chest"))
     }
 

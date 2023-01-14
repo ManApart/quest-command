@@ -8,7 +8,7 @@ import system.persistance.clean
 import system.persistance.getCharacterSaves
 
 class ListCharacters : EventListener<ListCharactersEvent>() {
-    override fun execute(event: ListCharactersEvent) {
+    override suspend fun execute(event: ListCharactersEvent) {
         val playerNames = GameState.players.values.map { it.name }
         if (playerNames.isEmpty()) {
             event.source.displayToMe("No characters to play as.")

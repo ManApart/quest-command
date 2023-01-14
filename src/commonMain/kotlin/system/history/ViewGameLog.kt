@@ -8,7 +8,7 @@ import core.history.displayToMe
 class ViewGameLog : EventListener<ViewGameLogEvent>() {
 
 
-    override fun execute(event: ViewGameLogEvent) {
+    override suspend fun execute(event: ViewGameLogEvent) {
         val historyList = GameLogger.getHistory(event.source).history.takeLast(event.numberOfLinesToShow)
         val message = createMessage(historyList, event.viewResponses)
         event.source.displayToMe(message)

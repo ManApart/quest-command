@@ -8,6 +8,7 @@ import core.body.*
 import core.thing.Thing
 import inventory.dropItem.PlaceItem
 import inventory.dropItem.PlaceItemEvent
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
@@ -45,7 +46,7 @@ class PlaceItemTest {
         creature.inventory.add(item)
         val scope = creature.location.getLocation()
 
-        PlaceItem().execute(PlaceItemEvent(creature, item))
+        runBlocking { PlaceItem().execute(PlaceItemEvent(creature, item)) }
         assertTrue(scope.getThings(item.name).isNotEmpty())
         assertNull(creature.inventory.getItem(item.name))
     }

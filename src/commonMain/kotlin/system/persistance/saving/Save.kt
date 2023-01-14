@@ -6,7 +6,7 @@ import core.history.displayGlobal
 import system.persistance.save
 
 class Save : EventListener<SaveEvent>() {
-    override fun execute(event: SaveEvent) {
+    override suspend fun execute(event: SaveEvent) {
         save(GameState.gameName)
 
         if (!event.silent) {

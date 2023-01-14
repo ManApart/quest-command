@@ -6,7 +6,7 @@ import explore.look.*
 
 class Examine : EventListener<ExamineEvent>() {
 
-    override fun execute(event: ExamineEvent) {
+    override suspend fun execute(event: ExamineEvent) {
         when {
             event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(event.source, true)
             event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBodyDetailed(event.source, event.thing) }

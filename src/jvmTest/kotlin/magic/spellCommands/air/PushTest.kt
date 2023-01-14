@@ -9,6 +9,7 @@ import core.events.EventManager
 import core.properties.WEIGHT
 import core.thing.Thing
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import magic.castSpell.StartCastSpellEvent
 import magic.spells.MoveThingSpell
 import kotlin.test.Test
@@ -34,9 +35,13 @@ class PushTest {
         init {
             createMockedGame()
 
-            DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock(listOf(
-                    EffectBase("Air Blasted", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.AIR)
-            )))
+            DependencyInjector.setImplementation(
+                EffectsCollection::class, EffectsMock(
+                    listOf(
+                        EffectBase("Air Blasted", "", "Health", statEffect = StatEffect.RECOVER, damageType = DamageType.AIR)
+                    )
+                )
+            )
             EffectManager.reset()
         }
 
@@ -115,7 +120,7 @@ class PushTest {
 
     private fun castSpell(input: String): MoveThingSpell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
-        Push().execute(caster, args, listOf(ThingAim(victim)), false)
+        runBlocking { Push().execute(caster, args, listOf(ThingAim(victim)), false) }
         val spell = (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell as MoveThingSpell?
         assertNotNull(spell)
         return spell

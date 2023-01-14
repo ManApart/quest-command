@@ -3,6 +3,7 @@ package system.connection
 import core.GameState.player
 import core.events.EventManager
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -25,7 +26,7 @@ class ConnectionCommandTest {
 
     @Test
     fun fullCommand() {
-        command.execute(player, "connect", "Bob 127.0.0.0 8090".split(" "))
+        runBlocking { command.execute(player, "connect", "Bob 127.0.0.0 8090".split(" ")) }
 
         val expected = ConnectEvent(player, "Bob", "http://127.0.0.0", "8090")
 
@@ -36,7 +37,7 @@ class ConnectionCommandTest {
 
     @Test
     fun noPort() {
-        command.execute(player, "connect", "Charles google.com".split(" "))
+        runBlocking { command.execute(player, "connect", "Charles google.com".split(" ")) }
 
         val expected = ConnectEvent(player, "Charles", "http://google.com")
 
@@ -47,7 +48,7 @@ class ConnectionCommandTest {
 
     @Test
     fun noName() {
-        command.execute(player, "connect", "google.com 8081".split(" "))
+        runBlocking { command.execute(player, "connect", "google.com 8081".split(" ")) }
 
         val expected = ConnectEvent(player, "Player", "http://google.com", "8081")
 
@@ -58,7 +59,7 @@ class ConnectionCommandTest {
 
     @Test
     fun defaults() {
-        command.execute(player, "connect", "Jim".split(" "))
+        runBlocking { command.execute(player, "connect", "Jim".split(" ")) }
 
         val expected = ConnectEvent(player, "Jim", "http://localhost", "8080")
 

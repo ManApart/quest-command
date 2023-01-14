@@ -12,11 +12,11 @@ import use.UseListener
 
 class UseOnFire : UseListener() {
 
-    override fun shouldExecute(event: UseEvent): Boolean {
+    override suspend fun shouldExecute(event: UseEvent): Boolean {
         return event.usedOn.soul.hasCondition("Burning")
     }
 
-    override fun executeUseEvent(event: UseEvent) {
+    override suspend fun executeUseEvent(event: UseEvent) {
         event.source.display{"${event.source.asSubject(it)} place ${event.used.name} in the fire burning the ${event.usedOn.name}."}
         val condition = Condition("Burning", Element.FIRE, 1, effects = listOf(EffectManager.getEffect("Burning", 1, 1)))
         EventManager.postEvent(AddConditionEvent(event.used, condition))

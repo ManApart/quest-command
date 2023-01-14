@@ -7,7 +7,7 @@ import core.utility.then
 import inventory.pickupItem.ItemPickedUpEvent
 
 class SpawnItem : EventListener<ItemSpawnedEvent>() {
-    override fun execute(event: ItemSpawnedEvent) {
+    override suspend fun execute(event: ItemSpawnedEvent) {
         if (event.thing == null) {
             val name = (event.item.properties.getCount() > 1).then("${event.item.properties.getCount()}x ${event.item.name}s", event.item.name)
             event.item.location = event.thingLocation

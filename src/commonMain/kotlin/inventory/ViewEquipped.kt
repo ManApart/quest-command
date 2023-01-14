@@ -9,7 +9,7 @@ import core.utility.ifYouWord
 
 class ViewEquipped : EventListener<ViewEquippedEvent>() {
 
-    override fun execute(event: ViewEquippedEvent) {
+    override suspend fun execute(event: ViewEquippedEvent) {
         with(event) {
             val body = target.body
             val items = body.getEquippedItems()

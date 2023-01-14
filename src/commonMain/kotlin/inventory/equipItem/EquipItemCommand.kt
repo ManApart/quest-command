@@ -28,7 +28,7 @@ class EquipItemCommand : Command() {
         return listOf("Inventory")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.inventory.getAllItems().map { it.name }
             args.size == 1 -> listOf("to")
@@ -37,7 +37,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "on")))
         val arguments = Args(args, delimiters, flags = listOf("f"))
 

@@ -28,11 +28,11 @@ class AliasCommand : Command() {
         return listOf("System")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
             return listOf("list", "create", "delete")
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         if (args.isEmpty()) {
             EventManager.postEvent(ListAliasesEvent(source))
         } else {

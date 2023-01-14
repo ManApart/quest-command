@@ -37,7 +37,7 @@ private fun getSaveFolder(): String {
     return if (GameState.properties.values.getBoolean(TEST_SAVE_FOLDER)) "./savesTest/" else "./saves/"
 }
 
-actual fun getGameNames(): List<String> {
+actual suspend fun getGameNames(): List<String> {
     return getFolders(getSaveFolder()).map { it.name }
 }
 

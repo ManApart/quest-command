@@ -9,7 +9,7 @@ import traveling.location.location.LocationManager
 import traveling.location.network.LocationNode
 
 class SetCompassGoal : EventListener<SetCompassEvent>() {
-    override fun execute(event: SetCompassEvent) {
+    override suspend fun execute(event: SetCompassEvent) {
         val sourceT = event.source.thing
         val destination = LocationManager.findLocationInAnyNetwork(sourceT, event.locationName)
         if (destination == null) {

@@ -6,6 +6,7 @@ import core.GameState
 import core.GameState.player
 import core.body.*
 import core.thing.Thing
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
 import kotlin.test.Test
 import kotlin.test.BeforeTest
@@ -48,7 +49,7 @@ class QuestListenerTest {
         //Only the apple event is executed
         val testEvent = InteractEvent(GameState.player.thing, Thing("Apple"))
         val listener = QuestListener()
-        listener.execute(testEvent)
+        runBlocking { listener.execute(testEvent) }
 
         val results = listener.getListeners()
         assertEquals(1, results.size)
@@ -68,7 +69,7 @@ class QuestListenerTest {
         val testEvent = InteractEvent(GameState.player.thing, Thing("Apple"))
         val listener = QuestListener()
 
-        listener.execute(testEvent)
+        runBlocking { listener.execute(testEvent) }
 
         val results = listener.getListeners()
         assertEquals(0, results.size)
@@ -85,7 +86,7 @@ class QuestListenerTest {
 
         val testEvent = InteractEvent(GameState.player.thing, Thing("Apple"))
         val listener = QuestListener()
-        listener.execute(testEvent)
+        runBlocking { listener.execute(testEvent) }
         val results = listener.getListeners()
         assertEquals(0, results.size)
     }

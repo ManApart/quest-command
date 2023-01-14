@@ -10,7 +10,7 @@ import use.UseListener
 
 class UseIngredientOnActivatorRecipe : UseListener() {
 
-    override fun shouldExecute(event: UseEvent): Boolean {
+    override suspend fun shouldExecute(event: UseEvent): Boolean {
         return if (event.used.properties.isItem() && event.usedOn.properties.isActivator()) {
             RecipeManager.findCraftableRecipes(event.source, listOf(event.used), event.usedOn).isNotEmpty()
         } else {
@@ -18,7 +18,7 @@ class UseIngredientOnActivatorRecipe : UseListener() {
         }
     }
 
-    override fun executeUseEvent(event: UseEvent) {
+    override suspend fun executeUseEvent(event: UseEvent) {
         val recipes = RecipeManager.findCraftableRecipes(event.source, listOf(event.used), event.usedOn)
 
         when {

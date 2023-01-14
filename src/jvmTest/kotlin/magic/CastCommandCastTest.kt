@@ -3,9 +3,11 @@ package magic
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
+import core.GameState.player
 import core.events.EventManager
 import core.thing.Thing
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import magic.castSpell.CastCommand
 import magic.castSpell.getThingedPartsOrAll
 import magic.spellCommands.SpellCommandsCollection
@@ -50,7 +52,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute(player,"cast", "testspellA".split(" "))
+        runBlocking { CastCommand().execute(player, "cast", "testspellA".split(" ")) }
 
         assertTrue(spellCommand.args.isEmpty())
         assertTrue(spellCommand.things.isEmpty())
@@ -62,7 +64,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute(player,"cast", "testspellA 1 2".split(" "))
+        runBlocking { CastCommand().execute(player, "cast", "testspellA 1 2".split(" ")) }
 
         assertEquals("1 2", spellCommand.args.fullString)
         assertTrue(spellCommand.things.isEmpty())
@@ -74,7 +76,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute(player,"cast", "testspellA on thingA".split(" "))
+        runBlocking { CastCommand().execute(player, "cast", "testspellA on thingA".split(" ")) }
 
         assertTrue(spellCommand.args.isEmpty())
         assertTrue(thingsContainByName(spellCommand.things, thingA))
@@ -86,7 +88,7 @@ class CastCommandCastTest {
         val reflections = SpellCommandsMock(listOf(spellCommand))
         DependencyInjector.setImplementation(SpellCommandsCollection::class, reflections)
 
-        CastCommand().execute(player,"cast", "testspellA 1 2 on thingA and thingB".split(" "))
+        runBlocking { CastCommand().execute(player, "cast", "testspellA 1 2 on thingA and thingB".split(" ")) }
 
         assertEquals("1 2", spellCommand.args.fullString)
         assertTrue(thingsContainByName(spellCommand.things, thingA))

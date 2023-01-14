@@ -15,10 +15,10 @@ import kotlin.math.abs
 import kotlin.math.max
 
 class PlayerJump : EventListener<JumpEvent>() {
-    override fun shouldExecute(event: JumpEvent): Boolean {
+    override suspend fun shouldExecute(event: JumpEvent): Boolean {
         return event.creature.isPlayer()
     }
-    override fun execute(event: JumpEvent) {
+    override suspend fun execute(event: JumpEvent) {
         event.creature.display{"${event.creature.asSubject(it)} jump from ${event.source}"}
         val damage = calculateJumpDamage(event)
 

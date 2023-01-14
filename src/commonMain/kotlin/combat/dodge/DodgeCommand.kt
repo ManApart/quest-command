@@ -27,14 +27,14 @@ class DodgeCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> Direction.values().map { it.name }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val direction = parseDirection(args).vector * 10
         EventManager.postEvent(StartMoveEvent(source, direction, 2f, 1.5f))
     }

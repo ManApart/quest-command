@@ -27,7 +27,7 @@ class BlockCommand : Command() {
         return listOf("Combat")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.body.getParts().map { it.name }
             args.last() == "with" -> listOf("right", "left") + source.body.getEquippedItems().map { it.name }
@@ -35,7 +35,7 @@ class BlockCommand : Command() {
         }
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
         val handHelper = HandHelper(source, arguments.getString("with"), "block")
         val shieldedPart = parseBodyParts(source, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand

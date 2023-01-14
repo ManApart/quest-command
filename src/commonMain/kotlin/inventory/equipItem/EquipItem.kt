@@ -8,7 +8,7 @@ import core.utility.isAre
 import explore.listen.addSoundEffect
 
 class EquipItem : EventListener<EquipItemEvent>() {
-    override fun execute(event: EquipItemEvent) {
+    override suspend fun execute(event: EquipItemEvent) {
         if (!event.item.isWithinRangeOf(event.creature)) {
             event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to equip ${event.item}."}
         } else {

@@ -18,6 +18,7 @@ import createPackMule
 import createPouch
 import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
 
@@ -61,7 +62,7 @@ class TransferItemPlaceTest {
 
         val chest = createChest(5)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -79,7 +80,7 @@ class TransferItemPlaceTest {
         val pouch = createPouch(15)
         packMule.inventory.add(pouch)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, packMule))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, packMule)) }
 
         assertNotNull(packMule.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -87,11 +88,11 @@ class TransferItemPlaceTest {
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val bodyMock = BodysMock(networks{
-            network("body"){
+        val bodyMock = BodysMock(networks {
+            network("body") {
                 locationNode("Hand")
             }
-            network("none"){
+            network("none") {
                 locationNode("part")
             }
         })
@@ -113,7 +114,7 @@ class TransferItemPlaceTest {
 
         val packMule = createPackMule(1)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, packMule))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, packMule)) }
 
         assertNotNull(packMule.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -127,7 +128,7 @@ class TransferItemPlaceTest {
 
         val chest = createChest(10)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -141,7 +142,7 @@ class TransferItemPlaceTest {
         creature.inventory.add(item)
 
         val chest = createChest(size = 5)
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertEquals(1, chest.inventory.getItem(item.name)!!.properties.getCount())
@@ -158,7 +159,7 @@ class TransferItemPlaceTest {
 
         val chest = createChest(5)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -172,7 +173,7 @@ class TransferItemPlaceTest {
 
         val chest = createClosedChest(5)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -186,7 +187,7 @@ class TransferItemPlaceTest {
 
         val chest = createChest(1)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -200,7 +201,7 @@ class TransferItemPlaceTest {
 
         val chest = createChest(size = 0)
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))
@@ -232,7 +233,7 @@ class TransferItemPlaceTest {
         val chest = createChest(5)
         chest.body.getRootPart().properties.values.put(CAN_HOLD, "Food,Apparel")
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(chest.inventory.getItem(item.name))
         assertNull(creature.inventory.getItem(item.name))
@@ -248,7 +249,7 @@ class TransferItemPlaceTest {
         val chest = createChest(5)
         chest.body.getRootPart().properties.values.put(CAN_HOLD, "Weapon,Apparel")
 
-        TransferItem().execute(TransferItemEvent(creature, item, creature, chest))
+        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
         assertNotNull(creature.inventory.getItem(item.name))
         assertNull(chest.inventory.getItem(item.name))

@@ -20,7 +20,7 @@ import use.UseEvent
 
 class Attack : EventListener<AttackEvent>() {
 
-    override fun execute(event: AttackEvent) {
+    override suspend fun execute(event: AttackEvent) {
         val source = event.source
         val thingDistance = source.position.getDistance(event.aim.thing.position)
         val weaponRange = getRange(source, event.sourcePart)

@@ -4,7 +4,7 @@ import core.*
 import core.properties.Properties
 import traveling.location.Network
 
-expect fun getGameNames(): List<String>
+expect suspend fun getGameNames(): List<String>
 expect fun getCharacterSaves(gameName: String): List<String>
 expect inline fun <reified T> loadFromPath(path: String): T?
 expect fun getFiles(path: String, ignoredFileNames: List<String> = listOf()): List<File>

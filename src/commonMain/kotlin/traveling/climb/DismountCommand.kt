@@ -28,11 +28,11 @@ class DismountCommand : Command() {
         return listOf("Traveling")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return listOf()
     }
 
-    override fun execute(source: Thing, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         if (source.properties.values.getBoolean(IS_CLIMBING)) {
             //If current location has a network connection/ exit, dismount there, otherwise dismount to thing location if height 0
             val exit = getExitLocation(source)

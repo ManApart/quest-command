@@ -15,7 +15,7 @@ class QuestListener : EventListener<Event>() {
         return 100
     }
 
-    override fun execute(event: Event) {
+    override suspend fun execute(event: Event) {
         if (listeners.isEmpty()) {
             buildListeners()
         }

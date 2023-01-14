@@ -11,6 +11,7 @@ import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.pickupItem.TakeItem
 import inventory.pickupItem.TakeItemEvent
+import kotlinx.coroutines.runBlocking
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
@@ -33,7 +34,7 @@ class TakeItemTest {
 
         NOWHERE_NODE.getLocation().clear()
     }
-    
+
     @AfterTest
     fun tearDown() {
         NOWHERE_NODE.getLocation().clear()
@@ -43,10 +44,10 @@ class TakeItemTest {
     fun pickupItemFromLocation() {
         val creature = getCreatureWithCapacity()
         val location = creature.location.getLocation()
-        val item = Thing("Apple",  properties = Properties(Tags(ITEM_TAG)))
+        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
         location.addThing(item)
 
-        TakeItem().execute(TakeItemEvent(creature, item))
+        runBlocking { TakeItem().execute(TakeItemEvent(creature, item)) }
         assertNotNull(creature.inventory.getItem(item.name))
         assertTrue(location.getThings(item.name).isEmpty())
     }
@@ -58,7 +59,7 @@ class TakeItemTest {
         val item = Thing("Apple")
         location.addThing(item)
 
-        TakeItem().execute(TakeItemEvent(creature, item))
+        runBlocking { TakeItem().execute(TakeItemEvent(creature, item)) }
         assertNull(creature.inventory.getItem(item.name))
         assertTrue(location.getThings(item.name).isNotEmpty())
     }
@@ -67,10 +68,10 @@ class TakeItemTest {
     fun pickupSingleItemLeavesRestOfStack() {
         val creature = getCreatureWithCapacity()
         val location = creature.location.getLocation()
-        val item = Thing("Apple",  properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
+        val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
         location.addThing(item)
 
-        TakeItem().execute(TakeItemEvent(creature, item))
+        runBlocking { TakeItem().execute(TakeItemEvent(creature, item)) }
         val inInventory = creature.inventory.getItem(item.name)
         val inLocation = location.getItems(item.name).firstOrNull()
 

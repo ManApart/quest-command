@@ -29,14 +29,14 @@ class RecipeCommand : Command() {
         return listOf("Crafting")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> listOf("all") + RecipeManager.getKnownRecipes(source).map { it.name }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val argString = args.joinToString(" ")
         when {
             args.isEmpty() && keyword == "recipe" -> clarifyRecipe(source)

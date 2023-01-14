@@ -25,7 +25,7 @@ const val PLAYER_START_LOCATION = "An Open Field"
 object GameManager {
     var playing = false
 
-    fun newOrLoadGame() {
+    suspend fun newOrLoadGame() {
         val gameMetaData = getGamesMetaData()
         if (gameMetaData.values.getBoolean(AUTO_LOAD) && getGameNames().isNotEmpty()) {
             val saveName = gameMetaData.values.getString(LAST_SAVE_GAME_NAME, getGameNames().first())

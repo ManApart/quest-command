@@ -10,11 +10,11 @@ import status.stat.HEALTH
 import traveling.scope.remove.RemoveScopeEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {
-    override fun shouldExecute(event: StatMinnedEvent): Boolean {
+    override suspend fun shouldExecute(event: StatMinnedEvent): Boolean {
         return !event.thing.isPlayer() && event.stat.lowercase() == HEALTH.lowercase()
     }
 
-    override fun execute(event: StatMinnedEvent) {
+    override suspend fun execute(event: StatMinnedEvent) {
         event.thing.display("${event.thing.name} has died.")
         val creature = event.thing
 

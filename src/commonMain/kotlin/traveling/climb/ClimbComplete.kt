@@ -8,11 +8,11 @@ import explore.listen.addSoundEffect
 import traveling.arrive.ArriveEvent
 
 class ClimbComplete : EventListener<ClimbCompleteEvent>() {
-    override fun shouldExecute(event: ClimbCompleteEvent): Boolean {
+    override suspend fun shouldExecute(event: ClimbCompleteEvent): Boolean {
         return event.creature.isPlayer()
     }
 
-    override fun execute(event: ClimbCompleteEvent) {
+    override suspend fun execute(event: ClimbCompleteEvent) {
         event.climbThing.consume(event)
         val climbBackOff = event.destination.location == event.origin.location
 

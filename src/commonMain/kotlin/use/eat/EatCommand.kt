@@ -27,14 +27,14 @@ class EatCommand : Command() {
         return listOf("Interact")
     }
 
-    override fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+    override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.inventory.getAllItems().map { it.name }
             else -> listOf()
         }
     }
 
-    override fun execute(source: Player, keyword: String, args: List<String>) {
+    override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val argsString = args.joinToString(" ")
         val allFood = source.thing.currentLocation().getItemsIncludingPlayerInventory(source.thing).filter { it.properties.tags.has("food") }
         val pickedFood = source.thing.currentLocation().getItemsIncludingPlayerInventory(argsString, source.thing)

@@ -7,6 +7,6 @@ val ignoredConnectionCommands = listOf("Disconnect", "Connect", "Play", "Be", "Q
 
 expect class ConnectionCommandInterceptor : CommandInterceptor {
     override fun ignoredCommands(): List<String>
-    override fun parseCommand(source: Player, line: String)
+    override suspend fun parseCommand(source: Player, line: String)
 
 }

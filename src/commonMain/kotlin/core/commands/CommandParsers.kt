@@ -79,15 +79,15 @@ object CommandParsers {
         return groups.toSortedMap()
     }
 
-    fun parseInitialCommand(player: Player) {
+    suspend fun parseInitialCommand(player: Player) {
         parsers[player.name]?.parseInitialCommand()
     }
 
-    fun parseCommand(player: Player, line: String) {
+    suspend fun parseCommand(player: Player, line: String) {
         parseCommand(line, player.name)
     }
 
-    fun parseCommand(line: String, name: String) {
+    suspend fun parseCommand(line: String, name: String) {
         parsers[name]?.parseCommand(line)
     }
 
@@ -99,7 +99,7 @@ object CommandParsers {
         return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotEmpty() }.toList()
     }
 
-    fun suggestions(player: Player, args: String): List<String> {
+    suspend fun suggestions(player: Player, args: String): List<String> {
         val input = cleanLine(args)
         return if (commandNameList.any { it.lowercase() == input.first() }){
             val cleanedArgs = if (args.endsWith(" ")) input.removeFirstItem() else input.removeFirstItem().removeLastItem()

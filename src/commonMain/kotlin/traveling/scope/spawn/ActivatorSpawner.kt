@@ -5,7 +5,7 @@ import core.history.display
 import traveling.position.NO_VECTOR
 
 class ActivatorSpawner : EventListener<SpawnActivatorEvent>() {
-    override fun execute(event: SpawnActivatorEvent) {
+    override suspend fun execute(event: SpawnActivatorEvent) {
         if (!event.silent) {
             event.activator.display("${event.activator.name} appeared.")
         }

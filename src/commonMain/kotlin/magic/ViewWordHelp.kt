@@ -16,7 +16,7 @@ class ViewWordHelp : EventListener<ViewWordHelpEvent>() {
         return NameSearchableList(DependencyInjector.getImplementation(SpellCommandsCollection::class).values)
     }
 
-    override fun execute(event: ViewWordHelpEvent) {
+    override suspend fun execute(event: ViewWordHelpEvent) {
         when {
             event.word == null -> listWords(event.source)
             event.groups -> printWordGroup(event.source, event.word.lowercase())
