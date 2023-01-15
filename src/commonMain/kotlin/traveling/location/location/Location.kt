@@ -296,7 +296,7 @@ data class Location(
         return source.inventory.getItems(name) + getItems(source, name)
     }
 
-    fun getOther(perceivedBy: Thing? = null): NameSearchableList<Thing> {
+    suspend fun getOther(perceivedBy: Thing? = null): NameSearchableList<Thing> {
         return other.filter { perceivedBy?.perceives(it) ?: true }
     }
 

@@ -5,6 +5,7 @@ import core.GameState.player
 import core.Player
 import core.commands.Command
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import crafting.RecipeManager
@@ -57,8 +58,8 @@ class RecipeCommand : Command() {
         }
     }
 
-    private fun clarifyWhichRecipe(player: Player) {
-        player.respond("You don't know any recipes.") {
+    private suspend fun clarifyWhichRecipe(player: Player) {
+        player.respondSuspend("You don't know any recipes.") {
             message("Read what recipe?")
             optionsNamed(RecipeManager.getKnownRecipes(player))
             command { "recipe $it" }

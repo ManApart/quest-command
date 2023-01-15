@@ -7,6 +7,7 @@ import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 import core.utility.NameSearchableList
+import core.utility.filterList
 import traveling.direction.Direction
 import traveling.direction.getDirection
 import traveling.location.network.LocationNode
@@ -134,18 +135,16 @@ class ClimbCommand : Command() {
         desiredDirection: Direction
     ): List<ClimbOption> {
         return things
-            .filter { getEntryPoints(player, it).isNotEmpty() }
+            .filterList { getEntryPoints(player, it).isNotEmpty() }
             .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
             .filter { it.direction == desiredDirection }
-            .toList()
     }
 
     private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
         val climbOptions = options
-            .filter { getEntryPoints(player.thing, it).isNotEmpty() }
+            .filterList { getEntryPoints(player.thing, it).isNotEmpty() }
             .map { ClimbOption(it, getDirection(player.thing, it, getEntryPoints(player.thing, it).first())) }
             .filter { desiredDirection == Direction.NONE || it.direction == desiredDirection }
-            .toList()
 
         when {
             climbOptions.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")

@@ -16,7 +16,7 @@ data class Goal(
 
     private var aborted = false
 
-    fun step(owner: Thing) {
+    suspend fun step(owner: Thing) {
         val step = steps[progress]
         if (step.shouldSkip(owner) != true) {
             val events = try {

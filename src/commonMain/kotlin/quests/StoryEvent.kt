@@ -32,7 +32,7 @@ data class StoryEvent(
         }
     }
 
-    fun execute(triggeringEvent: Event) {
+    suspend fun execute(triggeringEvent: Event) {
         if (triggeringEvent::class == triggeredEvent.triggerEvent) {
             triggeredEvent.execute(triggeringEvent)
         } else {

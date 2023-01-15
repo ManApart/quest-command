@@ -9,7 +9,7 @@ import kotlin.math.max
 class StartUseEvent(override val source: Thing, val used: Thing, val thing: Thing, timeLeft: Int = -1) : Event, DelayedEvent {
     override var timeLeft = calcTimeLeft(timeLeft)
 
-    private fun calcTimeLeft(defaultTimeLeft: Int): Int {
+    private suspend fun calcTimeLeft(defaultTimeLeft: Int): Int {
         return if (defaultTimeLeft != -1){
             defaultTimeLeft
         } else {

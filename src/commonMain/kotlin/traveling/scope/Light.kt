@@ -29,11 +29,15 @@ private fun Location.getDayBonus(): Int {
     }
 }
 
-fun Location.getLightLevel(thing: Thing, lightSources: List<Thing> = this.getLightSources()): Int {
+suspend fun Location.getLightLevel(thing: Thing): Int {
+    return getLightLevel(thing, this.getLightSources())
+}
+
+fun Location.getLightLevel(thing: Thing, lightSources: List<Thing>): Int {
     return (getLightLevel() + thing.properties.values.getInt(LIGHT) + getLightCastOn(thing, lightSources)).clamp(0, MAX_LIGHT)
 }
 
-fun Location.getLightSources(): List<Thing> {
+suspend fun Location.getLightSources(): List<Thing> {
     return this.getThingsIncludingTopLevelInventories().filter { it.properties.values.getInt(LIGHT) != 0 }
 }
 

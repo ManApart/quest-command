@@ -1,6 +1,7 @@
 package combat.attack
 
 import combat.HandHelper
+import combat.handHelper
 import core.Player
 import core.commands.*
 import core.events.EventManager
@@ -57,7 +58,7 @@ class AttackCommand : Command() {
         } else {
             val arguments = Args(args, listOf("with"))
             val attackType = fromString(keyword)
-            val handHelper = HandHelper(sourceT, arguments.getString("with"), attackType.damageType.damage.lowercase())
+            val handHelper = handHelper(sourceT, arguments.getString("with"), attackType.damageType.damage.lowercase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
             val thing = getThing(keyword, arguments, weaponName, source)
 

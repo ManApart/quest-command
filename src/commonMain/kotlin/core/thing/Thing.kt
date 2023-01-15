@@ -85,11 +85,11 @@ data class Thing(
         return parent?.getTopParent() ?: this
     }
 
-    fun canConsume(event: Event): Boolean {
+    suspend fun canConsume(event: Event): Boolean {
         return !isPlayer() && behaviors.any { it.matches(event) }
     }
 
-    fun consume(event: Event) {
+    suspend fun consume(event: Event) {
         if (!isPlayer()) {
             behaviors.filter { it.matches(event) }
                 .forEach { it.execute(event) }
@@ -132,7 +132,7 @@ data class Thing(
         }
     }
 
-    fun getEquippedSlot(body: Body): Slot {
+    suspend fun getEquippedSlot(body: Body): Slot {
         return equipSlots.first { it.itemIsEquipped(this, body) }
     }
 

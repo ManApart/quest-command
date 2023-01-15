@@ -79,7 +79,7 @@ class Flame : SpellCommand() {
         }
     }
 
-    private fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int): StartCastSpellEvent {
+    private suspend fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int): StartCastSpellEvent {
         val parts = getThingedPartsOrAll(thing, 3)
         val litLevel = max(damageAmount, thing.thing.properties.values.getInt(LIT_LIGHT, 1))
         val effects = listOf(

@@ -37,7 +37,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         return storyEvents.values.toList()
     }
 
-    fun getMatchingEvent(event: Event): StoryEvent? {
+    suspend fun getMatchingEvent(event: Event): StoryEvent? {
         return listenedForEvents.firstOrNull { it.matches(event) }
     }
 

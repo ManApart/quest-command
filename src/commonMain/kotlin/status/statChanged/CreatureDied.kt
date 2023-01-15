@@ -3,6 +3,7 @@ package status.statChanged
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.utility.filterList
 import explore.listen.addSoundEffect
 import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
@@ -19,7 +20,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         val creature = event.thing
 
         creature.location.getLocation().getCreatures()
-            .filter { it.mind.getAggroTarget() == creature }
+            .filterList { it.mind.getAggroTarget() == creature }
             .forEach { it.mind.clearAggroTarget() }
 
         creature.inventory.getAllItems().forEach {

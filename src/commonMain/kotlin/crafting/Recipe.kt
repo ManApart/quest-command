@@ -68,7 +68,7 @@ data class Recipe(
         return missing
     }
 
-    fun getResults(
+    suspend fun getResults(
         crafter: Thing,
         tool: Thing?,
         usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>

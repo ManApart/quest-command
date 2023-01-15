@@ -80,7 +80,7 @@ class Pull : SpellCommand() {
         }
     }
 
-    private fun calcDistance(thing: Thing, power: Int): Int {
+    private suspend fun calcDistance(thing: Thing, power: Int): Int {
         val weight = thing.getWeight()
         return if (weight > power) {
             0

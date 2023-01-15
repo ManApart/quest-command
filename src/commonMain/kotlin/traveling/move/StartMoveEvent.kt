@@ -10,7 +10,7 @@ import kotlin.math.max
 class StartMoveEvent(override val source: Thing, private val moveThing: Vector, private val staminaScalar: Float = 1f, private val speedScalar: Float = 1f, private val silent: Boolean = false, timeLeft: Int = -1) : Event, DelayedEvent {
     override var timeLeft = calcTimeLeft(timeLeft)
 
-    private fun calcTimeLeft(defaultTimeLeft: Int): Int {
+    private suspend fun calcTimeLeft(defaultTimeLeft: Int): Int {
         return if (defaultTimeLeft != -1) {
             defaultTimeLeft
         } else {
@@ -22,7 +22,7 @@ class StartMoveEvent(override val source: Thing, private val moveThing: Vector, 
         }
     }
 
-    private fun getUnencumberedAgility(thing: Thing): Int {
+    private suspend fun getUnencumberedAgility(thing: Thing): Int {
         val agility = thing.soul.getCurrent(AGILITY)
         val encumbrance = thing.getEncumbranceInverted()
         return (agility * encumbrance).toInt()

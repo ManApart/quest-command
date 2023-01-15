@@ -1,6 +1,7 @@
 package combat.block
 
 import combat.HandHelper
+import combat.handHelper
 import core.Player
 import core.commands.Args
 import core.commands.Command
@@ -37,7 +38,7 @@ class BlockCommand : Command() {
 
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
-        val handHelper = HandHelper(source, arguments.getString("with"), "block")
+        val handHelper = handHelper(source, arguments.getString("with"), "block")
         val shieldedPart = parseBodyParts(source, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
         EventManager.postEvent(StartBlockEvent(source, handHelper.hand, shieldedPart))
     }

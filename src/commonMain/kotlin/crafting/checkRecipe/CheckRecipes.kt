@@ -20,7 +20,7 @@ class CheckRecipes : EventListener<CheckRecipeEvent>() {
         }
     }
 
-    private fun printRecipes(source: Player) {
+    private suspend fun printRecipes(source: Player) {
         val recipes = RecipeManager.getKnownRecipes(source)
         val recipeString = recipes.joinToString { "\n\t${it.name}" }
 

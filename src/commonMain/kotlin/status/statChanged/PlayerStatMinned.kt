@@ -8,6 +8,7 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
 import core.history.displayToOthers
+import core.utility.filterList
 import inventory.dropItem.PlaceItemEvent
 import status.stat.HEALTH
 import status.stat.STAMINA
@@ -33,7 +34,7 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
 
         with(source.thing) {
             location.getLocation().getCreatures()
-                .filter { it.mind.getAggroTarget() == this }
+                .filterList { it.mind.getAggroTarget() == this }
                 .forEach { it.mind.clearAggroTarget() }
 
             inventory.getAllItems().forEach {

@@ -44,7 +44,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
     }
 }
 
-fun postArriveEvent(source: Thing, destination: LocationPoint, requiredStamina: Int, quiet: Boolean) {
+suspend fun postArriveEvent(source: Thing, destination: LocationPoint, requiredStamina: Int, quiet: Boolean) {
     val soundLevel = (max(10, (source.getEncumbrance() * 100).toInt()) - source.soul.getCurrent(SNEAK)).clamp(0, 20)
     source.addSoundEffect("Moving", "the sound of footfalls", soundLevel)
     EventManager.postEvent(ArriveEvent(source, destination = destination, method = "travel", quiet = quiet))

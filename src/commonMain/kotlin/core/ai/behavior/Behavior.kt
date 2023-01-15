@@ -8,11 +8,11 @@ data class Behavior<E : Event>(
         private val triggeredEvent: ConditionalEvents<E>,
         val params: Map<String, String> = mapOf()
 ) {
-    fun matches(event: Event): Boolean {
+    suspend fun matches(event: Event): Boolean {
         return triggeredEvent.matches(event)
     }
 
-    fun execute(event: Event) {
+    suspend fun execute(event: Event) {
         triggeredEvent.execute(event)
     }
 
