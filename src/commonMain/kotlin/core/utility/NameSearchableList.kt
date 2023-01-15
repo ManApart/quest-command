@@ -40,6 +40,6 @@ operator fun <T : Named> List<T>.plus(other: NameSearchableList<T>): NameSearcha
     return NameSearchableList(this) + other
 }
 
-inline fun <T: Named> NameSearchableList<T>.filterList(predicate: (T) -> Boolean): List<T> {
-    return this.toList().filter(predicate)
+inline fun <T: Named> NameSearchableList<T>.filterList(predicate: (T) -> Boolean): NameSearchableList<T> {
+    return this.toList().filter(predicate).toNameSearchableList()
 }

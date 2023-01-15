@@ -10,6 +10,7 @@ import core.thing.Thing
 import status.stat.HEALTH
 import traveling.position.ThingAim
 import use.StartUseEvent
+import use.startUseEvent
 
 class AttackCommand : Command() {
     override fun getAliases(): List<String> {
@@ -134,11 +135,11 @@ class AttackCommand : Command() {
 
     private suspend fun processAttack(source: Thing, arguments: Args, attackType: AttackType, handHelper: HandHelper, thing: ThingAim?) {
         when {
-            isAttackingActivatorWithWeapon(thing, handHelper) -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing!!.thing))
-            thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))
-            thing != null && !thing.thing.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing.thing))
-            thing != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, thing, attackType.damageType))
-            source.mind.getAggroTarget() != null -> EventManager.postEvent(StartAttackEvent(source, handHelper.hand, ThingAim(source.mind.getAggroTarget()!!), attackType.damageType))
+            isAttackingActivatorWithWeapon(thing, handHelper) -> EventManager.postEvent(startUseEvent(source, handHelper.weapon!!, thing!!.thing))
+            thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(startUseEvent(source, handHelper.weapon, source))
+            thing != null && !thing.thing.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(startUseEvent(source, handHelper.weapon, thing.thing))
+            thing != null -> EventManager.postEvent(startAttackEvent(source, handHelper.hand, thing, attackType.damageType))
+            source.mind.getAggroTarget() != null -> EventManager.postEvent(startAttackEvent(source, handHelper.hand, ThingAim(source.mind.getAggroTarget()!!), attackType.damageType))
             else -> source.displayToMe("Couldn't find ${arguments.getBaseString()}.")
         }
     }

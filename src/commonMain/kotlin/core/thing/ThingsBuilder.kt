@@ -1,6 +1,7 @@
 package core.thing
 
 import core.utility.NameSearchableList
+import core.utility.applySuspending
 import core.utility.toNameSearchableList
 
 class ThingsBuilder {
@@ -10,13 +11,13 @@ class ThingsBuilder {
         children.add(item)
     }
 
-    fun thing(name: String, initializer: ThingBuilder.() -> Unit) {
-        children.add(ThingBuilder(name).apply(initializer))
+    suspend fun thing(name: String, initializer: suspend ThingBuilder.() -> Unit) {
+        children.add(ThingBuilder(name).applySuspending(initializer))
     }
 }
 
-fun things(initializer: ThingsBuilder.() -> Unit): List<ThingBuilder> {
-    return ThingsBuilder().apply(initializer).children
+suspend fun things(initializer: suspend ThingsBuilder.() -> Unit): List<ThingBuilder> {
+    return ThingsBuilder().applySuspending(initializer).children
 }
 
 suspend fun List<ThingBuilder>.build(tagToApply: String? = null): NameSearchableList<Thing> {

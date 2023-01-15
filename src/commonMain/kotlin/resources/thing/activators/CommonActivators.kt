@@ -29,7 +29,7 @@ class CommonActivators : ActivatorResource {
 
         thing("Apple Tree Branches") {
             material("Bark")
-            extends(burnable)
+            extends(burnable.get())
             description("The branches are too thin to sit on comfortably, but their leaves rustle contentedly.")
             param("fireHealth" to 5, "itemName" to "Apple Tree Branches")
             props {
@@ -38,7 +38,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Wheat Field") {
-            extends(burnable)
+            extends(burnable.get())
             material("Plant")
             description("The golden shafts of wheat whisper as they brush against each other.")
             sound(5, "a faint rustling sound")
@@ -52,7 +52,7 @@ class CommonActivators : ActivatorResource {
         }
 
         thing("Logs") {
-            extends(burnable)
+            extends(burnable.get())
             material("Wood")
             description("A pile of logs.")
             param("fireHealth" to 5, "itemName" to "Ash")

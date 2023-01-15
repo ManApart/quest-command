@@ -9,6 +9,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import traveling.move.StartMoveEvent
+import traveling.move.startMoveEvent
 import traveling.position.Distances
 
 class ApproachCommand : Command() {
@@ -46,7 +47,7 @@ class ApproachCommand : Command() {
         when {
             thing != null && distance != null -> approachByAmount(source.thing, thing, distance)
             thing != null && keyword.lowercase() == "approach" -> clarifyAmount(source, thing)
-            thing != null -> EventManager.postEvent(StartMoveEvent(source.thing, thing.position))
+            thing != null -> EventManager.postEvent(startMoveEvent(source.thing, thing.position))
             else -> clarifyThing(source, creatures)
         }
     }
@@ -60,9 +61,9 @@ class ApproachCommand : Command() {
         }
     }
 
-    private fun approachByAmount(source: Thing, thing: Thing, distance: Int) {
+    private suspend fun approachByAmount(source: Thing, thing: Thing, distance: Int) {
         val goal = source.position.closer(thing.position, distance)
-        EventManager.postEvent(StartMoveEvent(source, goal))
+        EventManager.postEvent(startMoveEvent(source, goal))
     }
 
     private fun clarifyAmount(source: Player, thing: Thing) {

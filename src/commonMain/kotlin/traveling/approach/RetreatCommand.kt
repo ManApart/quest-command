@@ -9,6 +9,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import traveling.move.StartMoveEvent
+import traveling.move.startMoveEvent
 import traveling.position.Distances.HUMAN_LENGTH
 
 class RetreatCommand : Command() {
@@ -62,9 +63,9 @@ class RetreatCommand : Command() {
         }
     }
 
-    private fun retreatByAmount(source: Thing, thing: Thing, distance: Int) {
+    private suspend fun retreatByAmount(source: Thing, thing: Thing, distance: Int) {
         val goal = source.position.further(thing.position, distance)
-        EventManager.postEvent(StartMoveEvent(source, goal))
+        EventManager.postEvent(startMoveEvent(source, goal))
     }
 
     private fun clarifyAmount(player: Player, thing: Thing) {

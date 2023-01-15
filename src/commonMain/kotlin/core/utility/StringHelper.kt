@@ -37,6 +37,10 @@ fun <T> List<T>.joinToStringOr(transform: ((T) -> CharSequence)? = null): String
     return joinToStringWithDifferentLast("or", transform)
 }
 
+suspend fun <T> List<T>.joinToStringSuspend(del: String, transform: suspend (T) -> CharSequence): String {
+    return this.map { transform(it) }.joinToString(del)
+}
+
 fun <T> List<T>.joinToStringWithDifferentLast(lastDelimiter: String, transform: ((T) -> CharSequence)? = null): String {
     val stringList = if (transform == null) this else {
         this.map { transform(it) }

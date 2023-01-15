@@ -8,6 +8,7 @@ import core.thing.Thing
 import traveling.direction.Direction
 import traveling.location.weather.WeatherManager
 import traveling.move.StartMoveEvent
+import traveling.move.startMoveEvent
 
 class DodgeCommand : Command() {
     override fun getAliases(): List<String> {
@@ -36,7 +37,7 @@ class DodgeCommand : Command() {
 
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val direction = parseDirection(args).vector * 10
-        EventManager.postEvent(StartMoveEvent(source, direction, 2f, 1.5f))
+        EventManager.postEvent(startMoveEvent(source, direction, 2f, 1.5f))
     }
 
 

@@ -6,24 +6,22 @@ import core.thing.Thing
 import status.stat.AGILITY
 import kotlin.math.max
 
-class StartUseEvent(override val source: Thing, val used: Thing, val thing: Thing, timeLeft: Int = -1) : Event, DelayedEvent {
-    override var timeLeft = calcTimeLeft(timeLeft)
+suspend fun startUseEvent(source: Thing, used: Thing, thing: Thing, timeLeft: Int? = null): StartUseEvent {
+    return StartUseEvent(source, used, thing, timeLeft ?: calcTimeLeft(source, used))
+}
 
-    private suspend fun calcTimeLeft(defaultTimeLeft: Int): Int {
-        return if (defaultTimeLeft != -1){
-            defaultTimeLeft
-        } else {
-            val weaponSize = used.properties.getRange()
-            val weaponWeight = used.getWeight()
-            val encumbrance = source.getEncumbrance()
-            val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
-            val weaponScaleFactor = 10
-
-            max(1, weaponSize * weaponWeight * weaponScaleFactor / agility)
-        }
-    }
-
+class StartUseEvent(override val source: Thing, val used: Thing, val thing: Thing, override var timeLeft: Int) : Event, DelayedEvent {
     override fun getActionEvent(): UseEvent {
         return UseEvent(source, used, thing)
     }
+}
+
+private suspend fun calcTimeLeft(source: Thing, used: Thing): Int {
+    val weaponSize = used.properties.getRange()
+    val weaponWeight = used.getWeight()
+    val encumbrance = source.getEncumbrance()
+    val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
+    val weaponScaleFactor = 10
+
+    return max(1, weaponSize * weaponWeight * weaponScaleFactor / agility)
 }

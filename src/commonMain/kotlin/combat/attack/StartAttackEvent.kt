@@ -9,24 +9,23 @@ import traveling.location.location.Location
 import traveling.position.ThingAim
 import kotlin.math.max
 
-class StartAttackEvent(override val source: Thing, private val sourcePart: Location, val thing: ThingAim, val type: DamageType, timeLeft: Int = -1) : Event, DelayedEvent {
-    override var timeLeft = calcTimeLeft(timeLeft)
+suspend fun startAttackEvent(source: Thing, sourcePart: Location, thing: ThingAim, type: DamageType, timeLeft: Int? = null): StartAttackEvent {
+    return StartAttackEvent(source, sourcePart, thing, type, timeLeft ?: calcTimeLeft(source, sourcePart))
+}
 
-    private fun calcTimeLeft(defaultTimeLeft: Int): Int {
-        return if (defaultTimeLeft != -1){
-            defaultTimeLeft
-        } else {
-            val weaponSize = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: 1
-            val weaponWeight = sourcePart.getEquippedWeapon()?.getWeight() ?: 1
-            val encumbrance = source.getEncumbrance()
-            val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
-            val weaponScaleFactor = 10
-
-            max(1, weaponSize * weaponWeight * weaponScaleFactor / agility)
-        }
-    }
+class StartAttackEvent(override val source: Thing, private val sourcePart: Location, val thing: ThingAim, val type: DamageType, override var timeLeft: Int) : Event, DelayedEvent {
 
     override fun getActionEvent(): AttackEvent {
         return AttackEvent(source, sourcePart, thing, type)
     }
+}
+
+private suspend fun calcTimeLeft(source: Thing, sourcePart: Location): Int {
+    val weaponSize = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: 1
+    val weaponWeight = sourcePart.getEquippedWeapon()?.getWeight() ?: 1
+    val encumbrance = source.getEncumbrance()
+    val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
+    val weaponScaleFactor = 10
+
+    return max(1, weaponSize * weaponWeight * weaponScaleFactor / agility)
 }

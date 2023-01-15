@@ -53,7 +53,7 @@ class Quest(override val name: String, var stage: Int = 0) : Named {
         return listenedForEvents.toList()
     }
 
-    fun executeEvent(event: StoryEvent, triggeringEvent: Event) {
+    suspend fun executeEvent(event: StoryEvent, triggeringEvent: Event) {
         event.execute(triggeringEvent)
         journalEntries.add(event.journal)
         event.completed = true

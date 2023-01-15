@@ -2,6 +2,7 @@ package resources.ai.agenda
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
+import combat.attack.startAttackEvent
 import core.GameState
 import core.ai.agenda.AgendaResource
 import core.ai.agenda.agendas
@@ -138,6 +139,6 @@ private suspend fun clawAttack(target: Thing, creature: Thing): StartAttackEvent
     } else {
         creature.body.getRootPart()
     }
-    return StartAttackEvent(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
+    return startAttackEvent(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
 }
 

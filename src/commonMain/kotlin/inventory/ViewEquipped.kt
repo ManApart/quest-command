@@ -6,10 +6,12 @@ import core.history.displayToOthers
 import core.utility.asSubject
 import core.utility.asSubjectPossessive
 import core.utility.ifYouWord
+import core.utility.joinToStringSuspend
 
 class ViewEquipped : EventListener<ViewEquippedEvent>() {
 
     override suspend fun execute(event: ViewEquippedEvent) {
+
         with(event) {
             val body = target.body
             val items = body.getEquippedItems()
@@ -18,7 +20,7 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
                 val doesNot = target.ifYouWord(source, "don't", "doesn't")
                 source.displayToMe("$subject $doesNot have anything equipped!")
             } else {
-                val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
+                val itemList = items.joinToStringSuspend("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
                 val has = target.ifYouWord(source, "have", "has")
                 source.displayToMe("$subject $has the following items equipped:\n\t$itemList")
             }

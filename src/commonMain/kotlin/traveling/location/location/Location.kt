@@ -12,6 +12,7 @@ import core.thing.creature.CreatureManager
 import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.Named
+import core.utility.filterList
 import core.utility.plus
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
@@ -174,15 +175,15 @@ data class Location(
         return (creatures + items + activators + other)
     }
 
-    fun getThings(perceivedBy: Thing?): NameSearchableList<Thing> {
-        return getThings().filter { perceivedBy?.perceives(it) ?: true }
+    suspend fun getThings(perceivedBy: Thing?): NameSearchableList<Thing> {
+        return getThings().filterList { perceivedBy?.perceives(it) ?: true }
     }
 
-    fun getThings(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+    suspend fun getThings(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
         return getThings(perceivedBy = perceivedBy).sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getThings(name: String, source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+    suspend fun getThings(name: String, source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
         return getThingsByName(getThings(perceivedBy = perceivedBy), name, source)
     }
 
@@ -228,16 +229,16 @@ data class Location(
         return source.inventory.getItems(name) + getThings(name, source, perceivedBy)
     }
 
-    fun getCreaturesExcludingPlayer(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+    suspend fun getCreaturesExcludingPlayer(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
         return getCreatures(source, perceivedBy).also { it.remove(source) }
     }
 
-    fun getCreatures(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+    suspend fun getCreatures(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
         return getCreatures(perceivedBy).sortedBy { source.position.getDistance(it.position) }
     }
 
-    fun getCreatures(perceivedBy: Thing? = null): NameSearchableList<Thing> {
-        return creatures.filter { perceivedBy?.perceives(it) ?: true }
+    suspend fun getCreatures(perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        return creatures.filterList { perceivedBy?.perceives(it) ?: true }
     }
 
     fun getCreatures(name: String, source: Thing): NameSearchableList<Thing> {
@@ -260,19 +261,19 @@ data class Location(
         return activators
     }
 
-    fun getActivators(perceivedBy: Thing?): NameSearchableList<Thing> {
-        return getActivators().filter { perceivedBy?.perceives(it) ?: true }
+    suspend fun getActivators(perceivedBy: Thing?): NameSearchableList<Thing> {
+        return getActivators().filterList { perceivedBy?.perceives(it) ?: true }
     }
 
     fun getItems(): NameSearchableList<Thing> {
         return items
     }
 
-    fun getItems(perceivedBy: Thing?): NameSearchableList<Thing> {
-        return items.filter { perceivedBy?.perceives(it) ?: true }
+    suspend fun getItems(perceivedBy: Thing?): NameSearchableList<Thing> {
+        return items.filterList { perceivedBy?.perceives(it) ?: true }
     }
 
-    fun getItems(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+    suspend fun getItems(source: Thing, perceivedBy: Thing? = null): NameSearchableList<Thing> {
         return getItems(perceivedBy).sortedBy { source.position.getDistance(it.position) }
     }
 
@@ -297,7 +298,7 @@ data class Location(
     }
 
     suspend fun getOther(perceivedBy: Thing? = null): NameSearchableList<Thing> {
-        return other.filter { perceivedBy?.perceives(it) ?: true }
+        return other.filterList { perceivedBy?.perceives(it) ?: true }
     }
 
     fun findThingsByTag(tag: String): NameSearchableList<Thing> {
