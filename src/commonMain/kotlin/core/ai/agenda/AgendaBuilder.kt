@@ -7,7 +7,7 @@ import core.thing.Thing
 class AgendaBuilder(private val name: String) {
     private val steps: MutableList<GoalStep> = mutableListOf()
 
-    fun action(name: String, result: (Thing) -> Event?) {
+    fun action(name: String, result: suspend (Thing) -> Event?) {
         this.steps.add(GoalStep(AIAction(name, { thing ->
             result(thing)?.let { listOf(it) }
         })))

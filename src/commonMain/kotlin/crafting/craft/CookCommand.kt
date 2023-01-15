@@ -8,6 +8,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import core.thing.item.ItemManager
+import core.utility.filterList
 import crafting.RecipeManager
 import traveling.direction.Direction
 
@@ -32,8 +33,8 @@ class CookCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.contains("on") -> source.location.getLocation().findThingsByTag("Range").filter { source.thing.perceives(it) }.map { it.name }
-            else -> source.location.getLocation().getItemsIncludingPlayerInventory(source.thing).filter { source.thing.perceives(it) }.map { it.name }
+            args.contains("on") -> source.location.getLocation().findThingsByTag("Range").filterList { source.thing.perceives(it) }.map { it.name }
+            else -> source.location.getLocation().getItemsIncludingPlayerInventory(source.thing).filterList { source.thing.perceives(it) }.map { it.name }
         }
     }
 

@@ -2,22 +2,23 @@ package quests
 
 import core.events.Event
 import core.utility.MapBuilder
+import core.utility.applySuspending
 import kotlin.reflect.KClass
 
 class ConditionalEventsBuilder<E: Event>(private val trigger: KClass<E>) {
     private val paramsBuilder = MapBuilder()
     private var condition: (E, Map<String, String>) -> Boolean = { _, _ -> true }
-    private var createEvents: (E, Map<String, String>) -> List<Event> = { _, _ -> listOf() }
+    private var createEvents: suspend (E, Map<String, String>) -> List<Event> = { _, _ -> listOf() }
 
     fun build(): ConditionalEvents<E> {
         return ConditionalEvents(trigger, condition, createEvents, paramsBuilder.build())
     }
-    
+
     fun condition(cond: (E, Map<String, String>) -> Boolean){
         this.condition = cond
     }
 
-    fun events(createEvents: (E, Map<String, String>) -> List<Event>){
+    fun events(createEvents: suspend (E, Map<String, String>) -> List<Event>){
         this.createEvents = createEvents
     }
 

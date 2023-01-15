@@ -1,5 +1,5 @@
 package conversation.dsl
 
 interface DialogueTreeResource {
-    val values: List<DialogueTree>
+    suspend fun values(): List<DialogueTree>
 }

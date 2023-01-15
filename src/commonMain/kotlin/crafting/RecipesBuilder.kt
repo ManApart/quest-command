@@ -1,6 +1,7 @@
 package crafting
 
 import core.utility.NameSearchableList
+import core.utility.applySuspending
 import core.utility.toNameSearchableList
 
 class RecipesBuilder {
@@ -10,23 +11,23 @@ class RecipesBuilder {
         children.add(item)
     }
 
-    fun recipe(name: String, initializer: RecipeBuilder.() -> Unit) {
-        children.add(RecipeBuilder(name).apply(initializer))
+    suspend fun recipe(name: String, initializer: suspend RecipeBuilder.() -> Unit) {
+        children.add(RecipeBuilder(name).applySuspending(initializer))
     }
 }
 
-fun recipes(initializer: RecipesBuilder.() -> Unit): List<RecipeBuilder> {
-    return RecipesBuilder().apply(initializer).children
+suspend fun recipes(initializer: suspend RecipesBuilder.() -> Unit): List<RecipeBuilder> {
+    return RecipesBuilder().applySuspending(initializer).children
 }
 
-fun List<RecipeBuilder>.build(): NameSearchableList<Recipe> {
+suspend fun List<RecipeBuilder>.build(): NameSearchableList<Recipe> {
     val builders = associateBy { it.name }
     return builders.values.map {
         try {
             it.build()
         } catch (e: Exception) {
             println("Failed to build ${it.name}: ${e.message ?: e.cause ?: e.toString()}")
-            throw  e
+            throw e
         }
     }.toNameSearchableList()
 }

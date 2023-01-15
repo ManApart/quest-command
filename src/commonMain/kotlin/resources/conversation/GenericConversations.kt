@@ -6,7 +6,7 @@ import conversation.parsing.QuestionType
 import conversation.parsing.Verb
 
 class GenericConversations : DialogueTreeResource {
-    override val values = conversations {
+    override suspend fun values() = conversations {
         event { DialogueEvent(it.getLatestListener(), it, "I have nothing to say to you.") }
 
         branch {

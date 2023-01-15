@@ -8,12 +8,11 @@ import core.thing.Thing
 private val sampleConvo by lazy { buildSampleConvo() }
 
 class Dialogue(
-    val result: (Conversation) -> List<Event>,
+    val result: suspend (Conversation) -> List<Event>,
     val priority: Int = 10
 ) {
-    override fun toString(): String {
-        val sample = result(sampleConvo).first()
-        return "Priority: $priority, Sample: $sample"
+    private suspend fun getSample(): String {
+        return result(sampleConvo).first().toString()
     }
 }
 

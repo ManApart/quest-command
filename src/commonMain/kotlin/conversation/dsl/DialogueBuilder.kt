@@ -7,6 +7,7 @@ import conversation.parsing.Verb
 import core.events.Event
 import core.thing.Thing
 import core.utility.Named
+import core.utility.applySuspending
 import traveling.location.network.LocationNode
 
 class DialogueBuilder {
@@ -14,7 +15,7 @@ class DialogueBuilder {
     private val depthScale: Int = 2
     private val conditions: MutableList<suspend (Conversation) -> Boolean> = mutableListOf()
     private val children: MutableList<DialogueBuilder> = mutableListOf()
-    private var results: MutableList<((Conversation) -> List<Event>)> = mutableListOf()
+    private var results: MutableList<(suspend (Conversation) -> List<Event>)> = mutableListOf()
 
     fun cond(condition: suspend (Conversation) -> Boolean) {
         conditions.add(condition)
@@ -32,19 +33,19 @@ class DialogueBuilder {
         cond { it.subject() == condition(it) }
     }
 
-    fun branch(initializer: DialogueBuilder.() -> Unit) {
-        children.add(DialogueBuilder().apply(initializer))
+    suspend fun branch(initializer: suspend DialogueBuilder.() -> Unit) {
+        children.add(DialogueBuilder().applySuspending(initializer))
     }
 
-    fun line(line: ((Conversation) -> String)) {
+    fun line(line: suspend (Conversation) -> String) {
         this.results.add { listOf(DialogueEvent(it.getLatestListener(), it, line(it))) }
     }
 
-    fun event(result: ((Conversation) -> Event)) {
+    fun event(result: (Conversation) -> Event) {
         this.results.add { listOf(result(it)) }
     }
 
-    fun events(results: ((Conversation) -> List<Event>)) {
+    fun events(results: (Conversation) -> List<Event>) {
         this.results.add(results)
     }
 
@@ -58,10 +59,10 @@ class DialogueBuilder {
     }
 }
 
-fun conversations(
-    initializer: DialogueBuilder.() -> Unit
+suspend fun conversations(
+    initializer: suspend DialogueBuilder.() -> Unit
 ): List<DialogueTree> {
-    return listOf(DialogueBuilder().apply(initializer).build())
+    return listOf(DialogueBuilder().applySuspending(initializer).build())
 }
 
 suspend fun Conversation.question(): QuestionType? {

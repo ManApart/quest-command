@@ -15,7 +15,7 @@ class AgendasBuilder {
     }
 
     //Creates an Agenda with an action of the same name and a single result event
-    fun agendaAction(name: String, result: (Thing) -> Event?) {
+    fun agendaAction(name: String, result: suspend (Thing) -> Event?) {
         agenda(name){
             action(name, result)
         }

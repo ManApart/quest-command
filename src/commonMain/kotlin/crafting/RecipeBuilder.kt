@@ -2,6 +2,7 @@ package crafting
 
 import core.properties.PropsBuilder
 import core.utility.MapBuilder
+import core.utility.applySuspending
 
 class RecipeBuilder(internal val name: String) {
     private var verb = "craft"
@@ -11,7 +12,7 @@ class RecipeBuilder(internal val name: String) {
     private val results = mutableListOf<RecipeResultBuilder>()
     private var id = 0
 
-    fun build(): Recipe {
+    suspend fun build(): Recipe {
         val skillMap = skills.build().mapValues { it.value.toInt() }
         val toolProperties = toolProps.build()
         val resultItems = results.map { it.build() }
@@ -53,8 +54,8 @@ class RecipeBuilder(internal val name: String) {
         results.add(RecipeResultBuilder().apply { name(name) })
     }
 
-    fun result(initializer: RecipeResultBuilder.() -> Unit) {
-        results.add(RecipeResultBuilder().apply(initializer))
+    suspend fun result(initializer: suspend RecipeResultBuilder.() -> Unit) {
+        results.add(RecipeResultBuilder().applySuspending(initializer))
     }
 
 }

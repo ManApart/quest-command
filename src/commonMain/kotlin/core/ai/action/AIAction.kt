@@ -6,6 +6,6 @@ import core.utility.Named
 
 data class AIAction(
     override val name: String,
-    val createEvents: (Thing) -> List<Event>? = { _ -> listOf() },
-    val shouldSkip: (Thing) -> Boolean? = { false }
+    val createEvents: suspend (Thing) -> List<Event>? = { _ -> listOf() },
+    val shouldSkip: suspend (Thing) -> Boolean? = { false }
 ) : Named

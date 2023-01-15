@@ -15,7 +15,7 @@ data class StoryEvent(
 ) {
     var completed = false
 
-    fun matches(event: Event): Boolean {
+    suspend fun matches(event: Event): Boolean {
         return triggeredEvent.matches(event)
     }
 

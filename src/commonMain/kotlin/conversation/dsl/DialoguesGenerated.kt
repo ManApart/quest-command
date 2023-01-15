@@ -1,5 +1,5 @@
 package conversation.dsl
 
 class DialoguesGenerated : DialoguesCollection {
-    override val values by lazy { listOf<DialogueTreeResource>(resources.conversation.GenericConversations()).flatMap { it.values }}
+    override suspend fun values() = listOf<DialogueTreeResource>(resources.conversation.GenericConversations()).flatMap { it.values() }
 }

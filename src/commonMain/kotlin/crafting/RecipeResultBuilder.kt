@@ -14,7 +14,7 @@ class RecipeResultBuilder {
     private val tagsRemoved = mutableListOf<String>()
 
     //Crafter, Tool? Ingredients
-    private var getItem: ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)? = null
+    private var getItem: (suspend (Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)? = null
 
     /**
      * Get an item by this name
@@ -42,7 +42,7 @@ class RecipeResultBuilder {
         this.tagsRemoved.addAll(tag)
     }
 
-    fun produces(getItem: ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
+    fun produces(getItem: suspend ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
         this.getItem = getItem
     }
 
@@ -51,13 +51,13 @@ class RecipeResultBuilder {
 
         if (getItem != null) return RecipeResult(description, getItem!!)
 
-        val baseItemGetter: (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = when {
+        val baseItemGetter: suspend (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = when {
             (ingredientReference != null) -> { usedIngredients -> (usedIngredients[ingredientReference!!.toString()])!!.second }
             (itemName != null) -> { _ -> ItemManager.getItem(itemName!!) }
             else -> throw IllegalStateException("Recipe must have an item name or item reference")
         }
 
-        val transformation: (Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = { _, _, usedIngredients ->
+        val transformation: suspend (Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = { _, _, usedIngredients ->
             baseItemGetter(usedIngredients).also { base ->
                 base.properties.tags.addAll(tagsAdded)
                 base.properties.tags.removeAll(tagsRemoved)

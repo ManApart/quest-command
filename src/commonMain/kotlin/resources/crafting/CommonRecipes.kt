@@ -8,7 +8,7 @@ import status.stat.*
 import traveling.location.connection
 
 class CommonRecipes : RecipeResource {
-    override val values = recipes {
+    override suspend fun values() = recipes {
         recipe("Sliced Food") {
             verb("slice")
             skill(COOKING, 1)

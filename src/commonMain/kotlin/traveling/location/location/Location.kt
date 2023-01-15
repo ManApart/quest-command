@@ -26,6 +26,19 @@ import traveling.location.weather.Weather
 import traveling.location.weather.WeatherManager
 import traveling.position.Shape
 
+suspend fun location(locationNode: LocationNode): Location {
+    return Location(
+        locationNode,
+        NameSearchableList(),
+        NameSearchableList(),
+        NameSearchableList(),
+        NameSearchableList(),
+        Properties()
+    ).apply {
+        populateFromProtoLocation()
+    }
+}
+
 data class Location(
     val locationNode: LocationNode,
     private val activators: NameSearchableList<Thing> = NameSearchableList(),
@@ -35,18 +48,8 @@ data class Location(
     val properties: Properties = Properties(),
     private val recipe: LocationRecipe = locationNode.recipe
 ) : Named {
-    constructor(locationNode: LocationNode) : this(
-        locationNode,
-        NameSearchableList<Thing>(),
-        NameSearchableList<Thing>(),
-        NameSearchableList<Thing>(),
-        NameSearchableList<Thing>(),
-        Properties()
-    ) {
-        populateFromProtoLocation()
-    }
-
     var material: Material = DEFAULT_MATERIAL
+
     init {
         material = MaterialManager.getMaterial(recipe.material)
     }
@@ -63,7 +66,7 @@ data class Location(
         return recipe.name
     }
 
-    private suspend fun populateFromProtoLocation() {
+    internal suspend fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.recipe.properties)
 
         if (recipe.activators.isNotEmpty()) {
