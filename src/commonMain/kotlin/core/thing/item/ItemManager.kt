@@ -1,10 +1,12 @@
 package core.thing.item
 
 import core.DependencyInjector
+import core.ai.AIManager
 import core.startupLog
 import core.thing.Thing
 import core.thing.build
 import core.thing.thing
+import core.utility.Backer
 import core.utility.NameSearchableList
 import core.utility.lazyM
 import traveling.location.location.LocationThing
@@ -12,25 +14,26 @@ import traveling.location.location.LocationThing
 const val ITEM_TAG = "Item"
 
 object ItemManager {
-    private var items by lazyM { loadItems() }
+    private val items = Backer(::loadItems)
+    suspend fun getItems() = items.get()
 
-    private fun loadItems(): NameSearchableList<Thing> {
+    private suspend fun loadItems(): NameSearchableList<Thing> {
         startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
         return itemsCollection.values.build(ITEM_TAG)
     }
 
-    fun reset() {
-        items = loadItems()
+    suspend fun reset() {
+        items.reset()
     }
 
-    fun itemExists(name: String): Boolean {
-        return items.exists(name)
+    suspend fun itemExists(name: String): Boolean {
+        return getItems().exists(name)
     }
 
     suspend fun getItem(name: String): Thing {
         return thing(name) {
-            extends(items.get(name))
+            extends(getItems().get(name))
         }.build()
     }
 
@@ -38,14 +41,14 @@ object ItemManager {
         return names.map { getItem(it) }
     }
 
-    fun getAllItems(): List<Thing> {
-        return items.toList()
+    suspend fun getAllItems(): List<Thing> {
+        return getItems().toList()
     }
 
     suspend fun getItemsFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
             val item = thing(it.name) {
-                extends(items.get(it.name))
+                extends(getItems().get(it.name))
                 param(it.params)
             }.build()
             if (!it.location.isNullOrBlank()) {
@@ -58,7 +61,7 @@ object ItemManager {
 
     suspend fun getTaggedItemName(item: Thing): String {
         val orig = getItem(item.name)
-        val newTags = item.properties.tags.getAll() - orig.properties.tags.getAll()
+        val newTags = item.properties.tags.getAll() - orig.properties.tags.getAll().toSet()
         return if (newTags.isNotEmpty()) {
             newTags.joinToString(" ") + " " + item.name
         } else {

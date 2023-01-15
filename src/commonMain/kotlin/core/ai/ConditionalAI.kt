@@ -22,7 +22,7 @@ class ConditionalAI : AI() {
     }
 
     private suspend fun determineGoal(): Goal {
-        val matches = AIManager.desires.flatMap { it.getDesires(creature) }
+        val matches = AIManager.getDesires().flatMap { it.getDesires(creature) }
         val priority = matches.maxOfOrNull { it.second } ?: 0
         val topMatches = matches.filter { it.second == priority }
         val desire = (RandomManager.getRandomOrNull(topMatches) ?: defaultAgenda).first

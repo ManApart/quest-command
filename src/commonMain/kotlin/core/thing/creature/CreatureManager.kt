@@ -1,10 +1,12 @@
 package core.thing.creature
 
 import core.DependencyInjector
+import core.ai.AIManager
 import core.startupLog
 import core.thing.Thing
 import core.thing.build
 import core.thing.thing
+import core.utility.Backer
 import core.utility.NameSearchableList
 import core.utility.lazyM
 import core.utility.toNameSearchableList
@@ -13,13 +15,14 @@ import traveling.location.location.LocationThing
 const val CREATURE_TAG = "Creature"
 
 object CreatureManager {
-    private var creatures by lazyM { loadCreatures() }
+    private val creatures = Backer(::loadCreatures)
+    suspend fun getCreatures() = creatures.get()
 
-    fun reset() {
-        creatures = loadCreatures()
+    suspend fun reset() {
+        creatures.reset()
     }
 
-    private fun loadCreatures(): NameSearchableList<Thing> {
+    private suspend fun loadCreatures(): NameSearchableList<Thing> {
         startupLog("Loading Creatures.")
         val collection = DependencyInjector.getImplementation(CreaturesCollection::class)
         return collection.values.build(CREATURE_TAG).toNameSearchableList()
@@ -27,7 +30,7 @@ object CreatureManager {
 
     private suspend fun getCreature(name: String): Thing {
         return thing(name) {
-            extends(creatures.get(name))
+            extends(getCreatures().get(name))
         }.build()
     }
 
@@ -35,14 +38,14 @@ object CreatureManager {
         return names.map { getCreature(it) }
     }
 
-    fun getAllCreatures(): List<Thing> {
-        return creatures.toList()
+    suspend fun getAllCreatures(): List<Thing> {
+        return getCreatures().toList()
     }
 
     suspend fun getCreaturesFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
             val creature = thing(it.name) {
-                extends(creatures.get(it.name))
+                extends(getCreatures().get(it.name))
                 param(it.params)
             }.build()
 

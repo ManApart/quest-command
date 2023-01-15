@@ -6,11 +6,13 @@ import core.ai.agenda.AgendasCollection
 import core.ai.desire.DesireTree
 import core.ai.desire.DesiresCollection
 import core.startupLog
+import core.utility.Backer
 import core.utility.lazyM
 
 object AIManager {
-    var desires by lazyM { loadDesires() }
-        private set
+    private val desires = Backer(::loadDesires)
+    suspend fun getDesires() = desires.get()
+
     var agendas by lazyM { loadAgendas() }
         private set
 
@@ -25,7 +27,7 @@ object AIManager {
     }
 
     suspend fun reset() {
-        desires = loadDesires()
+        desires.reset()
         agendas = loadAgendas()
     }
 

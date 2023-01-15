@@ -1,5 +1,6 @@
 package validation
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -10,13 +11,15 @@ class ValidationTest {
 
     @Test
     fun allValidationsPass() {
-        val warnings =
+        runBlocking {
+            val warnings =
                 ActivatorValidator().validate() +
                         CommandValidator().validate() +
                         QuestValidator().validate() +
                         DesireValidator().validate()
 
-        assertEquals(0, warnings)
+            assertEquals(0, warnings)
+        }
     }
 
 }
