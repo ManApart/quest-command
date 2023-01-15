@@ -25,17 +25,17 @@ object ActivatorManager {
         activators = loadActivators()
     }
 
-    fun getActivator(name: String): Thing {
+    suspend fun getActivator(name: String): Thing {
         return thing(name) {
             extends(activators.get(name))
         }.build()
     }
 
-    fun getActivators(names: List<String>): List<Thing> {
+    suspend fun getActivators(names: List<String>): List<Thing> {
         return names.map { getActivator(it) }
     }
 
-    fun getActivatorsFromLocationThings(things: List<LocationThing>): List<Thing> {
+    suspend fun getActivatorsFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
             val activator = thing(it.name) {
                 extends(activators.get(it.name))

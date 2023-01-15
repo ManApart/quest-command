@@ -5,7 +5,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import system.persistance.*
 
-fun persist(dataObject: Body, path: String) {
+suspend fun persist(dataObject: Body, path: String) {
     if (dataObject.name == NONE.name) {
         return
     }
@@ -19,7 +19,7 @@ fun persist(dataObject: Body, path: String) {
 }
 
 
-fun load(path: String, name: String): Body {
+suspend fun load(path: String, name: String): Body {
     if (name == NONE.name) {
         return NONE
     }
@@ -36,7 +36,7 @@ data class BodyP(
 ) {
     constructor(b: Body) : this(b.name, b.material.name, b.getSlotMap())
 
-    fun parsed(path: String): Body {
+    suspend fun parsed(path: String): Body {
         val filePath = cleanPathToFile(".json", path, name)
         val networkFolderPath = clean(path, name)
         val network = traveling.location.load(networkFolderPath, name)

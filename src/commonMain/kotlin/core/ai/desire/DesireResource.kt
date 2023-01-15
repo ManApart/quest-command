@@ -1,5 +1,5 @@
 package core.ai.desire
 
 interface DesireResource {
-    val values: List<DesireTree>
+    suspend fun values(): List<DesireTree>
 }

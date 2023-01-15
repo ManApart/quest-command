@@ -31,7 +31,7 @@ data class Subject(
 
     @Transient
     private var thing: Thing? = null
-    fun getThing(): Thing? {
+    suspend fun getThing(): Thing? {
         if (thing == null && networkName != null && locationName != null && thingName != null){
             thing = LocationManager.getNetwork(networkName).findLocation(locationName).getLocation().getThings(thingName).firstOrNull()
         }

@@ -34,7 +34,7 @@ class HoldItemCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
-            args.isEmpty() -> source.thing.currentLocation().getThingsIncludingInventories().filter { source.thing.perceives(it) }.map { it.name }
+            args.isEmpty() -> source.thing.currentLocation().getThingsIncludingInventories().toList().filter { source.thing.perceives(it) }.map { it.name }
             args.size == 1 -> listOf("in")
             args.last() == "in" -> listOf("right", "left")
             args.last() in listOf("right", "left") -> listOf("hand")
@@ -76,7 +76,7 @@ class HoldItemCommand : Command() {
         }
     }
 
-    private fun getItem(source: Thing, args: Args): Thing? {
+    private suspend fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         return source.currentLocation().getItemsIncludingPlayerInventory(itemName, source).firstOrNull()
     }
@@ -93,7 +93,7 @@ class HoldItemCommand : Command() {
         }
     }
 
-    private fun suggestEquippableItems(source: Player) {
+    private suspend fun suggestEquippableItems(source: Player) {
         source.respond("There is nothing for you to hold.") {
             message("What do you want to hold?")
             optionsNamed(getEquipableItems(source.thing))
@@ -107,7 +107,7 @@ class HoldItemCommand : Command() {
         return source.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
     }
 
-    private fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
+    private suspend fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
         source.respond("There is no place you can hold ${item.name}.") {
             message("Could not find attach point $attachPointGuess. Where would you like to hold ${item.name}?")
             val options = source.thing.body.getParts().filter { it.hasAttachPoint("Grip") }

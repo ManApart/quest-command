@@ -22,7 +22,7 @@ class PlayAs : EventListener<PlayAsEvent>() {
     }
 
     //TODO - I don't think loading a character makes sense
-    private fun loadCharacter(source: Player, gameName: String, characterName: String): Player? {
+    private suspend fun loadCharacter(source: Player, gameName: String, characterName: String): Player? {
         val playerSaveName = clean(characterName)
         val allSaves = getCharacterSaves(gameName)
         val saves = allSaves.filter { it.lowercase().contains(playerSaveName.lowercase()) }

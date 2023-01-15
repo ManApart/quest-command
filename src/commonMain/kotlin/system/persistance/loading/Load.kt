@@ -28,7 +28,7 @@ class Load : EventListener<LoadEvent>() {
         }
     }
 
-    private fun loadGameAndPlayer(gameName: String) {
+    private suspend fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
         GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName}.")
     }

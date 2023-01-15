@@ -19,7 +19,7 @@ fun things(initializer: ThingsBuilder.() -> Unit): List<ThingBuilder> {
     return ThingsBuilder().apply(initializer).children
 }
 
-fun List<ThingBuilder>.build(tagToApply: String? = null): NameSearchableList<Thing> {
+suspend fun List<ThingBuilder>.build(tagToApply: String? = null): NameSearchableList<Thing> {
     val tags = tagToApply?.let { listOf(it) } ?: listOf()
     val builders = associateBy { it.name }
     return builders.values.map {

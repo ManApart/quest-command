@@ -6,11 +6,11 @@ import core.history.displayToMe
 import core.history.displayToOthersGlobal
 
 class PlayerControlledAI : AI() {
-    override fun hear(event: DialogueEvent) {
+    override suspend fun hear(event: DialogueEvent) {
         event.speaker.display("" + event.speaker.name + ": " + event.line)
     }
 
-    override fun takeAction() {
+    override suspend fun takeAction() {
         creature.displayToMe("What do you do, ${creature.name}?")
         creature.displayToOthersGlobal("${creature.name} does what?")
     }

@@ -74,7 +74,7 @@ class CastCommand : Command() {
         }
     }
 
-    private fun clarifyWord(source: Player) {
+    private suspend fun clarifyWord(source: Player) {
         source.respond("There are no spells you can cast.") {
             message("Cast what?")
             optionsNamed(spellCommands)
@@ -112,7 +112,7 @@ fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<Location>
 
 }
 
-fun getThingedPartsOrRootPart(thingAim: ThingAim): List<Location> {
+suspend fun getThingedPartsOrRootPart(thingAim: ThingAim): List<Location> {
     return thingAim.bodyPartThings.ifEmpty {
         listOfNotNull(thingAim.thing.body.getRootPart())
     }

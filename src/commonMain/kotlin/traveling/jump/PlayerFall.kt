@@ -30,7 +30,7 @@ class PlayerFall : EventListener<FallEvent>() {
         event.creature.finishClimbing()
     }
 
-    private fun takeDamage(event: FallEvent) {
+    private suspend fun takeDamage(event: FallEvent) {
         //TODO add defense per their foot defense
         val amount = max(0, event.fallHeight - event.creature.soul.getCurrent(AGILITY))
         if (amount != 0) {

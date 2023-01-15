@@ -53,7 +53,7 @@ class CraftRecipeCommand : Command() {
         }
     }
 
-    private fun processRecipe(source: Player, recipe: Recipe) {
+    private suspend fun processRecipe(source: Player, recipe: Recipe) {
         val tool = source.thing.currentLocation().findActivatorsByProperties(recipe.toolProperties).firstOrNull()
                 ?: source.thing.inventory.findItemsByProperties(recipe.toolProperties).firstOrNull()
         if (!recipe.toolProperties.isEmpty() && tool == null) {

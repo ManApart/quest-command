@@ -48,7 +48,7 @@ class ThingBuilder(internal val name: String) {
     private var parent: Thing? = null
     private var bodyCustomizer: BodyCustomizer = BodyCustomizer()
 
-    fun build(additionalBases: List<ThingBuilder> = listOf(), tagsToApply: List<String> = listOf()): Thing {
+    suspend fun build(additionalBases: List<ThingBuilder> = listOf(), tagsToApply: List<String> = listOf()): Thing {
         val bases = bases + additionalBases
         val basesR = bases.reversed()
         val params = paramsBuilder.build(bases.map { it.paramsBuilder })
@@ -96,7 +96,7 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    fun buildWithBase(builders: Map<String, ThingBuilder>, tagsToApply: List<String> = listOf()): Thing {
+    suspend fun buildWithBase(builders: Map<String, ThingBuilder>, tagsToApply: List<String> = listOf()): Thing {
         val bases = baseNames.map { builders[it]!! }
         return build(bases, tagsToApply)
     }
@@ -236,7 +236,7 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    private fun discernBody(possibleBody: Body?, possibleBodyName: String?, bodyMaterial: Material, bodyCustomizer: BodyCustomizer): Body {
+    private suspend fun discernBody(possibleBody: Body?, possibleBodyName: String?, bodyMaterial: Material, bodyCustomizer: BodyCustomizer): Body {
         return when {
             possibleBody != null -> possibleBody
             possibleBodyName != null -> BodyManager.getBody(possibleBodyName)

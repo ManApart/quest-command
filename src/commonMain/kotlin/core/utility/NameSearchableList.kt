@@ -8,7 +8,7 @@ expect class NameSearchableList<N : Named>() : MutableList<N> {
     override fun clear()
     override fun toString(): String
     fun <R : Comparable<R>> sortedBy(selector: (N) -> R?): NameSearchableList<N>
-    fun filter(predicate: (N) -> Boolean): NameSearchableList<N>
+    fun filter(predicate: suspend (N) -> Boolean): NameSearchableList<N>
     operator fun plus(other: NameSearchableList<N>): NameSearchableList<N>
     operator fun plus(other: List<N>): NameSearchableList<N>
     fun addProxy(item: N, names: List<String>)

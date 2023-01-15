@@ -21,7 +21,7 @@ actual class File actual constructor(pathIn: String) {
     private val implementation = JFile(pathIn)
     actual val path: String = implementation.path
     actual val nameWithoutExtension: String = implementation.nameWithoutExtension
-    actual fun readText(): String = implementation.readText()
+    actual suspend fun readText(): String = implementation.readText()
     val name: String = implementation.name
     fun exists(): Boolean = implementation.exists()
     val isDirectory: Boolean = implementation.isDirectory
@@ -33,15 +33,11 @@ actual class File actual constructor(pathIn: String) {
 
 private val ignoredNames = listOf("games", "gameState")
 
-private fun getSaveFolder(): String {
-    return if (GameState.properties.values.getBoolean(TEST_SAVE_FOLDER)) "./savesTest/" else "./saves/"
-}
-
 actual suspend fun getGameNames(): List<String> {
     return getFolders(getSaveFolder()).map { it.name }
 }
 
-actual fun getCharacterSaves(gameName: String): List<String> {
+actual suspend fun getCharacterSaves(gameName: String): List<String> {
     return getFiles(clean(getSaveFolder(), gameName))
         .map { it.name }
         .filter { it.endsWith(".json") }
@@ -49,14 +45,14 @@ actual fun getCharacterSaves(gameName: String): List<String> {
         .filter { !ignoredNames.contains(it) }
 }
 
-actual inline fun <reified T> loadFromPath(path: String): T? {
+actual suspend inline fun <reified T> loadFromPath(path: String): T? {
     val file = File(path)
     return if (file.exists()) {
         Json.decodeFromString(file.readText())
     } else null
 }
 
-actual fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
+actual suspend fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
     return getFilesAndFolders(path, ignoredFileNames).filter { !it.isDirectory }
 }
 
@@ -79,7 +75,7 @@ private fun getFilesAndFolders(path: String, ignoredFileNames: List<String> = li
 }
 
 
-actual fun save(rawGameName: String) {
+actual suspend fun save(rawGameName: String) {
     val gameName = cleanPathPart(rawGameName)
     val gamePath = clean(getSaveFolder(), gameName)
     saveSessionStats()
@@ -91,20 +87,20 @@ actual fun save(rawGameName: String) {
     saveTopLevelMetadata(gameName)
 }
 
-private fun saveSessionStats() {
+private suspend fun saveSessionStats() {
     if (!GameState.properties.values.getBoolean(SKIP_SAVE_STATS)) {
         SessionHistory.saveSessionStats()
     }
 }
 
-private fun saveGameState(path: String) {
+private suspend fun saveGameState(path: String) {
     GameState.properties.values.put(AUTO_LOAD, true)
     val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
     val json = Json.encodeToString(GameStateP())
     writeSave(path, gameStateSaveName, json)
 }
 
-private fun saveTopLevelMetadata(gameName: String) {
+private suspend fun saveTopLevelMetadata(gameName: String) {
     val gameMetaData = Properties()
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
     gameMetaData.values.put(AUTO_LOAD, true)
@@ -112,7 +108,7 @@ private fun saveTopLevelMetadata(gameName: String) {
     writeSave(getSaveFolder(), cleanPathToFile(".json", getSaveFolder(), "games"), json)
 }
 
-actual fun save(gameName: String, network: Network) {
+actual suspend fun save(gameName: String, network: Network) {
     network.getLocationNodes()
         .filter { it.hasLoadedLocation() }
         .map {
@@ -124,7 +120,7 @@ actual fun save(gameName: String, network: Network) {
 }
 
 //Instead of saving character at top level, save the path to the character's location and load that?
-actual fun loadGame(gameName: String) {
+actual suspend fun loadGame(gameName: String) {
     val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
     gameStateData.updateGameState()
     GameLogger.stopTracking(GameState.player)
@@ -144,18 +140,18 @@ actual fun loadGame(gameName: String) {
 }
 
 
-actual fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
+actual suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
     return json.parsed(playerName, path, null)
 }
 
-actual fun getGamesMetaData(): Properties {
+actual suspend fun getGamesMetaData(): Properties {
     val props: PropertiesP? = loadFromPath(cleanPathToFile(".json", getSaveFolder(), "games"))
     return props?.parsed() ?: Properties()
 }
 
-actual fun writeSave(directoryName: String, saveName: String, json: String) {
+actual suspend fun writeSave(directoryName: String, saveName: String, json: String) {
     val directory = File(directoryName)
     if (!directory.exists()) {
         directory.mkdirs()

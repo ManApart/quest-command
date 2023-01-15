@@ -18,7 +18,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         }
     }
 
-    private fun placeItem(source: Thing, item: Thing, position: Vector, silent: Boolean) {
+    private suspend fun placeItem(source: Thing, item: Thing, position: Vector, silent: Boolean) {
         if (item.properties.getCount() > 1) {
             item.properties.incCount(-1)
         } else {

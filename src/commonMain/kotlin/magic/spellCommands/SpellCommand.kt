@@ -16,7 +16,7 @@ abstract class SpellCommand : Named {
     abstract suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String>
     abstract suspend fun execute(source: Player, args: Args, things: List<ThingAim>, useDefaults: Boolean)
 
-    fun executeWithWarns(source: Player, levelStat: String, levelRequirement: Int, totalCost: Int, things: List<ThingAim>, minThingCount: Int = 1, maxThingCount: Int = 100, execute: () -> Unit) {
+    suspend fun executeWithWarns(source: Player, levelStat: String, levelRequirement: Int, totalCost: Int, things: List<ThingAim>, minThingCount: Int = 1, maxThingCount: Int = 100, execute: suspend () -> Unit) {
         val level = source.soul.getCurrent(levelStat)
         val focus = source.soul.getCurrent(FOCUS)
         when {

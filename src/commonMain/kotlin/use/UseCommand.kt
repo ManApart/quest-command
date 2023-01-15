@@ -1,10 +1,7 @@
 package use
 
 import core.Player
-import core.commands.ArgDelimiter
-import core.commands.Args
-import core.commands.Command
-import core.commands.respond
+import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
 import use.interaction.InteractEvent
@@ -70,24 +67,24 @@ class UseCommand : Command() {
         }
     }
 
-    private fun clarifyItem(source: Player) {
-        source.respond("There isn't anything here to use.") {
+    private suspend fun clarifyItem(source: Player) {
+        source.respondSuspend("There isn't anything here to use.") {
             message("Use what?")
             optionsNamed(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
             command { "use $it" }
         }
     }
 
-    private fun clarifyItemForThing(source: Player) {
-        source.respond("There isn't anything to use.") {
+    private suspend fun clarifyItemForThing(source: Player) {
+        source.respondSuspend("There isn't anything to use.") {
             message("Use what?")
             optionsNamed(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
             command { "use $it on" }
         }
     }
 
-    private fun clarifyThing(source: Player, used: String) {
-        source.respond("There isn't anything to use $used on.") {
+    private suspend fun clarifyThing(source: Player, used: String) {
+        source.respondSuspend("There isn't anything to use $used on.") {
             message("Use $used on what?")
             optionsNamed(source.thing.currentLocation().getThingsIncludingPlayerInventory(source.thing))
             command { "use $used on $it" }

@@ -12,7 +12,7 @@ fun parseThingsFromInventory(source: Thing, arguments: List<String>): List<Thing
     return parseThings(source, arguments, things)
 }
 
-fun parseThingsFromLocation(source: Thing, arguments: List<String>): List<ThingAim> {
+suspend fun parseThingsFromLocation(source: Thing, arguments: List<String>): List<ThingAim> {
     val things = source.currentLocation().getThings()
     return parseThings(source, arguments, things)
 }

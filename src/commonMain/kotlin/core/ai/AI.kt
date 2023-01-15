@@ -8,8 +8,8 @@ import status.stat.WISDOM
 
 abstract class AI {
     lateinit var creature: Thing
-    abstract fun hear(event: DialogueEvent)
-    abstract fun takeAction()
+    abstract suspend fun hear(event: DialogueEvent)
+    abstract suspend fun takeAction()
 
     var action: DelayedEvent? = null
 
@@ -36,7 +36,7 @@ abstract class AI {
         return action == null && actionPoints >= 100
     }
 
-    fun chooseAction() {
+    suspend fun chooseAction() {
         if (!creature.isPlayer()) {
             takeAction()
         }

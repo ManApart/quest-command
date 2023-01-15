@@ -99,7 +99,7 @@ data class Location(
         return equippedItems.values.firstOrNull { it?.properties?.tags?.has("Weapon") ?: false }
     }
 
-    fun equipItem(attachPoint: String, item: Thing) {
+    suspend fun equipItem(attachPoint: String, item: Thing) {
         if (!equippedItems.containsKey(attachPoint.lowercase())) {
             item.display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
         } else {
@@ -159,7 +159,7 @@ data class Location(
         thing.properties.values.clear("locationDescription")
     }
 
-    fun removeThingIncludingPlayerInventory(source: Thing, thing: Thing) {
+    suspend fun removeThingIncludingPlayerInventory(source: Thing, thing: Thing) {
         if (source.inventory.exists(thing)) {
             source.inventory.remove(thing)
         } else {
@@ -366,7 +366,7 @@ data class Location(
         return true
     }
 
-    fun isSafeFor(creature: Thing): Boolean {
+    suspend fun isSafeFor(creature: Thing): Boolean {
         //No one is hostile towards the creature
         return creatures.none { it.mind.getAggroTarget() == creature }
     }

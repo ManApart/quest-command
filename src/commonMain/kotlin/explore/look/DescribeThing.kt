@@ -6,14 +6,14 @@ import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.joinToStringAnd
 
-fun describeThing(source: Player, thing: Thing) {
+suspend fun describeThing(source: Player, thing: Thing) {
     var message = thing.getDisplayName()
     message += "\n\t${thing.description}"
     source.displayToMe(message)
     source.displayToOthers("${source.name} looks at ${thing.name}.")
 }
 
-fun describeThingDetailed(source: Player, thing: Thing) {
+suspend fun describeThingDetailed(source: Player, thing: Thing) {
     var message = thing.getDisplayName()
     message += "\n\t${thing.description}"
     message += describeStatusEffects(thing)

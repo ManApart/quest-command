@@ -50,7 +50,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupItemFromScope(source: Player, args: Args) {
+    private suspend fun pickupItemFromScope(source: Player, args: Args) {
         val items = source.thing.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
         when {
             items.isEmpty() -> source.displayToMe("Couldn't find ${args.getBaseString()}")
@@ -59,7 +59,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupWhat(source: Player, items: List<Thing>) {
+    private suspend fun pickupWhat(source: Player, items: List<Thing>) {
         if (items.isEmpty()) {
             source.displayToMe("Nothing to pickup!")
         } else {
@@ -71,7 +71,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun pickupItemFromContainer(source: Player, args: Args) {
+    private suspend fun pickupItemFromContainer(source: Player, args: Args) {
         val from = source.thing.currentLocation().getThings(args.getString("from")).filterUniqueByName()
         when {
             from.isEmpty() -> source.displayToMe("Couldn't find ${args.getString("from")}.")
@@ -80,7 +80,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun takeFromWhat(source: Player, creatures: List<Thing>, itemName: String) {
+    private suspend fun takeFromWhat(source: Player, creatures: List<Thing>, itemName: String) {
         source.respond("Nothing to take from.") {
             message("Take $itemName from what?")
             optionsNamed(creatures)

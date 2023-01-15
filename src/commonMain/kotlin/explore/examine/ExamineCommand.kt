@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Command
 import core.commands.parseThings
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import traveling.position.ThingAim
@@ -48,7 +49,7 @@ class ExamineCommand : Command() {
         }
     }
 
-    private fun tryAndGetThing(args: List<String>, source: Player) {
+    private suspend fun tryAndGetThing(args: List<String>, source: Player) {
         val thing = getThing(args, source)
         when {
             thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
@@ -58,7 +59,7 @@ class ExamineCommand : Command() {
         }
     }
 
-    private fun getThing(args: List<String>, source: Player): ThingAim? {
+    private suspend fun getThing(args: List<String>, source: Player): ThingAim? {
         val allThings = source.thing.currentLocation().getThingsIncludingInventories()
         val things = parseThings(source.thing, args, allThings)
 
@@ -75,8 +76,8 @@ class ExamineCommand : Command() {
         }
     }
 
-    private fun clarifyThing(source: Player) {
-        source.respond({}) {
+    private suspend fun clarifyThing(source: Player) {
+        source.respondSuspend({}) {
             message("Examine what?")
             options(listOf("all") + source.thing.currentLocation().getThings().map { it.name })
             command { "examine $it" }

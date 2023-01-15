@@ -73,7 +73,7 @@ data class LocationNode(
         return location != null
     }
 
-    fun getLocation(): Location {
+    suspend fun getLocation(): Location {
         return when {
             location != null -> location!!
             loadPath != null -> {

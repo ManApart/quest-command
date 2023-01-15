@@ -13,7 +13,7 @@ import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 import traveling.location.network.LocationNode
 
-fun describeClimbJourney(source: Player, detailed: Boolean = false) {
+suspend fun describeClimbJourney(source: Player, detailed: Boolean = false) {
     val location = source.thing.location
     val distance = getDistance(location).wrapNonEmpty("", " ")
     val exits = getExits(location, source.thing.climbThing!!)

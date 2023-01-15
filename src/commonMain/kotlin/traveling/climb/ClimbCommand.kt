@@ -117,7 +117,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun findAllThings(source: Thing): NameSearchableList<Thing> {
+    private suspend fun findAllThings(source: Thing): NameSearchableList<Thing> {
         val localClimbableThings = source.currentLocation().findThingsByTag("Climbable")
         val connections = source.location.getNeighborConnections().filter { connection ->
             localClimbableThings.none { it.name == connection.source.thingName }
@@ -170,7 +170,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun clarifyClimbPart(player: Player, currentLocation: LocationNode, thing: Thing) {
+    private suspend fun clarifyClimbPart(player: Player, currentLocation: LocationNode, thing: Thing) {
         val options = getAvailableOptions(player.thing, currentLocation, thing)
 
         if (options.isEmpty()) {
@@ -210,7 +210,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun processClimbing(player: Player, keyword: String, arguments: Args, thing: Thing) {
+    private suspend fun processClimbing(player: Player, keyword: String, arguments: Args, thing: Thing) {
         val direction = arguments.getDirection()
         when {
             arguments.isEmpty() -> {
@@ -226,7 +226,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun climbInDirection(player: Player, direction: Direction, thing: Thing) {
+    private suspend fun climbInDirection(player: Player, direction: Direction, thing: Thing) {
         val location = player.location.getNeighbors(direction).firstOrNull()
         if (location != null) {
             EventManager.postEvent(AttemptClimbEvent(player.thing, thing, location, direction))
@@ -235,7 +235,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun climbToPart(player: Player, arguments: Args, thing: Thing) {
+    private suspend fun climbToPart(player: Player, arguments: Args, thing: Thing) {
         val partArgs = arguments.getBaseString()
         if (thing.body.hasPart(partArgs)) {
             val part = thing.body.getPartLocation(partArgs)

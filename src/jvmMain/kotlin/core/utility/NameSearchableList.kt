@@ -41,8 +41,8 @@ actual class NameSearchableList<N : Named> actual constructor() : MutableList<N>
         return newList
     }
 
-    actual fun filter(predicate: (N) -> Boolean): NameSearchableList<N> {
-        val newList: NameSearchableList<N> = filterTo(NameSearchableList(), predicate)
+    actual fun filter(predicate: suspend (N) -> Boolean): NameSearchableList<N> {
+        val newList = this.filter(predicate)
         // Only add proxies for items that still exist in the list
         proxies.forEach { (proxy, item) ->
             if (newList.exists(item)) {

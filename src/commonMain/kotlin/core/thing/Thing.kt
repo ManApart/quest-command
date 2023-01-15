@@ -208,7 +208,7 @@ data class Thing(
         climbThing = null
     }
 
-    fun isSafe(): Boolean {
+    suspend fun isSafe(): Boolean {
         return location.getLocation().isSafeFor(this) && !properties.values.getBoolean(IS_CLIMBING)
     }
 
@@ -216,7 +216,7 @@ data class Thing(
         return !properties.values.getBoolean(IS_CLIMBING)
     }
 
-    fun currentLocation(): Location {
+    suspend fun currentLocation(): Location {
         return location.getLocation()
     }
 
@@ -228,7 +228,8 @@ data class Thing(
         return (soul.getCurrent(PERCEPTION) + 5).clamp(0, 100)
     }
 
-    fun getStealthLevel(observer: Thing, lightSources: List<Thing> = location.getLocation().getLightSources()): Int {
+    suspend fun getStealthLevel(observer: Thing, lightSourcesIn: List<Thing>? = null): Int {
+        val lightSources = lightSourcesIn ?: location.getLocation().getLightSources()
         val size = min(getSize(), 50)
         val soundLevel = getSound(observer)?.strength ?: 0
         val sneak = soul.getCurrent(SNEAK)
@@ -237,14 +238,14 @@ data class Thing(
         return (sneak + adjustedDark - size - soundLevel).clamp(0, 100)
     }
 
-    fun perceives(other: Thing): Boolean {
+    suspend fun perceives(other: Thing): Boolean {
         if (GameState.getDebugBoolean(DebugType.CLARITY) || this === other) return true
         return location == other.location && getClarity() >= other.getStealthLevel(this) || inventory.exists(other)
     }
 
 }
 
-fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
+suspend fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
     if (GameState.getDebugBoolean(DebugType.CLARITY)) return this
     val clarity = source.getClarity()
     val lightSources = source.location.getLocation().getLightSources()

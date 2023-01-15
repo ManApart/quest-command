@@ -37,6 +37,7 @@ import crafting.material.MaterialManager
 import crafting.material.MaterialsCollection
 import crafting.material.MaterialsMock
 import inventory.createInventoryBody
+import kotlinx.coroutines.runBlocking
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
 import quests.QuestManager
@@ -172,7 +173,7 @@ fun createMockedGame() {
     GameState.reset()
     CommandParsers.reset()
     CommandParsers.setResponseRequest(GameState.player, null)
-    GameState.player.location.getLocation().addThing(GameState.player.thing)
+    runBlocking { GameState.player.location.getLocation().addThing(GameState.player.thing) }
 
     GameLogger.reset()
 

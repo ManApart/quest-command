@@ -80,7 +80,7 @@ class AttackCommand : Command() {
         }
     }
 
-    private fun getThing(keyword: String, arguments: Args, weaponName: String, source: Player): ThingAim? {
+    private suspend fun getThing(keyword: String, arguments: Args, weaponName: String, source: Player): ThingAim? {
         val things = parseThingsFromLocation(source.thing, arguments.getBaseGroup()) + parseThingsFromInventory(source.thing, arguments.getBaseGroup())
 
         return when {
@@ -107,8 +107,8 @@ class AttackCommand : Command() {
         }
     }
 
-    private fun clarifyThing(player: Player, keyword: String, weaponName: String) {
-        player.respond("Unable to find a weapon.") {
+    private suspend fun clarifyThing(player: Player, keyword: String, weaponName: String) {
+        player.respondSuspend("Unable to find a weapon.") {
             message("$keyword what with $weaponName?")
             optionsNamed(player.thing.currentLocation().getThings())
             command { "$keyword $it" }
@@ -131,7 +131,7 @@ class AttackCommand : Command() {
         }
     }
 
-    private fun processAttack(source: Thing, arguments: Args, attackType: AttackType, handHelper: HandHelper, thing: ThingAim?) {
+    private suspend fun processAttack(source: Thing, arguments: Args, attackType: AttackType, handHelper: HandHelper, thing: ThingAim?) {
         when {
             isAttackingActivatorWithWeapon(thing, handHelper) -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, thing!!.thing))
             thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(StartUseEvent(source, handHelper.weapon!!, source))

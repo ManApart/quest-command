@@ -2,8 +2,9 @@ package core.ai.desire
 
 import core.thing.Thing
 import core.utility.RandomManager
+import core.utility.applySuspending
 
-class DesireBuilder(val condition: (Thing) -> Boolean?) {
+class DesireBuilder(val condition: suspend (Thing) -> Boolean?) {
     //Set priority to an exact amount
     var priority: Int? = null
     //Give some additional priority to actions at the top level of this branch. Not recursive
@@ -13,17 +14,19 @@ class DesireBuilder(val condition: (Thing) -> Boolean?) {
     private val agendas: MutableList<String> = mutableListOf()
 
 
-    fun cond(condition: (Thing) -> Boolean? = { _ -> true }, initializer: DesireBuilder.() -> Unit) {
-        children.add(DesireBuilder(condition).apply(initializer))
+    suspend fun cond(condition: suspend (Thing) -> Boolean? = { _ -> true }, initializer: suspend DesireBuilder.() -> Unit) {
+        children.add(DesireBuilder(condition).applySuspending(initializer))
     }
 
-    fun cond(randomChance: Int, condition: (Thing) -> Boolean? = { _ -> true }, initializer: DesireBuilder.() -> Unit) {
-        val newCondition: (Thing) -> Boolean? = { thing ->  if (RandomManager.isSuccess(randomChance)) condition(thing) else null }
+    suspend fun cond(randomChance: Int, condition: suspend (Thing) -> Boolean? = { _ -> true }, initializer: DesireBuilder.() -> Unit) {
+        val newCondition: suspend (Thing) -> Boolean? = { thing ->  if (RandomManager.isSuccess(randomChance)) condition(thing) else null }
         children.add(DesireBuilder(newCondition).apply(initializer))
     }
 
-    fun tag(tag: String, initializer: DesireBuilder.() -> Unit) {
-        children.add(DesireBuilder { source -> source.properties.tags.has(tag) }.apply(initializer))
+    suspend fun tag(tag: String, initializer: suspend DesireBuilder.() -> Unit) {
+        val b = DesireBuilder { source -> source.properties.tags.has(tag) }
+        b.initializer()
+        children.add(b)
     }
 
     fun agenda(agenda: String) {
@@ -39,9 +42,9 @@ class DesireBuilder(val condition: (Thing) -> Boolean?) {
     }
 }
 
-fun desires(
+suspend fun desires(
     condition: (Thing) -> Boolean? = { _ -> true },
-    initializer: DesireBuilder.() -> Unit
+    initializer: suspend DesireBuilder.() -> Unit
 ): List<DesireTree> {
-    return listOf(DesireBuilder(condition).apply(initializer).build())
+    return listOf(DesireBuilder(condition).applySuspending(initializer).build())
 }

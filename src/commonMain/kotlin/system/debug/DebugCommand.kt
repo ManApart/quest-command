@@ -101,7 +101,7 @@ class DebugCommand : Command() {
         }
     }
 
-    private fun sendDebugTagEvent(source: Thing, args: Args) {
+    private suspend fun sendDebugTagEvent(source: Thing, args: Args) {
         val thing = parseThingsFromLocation(source, args.getGroup("on")).firstOrNull()?.thing ?: source
         val tagName = args.argsWithout(listOf("remove", args.args.first())).joinToString(" ")
         val isAdding = !args.contains("remove")

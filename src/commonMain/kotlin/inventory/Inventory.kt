@@ -12,9 +12,17 @@ import core.utility.toNameSearchableList
 import crafting.material.DEFAULT_MATERIAL
 import traveling.location.location.Location
 
+suspend fun inventory(name: String = "Inventory") : Inventory {
+    return Inventory(name, createInventoryBody(name))
+}
 
-data class Inventory(val name: String = "Inventory", private val body: Body = createInventoryBody(name)) {
-    constructor(name: String, items: List<Thing>) : this(name, Body().also { it.layout.rootNode.getLocation().addThings(items) })
+suspend fun inventory(name: String, items: List<Thing>) : Inventory {
+    return Inventory(name, Body().also { it.layout.rootNode.getLocation().addThings(items) })
+}
+
+data class Inventory(val name: String = "Inventory", private val body: Body) {
+    //TODO
+//    constructor(name: String, items: List<Thing>) : this(name, Body().also { it.layout.rootNode.getLocation().addThings(items) })
 
     override fun toString(): String {
         return name
@@ -52,13 +60,13 @@ data class Inventory(val name: String = "Inventory", private val body: Body = cr
         return getItems().toNameSearchableList()
     }
 
-    fun addAllByName(items: List<String>) {
+    suspend fun addAllByName(items: List<String>) {
         if (items.isNotEmpty()) {
             addAll(ItemManager.getItems(items))
         }
     }
 
-    fun addAll(items: List<Thing>) {
+    suspend fun addAll(items: List<Thing>) {
         items.forEach { add(it) }
     }
 
@@ -73,7 +81,7 @@ data class Inventory(val name: String = "Inventory", private val body: Body = cr
     }
 
     //Eventually add count
-    fun attemptToAdd(item: Thing): Boolean {
+    suspend fun attemptToAdd(item: Thing): Boolean {
         val equipSlot = body.getEmptyEquipSlot(item)
         if (equipSlot != null) {
             body.equip(item, equipSlot)
@@ -92,13 +100,13 @@ data class Inventory(val name: String = "Inventory", private val body: Body = cr
         return true
     }
 
-    fun add(item: Thing) {
+    suspend fun add(item: Thing) {
         if (!attemptToAdd(item)) {
             body.getRootPart().addThing(item)
         }
     }
 
-    fun remove(item: Thing, count: Int = 1) {
+    suspend fun remove(item: Thing, count: Int = 1) {
         val location = findLocationWith(item)
         if (location != null) {
             if (item.properties.getCount() > count) {
@@ -120,7 +128,7 @@ data class Inventory(val name: String = "Inventory", private val body: Body = cr
 
 }
 
-fun createInventoryBody(name: String = "Inventory", capacity: Int? = null): Body {
+suspend fun createInventoryBody(name: String = "Inventory", capacity: Int? = null): Body {
     return Body(name).also {
         with(it.getRootPart().properties.tags) {
             add(CONTAINER)

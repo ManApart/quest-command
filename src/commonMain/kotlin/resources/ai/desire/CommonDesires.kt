@@ -8,7 +8,7 @@ import status.stat.STAMINA
 import time.TimeManager
 
 class CommonDesires : DesireResource {
-    override val values = desires {
+    override suspend fun values() = desires {
         agenda("Nothing")
 
         cond({ source -> source.mind.getAggroTarget() != null }) {
@@ -51,14 +51,14 @@ class CommonDesires : DesireResource {
     }
 }
 
-private fun Thing.creatures(): List<Thing> {
+private suspend fun Thing.creatures(): List<Thing> {
     return location.getLocation().getCreatures(perceivedBy = this).filter { it != this }
 }
 
-private fun Thing.activators(): List<Thing> {
+private suspend fun Thing.activators(): List<Thing> {
     return location.getLocation().getActivators(perceivedBy = this).filter { it != this }
 }
 
-private fun Thing.items(): List<Thing> {
+private suspend fun Thing.items(): List<Thing> {
     return location.getLocation().getItems(perceivedBy = this).filter { it != this }
 }

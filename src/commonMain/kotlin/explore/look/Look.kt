@@ -21,7 +21,7 @@ class Look : EventListener<LookEvent>() {
 
 }
 
-fun describePerceived(source: Player, thing: Thing, describe: () -> Unit) {
+suspend fun describePerceived(source: Player, thing: Thing, describe: () -> Unit) {
     if (source.thing.perceives(thing)) {
         describe()
     } else {

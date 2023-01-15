@@ -32,18 +32,18 @@ class TakeItemTest {
         DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
-        NOWHERE_NODE.getLocation().clear()
+        runBlocking { NOWHERE_NODE.getLocation().clear() }
     }
 
     @AfterTest
     fun tearDown() {
-        NOWHERE_NODE.getLocation().clear()
+        runBlocking { NOWHERE_NODE.getLocation().clear() }
     }
 
     @Test
     fun pickupItemFromLocation() {
         val creature = getCreatureWithCapacity()
-        val location = creature.location.getLocation()
+        val location = runBlocking { creature.location.getLocation() }
         val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
         location.addThing(item)
 
@@ -55,7 +55,7 @@ class TakeItemTest {
     @Test
     fun noPickupItemFromLocationIfNoCapacity() {
         val creature = Thing("Thing")
-        val location = creature.location.getLocation()
+        val location = runBlocking { creature.location.getLocation() }
         val item = Thing("Apple")
         location.addThing(item)
 
@@ -67,7 +67,7 @@ class TakeItemTest {
     @Test
     fun pickupSingleItemLeavesRestOfStack() {
         val creature = getCreatureWithCapacity()
-        val location = creature.location.getLocation()
+        val location = runBlocking { creature.location.getLocation() }
         val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
         location.addThing(item)
 
@@ -80,9 +80,10 @@ class TakeItemTest {
 
         assertEquals(1, inInventory.properties.values.getInt(COUNT))
         assertEquals(2, inLocation.properties.values.getInt(COUNT))
-
-        assertEquals(location, inLocation.location.getLocation())
-        assertEquals(creature.inventory.getItem("Pouch")?.body?.getRootPart(), inInventory.location.getLocation())
+        runBlocking {
+            assertEquals(location, inLocation.location.getLocation())
+            assertEquals(creature.inventory.getItem("Pouch")?.body?.getRootPart(), inInventory.location.getLocation())
+        }
     }
 
     private fun getCreatureWithCapacity(): Thing {

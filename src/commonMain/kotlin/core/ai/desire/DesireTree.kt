@@ -5,12 +5,12 @@ import core.thing.Thing
 typealias PrioritizedAgendaName = Pair<String, Int>
 
 data class DesireTree(
-    private val condition: (Thing) -> Boolean?,
+    private val condition: suspend (Thing) -> Boolean?,
     private val agendas: List<PrioritizedAgendaName> = listOf(),
     private val children: List<DesireTree> = listOf()
 ) {
 
-    fun getDesires(source: Thing): List<PrioritizedAgendaName> {
+    suspend fun getDesires(source: Thing): List<PrioritizedAgendaName> {
         return if (condition(source) == true) {
             agendas + children.flatMap { it.getDesires(source) }
         } else listOf()

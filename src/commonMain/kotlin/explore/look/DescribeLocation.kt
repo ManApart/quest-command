@@ -13,13 +13,13 @@ import traveling.position.NO_VECTOR
 import traveling.scope.getHeatLevel
 import traveling.scope.getLightLevel
 
-fun describeLocation(source: Player, location: Location) {
+suspend fun describeLocation(source: Player, location: Location) {
     describePosition(source, location)
     describePerceivedThings(source, location)
     source.displayToOthers("${source.name} looks around.")
 }
 
-private fun describePosition(source: Player, location: Location) {
+private suspend fun describePosition(source: Player, location: Location) {
     val boundsString = if (location.bounds.toString().isBlank()) "" else " (${location.bounds})"
     if (source.thing.currentLocation() == location) {
         val pos = source.position
@@ -33,7 +33,7 @@ private fun describePosition(source: Player, location: Location) {
     }
 }
 
-private fun describePerceivedThings(source: Player, location: Location) {
+private suspend fun describePerceivedThings(source: Player, location: Location) {
     val allThings = location.getThings()
     val things = allThings.filterNot { it == source.thing }.toList().perceivedBy(source.thing)
     when {
@@ -49,7 +49,7 @@ private fun describePerceivedThings(source: Player, location: Location) {
     }
 }
 
-fun describeLocationDetailed(source: Player, location: Location) {
+suspend fun describeLocationDetailed(source: Player, location: Location) {
     val locationRecipe = location.locationNode.recipe
     describePosition(source, location)
 

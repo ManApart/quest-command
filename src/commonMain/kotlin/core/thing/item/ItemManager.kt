@@ -28,13 +28,13 @@ object ItemManager {
         return items.exists(name)
     }
 
-    fun getItem(name: String): Thing {
+    suspend fun getItem(name: String): Thing {
         return thing(name) {
             extends(items.get(name))
         }.build()
     }
 
-    fun getItems(names: List<String>): List<Thing> {
+    suspend fun getItems(names: List<String>): List<Thing> {
         return names.map { getItem(it) }
     }
 
@@ -42,7 +42,7 @@ object ItemManager {
         return items.toList()
     }
 
-    fun getItemsFromLocationThings(things: List<LocationThing>): List<Thing> {
+    suspend fun getItemsFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
             val item = thing(it.name) {
                 extends(items.get(it.name))
@@ -56,7 +56,7 @@ object ItemManager {
         }
     }
 
-    fun getTaggedItemName(item: Thing): String {
+    suspend fun getTaggedItemName(item: Thing): String {
         val orig = getItem(item.name)
         val newTags = item.properties.tags.getAll() - orig.properties.tags.getAll()
         return if (newTags.isNotEmpty()) {

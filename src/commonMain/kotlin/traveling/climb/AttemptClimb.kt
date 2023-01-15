@@ -72,7 +72,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         return skill / challenge.toDouble()
     }
 
-    private fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
+    private suspend fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
         val directionString = getDirectionString(event.desiredDirection)
         when {
             distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.thingPart.name}.")

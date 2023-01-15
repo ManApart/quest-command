@@ -15,7 +15,7 @@ import system.persistance.writeSave
 import traveling.location.Network
 import traveling.location.location.LocationManager
 
-fun persistToDisk(dataObject: Thing, path: String) {
+suspend fun persistToDisk(dataObject: Thing, path: String) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
     val data = Json.encodeToString(ThingP(dataObject))
@@ -27,7 +27,7 @@ fun persistToDisk(dataObject: Thing, path: String) {
 }
 
 
-fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
+suspend fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
     val json: ThingP = loadFromPath(path)!!
     return json.parsed(path, parentLocation)
 }
@@ -51,7 +51,7 @@ data class ThingP(
 ){
     internal constructor(b: Thing): this(b.name, MindP(b.mind), b.behaviors.map { BehaviorRecipe(it.name, it.params) }, b.equipSlots.map { it.attachPoints }, b.description, b.location.network.name, b.location.name, SoulP(b.soul), PropertiesP(b.properties), b.body.name, b.body)
 
-    fun parsed(path: String, parentLocation: Network? = null): Thing {
+    suspend fun parsed(path: String, parentLocation: Network? = null): Thing {
         val folderPath = path.removeSuffix(".json")
 
         val network = parentLocation ?: LocationManager.getNetwork(networkName)
@@ -72,12 +72,12 @@ data class ThingP(
         }
     }
 
-    fun persistReferences(path: String) {
+    suspend fun persistReferences(path: String) {
         core.body.persist(bodyReference!!, path)
     }
 }
 
-fun saveBody(thing: Thing, path: String){
+suspend fun saveBody(thing: Thing, path: String){
     val prefix = clean(path, thing.name)
     core.body.persist(thing.body, prefix)
 }

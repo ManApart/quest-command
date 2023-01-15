@@ -8,7 +8,7 @@ import system.persistance.cleanPathToFile
 import system.persistance.writeSave
 import traveling.location.Network
 
-fun persist(dataObject: Player, path: String) {
+suspend fun persist(dataObject: Player, path: String) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
     val playerP = PlayerP(dataObject)
@@ -24,11 +24,11 @@ data class PlayerP(
 ) {
     constructor(b: Player) : this(ThingP(b.thing))
 
-    fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
+    suspend fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
         return Player(playerName, thing.parsed(path, parentLocation))
     }
 
-    fun persistReferences(path: String) {
+    suspend fun persistReferences(path: String) {
         val prefix = clean(path, thing.name)
         thing.persistReferences(prefix)
     }

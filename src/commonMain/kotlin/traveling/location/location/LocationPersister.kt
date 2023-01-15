@@ -11,7 +11,7 @@ import kotlinx.serialization.json.Json
 import system.persistance.*
 import traveling.location.network.LocationNode
 
-fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = listOf()) {
+suspend fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = listOf()) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile(".json", prefix)
     val locationJson = Json.encodeToString(LocationP(dataObject))
@@ -26,12 +26,12 @@ fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = lis
 
 }
 
-fun load(path: String, locationNode: LocationNode): Location {
+suspend fun load(path: String, locationNode: LocationNode): Location {
     val json: LocationP = Json.decodeFromString(File(path).readText())
     return json.parsed(path, locationNode)
 }
 
-private fun getThings(folderPath: String, folderName: String, parent: LocationNode): NameSearchableList<Thing> {
+private suspend fun getThings(folderPath: String, folderName: String, parent: LocationNode): NameSearchableList<Thing> {
     return getFiles(clean(folderPath, folderName)).map { core.thing.loadFromDisk(it.path, parent.network) }.toNameSearchableList()
 }
 
@@ -44,7 +44,7 @@ data class LocationP(
     ){
     constructor(b: Location): this(b.name, b.material.name, PropertiesP(b.properties))
 
-    fun parsed(path: String, locationNode: LocationNode): Location {
+    suspend fun parsed(path: String, locationNode: LocationNode): Location {
         val folderPath = path.removeSuffix(".json")
 
         val activators = getThings(folderPath, "activators", locationNode)

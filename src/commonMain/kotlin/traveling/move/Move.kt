@@ -70,7 +70,7 @@ class Move : EventListener<MoveEvent>() {
             .minByOrNull { destination.getDistance(it.source.vector) }
     }
 
-    private fun move(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
+    private suspend fun move(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
         event.creature.position = actualDestination
         //TODO - make materially based description + possibly sound level?
         val soundLevel = (max(10, (event.creature.getEncumbrance() * 100).toInt()) - event.creature.soul.getCurrent(SNEAK)).clamp(0, 20)
@@ -81,7 +81,7 @@ class Move : EventListener<MoveEvent>() {
         }
     }
 
-    private fun displayMovement(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
+    private suspend fun displayMovement(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
         if (!event.silent) {
             val location = event.creature.location.getLocation()
             val things = location.getThings(event.creature).filter { it != event.creature }

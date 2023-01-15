@@ -3,6 +3,7 @@ package core.commands
 import core.Player
 import core.history.displayToMe
 import core.utility.Named
+import core.utility.applySuspending
 
 class RequestResponseBuilder(private val defaultBehavior: () -> Unit) {
     private var message: String = ""
@@ -101,4 +102,12 @@ fun Player.respond(defaultBehavior: () -> Unit, initializer: RequestResponseBuil
 
 fun Player.respond(noOptionMessage: String, initializer: RequestResponseBuilder.() -> Unit) {
     RequestResponseBuilder { displayToMe(noOptionMessage) }.apply(initializer).build()?.let { CommandParsers.setResponseRequest(this, it) }
+}
+
+suspend fun Player.respondSuspend(defaultBehavior: () -> Unit, initializer: suspend RequestResponseBuilder.() -> Unit) {
+    RequestResponseBuilder(defaultBehavior).applySuspending(initializer).build()?.let { CommandParsers.setResponseRequest(this, it) }
+}
+
+suspend fun Player.respondSuspend(noOptionMessage: String, initializer: suspend RequestResponseBuilder.() -> Unit) {
+    RequestResponseBuilder { displayToMe(noOptionMessage) }.applySuspending(initializer).build()?.let { CommandParsers.setResponseRequest(this, it) }
 }

@@ -11,7 +11,7 @@ class ConditionalAI : AI() {
     private val defaultAgenda = Pair("Nothing", 0)
     private var goal: Goal? = null
 
-    override fun takeAction() {
+    override suspend fun takeAction() {
         if (goal == null) {
             goal = determineGoal()
         }
@@ -21,7 +21,7 @@ class ConditionalAI : AI() {
         }
     }
 
-    private fun determineGoal(): Goal {
+    private suspend fun determineGoal(): Goal {
         val matches = AIManager.desires.flatMap { it.getDesires(creature) }
         val priority = matches.maxOfOrNull { it.second } ?: 0
         val topMatches = matches.filter { it.second == priority }
@@ -31,7 +31,7 @@ class ConditionalAI : AI() {
         return Goal(agenda, priority)
     }
 
-    override fun hear(event: DialogueEvent) {
+    override suspend fun hear(event: DialogueEvent) {
         event.speaker.display(event.line)
         val matches = ConversationManager.getMatchingDialogue(event.conversation)
         val priority = matches.maxOf { it.priority }

@@ -9,7 +9,7 @@ import core.thing.Thing
 import crafting.material.DEFAULT_MATERIAL
 import traveling.location.RouteNeighborFinder
 
-fun describeBody(source: Player, thing: Thing) {
+suspend fun describeBody(source: Player, thing: Thing) {
     val body = thing.body
     val routes = RouteNeighborFinder(body.layout.rootNode, 100).getNeighbors()
 
@@ -31,7 +31,7 @@ fun describeBody(source: Player, thing: Thing) {
     source.displayToOthers("${source.name} looks at ${thing.name}'s body.")
 }
 
-fun describeBodyDetailed(source: Player, thing: Thing) {
+suspend fun describeBodyDetailed(source: Player, thing: Thing) {
     describeBody(source, thing)
     source.displayToOthers("${source.name} looks at ${thing.name}'s body.")
 }

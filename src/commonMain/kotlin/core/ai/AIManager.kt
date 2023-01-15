@@ -14,9 +14,9 @@ object AIManager {
     var agendas by lazyM { loadAgendas() }
         private set
 
-    private fun loadDesires(): List<DesireTree> {
+    private suspend fun loadDesires(): List<DesireTree> {
         startupLog("Loading AI Desires.")
-        return DependencyInjector.getImplementation(DesiresCollection::class).values
+        return DependencyInjector.getImplementation(DesiresCollection::class).values()
     }
 
     private fun loadAgendas(): Map<String, Agenda> {

@@ -48,7 +48,7 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private fun clarifyItemToPlace(source: Player) {
+    private suspend fun clarifyItemToPlace(source: Player) {
         source.respond("You don't have any items to give."){
             message("Give what item?")
             optionsNamed(source.inventory.getItems())
@@ -56,7 +56,7 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private fun placeItemInContainer(source: Player, args: Args) {
+    private suspend fun placeItemInContainer(source: Player, args: Args) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             val thingString = args.getFirstString("in", "to")
@@ -71,7 +71,7 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
+    private suspend fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
         source.respond("Couldn't find something to give $itemName to.") {
             message("Give $itemName to what?")
             optionsNamed(creatures)

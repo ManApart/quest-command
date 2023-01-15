@@ -64,7 +64,7 @@ class JournalCommand : Command() {
         }
     }
 
-    private fun clarifyWhichQuest(source: Player) {
+    private suspend fun clarifyWhichQuest(source: Player) {
         source.respond("You don't have any quests.") {
             message("Info about which quest?")
             optionsNamed(QuestManager.getAllPlayerQuests())

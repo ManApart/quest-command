@@ -126,7 +126,7 @@ private fun Thing.discover(target: Thing, kind: String): DiscoverFactEvent {
     return DiscoverFactEvent(this, Fact(Subject(target), kind))
 }
 
-private fun clawAttack(target: Thing, creature: Thing): StartAttackEvent {
+private suspend fun clawAttack(target: Thing, creature: Thing): StartAttackEvent {
     val enemyBody = target.body
     val possibleParts = listOf(
         enemyBody.getPart("Right Foot"),

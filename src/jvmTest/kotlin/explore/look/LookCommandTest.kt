@@ -14,7 +14,7 @@ class LookCommandTest {
     @BeforeTest
     fun setup() {
         createMockedGame()
-        GameState.player.location.getLocation().addThing(Thing("Bob"))
+        runBlocking { GameState.player.location.getLocation().addThing(Thing("Bob")) }
     }
 
     @Test

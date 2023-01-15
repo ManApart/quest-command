@@ -36,7 +36,7 @@ class PlaceItemTest {
         DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
 
-        NOWHERE_NODE.getLocation().clear()
+        runBlocking { NOWHERE_NODE.getLocation().clear() }
     }
 
     @Test
@@ -44,7 +44,7 @@ class PlaceItemTest {
         val creature = Thing("Creature")
         val item = Thing("Apple")
         creature.inventory.add(item)
-        val scope = creature.location.getLocation()
+        val scope = runBlocking { creature.location.getLocation() }
 
         runBlocking { PlaceItem().execute(PlaceItemEvent(creature, item)) }
         assertTrue(scope.getThings(item.name).isNotEmpty())

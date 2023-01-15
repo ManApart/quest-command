@@ -35,7 +35,7 @@ object GameManager {
         }
     }
 
-    fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
+    suspend fun newGame(gameName: String = "Kanbara", playerName: String = "Player", testing: Boolean = false) {
         startupLog("Creating New Game.")
         //Set initial time to day
         GameState.timeManager.setTime(50)
@@ -67,7 +67,7 @@ object GameManager {
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
     }
 
-    fun newPlayer(
+    suspend fun newPlayer(
         name: String = "Player",
         description: String = "Our Hero!",
         body: String = "Human",
@@ -103,7 +103,7 @@ object GameManager {
         return Player(name, player)
     }
 
-    fun giveStartingItems(player: Thing) {
+    suspend fun giveStartingItems(player: Thing) {
         val inventory = player.inventory
         val body = player.body
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {

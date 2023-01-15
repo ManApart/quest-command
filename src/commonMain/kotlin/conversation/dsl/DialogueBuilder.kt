@@ -12,23 +12,23 @@ import traveling.location.network.LocationNode
 class DialogueBuilder {
     var priority: Int? = null
     private val depthScale: Int = 2
-    private val conditions: MutableList<(Conversation) -> Boolean> = mutableListOf()
+    private val conditions: MutableList<suspend (Conversation) -> Boolean> = mutableListOf()
     private val children: MutableList<DialogueBuilder> = mutableListOf()
     private var results: MutableList<((Conversation) -> List<Event>)> = mutableListOf()
 
-    fun cond(condition: (Conversation) -> Boolean) {
+    fun cond(condition: suspend (Conversation) -> Boolean) {
         conditions.add(condition)
     }
 
-    fun question(questionType: QuestionType) {
+    suspend fun question(questionType: QuestionType) {
         cond { it.question() == questionType }
     }
 
-    fun verb(verb: Verb) {
+    suspend fun verb(verb: Verb) {
         cond { it.verb() == verb }
     }
 
-    fun subject(condition: (Conversation) -> Named) {
+    suspend fun subject(condition: (Conversation) -> Named) {
         cond { it.subject() == condition(it) }
     }
 
@@ -50,7 +50,7 @@ class DialogueBuilder {
 
     internal fun build(depth: Int = 0): DialogueTree {
         val usedPriority = priority ?: (10 + depthScale * depth)
-        val condition: (Conversation) -> Boolean = { convo -> conditions.all { it(convo) } }
+        val condition: suspend (Conversation) -> Boolean = { convo -> conditions.all { it(convo) } }
         val dialogues = results.map { Dialogue(it, usedPriority) }
         val trees = children.map { it.build(depth + 1) }
 
@@ -64,23 +64,23 @@ fun conversations(
     return listOf(DialogueBuilder().apply(initializer).build())
 }
 
-fun Conversation.question(): QuestionType? {
-    return history.last().parsed?.questionType
+suspend fun Conversation.question(): QuestionType? {
+    return history.last().parsed()?.questionType
 }
 
-fun Conversation.verb(): Verb? {
-    return history.last().parsed?.verb
+suspend fun Conversation.verb(): Verb? {
+    return history.last().parsed()?.verb
 }
 
-fun Conversation.subject(): Named? {
-    return history.last().parsed?.subject
+suspend fun Conversation.subject(): Named? {
+    return history.last().parsed()?.subject
 }
 
-fun Conversation.subjects(): List<Named>? {
-    return history.last().parsed?.subjects
+suspend fun Conversation.subjects(): List<Named>? {
+    return history.last().parsed()?.subjects
 }
 
-fun Named?.hasTag(tag: String): Boolean {
+suspend fun Named?.hasTag(tag: String): Boolean {
     return if (this != null) {
         (this is LocationNode && getLocation().properties.tags.has(tag)) ||
                 (this is Thing && properties.tags.has(tag))

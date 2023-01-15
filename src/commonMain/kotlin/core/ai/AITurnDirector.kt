@@ -31,7 +31,7 @@ class AITurnDirector : EventListener<AIUpdateTick>() {
 
     }
 
-    private fun takeATurn(creatures: List<Thing>): Boolean {
+    private suspend fun takeATurn(creatures: List<Thing>): Boolean {
         //Sort by action points and give players 1 extra point so they always come before npcs
         val allAIs = creatures.map { it.mind.ai }.sortedByDescending { it.getActionPoints() + if (it.creature.isPlayer()) 1 else 0 }
         allAIs.forEach { it.tick() }

@@ -16,7 +16,7 @@ object GameState {
     var player = players.values.first()
     val aliases = mutableMapOf<String, String>()
 
-    fun reset() {
+    suspend fun reset() {
         players.clear()
         putPlayer(GameManager.newPlayer())
         player = players.values.first()

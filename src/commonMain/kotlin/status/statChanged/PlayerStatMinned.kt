@@ -27,7 +27,7 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
         }
     }
 
-    private fun killPlayer(source: Player) {
+    private suspend fun killPlayer(source: Player) {
         source.displayToMe("Oh dear, you have died!")
         source.displayToOthers("${source.name} has died!")
 

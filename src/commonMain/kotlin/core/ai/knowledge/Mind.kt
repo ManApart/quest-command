@@ -25,7 +25,7 @@ data class Mind(
         return memory.getFact(source, kind)
     }
 
-    fun knowsThingByKind(kind: String): Thing? {
+    suspend fun knowsThingByKind(kind: String): Thing? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
     }
 
@@ -75,11 +75,11 @@ data class Mind(
         learn(Fact(Subject(enemy), "aggroTarget"))
     }
 
-    fun getAggroTarget(): Thing? {
+    suspend fun getAggroTarget(): Thing? {
         return knowsThingByKind("aggroTarget")
     }
 
-    fun clearAggroTarget() {
+    suspend fun clearAggroTarget() {
         getAggroTarget()?.let {
             memory.forget(Fact(Subject(it), "aggroTarget"))
         }
@@ -89,11 +89,11 @@ data class Mind(
         learn(Fact(Subject(enemy), "useTarget"))
     }
 
-    fun getUseTarget(): Thing? {
+    suspend fun getUseTarget(): Thing? {
         return knowsThingByKind("useTarget")
     }
 
-    fun clearUseTarget() {
+    suspend fun clearUseTarget() {
         getAggroTarget()?.let {
             memory.forget(Fact(Subject(it), "useTarget"))
         }

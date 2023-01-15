@@ -42,11 +42,11 @@ fun displayGlobal(message: (Player) -> String) {
 /**
  * The message is evaluated for each listener that perceives this thing
  */
-fun Player.display(message: String) = this.display { message }
-fun Player.display(message: (Player) -> String) = this.thing.display(message)
-fun Thing.display(message: String) = this.display { message }
+suspend fun Player.display(message: String) = this.display { message }
+suspend fun Player.display(message: (Player) -> String) = this.thing.display(message)
+suspend fun Thing.display(message: String) = this.display { message }
 
-fun Thing.display(message: (Player) -> String) {
+suspend fun Thing.display(message: (Player) -> String) {
     GameLogger.histories.values
         .filter { it.listener.thing.perceives(this) }
         .forEach { history ->
@@ -58,11 +58,11 @@ fun Thing.display(message: (Player) -> String) {
 /**
  * The message is evaluated for each listener that perceives this thing, but excludes this thing itself
  */
-fun Player.displayToOthers(message: String) = this.thing.displayToOthers(message)
-fun Player.displayToOthers(message: (Player) -> String) = this.thing.displayToOthers(message)
-fun Thing.displayToOthers(message: String) = this.displayToOthers { message }
+suspend fun Player.displayToOthers(message: String) = this.thing.displayToOthers(message)
+suspend fun Player.displayToOthers(message: (Player) -> String) = this.thing.displayToOthers(message)
+suspend fun Thing.displayToOthers(message: String) = this.displayToOthers { message }
 
-fun Thing.displayToOthers(message: (Player) -> String) {
+suspend fun Thing.displayToOthers(message: (Player) -> String) {
     GameLogger.histories.values
         .filter { it.listener.thing !== this && it.listener.thing.perceives(this) }
         .forEach { history ->

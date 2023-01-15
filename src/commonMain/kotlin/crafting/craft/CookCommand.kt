@@ -61,7 +61,7 @@ class CookCommand : Command() {
         return args.hasBase() && args.hasGroup("on")
     }
 
-    private fun getIngredients(args: Args): List<Thing> {
+    private suspend fun getIngredients(args: Args): List<Thing> {
         val ingredients = mutableListOf<Thing>()
         args.getBaseAndStrings(",").forEach {
             if (ItemManager.itemExists(it)) {
@@ -71,7 +71,7 @@ class CookCommand : Command() {
         return ingredients
     }
 
-    private fun getTool(source: Thing, args: Args): Thing? {
+    private suspend fun getTool(source: Thing, args: Args): Thing? {
         val group = args.getGroup("on")
         val location = source.currentLocation()
         return (location.getActivators(group.joinToString(" "), source) + location.findActivatorsByTag("Range")).firstOrNull()

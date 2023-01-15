@@ -28,7 +28,7 @@ data class Body(
     private val parts: NameSearchableList<Location> by lazy { createParts() }
     val blockHelper = BlockHelper()
 
-    private fun createParts(): NameSearchableList<Location> {
+    private suspend fun createParts(): NameSearchableList<Location> {
         return NameSearchableList(layout.getLocationNodes().map { it.getLocation() })
     }
 
@@ -36,7 +36,7 @@ data class Body(
         return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
-    fun equipItems(equippedItems: List<Thing>){
+    suspend fun equipItems(equippedItems: List<Thing>){
         equippedItems.forEach { item ->
             val slotName = slotMap[item.name]
             val slot = item.equipSlots.firstOrNull { equipSlot -> equipSlot.description == slotName }
@@ -92,7 +92,7 @@ data class Body(
         return layout.getLocationNode(part)
     }
 
-    fun getRootPart(): Location {
+    suspend fun getRootPart(): Location {
         return layout.rootNode.getLocation()
     }
 
@@ -147,7 +147,7 @@ data class Body(
 //            }
     }
 
-    fun equip(item: Thing, slot: Slot = getDefaultSlot(item)) {
+    suspend fun equip(item: Thing, slot: Slot = getDefaultSlot(item)) {
         if (canEquip(slot)) {
             unEquip(item)
             slotMap[item.name] = slot.description
@@ -166,7 +166,7 @@ data class Body(
         }
     }
 
-    fun unEquip(item: Thing) {
+    suspend fun unEquip(item: Thing) {
         item.location.getLocation().removeThing(item)
         slotMap.remove(item.name)
         getPartsEquippedWith(item).forEach {

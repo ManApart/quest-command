@@ -28,38 +28,13 @@ actual object SessionHistory {
         unknownCommands[command] = (unknownCommands[command] ?: 0) + 1
     }
 
-    actual fun saveSessionStats() {
+    actual suspend fun saveSessionStats() {
         val directory = File(directory)
         if (!directory.exists()) {
             directory.mkdir()
         }
         File(fileName).printWriter().use { out ->
-
-            out.println("\n## Unknown Commands"+
-                    "\n\nCommand | Count" +
-                    "\n---|---")
-            unknownCommands.entries.sortedBy { it.key }.forEach { (command, count) ->
-                out.println("$command | $count")
-            }
-
-            out.println(
-                "\n## Input History" +
-                        "\n\nTime in seconds | Command" +
-                        "\n---|---"
-            )
-            //We could print _all_ histories, but for now just print the main one
-            GameLogger.getMainHistory().history.forEach { inOut ->
-                out.println("${inOut.timeTaken / 1000f} | ${inOut.input}")
-            }
-
-            out.println(
-                "## Event Counts" +
-                        "\n\nEvent | Count" +
-                        "\n---|---"
-            )
-            eventCounts.forEach { event ->
-                out.println("${event.name} | ${event.count}")
-            }
+            out.println(getSessionStats(unknownCommands, eventCounts))
         }
     }
 }

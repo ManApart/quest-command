@@ -1,3 +1,4 @@
+import FakeSync.promise
 import kotlin.js.Promise
 
 @JsModule("localforage")
@@ -9,3 +10,14 @@ external object LocalForage {
 }
 
 data class LocalForageConfig(val name: String)
+
+suspend fun <T> getForage(key: String) : T {
+    return promise {
+        LocalForage.getItem(key) as Promise<T>
+    }
+}
+suspend fun setForage(key: String, value: Any) {
+    promise {
+        LocalForage.setItem(key, value)
+    }
+}

@@ -17,7 +17,7 @@ class TakeItem : EventListener<TakeItemEvent>() {
         }
     }
 
-    private fun takeItem(taker: Thing, item: Thing, silent: Boolean) {
+    private suspend fun takeItem(taker: Thing, item: Thing, silent: Boolean) {
         val newStack = item.copy(1)
         if (taker.inventory.attemptToAdd(newStack)) {
             if (item.properties.getCount() > 1) {

@@ -12,12 +12,12 @@ class BodyCustomizer {
         parts[name] = BodyPartCustomizer().apply(initializer)
     }
 
-    fun apply(base: Body): Body {
+    suspend fun apply(base: Body): Body {
         transform(base.layout)
         return Body(base.name, base.material, base.layout, base.getSlotMap().toMutableMap())
     }
 
-    private fun transform(layout: Network) {
+    private suspend fun transform(layout: Network) {
         parts.forEach { (partName, customizer) ->
             layout.getLocationNodeOrNull(partName)?.getLocation()?.let { customizer.apply(it) }
         }

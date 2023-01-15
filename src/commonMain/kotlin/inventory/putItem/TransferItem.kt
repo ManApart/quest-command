@@ -28,7 +28,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         return container.properties.tags.has("Container") && container.properties.tags.has("Open")
     }
 
-    private fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
+    private suspend fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
         val newStack = item.copy(1)
         if (destination.inventory.attemptToAdd(newStack)) {
             removeFromSource(source, item)
@@ -40,7 +40,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
         }
     }
 
-    private fun removeFromSource(source: Thing, item: Thing) {
+    private suspend fun removeFromSource(source: Thing, item: Thing) {
         if (item.properties.getCount() > 1) {
             item.properties.incCount(-1)
         } else {

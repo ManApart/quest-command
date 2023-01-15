@@ -1,5 +1,8 @@
 package system.persistance
 
+import core.GameState
+import core.TEST_SAVE_FOLDER
+
 fun cleanPathToFile(extension: String, vararg pieces: String): String {
     val path = cleanPath(pieces.toList()).removeSuffix("/")
     return clean("$path.$extension").removeSuffix("/")
@@ -15,4 +18,8 @@ private fun cleanPath(pieces: List<String>) : String {
 
 fun cleanPathPart(pathString: String): String {
     return pathString.replace(" ", "_").replace("\\", "/").replace(Regex("[^a-zA-Z/.]"), "")
+}
+
+fun getSaveFolder(): String {
+    return if (GameState.properties.values.getBoolean(TEST_SAVE_FOLDER)) "./savesTest/" else "./saves/"
 }

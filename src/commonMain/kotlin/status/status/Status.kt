@@ -41,7 +41,7 @@ class Status : EventListener<StatusEvent>() {
         }
     }
 
-    private fun printOtherStats(event: StatusEvent) {
+    private suspend fun printOtherStats(event: StatusEvent) {
         val soul = event.creature.soul
 
         val statString = soul.getStats().asSequence()
@@ -59,7 +59,7 @@ class Status : EventListener<StatusEvent>() {
         }
     }
 
-    private fun printOtherConditions(event: StatusEvent) {
+    private suspend fun printOtherConditions(event: StatusEvent) {
         val soul = event.creature.soul
 
         val conditionString = soul.getConditions().joinToString("\n\t") { condition ->

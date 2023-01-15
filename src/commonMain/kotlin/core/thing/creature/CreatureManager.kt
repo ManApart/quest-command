@@ -25,13 +25,13 @@ object CreatureManager {
         return collection.values.build(CREATURE_TAG).toNameSearchableList()
     }
 
-    private fun getCreature(name: String): Thing {
+    private suspend fun getCreature(name: String): Thing {
         return thing(name) {
             extends(creatures.get(name))
         }.build()
     }
 
-    fun getCreatures(names: List<String>): List<Thing> {
+    suspend fun getCreatures(names: List<String>): List<Thing> {
         return names.map { getCreature(it) }
     }
 
@@ -39,7 +39,7 @@ object CreatureManager {
         return creatures.toList()
     }
 
-    fun getCreaturesFromLocationThings(things: List<LocationThing>): List<Thing> {
+    suspend fun getCreaturesFromLocationThings(things: List<LocationThing>): List<Thing> {
         return things.map {
             val creature = thing(it.name) {
                 extends(creatures.get(it.name))

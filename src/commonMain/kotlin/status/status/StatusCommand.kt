@@ -3,6 +3,7 @@ package status.status
 import core.Player
 import core.commands.Command
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import core.utility.filterUniqueByName
@@ -43,8 +44,8 @@ class StatusCommand : Command() {
         }
     }
 
-    private fun clarifyStatus(source: Player) {
-        source.respond("There is nothing to get a status of.") {
+    private suspend fun clarifyStatus(source: Player) {
+        source.respondSuspend("There is nothing to get a status of.") {
             message("Status of what?")
             optionsNamed(source.thing.currentLocation().getCreatures())
             command { "status $it" }

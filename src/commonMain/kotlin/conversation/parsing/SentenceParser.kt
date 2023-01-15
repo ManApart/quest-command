@@ -8,10 +8,13 @@ import traveling.location.location.LocationManager
 
 class SentenceParser(private val speaker: Thing, private val listener: Thing, sentenceToParse: String) {
     private val sentence = Sentence(sentenceToParse.lowercase())
+    private var parsedDialogue: ParsedDialogue? = null
 
-    val parsedDialogue = parseDialogue()
+    suspend fun getParsedDialogue(): ParsedDialogue? {
+        return parsedDialogue ?: parseDialogue().also { parsedDialogue = it }
+    }
 
-    private fun parseDialogue(): ParsedDialogue? {
+    private suspend fun parseDialogue(): ParsedDialogue? {
         parseQuestionType(sentence)
         parseVerb(sentence)
         parseSubject(sentence)
@@ -67,13 +70,13 @@ class SentenceParser(private val speaker: Thing, private val listener: Thing, se
         }
     }
 
-    private fun parseSubject(sentence: Sentence) {
+    private suspend fun parseSubject(sentence: Sentence) {
         val filteredWords = sentence.getUnmappedWords()
         sentence.subjects = findSubject(filteredWords)
         sentence.getUnmappedWordPositions().forEach { sentence.mapWord(it, PartOfSpeech.SUBJECT) }
     }
 
-    private fun findSubject(filteredWords: List<String>): List<Named> {
+    private suspend fun findSubject(filteredWords: List<String>): List<Named> {
         val subjectName = filteredWords.joinToString(" ")
         return when {
             subjectName == "you" -> listOf(listener)
@@ -83,7 +86,7 @@ class SentenceParser(private val speaker: Thing, private val listener: Thing, se
         }
     }
 
-    private fun findNamed(subjectName: String): List<Named> {
+    private suspend fun findNamed(subjectName: String): List<Named> {
         val subjects = speaker.location.getLocation().getThings(subjectName, speaker, speaker)
         val exact = subjects.getExact(subjectName)
         if (exact != null) {

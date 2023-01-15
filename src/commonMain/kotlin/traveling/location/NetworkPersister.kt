@@ -7,7 +7,7 @@ import system.persistance.getFiles
 import traveling.location.location.LocationManager
 
 //TODO - save discovered
-fun persist(dataObject: Network, path: String, ignoredThings: List<Thing>) {
+suspend fun persist(dataObject: Network, path: String, ignoredThings: List<Thing>) {
     val cleanedPath = clean(path, dataObject.name)
 
     dataObject.getLocationNodes()
@@ -17,7 +17,7 @@ fun persist(dataObject: Network, path: String, ignoredThings: List<Thing>) {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun load(path: String, name: String): Network {
+suspend fun load(path: String, name: String): Network {
     val network = if (LocationManager.networkExists(name)) {
         LocationManager.getNetwork(name)
     } else {

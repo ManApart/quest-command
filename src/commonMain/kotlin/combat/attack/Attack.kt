@@ -48,7 +48,7 @@ class Attack : EventListener<AttackEvent>() {
         }
     }
 
-    private fun processAttack(event: AttackEvent, damageSource: String, offensiveDamage: Int) {
+    private suspend fun processAttack(event: AttackEvent, damageSource: String, offensiveDamage: Int) {
         val source = event.source
         val attackedParts = getAttackedParts(source, event.sourcePart, event.aim)
         if (source != event.aim.thing) {
@@ -99,7 +99,7 @@ class Attack : EventListener<AttackEvent>() {
         return weaponRange + bodyRange
     }
 
-    private fun processAttackHit(
+    private suspend fun processAttackHit(
         event: AttackEvent,
         attackedPart: Location,
         verb: String,

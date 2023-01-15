@@ -7,6 +7,7 @@ import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import core.utility.capitalize2
@@ -50,12 +51,12 @@ class SpeakCommand : Command() {
         }
     }
 
-    private fun speakTo(speaker: Player, thingName: String) {
+    private suspend fun speakTo(speaker: Player, thingName: String) {
         val things = speaker.location.getLocation().getThings(thingName)
         if (things.size == 1) {
             EventManager.postEvent(StartConversationEvent(speaker, things.first()))
         } else {
-            speaker.respond("There is no one to speak to.") {
+            speaker.respondSuspend("There is no one to speak to.") {
                 message( "Speak to who?")
                 optionsNamed(speaker.location.getLocation().getCreatures(speaker.thing))
                 command { "speak to $it" }

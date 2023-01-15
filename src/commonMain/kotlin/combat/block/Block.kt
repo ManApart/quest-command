@@ -16,7 +16,7 @@ class Block : EventListener<BlockEvent>() {
         event.source.addSoundEffect("Block", "the tightening of straps and sinew", 1)
     }
 
-    private fun getBlockedParts(event: BlockEvent): List<Location> {
+    private suspend fun getBlockedParts(event: BlockEvent): List<Location> {
         val shield = getShield(event.partThatWillShield)
         val shieldSize = shield?.properties?.values?.getInt("radius") ?: 0
         val partLocation = event.source.body.layout.findLocation(event.partThatWillBeShielded.name)

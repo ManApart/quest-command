@@ -41,7 +41,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
         }
     }
 
-    private fun removeIngredients(inventory: Inventory, ingredients: List<Thing>) {
+    private suspend fun removeIngredients(inventory: Inventory, ingredients: List<Thing>) {
         ingredients.forEach {
             inventory.remove(it)
         }

@@ -3,6 +3,7 @@ package conversation.parsing
 import conversation.dialogue.ParsedDialogue
 import core.thing.Thing
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
 
 import kotlin.test.BeforeTest
@@ -20,7 +21,7 @@ class SentenceParserTest {
         fun setup() {
             createMockedGame()
 
-            speaker.location.getLocation().addThing(listener)
+            runBlocking { speaker.location.getLocation().addThing(listener) }
         }
     }
 
@@ -29,7 +30,7 @@ class SentenceParserTest {
         val input = "where listener be?"
         val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
-        assertEquals(expectedEvent, parser.parsedDialogue)
+        runBlocking { assertEquals(expectedEvent, parser.getParsedDialogue()) }
     }
 
     @Test
@@ -37,7 +38,7 @@ class SentenceParserTest {
         val input = "where listener is?"
         val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
-        assertEquals(expectedEvent, parser.parsedDialogue)
+        runBlocking { assertEquals(expectedEvent, parser.getParsedDialogue()) }
     }
 
     @Test
@@ -45,7 +46,7 @@ class SentenceParserTest {
         val input = "where be listener?"
         val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
-        assertEquals(expectedEvent, parser.parsedDialogue)
+        runBlocking { assertEquals(expectedEvent, parser.getParsedDialogue()) }
     }
 
     @Test
@@ -53,7 +54,7 @@ class SentenceParserTest {
         val input = "where be you?"
         val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
-        assertEquals(expectedEvent, parser.parsedDialogue)
+        runBlocking { assertEquals(expectedEvent, parser.getParsedDialogue()) }
     }
 
     @Test
@@ -61,7 +62,7 @@ class SentenceParserTest {
         val input = "where be i?"
         val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(speaker), Verb.BE, null, QuestionType.WHERE)
-        assertEquals(expectedEvent, parser.parsedDialogue)
+        runBlocking { assertEquals(expectedEvent, parser.getParsedDialogue()) }
     }
 
     @Test
@@ -69,7 +70,7 @@ class SentenceParserTest {
         val input = "where be?"
         val parser = SentenceParser(speaker, listener, input)
         val expectedEvent = ParsedDialogue(speaker, listener, listOf(listener), Verb.BE, null, QuestionType.WHERE)
-        assertEquals(expectedEvent, parser.parsedDialogue)
+        runBlocking { assertEquals(expectedEvent, parser.getParsedDialogue()) }
     }
 
 
