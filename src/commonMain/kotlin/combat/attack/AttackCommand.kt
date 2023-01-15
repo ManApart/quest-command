@@ -123,8 +123,8 @@ class AttackCommand : Command() {
         }
     }
 
-    private fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
-        player.respond("Unable to find a part of ${thing.thing.name} to attack.") {
+    private suspend fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
+        player.respondSuspend("Unable to find a part of ${thing.thing.name} to attack.") {
             message("$keyword what part of ${thing.thing.name} with $weaponName?")
             optionsNamed(thing.thing.body.getParts())
             command { "$keyword $it of ${thing.thing.name}" }

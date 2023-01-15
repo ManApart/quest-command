@@ -99,7 +99,7 @@ class CastCommand : Command() {
     }
 }
 
-fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<Location> {
+suspend fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<Location> {
     val parts = thingAim.bodyPartThings.ifEmpty {
         thingAim.thing.body.getParts()
     }

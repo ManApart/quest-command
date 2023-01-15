@@ -4,6 +4,7 @@ import core.Player
 import core.commands.ArgDelimiter
 import core.commands.Args
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -49,7 +50,7 @@ class PutItemCommand : core.commands.Command() {
     }
 
     private suspend fun clarifyItemToPlace(source: Player) {
-        source.respond("You don't have any items to give."){
+        source.respondSuspend("You don't have any items to give."){
             message("Give what item?")
             optionsNamed(source.inventory.getItems())
             command { "place $it in" }

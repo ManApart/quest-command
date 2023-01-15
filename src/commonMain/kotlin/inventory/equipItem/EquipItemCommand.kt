@@ -71,7 +71,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun getItem(source: Thing, args: Args): Thing? {
+    private suspend fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         return source.inventory.getItem(itemName)
     }
@@ -84,7 +84,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
+    private suspend fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
         return if (attachPointGuess == null) {
             body.getDefaultSlot(item)
         } else {
@@ -93,14 +93,14 @@ class EquipItemCommand : Command() {
     }
 
     private suspend fun suggestEquippableItems(source: Player) {
-        source.respond("There is nothing you can equip.") {
+        source.respondSuspend("There is nothing you can equip.") {
             message("What do you want to equip?")
             optionsNamed(getEquipableItems(source.thing))
             command { "equip $it" }
         }
     }
 
-    private fun getEquipableItems(source: Thing): List<Thing> {
+    private suspend fun getEquipableItems(source: Thing): List<Thing> {
         val body = source.body
         val equippedItems = body.getEquippedItems()
         return source.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }

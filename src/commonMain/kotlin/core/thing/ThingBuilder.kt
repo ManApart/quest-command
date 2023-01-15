@@ -16,6 +16,7 @@ import core.thing.creature.CREATURE_TAG
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested
+import core.utility.applySuspending
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
 import crafting.material.MaterialManager
@@ -109,7 +110,7 @@ class ThingBuilder(internal val name: String) {
      */
     fun extends(other: String) = baseNames.add(other)
     fun extends(other: ThingBuilder) = bases.add(other)
-    fun extends(other: Thing) = bases.add(unBuild(other))
+    suspend fun extends(other: Thing) = bases.add(unBuild(other))
 
     fun props(initializer: PropsBuilder.() -> Unit) {
         propsBuilder.apply(initializer)
@@ -219,7 +220,7 @@ class ThingBuilder(internal val name: String) {
         propsBuilder.value(SOUND_LEVEL, level)
     }
 
-    private fun unBuild(t: Thing): ThingBuilder {
+    private suspend fun unBuild(t: Thing): ThingBuilder {
         return thing(t.name) {
             description(t.description)
             location(t.location)
@@ -246,6 +247,6 @@ class ThingBuilder(internal val name: String) {
 
 }
 
-fun thing(name: String, initializer: ThingBuilder.() -> Unit): ThingBuilder {
-    return ThingBuilder(name).apply(initializer)
+suspend fun thing(name: String, initializer: suspend ThingBuilder.() -> Unit): ThingBuilder {
+    return ThingBuilder(name).applySuspending(initializer)
 }

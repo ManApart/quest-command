@@ -12,7 +12,7 @@ object GameState {
     var gameName = "Kanbara"
     var properties = Properties()
     val timeManager = TimeManager()
-    val players = mutableMapOf("Player" to GameManager.newPlayer())
+    val players = mutableMapOf<String, Player>()
     var player = players.values.first()
     val aliases = mutableMapOf<String, String>()
 

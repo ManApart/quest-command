@@ -28,11 +28,11 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
         return name
     }
 
-    fun exists(item: Thing): Boolean {
+    suspend fun exists(item: Thing): Boolean {
         return getItemsNameSearchable().exists(item) || NameSearchableList(getAllItems()).exists(item)
     }
 
-    fun getItem(name: String?): Thing? {
+    suspend fun getItem(name: String?): Thing? {
         return if (name == null) {
             null
         } else {
@@ -40,23 +40,23 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
         }
     }
 
-    fun getItems(name: String): List<Thing> {
+    suspend fun getItems(name: String): List<Thing> {
         return getAllItems().toNameSearchableList().getAll(name)
     }
 
     /**
      * Return all items of this inventory and any sub-inventory
      */
-    fun getAllItems(): List<Thing> {
+    suspend fun getAllItems(): List<Thing> {
         val items = getItems()
         return (items + items.flatMap { it.inventory.getAllItems() }).toSet().toList()
     }
 
-    fun getItems(): List<Thing> {
+    suspend fun getItems(): List<Thing> {
         return body.getParts().flatMap { it.getItems() }.toSet().toList()
     }
 
-    private fun getItemsNameSearchable(): NameSearchableList<Thing> {
+    private suspend fun getItemsNameSearchable(): NameSearchableList<Thing> {
         return getItems().toNameSearchableList()
     }
 
@@ -70,12 +70,12 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
         items.forEach { add(it) }
     }
 
-    private fun findLocationWith(item: Thing): Location? {
+    private suspend fun findLocationWith(item: Thing): Location? {
         return body.getParts().firstOrNull { it.getItems().contains(item) }
                 ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationWith(item) }
     }
 
-    private fun findLocationThatCanTake(item: Thing): Location? {
+    private suspend fun findLocationThatCanTake(item: Thing): Location? {
         return body.getParts().firstOrNull { it.canHold(item) }
                 ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationThatCanTake(item) }
     }
@@ -118,11 +118,11 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
         }
     }
 
-    fun findItemsByProperties(properties: Properties): List<Thing> {
+    suspend fun findItemsByProperties(properties: Properties): List<Thing> {
         return getAllItems().filter { it.properties.hasAll(properties) }
     }
 
-    fun getWeight(): Int {
+    suspend fun getWeight(): Int {
         return getItems().sumOf { it.getWeight() }
     }
 

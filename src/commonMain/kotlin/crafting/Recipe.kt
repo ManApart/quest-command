@@ -23,7 +23,7 @@ data class Recipe(
         return (tool?.properties ?: Properties()).hasAll(this.toolProperties)
     }
 
-    fun canBeCraftedBy(crafter: Thing, tool: Thing?): Boolean {
+    suspend fun canBeCraftedBy(crafter: Thing, tool: Thing?): Boolean {
         return hasSkillsToCraft(crafter.soul) && matches(crafter, crafter.inventory.getAllItems(), tool)
     }
 

@@ -46,7 +46,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         }
     }
 
-    private fun isWithinRange(event: AttemptClimbEvent): Boolean {
+    private suspend fun isWithinRange(event: AttemptClimbEvent): Boolean {
         return event.creature.climbThing != null || event.thing.isWithinRangeOf(event.creature)
                 || event.thing.location != event.creature.location
     }
@@ -117,12 +117,12 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     /**
      * Thing part is at the edge of the network (in the desired direction) and is either 0 feet from the ground or has a connected exit)
      */
-    private fun isDemountableEdgeNode(event: AttemptClimbEvent): Boolean {
+    private suspend fun isDemountableEdgeNode(event: AttemptClimbEvent): Boolean {
         return event.thingPart.isAnOuterNode(event.desiredDirection)
                 && (event.thingPart.getDistanceToLowestNodeInNetwork() == 0 || getConnectedLocation(event.thing.location, event.thing, event.thingPart) != null)
     }
 
-    private fun getConnectedLocation(thingLocation: LocationNode, climbThing: Thing, part: LocationNode): LocationPoint? {
+    private suspend fun getConnectedLocation(thingLocation: LocationNode, climbThing: Thing, part: LocationNode): LocationPoint? {
         return thingLocation.getNeighborConnections()
             .firstOrNull { it.source.equals(thingLocation, climbThing, climbThing.body.getPart(part.name)) }
             ?.destination

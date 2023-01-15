@@ -63,7 +63,7 @@ data class Location(
         return recipe.name
     }
 
-    private fun populateFromProtoLocation() {
+    private suspend fun populateFromProtoLocation() {
         properties.replaceWith(locationNode.recipe.properties)
 
         if (recipe.activators.isNotEmpty()) {
@@ -187,16 +187,16 @@ data class Location(
         return getThingsByName(getThings(), name)
     }
 
-    fun getThingsIncludingInventories(): NameSearchableList<Thing> {
+    suspend fun getThingsIncludingInventories(): NameSearchableList<Thing> {
         val baseThings = getThings()
         return baseThings + baseThings.flatMap { it.inventory.getAllItems() }
     }
 
-    fun getThingsIncludingInventories(name: String): NameSearchableList<Thing> {
+    suspend fun getThingsIncludingInventories(name: String): NameSearchableList<Thing> {
         return getThingsByName(getThingsIncludingInventories(), name)
     }
 
-    fun getThingsIncludingTopLevelInventories(): NameSearchableList<Thing> {
+    suspend fun getThingsIncludingTopLevelInventories(): NameSearchableList<Thing> {
         val baseThings = getThings()
         return baseThings + baseThings.flatMap { it.inventory.getItems() }
     }
@@ -217,11 +217,11 @@ data class Location(
         }
     }
 
-    fun getThingsIncludingPlayerInventory(source: Thing, perceivedBy: Thing? = null): List<Thing> {
+    suspend fun getThingsIncludingPlayerInventory(source: Thing, perceivedBy: Thing? = null): List<Thing> {
         return source.inventory.getItems() + getThings(source, perceivedBy)
     }
 
-    fun getThingsIncludingPlayerInventory(source: Thing, name: String, perceivedBy: Thing? = null): NameSearchableList<Thing> {
+    suspend fun getThingsIncludingPlayerInventory(source: Thing, name: String, perceivedBy: Thing? = null): NameSearchableList<Thing> {
         return source.inventory.getItems(name) + getThings(name, source, perceivedBy)
     }
 
@@ -281,15 +281,15 @@ data class Location(
         return getThingsByName(items, name)
     }
 
-    fun getItemsIncludingPlayerInventory(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+    suspend fun getItemsIncludingPlayerInventory(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
         return source.inventory.getItems() + getItems(source, perceivedBy)
     }
 
-    fun getItemsIncludingPlayerInventory(source: Thing): NameSearchableList<Thing> {
+    suspend fun getItemsIncludingPlayerInventory(source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems() + getItems(source)
     }
 
-    fun getItemsIncludingPlayerInventory(name: String, source: Thing): NameSearchableList<Thing> {
+    suspend fun getItemsIncludingPlayerInventory(name: String, source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems(name) + getItems(source, name)
     }
 
@@ -309,7 +309,7 @@ data class Location(
         return activators.filter { it.properties.hasAll(properties) }
     }
 
-    fun getAllSouls(source: Thing): List<Soul> {
+    suspend fun getAllSouls(source: Thing): List<Soul> {
         val things = mutableSetOf(source)
         things.addAll(source.inventory.getAllItems())
 
@@ -335,7 +335,7 @@ data class Location(
         this.weather = newWeather
     }
 
-    fun applyWeatherEffects() {
+    suspend fun applyWeatherEffects() {
         val conditionRecipes = weather.conditionNames
         conditionRecipes.forEach { recipeName ->
             getThings().forEach { thing ->
@@ -346,7 +346,7 @@ data class Location(
         }
     }
 
-    fun canHold(item: Thing): Boolean {
+    suspend fun canHold(item: Thing): Boolean {
         return properties.tags.has(CONTAINER) && hasRoomFor(item)
                 && item.properties.canBeHeldByContainerWithProperties(properties)
     }
@@ -354,11 +354,11 @@ data class Location(
     /**
      * How much do all of the items in this location weigh?
      */
-    private fun getWeight(source: Thing): Int {
+    private suspend fun getWeight(source: Thing): Int {
         return getItems(source).sumOf { it.getWeight() }
     }
 
-    fun hasRoomFor(thing: Thing): Boolean {
+    suspend fun hasRoomFor(thing: Thing): Boolean {
         if (properties.values.has(SIZE)) {
             val room = properties.values.getInt(SIZE)
             return room - getWeight(thing) >= thing.getWeight()

@@ -16,7 +16,7 @@ class ThingAim(val thing: Thing, val bodyPartThings: List<Location> = listOf()) 
         return bodyPartThings.joinToString(" ") { it.name } + " of " + thing.name
     }
 
-    fun isLookingAtBody(): Boolean {
+    suspend fun isLookingAtBody(): Boolean {
         return this.thing.body.getParts().size == this.bodyPartThings.size
     }
 }

@@ -24,7 +24,7 @@ object AIManager {
         return DependencyInjector.getImplementation(AgendasCollection::class).values.associateBy { it.name }
     }
 
-    fun reset() {
+    suspend fun reset() {
         desires = loadDesires()
         agendas = loadAgendas()
     }

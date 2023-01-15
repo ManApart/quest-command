@@ -107,13 +107,13 @@ data class Thing(
     /**
      * Return how encumbered the creature is, as a percent from 0-1
      */
-    fun getEncumbrance(): Float {
+    suspend fun getEncumbrance(): Float {
         val soulEncumbrance = soul.parent.properties.values.getInt(ENCUMBRANCE, 0) / 100f
         val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, soulEncumbrance + physicalEncumbrance))
     }
 
-    fun getEncumbrancePhysicalOnly(): Float {
+    suspend fun getEncumbrancePhysicalOnly(): Float {
         val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, physicalEncumbrance))
     }
@@ -122,11 +122,11 @@ data class Thing(
      * Return the inverse (1-percent) how encumbered the creature is, as a percent from 0-1.
      * Useful if multiplying this by some other stat. At 0% encumbered the stat is at 100%. At 100% encumbered the stat is 0%.
      */
-    fun getEncumbranceInverted(): Float {
+    suspend fun getEncumbranceInverted(): Float {
         return 1 - getEncumbrance()
     }
 
-    fun canEquipTo(body: Body): Boolean {
+    suspend fun canEquipTo(body: Body): Boolean {
         return equipSlots.any { slot ->
             body.canEquip(slot)
         }
@@ -136,11 +136,11 @@ data class Thing(
         return equipSlots.first { it.itemIsEquipped(this, body) }
     }
 
-    fun findSlot(body: Body, attachPoint: String): Slot? {
+    suspend fun findSlot(body: Body, attachPoint: String): Slot? {
         return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
     }
 
-    fun findSlotFromPart(body: Body, partName: String): Slot? {
+    suspend fun findSlotFromPart(body: Body, partName: String): Slot? {
         return body.getPartOrNull(partName)?.let { part ->
             equipSlots.firstOrNull { slot ->
                 slot.attachPoints.all { part.hasAttachPoint(it) }
@@ -159,7 +159,7 @@ data class Thing(
         return name == other.name && properties.matches(other.properties)
     }
 
-    fun getWeight(): Int {
+    suspend fun getWeight(): Int {
         return properties.values.getInt(WEIGHT, 1) + inventory.getWeight()
     }
 
@@ -177,7 +177,7 @@ data class Thing(
         return body.getPositionInLocation(part, position)
     }
 
-    fun isWithinRangeOf(creature: Thing?): Boolean {
+    suspend fun isWithinRangeOf(creature: Thing?): Boolean {
         if (creature == null
             || creature.inventory.exists(this)
             || getTopParent().location == NOWHERE_NODE

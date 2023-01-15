@@ -51,7 +51,7 @@ class DismountCommand : Command() {
         }
     }
 
-    private fun getExitLocation(source: Thing) : LocationPoint? {
+    private suspend fun getExitLocation(source: Thing) : LocationPoint? {
         val climbThing = source.climbThing!!
         val location = climbThing.location
         val part = climbThing.body.getPart(source.location.name)

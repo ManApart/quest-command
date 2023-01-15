@@ -12,7 +12,7 @@ class HandHelper(creature: Thing, source: String, desiredSkill: String) {
         determineHand(creature, source, desiredSkill)
     }
 
-    private fun determineHand(creature: Thing, source: String, desiredSkill: String) {
+    private suspend fun determineHand(creature: Thing, source: String, desiredSkill: String) {
         val rightHand = creature.body.getPart("right hand")
         val leftHand = creature.body.getPart("left hand")
         val rightWeapon = rightHand.getEquippedItem("right hand grip")

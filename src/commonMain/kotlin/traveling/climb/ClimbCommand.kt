@@ -128,12 +128,12 @@ class ClimbCommand : Command() {
         return NameSearchableList(localClimbableThings + connectedThings)
     }
 
-    private fun getDirectionMatches(
+    private suspend fun getDirectionMatches(
         player: Thing,
         things: NameSearchableList<Thing>,
         desiredDirection: Direction
     ): List<ClimbOption> {
-        return things.asSequence()
+        return things
             .filter { getEntryPoints(player, it).isNotEmpty() }
             .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
             .filter { it.direction == desiredDirection }
@@ -141,7 +141,7 @@ class ClimbCommand : Command() {
     }
 
     private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
-        val climbOptions = options.asSequence()
+        val climbOptions = options
             .filter { getEntryPoints(player.thing, it).isNotEmpty() }
             .map { ClimbOption(it, getDirection(player.thing, it, getEntryPoints(player.thing, it).first())) }
             .filter { desiredDirection == Direction.NONE || it.direction == desiredDirection }
@@ -184,7 +184,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun getAvailableOptions(player: Thing, currentLocation: LocationNode, thing: Thing): List<LocationNode> {
+    private suspend fun getAvailableOptions(player: Thing, currentLocation: LocationNode, thing: Thing): List<LocationNode> {
         //If in same network, all neighbor nodes available, otherwise only entry points
         return if (currentLocation.network == thing.body.layout) {
             currentLocation.getNeighbors()
@@ -193,7 +193,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun getEntryPoints(player: Thing, thing: Thing): List<LocationNode> {
+    private suspend fun getEntryPoints(player: Thing, thing: Thing): List<LocationNode> {
         val sourceConnection = player.location.getNeighborConnections()
             .firstOrNull { it.source.hasThingAndPart() && it.source.thingName == thing.name }
         val destConnection = player.location.getNeighborConnections()

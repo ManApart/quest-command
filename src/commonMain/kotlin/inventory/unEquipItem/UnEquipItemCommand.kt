@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Args
 import core.commands.Command
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -56,7 +57,7 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun getItem(source: Thing, args: Args): Thing? {
+    private suspend fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         val items = source.body.getEquippedItems()
         return if (items.exists(itemName)) {
@@ -66,7 +67,7 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private fun getUnequippedItem(source: Thing, args: Args): Thing? {
+    private suspend fun getUnequippedItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
         val equippedItems = source.body.getEquippedItems()
         val items = NameSearchableList(source.inventory.getItems().filter { !equippedItems.contains(it) })
@@ -78,7 +79,7 @@ class UnEquipItemCommand : Command() {
     }
 
     private suspend fun clarifyItem(source: Player) {
-        source.respond("There are no items you can unequip.") {
+        source.respondSuspend("There are no items you can unequip.") {
             message("What do you want to un-equip?")
             optionsNamed(source.body.getEquippedItems())
             command { "unequip $it" }

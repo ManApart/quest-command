@@ -21,7 +21,7 @@ class Status : EventListener<StatusEvent>() {
         event.source.displayToOthers("${event.source.name} examines ${event.creature.name}'s stats.")
     }
 
-    private fun printImportantStats(event: StatusEvent) {
+    private suspend fun printImportantStats(event: StatusEvent) {
         val soul = event.creature.soul
         if (soul.hasStat(HEALTH) || soul.hasStat(STAMINA) || soul.hasStat(FOCUS)) {
             val youHave =

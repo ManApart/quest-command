@@ -88,7 +88,7 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun takeItemFromContainer(source: Thing, from: Thing, itemName: String) {
+    private suspend fun takeItemFromContainer(source: Thing, from: Thing, itemName: String) {
         if (itemName.lowercase() == "all") {
             takeAllFromContainer(source, from)
         } else {
@@ -96,13 +96,13 @@ class TakeItemCommand : core.commands.Command() {
         }
     }
 
-    private fun takeAllFromContainer(source: Thing, from: Thing) {
+    private suspend fun takeAllFromContainer(source: Thing, from: Thing) {
         from.inventory.getItems().forEach { item ->
             EventManager.postEvent(TransferItemEvent(source, item, from, source))
         }
     }
 
-    private fun takeSingleItemFromContainer(source: Thing, from: Thing, itemName: String) {
+    private suspend fun takeSingleItemFromContainer(source: Thing, from: Thing, itemName: String) {
         val item = from.inventory.getItem(itemName)
         if (item != null) {
             EventManager.postEvent(TransferItemEvent(source, item, from, source))

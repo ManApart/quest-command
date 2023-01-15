@@ -88,7 +88,7 @@ class DebugCommand : Command() {
         EventManager.postEvent(DebugToggleEvent(source, type, toggledOn))
     }
 
-    private fun sendDebugStatEvent(source: Thing, type: StatKind, args: Args) {
+    private suspend fun sendDebugStatEvent(source: Thing, type: StatKind, args: Args) {
         val thing = parseThingsFromLocation(source, args.getGroup("on")).firstOrNull()?.thing ?: source
         val level = args.getNumber()
 

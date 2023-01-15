@@ -4,6 +4,7 @@ import core.Player
 import core.commands.Args
 import core.commands.parseVector
 import core.commands.respond
+import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -48,15 +49,15 @@ class DropItemCommand : core.commands.Command() {
         }
     }
 
-    private fun clarifyItemToDrop(source: Player) {
-        source.respond("You have nothing you can drop.") {
+    private suspend fun clarifyItemToDrop(source: Player) {
+        source.respondSuspend("You have nothing you can drop.") {
             message("Drop what item?")
             optionsNamed(source.inventory.getItems())
             command { "drop $it" }
         }
     }
 
-    private fun dropItem(source: Thing, args: Args, position: Vector) {
+    private suspend fun dropItem(source: Thing, args: Args, position: Vector) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             EventManager.postEvent(PlaceItemEvent(source, item, position))

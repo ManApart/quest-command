@@ -46,7 +46,7 @@ class RecipeResultBuilder {
         this.getItem = getItem
     }
 
-    fun build(): RecipeResult {
+    suspend fun build(): RecipeResult {
         if (description.isBlank()) buildDescription()
 
         if (getItem != null) return RecipeResult(description, getItem!!)

@@ -25,7 +25,12 @@ data class Body(
 
     constructor(base: Body) : this(base.name, base.material, Network(base.layout))
 
-    private val parts: NameSearchableList<Location> by lazy { createParts() }
+    private var partsBacking: NameSearchableList<Location>? = null
+    private suspend fun parts(): NameSearchableList<Location> {
+        return partsBacking ?: createParts().also { partsBacking = it }
+    }
+
+    //    private val parts: NameSearchableList<Location> by lazy { createParts() }
     val blockHelper = BlockHelper()
 
     private suspend fun createParts(): NameSearchableList<Location> {
@@ -33,10 +38,12 @@ data class Body(
     }
 
     override fun toString(): String {
+        //Since we can't run suspending in our tostring
+        val parts = partsBacking ?: emptyList()
         return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
-    suspend fun equipItems(equippedItems: List<Thing>){
+    suspend fun equipItems(equippedItems: List<Thing>) {
         equippedItems.forEach { item ->
             val slotName = slotMap[item.name]
             val slot = item.equipSlots.firstOrNull { equipSlot -> equipSlot.description == slotName }
@@ -48,9 +55,9 @@ data class Body(
         }
     }
 
-    fun getEquippedItems(): NameSearchableList<Thing> {
+    suspend fun getEquippedItems(): NameSearchableList<Thing> {
         val items = NameSearchableList<Thing>()
-        parts.forEach { part ->
+        parts().forEach { part ->
             part.getEquippedItems().forEach { item ->
                 if (!items.contains(item)) {
                     items.add(item)
@@ -60,32 +67,32 @@ data class Body(
         return items
     }
 
-    fun isEquipped(item: Thing): Boolean {
+    suspend fun isEquipped(item: Thing): Boolean {
         return getEquippedItems().contains(item)
     }
 
-    fun getEquippedItemsAt(attachPoint: String): List<Thing> {
-        return parts.asSequence().map { it.getEquippedItem(attachPoint) }.filterNotNull().toList()
+    suspend fun getEquippedItemsAt(attachPoint: String): List<Thing> {
+        return parts().asSequence().map { it.getEquippedItem(attachPoint) }.filterNotNull().toList()
     }
 
-    fun hasPart(part: String): Boolean {
-        return parts.exists(part)
+    suspend fun hasPart(part: String): Boolean {
+        return parts().exists(part)
     }
 
-    fun getPart(part: String): Location {
-        return parts.get(part)
+    suspend fun getPart(part: String): Location {
+        return parts().get(part)
     }
 
-    fun getPartOrNull(part: String): Location? {
-        return if (hasPart(part)) parts.get(part) else null
+    suspend fun getPartOrNull(part: String): Location? {
+        return if (hasPart(part)) parts().get(part) else null
     }
 
-    fun getParts(): List<Location> {
-        return parts.toList()
+    suspend fun getParts(): List<Location> {
+        return parts().toList()
     }
 
-    fun getAnyParts(names: List<String>): List<Location> {
-        return parts.getAny(names)
+    suspend fun getAnyParts(names: List<String>): List<Location> {
+        return parts().getAny(names)
     }
 
     fun getPartLocation(part: String): LocationNode {
@@ -96,41 +103,44 @@ data class Body(
         return layout.rootNode.getLocation()
     }
 
-    private fun getPartsWithAttachPoint(attachPoint: String): List<Location> {
-        return parts.filter { it.hasAttachPoint(attachPoint) }
+    private suspend fun getPartsWithAttachPoint(attachPoint: String): List<Location> {
+        return parts().filter { it.hasAttachPoint(attachPoint) }
     }
 
-    private fun getPartsEquippedWith(item: Thing): List<Location> {
-        return parts.filter { it.getEquippedItems().contains(item) }
+    private suspend fun getPartsEquippedWith(item: Thing): List<Location> {
+        return parts().filter { it.getEquippedItems().contains(item) }
     }
 
-    fun canEquip(item: Thing, slot: Slot = getDefaultSlot(item)): Boolean {
+    suspend fun canEquip(item: Thing, slotIn: Slot? = null): Boolean {
+        val slot = slotIn ?: getDefaultSlot(item)
         return canEquip(slot)
     }
 
-    fun canEquip(slot: Slot): Boolean {
+    suspend fun canEquip(slot: Slot): Boolean {
         return slot.attachPoints.all {
             hasAttachPoint(it)
         }
     }
 
-    private fun hasAttachPoint(attachPoint: String): Boolean {
-        return parts.any {
+    private suspend fun hasAttachPoint(attachPoint: String): Boolean {
+        return parts().any {
             it.hasAttachPoint(attachPoint)
         }
     }
 
-    fun getDefaultSlot(item: Thing): Slot {
+    suspend fun getDefaultSlot(item: Thing): Slot {
         return getEmptyEquipSlot(item)
             ?: item.equipSlots.firstOrNull { canEquip(it) }
             ?: throw IllegalArgumentException("Found no slot for $item for body $name. This should not happen!")
     }
 
-    fun getEmptyEquipSlot(item: Thing): Slot? {
+    suspend fun getEmptyEquipSlot(item: Thing): Slot? {
         val options = item.equipSlots.filter { canEquip(it) && it.isEmpty(this) }
-        val nonHandOption = options.firstOrNull { it.attachPoints.none { point ->
-            point.contains("Grip")
-        }}
+        val nonHandOption = options.firstOrNull {
+            it.attachPoints.none { point ->
+                point.contains("Grip")
+            }
+        }
         val rightHandFirst = options.sortedBy {
             it.attachPoints.any { point ->
                 point.contains("Right")
@@ -147,7 +157,8 @@ data class Body(
 //            }
     }
 
-    suspend fun equip(item: Thing, slot: Slot = getDefaultSlot(item)) {
+    suspend fun equip(item: Thing, slotIn: Slot? = null) {
+        val slot = slotIn ?: getDefaultSlot(item)
         if (canEquip(slot)) {
             unEquip(item)
             slotMap[item.name] = slot.description

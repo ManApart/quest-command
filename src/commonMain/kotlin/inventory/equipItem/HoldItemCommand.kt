@@ -3,10 +3,7 @@ package inventory.equipItem
 import core.Player
 import core.body.Body
 import core.body.Slot
-import core.commands.ArgDelimiter
-import core.commands.Args
-import core.commands.Command
-import core.commands.respond
+import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
@@ -85,7 +82,7 @@ class HoldItemCommand : Command() {
         return if (args.hasGroup("in")) args.getString("in") else null
     }
 
-    private fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
+    private suspend fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
         return if (attachPointGuess == null) {
            body.getEmptyEquipSlot(item) ?: body.getDefaultSlot(item)
         } else {
@@ -94,21 +91,21 @@ class HoldItemCommand : Command() {
     }
 
     private suspend fun suggestEquippableItems(source: Player) {
-        source.respond("There is nothing for you to hold.") {
+        source.respondSuspend("There is nothing for you to hold.") {
             message("What do you want to hold?")
             optionsNamed(getEquipableItems(source.thing))
             command { "hold $it" }
         }
     }
 
-    private fun getEquipableItems(source: Thing): List<Thing> {
+    private suspend fun getEquipableItems(source: Thing): List<Thing> {
         val body = source.body
         val equippedItems = body.getEquippedItems()
         return source.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
     }
 
     private suspend fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
-        source.respond("There is no place you can hold ${item.name}.") {
+        source.respondSuspend("There is no place you can hold ${item.name}.") {
             message("Could not find attach point $attachPointGuess. Where would you like to hold ${item.name}?")
             val options = source.thing.body.getParts().filter { it.hasAttachPoint("Grip") }
             optionsNamed(options)

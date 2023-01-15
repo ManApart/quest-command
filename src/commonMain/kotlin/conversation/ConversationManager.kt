@@ -19,7 +19,7 @@ object ConversationManager {
         dialogues = loadDialogue()
     }
 
-    fun getMatchingDialogue(conversation: Conversation): List<Dialogue> {
+    suspend fun getMatchingDialogue(conversation: Conversation): List<Dialogue> {
         return dialogues.flatMap { it.getDialogues(conversation) }
     }
 }
