@@ -5,7 +5,7 @@ import core.thing.things
 
 class CommonCreatures : CreatureResource {
 
-    override val values = things {
+    override suspend fun values() = things {
         thing("Rat") {
             description("Mangy and red eyed.")
             body("Rat")

@@ -6,7 +6,7 @@ import resources.thing.burnable
 
 class Food : ItemResource {
 
-    override val values = things {
+    override suspend fun values() = things {
         thing("Apple") {
             material("Food")
             description("It glistens and smells of spring blossoms.")
@@ -31,7 +31,7 @@ class Food : ItemResource {
         thing("Wheat Bundle") {
             material("Food")
             description("It's stems lightly scratch your hands.")
-            extends(burnable)
+            extends(burnable.get())
             param("fireHealth", 1)
             param("itemName", "Wheat Bundle")
             props {

@@ -20,7 +20,7 @@ object ItemManager {
     private suspend fun loadItems(): NameSearchableList<Thing> {
         startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
-        return itemsCollection.values.build(ITEM_TAG)
+        return itemsCollection.values().build(ITEM_TAG)
     }
 
     suspend fun reset() {

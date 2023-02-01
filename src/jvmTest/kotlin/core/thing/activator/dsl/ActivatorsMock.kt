@@ -1,4 +1,7 @@
 package core.thing.activator.dsl
+
 import core.thing.ThingBuilder
 
-class ActivatorsMock(override val values: List<ThingBuilder> = listOf()) : ActivatorsCollection
+class ActivatorsMock(val values: List<ThingBuilder> = listOf()) : ActivatorsCollection {
+    override suspend fun values() = values
+}

@@ -60,6 +60,6 @@ class RecipeBuilder(internal val name: String) {
 
 }
 
-fun recipe(name: String, initializer: RecipeBuilder.() -> Unit): RecipeBuilder {
-    return RecipeBuilder(name).apply(initializer)
+suspend fun recipe(name: String, initializer: suspend RecipeBuilder.() -> Unit): RecipeBuilder {
+    return RecipeBuilder(name).applySuspending(initializer)
 }

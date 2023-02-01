@@ -26,65 +26,75 @@ class TransferItemTakeTest {
 
     @BeforeTest
     fun setup() {
-        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
-        BodyManager.reset()
+        runBlocking {
+            DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
+            BodyManager.reset()
 
-        DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
-        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
-        LocationManager.reset()
+            DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+            DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
+            LocationManager.reset()
 
-        NOWHERE_NODE.getLocation().clear()
+            NOWHERE_NODE.getLocation().clear()
+        }
     }
 
     @AfterTest
     fun tearDown() {
-        NOWHERE_NODE.getLocation().clear()
+        runBlocking {
+            NOWHERE_NODE.getLocation().clear()
+        }
     }
 
     @Test
     fun pickupItemFromContainer() {
-        val creature = getCreatureWithCapacity()
+        runBlocking {
+            val creature = getCreatureWithCapacity()
 
-        val chest = Thing("Chest", properties = Properties(tags = Tags("Container", "Open")))
-        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
-        chest.inventory.add(item)
+            val chest = Thing("Chest", properties = Properties(tags = Tags("Container", "Open")))
+            val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
+            chest.inventory.add(item)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, chest, creature)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, chest, creature)) }
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertNull(chest.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun doNotPickupFromNonContainer() {
-        val creature = getCreatureWithCapacity()
+        runBlocking {
+            val creature = getCreatureWithCapacity()
 
-        val chest = Thing("Chest", properties = Properties(tags = Tags("Open")))
-        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
-        chest.inventory.add(item)
+            val chest = Thing("Chest", properties = Properties(tags = Tags("Open")))
+            val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
+            chest.inventory.add(item)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(chest.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun doNotPickupFromClosedContainer() {
-        val creature = getCreatureWithCapacity()
+        runBlocking {
+            val creature = getCreatureWithCapacity()
 
-        val chest = Thing("Chest", properties = Properties(tags = Tags("Container")))
-        val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
-        chest.inventory.add(item)
+            val chest = Thing("Chest", properties = Properties(tags = Tags("Container")))
+            val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
+            chest.inventory.add(item)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(chest.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
-    private fun getCreatureWithCapacity(): Thing {
+    private suspend fun getCreatureWithCapacity(): Thing {
         val creature = Thing("Thing", properties = Properties(tags = Tags("Container", "Open", "Creature")))
 //        val pouch = Thing("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)

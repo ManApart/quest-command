@@ -6,6 +6,7 @@ import core.properties.Values
 import core.thing.Thing
 import core.utility.toNameSearchableList
 import createMockedGame
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
 
@@ -18,36 +19,44 @@ import kotlin.test.assertTrue
 
 class LocationTest {
     @BeforeTest
-    fun setup(){
+    fun setup() {
         createMockedGame()
     }
 
     @Test
-    fun hasRoomForItem(){
-        val item = createItem("Apple", weight = 2)
-        val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
-        assertTrue(location.hasRoomFor(item))
+    fun hasRoomForItem() {
+        runBlocking {
+            val item = createItem("Apple", weight = 2)
+            val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
+            assertTrue(location.hasRoomFor(item))
+        }
     }
 
     @Test
-    fun doesNotHaveRoomForItem(){
-        val item = createItem("Apple", weight = 5)
-        val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
-        assertFalse(location.hasRoomFor(item))
+    fun doesNotHaveRoomForItem() {
+        runBlocking {
+            val item = createItem("Apple", weight = 5)
+            val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
+            assertFalse(location.hasRoomFor(item))
+        }
     }
 
     @Test
-    fun getAllSouls(){
-        val items = listOf(createItem("Apple", 5),
-        createItem("Dagger", 5),
-        createItem("Sword", 5))
-        val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values("Size" to "3")))
-        val souls = location.getAllSouls(GameState.player.thing)
-        assertEquals(4, souls.size)
-        assertTrue(souls.contains(GameState.player.thing.soul))
+    fun getAllSouls() {
+        runBlocking {
+            val items = listOf(
+                createItem("Apple", 5),
+                createItem("Dagger", 5),
+                createItem("Sword", 5)
+            )
+            val location = Location(LocationNode("Loc"), items = items.toNameSearchableList(), properties = Properties(Values("Size" to "3")))
+            val souls = location.getAllSouls(GameState.player.thing)
+            assertEquals(4, souls.size)
+            assertTrue(souls.contains(GameState.player.thing.soul))
+        }
     }
 
-    private fun createItem(name: String, weight: Int) : Thing {
+    private fun createItem(name: String, weight: Int): Thing {
         return Thing(name, properties = Properties(Values("weight" to weight.toString())))
     }
 

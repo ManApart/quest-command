@@ -21,7 +21,7 @@ object ActivatorManager {
     private suspend fun loadActivators(): NameSearchableList<Thing> {
         startupLog("Loading Activators.")
         val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class)
-        return activatorsCollection.values.build(ACTIVATOR_TAG)
+        return activatorsCollection.values().build(ACTIVATOR_TAG)
     }
 
     suspend fun reset() {

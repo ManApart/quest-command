@@ -1,3 +1,5 @@
 package crafting
 
-class RecipesMock(override val values: List<RecipeBuilder> = listOf()) : RecipesCollection
+class RecipesMock(val values: List<RecipeBuilder> = listOf()) : RecipesCollection{
+    override suspend fun values() = values
+}

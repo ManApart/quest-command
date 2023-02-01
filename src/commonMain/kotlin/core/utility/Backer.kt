@@ -11,3 +11,8 @@ class Backer<T>(private val initializer: suspend () -> T) {
         backing = initializer()
     }
 }
+
+//Allows for applying when the lambda needs to be a suspend
+suspend inline fun <T> T.applySuspending(block: suspend T.() -> Unit): T {
+    return this.also { it.block() }
+}

@@ -1,3 +1,5 @@
 package conversation.dsl
 
-class DialoguesMock(override val values: List<DialogueTree> = listOf()) : DialoguesCollection
+class DialoguesMock(val values: List<DialogueTree> = listOf()) : DialoguesCollection{
+    override suspend fun values() = values
+}

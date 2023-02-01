@@ -31,8 +31,8 @@ class CastCommandCastTest {
 
         private val thingA = Thing("thingA")
         private val thingB = Thing("thingB")
-        private val player = GameManager.newPlayer()
-        private val scope = GameState.player.thing.currentLocation()
+        private val player = runBlocking { GameManager.newPlayer() }
+        private val scope = runBlocking { GameState.player.thing.currentLocation() }
 
         init {
             scope.addThing(thingA)
@@ -101,13 +101,15 @@ class CastCommandCastTest {
 
     @Test
     fun limitParts() {
-        val part = Location(LocationNode("leg"))
-        val thing = ThingAim(Thing("Bob"), listOf(part))
+        runBlocking {
+            val part = Location(LocationNode("leg"))
+            val thing = ThingAim(Thing("Bob"), listOf(part))
 
-        val results = getThingedPartsOrAll(thing, 3)
+            val results = getThingedPartsOrAll(thing, 3)
 
-        assertEquals(1, results.size)
-        assertEquals(part, results.first())
+            assertEquals(1, results.size)
+            assertEquals(part, results.first())
+        }
     }
 
 

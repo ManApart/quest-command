@@ -5,7 +5,7 @@ import core.thing.things
 
 class IronArmor : ItemResource {
 
-    override val values = things {
+    override suspend fun values() = things {
         thing("Iron Half Helm") {
             material("Iron")
             description("The leather padding is worn, but the iron shell should protect your skull.")

@@ -6,9 +6,9 @@ import resources.thing.burnable
 
 class Apparel : ItemResource {
 
-    override val values = things {
+    override suspend fun values() = things {
         thing("Brown Pants") {
-            extends(burnable)
+            extends(burnable.get())
             material("Cloth")
             description("These pants used to be white.")
             param("fireHealth" to 1)
@@ -21,7 +21,7 @@ class Apparel : ItemResource {
         }
 
         thing("Old Shirt") {
-            extends(burnable)
+            extends(burnable.get())
             material("Cloth")
             description("A faint scent of soil oozes from the worn cloth.")
             param("fireHealth" to 1)

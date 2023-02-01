@@ -6,7 +6,7 @@ import traveling.scope.LIT_LIGHT
 
 class Items : ItemResource {
 
-    override val values = things {
+    override suspend fun values() = things {
 
         thing("Tinder Box") {
             material("Cloth")

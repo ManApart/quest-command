@@ -47,7 +47,7 @@ class PushTest {
 
         private val caster = Player("Caster", Thing("caster"))
         private val victim = Thing("victim")
-        private val scope = GameState.player.thing.currentLocation()
+        private val scope = runBlocking { GameState.player.thing.currentLocation() }
 
         init {
             scope.addThing(caster.thing)

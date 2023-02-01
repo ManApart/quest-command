@@ -8,6 +8,7 @@ import core.history.displayToMe
 import core.thing.Thing
 import traveling.location.weather.WeatherManager
 import use.StartUseEvent
+import use.startUseEvent
 
 class EatCommand : Command() {
     override fun getAliases(): List<String> {
@@ -57,9 +58,9 @@ class EatCommand : Command() {
         }
     }
 
-    private fun eatFood(source: Thing, food: Thing) {
+    private suspend fun eatFood(source: Thing, food: Thing) {
         if (food.properties.tags.has("food")) {
-            EventManager.postEvent(StartUseEvent(source, food, source))
+            EventManager.postEvent(startUseEvent(source, food, source))
         } else {
             source.displayToMe("${food.name} is inedible.")
         }

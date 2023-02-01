@@ -23,14 +23,16 @@ class AttackCommandTest {
 
     @Test
     fun attackCreatureWithoutDirection() {
-        val player = GameManager.newPlayer()
-        val rat = thing("Rat") {
-            body("human")
-        }.build()
-        player.thing.currentLocation().addThing(rat)
+        runBlocking {
+            val player = GameManager.newPlayer()
+            val rat = thing("Rat") {
+                body("human")
+            }.build()
+            player.thing.currentLocation().addThing(rat)
 
-        runBlocking { command.execute(player, "sl", "rat".split(" ")) }
-        val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
-        assertEquals(rat, event.thing.thing)
+            command.execute(player, "sl", "rat".split(" "))
+            val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
+            assertEquals(rat, event.thing.thing)
+        }
     }
 }

@@ -24,31 +24,35 @@ class PlaceItemTest {
 
     @BeforeTest
     fun setup() {
-        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
-        BodyManager.reset()
+        runBlocking {
+            DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
+            BodyManager.reset()
 
-        val behaviorParser = BehaviorsMock()
-        DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
-        BehaviorManager.reset()
+            val behaviorParser = BehaviorsMock()
+            DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
+            BehaviorManager.reset()
 
-        DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
-        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
-        LocationManager.reset()
+            DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+            DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
+            LocationManager.reset()
 
-        runBlocking { NOWHERE_NODE.getLocation().clear() }
+            NOWHERE_NODE.getLocation().clear()
+        }
     }
 
     @Test
     fun dropItem() {
-        val creature = Thing("Creature")
-        val item = Thing("Apple")
-        creature.inventory.add(item)
-        val scope = runBlocking { creature.location.getLocation() }
+        runBlocking {
+            val creature = Thing("Creature")
+            val item = Thing("Apple")
+            creature.inventory.add(item)
+            val scope = runBlocking { creature.location.getLocation() }
 
-        runBlocking { PlaceItem().execute(PlaceItemEvent(creature, item)) }
-        assertTrue(scope.getThings(item.name).isNotEmpty())
-        assertNull(creature.inventory.getItem(item.name))
+            PlaceItem().execute(PlaceItemEvent(creature, item))
+            assertTrue(scope.getThings(item.name).isNotEmpty())
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
 }

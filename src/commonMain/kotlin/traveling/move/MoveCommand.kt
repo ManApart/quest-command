@@ -53,9 +53,9 @@ class MoveCommand : Command() {
             val distance = arguments.getNumber()
 
             when {
-                vector != null -> EventManager.postEvent(StartMoveEvent(source.thing, vector))
-                thing != null -> EventManager.postEvent(StartMoveEvent(source.thing, thing.thing.position))
-                distance != null && direction != null -> EventManager.postEvent(StartMoveEvent(source.thing, source.position + (direction.vector * distance)))
+                vector != null -> EventManager.postEvent(startMoveEvent(source.thing, vector))
+                thing != null -> EventManager.postEvent(startMoveEvent(source.thing, thing.thing.position))
+                distance != null && direction != null -> EventManager.postEvent(startMoveEvent(source.thing, source.position + (direction.vector * distance)))
                 direction != null || distance != null || args.isEmpty() -> parseDirectionAndDistance(source, direction, distance)
                 //TODO - response request
                 else -> source.display("Could not understand: move ${args.joinToString(" ")}")
@@ -63,7 +63,7 @@ class MoveCommand : Command() {
         }
     }
 
-    private fun parseDirectionAndDistance(source: Player, initialDirection: Direction?, initialDistance: Int?) {
+    private suspend fun parseDirectionAndDistance(source: Player, initialDirection: Direction?, initialDistance: Int?) {
         val clarifier = source.clarify {
             respond("direction") {
                 message("Move in what direction?")
@@ -87,7 +87,7 @@ class MoveCommand : Command() {
             val distance = clarifier.getIntValue("distance")
             val direction = Direction.getDirection(clarifier.getStringValue("direction"))
             val vector = (direction.vector * distance) + source.position
-            EventManager.postEvent(StartMoveEvent(source.thing, vector))
+            EventManager.postEvent(startMoveEvent(source.thing, vector))
         }
     }
 

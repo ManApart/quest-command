@@ -11,7 +11,7 @@ import traveling.scope.LIGHT
 
 class CommonActivators : ActivatorResource {
 
-    override val values = things {
+    override suspend fun values() = things {
         thing("Apple Tree") {
             material("Wood")
             description("The apple tree's gnarled branches provide good footholds, and sparks of ruby dance among the emerald leaves.")

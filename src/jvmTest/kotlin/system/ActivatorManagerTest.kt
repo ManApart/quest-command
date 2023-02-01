@@ -8,6 +8,7 @@ import core.thing.activator.ActivatorManager
 import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.activator.dsl.ActivatorsMock
 import core.thing.thing
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
 
@@ -28,10 +29,10 @@ class ActivatorManagerTest {
     @BeforeTest
     fun setup() {
         val networksMock = NetworksMock(networks {
-            network(DEFAULT_NETWORK.name){
+            network(DEFAULT_NETWORK.name) {
                 locationNode(PLAYER_START_LOCATION)
             }
-            network(PLAYER_START_NETWORK){
+            network(PLAYER_START_NETWORK) {
                 locationNode(PLAYER_START_LOCATION)
             }
         })
@@ -47,32 +48,36 @@ class ActivatorManagerTest {
 
     @Test
     fun topLevelValueIsParameterized() {
-        val activator = thing("Thing"){
-            description("This is a \$key")
+        runBlocking {
+            val activator = thing("Thing") {
+                description("This is a \$key")
+            }
+            val mock = ActivatorsMock(listOf(activator))
+            DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
+            ActivatorManager.reset()
+
+            val thing = LocationThing("Thing", null, NO_VECTOR, mapOf("key" to "value"))
+            val result = ActivatorManager.getActivatorsFromLocationThings(listOf(thing)).first()
+
+            assertEquals("This is a value", result.description)
         }
-        val mock = ActivatorsMock(listOf(activator))
-        DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
-        ActivatorManager.reset()
-
-        val thing = LocationThing("Thing", null, NO_VECTOR, mapOf("key" to "value"))
-        val result = ActivatorManager.getActivatorsFromLocationThings(listOf(thing)).first()
-
-        assertEquals("This is a value", result.description)
     }
 
     @Test
     fun nestedClimbableGetsParams() {
-        val activator = thing("Thing"){
-            description("\$destination")
+        runBlocking {
+            val activator = thing("Thing") {
+                description("\$destination")
+            }
+            val mock = ActivatorsMock(listOf(activator))
+            DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
+            ActivatorManager.reset()
+
+            val thing = LocationThing("Thing", null, NO_VECTOR, mapOf("destination" to "resort"))
+            val result = ActivatorManager.getActivatorsFromLocationThings(listOf(thing)).first()
+
+            assertEquals("resort", result.description)
         }
-        val mock = ActivatorsMock(listOf(activator))
-        DependencyInjector.setImplementation(ActivatorsCollection::class, mock)
-        ActivatorManager.reset()
-
-        val thing = LocationThing("Thing", null, NO_VECTOR, mapOf("destination" to "resort"))
-        val result = ActivatorManager.getActivatorsFromLocationThings(listOf(thing)).first()
-
-        assertEquals("resort", result.description)
     }
 
 }

@@ -56,7 +56,7 @@ class UseCommand : Command() {
             thing == null -> source.displayToMe("Couldn't find ${arguments.getString("on")}")
             !thing.isWithinRangeOf(source.thing) -> source.displayToMe("You are too far away to use ${used.name} on ${thing.name}.")
 
-            else -> EventManager.postEvent(StartUseEvent(source.thing, used, thing))
+            else -> EventManager.postEvent(startUseEvent(source.thing, used, thing))
         }
     }
 

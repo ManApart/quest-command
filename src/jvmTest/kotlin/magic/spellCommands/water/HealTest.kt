@@ -43,7 +43,7 @@ class HealTest {
         }
 
         private val thingA = Player("Thinga", Thing("thingA"))
-        private val scope = GameState.player.thing.currentLocation()
+        private val scope = runBlocking { GameState.player.thing.currentLocation()}
 
         init {
             scope.addThing(thingA.thing)

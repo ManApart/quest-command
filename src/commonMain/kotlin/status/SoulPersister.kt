@@ -12,7 +12,7 @@ data class SoulP(
 ){
     constructor(b: Soul): this(b.getStats().map { LeveledStatP(it)}, b.getConditions().map { ConditionP(it) })
 
-    fun parsed(body: Body): Soul {
+    suspend fun parsed(body: Body): Soul {
         return Soul(stats.map { it.parsed() }.toMutableList()).apply { overrideConditions(conditions.map { it.parsed(body) }) }
     }
 }

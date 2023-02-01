@@ -39,172 +39,192 @@ class TransferItemPlaceTest {
 
     @BeforeTest
     fun setup() {
-        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
-        BodyManager.reset()
+        runBlocking {
+            DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
+            BodyManager.reset()
 
-        val behaviorParser = BehaviorsMock()
-        DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
-        BehaviorManager.reset()
+            val behaviorParser = BehaviorsMock()
+            DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
+            BehaviorManager.reset()
 
-        DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
-        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
-        LocationManager.reset()
+            DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+            DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
+            LocationManager.reset()
 
-        NOWHERE_NODE.getLocation().clear()
+            NOWHERE_NODE.getLocation().clear()
+        }
     }
 
     @Test
     fun placeItemInActivatorContainer() {
-        val item = createItem("Apple", weight = 5)
-        val creature = createChest()
-        creature.inventory.add(item)
+        runBlocking {
+            val item = createItem("Apple", weight = 5)
+            val creature = createChest()
+            creature.inventory.add(item)
 
-        val chest = createChest(5)
+            val chest = createChest(5)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(chest.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun placeItemInCreatureContainerSubInventory() {
-        //Capacity = 10 * Strength
-        val creature = createChest()
-        val item = createItem("Apple", weight = 10)
-        creature.inventory.add(item)
+        runBlocking {
+            //Capacity = 10 * Strength
+            val creature = createChest()
+            val item = createItem("Apple", weight = 10)
+            creature.inventory.add(item)
 
-        val packMule = createPackMule(1)
+            val packMule = createPackMule(1)
 
-        val pouch = createPouch(15)
-        packMule.inventory.add(pouch)
+            val pouch = createPouch(15)
+            packMule.inventory.add(pouch)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, packMule)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, packMule)) }
 
-        assertNotNull(packMule.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(packMule.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun placeItemInCreatureContainerEquip() {
-        val bodyMock = BodysMock(networks {
-            network("body") {
-                locationNode("Hand")
-            }
-            network("none") {
-                locationNode("part")
-            }
-        })
-        val bodyPartMock = BodyPartsMock(locations {
-            location("Hand") {
-                slot("Grip", "Glove")
-            }
-            location("part")
-        })
+        runBlocking {
+            val bodyMock = BodysMock(networks {
+                network("body") {
+                    locationNode("Hand")
+                }
+                network("none") {
+                    locationNode("part")
+                }
+            })
+            val bodyPartMock = BodyPartsMock(locations {
+                location("Hand") {
+                    slot("Grip", "Glove")
+                }
+                location("part")
+            })
 
-        DependencyInjector.setImplementation(BodysCollection::class, bodyMock)
-        DependencyInjector.setImplementation(BodyPartsCollection::class, bodyPartMock)
-        BodyManager.reset()
+            DependencyInjector.setImplementation(BodysCollection::class, bodyMock)
+            DependencyInjector.setImplementation(BodyPartsCollection::class, bodyPartMock)
+            BodyManager.reset()
 
-        val creature = createChest()
-        val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM_TAG)))
-        creature.inventory.add(item)
+            val creature = createChest()
+            val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM_TAG)))
+            creature.inventory.add(item)
 
 
-        val packMule = createPackMule(1)
+            val packMule = createPackMule(1)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, packMule)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, packMule)) }
 
-        assertNotNull(packMule.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(packMule.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun placeItemInItemContainer() {
-        val creature = createChest()
-        val item = createItem("Apple", weight = 5)
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = createChest()
+            val item = createItem("Apple", weight = 5)
+            creature.inventory.add(item)
 
-        val chest = createChest(10)
+            val chest = createChest(10)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(chest.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun placeItemStackInContainer() {
-        val creature = createChest()
-        val item = createItem(weight = 1)
-        item.properties.values.put(COUNT, 2)
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = createChest()
+            val item = createItem(weight = 1)
+            item.properties.values.put(COUNT, 2)
+            creature.inventory.add(item)
 
-        val chest = createChest(size = 5)
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            val chest = createChest(size = 5)
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertEquals(1, chest.inventory.getItem(item.name)!!.properties.getCount())
+            assertNotNull(chest.inventory.getItem(item.name))
+            assertEquals(1, chest.inventory.getItem(item.name)!!.properties.getCount())
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertEquals(1, creature.inventory.getItem(item.name)!!.properties.getCount())
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertEquals(1, creature.inventory.getItem(item.name)!!.properties.getCount())
+        }
     }
 
     @Test
     fun doNotPlaceInNonContainer() {
-        val creature = Thing("Creature")
-        val item = createItem("Apple", 1)
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = Thing("Creature")
+            val item = createItem("Apple", 1)
+            creature.inventory.add(item)
 
-        val chest = createChest(5)
+            val chest = createChest(5)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertNull(chest.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun doNotPlaceInNonOpenContainer() {
-        val creature = Thing("Creature")
-        val item = createItem("Apple", weight = 1)
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = Thing("Creature")
+            val item = createItem("Apple", weight = 1)
+            creature.inventory.add(item)
 
-        val chest = createClosedChest(5)
+            val chest = createClosedChest(5)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertNull(chest.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun doNotPlaceInFullContainer() {
-        val creature = Thing("Creature")
-        val item = createItem("Apple", weight = 5)
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = Thing("Creature")
+            val item = createItem("Apple", weight = 5)
+            creature.inventory.add(item)
 
-        val chest = createChest(1)
+            val chest = createChest(1)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertNull(chest.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun doNotPlaceInContainerWithoutCapacity() {
-        val creature = Thing("Creature")
-        val item = createItem("Apple", weight = 1)
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = Thing("Creature")
+            val item = createItem("Apple", weight = 1)
+            creature.inventory.add(item)
 
-        val chest = createChest(size = 0)
+            val chest = createChest(size = 0)
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertNull(chest.inventory.getItem(item.name))
+        }
     }
 
 //    @Test
@@ -225,34 +245,38 @@ class TransferItemPlaceTest {
 
     @Test
     fun placeItemInContainerThatHasASingleMatchingTag() {
-        val creature = createChest()
-        val item = createItem()
-        item.properties.tags.add("Food", "Fruit")
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = createChest()
+            val item = createItem()
+            item.properties.tags.add("Food", "Fruit")
+            creature.inventory.add(item)
 
-        val chest = createChest(5)
-        chest.body.getRootPart().properties.values.put(CAN_HOLD, "Food,Apparel")
+            val chest = createChest(5)
+            chest.body.getRootPart().properties.values.put(CAN_HOLD, "Food,Apparel")
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(chest.inventory.getItem(item.name))
-        assertNull(creature.inventory.getItem(item.name))
+            assertNotNull(chest.inventory.getItem(item.name))
+            assertNull(creature.inventory.getItem(item.name))
+        }
     }
 
     @Test
     fun doNotPlaceItemInContainerThatHasNoMatchingTags() {
-        val creature = Thing("Creature")
-        val item = createItem()
-        item.properties.tags.add("Food", "Fruit")
-        creature.inventory.add(item)
+        runBlocking {
+            val creature = Thing("Creature")
+            val item = createItem()
+            item.properties.tags.add("Food", "Fruit")
+            creature.inventory.add(item)
 
-        val chest = createChest(5)
-        chest.body.getRootPart().properties.values.put(CAN_HOLD, "Weapon,Apparel")
+            val chest = createChest(5)
+            chest.body.getRootPart().properties.values.put(CAN_HOLD, "Weapon,Apparel")
 
-        runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
 
-        assertNotNull(creature.inventory.getItem(item.name))
-        assertNull(chest.inventory.getItem(item.name))
+            assertNotNull(creature.inventory.getItem(item.name))
+            assertNull(chest.inventory.getItem(item.name))
+        }
     }
 
 }

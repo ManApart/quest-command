@@ -25,15 +25,17 @@ class QuestListenerTest {
         @JvmStatic
         @BeforeAll
         fun setup() {
-            DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
-            BodyManager.reset()
+            runBlocking {
+                DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
+                DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
+                BodyManager.reset()
 
-            DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
-            DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
-            LocationManager.reset()
+                DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+                DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
+                LocationManager.reset()
 
-            GameState.putPlayer(GameManager.newPlayer())
+                GameState.putPlayer(GameManager.newPlayer())
+            }
         }
     }
 

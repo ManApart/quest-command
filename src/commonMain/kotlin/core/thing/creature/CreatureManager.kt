@@ -25,7 +25,7 @@ object CreatureManager {
     private suspend fun loadCreatures(): NameSearchableList<Thing> {
         startupLog("Loading Creatures.")
         val collection = DependencyInjector.getImplementation(CreaturesCollection::class)
-        return collection.values.build(CREATURE_TAG).toNameSearchableList()
+        return collection.values().build(CREATURE_TAG).toNameSearchableList()
     }
 
     private suspend fun getCreature(name: String): Thing {

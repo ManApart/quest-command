@@ -6,8 +6,8 @@ import resources.thing.burnable
 
 class Weapons : ItemResource {
 
-    override val values = things {
-        thing(burnable)
+    override suspend fun values() = things {
+        thing(burnable.get())
 
         thing("Rusty Dagger") {
             material("Iron")

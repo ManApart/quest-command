@@ -60,14 +60,16 @@ import traveling.location.weather.WeathersCollection
 import traveling.location.weather.WeathersMock
 
 fun createItem(name: String = "Apple", weight: Int = 1): Thing {
-    return createItemBuilder(name, weight).build()
+    return runBlocking { createItemBuilder(name, weight).build() }
 }
 
 fun createItemBuilder(name: String = "Apple", weight: Int = 1): ThingBuilder {
-    return thing(name) {
-        props {
-            value("weight" to weight)
-            tag(ITEM_TAG)
+    return runBlocking {
+        thing(name) {
+            props {
+                value("weight" to weight)
+                tag(ITEM_TAG)
+            }
         }
     }
 }
@@ -76,7 +78,7 @@ fun createItemBuilder(name: String = "Apple", weight: Int = 1): ThingBuilder {
 fun createPouch(size: Int = 5, weight: Int = 1): Thing {
     return Thing(
         "Pouch",
-        body = createInventoryBody("Pouch", size),
+        body = createInventoryBodyBlocking("Pouch", size),
         properties = Properties(
             Values(
                 SIZE to size.toString(),
@@ -90,7 +92,7 @@ fun createPouch(size: Int = 5, weight: Int = 1): Thing {
 // Chest is a container
 fun createChest(size: Int = 10): Thing {
     return Thing(
-        "Chest", body = createInventoryBody("Chest", size),
+        "Chest", body = createInventoryBodyBlocking("Chest", size),
         properties = Properties(
             Values(SIZE to size.toString()),
             Tags(CONTAINER, OPEN, ACTIVATOR_TAG)
@@ -101,7 +103,7 @@ fun createChest(size: Int = 10): Thing {
 fun createClosedChest(size: Int = 10): Thing {
     return Thing(
         "Closed Chest",
-        body = createInventoryBody("Closed Chest", size),
+        body = createInventoryBodyBlocking("Closed Chest", size),
         properties = Properties(
             Values(SIZE to size.toString()),
             Tags(CONTAINER, ACTIVATOR_TAG)
@@ -111,7 +113,7 @@ fun createClosedChest(size: Int = 10): Thing {
 
 fun createPackMule(strength: Int = 1): Thing {
     return Thing(
-        "Pack Mule", body = createInventoryBody("Pack Mule"),
+        "Pack Mule", body = createInventoryBodyBlocking("Pack Mule"),
         properties = Properties(
             Values(STRENGTH to strength.toString()),
             Tags(CONTAINER, OPEN, CREATURE_TAG)
@@ -119,63 +121,69 @@ fun createPackMule(strength: Int = 1): Thing {
     )
 }
 
+
+fun createInventoryBodyBlocking(name: String = "Inventory", capacity: Int? = null): Body {
+    return runBlocking { createInventoryBody(name, capacity) }
+}
+
 fun createMockedGame() {
-    DependencyInjector.clearAllImplementations()
-    DependencyInjector.setImplementation(ActivatorsCollection::class, ActivatorsMock())
-    ActivatorManager.reset()
+    runBlocking {
+        DependencyInjector.clearAllImplementations()
+        DependencyInjector.setImplementation(ActivatorsCollection::class, ActivatorsMock())
+        ActivatorManager.reset()
 
-    DependencyInjector.setImplementation(DesiresCollection::class, DesiresMock())
-    DependencyInjector.setImplementation(AgendasCollection::class, AgendasMock())
-    AIManager.reset()
+        DependencyInjector.setImplementation(DesiresCollection::class, DesiresMock())
+        DependencyInjector.setImplementation(AgendasCollection::class, AgendasMock())
+        AIManager.reset()
 
-    DependencyInjector.setImplementation(BehaviorsCollection::class, BehaviorsMock())
-    BehaviorManager.reset()
+        DependencyInjector.setImplementation(BehaviorsCollection::class, BehaviorsMock())
+        BehaviorManager.reset()
 
-    DependencyInjector.setImplementation(BodysCollection::class, BodysMock.withFakePlayer())
-    DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
-    BodyManager.reset()
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock.withFakePlayer())
+        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
+        BodyManager.reset()
 
-    DependencyInjector.setImplementation(CommandsCollection::class, CommandsMock())
+        DependencyInjector.setImplementation(CommandsCollection::class, CommandsMock())
 
-    DependencyInjector.setImplementation(ConditionsCollection::class, ConditionsGenerated())
-    ConditionManager.reset()
+        DependencyInjector.setImplementation(ConditionsCollection::class, ConditionsGenerated())
+        ConditionManager.reset()
 
-    DependencyInjector.setImplementation(DialoguesCollection::class, DialoguesMock())
+        DependencyInjector.setImplementation(DialoguesCollection::class, DialoguesMock())
 
-    DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock())
-    EffectManager.reset()
+        DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock())
+        EffectManager.reset()
 
-    DependencyInjector.setImplementation(EventListenerMapMock::class, EventListenerMapMock())
-    EventManager.reset()
+        DependencyInjector.setImplementation(EventListenerMapMock::class, EventListenerMapMock())
+        EventManager.reset()
 
-    DependencyInjector.setImplementation(ItemsCollection::class, ItemsMock())
-    ItemManager.reset()
+        DependencyInjector.setImplementation(ItemsCollection::class, ItemsMock())
+        ItemManager.reset()
 
-    DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
-    DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
-    LocationManager.reset()
+        DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
+        DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
+        LocationManager.reset()
 
-    DependencyInjector.setImplementation(MaterialsCollection::class, MaterialsMock())
-    MaterialManager.reset()
+        DependencyInjector.setImplementation(MaterialsCollection::class, MaterialsMock())
+        MaterialManager.reset()
 
-    DependencyInjector.setImplementation(RecipesCollection::class, RecipesMock())
-    RecipeManager.reset()
+        DependencyInjector.setImplementation(RecipesCollection::class, RecipesMock())
+        RecipeManager.reset()
 
-    DependencyInjector.setImplementation(StoryEventsCollection::class, StoryEventsMock())
-    QuestManager.reset()
+        DependencyInjector.setImplementation(StoryEventsCollection::class, StoryEventsMock())
+        QuestManager.reset()
 
-    DependencyInjector.setImplementation(SpellCommandsCollection::class, SpellCommandsMock())
+        DependencyInjector.setImplementation(SpellCommandsCollection::class, SpellCommandsMock())
 
-    DependencyInjector.setImplementation(WeathersCollection::class, WeathersMock())
-    WeatherManager.reset()
+        DependencyInjector.setImplementation(WeathersCollection::class, WeathersMock())
+        WeatherManager.reset()
 
-    EventManager.clear()
-    GameState.reset()
-    CommandParsers.reset()
-    CommandParsers.setResponseRequest(GameState.player, null)
-    runBlocking { GameState.player.location.getLocation().addThing(GameState.player.thing) }
+        EventManager.clear()
+        GameState.reset()
+        CommandParsers.reset()
+        CommandParsers.setResponseRequest(GameState.player, null)
+        runBlocking { GameState.player.location.getLocation().addThing(GameState.player.thing) }
 
-    GameLogger.reset()
-
+        GameLogger.reset()
+    }
 }
 
