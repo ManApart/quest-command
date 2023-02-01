@@ -14,14 +14,16 @@ class StartupTest {
     @Ignore
     @Test
     fun startupPerformanceTest() {
-        val timer = PoorMansInstrumenter(10000)
-        timer.printElapsed("Starting")
-        EventManager.reset()
-        timer.printElapsed("Listeners Registered")
-        GameManager.newGame()
-        timer.printElapsed("New Game Started")
-        runBlocking { CommandParsers.parseInitialCommand(GameState.player) }
-        timer.printElapsed("Initial Command Parsed")
+        runBlocking {
+            val timer = PoorMansInstrumenter(10000)
+            timer.printElapsed("Starting")
+            EventManager.reset()
+            timer.printElapsed("Listeners Registered")
+            GameManager.newGame()
+            timer.printElapsed("New Game Started")
+            runBlocking { CommandParsers.parseInitialCommand(GameState.player) }
+            timer.printElapsed("Initial Command Parsed")
+        }
     }
 
 }

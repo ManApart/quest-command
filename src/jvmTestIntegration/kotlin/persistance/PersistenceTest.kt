@@ -41,11 +41,13 @@ import kotlin.test.assertTrue
 class PersistenceTest {
     @Before
     fun reset() {
-        EventManager.clear()
-        EventManager.reset()
-        GameManager.newGame(playerName = "Saved Player", testing = true)
-        runBlocking { EventManager.executeEvents() }
-        File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
+        runBlocking {
+            EventManager.clear()
+            EventManager.reset()
+            GameManager.newGame(playerName = "Saved Player", testing = true)
+            runBlocking { EventManager.executeEvents() }
+            File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
+        }
     }
 
     @After
@@ -95,13 +97,15 @@ class PersistenceTest {
 
     @Test
     fun effect() {
-        val locationRecipe = locationRecipe("Head") { }.build()
-        val location = Location(LocationNode("Head"), recipe = locationRecipe)
-        val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
-        val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
-        val json = Json.encodeToString(EffectP(original))
-        val parsed: EffectP = Json.decodeFromString(json)
-        assertEffectMatches(original, parsed.parsed(body))
+        runBlocking {
+            val locationRecipe = locationRecipe("Head") { }.build()
+            val location = Location(LocationNode("Head"), recipe = locationRecipe)
+            val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
+            val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
+            val json = Json.encodeToString(EffectP(original))
+            val parsed: EffectP = Json.decodeFromString(json)
+            assertEffectMatches(original, parsed.parsed(body))
+        }
     }
 
     private fun assertEffectMatches(original: Effect, parsed: Effect) {
@@ -115,64 +119,68 @@ class PersistenceTest {
 
     @Test
     fun condition() {
-        val locationRecipe = locationRecipe("Head") { }.build()
-        val location = Location(LocationNode("Head"), recipe = locationRecipe)
-        val effect = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
-        val original = Condition("Fever", effects = listOf(effect))
-        val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
+        runBlocking {
+            val locationRecipe = locationRecipe("Head") { }.build()
+            val location = Location(LocationNode("Head"), recipe = locationRecipe)
+            val effect = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
+            val original = Condition("Fever", effects = listOf(effect))
+            val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
 
-        val json = Json.encodeToString(ConditionP(original))
-        val parsed: ConditionP = Json.decodeFromString(json)
+            val json = Json.encodeToString(ConditionP(original))
+            val parsed: ConditionP = Json.decodeFromString(json)
 
-        with(parsed) {
-            assertEquals(original.name, name)
-            assertEquals(original.element, element)
-            assertEquals(original.elementStrength, elementStrength)
-            assertEquals(original.permanent, permanent)
-            assertEquals(original.age, age)
-            assertEquals(original.isCritical, isCritical)
-            assertEquals(original.isFirstApply, isFirstApply)
+            with(parsed) {
+                assertEquals(original.name, name)
+                assertEquals(original.element, element)
+                assertEquals(original.elementStrength, elementStrength)
+                assertEquals(original.permanent, permanent)
+                assertEquals(original.age, age)
+                assertEquals(original.isCritical, isCritical)
+                assertEquals(original.isFirstApply, isFirstApply)
+            }
+            assertEffectMatches(original.effects.first(), parsed.effects.first().parsed(body))
         }
-        assertEffectMatches(original.effects.first(), parsed.effects.first().parsed(body))
     }
 
     @Test
     fun playerSave() {
-        val preLoadPlayer = GameState.getPlayer("Saved Player")!!
         runBlocking {
-            CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
-            EventManager.executeEvents()
+            val preLoadPlayer = GameState.getPlayer("Saved Player")!!
+            runBlocking {
+                CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
+                EventManager.executeEvents()
+            }
+            preLoadPlayer.thing.properties.tags.add("Saved")
+            //subject: thingIsSelf
+            //subject: locationIsName
+            val fact = Fact(Subject(preLoadPlayer.thing), "Neat")
+            preLoadPlayer.mind.learn(fact)
+
+            preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
+
+            EventManager.postEvent(SaveEvent(preLoadPlayer))
+            runBlocking { EventManager.executeEvents() }
+            preLoadPlayer.thing.properties.tags.remove("Saved")
+            assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
+            val equippedItemCount = preLoadPlayer.thing.body.getEquippedItems().size
+
+            EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
+            runBlocking { EventManager.executeEvents() }
+            val postLoadPlayer = GameState.getPlayer("Saved Player")!!
+            assertEquals("Saved Player", postLoadPlayer.thing.name)
+            assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
+            assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
+            assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
+
+            val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material
+            assertEquals(MaterialManager.getMaterial("Stone"), daggerMat)
+
+            runBlocking { CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r") }
+            val location = postLoadPlayer.thing.location.getLocation()
+            val bundles = location.getItems("bundle")
+            assertTrue(bundles.isNotEmpty(), "Should have found wheat bundles")
+            assertEquals(2, bundles.first().properties.getCount())
         }
-        preLoadPlayer.thing.properties.tags.add("Saved")
-        //subject: thingIsSelf
-        //subject: locationIsName
-        val fact = Fact(Subject(preLoadPlayer.thing), "Neat")
-        preLoadPlayer.mind.learn(fact)
-
-        preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
-
-        EventManager.postEvent(SaveEvent(preLoadPlayer))
-        runBlocking { EventManager.executeEvents() }
-        preLoadPlayer.thing.properties.tags.remove("Saved")
-        assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
-        val equippedItemCount = preLoadPlayer.thing.body.getEquippedItems().size
-
-        EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
-        runBlocking { EventManager.executeEvents() }
-        val postLoadPlayer = GameState.getPlayer("Saved Player")!!
-        assertEquals("Saved Player", postLoadPlayer.thing.name)
-        assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
-        assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquippedItems().size)
-        assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
-
-        val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material
-        assertEquals(MaterialManager.getMaterial("Stone"), daggerMat)
-
-        runBlocking { CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r") }
-        val location = postLoadPlayer.thing.location.getLocation()
-        val bundles = location.getItems("bundle")
-        assertTrue(bundles.isNotEmpty(), "Should have found wheat bundles")
-        assertEquals(2, bundles.first().properties.getCount())
     }
 
 }

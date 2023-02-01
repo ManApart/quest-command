@@ -13,7 +13,7 @@ object GameState {
     var properties = Properties()
     val timeManager = TimeManager()
     val players = mutableMapOf<String, Player>()
-    var player = players.values.first()
+    var player by lazy { players.values.first() }
     val aliases = mutableMapOf<String, String>()
 
     suspend fun reset() {
@@ -31,7 +31,7 @@ object GameState {
         return players.values.firstOrNull { it.thing == creature }
     }
 
-    fun putPlayer(player: Player, isMainPlayer: Boolean = false){
+    fun putPlayer(player: Player, isMainPlayer: Boolean = false) {
         players[player.name.lowercase()] = player
         GameLogger.track(player)
         CommandParsers.addParser(player)
@@ -42,11 +42,11 @@ object GameState {
         return properties.values.getBoolean(key.propertyName)
     }
 
-    fun putDebug(key: DebugType, value: Boolean){
+    fun putDebug(key: DebugType, value: Boolean) {
         return properties.values.put(key.propertyName, value)
     }
 
-    fun putDebug(key: DebugType, value: Int){
+    fun putDebug(key: DebugType, value: Int) {
         return properties.values.put(key.propertyName, value)
     }
 
@@ -56,7 +56,7 @@ fun eventWithPlayer(creature: Thing, event: (Player) -> Event): Event? {
     return GameState.getPlayer(creature)?.let { event(it) }
 }
 
-fun startupLog(message: String){
+fun startupLog(message: String) {
     if (GameState.properties.values.getBoolean(VERBOSE_STARTUP)) println(message)
 }
 

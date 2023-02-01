@@ -2,6 +2,7 @@ package balance
 
 import combat.DamageType
 import combat.attack.StartAttackEvent
+import combat.attack.startAttackEvent
 import core.properties.Properties
 import core.properties.Tags
 import core.properties.Values
@@ -62,7 +63,7 @@ private suspend fun testAttackTime(agility: Int, strength: Int, weaponSize: Stri
     creature.inventory.add(Thing("Dead weight", properties = Properties(Values("weight" to otherWeight.toString()))))
     part.equipItem("hand", weapon)
 
-    val event = StartAttackEvent(creature, part, ThingAim(Thing("Thing")), DamageType.SLASH)
+    val event = startAttackEvent(creature, part, ThingAim(Thing("Thing")), DamageType.SLASH)
 
     println("\t${creature.soul.getCurrent(AGILITY)} \t\t${creature.soul.getCurrent(STRENGTH)} \t\t\t${creature.getEncumbrance()} \t\t\t$weaponSize \t\t\t$weaponWeight \t\t\t\t${event.timeLeft}")
 }

@@ -16,66 +16,80 @@ class CommandComboTest {
 
     @BeforeTest
     fun reset() {
-        EventManager.clear()
-        GameManager.newGame(testing = true)
-        runBlocking { EventManager.executeEvents() }
+        runBlocking {
+            EventManager.clear()
+            GameManager.newGame(testing = true)
+            runBlocking { EventManager.executeEvents() }
+        }
     }
 
     @Test
     fun sliceApple() {
-        val input = "use dagger on apple"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        runBlocking {
+            val input = "use dagger on apple"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+            assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        }
     }
 
     @Test
     fun chopApple() {
-        val input = "chop apple"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        runBlocking {
+            val input = "chop apple"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+            assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Sliced") ?: false)
+        }
     }
 
     @Test
     fun eatApple() {
-        val input = "sl head of self && eat apple && n && eat apple"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertNull(GameState.player.thing.inventory.getItem("Apple"))
-        assertEquals("You feel the fullness of life beating in your bosom.", GameLogger.getMainHistory().getLastOutput())
+        runBlocking {
+            val input = "sl head of self && eat apple && n && eat apple"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            assertNull(GameState.player.thing.inventory.getItem("Apple"))
+            assertEquals("You feel the fullness of life beating in your bosom.", GameLogger.getMainHistory().getLastOutput())
+        }
     }
 
     @Test
     fun roastApple() {
-        val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && n && use tinder on tree && use apple on tree"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
+        runBlocking {
+            val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && n && use tinder on tree && use apple on tree"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+            assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
+        }
     }
 
     @Test
     fun cookApple() {
-        val stat = GameState.player.thing.soul.getStats().first { it.name.lowercase() == COOKING.lowercase() }
-        stat.setLevel(2)
+        runBlocking {
+            val stat = GameState.player.thing.soul.getStats().first { it.name.lowercase() == COOKING.lowercase() }
+            stat.setLevel(2)
 
-        val input = "w && s && move to range && cook apple on range"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
-        assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
+            val input = "w && s && move to range && cook apple on range"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
+            assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Cooked") ?: false)
+        }
     }
 
     @Test
     fun makeFire() {
-        val input = "n && pickup hatchet && equip hatchet to right hand grip f && ch tree && ch tree"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertEquals(0, GameState.player.thing.currentLocation().getActivators("tree").size)
-        assertEquals(1, GameState.player.thing.currentLocation().getActivators("logs").size)
-        runBlocking { CommandParsers.parseCommand(GameState.player, "cast flame 1 on logs") }
-        assertTrue(GameState.player.thing.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
-        runBlocking { CommandParsers.parseCommand(GameState.player, "eat apple && eat apple && cast flame 1 on logs && rest 3") }
+        runBlocking {
+            val input = "n && pickup hatchet && equip hatchet to right hand grip f && ch tree && ch tree"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            assertEquals(0, GameState.player.thing.currentLocation().getActivators("tree").size)
+            assertEquals(1, GameState.player.thing.currentLocation().getActivators("logs").size)
+            runBlocking { CommandParsers.parseCommand(GameState.player, "cast flame 1 on logs") }
+            assertTrue(GameState.player.thing.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
+            runBlocking { CommandParsers.parseCommand(GameState.player, "eat apple && eat apple && cast flame 1 on logs && rest 3") }
 
-        assertEquals(0, GameState.player.thing.currentLocation().getActivators("logs").size)
-        assertEquals(1, GameState.player.thing.currentLocation().getItems("ash").size)
+            assertEquals(0, GameState.player.thing.currentLocation().getActivators("logs").size)
+            assertEquals(1, GameState.player.thing.currentLocation().getItems("ash").size)
+        }
     }
 
     @Test
@@ -169,16 +183,18 @@ class CommandComboTest {
 
     @Test
     fun makePie() {
-        val input = "move to wheat && slash wheat && pickup wheat && t farmer's hut && take bucket && mv to well && use bucket on well && t windmill && t" +
-                "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
-                "&& use dagger on apple && rs 10" +
-                "&& t interior && t && t && rest 10 && move to range && take pie tin" +
-                "&& read recipe && rs" +
-                "&& take box && use box on range && craft apple pie"
-        runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+        runBlocking {
+            val input = "move to wheat && slash wheat && pickup wheat && t farmer's hut && take bucket && mv to well && use bucket on well && t windmill && t" +
+                    "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
+                    "&& use dagger on apple && rs 10" +
+                    "&& t interior && t && t && rest 10 && move to range && take pie tin" +
+                    "&& read recipe && rs" +
+                    "&& take box && use box on range && craft apple pie"
+            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
 
-        assertNotNull(GameState.player.thing.inventory.getItem("Apple Pie"))
-        assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
+            assertNotNull(GameState.player.thing.inventory.getItem("Apple Pie"))
+            assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
+        }
     }
 
     @Test
@@ -245,12 +261,12 @@ class CommandComboTest {
                 GameState.player,
                 "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger"
             )
+
+            val dagger = GameState.player.inventory.getItem("Bronze Dagger")
+            assertNotNull(dagger)
+
+            val tags = dagger.properties.tags
+            assertTrue(tags.hasAll(listOf("Bronze", "Weapon")))
         }
-
-        val dagger = GameState.player.inventory.getItem("Bronze Dagger")
-        assertNotNull(dagger)
-
-        val tags = dagger.properties.tags
-        assertTrue(tags.hasAll(listOf("Bronze", "Weapon")))
     }
 }

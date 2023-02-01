@@ -16,9 +16,11 @@ class ConversationsTest {
 
     @BeforeTest
     fun reset() {
-        EventManager.clear()
-        GameManager.newGame(testing = true)
-        runBlocking {EventManager.executeEvents()}
+        runBlocking {
+            EventManager.clear()
+            GameManager.newGame(testing = true)
+            runBlocking { EventManager.executeEvents() }
+        }
     }
 
     @Test
@@ -28,7 +30,7 @@ class ConversationsTest {
             CommandParsers.parseCommand(GameState.player, "w && speak with farmer")
             CommandParsers.parseCommand(GameState.player, "why is the sky blue?")
         }
-        val interceptor= CommandParsers.getParser(GameState.player).commandInterceptor as ConversationCommandInterceptor
+        val interceptor = CommandParsers.getParser(GameState.player).commandInterceptor as ConversationCommandInterceptor
         assertEquals("Farmer", interceptor.conversation.getLatestSpeaker().name)
     }
 

@@ -1,12 +1,13 @@
 package validation
 
 import core.thing.activator.ActivatorManager
+import kotlinx.coroutines.runBlocking
 
 //TODO - check that connections with connection networks exist
 
 class ActivatorValidator {
 
-    private val activators = ActivatorManager.getAll()
+    private val activators = runBlocking { ActivatorManager.getAll() }
 
     fun validate(): Int {
         return noDuplicateNames()
