@@ -43,6 +43,8 @@ import kotlin.reflect.full.allSupertypes
 
 private const val srcRoot = "./src/commonMain/kotlin"
 private const val testRoot = "./src/jvmTest/kotlin"
+private const val propString = "val values"
+private const val funcString = "suspend fun values()"
 
 object ReflectionTools {
     private val topLevelPackages = getPrefixes()
@@ -96,9 +98,9 @@ object ReflectionTools {
         val classes = allClasses.joinToString(", ") { "${it.qualifiedName}()".replace("$", ".") }
         val newClassName = collectedClass.simpleName!!
 
-        writeInterfaceFile(collectedClass, collectedClass, typeSuffix, newClassName)
-        writeGeneratedFile(collectedClass, typeSuffix, classes)
-        writeMockedFile(collectedClass, collectedClass, typeSuffix, newClassName)
+        writeInterfaceFile(collectedClass, collectedClass, typeSuffix, newClassName, propString)
+        writeGeneratedFile(collectedClass, typeSuffix, classes, propString)
+        writeMockedFile(collectedClass, collectedClass, typeSuffix, newClassName, propString)
     }
 
     /**
@@ -120,16 +122,19 @@ object ReflectionTools {
         val classes = allClasses.joinToString(", ") { "${it.qualifiedName}()".replace("$", ".") }
         val newClassName = resourceInterface.simpleName!!.replace("Resource", "")
 
-        writeInterfaceFile(resourceInterface, collectedClass, typeSuffix, newClassName)
-        writeGeneratedResourceFile(resourceInterface, classes, newClassName)
-        writeMockedFile(resourceInterface, collectedClass, typeSuffix, newClassName)
+        val propOrFunction = if ((resourceInterface.members as List).first().isSuspend) funcString else propString
+
+        writeInterfaceFile(resourceInterface, collectedClass, typeSuffix, newClassName, propOrFunction)
+        writeGeneratedResourceFile(resourceInterface, classes, newClassName, propOrFunction)
+        writeMockedFile(resourceInterface, collectedClass, typeSuffix, newClassName, propOrFunction)
     }
 
     private fun writeInterfaceFile(
         resourceInterface: KClass<*>,
         collectedClass: KClass<*>,
         typeSuffix: String,
-        newClassName: String
+        newClassName: String,
+        propOrFunction: String
     ) {
         //TODO - use qualified name instead of package name?
         //resourceInterface.qualifiedName
@@ -141,14 +146,14 @@ object ReflectionTools {
                 import ${collectedClass.qualifiedName}
 
                 interface ${newClassName}sCollection {
-                    val values: List<${collectedClass.simpleName}$typeSuffix>
+                    $propOrFunction: List<${collectedClass.simpleName}$typeSuffix>
                 }
             """.trimIndent()
             )
         }
     }
 
-    private fun writeGeneratedFile(collectedClass: KClass<*>, typeSuffix: String, classes: String) {
+    private fun writeGeneratedFile(collectedClass: KClass<*>, typeSuffix: String, classes: String, propOrFunction: String) {
         val packageName = collectedClass.java.packageName.replace(".", "/")
         File("$srcRoot/$packageName/${collectedClass.simpleName}sGenerated.kt").printWriter().use {
             it.print(
@@ -156,15 +161,18 @@ object ReflectionTools {
                 package ${collectedClass.java.packageName}
 
                 class ${collectedClass.simpleName}sGenerated : ${collectedClass.simpleName}sCollection {
-                    override val values: List<${collectedClass.qualifiedName}$typeSuffix> = listOf($classes)
+                    override $propOrFunction: List<${collectedClass.qualifiedName}$typeSuffix> = listOf($classes)
                 }
             """.trimIndent()
             )
         }
     }
 
-    private fun writeGeneratedResourceFile(resourceInterface: KClass<*>, classes: String, newClassName: String) {
+    private fun writeGeneratedResourceFile(resourceInterface: KClass<*>, classes: String, newClassName: String, propOrFunction: String) {
         val packageName = resourceInterface.java.packageName.replace(".", "/")
+        val byLazy = if(propOrFunction.startsWith("val")) "by lazy {" else "="
+        val byLazyEnd = if(propOrFunction.startsWith("val")) "}" else ""
+        val byLazyParens = if(propOrFunction.startsWith("val")) "" else "()"
 
         File("$srcRoot/$packageName/${newClassName}sGenerated.kt").printWriter().use {
             it.print(
@@ -172,7 +180,7 @@ object ReflectionTools {
                 package ${resourceInterface.java.packageName}
 
                 class ${newClassName}sGenerated : ${newClassName}sCollection {
-                    override val values by lazy { listOf<${resourceInterface.simpleName}>($classes).flatMap { it.values }}
+                    override $propOrFunction $byLazy listOf<${resourceInterface.simpleName}>($classes).flatMap { it.values$byLazyParens }$byLazyEnd
                 }
             """.trimIndent()
             )
@@ -183,7 +191,8 @@ object ReflectionTools {
         resourceInterface: KClass<*>,
         collectedClass: KClass<*>,
         typeSuffix: String,
-        newClassName: String
+        newClassName: String,
+        propOrFunction: String
     ) {
         val packageName = resourceInterface.java.packageName.replace(".", "/")
         val file = File("$testRoot/$packageName/${newClassName}sMock.kt")
@@ -196,7 +205,7 @@ object ReflectionTools {
                 package ${resourceInterface.java.packageName}
                 import ${collectedClass.simpleName}
 
-                class ${newClassName}sMock(override val values: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
+                class ${newClassName}sMock(override $propOrFunction: List<${collectedClass.simpleName}$typeSuffix> = listOf()) : ${newClassName}sCollection
             """.trimIndent()
                 )
             }
@@ -233,13 +242,13 @@ object ReflectionTools {
     }
 
     //This can be removed when JS can use qualified name
-    private fun assertNoDuplicateEventNames(){
+    private fun assertNoDuplicateEventNames() {
         val allEvents = getClasses(Event::class)
         val existing = mutableMapOf<String, String>()
         allEvents.forEach { event ->
             val simpleName = event.simpleName!!
             val qualifiedName = event.qualifiedName!!
-            if (existing.containsKey(simpleName)){
+            if (existing.containsKey(simpleName)) {
                 throw IllegalArgumentException("Found Duplicate Event. Both ${existing[simpleName]} and $qualifiedName have the same simple name!")
             }
             existing[simpleName] = qualifiedName
