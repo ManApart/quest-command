@@ -5,6 +5,7 @@ import core.events.Event
 import core.history.GameLogger
 import core.properties.Properties
 import core.thing.Thing
+import core.utility.lazyM
 import system.debug.DebugType
 import time.TimeManager
 
@@ -13,7 +14,7 @@ object GameState {
     var properties = Properties()
     val timeManager = TimeManager()
     val players = mutableMapOf<String, Player>()
-    var player by lazy { players.values.first() }
+    var player by lazyM { players.values.first() }
     val aliases = mutableMapOf<String, String>()
 
     suspend fun reset() {

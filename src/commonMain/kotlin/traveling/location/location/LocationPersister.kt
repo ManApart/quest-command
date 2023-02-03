@@ -41,8 +41,8 @@ data class LocationP(
     val name: String,
     val materialName: String,
     val properties: PropertiesP,
-    ){
-    constructor(b: Location): this(b.name, b.material.name, PropertiesP(b.properties))
+) {
+    constructor(b: Location) : this(b.name, b.material.name, PropertiesP(b.properties))
 
     suspend fun parsed(path: String, locationNode: LocationNode): Location {
         val folderPath = path.removeSuffix(".json")
@@ -52,6 +52,6 @@ data class LocationP(
         val items = getThings(folderPath, "items", locationNode)
         val other = getThings(folderPath, "other", locationNode)
         val recipe = locationNode.recipe.copy(material = materialName)
-        return Location(locationNode, activators, creatures, items, other, properties.parsed(), recipe)
+        return Location(locationNode, activators, creatures, items, other, properties.parsed(), recipe).apply { changeWeatherIfEnoughTimeHasPassed() }
     }
 }

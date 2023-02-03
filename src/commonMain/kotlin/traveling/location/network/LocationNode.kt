@@ -11,6 +11,7 @@ import traveling.location.RouteFinder
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
 import traveling.location.location.load
+import traveling.location.location.location
 import traveling.position.Vector
 import kotlin.math.abs
 
@@ -81,7 +82,7 @@ data class LocationNode(
                 location!!
             }
             else -> {
-                location = Location(this)
+                location = location(this)
                 location!!
             }
         }

@@ -4,10 +4,8 @@ import conversation.dsl.Dialogue
 import conversation.dsl.DialogueTree
 import conversation.dsl.DialoguesCollection
 import core.DependencyInjector
-import core.ai.AIManager
 import core.startupLog
 import core.utility.Backer
-import core.utility.lazyM
 
 object ConversationManager {
     private val dialogues = Backer(::loadDialogue)
