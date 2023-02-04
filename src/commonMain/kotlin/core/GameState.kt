@@ -13,8 +13,9 @@ object GameState {
     var gameName = "Kanbara"
     var properties = Properties()
     val timeManager = TimeManager()
-    val players = mutableMapOf<String, Player>()
-    var player by lazyM { players.values.first() }
+    //The default player is just a stub replaced by new game or load.
+    val players = mutableMapOf("Player" to Player("Player", Thing("Player")) )
+    var player = players.values.first()
     val aliases = mutableMapOf<String, String>()
 
     suspend fun reset() {

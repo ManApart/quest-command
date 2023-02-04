@@ -25,13 +25,11 @@ actual class File actual constructor(pathIn: String) {
     val name: String = implementation.name
     fun exists(): Boolean = implementation.exists()
     val isDirectory: Boolean = implementation.isDirectory
-    fun listFiles(): List<File> = implementation.listFiles().map { File(it) }
+    fun listFiles(): List<File> = implementation.listFiles()?.map { File(it) } ?: listOf()
     fun mkdirs(): Boolean = implementation.mkdirs()
     fun endsWith(text: String): Boolean = implementation.endsWith(text)
     fun printWriter(): PrintWriter = implementation.printWriter()
 }
-
-private val ignoredNames = listOf("games", "gameState")
 
 actual suspend fun getGameNames(): List<String> {
     return getFolders(getSaveFolder()).map { it.name }
@@ -42,7 +40,7 @@ actual suspend fun getCharacterSaves(gameName: String): List<String> {
         .map { it.name }
         .filter { it.endsWith(".json") }
         .map { it.substring(0, it.length - ".json".length) }
-        .filter { !ignoredNames.contains(it) }
+        .filter { !ignoredGameSaveNames.contains(it) }
 }
 
 actual suspend inline fun <reified T> loadFromPath(path: String): T? {
@@ -63,7 +61,6 @@ private fun getFolders(path: String, ignoredFileNames: List<String> = listOf()):
 private fun getFilesAndFolders(path: String, ignoredFileNames: List<String> = listOf()): List<File> {
     val folder = File(path)
     return if (folder.exists() && folder.isDirectory) {
-        @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         folder.listFiles().filter { file ->
             ignoredFileNames.none {
                 file.endsWith(it)

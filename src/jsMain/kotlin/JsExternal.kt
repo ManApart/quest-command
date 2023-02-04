@@ -6,6 +6,7 @@ import kotlin.js.Promise
 external object LocalForage {
     fun setItem(key: String, value: Any): Promise<*>
     fun getItem(key: String): Promise<Any?>
+    fun keys(): Promise<Any?>
     fun config(config: LocalForageConfig)
 }
 
@@ -16,6 +17,13 @@ suspend fun <T> getForage(key: String) : T? {
         LocalForage.getItem(key) as Promise<T?>
     }
 }
+
+suspend fun getForageKeys() : List<String> {
+    return promise {
+        LocalForage.keys() as Promise<List<String>>
+    }!!.toString().split(",")
+}
+
 suspend fun setForage(key: String, value: Any) {
     promise {
         LocalForage.setItem(key, value)

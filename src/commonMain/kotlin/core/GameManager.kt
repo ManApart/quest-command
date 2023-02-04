@@ -12,6 +12,7 @@ import system.debug.DebugType
 import system.persistance.getGameNames
 import system.persistance.getGamesMetaData
 import system.persistance.loading.LoadEvent
+import system.persistance.save
 import system.startup.GameStartEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
