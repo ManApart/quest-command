@@ -22,7 +22,7 @@ actual class File actual constructor(pathIn: String) {
     actual val nameWithoutExtension: String = pathIn.replace(".json", "")
 
     actual suspend fun readText(): String {
-        return getForage(path)
+        return getForage(path) ?: ""
     }
 
     suspend fun exists(): Boolean {
@@ -32,7 +32,7 @@ actual class File actual constructor(pathIn: String) {
 }
 
 actual suspend fun getGameNames(): List<String> {
-    return getForage("game-names")
+    return getForage("game-names") ?: listOf()
 }
 
 actual suspend fun getCharacterSaves(gameName: String): List<String> {

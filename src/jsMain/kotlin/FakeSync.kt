@@ -3,7 +3,7 @@ import kotlin.js.Promise
 
 object FakeSync {
 
-    suspend fun <T> promise(lambda: () -> Promise<T>): T {
+    suspend fun <T> promise(lambda: () -> Promise<T?>): T? {
         var done = false
         var result: T? = null
         lambda().then { res ->
@@ -14,6 +14,6 @@ object FakeSync {
             delay(100)
         }
 
-        return result!!
+        return result
     }
 }
