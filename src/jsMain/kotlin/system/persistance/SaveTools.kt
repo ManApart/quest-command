@@ -103,22 +103,18 @@ actual suspend fun loadGame(gameName: String) {
     val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
     gameStateData.updateGameState()
     GameLogger.stopTracking(GameState.player)
-    println("Here 2")
     val newPlayers = gameStateData.characterNames.map { name ->
         loadCharacter(gameName, name, name)
     }
-    println("Here 3")
     GameState.players.clear()
     newPlayers.forEach {
         GameState.putPlayer(it)
         it.location.getLocation().addThing(it.thing)
     }
-    println("Here 4")
     GameState.player = newPlayers.first()
     GameLogger.reset()
     CommandParsers.reset()
     GameManager.playing = true
-    println("Here 5")
 }
 
 actual suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
@@ -137,8 +133,12 @@ actual suspend fun writeSave(directoryName: String, saveName: String, json: Stri
 }
 
 actual suspend fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
+    val depth = path.count { it == '/' } + 1
     return getForageKeys().filter {
-        it.startsWith(path) && it.endsWith(".json") && ignoredFileNames.none { ignored -> it.endsWith(ignored) }
+        it.startsWith(path)
+                && it.endsWith(".json")
+                && depth == it.count { c -> c == '/' }
+                && ignoredFileNames.none { ignored -> it.endsWith(ignored) }
     }.map { File(it) }
 }
 
