@@ -3,6 +3,8 @@ package system.persistance
 import core.GameState
 import core.TEST_SAVE_FOLDER
 
+val ignoredGameSaveNames = listOf("games", "gameState")
+
 fun cleanPathToFile(extension: String, vararg pieces: String): String {
     val path = cleanPath(pieces.toList()).removeSuffix("/")
     return clean("$path.$extension").removeSuffix("/")

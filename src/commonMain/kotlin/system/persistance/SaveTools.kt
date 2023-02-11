@@ -21,5 +21,3 @@ expect class File(pathIn: String) {
     val nameWithoutExtension: String
     suspend fun readText(): String
 }
-
-val ignoredGameSaveNames = listOf("games", "gameState")
