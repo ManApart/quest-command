@@ -42,6 +42,7 @@ class ThingBuilder(internal val name: String) {
     private var ai: AI? = null
     private var mind: Mind? = null
     private var mindP: MindP? = null
+    private var mindInitializer: Mind.() -> Unit = {}
     private var body: Body? = null
     private var bodyMaterial: String = DEFAULT_MATERIAL.name
     private var bodyName: String? = null
@@ -70,6 +71,7 @@ class ThingBuilder(internal val name: String) {
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if (tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
+        mind.mindInitializer()
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
 
@@ -160,12 +162,17 @@ class ThingBuilder(internal val name: String) {
         this.ai = ai
     }
 
-    fun mind(mind: Mind) {
+    fun mind(mind: Mind, initializer: Mind.() -> Unit = {}) {
         this.mind = mind
+        this.mindInitializer = initializer
     }
 
     fun mind(mind: MindP) {
         this.mindP = mind
+    }
+
+    fun mind(initializer: Mind.() -> Unit = {}) {
+        this.mindInitializer = initializer
     }
 
     fun body(body: String, initializer: BodyCustomizer.() -> Unit = {}) {

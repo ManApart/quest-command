@@ -44,8 +44,8 @@ class DebugCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() -> listOf("list", "levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "stat", "prop", "tag", "weather")
-            args.last() in listOf("levelreq", "statchanges", "random", "map", "clarity", "displayupdates") -> listOf("on", "off")
+            args.isEmpty() -> listOf("list", "levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "stat", "prop", "tag", "weather", "aiupdates")
+            args.last() in listOf("levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "aiupdates") -> listOf("on", "off")
             args.last() == "weather" -> WeatherManager.getAllWeather().map { it.name }
             args.last() == "on" -> source.getPerceivedThingNames()
             else -> listOf()
@@ -63,6 +63,7 @@ class DebugCommand : Command() {
                 "lvlreq" -> sendDebugToggleEvent(source, DebugType.LEVEL_REQ, arguments)
                 "statchanges" -> sendDebugToggleEvent(source, DebugType.STAT_CHANGES, arguments)
                 "random" -> sendDebugToggleEvent(source, DebugType.RANDOM_SUCCEED, arguments)
+                "aiupdates" -> sendDebugToggleEvent(source, DebugType.AI_Updates, arguments)
                 "poll" -> sendDebugToggleEvent(source, DebugType.POLL_CONNECTION, arguments)
                 "map" -> sendDebugToggleEvent(source, DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
                 "recipe" -> sendDebugToggleEvent(source, DebugType.RECIPE_SHOW_ALL, arguments)
@@ -109,9 +110,14 @@ class DebugCommand : Command() {
         EventManager.postEvent(DebugTagEvent(thing, tagName, isAdding))
     }
 
-    private fun sendDebugWeatherEvent(source: Thing, arguments: Args) {
+    private suspend fun sendDebugWeatherEvent(source: Thing, arguments: Args) {
         val weather = arguments.argsWithout(listOf("weather")).joinToString(" ")
-        EventManager.postEvent(DebugWeatherEvent(source, weather))
+        if (weather.isBlank()) {
+            source.displayToMe("Current weather is ${source.location.getLocation().weather.name}.")
+            source.displayToMe("Weathers are ${WeatherManager.getAllWeather().joinToString { it.name }}")
+        } else {
+            EventManager.postEvent(DebugWeatherEvent(source, weather))
+        }
     }
 
 }

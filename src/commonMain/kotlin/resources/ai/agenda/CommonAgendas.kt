@@ -12,10 +12,14 @@ import core.ai.knowledge.Subject
 import core.thing.Thing
 import core.utility.RandomManager
 import status.rest.RestEvent
+import traveling.location.network.LocationNode
 import traveling.move.MoveEvent
 import traveling.position.ThingAim
 import traveling.position.Vector
+import traveling.routes.FindRouteEvent
+import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent
+import use.interaction.InteractEvent
 import use.interaction.nothing.NothingEvent
 
 class CommonAgendas : AgendaResource {
@@ -27,7 +31,7 @@ class CommonAgendas : AgendaResource {
             }
         }
 
-        agenda("Eat Food on Ground") {
+        agenda("Eat Food") {
             agenda("Search For Food")
             agenda("Move to Use Target")
             agenda("Eat Targeted Food")
@@ -55,6 +59,30 @@ class CommonAgendas : AgendaResource {
                 result { creature ->
                     creature.mind.getAggroTarget()?.position?.let {
                         MoveEvent(creature, destination = it)
+                    }
+                }
+            }
+        }
+
+        agenda("Travel to Location") {
+            actionDetailed("Identify Route") {
+                shouldSkip { s ->
+                    val goal = s.mind.knowsLocationByKind("LocationGoal")
+                    goal == null || s.location == goal || s.route?.destination == goal
+                }
+                result { s ->
+                    s.mind.knowsLocationByKind("LocationGoal")?.let {
+                        FindRouteEvent(s, s.location, it)
+                    }
+                }
+            }
+            actionDetailed("Travel to Location") {
+                shouldSkip { s ->
+                    s.location == s.mind.knowsLocationByKind("LocationGoal")
+                }
+                result { s ->
+                    s.route?.let {
+                        TravelStartEvent(s, destination = it.getNextStep(s.location).destination.location)
                     }
                 }
             }
@@ -104,26 +132,70 @@ class CommonAgendas : AgendaResource {
         }
 
         agendaAction("Search For Food") { owner ->
-            val target = owner.location.getLocation().getItems(perceivedBy = owner).firstOrNull { it.properties.tags.has("Food") }
+            val target = (owner.inventory.getItems() + owner.location.getLocation().getItems(perceivedBy = owner)).firstOrNull { it.properties.tags.has("Food") }
             target?.let {
                 owner.discover(target, "useTarget")
             }
         }
 
-        agenda("Sleep On Ground") {
+        agenda("Rest") {
             action("Rest") { creature -> RestEvent(creature, 2) }
         }
 
-        agendaAction("Wander") { creature ->
-            val additional = Vector(RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10), RandomManager.getRandom(0, 10))
-            MoveEvent(creature, destination = creature.position + additional)
+        agenda("Sleep In Bed") {
+            action("Find Bed") { owner ->
+                owner.mind.knowsThingByKind("MyBed")?.let { target ->
+                    owner.discover(target, "useTarget")
+                    owner.discover(target.location, "LocationGoal")
+                }
+            }
+            agenda("Travel to Location")
+            agenda("Move to Use Target")
+            agenda("Interact Target")
         }
+
+        agendaAction("Wander") { creature ->
+            val target = creature.location.getLocation().getThings(creature).random()
+            MoveEvent(creature, destination = target.position)
+        }
+
+        agenda("Travel to Job Site") {
+            action("Find Work Site") { owner ->
+                owner.mind.knowsLocationByKind("MyWorkplace")?.let { target ->
+                    owner.discover(target, "LocationGoal")
+                }
+            }
+            agenda("Travel to Location")
+        }
+
+        agenda("Work At Job Site") {
+            action("Find Workable Activator") { s ->
+                s.mind.knows("WorkTags")?.sources?.mapNotNull { it.topic }?.let { tags ->
+                    s.location.getLocation().getActivators(s).firstOrNull { it.properties.tags.hasAll(tags) }?.let { target ->
+                        s.discover(target, "useTarget")
+                    }
+                }
+            }
+            agenda("Move to Use Target")
+            agenda("Interact Target")
+        }
+
+        agendaAction("Interact Target") { creature ->
+            creature.mind.getUseTarget()?.let { target ->
+                InteractEvent(creature, target)
+            }
+        }
+
 
     }
 
 }
 
 private fun Thing.discover(target: Thing, kind: String): DiscoverFactEvent {
+    return DiscoverFactEvent(this, Fact(Subject(target), kind))
+}
+
+private fun Thing.discover(target: LocationNode, kind: String): DiscoverFactEvent {
     return DiscoverFactEvent(this, Fact(Subject(target), kind))
 }
 

@@ -1,5 +1,6 @@
 package traveling.location.location
 
+import core.ai.knowledge.Subject
 import core.thing.Thing
 import core.utility.ParamBuilder
 import core.utility.ParamBuilderI
@@ -10,11 +11,11 @@ class LocationThingBuilder(
     private val name: String
 ) : VectorParent by VectorParentI(), ParamBuilder by ParamBuilderI() {
     private var location: String? = null
-    private var transformation: (Thing) -> Unit = {}
+    private var transformations = mutableListOf<(Thing) -> Unit>()
 
     fun build(): LocationThing {
         val params = paramsBuilder.build()
-        return LocationThing(name, location, vector, params, transformation)
+        return LocationThing(name, location, vector, params) { thing -> transformations.forEach { it(thing) } }
     }
 
     fun location(location: String) {
@@ -22,7 +23,15 @@ class LocationThingBuilder(
     }
 
     fun transform(transformation: (Thing) -> Unit) {
-        this.transformation = transformation
+        transformations.add(transformation)
+    }
+
+    fun learnBedLocation(bedName: String, location: String, network: String) {
+        transformations.add { it.mind.learn(Subject(bedName, location, network), "MyBed") }
+    }
+
+    fun learnWorkLocation(location: String, network: String) {
+        transformations.add { it.mind.learn(Subject(null, location, network), "MyWorkplace") }
     }
 
     fun param(values: Map<String, Any>) = this.paramsBuilder.entry(values.toList())

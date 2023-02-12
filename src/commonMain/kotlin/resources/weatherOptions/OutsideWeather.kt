@@ -7,6 +7,7 @@ import traveling.location.weather.weathers
 class OutsideWeather : WeatherResource {
     override val values = weathers {
 
+        weather("Clear", "The air is clean and fresh.")
         weather("Soft Wind", "A soft wind blows gently against you.")
 
         weather("Windy") {
@@ -90,6 +91,11 @@ class OutsideWeather : WeatherResource {
             description("You are completely under water.")
             sound(7,"muffled swirling and bubbling")
             light(-2)
+        }
+        weather("Utter Fog") {
+            description("You can't see anything.")
+            sound(10,"muffled nothings")
+            light(-10)
         }
     }.build()
 }

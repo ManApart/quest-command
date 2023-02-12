@@ -69,4 +69,9 @@ class TimeManager(private var ticks: Long = 0) {
         return percent < 25 || percent > 75
     }
 
+    fun isWorkHours(): Boolean {
+        val percent = getPercentDayComplete()
+        return percent > 25 || percent < 50
+    }
+
 }
