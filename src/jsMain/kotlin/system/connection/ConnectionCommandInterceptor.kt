@@ -10,10 +10,8 @@ actual class ConnectionCommandInterceptor : CommandInterceptor {
     }
 
     actual override suspend fun parseCommand(source: Player, line: String) {
-        WebClient.sendCommand(line) { responses ->
-            responses.forEach {
-                addHistoryMessageAfterCallback(it)
-            }
+        WebClient.sendCommand(line).forEach {
+            addHistoryMessageAfterCallback(it)
         }
     }
 

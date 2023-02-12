@@ -8,7 +8,6 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.*
-import system.connection.WebClient.host
 
 
 object WebClient {
@@ -25,36 +24,27 @@ object WebClient {
         return HttpClient(Js) { install(ContentNegotiation) { json() } }
     }
 
-    fun createServerConnectionIfPossible(host: String, port: String, playerName: String, callback: (ServerInfo) -> Unit) {
-        getServerInfo(host, port) { info ->
-            latestInfo = info
-            if (latestInfo.validServer) {
-                this.host = host
-                this.port = port
-                this.playerName = playerName
-                if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
-                    GlobalScope.launch {
-                        latestInfo = createPlayer(playerName)
-                        callback(latestInfo)
-                    }
-                } else {
-                    callback(latestInfo)
-                }
+    suspend fun createServerConnectionIfPossible(host: String, port: String, playerName: String): ServerInfo {
+        latestInfo = getServerInfo(host, port)
+        return if (latestInfo.validServer) {
+            this.host = host
+            this.port = port
+            this.playerName = playerName
+            if (latestInfo.playerNames.none { it.lowercase() == playerName.lowercase() }) {
+                createPlayer(playerName)
             } else {
-                callback(latestInfo)
+                latestInfo
             }
+        } else {
+            latestInfo
         }
     }
 
-    fun getServerInfo(host: String = this.host, port: String = this.port, callback: (ServerInfo) -> Unit) {
-        latestInfo = ServerInfo()
-        GlobalScope.launch {
-            try {
-                latestInfo = client.get("$host:$port/info").body()
-            } catch (e: Exception) {
-                ServerInfo()
-            }
-            callback(latestInfo)
+    suspend fun getServerInfo(host: String = this.host, port: String = this.port): ServerInfo {
+        return try {
+            client.get("$host:$port/info").body()
+        } catch (e: Exception) {
+            ServerInfo()
         }
     }
 
@@ -66,68 +56,55 @@ object WebClient {
         }
     }
 
-    fun getSuggestions(line: String, callback: (List<String>) -> Unit) {
-        GlobalScope.launch {
-            try {
-                val suggestions: List<String> = client.post("$host:$port/$playerName/suggestion") {
-                    setBody(line)
-                }.body()
-                callback(suggestions)
-            } catch (e: Exception) {
-                callback(listOf())
-            }
+    suspend fun getSuggestions(line: String): List<String> {
+        return try {
+            client.post("$host:$port/$playerName/suggestion") {
+                setBody(line)
+            }.body()
+        } catch (e: Exception) {
+            listOf()
         }
     }
 
-    fun sendCommand(line: String, callback: (List<String>) -> Unit) {
-        GlobalScope.launch {
-            val responses = try {
-                val response: ServerResponse = client.post("$host:$port/$playerName/command") {
-                    parameter("start", latestResponse)
-                    parameter("startSub", latestSubResponse)
-                    setBody(line)
-                }.body()
+    suspend fun sendCommand(line: String): List<String> {
+        return try {
+            val response: ServerResponse = client.post("$host:$port/$playerName/command") {
+                parameter("start", latestResponse)
+                parameter("startSub", latestSubResponse)
+                setBody(line)
+            }.body()
 
-                this@WebClient.latestResponse = response.latestResponse
-                this@WebClient.latestSubResponse = response.latestSubResponse
-                response.history
-            } catch (e: Exception) {
-                listOf("Unable to hit server.")
-            }
-            callback(responses)
+            latestResponse = response.latestResponse
+            latestSubResponse = response.latestSubResponse
+            response.history
+        } catch (e: Exception) {
+            listOf("Unable to hit server.")
         }
     }
 
-    fun pollForUpdates() {
+    suspend fun pollForUpdates() {
         doPolling = true
-        GlobalScope.launch {
-            while (doPolling) {
-                if (latestInfo.validServer) {
-                    val updates = getServerUpdates()
-                    if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
-                        updates.forEach { addHistoryMessageAfterCallback(it) }
-                    }
-                    delay(1000)
+        while (doPolling) {
+            if (latestInfo.validServer) {
+                val updates = getServerUpdates()
+                if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
+                    updates.forEach { addHistoryMessageAfterCallback(it) }
                 }
+                delay(1000)
             }
         }
     }
 
-    fun getServerHistory(callback: (List<String>) -> Unit) {
-        GlobalScope.launch {
-            callback(getServerUpdates())
-        }
-    }
 
-    private suspend fun getServerUpdates(): List<String> {
+    suspend fun getServerUpdates(): List<String> {
         return try {
             val response: ServerResponse = client.get("$host:$port/$playerName/history") {
                 parameter("start", latestResponse)
                 parameter("startSub", latestSubResponse)
             }.body()
 
-            this@WebClient.latestResponse = response.latestResponse
-            this@WebClient.latestSubResponse = response.latestSubResponse
+            latestResponse = response.latestResponse
+            latestSubResponse = response.latestSubResponse
             response.history
         } catch (e: Exception) {
             listOf("Unable to hit server")

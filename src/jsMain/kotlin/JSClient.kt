@@ -113,9 +113,7 @@ private suspend fun tabHint() {
     val lastInput = input.split(" ").lastOrNull()
     if (input.isNotBlank()) {
         if (CommandParsers.getParser(GameState.player).commandInterceptor != null) {
-            WebClient.getSuggestions(input) { suggestions ->
-                updateSuggestions(lastInput, suggestions)
-            }
+            updateSuggestions(lastInput, WebClient.getSuggestions(input))
         } else {
             updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
         }
