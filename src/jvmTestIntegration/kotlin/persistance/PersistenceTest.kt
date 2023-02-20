@@ -45,7 +45,7 @@ class PersistenceTest {
             EventManager.clear()
             EventManager.reset()
             GameManager.newGame(playerName = "Saved Player", testing = true)
-            runBlocking { EventManager.executeEvents() }
+            EventManager.executeEvents()
             File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
         }
     }
@@ -146,10 +146,8 @@ class PersistenceTest {
     fun playerSave() {
         runBlocking {
             val preLoadPlayer = GameState.getPlayer("Saved Player")!!
-            runBlocking {
-                CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
-                EventManager.executeEvents()
-            }
+            CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
+            EventManager.executeEvents()
             preLoadPlayer.thing.properties.tags.add("Saved")
             //subject: thingIsSelf
             //subject: locationIsName
@@ -159,13 +157,19 @@ class PersistenceTest {
             preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
 
             EventManager.postEvent(SaveEvent(preLoadPlayer))
-            runBlocking { EventManager.executeEvents() }
+            EventManager.executeEvents()
             preLoadPlayer.thing.properties.tags.remove("Saved")
             assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
             val equippedItemCount = preLoadPlayer.thing.body.getEquippedItems().size
 
+            //Wipe Game
+            EventManager.clear()
+            EventManager.reset()
+            GameManager.newGame(playerName = "Saved Player", testing = true)
+            EventManager.executeEvents()
+
             EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
-            runBlocking { EventManager.executeEvents() }
+            EventManager.executeEvents()
             val postLoadPlayer = GameState.getPlayer("Saved Player")!!
             assertEquals("Saved Player", postLoadPlayer.thing.name)
             assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
@@ -175,7 +179,7 @@ class PersistenceTest {
             val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material
             assertEquals(MaterialManager.getMaterial("Stone"), daggerMat)
 
-            runBlocking { CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r") }
+            CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
             val location = postLoadPlayer.thing.location.getLocation()
             val bundles = location.getItems("bundle")
             assertTrue(bundles.isNotEmpty(), "Should have found wheat bundles")

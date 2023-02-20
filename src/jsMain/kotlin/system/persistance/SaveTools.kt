@@ -102,6 +102,15 @@ actual suspend fun save(gameName: String, network: Network) {
 actual suspend fun loadGame(gameName: String) {
     val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
     gameStateData.updateGameState()
+    LocationManager.getNetworks().forEach { network ->
+        val path = clean(getSaveFolder(), gameName, cleanPathPart(network.name))
+        getFiles(path).forEach {
+            network.getLocationNode(it.nameWithoutExtension).apply {
+                flushLocation()
+                loadPath = it.path
+            }
+        }
+    }
     GameLogger.stopTracking(GameState.player)
     val newPlayers = gameStateData.characterNames.map { name ->
         loadCharacter(gameName, name, name)

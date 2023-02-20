@@ -17,7 +17,8 @@ import java.io.PrintWriter
 import java.io.File as JFile
 
 actual class File actual constructor(pathIn: String) {
-    constructor(jFile: JFile): this(jFile.path)
+    constructor(jFile: JFile) : this(jFile.path)
+
     private val implementation = JFile(pathIn)
     actual val path: String = implementation.path
     actual val nameWithoutExtension: String = implementation.nameWithoutExtension
@@ -120,6 +121,15 @@ actual suspend fun save(gameName: String, network: Network) {
 actual suspend fun loadGame(gameName: String) {
     val gameStateData: GameStateP = loadFromPath(cleanPathToFile(".json", getSaveFolder(), gameName, "gameState"))!!
     gameStateData.updateGameState()
+    LocationManager.getNetworks().forEach { network ->
+        val path = clean(getSaveFolder(), gameName, cleanPathPart(network.name))
+        getFiles(path).forEach {
+            network.getLocationNode(it.nameWithoutExtension).apply {
+                flushLocation()
+                loadPath = it.path
+            }
+        }
+    }
     GameLogger.stopTracking(GameState.player)
     val newPlayers = gameStateData.characterNames.map { name ->
         loadCharacter(gameName, name, name)
