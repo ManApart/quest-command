@@ -10,6 +10,7 @@ import core.utility.Backer
 import core.utility.NameSearchableList
 import core.utility.lazyM
 import core.utility.toNameSearchableList
+import status.stat.*
 import traveling.location.location.LocationThing
 
 const val CREATURE_TAG = "Creature"
@@ -30,8 +31,8 @@ object CreatureManager {
 
     private suspend fun getCreature(name: String): Thing {
         return thing(name) {
-            extends(getCreatures().get(name))
-        }.build()
+            extends(creatures.get().get(name))
+        }.build().startingStats()
     }
 
     suspend fun getCreatures(names: List<String>): List<Thing> {
@@ -47,13 +48,26 @@ object CreatureManager {
             val creature = thing(it.name) {
                 extends(getCreatures().get(it.name))
                 param(it.params)
-            }.build()
+            }.build().startingStats()
+                .also { thing -> it.transform(thing) }
 
             if (!it.location.isNullOrBlank()) {
                 creature.properties.values.put("locationDescription", it.location)
             }
             creature.position = it.position
             creature
+        }
+    }
+
+    private fun Thing.startingStats(): Thing {
+        return this.apply {
+            with(soul) {
+                if (!hasStat(HEALTH)) addStat(HEALTH, 1, 10, 1)
+                if (!hasStat(PERCEPTION)) addStat(PERCEPTION, 1, 1, 1)
+                if (!hasStat(STAMINA)) addStat(STAMINA, 1, 100, 1)
+                if (!hasStat(FOCUS)) addStat(FOCUS, 1, 100, 1)
+                if (!hasStat(STRENGTH)) addStat(STRENGTH, 1, 1, 1)
+            }
         }
     }
 

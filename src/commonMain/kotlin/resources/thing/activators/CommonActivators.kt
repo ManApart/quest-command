@@ -49,6 +49,9 @@ class CommonActivators : ActivatorResource {
                 "message" to "The wheat falls with little more than a whisper.",
                 "count" to 3
             )
+            props {
+                tag("Farmable")
+            }
         }
 
         thing("Logs") {
@@ -193,6 +196,14 @@ class CommonActivators : ActivatorResource {
             props {
                 value(SIZE to 10)
                 tag(CONTAINER, OPEN)
+            }
+        }
+
+        thing("Simple Bed") {
+            material("Wood")
+            description("A simple, unadorned bed.")
+            props {
+                tag("Bed")
             }
         }
 

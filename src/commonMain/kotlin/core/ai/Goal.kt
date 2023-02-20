@@ -5,6 +5,7 @@ import core.ai.agenda.Agenda
 import core.events.EventManager
 import core.thing.Thing
 import core.utility.Named
+import kotlin.math.max
 
 data class Goal(
     override val name: String,

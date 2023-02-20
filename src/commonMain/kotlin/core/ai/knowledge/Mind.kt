@@ -5,6 +5,7 @@ import core.ai.DumbAI
 import core.thing.Thing
 import crafting.Recipe
 import traveling.location.network.LocationNode
+import kotlin.jvm.JvmName
 
 data class Mind(
     val ai: AI = DumbAI(),
@@ -29,12 +30,26 @@ data class Mind(
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
     }
 
+    suspend fun thingByKindExists(kind: String): Boolean {
+        return knowsThingByKind(kind) != null
+    }
+
+    fun knowsLocationByKind(kind: String): LocationNode? {
+        return memory.getSubjects(kind).firstNotNullOfOrNull { it.getLocation() }
+    }
+
+    fun locationByKindExists(kind: String): Boolean {
+        return knowsLocationByKind(kind) != null
+    }
+
     fun learn(source: Subject, kind: String) {
         val fact = memory.getFact(source, kind) ?: Fact(source, kind)
         learn(fact)
     }
 
     fun learn(kind: String, addition: Subject) = learn(kind, listOf(addition))
+    @JvmName("learnTopics")
+    fun learn(kind: String, additions: List<String>) = learn(kind, additions.map { Subject(topic = it) })
     fun learn(kind: String, additions: List<Subject>) {
         val existing = memory.getListFact(kind)
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))

@@ -49,14 +49,18 @@ class CommandComboTest {
             val input = "sl head of self && eat apple && n && eat apple"
             runBlocking { CommandParsers.parseCommand(GameState.player, input) }
             assertNull(GameState.player.thing.inventory.getItem("Apple"))
-            assertEquals("You feel the fullness of life beating in your bosom.", GameLogger.getMainHistory().getLastOutput())
+            assertEquals(
+                "You feel the fullness of life beating in your bosom.",
+                GameLogger.getMainHistory().getLastOutput()
+            )
         }
     }
 
     @Test
     fun roastApple() {
         runBlocking {
-            val input = "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && n && use tinder on tree && use apple on tree"
+            val input =
+                "w && s && rs 10 && move to range && pickup tinder box && n && e && n && rs 10 && n && use tinder on tree && use apple on tree"
             runBlocking { CommandParsers.parseCommand(GameState.player, input) }
             assertTrue(GameState.player.thing.inventory.getItem("Apple") != null)
             assertTrue(GameState.player.thing.inventory.getItem("Apple")?.properties?.tags?.has("Roasted") ?: false)
@@ -85,7 +89,12 @@ class CommandComboTest {
             assertEquals(1, GameState.player.thing.currentLocation().getActivators("logs").size)
             runBlocking { CommandParsers.parseCommand(GameState.player, "cast flame 1 on logs") }
             assertTrue(GameState.player.thing.currentLocation().getActivators("logs").first().soul.hasEffect("On Fire"))
-            runBlocking { CommandParsers.parseCommand(GameState.player, "eat apple && eat apple && cast flame 1 on logs && rest 3") }
+            runBlocking {
+                CommandParsers.parseCommand(
+                    GameState.player,
+                    "eat apple && eat apple && cast flame 1 on logs && rest 3"
+                )
+            }
 
             assertEquals(0, GameState.player.thing.currentLocation().getActivators("logs").size)
             assertEquals(1, GameState.player.thing.currentLocation().getItems("ash").size)
@@ -115,7 +124,12 @@ class CommandComboTest {
     fun ratFightsBack() {
         GameState.putDebug(DebugType.RANDOM_SUCCEED, true)
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
-        runBlocking { CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing") }
+        runBlocking {
+            CommandParsers.parseCommand(
+                GameState.player,
+                "s && nothing && nothing && nothing && nothing && nothing && nothing"
+            )
+        }
         assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
     }
 
@@ -150,7 +164,8 @@ class CommandComboTest {
 
     @Test
     fun enterKanbaraThroughWall() {
-        val input = "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && mv to wall && cl && cl && cl && cl && d && d && d && ls"
+        val input =
+            "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && mv to wall && cl && cl && cl && cl && d && d && d && ls"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
         assertTrue(GameLogger.getMainHistory().contains("You are at Kanbara City South."))
     }
@@ -161,7 +176,12 @@ class CommandComboTest {
         assertEquals("Kentle", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is SOUTH_WEST of you.", GameLogger.getMainHistory().getLastOutput())
 
-        runBlocking { CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && w && co pub") }
+        runBlocking {
+            CommandParsers.parseCommand(
+                GameState.player,
+                "rs 10 && sw && rs 10 && w && rest 10 && w && co pub"
+            )
+        }
         assertEquals("Kanbara Gate", GameState.player.thing.location.name)
         assertEquals("Kanbara Pub is WEST of you.", GameLogger.getMainHistory().getLastOutput())
 
@@ -176,7 +196,8 @@ class CommandComboTest {
 
     @Test
     fun millFlour() {
-        val input = "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
+        val input =
+            "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
         assertEquals("You picked up Wheat Flour.", GameLogger.getMainHistory().getLastOutput())
     }
@@ -184,13 +205,14 @@ class CommandComboTest {
     @Test
     fun makePie() {
         runBlocking {
-            val input = "move to wheat && slash wheat && pickup wheat && t farmer's hut && take bucket && mv to well && use bucket on well && t windmill && t" +
-                    "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
-                    "&& use dagger on apple && rs 10" +
-                    "&& t interior && t && t && rest 10 && move to range && take pie tin" +
-                    "&& read recipe && rs" +
-                    "&& take box && use box on range && craft apple pie"
-            runBlocking { CommandParsers.parseCommand(GameState.player, input) }
+            val input =
+                "move to wheat && slash wheat && pickup wheat && t farmer's hut && take bucket && use bucket on well && t windmill && t" +
+                        "&& a && a && put wheat in chute && d && d && take wheat from bin && use flour on bucket" +
+                        "&& use dagger on apple && rs 10" +
+                        "&& t interior && t && t && rest 10 && move to range && take pie tin" +
+                        "&& read recipe && rs" +
+                        "&& take box && use box on range && craft apple pie"
+            CommandParsers.parseCommand(GameState.player, input)
 
             assertNotNull(GameState.player.thing.inventory.getItem("Apple Pie"))
             assertEquals(true, QuestManager.quests.get("A Simple Pie").complete)
@@ -247,7 +269,10 @@ class CommandComboTest {
     @Test
     fun lightTheWay() {
         runBlocking {
-            CommandParsers.parseCommand(GameState.player, "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && hold lantern f && ls")
+            CommandParsers.parseCommand(
+                GameState.player,
+                "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && hold lantern f && ls"
+            )
             assertEquals("It's too dark to see anything.", GameLogger.getMainHistory().getLastOutput())
             CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
             assertEquals("It contains Wall Crack.", GameLogger.getMainHistory().getLastOutput())

@@ -15,6 +15,7 @@ class CommonCreatures : CreatureResource {
             props {
                 tag("Small", "Predator")
             }
+            //TODO - make this a 'death item' that's spawned on death
             item("Poor Quality Meat")
         }
 
@@ -24,8 +25,11 @@ class CommonCreatures : CreatureResource {
             soul("Health", 10)
             soul("Strength", 3)
             soul("Bare Handed", 2)
+            mind{
+                learn("WorkTags", listOf("Farmable"))
+            }
             props {
-                tag("Commoner", "Farmer")
+                tag("Commoner")
                 value("Race", "Human")
             }
             item("Brown Pants", "Old Shirt")

@@ -47,6 +47,7 @@ data class Thing(
 ) : Named {
     var position = Vector()
     var climbThing: Thing? = null
+    //TODO - move route to mind
     var route: Route? = null
 
     init {

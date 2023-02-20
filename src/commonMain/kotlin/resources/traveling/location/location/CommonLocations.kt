@@ -72,6 +72,10 @@ class CommonLocations : LocationResource {
                 location("by the door")
                 vector(y = 10)
             }
+            activator("Simple Bed") {
+                location("on the wall furthest from the door")
+                vector(y = -10)
+            }
             item("Tinder Box") {
                 location("on the range")
                 vector(y = 10, z = 5)

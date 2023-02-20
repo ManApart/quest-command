@@ -1,6 +1,7 @@
 package system.debug
 
 enum class DebugType(val propertyName: String) {
+    AI_Updates("AI Updates"),
     DEBUG_GROUP("Debug Group"),
     LEVEL_REQ("Ignore Level Requirements"),
     STAT_CHANGES("Ignore Stat Changes"),
