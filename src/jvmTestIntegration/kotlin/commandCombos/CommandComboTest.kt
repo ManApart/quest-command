@@ -124,7 +124,7 @@ class CommandComboTest {
     fun doNotAttackDeadThing() {
         val input = "s && slash torso of rat && sl rat && sl && slash rat"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        val expected = "slash what with Rusty Dagger?\n\tPlayer, Poor Quality Meat"
+        val expected = "Slash what with Rusty Dagger?\n\tOld Shirt, Brown Pants, Small Pouch, Rusty Dagger, Player, Poor Quality Meat"
         assertEquals(expected, GameLogger.getMainHistory().getLastOutput())
     }
 

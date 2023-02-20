@@ -54,6 +54,10 @@ data class Thing(
         soul.parent = this
     }
 
+    override fun toString(): String {
+        return getDisplayName()
+    }
+
     fun getDisplayName(): String {
         val locationDescription = properties.values.getString("locationDescription")
         val description = if (locationDescription.isBlank()) {
@@ -256,17 +260,5 @@ suspend fun List<Thing>.perceivedBy(source: Thing): List<Thing> {
 }
 
 fun List<Thing>.toThingString(): String {
-    val thingCounts = HashMap<String, Int>()
-    this.forEach {
-        val count = it.properties.getCount()
-        thingCounts[it.getDisplayName()] = thingCounts[it.getDisplayName()]?.plus(count) ?: count
-    }
-
-    return thingCounts.entries.joinToString(", ") {
-        if (it.value == 1) {
-            it.key
-        } else {
-            "${it.value}x ${it.key}"
-        }
-    }
+    return joinToString(", ") { it.getDisplayName() }
 }

@@ -35,7 +35,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
                 val resultNames = results.joinToString(", ") { it.name }
                 //TODO - make sound description materially based
                 event.source.thing.addSoundEffect("Crafting", "jingles of metal, the scraping of leather, and the pinging of hammers", 20)
-                event.source.displayToMe("You ${event.recipe.craftVerb} $ingredientNames together and produce $resultNames.")
+                event.source.displayToMe("You ${event.recipe.craftVerb} $ingredientNames and produce $resultNames.")
             }
             else -> event.source.displayToMe("You aren't able to craft ${event.recipe.name}.")
         }

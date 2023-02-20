@@ -7,9 +7,9 @@ import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import core.utility.capitalize2
 import status.stat.HEALTH
 import traveling.position.ThingAim
-import use.StartUseEvent
 import use.startUseEvent
 
 class AttackCommand : Command() {
@@ -61,7 +61,7 @@ class AttackCommand : Command() {
             val attackType = fromString(keyword)
             val handHelper = handHelper(sourceT, arguments.getString("with"), attackType.damageType.damage.lowercase())
             val weaponName = handHelper.hand.getEquippedWeapon()?.name ?: handHelper.hand.name
-            val thing = getThing(keyword, arguments, weaponName, source)
+            val thing = getThing(keyword, arguments, source)
 
             if (thing == null) {
                 clarifyThing(source, keyword, weaponName)
@@ -82,22 +82,14 @@ class AttackCommand : Command() {
         }
     }
 
-    private suspend fun getThing(keyword: String, arguments: Args, weaponName: String, source: Player): ThingAim? {
+    private suspend fun getThing(keyword: String, arguments: Args, source: Player): ThingAim? {
         val things = parseThingsFromLocation(source.thing, arguments.getBaseGroup()) + parseThingsFromInventory(source.thing, arguments.getBaseGroup())
 
         return when {
             things.size == 1 -> things.first()
-            things.isEmpty() && !isAlias(keyword) -> {
-                clarifyThing(source, keyword, weaponName)
-                null
-            }
-            things.isEmpty() -> {
-                source.mind.getAggroTarget()?.let { ThingAim(it) }
-            }
-            else -> {
-                clarifyThing(source, keyword, weaponName)
-                null
-            }
+            things.isEmpty() && !isAlias(keyword) -> null
+            things.isEmpty() -> source.mind.getAggroTarget()?.let { ThingAim(it) }
+            else -> null
         }
     }
 
@@ -110,24 +102,16 @@ class AttackCommand : Command() {
     }
 
     private suspend fun clarifyThing(player: Player, keyword: String, weaponName: String) {
-        player.respondSuspend("Unable to find a weapon.") {
-            message("$keyword what with $weaponName?")
-            optionsNamed(player.thing.currentLocation().getThings())
-            command { "$keyword $it" }
-        }
-    }
-
-    private fun clarifyThings(player: Player, keyword: String, options: List<ThingAim>, weaponName: String) {
-        player.respond("Unable to find something to attack.") {
-            message("$keyword which one with $weaponName?")
-            options(options.map { it.thing.name })
+        player.respondSuspend("Unable to find something to $keyword.") {
+            message("${keyword.capitalize2()} what with $weaponName?")
+            optionsNamed(player.thing.currentLocation().getThingsIncludingPlayerInventory(player.thing))
             command { "$keyword $it" }
         }
     }
 
     private suspend fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
         player.respondSuspend("Unable to find a part of ${thing.thing.name} to attack.") {
-            message("$keyword what part of ${thing.thing.name} with $weaponName?")
+            message("${keyword.capitalize2()} what part of ${thing.thing.name} with $weaponName?")
             optionsNamed(thing.thing.body.getParts())
             command { "$keyword $it of ${thing.thing.name}" }
         }
