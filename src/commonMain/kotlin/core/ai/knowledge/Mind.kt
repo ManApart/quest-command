@@ -4,6 +4,7 @@ import core.ai.AI
 import core.ai.DumbAI
 import core.thing.Thing
 import crafting.Recipe
+import traveling.location.Route
 import traveling.location.network.LocationNode
 import kotlin.jvm.JvmName
 
@@ -12,6 +13,7 @@ data class Mind(
     val memory: CreatureMemory = CreatureMemory()
 ) {
     lateinit var creature: Thing; private set
+    var route: Route? = null
 
     fun updateCreature(creature: Thing) {
         this.creature = creature

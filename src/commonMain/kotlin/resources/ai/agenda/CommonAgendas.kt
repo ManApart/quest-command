@@ -68,7 +68,7 @@ class CommonAgendas : AgendaResource {
             actionDetailed("Identify Route") {
                 shouldSkip { s ->
                     val goal = s.mind.knowsLocationByKind("LocationGoal")
-                    goal == null || s.location == goal || s.route?.destination == goal
+                    goal == null || s.location == goal || s.mind.route?.destination == goal
                 }
                 result { s ->
                     s.mind.knowsLocationByKind("LocationGoal")?.let {
@@ -81,7 +81,7 @@ class CommonAgendas : AgendaResource {
                     s.location == s.mind.knowsLocationByKind("LocationGoal")
                 }
                 result { s ->
-                    s.route?.let {
+                    s.mind.route?.let {
                         TravelStartEvent(s, destination = it.getNextStep(s.location).destination.location)
                     }
                 }

@@ -23,7 +23,7 @@ class FindRoute : EventListener<FindRouteEvent>() {
 
         if (finder.hasRoute()){
             val route = finder.getRoute()
-            event.source.route = route
+            event.source.mind.route = route
 
             if (event.startImmediately){
                 startTravel(event.source, route, event.quiet)

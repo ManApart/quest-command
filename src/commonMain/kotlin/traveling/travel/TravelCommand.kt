@@ -45,7 +45,7 @@ class TravelCommand : Command() {
         if (source.thing.getEncumbrance() >=1){
             source.displayToMe("You are too encumbered to travel.")
         } else if (args.isEmpty()) {
-            val route = source.thing.route
+            val route = source.thing.mind.route
             val sourceLocation = source.location
             when {
                 route == null -> source.displayToMe("No route to travel to.")
