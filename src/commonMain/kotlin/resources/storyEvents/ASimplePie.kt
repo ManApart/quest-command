@@ -15,7 +15,7 @@ class ASimplePie : StoryEventResource {
     override val values: List<StoryEvent> = listOf(
         StoryEvent("A Simple Pie", 10, "I should pick up an Apple, which I could get by traveling to the Apple Tree.",
             ConditionalEvents(InteractEvent::class,
-                { event, _ -> event.source.isPlayer() && event.thing.name == "Apple Pie Recipe" },
+                { event, _ -> event.source.isPlayer() && event.interactionTarget.name == "Apple Pie Recipe" },
                 { event, _ -> listOf(MessageEvent(GameState.getPlayer(event.source)!!, "This pie sounds pretty simple to make. I should start by getting an Apple.")) }
             )
         ),

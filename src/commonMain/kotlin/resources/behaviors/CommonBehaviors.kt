@@ -11,6 +11,7 @@ import crafting.DiscoverRecipeEvent
 import crafting.RecipeManager
 import inventory.pickupItem.ItemPickedUpEvent
 import status.conditions.RemoveConditionEvent
+import status.rest.RestEvent
 import status.statChanged.StatChangeEvent
 import system.message.MessageEvent
 import traveling.RestrictLocationEvent
@@ -47,7 +48,7 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Climbable", InteractEvent::class) {
             events { event, _ ->
-                listOfNotNull(eventWithPlayer(event.source) { CommandEvent(it, "climb ${event.thing.name}") })
+                listOfNotNull(eventWithPlayer(event.source) { CommandEvent(it, "climb ${event.interactionTarget.name}") })
             }
         }
 
@@ -99,9 +100,18 @@ class CommonBehaviors : BehaviorResource {
                 val replacement = ActivatorManager.getActivator(params["replacementActivator"] ?: "Logs")
                 listOfNotNull(
                     eventWithPlayer(source) { MessageEvent(it, params["message"] ?: "") },
-                    RestrictLocationEvent(event.thing, sourceLocation, destinationLocation, makeRestricted),
-                    RemoveScopeEvent(event.thing),
-                    SpawnActivatorEvent(replacement, true, event.thing.location)
+                    RestrictLocationEvent(event.interactionTarget, sourceLocation, destinationLocation, makeRestricted),
+                    RemoveScopeEvent(event.interactionTarget),
+                    SpawnActivatorEvent(replacement, true, event.interactionTarget.location)
+                )
+            }
+        }
+        behavior("Rest", InteractEvent::class) {
+            events { event, params ->
+                val hoursRested = params["hoursRested"]?.toIntOrNull() ?: 10
+                listOfNotNull(
+                    eventWithPlayer(event.source) { MessageEvent(it, "You rest for $hoursRested hours.") },
+                    RestEvent(event.source, hoursRested)
                 )
             }
         }

@@ -202,6 +202,7 @@ class CommonActivators : ActivatorResource {
         thing("Simple Bed") {
             material("Wood")
             description("A simple, unadorned bed.")
+            behavior("Rest")
             props {
                 tag("Bed")
             }

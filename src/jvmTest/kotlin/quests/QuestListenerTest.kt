@@ -3,13 +3,11 @@ package quests
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
-import core.GameState.player
 import core.body.*
 import core.thing.Thing
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeAll
 import kotlin.test.Test
-import kotlin.test.BeforeTest
 
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
@@ -41,8 +39,8 @@ class QuestListenerTest {
 
     @Test
     fun oneQuestListenerIsRemovedOnExecute() {
-        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class, { event, _ -> event.thing.name == "Pie" }))
-        val event2 = StoryEvent("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class, { event, _ -> event.thing.name == "Apple" }))
+        val event1 = StoryEvent("Test Quest", 10, "journal", ConditionalEvents(InteractEvent::class, { event, _ -> event.interactionTarget.name == "Pie" }))
+        val event2 = StoryEvent("Test Quest2", 10, "journal", ConditionalEvents(InteractEvent::class, { event, _ -> event.interactionTarget.name == "Apple" }))
 
         val questList = StoryEventsMock(listOf(event1, event2))
         DependencyInjector.setImplementation(StoryEventsCollection::class, questList)
