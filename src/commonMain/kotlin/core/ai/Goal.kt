@@ -10,7 +10,7 @@ import kotlin.math.max
 data class Goal(
     override val name: String,
     val priority: Int,
-    private var progress: Int,
+    var progress: Int,
     val steps: List<AIAction>,
 ) : Named {
     constructor(agenda: Agenda, priority: Int) : this(agenda.name, priority, 0, agenda.steps.flatMap { it.getActions() })

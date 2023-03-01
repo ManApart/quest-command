@@ -11,7 +11,8 @@ import system.debug.DebugType
 
 class ConditionalAI : AI() {
     private val defaultAgenda = Pair("Nothing", 0)
-    private var goal: Goal? = null
+    var goal: Goal? = null
+        private set
 
     override suspend fun takeAction() {
         if (goal == null) {
@@ -30,7 +31,7 @@ class ConditionalAI : AI() {
         val desire = (RandomManager.getRandomOrNull(topMatches) ?: defaultAgenda).first
         val agenda = AIManager.agendas[desire] ?: AIManager.agendas[defaultAgenda.first]!!.also { displayGlobal("Couldn't find agenda for ${desire}!") }
 
-        if (GameState.getDebugBoolean(DebugType.AI_Updates)) displayGlobal("${creature.name} picks ${agenda.name}.")
+        if (GameState.getDebugBoolean(DebugType.AI_UPDATES)) displayGlobal("${creature.name} picks ${agenda.name}.")
         return Goal(agenda, priority)
     }
 

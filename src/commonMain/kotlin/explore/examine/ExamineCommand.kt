@@ -1,10 +1,7 @@
 package explore.examine
 
 import core.Player
-import core.commands.Command
-import core.commands.parseThings
-import core.commands.respond
-import core.commands.respondSuspend
+import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
 import traveling.position.ThingAim
@@ -23,6 +20,7 @@ class ExamineCommand : Command() {
 	Examine all - Look more closely at your surroundings. Gives more detailed information than look, based on how perceptive you are.
 	Examine <thingAim> - Look closely at a specific thing.
     Examine body of <thing> - Look closely at the body of a thing.
+    Examine mind of <thing> - Ponder the thought of a creature. This requires the utmost perception and wisdom.
     Examine hand of player - Look closely at the player's right hand.
     """
     }
@@ -33,7 +31,7 @@ class ExamineCommand : Command() {
 
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         when {
-            keyword == "look" && args.isEmpty() -> clarifyThing(source)
+            keyword == "examine" && args.isEmpty() -> clarifyThing(source)
             args.isEmpty() -> EventManager.postEvent(ExamineEvent(source))
             args.size == 1 && args[0] == "all" -> EventManager.postEvent(ExamineEvent(source))
             else -> tryAndGetThing(args, source)
@@ -41,18 +39,24 @@ class ExamineCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return when{
-            args.isEmpty() -> listOf("all", "body", "hand") + source.getPerceivedThingNames()
-            args.last() == "body" || args.last() == "hand" -> listOf("of")
+        return when {
+            args.isEmpty() -> listOf("all", "body", "mind", "hand") + source.getPerceivedThingNames()
+            args.last() in listOf("body", "mind", "hand") -> listOf("of")
             args.last() == "of" -> source.getPerceivedThingNames()
             else -> listOf()
         }
     }
 
     private suspend fun tryAndGetThing(args: List<String>, source: Player) {
-        val thing = getThing(args, source)
+        var lookingAtMind = false
+        val thing = if (args.contains("mind") && args.contains("of")) {
+            lookingAtMind = true
+            getThing(args.removeAll(listOf("mind", "of")), source)
+        } else getThing(args, source)
+
         when {
             thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
+            lookingAtMind -> EventManager.postEvent(ExamineEvent(source, thing.thing, mind = thing.thing.mind))
             thing.isLookingAtBody() -> EventManager.postEvent(ExamineEvent(source, thing.thing, body = thing.thing.body))
             thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(ExamineEvent(source, location = thing.bodyPartThings.firstOrNull()))
             else -> EventManager.postEvent(ExamineEvent(source, thing = thing.thing))
@@ -69,6 +73,7 @@ class ExamineCommand : Command() {
                 clarifyThing(source)
                 null
             }
+
             else -> {
                 clarifyThings(source, things)
                 null
