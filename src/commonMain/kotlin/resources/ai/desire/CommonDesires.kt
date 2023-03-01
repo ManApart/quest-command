@@ -28,7 +28,7 @@ class CommonDesires : DesireResource {
             }
 
             cond({ s -> GameState.timeManager.isWorkHours() && s.mind.locationByKindExists("MyWorkplace") }) {
-                cond({ s -> s.location !=  s.mind.knowsLocationByKind("MyWorkplace") }) {
+                cond({ s -> s.location != s.mind.knowsLocationByKind("MyWorkplace") }) {
                     agenda("Travel to Job Site")
                 }
                 agenda("Work At Job Site")

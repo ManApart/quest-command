@@ -1,7 +1,6 @@
 package resources.status
 
 import combat.DamageType
-import explore.listen.SOUND_LEVEL
 import status.effects.EffectResource
 import status.effects.effects
 import status.stat.StatEffect
