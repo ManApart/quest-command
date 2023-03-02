@@ -143,10 +143,12 @@ class CommonAgendas : AgendaResource {
         }
 
         agenda("Sleep In Bed") {
-            action("Find Bed") { owner ->
+            actions("Find Bed") { owner ->
                 owner.mind.knowsThingByKind("MyBed")?.let { target ->
-                    owner.discover(target, "useTarget")
-                    owner.discover(target.location, "LocationGoal")
+                    listOf(
+                        owner.discover(target, "useTarget"),
+                        owner.discover(target.location, "LocationGoal")
+                    )
                 }
             }
             agenda("Travel to Location")

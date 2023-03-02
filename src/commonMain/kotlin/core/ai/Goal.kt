@@ -1,10 +1,13 @@
 package core.ai
 
+import core.GameState
 import core.ai.action.AIAction
 import core.ai.agenda.Agenda
 import core.events.EventManager
+import core.history.displayGlobal
 import core.thing.Thing
 import core.utility.Named
+import system.debug.DebugType
 import kotlin.math.max
 
 data class Goal(
@@ -31,6 +34,7 @@ data class Goal(
             if (events == null) {
                 aborted = true
             }
+            if (GameState.getDebugBoolean(DebugType.AI_UPDATES)) displayGlobal("${owner.name} does ${step.name}, producing events ${events?.joinToString { it.toString() }}.")
             events?.forEach { EventManager.postEvent(it) }
         }
         progress++

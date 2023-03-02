@@ -17,7 +17,7 @@ class AgendaBuilder(private val name: String) {
         this.steps.add(GoalStep(ActionBuilder(name).apply(initializer).build()))
     }
 
-    fun actions(name: String, result: (Thing) -> List<Event>?) {
+    fun actions(name: String, result: suspend (Thing) -> List<Event>?) {
         this.steps.add(GoalStep(AIAction(name, result)))
     }
 

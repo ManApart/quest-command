@@ -9,8 +9,9 @@ import core.history.displayGlobal
 import core.utility.RandomManager
 import system.debug.DebugType
 
+private val defaultAgenda = Pair("Nothing", 0)
+
 class ConditionalAI : AI() {
-    private val defaultAgenda = Pair("Nothing", 0)
     var goal: Goal? = null
         private set
 
