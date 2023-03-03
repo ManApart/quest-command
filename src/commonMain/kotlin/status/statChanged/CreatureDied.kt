@@ -15,7 +15,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         return !event.thing.isPlayer() && event.stat.lowercase() == HEALTH.lowercase()
     }
 
-    override suspend fun execute(event: StatMinnedEvent) {
+    override suspend fun complete(event: StatMinnedEvent) {
         event.thing.display("${event.thing.name} has died.")
         val creature = event.thing
 

@@ -4,7 +4,7 @@ import core.events.EventListener
 
 class AITurnListener : EventListener<AIUpdateTick>() {
 
-    override suspend fun execute(event: AIUpdateTick) {
+    override suspend fun complete(event: AIUpdateTick) {
         directAI()
     }
 

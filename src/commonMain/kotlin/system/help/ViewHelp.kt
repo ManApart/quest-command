@@ -12,7 +12,7 @@ import core.utility.toSortedMap
 class ViewHelp : EventListener<ViewHelpEvent>() {
     val description = HelpCommand().getDescription()
 
-    override suspend fun execute(event: ViewHelpEvent) {
+    override suspend fun complete(event: ViewHelpEvent) {
         when {
             event.commandManual != null -> printManual(event.source, event.commandManual)
             event.commandGroups && event.args.isEmpty() -> printCommandGroupsSummary(event.source)

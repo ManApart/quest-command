@@ -49,7 +49,7 @@ class PlaceItemTest {
             creature.inventory.add(item)
             val scope = runBlocking { creature.location.getLocation() }
 
-            PlaceItem().execute(PlaceItemEvent(creature, item))
+            PlaceItem().complete(PlaceItemEvent(creature, item))
             assertTrue(scope.getThings(item.name).isNotEmpty())
             assertNull(creature.inventory.getItem(item.name))
         }

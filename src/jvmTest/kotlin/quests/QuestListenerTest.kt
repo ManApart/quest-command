@@ -49,7 +49,7 @@ class QuestListenerTest {
         //Only the apple event is executed
         val testEvent = InteractEvent(GameState.player.thing, Thing("Apple"))
         val listener = QuestListener()
-        runBlocking { listener.execute(testEvent) }
+        runBlocking { listener.complete(testEvent) }
 
         val results = listener.getListeners()
         assertEquals(1, results.size)
@@ -69,7 +69,7 @@ class QuestListenerTest {
         val testEvent = InteractEvent(GameState.player.thing, Thing("Apple"))
         val listener = QuestListener()
 
-        runBlocking { listener.execute(testEvent) }
+        runBlocking { listener.complete(testEvent) }
 
         val results = listener.getListeners()
         assertEquals(0, results.size)
@@ -86,7 +86,7 @@ class QuestListenerTest {
 
         val testEvent = InteractEvent(GameState.player.thing, Thing("Apple"))
         val listener = QuestListener()
-        runBlocking { listener.execute(testEvent) }
+        runBlocking { listener.complete(testEvent) }
         val results = listener.getListeners()
         assertEquals(0, results.size)
     }

@@ -7,7 +7,7 @@ import traveling.direction.Direction
 import traveling.location.Route
 
 class ViewCompass : EventListener<ViewCompassEvent>() {
-    override suspend fun execute(event: ViewCompassEvent) {
+    override suspend fun complete(event: ViewCompassEvent) {
         val route = updateRoute(event)
         if (route == null) {
             event.source.displayToMe("Could not find a valid destination to point to.")

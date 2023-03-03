@@ -50,7 +50,7 @@ class CraftTest {
             DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapGenerated())
             EventManager.reset()
 
-            Craft().execute(craftEvent)
+            Craft().complete(craftEvent)
             EventManager.executeEvents()
             assertFalse(baker.inventory.exists(ingredient))
             assertNotNull(baker.inventory.getItem(resultItemName1))
@@ -74,7 +74,7 @@ class CraftTest {
             DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapGenerated())
             EventManager.reset()
 
-            Craft().execute(craftEvent)
+            Craft().complete(craftEvent)
 
             EventManager.executeEvents()
             val result = baker.inventory.getItem(ingredient.name)

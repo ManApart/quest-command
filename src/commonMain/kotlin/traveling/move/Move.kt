@@ -29,7 +29,7 @@ class Move : EventListener<MoveEvent>() {
         return 10
     }
 
-    override suspend fun execute(event: MoveEvent) {
+    override suspend fun complete(event: MoveEvent) {
         val desiredDistance = event.source.getDistance(event.destination)
         val actualDistance = getActualDistanceMoved(event, desiredDistance)
         val attainableDestination = event.source.getVectorInDirection(event.destination, actualDistance)

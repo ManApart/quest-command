@@ -7,7 +7,7 @@ class StatMinned : EventListener<StatMinnedEvent>() {
         return !event.thing.isPlayer()
     }
 
-    override suspend fun execute(event: StatMinnedEvent) {
+    override suspend fun complete(event: StatMinnedEvent) {
         event.thing.consume(event)
     }
 }

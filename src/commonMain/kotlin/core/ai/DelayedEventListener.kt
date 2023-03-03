@@ -7,7 +7,7 @@ import core.events.EventManager
 import time.gameTick.GameTickEvent
 
 class DelayedEventListener : EventListener<Event>() {
-    override suspend fun execute(event: Event) {
+    override suspend fun complete(event: Event) {
         if (event is DelayedEvent){
             event.source.mind.ai.action = event
             EventManager.postEvent(GameTickEvent())

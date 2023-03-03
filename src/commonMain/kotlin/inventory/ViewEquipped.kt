@@ -10,7 +10,7 @@ import core.utility.joinToStringSuspend
 
 class ViewEquipped : EventListener<ViewEquippedEvent>() {
 
-    override suspend fun execute(event: ViewEquippedEvent) {
+    override suspend fun complete(event: ViewEquippedEvent) {
 
         with(event) {
             val body = target.body

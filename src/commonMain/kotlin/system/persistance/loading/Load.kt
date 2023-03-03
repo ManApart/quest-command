@@ -13,7 +13,7 @@ import system.persistance.clean
 import system.persistance.getGameNames
 
 class Load : EventListener<LoadEvent>() {
-    override suspend fun execute(event: LoadEvent) {
+    override suspend fun complete(event: LoadEvent) {
         val gameName = clean(event.saveName).removeSuffix("/")
         val allSaves = getGameNames()
         val saves = allSaves.filter { it.lowercase().contains(gameName.lowercase()) }

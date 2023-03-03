@@ -11,7 +11,7 @@ import traveling.location.location.Location
 import kotlin.math.max
 
 class TakeDamage : EventListener<TakeDamageEvent>() {
-    override suspend fun execute(event: TakeDamageEvent) {
+    override suspend fun complete(event: TakeDamageEvent) {
         val undefendedDamage = getUndefendedDamage(event.source, event.damage, event.sourcePart, event.attackType)
 
         if (hasSpecificHealth(event.source, event.attackType)) {

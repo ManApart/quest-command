@@ -8,7 +8,7 @@ class ExpGained : EventListener<ExpGainedEvent>() {
         return event.creature.isPlayer()
     }
 
-    override suspend fun execute(event: ExpGainedEvent) {
+    override suspend fun complete(event: ExpGainedEvent) {
         val stat = event.creature.soul.getStatOrNull(event.stat)
         if (stat != null && event.amount > 0) {
             if (stat.expExponential > 1) {

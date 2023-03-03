@@ -7,7 +7,7 @@ import core.history.display
 import core.history.displayToMe
 
 class EndConversation : EventListener<EndConversationEvent>() {
-    override suspend fun execute(event: EndConversationEvent) {
+    override suspend fun complete(event: EndConversationEvent) {
         val speaker = event.conversation.getLatestSpeaker()
         val listener = event.conversation.getLatestListener()
 

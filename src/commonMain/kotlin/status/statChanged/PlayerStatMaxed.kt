@@ -10,7 +10,7 @@ class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
         return event.thing.isPlayer()
     }
 
-    override suspend fun execute(event: StatMaxedEvent) {
+    override suspend fun complete(event: StatMaxedEvent) {
         when (event.stat.lowercase()){
             HEALTH.lowercase() -> event.thing.displayToMe("You feel the fullness of life beating in your bosom.")
             STAMINA.lowercase() -> event.thing.displayToMe("You feel totally energized.")

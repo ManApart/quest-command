@@ -12,7 +12,7 @@ import status.statChanged.StatChangeEvent
 
 class EatFood : EventListener<EatFoodEvent>() {
 
-    override suspend fun execute(event: EatFoodEvent) {
+    override suspend fun complete(event: EatFoodEvent) {
         event.creature.displayToMe("You eat ${event.food.name}.")
         event.creature.displayToOthers("${event.creature.name} eats ${event.food.name}.")
         val healAmount = getHealAmount(event.food)

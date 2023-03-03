@@ -28,7 +28,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         return event.creature.isPlayer() && event.thing.properties.tags.has("Climbable")
     }
 
-    override suspend fun execute(event: AttemptClimbEvent) {
+    override suspend fun complete(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.thing.name}." }
         } else {

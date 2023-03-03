@@ -1,7 +1,9 @@
 package core.events
 
 abstract class EventListener<T : Event> {
-    abstract suspend fun execute(event: T)
+    open suspend fun start(event: T){}
+
+    abstract suspend fun complete(event: T)
 
     open suspend fun shouldExecute(event: T): Boolean {
         return true

@@ -21,7 +21,7 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
         return event.thing.isPlayer()
     }
 
-    override suspend fun execute(event: StatMinnedEvent) {
+    override suspend fun complete(event: StatMinnedEvent) {
         when (event.stat.lowercase()) {
             HEALTH.lowercase() -> GameState.getPlayer(event.thing)?.let { killPlayer(it) }
             STAMINA.lowercase() -> event.thing.displayToMe("You are completely exhausted.")

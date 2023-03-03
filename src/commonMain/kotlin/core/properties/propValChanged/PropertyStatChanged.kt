@@ -12,7 +12,7 @@ class PropertyStatChanged : EventListener<PropertyStatChangeEvent>() {
         return event.amount != 0
     }
 
-    override suspend fun execute(event: PropertyStatChangeEvent) {
+    override suspend fun complete(event: PropertyStatChangeEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
         val values = event.thing.properties.values
         val beforeVal = values.getInt(event.statName)

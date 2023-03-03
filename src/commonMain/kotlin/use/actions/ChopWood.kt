@@ -17,7 +17,7 @@ class ChopWood : EventListener<UseEvent>() {
                 && event.used.properties.values.getInt(DamageType.CHOP.damage, 0) != 0
     }
 
-    override suspend fun execute(event: UseEvent) {
+    override suspend fun complete(event: UseEvent) {
         event.source.display("The ${event.used.name} hacks at ${event.usedOn.name}.")
         val damageDone = -event.used.properties.values.getInt(DamageType.CHOP.damage, 0)
         EventManager.postEvent(PropertyStatChangeEvent(event.usedOn, event.used.name, DamageType.CHOP.health, damageDone))

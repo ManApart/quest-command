@@ -8,7 +8,7 @@ class RemoveCondition : EventListener<RemoveConditionEvent>() {
         return true
     }
 
-    override suspend fun execute(event: RemoveConditionEvent) {
+    override suspend fun complete(event: RemoveConditionEvent) {
         if (event.thing.soul.hasCondition(event.condition)) {
             event.thing.soul.removeCondition(event.condition)
             if (!event.condition.silent) {

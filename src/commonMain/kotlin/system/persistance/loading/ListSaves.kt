@@ -7,7 +7,7 @@ import system.persistance.clean
 import system.persistance.getGameNames
 
 class ListSaves : EventListener<ListSavesEvent>() {
-    override suspend fun execute(event: ListSavesEvent) {
+    override suspend fun complete(event: ListSavesEvent) {
         val gameNames = getGameNames()
         if (gameNames.isEmpty()) {
             event.source.displayToMe("No game saves to load")

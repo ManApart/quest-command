@@ -9,7 +9,7 @@ import core.utility.asSubject
 import core.utility.isAre
 
 class TakeItem : EventListener<TakeItemEvent>() {
-    override suspend fun execute(event: TakeItemEvent) {
+    override suspend fun complete(event: TakeItemEvent) {
         if (event.taker.canReach(event.item.position)) {
             takeItem(event.taker, event.item, event.silent)
         } else {

@@ -16,7 +16,7 @@ class NoInteractionFound : EventListener<InteractEvent>() {
         return false
     }
 
-    override suspend fun execute(event: InteractEvent) {
+    override suspend fun complete(event: InteractEvent) {
         if (event.source.canInteract()) {
             event.source.displayToMe("You don't seem to be able to do anything interesting with ${event.interactionTarget.name}.")
         } else {

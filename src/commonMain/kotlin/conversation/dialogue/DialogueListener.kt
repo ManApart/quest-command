@@ -5,7 +5,7 @@ import explore.listen.addSoundEffect
 
 
 class DialogueListener : EventListener<DialogueEvent>() {
-    override suspend fun execute(event: DialogueEvent) {
+    override suspend fun complete(event: DialogueEvent) {
         val conversation = event.conversation
 
         event.speaker.addSoundEffect("Talking", "the sound of voices", 20)

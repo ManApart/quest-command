@@ -8,7 +8,7 @@ import status.stat.COOKING
 
 class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
 
-    override suspend fun execute(event: DiscoverRecipeEvent) {
+    override suspend fun complete(event: DiscoverRecipeEvent) {
         if (event.source.thing.isPlayer()) {
             if (!event.source.mind.knows(event.recipe)) {
                 event.source.mind.discover(event.recipe)

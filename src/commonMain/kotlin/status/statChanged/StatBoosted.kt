@@ -12,7 +12,7 @@ class StatBoosted : EventListener<StatBoostEvent>() {
         return event.amount != 0
     }
 
-    override suspend fun execute(event: StatBoostEvent) {
+    override suspend fun complete(event: StatBoostEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
 
         val soul = event.thing.soul

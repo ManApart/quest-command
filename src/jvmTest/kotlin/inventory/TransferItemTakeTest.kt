@@ -55,7 +55,7 @@ class TransferItemTakeTest {
             val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
             chest.inventory.add(item)
 
-            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, chest, creature)) }
+            runBlocking { TransferItem().complete(TransferItemEvent(creature, item, chest, creature)) }
 
             assertNotNull(creature.inventory.getItem(item.name))
             assertNull(chest.inventory.getItem(item.name))
@@ -71,7 +71,7 @@ class TransferItemTakeTest {
             val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
             chest.inventory.add(item)
 
-            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
 
             assertNotNull(chest.inventory.getItem(item.name))
             assertNull(creature.inventory.getItem(item.name))
@@ -87,7 +87,7 @@ class TransferItemTakeTest {
             val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
             chest.inventory.add(item)
 
-            runBlocking { TransferItem().execute(TransferItemEvent(creature, item, creature, chest)) }
+            runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
 
             assertNotNull(chest.inventory.getItem(item.name))
             assertNull(creature.inventory.getItem(item.name))

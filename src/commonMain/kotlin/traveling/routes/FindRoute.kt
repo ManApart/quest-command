@@ -11,7 +11,7 @@ import traveling.location.RouteFinder
 import traveling.travel.TravelStartEvent
 
 class FindRoute : EventListener<FindRouteEvent>() {
-    override suspend fun execute(event: FindRouteEvent) {
+    override suspend fun complete(event: FindRouteEvent) {
         if (event.sourceLocation == event.destination){
             event.source.displayToMe("You are already there.")
             return

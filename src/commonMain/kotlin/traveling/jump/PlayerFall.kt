@@ -19,7 +19,7 @@ class PlayerFall : EventListener<FallEvent>() {
         return event.creature.isPlayer()
     }
 
-    override suspend fun execute(event: FallEvent) {
+    override suspend fun complete(event: FallEvent) {
         if (event.reason != null) event.creature.displayToMe(event.reason)
         event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("fall", it)} ${event.fallHeight}ft."}
         takeDamage(event)

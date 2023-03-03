@@ -7,7 +7,7 @@ import core.events.EventListener
 import system.debug.DebugType
 
 actual class Connect : EventListener<ConnectEvent>() {
-    actual override suspend fun execute(event: ConnectEvent) {
+    actual override suspend fun complete(event: ConnectEvent) {
         val info = WebClient.createServerConnectionIfPossible(event.host, event.port, event.playerName)
         if (info.validServer) {
             CommandParsers.getParser(event.source).commandInterceptor = ConnectionCommandInterceptor()

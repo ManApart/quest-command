@@ -6,7 +6,7 @@ import core.utility.asSubject
 import explore.listen.addSoundEffect
 
 class ItemDropped : EventListener<ItemDroppedEvent>() {
-    override suspend fun execute(event: ItemDroppedEvent) {
+    override suspend fun complete(event: ItemDroppedEvent) {
         if (!event.silent) {
             event.source.display { listener -> "${event.source.asSubject(listener)} dropped ${event.item.name}." }
         }

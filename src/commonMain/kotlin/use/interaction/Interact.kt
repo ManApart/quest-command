@@ -8,7 +8,7 @@ import core.utility.isAre
 
 class Interact : EventListener<InteractEvent>() {
 
-    override suspend fun execute(event: InteractEvent) {
+    override suspend fun complete(event: InteractEvent) {
 
         when {
             !event.interactionTarget.isWithinRangeOf(event.source) -> event.source.display { event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to interact with ${event.interactionTarget}." }

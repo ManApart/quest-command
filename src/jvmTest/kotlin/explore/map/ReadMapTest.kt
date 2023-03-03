@@ -32,7 +32,7 @@ class ReadMapTest {
 
         val event = ReadMapEvent(player, thing)
 
-        runBlocking { ReadMap().execute(event) }
+        runBlocking { ReadMap().complete(event) }
         val actual = GameLogger.getHistory(player).getLastOutput()
         assertEquals("My Place is a part of Wilderness. It has no known neighbors.", actual)
     }
@@ -49,7 +49,7 @@ class ReadMapTest {
         thing.getNeighborConnections().forEach { player.thing.mind.discover(it.destination.location) }
         val event = ReadMapEvent(player, thing)
 
-        runBlocking { ReadMap().execute(event) }
+        runBlocking { ReadMap().complete(event) }
         val actual = GameLogger.getHistory(player).getLastOutput()
         assertEquals(
             "My Place is a part of Wilderness. It is neighbored by:\n" +
@@ -71,7 +71,7 @@ class ReadMapTest {
         }
 
         val event = ReadMapEvent(player, thing)
-        runBlocking { ReadMap().execute(event) }
+        runBlocking { ReadMap().complete(event) }
         val actual = GameLogger.getHistory(player).getLastOutput()
         assertEquals(
             "My Place is a part of Wilderness. It is neighbored by:\n" +

@@ -5,7 +5,7 @@ import core.events.EventListener
 import core.events.EventManager
 
 class GameTick : EventListener<Event>() {
-    override suspend fun execute(event: Event) {
+    override suspend fun complete(event: Event) {
         if (event.gameTicks() > 0) {
             EventManager.postEvent(GameTickEvent(event.gameTicks()))
         }

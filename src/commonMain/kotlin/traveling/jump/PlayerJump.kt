@@ -18,7 +18,7 @@ class PlayerJump : EventListener<JumpEvent>() {
     override suspend fun shouldExecute(event: JumpEvent): Boolean {
         return event.creature.isPlayer()
     }
-    override suspend fun execute(event: JumpEvent) {
+    override suspend fun complete(event: JumpEvent) {
         event.creature.display{"${event.creature.asSubject(it)} jump from ${event.source}"}
         val damage = calculateJumpDamage(event)
 

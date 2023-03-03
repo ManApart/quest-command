@@ -6,7 +6,7 @@ import core.events.EventManager
 import time.gameTick.GameTickEvent
 
 class ConditionRemover : EventListener<GameTickEvent>() {
-    override suspend fun execute(event: GameTickEvent) {
+    override suspend fun complete(event: GameTickEvent) {
         GameState.players.values.forEach { player ->
             player.thing.currentLocation().getAllSouls(player.thing).forEach { soul ->
                 soul.getConditions().filter { !it.isStillViable() }.forEach { oldCondition ->

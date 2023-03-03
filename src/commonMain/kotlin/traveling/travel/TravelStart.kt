@@ -17,7 +17,7 @@ import traveling.move.MoveEvent
 import kotlin.math.max
 
 class TravelStart : EventListener<TravelStartEvent>() {
-    override suspend fun execute(event: TravelStartEvent) {
+    override suspend fun complete(event: TravelStartEvent) {
         val connection = event.currentLocation.getConnection(event.destination)
         if (connection == null){
             event.creature.displayToMe("Could not find a way to get to ${event.destination.name}.")

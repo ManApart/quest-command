@@ -33,7 +33,7 @@ class ViewInventoryTest {
             val creature = createClosedChest()
             creature.inventory.add(createItem())
             val event = ViewInventoryEvent(GameState.player, creature)
-            runBlocking { ViewInventory().execute(event) }
+            runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Closed Chest has:\n\tApple"))
         }
     }
@@ -42,7 +42,7 @@ class ViewInventoryTest {
     fun listNoItemsInventory() {
         val creature = createClosedChest()
         val event = ViewInventoryEvent(GameState.player, creature)
-        runBlocking { ViewInventory().execute(event) }
+        runBlocking { ViewInventory().complete(event) }
         assertTrue(GameLogger.getMainHistory().contains("Closed Chest has no items."))
     }
 
@@ -63,7 +63,7 @@ class ViewInventoryTest {
             creature.inventory.add(item)
             creature.body.equip(item)
             val event = ViewInventoryEvent(GameState.player, creature)
-            runBlocking { ViewInventory().execute(event) }
+            runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Chestplate"))
         }
     }
@@ -89,7 +89,7 @@ class ViewInventoryTest {
             creature.body.equip(pouch)
 
             val event = ViewInventoryEvent(GameState.player, creature)
-            runBlocking { ViewInventory().execute(event) }
+            runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Pouch\n\t\tApple"))
         }
     }
@@ -100,7 +100,7 @@ class ViewInventoryTest {
             val creature = Thing("Chest")
             creature.inventory.add(Thing("Apple"))
             val event = ViewInventoryEvent(GameState.player, creature)
-            runBlocking { ViewInventory().execute(event) }
+            runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Cannot view inventory of Chest"))
         }
     }

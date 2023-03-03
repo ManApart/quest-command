@@ -5,7 +5,7 @@ import core.events.EventListener
 import core.history.displayToMe
 
 actual class Disconnect : EventListener<DisconnectEvent>() {
-    actual override suspend fun execute(event: DisconnectEvent) {
+    actual override suspend fun complete(event: DisconnectEvent) {
         if (CommandParsers.getParser(event.source).commandInterceptor is ConnectionCommandInterceptor) {
             WebClient.doPolling = false
             WebClient.latestResponse = 0

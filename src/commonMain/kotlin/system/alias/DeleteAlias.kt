@@ -5,7 +5,7 @@ import core.events.EventListener
 import core.history.displayToMe
 
 class DeleteAlias : EventListener<DeleteAliasEvent>() {
-    override suspend fun execute(event: DeleteAliasEvent) {
+    override suspend fun complete(event: DeleteAliasEvent) {
         if (GameState.aliases.containsKey(event.alias.lowercase())) {
             GameState.aliases.remove(event.alias.lowercase())
             event.source.displayToMe("Removed alias " + event.alias)

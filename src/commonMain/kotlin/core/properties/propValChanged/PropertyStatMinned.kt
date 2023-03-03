@@ -7,7 +7,7 @@ class PropertyStatMinned : EventListener<PropertyStatMinnedEvent>() {
         return !event.thing.isPlayer()
     }
 
-    override suspend fun execute(event: PropertyStatMinnedEvent) {
+    override suspend fun complete(event: PropertyStatMinnedEvent) {
         event.thing.consume(event)
     }
 }

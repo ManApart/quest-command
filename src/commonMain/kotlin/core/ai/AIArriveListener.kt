@@ -7,7 +7,7 @@ class AIArriveListener : EventListener<ArriveEvent>() {
 
     override fun getPriorityRank() = 20
 
-    override suspend fun execute(event: ArriveEvent) {
+    override suspend fun complete(event: ArriveEvent) {
         directAI()
     }
 

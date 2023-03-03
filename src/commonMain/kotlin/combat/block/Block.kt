@@ -9,7 +9,7 @@ import traveling.location.location.Location
 
 class Block : EventListener<BlockEvent>() {
 
-    override suspend fun execute(event: BlockEvent) {
+    override suspend fun complete(event: BlockEvent) {
         val blockHelper = event.source.body.blockHelper
         blockHelper.blockBodyPart = event.partThatWillShield
         blockHelper.blockedBodyParts.addAll(getBlockedParts(event))

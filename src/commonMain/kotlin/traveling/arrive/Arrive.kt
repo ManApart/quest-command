@@ -11,7 +11,7 @@ class Arrive : EventListener<ArriveEvent>() {
 
     override fun getPriorityRank() = 10
 
-    override suspend fun execute(event: ArriveEvent) {
+    override suspend fun complete(event: ArriveEvent) {
         with(event) {
             if (origin != destination) {
                 val player = creature

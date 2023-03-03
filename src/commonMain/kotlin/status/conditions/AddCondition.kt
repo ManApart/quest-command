@@ -8,7 +8,7 @@ class AddCondition : EventListener<AddConditionEvent>() {
         return true
     }
 
-    override suspend fun execute(event: AddConditionEvent) {
+    override suspend fun complete(event: AddConditionEvent) {
         event.thing.soul.addNewCondition(event.condition)
         if (!event.silent) {
             event.thing.display("${event.thing.name} is now ${event.condition.name}")

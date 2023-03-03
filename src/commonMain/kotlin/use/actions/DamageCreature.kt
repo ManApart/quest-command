@@ -12,7 +12,7 @@ class DamageCreature : EventListener<UseEvent>() {
         return event.used.properties.tags.has("Weapon") && event.usedOn.soul.hasStat(HEALTH)
     }
 
-    override suspend fun execute(event: UseEvent) {
+    override suspend fun complete(event: UseEvent) {
         EventManager.postEvent(StatChangeEvent(event.usedOn, event.used.name, "Health", -event.used.getDamage()))
         event.source.addSoundEffect("Pain", "a sharp intake of breath")
     }

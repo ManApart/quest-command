@@ -6,7 +6,7 @@ import core.utility.asSubject
 import core.utility.ifYouWord
 
 class DoNothing : EventListener<NothingEvent>() {
-    override suspend fun execute(event: NothingEvent) {
+    override suspend fun complete(event: NothingEvent) {
         with(event) {
             source.display { "${source.asSubject(it)} ${source.ifYouWord(it, "do", "does")} nothing." }
         }

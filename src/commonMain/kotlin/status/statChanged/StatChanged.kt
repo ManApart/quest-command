@@ -14,7 +14,7 @@ class StatChanged : EventListener<StatChangeEvent>() {
         return event.amount != 0
     }
 
-    override suspend fun execute(event: StatChangeEvent) {
+    override suspend fun complete(event: StatChangeEvent) {
         val change = (event.amount > 0).then("increases", "decreases")
         val soul = event.thing.soul
 

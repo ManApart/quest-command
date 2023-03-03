@@ -9,7 +9,7 @@ import traveling.scope.spawn.ItemSpawnedEvent
 import traveling.scope.spawn.SpawnItemEvent
 
 class ItemSpawner : EventListener<SpawnItemEvent>() {
-    override suspend fun execute(event: SpawnItemEvent) {
+    override suspend fun complete(event: SpawnItemEvent) {
         if (ItemManager.itemExists(event.itemName)) {
             val item = ItemManager.getItem(event.itemName)
             item.properties.values.put(COUNT, event.count)

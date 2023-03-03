@@ -8,7 +8,7 @@ class LevelUp : EventListener<LevelUpEvent>() {
         return event.source.isPlayer()
     }
 
-    override suspend fun execute(event: LevelUpEvent) {
+    override suspend fun complete(event: LevelUpEvent) {
         event.source.displayToMe("${event.leveledStat.name} leveled up to ${event.level}.")
     }
 }

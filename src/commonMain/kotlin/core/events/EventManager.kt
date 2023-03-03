@@ -58,7 +58,7 @@ object EventManager {
 
         (specificEvents + genericEventListeners)
             .sortedBy { it.getPriorityRank() }
-            .forEach { it.execute(event) }
+            .forEach { it.complete(event) }
     }
 
 }

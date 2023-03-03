@@ -27,7 +27,7 @@ class EventManagerTest {
             return priorityLevel
         }
 
-        override suspend fun execute(event: TestEvent) {
+        override suspend fun complete(event: TestEvent) {
             parent.resultList.add(id)
         }
 

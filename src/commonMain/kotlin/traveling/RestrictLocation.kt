@@ -5,7 +5,7 @@ import core.history.display
 
 class RestrictLocation : EventListener<RestrictLocationEvent>() {
 
-    override suspend fun execute(event: RestrictLocationEvent) {
+    override suspend fun complete(event: RestrictLocationEvent) {
         event.source.getConnection(event.destination)?.restricted = event.makeRestricted
         event.destination.getConnection(event.source)?.restricted = event.makeRestricted
 

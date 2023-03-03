@@ -10,7 +10,7 @@ import explore.listen.addSoundEffect
 import traveling.position.Vector
 
 class PlaceItem : EventListener<PlaceItemEvent>() {
-    override suspend fun execute(event: PlaceItemEvent) {
+    override suspend fun complete(event: PlaceItemEvent) {
         if (event.source.canReach(event.position)) {
             placeItem(event.source, event.item, event.position, event.silent)
         } else {

@@ -12,7 +12,7 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
         return event.creature.isPlayer()
     }
 
-    override suspend fun execute(event: ClimbCompleteEvent) {
+    override suspend fun complete(event: ClimbCompleteEvent) {
         event.climbThing.consume(event)
         val climbBackOff = event.destination.location == event.origin.location
 

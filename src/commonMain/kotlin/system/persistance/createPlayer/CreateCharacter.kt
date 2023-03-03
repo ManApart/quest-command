@@ -9,7 +9,7 @@ import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationPoint
 
 class CreateCharacter : EventListener<CreateCharacterEvent>() {
-    override suspend fun execute(event: CreateCharacterEvent) {
+    override suspend fun complete(event: CreateCharacterEvent) {
         val player = GameManager.newPlayer(event.characterName)
         GameManager.giveStartingItems(player.thing)
         EventManager.postEvent(ArriveEvent(player.thing, destination = LocationPoint(player.thing.location), method = "wake"))

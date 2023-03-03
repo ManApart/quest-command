@@ -48,7 +48,7 @@ class TakeItemTest {
             val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
             location.addThing(item)
 
-            TakeItem().execute(TakeItemEvent(creature, item))
+            TakeItem().complete(TakeItemEvent(creature, item))
             assertNotNull(creature.inventory.getItem(item.name))
             assertTrue(location.getThings(item.name).isEmpty())
         }
@@ -62,7 +62,7 @@ class TakeItemTest {
             val item = Thing("Apple")
             location.addThing(item)
 
-            TakeItem().execute(TakeItemEvent(creature, item))
+            TakeItem().complete(TakeItemEvent(creature, item))
             assertNull(creature.inventory.getItem(item.name))
             assertTrue(location.getThings(item.name).isNotEmpty())
         }
@@ -76,7 +76,7 @@ class TakeItemTest {
             val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
             location.addThing(item)
 
-            TakeItem().execute(TakeItemEvent(creature, item))
+            TakeItem().complete(TakeItemEvent(creature, item))
             val inInventory = creature.inventory.getItem(item.name)
             val inLocation = location.getItems(item.name).firstOrNull()
 
