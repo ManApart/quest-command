@@ -15,6 +15,10 @@ class ConditionalAI : AI() {
     var goal: Goal? = null
         private set
 
+    override fun toString(): String {
+        return "Conditional AI for ${creature.name}"
+    }
+
     override suspend fun takeAction() {
         if (goal == null) {
             goal = determineGoal()

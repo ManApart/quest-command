@@ -45,8 +45,13 @@ object EventManager {
         return eventQueue.toList()
     }
 
-    @Suppress("UNCHECKED_CAST")
     private suspend fun <E : Event> executeEvent(event: E) {
+        getListeners(event)
+            .forEach { it.complete(event) }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private suspend fun <E: Event> getListeners(event: E): List<EventListener<Event>>{
         val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.simpleName]?.filter { (it as EventListener<E>).shouldExecute(event) }
             ?.map {
                 it
@@ -56,9 +61,8 @@ object EventManager {
                 (it as EventListener<Event>)
             } ?: emptyList())
 
-        (specificEvents + genericEventListeners)
+        return (specificEvents + genericEventListeners)
             .sortedBy { it.getPriorityRank() }
-            .forEach { it.complete(event) }
     }
 
 }
