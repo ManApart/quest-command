@@ -24,7 +24,7 @@ suspend fun describeBattle(source: Player) {
 }
 
 private fun status(thing: Thing): String {
-    val actionName = thing.mind.ai.action?.let { it::class.simpleName } ?: "None"
+    val actionName = thing.mind.ai.actions.firstOrNull()?.let { it::class.simpleName } ?: "None"
     return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, $actionName."
 }
 

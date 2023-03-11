@@ -47,7 +47,7 @@ object EventManager {
 
     private suspend fun <E : Event> startEvent(event: E) {
         if (event is TemporalEvent && event.gameTicks() > 0) {
-            event.source.mind.ai.action = event
+            event.source.mind.ai.actions.add(event)
             eventsInProgress.add(event)
         }
         if (event.gameTicks() == 0) completeEvent(event)
@@ -73,7 +73,7 @@ object EventManager {
     }
 
     private suspend fun <E : Event> completeEvent(event: E) {
-        if (event is TemporalEvent && event.source.mind.ai.action == event) event.source.mind.ai.action = null
+        if (event is TemporalEvent) event.source.mind.ai.actions.remove(event)
         getListeners(event)
             .forEach { it.complete(event) }
     }

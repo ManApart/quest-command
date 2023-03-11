@@ -6,8 +6,7 @@ import status.stat.AGILITY
 import traveling.position.Vector
 import kotlin.math.max
 
-class MoveEvent(val creature: Thing, val sourcePosition: Vector = creature.position, val destination: Vector, val staminaScalar: Float = 1f, val silent: Boolean = false, override var timeLeft: Int = 1) : TemporalEvent {
-    override val source: Thing = creature
+class MoveEvent(override val source: Thing, val sourcePosition: Vector = source.position, val destination: Vector, val staminaScalar: Float = 1f, val silent: Boolean = false, override var timeLeft: Int = 1) : TemporalEvent {
     override fun gameTicks(): Int {
         return 1
     }

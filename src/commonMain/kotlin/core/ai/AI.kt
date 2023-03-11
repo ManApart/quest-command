@@ -9,8 +9,7 @@ abstract class AI {
     abstract suspend fun hear(event: DialogueEvent)
     abstract suspend fun takeAction()
 
-    //TODO timing actions as list
-    var action: Event? = null
+    val actions = mutableListOf<Event>()
 
     suspend fun chooseAction() {
         if (!creature.isPlayer()) {

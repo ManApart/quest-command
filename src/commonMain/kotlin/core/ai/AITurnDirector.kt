@@ -10,7 +10,7 @@ import time.gameTick.GameTickEvent
 suspend fun directAI() {
     val creatures = GameState.players.values.flatMap { it.thing.location.getLocation().getCreatures(it.thing) }.toSet()
 
-    creatures.map { it.mind.ai }.filter { it.action == null }.forEach {
+    creatures.map { it.mind.ai }.filter { it.actions.isEmpty() }.forEach {
         it.creature.body.blockHelper.resetStance()
         it.chooseAction()
     }

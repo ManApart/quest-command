@@ -33,25 +33,25 @@ class Move : EventListener<MoveEvent>() {
         val desiredDistance = event.sourcePosition.getDistance(event.destination)
         val actualDistance = getActualDistanceMoved(event, desiredDistance)
         val attainableDestination = event.sourcePosition.getVectorInDirection(event.destination, actualDistance)
-        val connection = getMovedToConnection(event.creature.location, event.creature.position, attainableDestination)
+        val connection = getMovedToConnection(event.source.location, event.source.position, attainableDestination)
         val movedToNeighbor = connection?.destination
-        val actualDestination = event.creature.position.getNearest(attainableDestination, connection?.source?.vector ?: attainableDestination)
-        val vector = actualDestination - event.creature.position
-        val stamina = event.creature.soul.getCurrent(STAMINA)
+        val actualDestination = event.source.position.getNearest(attainableDestination, connection?.source?.vector ?: attainableDestination)
+        val vector = actualDestination - event.source.position
+        val stamina = event.source.soul.getCurrent(STAMINA)
         val staminaRequired = vector.getDistance() / 10
-        val boundedDestination = event.creature.currentLocation().bounds.trim(attainableDestination)
+        val boundedDestination = event.source.currentLocation().bounds.trim(attainableDestination)
 
         when {
-            actualDestination.z > 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air." }
-            stamina == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} too tired to move." }
-            movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, staminaRequired, event.silent)
-            event.creature.position == boundedDestination -> event.creature.displayToMe("You cannot move that far in that direction.")
+            actualDestination.z > 0 -> event.source.display { "${event.source.asSubject(it)} ${event.source.isAre(it)} unable to move into the air." }
+            stamina == 0 -> event.source.display { "${event.source.asSubject(it)} ${event.source.isAre(it)} too tired to move." }
+            movedToNeighbor != null -> postArriveEvent(event.source, movedToNeighbor, staminaRequired, event.silent)
+            event.source.position == boundedDestination -> event.source.displayToMe("You cannot move that far in that direction.")
             else -> move(event, desiredDistance, actualDistance, boundedDestination)
         }
     }
 
     private fun getActualDistanceMoved(event: MoveEvent, desiredDistance: Int): Int {
-        val abilityToMove = event.creature.getMaxPossibleMovement(event.staminaScalar)
+        val abilityToMove = event.source.getMaxPossibleMovement(event.staminaScalar)
         return if (event.staminaScalar != 0f) {
             min(abilityToMove, desiredDistance)
         } else {
@@ -71,31 +71,31 @@ class Move : EventListener<MoveEvent>() {
     }
 
     private suspend fun move(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
-        event.creature.position = actualDestination
+        event.source.position = actualDestination
         //TODO - make materially based description + possibly sound level?
-        val soundLevel = (max(10, (event.creature.getEncumbrance() * 100).toInt()) - event.creature.soul.getCurrent(SNEAK)).clamp(0, 20)
-        event.creature.addSoundEffect("Moving", "the sound of footfalls", soundLevel)
+        val soundLevel = (max(10, (event.source.getEncumbrance() * 100).toInt()) - event.source.soul.getCurrent(SNEAK)).clamp(0, 20)
+        event.source.addSoundEffect("Moving", "the sound of footfalls", soundLevel)
         displayMovement(event, desiredDistance, actualDistance, actualDestination)
         if (event.staminaScalar != 0f) {
-            EventManager.postEvent(StatChangeEvent(event.creature, "moving", STAMINA, -getStaminaCost(actualDistance, event.staminaScalar), true))
+            EventManager.postEvent(StatChangeEvent(event.source, "moving", STAMINA, -getStaminaCost(actualDistance, event.staminaScalar), true))
         }
     }
 
     private suspend fun displayMovement(event: MoveEvent, desiredDistance: Int, actualDistance: Int, actualDestination: Vector) {
         if (!event.silent) {
-            val location = event.creature.location.getLocation()
-            val things = location.getThings(event.creature).filter { it != event.creature }
+            val location = event.source.location.getLocation()
+            val things = location.getThings(event.source).filter { it != event.source }
             val destinationThing = things.firstOrNull { it.position == actualDestination }
             val startThing = things.firstOrNull { it.position == event.sourcePosition }
             val destinationString = destinationThing?.getDisplayName() ?: actualDestination.toString()
             val startString = startThing?.getDisplayName() ?: event.sourcePosition.toString()
 
-            val youMove = event.creature.isPlayer().then("move", "moves")
+            val youMove = event.source.isPlayer().then("move", "moves")
 
             if (desiredDistance == actualDistance) {
-                event.creature.display { "${event.creature.asSubject(it)} $youMove from $startString to $destinationString." }
+                event.source.display { "${event.source.asSubject(it)} $youMove from $startString to $destinationString." }
             } else {
-                event.creature.display { "${event.creature.asSubject(it)}  $youMove $actualDistance towards ${event.destination} and ${event.creature.isAre(it)} now at ${destinationString}." }
+                event.source.display { "${event.source.asSubject(it)}  $youMove $actualDistance towards ${event.destination} and ${event.source.isAre(it)} now at ${destinationString}." }
             }
         }
     }
