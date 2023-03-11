@@ -46,14 +46,18 @@ object EventManager {
     }
 
     private suspend fun <E : Event> startEvent(event: E) {
-        if (event is TemporalEvent && event.gameTicks() > 0) {
-            event.source.mind.ai.actions.add(event)
+        if (event is TemporalEvent && event.timeLeft > 0) {
+            event.creature.mind.ai.actions.add(event)
             eventsInProgress.add(event)
         }
-        if (event.gameTicks() == 0) completeEvent(event)
 
         getListeners(event)
             .forEach { it.start(event) }
+
+        if (event !is TemporalEvent || event.timeLeft == 0){
+            completeEvent(event)
+        }
+
     }
 
     suspend fun tick() {
@@ -73,7 +77,7 @@ object EventManager {
     }
 
     private suspend fun <E : Event> completeEvent(event: E) {
-        if (event is TemporalEvent) event.source.mind.ai.actions.remove(event)
+        if (event is TemporalEvent) event.creature.mind.ai.actions.remove(event)
         getListeners(event)
             .forEach { it.complete(event) }
     }

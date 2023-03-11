@@ -17,7 +17,7 @@ class UseOnFire : UseListener() {
     }
 
     override suspend fun executeUseEvent(event: UseEvent) {
-        event.source.display{"${event.source.asSubject(it)} place ${event.used.name} in the fire burning the ${event.usedOn.name}."}
+        event.creature.display{"${event.creature.asSubject(it)} place ${event.used.name} in the fire burning the ${event.usedOn.name}."}
         val condition = Condition("Burning", Element.FIRE, 1, effects = listOf(EffectManager.getEffect("Burning", 1, 1)))
         EventManager.postEvent(AddConditionEvent(event.used, condition))
     }

@@ -14,6 +14,6 @@ class DamageCreature : EventListener<UseEvent>() {
 
     override suspend fun complete(event: UseEvent) {
         EventManager.postEvent(StatChangeEvent(event.usedOn, event.used.name, "Health", -event.used.getDamage()))
-        event.source.addSoundEffect("Pain", "a sharp intake of breath")
+        event.creature.addSoundEffect("Pain", "a sharp intake of breath")
     }
 }

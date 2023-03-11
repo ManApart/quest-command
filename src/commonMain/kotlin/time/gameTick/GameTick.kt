@@ -6,9 +6,9 @@ import core.events.EventManager
 
 class GameTick : EventListener<Event>() {
     override suspend fun complete(event: Event) {
-        if (event.gameTicks() > 0) {
-            EventManager.postEvent(GameTickEvent(event.gameTicks()))
-        }
+//        if (event.gameTicks() > 0) {
+//            EventManager.postEvent(GameTickEvent(event.gameTicks()))
+//        }
     }
 
 }

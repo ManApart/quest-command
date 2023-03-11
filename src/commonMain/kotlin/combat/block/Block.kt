@@ -10,16 +10,16 @@ import traveling.location.location.Location
 class Block : EventListener<BlockEvent>() {
 
     override suspend fun complete(event: BlockEvent) {
-        val blockHelper = event.source.body.blockHelper
+        val blockHelper = event.creature.body.blockHelper
         blockHelper.blockBodyPart = event.partThatWillShield
         blockHelper.blockedBodyParts.addAll(getBlockedParts(event))
-        event.source.addSoundEffect("Block", "the tightening of straps and sinew", 1)
+        event.creature.addSoundEffect("Block", "the tightening of straps and sinew", 1)
     }
 
     private suspend fun getBlockedParts(event: BlockEvent): List<Location> {
         val shield = getShield(event.partThatWillShield)
         val shieldSize = shield?.properties?.values?.getInt("radius") ?: 0
-        val partLocation = event.source.body.layout.findLocation(event.partThatWillBeShielded.name)
+        val partLocation = event.creature.body.layout.findLocation(event.partThatWillBeShielded.name)
         val locations = listOf(partLocation) + partLocation.getNeighbors().filter { partLocation.getConnection(it)?.source?.vector?.getDistance() ?: 0 <= shieldSize }
 
         return locations.map { it.getLocation() }

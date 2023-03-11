@@ -11,9 +11,9 @@ class Interact : EventListener<InteractEvent>() {
     override suspend fun complete(event: InteractEvent) {
 
         when {
-            !event.interactionTarget.isWithinRangeOf(event.source) -> event.source.display { event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to interact with ${event.interactionTarget}." }
-            !event.source.canInteract() -> event.source.displayToMe("You can't interact with ${event.interactionTarget.name} right now.")
-            !event.interactionTarget.canConsume(event) -> event.source.displayToMe("${event.interactionTarget.name} doesn't seem to do anything interesting.")
+            !event.interactionTarget.isWithinRangeOf(event.creature) -> event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to interact with ${event.interactionTarget}." }
+            !event.creature.canInteract() -> event.creature.displayToMe("You can't interact with ${event.interactionTarget.name} right now.")
+            !event.interactionTarget.canConsume(event) -> event.creature.displayToMe("${event.interactionTarget.name} doesn't seem to do anything interesting.")
             else  -> {
                 event.interactionTarget.consume(event)
             }

@@ -8,7 +8,7 @@ import core.utility.ifYouWord
 class DoNothing : EventListener<NothingEvent>() {
     override suspend fun complete(event: NothingEvent) {
         with(event) {
-            source.display { "${source.asSubject(it)} ${source.ifYouWord(it, "do", "does")} nothing." }
+            creature.display { "${creature.asSubject(it)} ${creature.ifYouWord(it, "do", "does")} nothing." }
         }
     }
 }

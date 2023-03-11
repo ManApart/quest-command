@@ -8,10 +8,10 @@ import core.utility.isAre
 abstract class UseListener : EventListener<UseEvent>() {
 
     override suspend fun complete(event: UseEvent) {
-        if (!event.used.isWithinRangeOf(event.source)) {
-            event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.used.name}."}
-        } else if (!event.usedOn.isWithinRangeOf(event.source)) {
-            event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to use ${event.used.name} on ${event.usedOn.name}."}
+        if (!event.used.isWithinRangeOf(event.creature)) {
+            event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to use ${event.used.name}."}
+        } else if (!event.usedOn.isWithinRangeOf(event.creature)) {
+            event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to use ${event.used.name} on ${event.usedOn.name}."}
         } else {
             executeUseEvent(event)
         }

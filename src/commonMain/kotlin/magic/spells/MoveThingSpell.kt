@@ -22,7 +22,7 @@ class MoveThingSpell(
 ) : Spell(name, condition, cost, statRequired, levelRequired, range, castTime, isHostile) {
 
     override fun cast(event: CastSpellEvent) {
-        EventManager.postEvent(StatChangeEvent(event.source, "Casting", FOCUS, -event.spell.cost))
+        EventManager.postEvent(StatChangeEvent(event.creature, "Casting", FOCUS, -event.spell.cost))
         EventManager.postEvent(AddConditionEvent(event.thing.thing, event.spell.condition))
         EventManager.postEvent(MoveEvent(event.thing.thing, event.thing.thing.position, vector, 0f))
     }

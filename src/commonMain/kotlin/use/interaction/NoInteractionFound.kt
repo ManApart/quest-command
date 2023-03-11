@@ -17,10 +17,10 @@ class NoInteractionFound : EventListener<InteractEvent>() {
     }
 
     override suspend fun complete(event: InteractEvent) {
-        if (event.source.canInteract()) {
-            event.source.displayToMe("You don't seem to be able to do anything interesting with ${event.interactionTarget.name}.")
+        if (event.creature.canInteract()) {
+            event.creature.displayToMe("You don't seem to be able to do anything interesting with ${event.interactionTarget.name}.")
         } else {
-            event.source.displayToMe("You can't interact with ${event.interactionTarget.name} right now.")
+            event.creature.displayToMe("You can't interact with ${event.interactionTarget.name} right now.")
         }
     }
 }

@@ -13,11 +13,11 @@ import inventory.pickupItem.ItemPickedUpEvent
 class TransferItem : EventListener<TransferItemEvent>() {
 
     override suspend fun complete(event: TransferItemEvent) {
-        val isTaking = event.mover == event.destination
-        val isPlacing = event.mover == event.source
+        val isTaking = event.creature == event.destination
+        val isPlacing = event.creature == event.source
         when {
-            isPlacing && !event.destination.isWithinRangeOf(event.mover) -> event.source.display{event.mover.asSubject(it) + " " + event.mover.isAre(it) + " too far away to place in ${event.destination.name}."}
-            isTaking && !event.source.isWithinRangeOf(event.mover) -> event.source.display{event.mover.asSubject(it) + " " + event.mover.isAre(it) + " too far away to take from ${event.source.name}."}
+            isPlacing && !event.destination.isWithinRangeOf(event.creature) -> event.source.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to place in ${event.destination.name}."}
+            isTaking && !event.source.isWithinRangeOf(event.creature) -> event.source.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to take from ${event.source.name}."}
             !isOpen(event.source) -> event.source.displayToMe("Can't take ${event.item.name} from ${event.source.name} because it's not an open container.")
             !isOpen(event.destination) -> event.source.displayToMe("Can't place ${event.item.name} in ${event.destination.name} because it's not an open container.")
             else -> moveItemFromSourceToDest(event.source, event.item, event.destination, event.silent)

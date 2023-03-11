@@ -13,13 +13,13 @@ import use.UseListener
 class StartFire : UseListener() {
 
     override suspend fun shouldExecute(event: UseEvent): Boolean {
-        return event.source.canInteract()
+        return event.creature.canInteract()
                 && event.used.properties.tags.has("Fire Starter")
                 && event.usedOn.properties.tags.has("Flammable")
     }
 
     override suspend fun executeUseEvent(event: UseEvent) {
-        event.source.display("${event.usedOn.name} catches on fire.")
+        event.creature.display("${event.usedOn.name} catches on fire.")
         val litLevel = event.usedOn.properties.values.getInt(LIT_LIGHT, 1)
         val condition = Condition("Burning", Element.FIRE, 1, listOf(
                 EffectManager.getEffect("Burning", 1, 5),

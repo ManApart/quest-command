@@ -48,7 +48,7 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Climbable", InteractEvent::class) {
             events { event, _ ->
-                listOfNotNull(eventWithPlayer(event.source) { CommandEvent(it, "climb ${event.interactionTarget.name}") })
+                listOfNotNull(eventWithPlayer(event.creature) { CommandEvent(it, "climb ${event.interactionTarget.name}") })
             }
         }
 
@@ -85,7 +85,7 @@ class CommonBehaviors : BehaviorResource {
             }
             events { event, params ->
                 listOfNotNull(
-                    eventWithPlayer(event.source) { MessageEvent(it, params["message"] ?: "You harvest ${event.usedOn} with ${event.used}.") },
+                    eventWithPlayer(event.creature) { MessageEvent(it, params["message"] ?: "You harvest ${event.usedOn} with ${event.used}.") },
                     SpawnItemEvent(params["itemName"] ?: "Apple", params["count"]?.toInt() ?: 1, thingLocation = event.usedOn.location, positionParent = event.usedOn)
                 )
             }
@@ -93,7 +93,7 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Restrict Destination", InteractEvent::class) {
             events { event, params ->
-                val source = event.source
+                val source = event.creature
                 val sourceLocation = parseLocation(params, source, "sourceNetwork", "sourceLocation")
                 val destinationLocation = parseLocation(params, source, "destinationNetwork", "destinationLocation")
                 val makeRestricted = false
@@ -110,8 +110,8 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val hoursRested = params["hoursRested"]?.toIntOrNull() ?: 10
                 listOfNotNull(
-                    eventWithPlayer(event.source) { MessageEvent(it, "You rest for $hoursRested hours.") },
-                    RestEvent(event.source, hoursRested)
+                    eventWithPlayer(event.creature) { MessageEvent(it, "You rest for $hoursRested hours.") },
+                    RestEvent(event.creature, hoursRested)
                 )
             }
         }
@@ -140,16 +140,16 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Learn Recipe", InteractEvent::class) {
             events { event, params ->
-                val sourceItem = event.source.inventory.getItem(params["sourceItem"])
+                val sourceItem = event.creature.inventory.getItem(params["sourceItem"])
                 val recipe = RecipeManager.getRecipeOrNull(params["recipe"] ?: "")
                 when {
                     recipe == null -> listOf()
-                    !event.source.isPlayer() -> listOf()
-                    sourceItem == null -> listOfNotNull(eventWithPlayer(event.source) { DiscoverRecipeEvent(it, recipe) })
+                    !event.creature.isPlayer() -> listOf()
+                    sourceItem == null -> listOfNotNull(eventWithPlayer(event.creature) { DiscoverRecipeEvent(it, recipe) })
                     else -> listOfNotNull(
-                        RemoveItemEvent(event.source, sourceItem),
+                        RemoveItemEvent(event.creature, sourceItem),
                         RemoveScopeEvent(sourceItem),
-                        eventWithPlayer(event.source) { DiscoverRecipeEvent(it, recipe) }
+                        eventWithPlayer(event.creature) { DiscoverRecipeEvent(it, recipe) }
                     )
                 }
             }

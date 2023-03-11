@@ -12,6 +12,6 @@ class ScratchSurface : UseListener() {
     }
 
     override suspend fun executeUseEvent(event: UseEvent) {
-        event.source.display("The ${event.used.name} scratches ${event.usedOn.name} but does no discernible harm.")
+        event.creature.display("The ${event.used.name} scratches ${event.usedOn.name} but does no discernible harm.")
     }
 }

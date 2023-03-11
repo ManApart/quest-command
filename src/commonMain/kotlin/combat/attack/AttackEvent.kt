@@ -9,10 +9,7 @@ import traveling.position.ThingAim
 import kotlin.math.max
 
 
-class AttackEvent(override val source: Thing, val sourcePart: Location, val aim: ThingAim, val type: DamageType, override var timeLeft: Int = 0) : TemporalEvent {
-    //TODO - delete
-    override fun gameTicks(): Int = 1
-}
+class AttackEvent(override val creature: Thing, val sourcePart: Location, val aim: ThingAim, val type: DamageType, override var timeLeft: Int = 1) : TemporalEvent
 
 suspend fun startAttack(source: Thing, sourcePart: Location, thing: ThingAim, type: DamageType, timeLeft: Int? = null): AttackEvent {
     return AttackEvent(source, sourcePart, thing, type, timeLeft ?: calcTimeLeft(source, sourcePart))

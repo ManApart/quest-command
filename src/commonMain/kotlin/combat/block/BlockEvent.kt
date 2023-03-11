@@ -7,17 +7,14 @@ import traveling.location.location.Location
 import kotlin.math.max
 
 
-class BlockEvent(override val source: Thing, val partThatWillShield: Location, val partThatWillBeShielded: Location, override var timeLeft: Int) : TemporalEvent {
-    override fun gameTicks(): Int {
-        return if (source.isPlayer()) {
-            1
-        } else {
-            0
-        }
-    }
-}
+class BlockEvent(
+    override val creature: Thing,
+    val partThatWillShield: Location,
+    val partThatWillBeShielded: Location,
+    override var timeLeft: Int = if (creature.isPlayer()) 1 else 0
+) : TemporalEvent
 
-suspend fun startBlockEvent(source: Thing, partThatWillShield: Location, partThatWillBeShielded: Location,timeLeft: Int? = null): BlockEvent{
+suspend fun startBlockEvent(source: Thing, partThatWillShield: Location, partThatWillBeShielded: Location, timeLeft: Int? = null): BlockEvent {
     return BlockEvent(source, partThatWillShield, partThatWillBeShielded, timeLeft ?: calcTimeLeft(source))
 }
 

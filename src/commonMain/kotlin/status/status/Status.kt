@@ -18,19 +18,19 @@ class Status : EventListener<StatusEvent>() {
         printImportantStats(event)
         printOtherStats(event)
         printOtherConditions(event)
-        event.source.displayToOthers("${event.source.name} examines ${event.creature.name}'s stats.")
+        event.source.displayToOthers("${event.source.name} examines ${event.examined.name}'s stats.")
     }
 
     private suspend fun printImportantStats(event: StatusEvent) {
-        val soul = event.creature.soul
+        val soul = event.examined.soul
         if (soul.hasStat(HEALTH) || soul.hasStat(STAMINA) || soul.hasStat(FOCUS)) {
             val youHave =
-                (event.creature == event.source.thing).then("You (${event.creature.name}) have", "${event.creature.name} has")
-            val youAre = (event.creature == event.source.thing).then("You are", "${event.creature.name} is")
-            val encumbrancePercent = (event.creature.getEncumbrance() * 100).toInt()
-            val additionalEncumbrancePercent = event.creature.properties.values.getInt(ENCUMBRANCE, 0)
+                (event.examined == event.source.thing).then("You (${event.examined.name}) have", "${event.examined.name} has")
+            val youAre = (event.examined == event.source.thing).then("You are", "${event.examined.name} is")
+            val encumbrancePercent = (event.examined.getEncumbrance() * 100).toInt()
+            val additionalEncumbrancePercent = event.examined.properties.values.getInt(ENCUMBRANCE, 0)
             val encumberedStats =
-                "${event.creature.inventory.getWeight()}/${event.creature.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
+                "${event.examined.inventory.getWeight()}/${event.examined.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
             event.source.displayToMe(
                 "$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${
                     soul.getCurrent(
@@ -42,7 +42,7 @@ class Status : EventListener<StatusEvent>() {
     }
 
     private suspend fun printOtherStats(event: StatusEvent) {
-        val soul = event.creature.soul
+        val soul = event.examined.soul
 
         val statString = soul.getStats().asSequence()
             .filter {
@@ -53,22 +53,22 @@ class Status : EventListener<StatusEvent>() {
             .joinToString("\n\t") {
                 "${it.name.capitalize2()}: ${it.current}/${it.max} (${it.xp.toInt()}/${it.getNextLevelXP().toInt()}xp)"
             }
-        event.creature.display {
-            val subject = event.creature.asSubjectPossessive(it)
+        event.examined.display {
+            val subject = event.examined.asSubjectPossessive(it)
             "$subject stats:\n\t$statString"
         }
     }
 
     private suspend fun printOtherConditions(event: StatusEvent) {
-        val soul = event.creature.soul
+        val soul = event.examined.soul
 
         val conditionString = soul.getConditions().joinToString("\n\t") { condition ->
             "${condition.name} (age: ${condition.age}}):\n\t\t" + condition.getEffects().joinToString("\n\t\t")
         }
 
         if (soul.getConditions().isNotEmpty()) {
-            event.creature.display {
-                val subject = event.creature.asSubjectPossessive(it)
+            event.examined.display {
+                val subject = event.examined.asSubjectPossessive(it)
                 "$subject current conditions:\n\t$conditionString"
             }
         }

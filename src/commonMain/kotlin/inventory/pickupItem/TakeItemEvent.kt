@@ -1,15 +1,11 @@
 package inventory.pickupItem
 
-import core.events.Event
+import core.events.TemporalEvent
 import core.thing.Thing
 
-class TakeItemEvent(val taker: Thing, val item: Thing, val silent: Boolean = false) : Event {
-
-    override fun gameTicks(): Int {
-        return if (taker.isPlayer()) {
-            1
-        } else {
-            0
-        }
-    }
-}
+class TakeItemEvent(
+    override val creature: Thing,
+    val item: Thing,
+    val silent: Boolean = false,
+    override var timeLeft: Int = if(creature.isPlayer()) 1 else 0
+) : TemporalEvent

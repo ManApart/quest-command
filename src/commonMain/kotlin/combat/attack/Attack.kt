@@ -21,7 +21,7 @@ import use.UseEvent
 class Attack : EventListener<AttackEvent>() {
 
     override suspend fun complete(event: AttackEvent) {
-        val source = event.source
+        val source = event.creature
         val thingDistance = source.position.getDistance(event.aim.thing.position)
         val weaponRange = getRange(source, event.sourcePart)
         val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
@@ -29,27 +29,27 @@ class Attack : EventListener<AttackEvent>() {
             val offensiveDamage = getOffensiveDamage(source, event.sourcePart, event.type)
 
             when {
-                weaponRange < thingDistance -> event.source.displayToMe("${event.aim} is too far away to be hit by $damageSource.")
+                weaponRange < thingDistance -> event.creature.displayToMe("${event.aim} is too far away to be hit by $damageSource.")
                 offensiveDamage > 0 -> processAttack(event, damageSource, offensiveDamage)
                 event.sourcePart.getEquippedWeapon() != null -> EventManager.postEvent(
                     UseEvent(
-                        event.source,
+                        event.creature,
                         event.sourcePart.getEquippedWeapon()!!,
                         event.aim.thing
                     )
                 )
-                else -> event.source.displayToMe("Nothing happens.")
+                else -> event.creature.displayToMe("Nothing happens.")
             }
         } else {
             when {
-                weaponRange < thingDistance -> event.source.displayToMe("${event.aim} is too far away for $damageSource to be used on it.")
+                weaponRange < thingDistance -> event.creature.displayToMe("${event.aim} is too far away for $damageSource to be used on it.")
                 else -> event.aim.thing.consume(event)
             }
         }
     }
 
     private suspend fun processAttack(event: AttackEvent, damageSource: String, offensiveDamage: Int) {
-        val source = event.source
+        val source = event.creature
         val attackedParts = getAttackedParts(source, event.sourcePart, event.aim)
         if (source != event.aim.thing) {
             source.mind.setAggroTarget(event.aim.thing)
@@ -62,7 +62,7 @@ class Attack : EventListener<AttackEvent>() {
                 "$subject ${source.isPlayer().then("miss", "misses")} $missedParts!"
             }
         } else {
-            val verb = event.source.isPlayer().then(event.type.verbPlural, event.type.verb)
+            val verb = event.creature.isPlayer().then(event.type.verbPlural, event.type.verb)
 //            display("$subject $verb at $defenderName.")
             attackedParts.forEach { attackedPart ->
                 processAttackHit(
@@ -80,7 +80,7 @@ class Attack : EventListener<AttackEvent>() {
 
     private fun processSound(event: AttackEvent, attackedParts: List<Location>) {
         val soundLevel = if (attackedParts.isEmpty()) 10 else 30
-        event.source.addSoundEffect("Attacking", "the din of battle", soundLevel)
+        event.creature.addSoundEffect("Attacking", "the din of battle", soundLevel)
     }
 
     private fun getAttackedParts(source: Thing, sourcePart: Location, thing: ThingAim): List<Location> {
@@ -107,10 +107,10 @@ class Attack : EventListener<AttackEvent>() {
         defender: ThingAim,
         offensiveDamage: Int
     ) {
-        event.source.display { listener ->
-            val subject = event.source.asSubject(listener)
+        event.creature.display { listener ->
+            val subject = event.creature.asSubject(listener)
             val defenderName = event.aim.thing.asSubject(listener)
-            val possessive = event.source.asSubjectPossessive(listener)
+            val possessive = event.creature.asSubjectPossessive(listener)
             "$subject $verb the ${attackedPart.name} of $defenderName with $possessive $damageSource."
         }
         EventManager.postEvent(

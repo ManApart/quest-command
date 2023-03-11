@@ -1,10 +1,6 @@
 package inventory.unEquipItem
 
-import core.events.Event
+import core.events.TemporalEvent
 import core.thing.Thing
 
-class UnEquipItemEvent(val creature: Thing, val item: Thing) : Event {
-    override fun gameTicks(): Int {
-        return 1
-    }
-}
+class UnEquipItemEvent(override val creature: Thing, val item: Thing, override var timeLeft: Int = 1) : TemporalEvent

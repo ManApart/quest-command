@@ -7,7 +7,7 @@ import use.eat.EatFoodEvent
 
 class UseFoodItem : UseListener() {
     override suspend fun shouldExecute(event: UseEvent): Boolean {
-        return event.source.canInteract()
+        return event.creature.canInteract()
                 && event.used.properties.tags.has("Food")
                 && event.usedOn.properties.tags.has("Creature")
     }

@@ -13,7 +13,6 @@ import core.thing.Thing
 import core.utility.RandomManager
 import status.rest.RestEvent
 import traveling.location.network.LocationNode
-import traveling.move.MoveEvent
 import traveling.move.startMoveEvent
 import traveling.position.ThingAim
 import traveling.routes.FindRouteEvent

@@ -71,21 +71,21 @@ class Tutorial : StoryEventResource {
         StoryEvent("Tutorial", 80, "I should read the recipe for Apple Pie by typing 'read recipe'.",
             ConditionalEvents(MoveEvent::class,
                 { event, _ ->
-                    if (event.source.location.name == "Farmer's Hut Interior") {
-                        val recipe = event.source.location.getLocation().getItems("Apple Pie Recipe").firstOrNull()
-                        (recipe != null && event.source.canReach(recipe.position))
+                    if (event.creature.location.name == "Farmer's Hut Interior") {
+                        val recipe = event.creature.location.getLocation().getItems("Apple Pie Recipe").firstOrNull()
+                        (recipe != null && event.creature.canReach(recipe.position))
                     } else {
                         false
                     }
                 },
-                { event, _ -> listOfNotNull(eventWithPlayer(event.source) { MessageEvent(it, "I should read the recipe for Apple Pie by typing 'read recipe'.") }) }
+                { event, _ -> listOfNotNull(eventWithPlayer(event.creature) { MessageEvent(it, "I should read the recipe for Apple Pie by typing 'read recipe'.") }) }
             )
         ),
 
         StoryEvent("Tutorial", 90, "I should travel to Barren Field.",
             ConditionalEvents(InteractEvent::class,
-                { event, _ -> event.source.isPlayer() && event.interactionTarget.name == "Apple Pie Recipe" },
-                { event, _ -> listOfNotNull(eventWithPlayer(event.source) { MessageEvent(it, "Once I'm done here I should travel to Barren Field.") }) }
+                { event, _ -> event.creature.isPlayer() && event.interactionTarget.name == "Apple Pie Recipe" },
+                { event, _ -> listOfNotNull(eventWithPlayer(event.creature) { MessageEvent(it, "Once I'm done here I should travel to Barren Field.") }) }
             )
         ),
 

@@ -1,11 +1,8 @@
 package status.rest
 
-import core.events.Event
+import core.events.TemporalEvent
 import core.thing.Thing
 import time.TimeManager
 
-class RestEvent(val creature: Thing, val hoursRested: Int) : Event {
-    override fun gameTicks(): Int {
-        return hoursRested * TimeManager.ticksInHour
-    }
+class RestEvent(override val creature: Thing, val hoursRested: Int, override var timeLeft: Int = hoursRested * TimeManager.ticksInHour) : TemporalEvent {
 }

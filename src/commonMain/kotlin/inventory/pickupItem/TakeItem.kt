@@ -10,10 +10,10 @@ import core.utility.isAre
 
 class TakeItem : EventListener<TakeItemEvent>() {
     override suspend fun complete(event: TakeItemEvent) {
-        if (event.taker.canReach(event.item.position)) {
-            takeItem(event.taker, event.item, event.silent)
+        if (event.creature.canReach(event.item.position)) {
+            takeItem(event.creature, event.item, event.silent)
         } else {
-            event.taker.display{event.taker.asSubject(it) + " " + event.taker.isAre(it) + " too far away to take ${event.item}."}
+            event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to take ${event.item}."}
         }
     }
 

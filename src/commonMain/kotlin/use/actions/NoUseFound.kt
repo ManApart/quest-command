@@ -21,16 +21,16 @@ class NoUseFound : UseListener() {
     }
 
     override suspend fun executeUseEvent(event: UseEvent) {
-        if (event.source.canInteract()) {
-            if (!event.usedOn.isWithinRangeOf(event.source)) {
-                event.source.display{event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to interact with ${event.usedOn}."}
+        if (event.creature.canInteract()) {
+            if (!event.usedOn.isWithinRangeOf(event.creature)) {
+                event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to interact with ${event.usedOn}."}
             } else if (event.usedOn.canConsume(event)) {
                 event.usedOn.consume(event)
             } else {
-                event.source.display{"${event.source.asSubject(it)} use ${event.used.name} on ${event.usedOn.name} but nothing happens."}
+                event.creature.display{"${event.creature.asSubject(it)} use ${event.used.name} on ${event.usedOn.name} but nothing happens."}
             }
         } else {
-            event.source.displayToMe("You can't interact with that right now.")
+            event.creature.displayToMe("You can't interact with that right now.")
         }
     }
 }

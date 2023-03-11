@@ -11,10 +11,10 @@ import traveling.position.Vector
 
 class PlaceItem : EventListener<PlaceItemEvent>() {
     override suspend fun complete(event: PlaceItemEvent) {
-        if (event.source.canReach(event.position)) {
-            placeItem(event.source, event.item, event.position, event.silent)
+        if (event.creature.canReach(event.position)) {
+            placeItem(event.creature, event.item, event.position, event.silent)
         } else {
-            event.source.display { event.source.asSubject(it) + " " + event.source.isAre(it) + " too far away to place at ${event.position}." }
+            event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to place at ${event.position}." }
         }
     }
 
