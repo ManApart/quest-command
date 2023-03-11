@@ -1,5 +1,6 @@
 package magic.spellCommands.air
 
+
 import combat.DamageType
 import core.DependencyInjector
 import core.GameState
@@ -10,11 +11,8 @@ import core.properties.WEIGHT
 import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.spells.MoveThingSpell
-import kotlin.test.Test
-
-
 import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
@@ -26,6 +24,7 @@ import traveling.position.NO_VECTOR
 import traveling.position.ThingAim
 import traveling.position.Vector
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -121,7 +120,7 @@ class PullTest {
     private fun castSpell(input: String): MoveThingSpell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
         runBlocking { Pull().execute(caster, args, listOf(ThingAim(victim)), false) }
-        val spell = (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell as MoveThingSpell?
+        val spell = (EventManager.getUnexecutedEvents().firstOrNull() as CastSpellEvent).spell as MoveThingSpell?
         assertNotNull(spell)
         return spell
     }

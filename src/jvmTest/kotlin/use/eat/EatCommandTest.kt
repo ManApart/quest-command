@@ -11,7 +11,7 @@ import core.utility.PoorMansInstrumenter
 import createMockedGame
 import kotlinx.coroutines.runBlocking
 import traveling.location.network.NOWHERE_NODE
-import use.StartUseEvent
+import use.UseEvent
 import kotlin.test.*
 
 class EatCommandTest {
@@ -37,8 +37,8 @@ class EatCommandTest {
             timer.printElapsed("get events")
 
             assertEquals(1, events.size)
-            assertTrue(events[0] is StartUseEvent)
-            assertEquals(item, (events[0] as StartUseEvent).used)
+            assertTrue(events[0] is UseEvent)
+            assertEquals(item, (events[0] as UseEvent).used)
             assertNull(CommandParsers.getParser(player).getResponseRequest())
         }
     }

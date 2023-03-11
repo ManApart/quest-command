@@ -1,7 +1,7 @@
 package combat
 
 import combat.attack.AttackCommand
-import combat.attack.StartAttackEvent
+import combat.attack.AttackEvent
 import core.GameManager
 import core.events.EventManager
 import core.thing.thing
@@ -31,8 +31,8 @@ class AttackCommandTest {
             player.thing.currentLocation().addThing(rat)
 
             command.execute(player, "sl", "rat".split(" "))
-            val event = EventManager.getUnexecutedEvents()[0] as StartAttackEvent
-            assertEquals(rat, event.thing.thing)
+            val event = EventManager.getUnexecutedEvents()[0] as AttackEvent
+            assertEquals(rat, event.aim.thing)
         }
     }
 }

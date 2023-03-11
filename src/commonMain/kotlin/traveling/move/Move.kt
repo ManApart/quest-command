@@ -42,6 +42,7 @@ class Move : EventListener<MoveEvent>() {
         val boundedDestination = event.creature.currentLocation().bounds.trim(attainableDestination)
 
         when {
+            actualDistance == 0 -> event.creature.displayToMe("You are already there.")
             actualDestination.z > 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} unable to move into the air." }
             stamina == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.isAre(it)} too tired to move." }
             movedToNeighbor != null -> postArriveEvent(event.creature, movedToNeighbor, staminaRequired, event.silent)

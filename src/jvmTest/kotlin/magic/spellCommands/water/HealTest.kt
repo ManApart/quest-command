@@ -1,5 +1,6 @@
 package magic.spellCommands.water
 
+
 import combat.DamageType
 import core.DependencyInjector
 import core.GameState
@@ -10,12 +11,10 @@ import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking
 import magic.SpellCommandMock
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
 import magic.spells.Spell
-
-
 import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
@@ -94,7 +93,7 @@ class HealTest {
     private fun castHeal(input: String): Spell {
         val args = Args(input.split(" "), delimiters = listOf("on"))
         runBlocking { Heal().execute(thingA, args, listOf(ThingAim(thingA.thing)), true) }
-        return (EventManager.getUnexecutedEvents().firstOrNull() as StartCastSpellEvent).spell
+        return (EventManager.getUnexecutedEvents().firstOrNull() as CastSpellEvent).spell
     }
 
 

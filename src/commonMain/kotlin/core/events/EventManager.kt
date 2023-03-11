@@ -1,6 +1,7 @@
 package core.events
 
 import core.DependencyInjector
+import core.ai.directAI
 
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
@@ -31,6 +32,7 @@ object EventManager {
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
         eventCopy.forEach { startEvent(it) }
+        directAI()
         if (eventQueue.isNotEmpty()) {
             startEvents()
         }
@@ -60,8 +62,8 @@ object EventManager {
 
     }
 
-    suspend fun tick() {
-        eventsInProgress.forEach { it.timeLeft-- }
+    suspend fun tick(timePassed: Int) {
+        eventsInProgress.forEach { it.timeLeft -= timePassed }
         completeEvents()
     }
 
