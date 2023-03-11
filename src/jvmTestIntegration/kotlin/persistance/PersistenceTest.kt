@@ -11,7 +11,6 @@ import core.events.EventManager
 import core.properties.PropertiesP
 import core.properties.props
 import crafting.material.DEFAULT_MATERIAL
-import crafting.material.Material
 import crafting.material.MaterialManager
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
@@ -45,7 +44,7 @@ class PersistenceTest {
             EventManager.clear()
             EventManager.reset()
             GameManager.newGame(playerName = "Saved Player", testing = true)
-            EventManager.executeEvents()
+            EventManager.startEvents()
             File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
         }
     }
@@ -147,7 +146,7 @@ class PersistenceTest {
         runBlocking {
             val preLoadPlayer = GameState.getPlayer("Saved Player")!!
             CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
-            EventManager.executeEvents()
+            EventManager.startEvents()
             preLoadPlayer.thing.properties.tags.add("Saved")
             //subject: thingIsSelf
             //subject: locationIsName
@@ -157,7 +156,7 @@ class PersistenceTest {
             preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
 
             EventManager.postEvent(SaveEvent(preLoadPlayer))
-            EventManager.executeEvents()
+            EventManager.startEvents()
             preLoadPlayer.thing.properties.tags.remove("Saved")
             assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
             val equippedItemCount = preLoadPlayer.thing.body.getEquippedItems().size
@@ -166,10 +165,10 @@ class PersistenceTest {
             EventManager.clear()
             EventManager.reset()
             GameManager.newGame(playerName = "Saved Player", testing = true)
-            EventManager.executeEvents()
+            EventManager.startEvents()
 
             EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
-            EventManager.executeEvents()
+            EventManager.startEvents()
             val postLoadPlayer = GameState.getPlayer("Saved Player")!!
             assertEquals("Saved Player", postLoadPlayer.thing.name)
             assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))

@@ -51,7 +51,7 @@ class CraftTest {
             EventManager.reset()
 
             Craft().complete(craftEvent)
-            EventManager.executeEvents()
+            EventManager.startEvents()
             assertFalse(baker.inventory.exists(ingredient))
             assertNotNull(baker.inventory.getItem(resultItemName1))
             assertNotNull(baker.inventory.getItem(resultItemName2))
@@ -76,7 +76,7 @@ class CraftTest {
 
             Craft().complete(craftEvent)
 
-            EventManager.executeEvents()
+            EventManager.startEvents()
             val result = baker.inventory.getItem(ingredient.name)
             assertNotNull(result)
             assertTrue(result.properties.tags.has("Cooked"))

@@ -8,9 +8,6 @@ import core.history.GameLogger
 import core.history.displayToMe
 import core.utility.currentTime
 import core.utility.removeFirstItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class CommandParser(private val commandSource: Player) {
     private var responseRequest: ResponseRequest? = null
@@ -50,7 +47,7 @@ class CommandParser(private val commandSource: Player) {
             } else {
                 parseSingleCommand(command)
             }
-            EventManager.executeEvents()
+            EventManager.startEvents()
             GameLogger.endCurrent()
         }
     }

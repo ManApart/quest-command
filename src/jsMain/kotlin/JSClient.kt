@@ -36,7 +36,7 @@ fun Document.startClient() {
 
     CoroutineScope(GlobalScope.coroutineContext).launch {
         GameManager.newOrLoadGame()
-        EventManager.executeEvents()
+        EventManager.startEvents()
         CommandParsers.parseInitialCommand(GameState.player)
         updateOutput()
         window.onkeyup = { keyboardEvent ->

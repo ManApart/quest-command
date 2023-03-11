@@ -25,18 +25,17 @@ suspend fun describeBattle(source: Player) {
 
 private fun status(thing: Thing): String {
     val actionName = thing.mind.ai.action?.let { it::class.simpleName } ?: "None"
-    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, ${thing.mind.ai.getActionPoints()}/100 AP, $actionName."
+    return "${thing.name}: ${thing.soul.getCurrent(HEALTH)}/${thing.soul.getTotal(HEALTH)} HP, $actionName."
 }
 
 private fun printTurnStatus(source: Player, creatures: List<Thing>) {
     val combatantString = creatures.map {
-        when {
-            it.mind.ai.isActionReady() -> ""
-            it.mind.ai.getActionPoints() == 0 -> ""
-            it.mind.ai.canChooseAction() -> "${it.name} is making a choice"
-            it.mind.ai.action != null -> "${it.name} is preforming an action with ${it.mind.ai.action!!.timeLeft} time left"
-            else -> "${it.name} is getting ready to make a choice: ${it.mind.ai.getActionPoints()}/100"
-        }
+        ""
+//            //TODO timing
+//        when {
+//            it.mind.ai.action != null -> "${it.name} is preforming an action with ${it.mind.ai.action!!.timeLeft} time left."
+//            else -> "${it.name} is getting ready to make a choice."
+//        }
     }.filter { it.isNotBlank() }.joinToString("\n")
 
     if (combatantString.isNotBlank()) {

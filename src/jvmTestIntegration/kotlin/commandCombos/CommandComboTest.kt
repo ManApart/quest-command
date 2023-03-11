@@ -19,7 +19,7 @@ class CommandComboTest {
         runBlocking {
             EventManager.clear()
             GameManager.newGame(testing = true)
-            runBlocking { EventManager.executeEvents() }
+            runBlocking { EventManager.startEvents() }
         }
     }
 

@@ -20,7 +20,7 @@ class ConversationCommandInterceptor(val conversation: Conversation) : CommandIn
             val event = DialogueEvent(source.thing, conversation, line)
             EventManager.postEvent(event)
         }
-        EventManager.executeEvents()
+        EventManager.startEvents()
     }
 
 }

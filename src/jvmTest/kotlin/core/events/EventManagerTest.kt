@@ -1,9 +1,7 @@
 package core.events
 
 import core.DependencyInjector
-import createMockedGame
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -51,7 +49,7 @@ class EventManagerTest {
     fun higherPriorityRunsSooner() {
         runBlocking {
             EventManager.postEvent(TestEvent())
-            EventManager.executeEvents()
+            EventManager.startEvents()
 
             assertEquals("first", resultList[0])
             assertEquals("second", resultList[1])

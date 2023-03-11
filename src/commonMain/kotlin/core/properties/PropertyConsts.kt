@@ -1,7 +1,6 @@
 package core.properties
 
 //Effects
-const val ACTION_POINTS = "Action Point Boost"
 const val ENCUMBRANCE = "Additional Encumbrance"
 
 //stats

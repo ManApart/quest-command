@@ -5,6 +5,7 @@ import core.DependencyInjector
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
     private val eventQueue = mutableListOf<Event>()
+    private val eventsInProgress = mutableListOf<InProgressEvent>()
 
     fun reset() {
         listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
@@ -13,6 +14,7 @@ object EventManager {
 
     fun clear() {
         eventQueue.clear()
+        eventsInProgress.clear()
     }
 
     /**
@@ -25,14 +27,12 @@ object EventManager {
     /**
      * Called by the main method to execute the queue of events
      */
-    suspend fun executeEvents() {
+    suspend fun startEvents() {
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
-        eventCopy.forEach { event ->
-            executeEvent(event)
-        }
+        eventCopy.forEach { startEvent(it) }
         if (eventQueue.isNotEmpty()) {
-            executeEvents()
+            startEvents()
         }
     }
 
@@ -45,13 +45,37 @@ object EventManager {
         return eventQueue.toList()
     }
 
-    private suspend fun <E : Event> executeEvent(event: E) {
+    private suspend fun <E : Event> startEvent(event: E) {
+        if (event.gameTicks() > 0) eventsInProgress.add(InProgressEvent(event))
+        if (event.gameTicks() == 0) completeEvent(event)
+
+        getListeners(event)
+            .forEach { it.start(event) }
+    }
+
+    suspend fun tick() {
+        eventsInProgress.forEach { it.timeRemaining-- }
+        completeEvents()
+    }
+
+    private suspend fun completeEvents() {
+        val events = eventsInProgress.filter { it.timeRemaining <= 0 }
+        if (events.isNotEmpty()) {
+            eventsInProgress.removeAll(events)
+            events.forEach { completeEvent(it.event) }
+            if (eventQueue.isNotEmpty()) {
+                startEvents()
+            }
+        }
+    }
+
+    private suspend fun <E : Event> completeEvent(event: E) {
         getListeners(event)
             .forEach { it.complete(event) }
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun <E: Event> getListeners(event: E): List<EventListener<Event>>{
+    private suspend fun <E : Event> getListeners(event: E): List<EventListener<Event>> {
         val specificEvents: List<EventListener<Event>> = (listenerMap[event::class.simpleName]?.filter { (it as EventListener<E>).shouldExecute(event) }
             ?.map {
                 it
