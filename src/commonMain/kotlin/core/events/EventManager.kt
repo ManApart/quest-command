@@ -5,7 +5,7 @@ import core.DependencyInjector
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
     private val eventQueue = mutableListOf<Event>()
-    private val eventsInProgress = mutableListOf<InProgressEvent>()
+    private val eventsInProgress = mutableListOf<TemporalEvent>()
 
     fun reset() {
         listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
@@ -46,7 +46,7 @@ object EventManager {
     }
 
     private suspend fun <E : Event> startEvent(event: E) {
-        if (event.gameTicks() > 0) eventsInProgress.add(InProgressEvent(event))
+        if (event is TemporalEvent && event.gameTicks() > 0) eventsInProgress.add(event)
         if (event.gameTicks() == 0) completeEvent(event)
 
         getListeners(event)
@@ -54,15 +54,15 @@ object EventManager {
     }
 
     suspend fun tick() {
-        eventsInProgress.forEach { it.timeRemaining-- }
+        eventsInProgress.forEach { it.timeLeft-- }
         completeEvents()
     }
 
     private suspend fun completeEvents() {
-        val events = eventsInProgress.filter { it.timeRemaining <= 0 }
+        val events = eventsInProgress.filter { it.timeLeft <= 0 }
         if (events.isNotEmpty()) {
             eventsInProgress.removeAll(events)
-            events.forEach { completeEvent(it.event) }
+            events.forEach { completeEvent(it) }
             if (eventQueue.isNotEmpty()) {
                 startEvents()
             }
@@ -70,6 +70,7 @@ object EventManager {
     }
 
     private suspend fun <E : Event> completeEvent(event: E) {
+        if (event is TemporalEvent && event.source.mind.ai.action == event) event.source.mind.ai.action = null
         getListeners(event)
             .forEach { it.complete(event) }
     }
