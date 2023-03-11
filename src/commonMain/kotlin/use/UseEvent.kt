@@ -8,7 +8,7 @@ import kotlin.math.max
 /**
  * A source uses an item on a thing. Different from Interact in that there is something being used ON/WITH something else
  */
-class UseEvent(override val creature: Thing, val used: Thing, val usedOn: Thing, override var timeLeft: Int = 1) : TemporalEvent
+data class UseEvent(override val creature: Thing, val used: Thing, val usedOn: Thing, override var timeLeft: Int = 1) : TemporalEvent
 
 suspend fun startUseEvent(source: Thing, used: Thing, thing: Thing, timeLeft: Int? = null): UseEvent {
     return UseEvent(source, used, thing, timeLeft ?: calcTimeLeft(source, used))

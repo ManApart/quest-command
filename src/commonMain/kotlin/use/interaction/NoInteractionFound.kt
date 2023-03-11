@@ -1,19 +1,13 @@
 package use.interaction
 
-import core.events.Event
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
 
 class NoInteractionFound : EventListener<InteractEvent>() {
-    private var checkedEvent: Event? = null
 
     override suspend fun shouldExecute(event: InteractEvent): Boolean {
-        if (event != checkedEvent) {
-            checkedEvent = event
-            return EventManager.getNumberOfMatchingListeners(event) == 0
-        }
-        return false
+        return EventManager.getNumberOfMatchingListeners(event, this) == 0
     }
 
     override suspend fun complete(event: InteractEvent) {

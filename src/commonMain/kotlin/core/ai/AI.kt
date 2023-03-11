@@ -1,7 +1,7 @@
 package core.ai
 
 import conversation.dialogue.DialogueEvent
-import core.events.Event
+import core.events.TemporalEvent
 import core.thing.Thing
 
 abstract class AI {
@@ -9,7 +9,7 @@ abstract class AI {
     abstract suspend fun hear(event: DialogueEvent)
     abstract suspend fun takeAction()
 
-    val actions = mutableListOf<Event>()
+    val actions = mutableListOf<TemporalEvent>()
 
     suspend fun chooseAction() {
         if (!creature.isPlayer()) {

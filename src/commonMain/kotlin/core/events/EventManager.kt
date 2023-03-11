@@ -39,8 +39,8 @@ object EventManager {
     }
 
     @Suppress("UNCHECKED_CAST")
-    suspend fun <E : Event> getNumberOfMatchingListeners(event: E): Int {
-        return listenerMap[event::class.simpleName!!]?.count { (it as EventListener<E>).shouldExecute(event) } ?: 0
+    suspend fun <E : Event> getNumberOfMatchingListeners(event: E, ignoring: EventListener<E>): Int {
+        return listenerMap[event::class.simpleName!!]?.count { it != ignoring && (it as EventListener<E>).shouldExecute(event) } ?: 0
     }
 
     fun getUnexecutedEvents(): List<Event> {
