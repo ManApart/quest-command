@@ -8,7 +8,6 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
-import traveling.move.StartMoveEvent
 import traveling.move.startMoveEvent
 import traveling.position.Distances
 

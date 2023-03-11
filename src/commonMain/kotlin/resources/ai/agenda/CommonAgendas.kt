@@ -1,8 +1,8 @@
 package resources.ai.agenda
 
 import combat.DamageType
-import combat.attack.StartAttackEvent
-import combat.attack.startAttackEvent
+import combat.attack.AttackEvent
+import combat.attack.startAttack
 import core.GameState
 import core.ai.agenda.AgendaResource
 import core.ai.agenda.agendas
@@ -14,8 +14,8 @@ import core.utility.RandomManager
 import status.rest.RestEvent
 import traveling.location.network.LocationNode
 import traveling.move.MoveEvent
+import traveling.move.startMoveEvent
 import traveling.position.ThingAim
-import traveling.position.Vector
 import traveling.routes.FindRouteEvent
 import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent
@@ -58,7 +58,7 @@ class CommonAgendas : AgendaResource {
                 }
                 result { creature ->
                     creature.mind.getAggroTarget()?.position?.let {
-                        MoveEvent(creature, destination = it)
+                        startMoveEvent(creature, destination = it)
                     }
                 }
             }
@@ -97,7 +97,7 @@ class CommonAgendas : AgendaResource {
                 }
                 result { creature ->
                     creature.mind.getUseTarget()?.position?.let {
-                        MoveEvent(creature, destination = it)
+                        startMoveEvent(creature, destination = it)
                     }
                 }
             }
@@ -158,7 +158,7 @@ class CommonAgendas : AgendaResource {
 
         agendaAction("Wander") { creature ->
             val target = creature.location.getLocation().getThings(creature).random()
-            MoveEvent(creature, destination = target.position)
+            startMoveEvent(creature, destination = target.position)
         }
 
         agenda("Travel to Job Site") {
@@ -201,7 +201,7 @@ private fun Thing.discover(target: LocationNode, kind: String): DiscoverFactEven
     return DiscoverFactEvent(this, Fact(Subject(target), kind))
 }
 
-private suspend fun clawAttack(target: Thing, creature: Thing): StartAttackEvent {
+private suspend fun clawAttack(target: Thing, creature: Thing): AttackEvent {
     val enemyBody = target.body
     val possibleParts = listOf(
         enemyBody.getPart("Right Foot"),
@@ -213,6 +213,6 @@ private suspend fun clawAttack(target: Thing, creature: Thing): StartAttackEvent
     } else {
         creature.body.getRootPart()
     }
-    return startAttackEvent(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
+    return startAttack(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
 }
 

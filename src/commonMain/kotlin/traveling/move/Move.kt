@@ -30,9 +30,9 @@ class Move : EventListener<MoveEvent>() {
     }
 
     override suspend fun complete(event: MoveEvent) {
-        val desiredDistance = event.source.getDistance(event.destination)
+        val desiredDistance = event.sourcePosition.getDistance(event.destination)
         val actualDistance = getActualDistanceMoved(event, desiredDistance)
-        val attainableDestination = event.source.getVectorInDirection(event.destination, actualDistance)
+        val attainableDestination = event.sourcePosition.getVectorInDirection(event.destination, actualDistance)
         val connection = getMovedToConnection(event.creature.location, event.creature.position, attainableDestination)
         val movedToNeighbor = connection?.destination
         val actualDestination = event.creature.position.getNearest(attainableDestination, connection?.source?.vector ?: attainableDestination)
@@ -86,9 +86,9 @@ class Move : EventListener<MoveEvent>() {
             val location = event.creature.location.getLocation()
             val things = location.getThings(event.creature).filter { it != event.creature }
             val destinationThing = things.firstOrNull { it.position == actualDestination }
-            val startThing = things.firstOrNull { it.position == event.source }
+            val startThing = things.firstOrNull { it.position == event.sourcePosition }
             val destinationString = destinationThing?.getDisplayName() ?: actualDestination.toString()
-            val startString = startThing?.getDisplayName() ?: event.source.toString()
+            val startString = startThing?.getDisplayName() ?: event.sourcePosition.toString()
 
             val youMove = event.creature.isPlayer().then("move", "moves")
 

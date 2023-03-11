@@ -5,14 +5,13 @@ import core.commands.Args
 import core.commands.clarify
 import core.events.EventManager
 import magic.Element
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
 import status.stat.EARTH_MAGIC
-import traveling.direction.Direction
 import traveling.position.ThingAim
 import traveling.position.toCommandString
 import kotlin.math.max
@@ -93,7 +92,7 @@ class Rock : SpellCommand() {
 
                 val condition = Condition("Hit by a Rock", Element.EARTH, amount, effects)
                 val spell = Spell("Rock", condition, amount, EARTH_MAGIC, levelRequirement, castTime = castTime)
-                EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
+                EventManager.postEvent(CastSpellEvent(source.thing, thing, spell))
             }
         }
     }

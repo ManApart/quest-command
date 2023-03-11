@@ -4,7 +4,7 @@ import core.Player
 import core.commands.Args
 import core.events.EventManager
 import magic.Element
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.castSpell.getThingedPartsOrAll
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
@@ -58,7 +58,7 @@ class Jet : SpellCommand() {
                 val cost = damageAmount * parts.size
                 val condition = Condition("Water Blasted", Element.WATER, cost, effects)
                 val spell = Spell("Jet", condition, cost, WATER_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
-                EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
+                EventManager.postEvent(CastSpellEvent(source.thing, thing, spell))
             }
         }
     }

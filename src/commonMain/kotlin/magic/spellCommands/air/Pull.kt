@@ -8,7 +8,7 @@ import core.commands.parseDirection
 import core.events.EventManager
 import core.thing.Thing
 import magic.Element
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.spellCommands.SpellCommand
 import magic.spells.MoveThingSpell
 import status.conditions.Condition
@@ -74,7 +74,7 @@ class Pull : SpellCommand() {
                         thing.thing.position.getVectorInDirection((direction.vector * distance) + thing.thing.position, distance)
                     }
                     val spell = MoveThingSpell("Push", vector, condition, perThingCost, AIR_MAGIC, levelRequirement)
-                    EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
+                    EventManager.postEvent(CastSpellEvent(source.thing, thing, spell))
                 }
             }
         }

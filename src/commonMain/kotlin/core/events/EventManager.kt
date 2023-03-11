@@ -46,7 +46,10 @@ object EventManager {
     }
 
     private suspend fun <E : Event> startEvent(event: E) {
-        if (event is TemporalEvent && event.gameTicks() > 0) eventsInProgress.add(event)
+        if (event is TemporalEvent && event.gameTicks() > 0) {
+            event.source.mind.ai.action = event
+            eventsInProgress.add(event)
+        }
         if (event.gameTicks() == 0) completeEvent(event)
 
         getListeners(event)

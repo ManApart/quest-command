@@ -53,7 +53,7 @@ class NothingCommand : Command() {
     }
 
     private fun wait(source: Thing, hours: Int) {
-        EventManager.postEvent(StartNothingEvent(source, hours))
+        EventManager.postEvent(NothingEvent(source, hours))
     }
 
 }

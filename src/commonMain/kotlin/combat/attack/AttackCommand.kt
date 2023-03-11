@@ -122,8 +122,8 @@ class AttackCommand : Command() {
             isAttackingActivatorWithWeapon(thing, handHelper) -> EventManager.postEvent(startUseEvent(source, handHelper.weapon!!, thing!!.thing))
             thing != null && thing.thing == source && handHelper.weapon != null -> EventManager.postEvent(startUseEvent(source, handHelper.weapon, source))
             thing != null && !thing.thing.soul.hasStat(HEALTH) && handHelper.weapon != null -> EventManager.postEvent(startUseEvent(source, handHelper.weapon, thing.thing))
-            thing != null -> EventManager.postEvent(startAttackEvent(source, handHelper.hand, thing, attackType.damageType))
-            source.mind.getAggroTarget() != null -> EventManager.postEvent(startAttackEvent(source, handHelper.hand, ThingAim(source.mind.getAggroTarget()!!), attackType.damageType))
+            thing != null -> EventManager.postEvent(startAttack(source, handHelper.hand, thing, attackType.damageType))
+            source.mind.getAggroTarget() != null -> EventManager.postEvent(startAttack(source, handHelper.hand, ThingAim(source.mind.getAggroTarget()!!), attackType.damageType))
             else -> source.displayToMe("Couldn't find ${arguments.getBaseString()}.")
         }
     }

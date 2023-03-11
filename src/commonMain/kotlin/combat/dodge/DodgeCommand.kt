@@ -6,8 +6,6 @@ import core.commands.parseDirection
 import core.events.EventManager
 import core.thing.Thing
 import traveling.direction.Direction
-import traveling.location.weather.WeatherManager
-import traveling.move.StartMoveEvent
 import traveling.move.startMoveEvent
 
 class DodgeCommand : Command() {

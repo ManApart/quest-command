@@ -6,8 +6,6 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
-import traveling.location.weather.WeatherManager
-import use.StartUseEvent
 import use.startUseEvent
 
 class EatCommand : Command() {

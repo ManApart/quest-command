@@ -4,10 +4,9 @@ import core.Player
 import core.commands.Args
 import core.commands.clarify
 import core.events.EventManager
-import core.events.multiEvent.StartMultiEvent
 import core.thing.Thing
 import magic.Element
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.castSpell.getThingedPartsOrAll
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
@@ -37,7 +36,7 @@ class Flame : SpellCommand() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return when{
+        return when {
             args.isEmpty() -> listOf("1", "5", "10")
             args.size == 1 && args.last().toIntOrNull() != null -> listOf("on")
             args.last() == "on" -> source.getPerceivedThingNames()
@@ -52,7 +51,7 @@ class Flame : SpellCommand() {
             respond("power") {
                 message("Cast Flame with what power?")
                 options("1", "3", "5", "10", "50", "#")
-                command { "cast flame $it on ${things.toCommandString()}"}
+                command { "cast flame $it on ${things.toCommandString()}" }
                 value(initialPower)
                 defaultValue(1)
             }
@@ -67,30 +66,27 @@ class Flame : SpellCommand() {
             val levelRequirement = damageAmount / 2
 
             executeWithWarns(source, FIRE_MAGIC, levelRequirement, totalCost, things) {
-                val spells = mutableListOf(
-                        postSpell(source.thing, ThingAim(source.thing, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement)
-                )
-                things.forEach { thing ->
-                    spells.add(postSpell(source.thing, thing, damageAmount, cost, levelRequirement))
-                }
+                EventManager.postEvent(postSpell(source.thing, ThingAim(source.thing, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement))
 
-                EventManager.postEvent(StartMultiEvent(source.thing, spells.first().timeLeft, spells))
+                things.forEach { thing ->
+                    EventManager.postEvent(postSpell(source.thing, thing, damageAmount, cost, levelRequirement))
+                }
             }
         }
     }
 
-    private suspend fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int): StartCastSpellEvent {
+    private suspend fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int): CastSpellEvent {
         val parts = getThingedPartsOrAll(thing, 3)
         val litLevel = max(damageAmount, thing.thing.properties.values.getInt(LIT_LIGHT, 1))
         val effects = listOf(
-                EffectManager.getEffect("Burning", damageAmount, 3, parts),
-                EffectManager.getEffect("On Fire", damageAmount, 3, parts),
-                EffectManager.getEffect("Lit", litLevel, 3, parts),
+            EffectManager.getEffect("Burning", damageAmount, 3, parts),
+            EffectManager.getEffect("On Fire", damageAmount, 3, parts),
+            EffectManager.getEffect("Lit", litLevel, 3, parts),
         )
 
         val condition = Condition("Fire Blasted", Element.FIRE, cost, effects)
         val spell = Spell("Flame", condition, cost, FIRE_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
-        return StartCastSpellEvent(source, thing, spell)
+        return CastSpellEvent(source, thing, spell)
     }
 
 }

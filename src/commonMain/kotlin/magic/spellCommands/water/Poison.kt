@@ -5,7 +5,7 @@ import core.commands.Args
 import core.commands.clarify
 import core.events.EventManager
 import magic.Element
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
@@ -85,7 +85,7 @@ class Poison : SpellCommand() {
 
                     val condition = Condition("Poisoned", Element.WATER, amount, effects)
                     val spell = Spell("Poison", condition, amount, WATER_MAGIC, levelRequirement, range = Distances.SWORD_RANGE)
-                    EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
+                    EventManager.postEvent(CastSpellEvent(source.thing, thing, spell))
                 }
             }
         }

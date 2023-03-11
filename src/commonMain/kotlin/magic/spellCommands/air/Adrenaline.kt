@@ -5,7 +5,7 @@ import core.commands.Args
 import core.commands.clarify
 import core.events.EventManager
 import magic.Element
-import magic.castSpell.StartCastSpellEvent
+import magic.castSpell.CastSpellEvent
 import magic.castSpell.getThingedPartsOrRootPart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
@@ -91,7 +91,7 @@ class Adrenaline : SpellCommand() {
 
                     val condition = Condition("On Adrenaline", Element.AIR, amount, effects)
                     val spell = Spell("Adrenaline", condition, amount, AIR_MAGIC, levelRequirement, range = Distances.DAGGER_RANGE)
-                    EventManager.postEvent(StartCastSpellEvent(source.thing, thing, spell))
+                    EventManager.postEvent(CastSpellEvent(source.thing, thing, spell))
                 }
             }
         }
