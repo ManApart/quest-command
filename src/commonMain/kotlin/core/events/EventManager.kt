@@ -2,6 +2,7 @@ package core.events
 
 import core.DependencyInjector
 import core.ai.directAI
+import core.thing.Thing
 
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
@@ -65,6 +66,10 @@ object EventManager {
     suspend fun tick(timePassed: Int) {
         eventsInProgress.forEach { it.timeLeft -= timePassed }
         completeEvents()
+    }
+
+    fun removeInProgressEvents(creature: Thing){
+        eventsInProgress.removeAll(eventsInProgress.filter { it.creature == creature })
     }
 
     private suspend fun completeEvents() {

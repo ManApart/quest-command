@@ -110,11 +110,12 @@ class CommandComboTest {
     fun fightRat() {
         runBlocking {
             CommandParsers.parseCommand(GameState.player, "s")
+            assertEquals(2, GameState.player.location.getLocation().getCreatures().size)
             val input = "slash torso of rat && r && r"
             CommandParsers.parseCommand(GameState.player, input)
-            assertTrue(GameLogger.getMainHistory().contains("Rat has died."))
+            assertEquals(1, GameState.player.location.getLocation().getCreatures().size)
             CommandParsers.parseCommand(GameState.player, "ex")
-            assertTrue(GameLogger.getMainHistory().contains("It contains Poor Quality Meat."))
+            assertEquals(1, GameState.player.location.getLocation().getItems("Poor Quality Meat").size)
         }
     }
 

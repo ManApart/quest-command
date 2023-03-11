@@ -32,6 +32,7 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
         source.displayToMe("Oh dear, you have died!")
         source.displayToOthers("${source.name} has died!")
 
+        EventManager.removeInProgressEvents(source.thing)
         with(source.thing) {
             location.getLocation().getCreatures()
                 .filterList { it.mind.getAggroTarget() == this }

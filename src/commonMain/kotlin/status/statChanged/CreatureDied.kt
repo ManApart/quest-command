@@ -26,6 +26,7 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
         creature.inventory.getAllItems().forEach {
             EventManager.postEvent(PlaceItemEvent(creature, it, silent = true))
         }
+        EventManager.removeInProgressEvents(creature)
         EventManager.postEvent(RemoveScopeEvent(creature))
         EventManager.postEvent(CreatureDiedEvent(creature))
         event.thing.addSoundEffect("Death", "a sharp cry, cut short", 1)
