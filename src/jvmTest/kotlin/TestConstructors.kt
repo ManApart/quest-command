@@ -14,6 +14,7 @@ import core.body.*
 import core.commands.CommandParsers
 import core.commands.CommandsCollection
 import core.commands.CommandsMock
+import core.events.EventListenerMapCollection
 import core.events.EventListenerMapMock
 import core.events.EventManager
 import core.history.GameLogger
@@ -129,6 +130,11 @@ fun createInventoryBodyBlocking(name: String = "Inventory", capacity: Int? = nul
 fun createMockedGame() {
     runBlocking {
         DependencyInjector.clearAllImplementations()
+
+        //Must go before bodies
+        DependencyInjector.setImplementation(MaterialsCollection::class, MaterialsMock())
+        MaterialManager.reset()
+
         DependencyInjector.setImplementation(ActivatorsCollection::class, ActivatorsMock())
         ActivatorManager.reset()
 
@@ -153,7 +159,7 @@ fun createMockedGame() {
         DependencyInjector.setImplementation(EffectsCollection::class, EffectsMock())
         EffectManager.reset()
 
-        DependencyInjector.setImplementation(EventListenerMapMock::class, EventListenerMapMock())
+        DependencyInjector.setImplementation(EventListenerMapCollection::class, EventListenerMapMock())
         EventManager.reset()
 
         DependencyInjector.setImplementation(ItemsCollection::class, ItemsMock())
@@ -162,9 +168,6 @@ fun createMockedGame() {
         DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
         DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
         LocationManager.reset()
-
-        DependencyInjector.setImplementation(MaterialsCollection::class, MaterialsMock())
-        MaterialManager.reset()
 
         DependencyInjector.setImplementation(RecipesCollection::class, RecipesMock())
         RecipeManager.reset()
