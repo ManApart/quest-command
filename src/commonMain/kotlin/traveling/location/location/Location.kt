@@ -21,6 +21,7 @@ import inventory.Inventory
 import status.Soul
 import status.conditions.AddConditionEvent
 import status.conditions.ConditionManager
+import system.debug.DebugType
 import traveling.location.network.LocationNode
 import traveling.location.weather.DEFAULT_WEATHER
 import traveling.location.weather.Weather
@@ -335,6 +336,9 @@ data class Location(
     }
 
     fun updateWeather(newWeather: Weather) {
+        if (GameState.getDebugBoolean(DebugType.VERBOSE_WEATHER)){
+            println("Changing Weather from ${weather.name} to ${newWeather.name}.")
+        }
         lastWeatherChange = GameState.timeManager.getTicks()
         this.weather = newWeather
     }

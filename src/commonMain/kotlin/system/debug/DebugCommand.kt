@@ -35,6 +35,7 @@ class DebugCommand : Command() {
     Debug prop <prop name> <desired level> on *<thing> - Set a property to the desired level.
     Debug tag *<remove> <tag name> on *<thing> - Add (or remove) a tag.
     Debug weather <weather name> - Set weather in current location to the given weather, if it exists.
+    Debug verbose <on/off> - Toggle all the verbose settings on or off 
         """
     }
 
@@ -56,37 +57,38 @@ class DebugCommand : Command() {
         val arguments = Args(args, delimiters = listOf("on"))
 
         if (args.isEmpty()) {
-            sendDebugToggleEvent(source, DebugType.DEBUG_GROUP, arguments)
+            sendDebugToggleEvent(source, arguments, DebugType.LEVEL_REQ, DebugType.STAT_CHANGES, DebugType.RANDOM_SUCCEED)
         } else {
             when (args.first()) {
                 "list" -> EventManager.postEvent(DebugListEvent(source))
-                "lvlreq" -> sendDebugToggleEvent(source, DebugType.LEVEL_REQ, arguments)
-                "statchanges" -> sendDebugToggleEvent(source, DebugType.STAT_CHANGES, arguments)
-                "random" -> sendDebugToggleEvent(source, DebugType.RANDOM_SUCCEED, arguments)
-                "aiupdates" -> sendDebugToggleEvent(source, DebugType.AI_UPDATES, arguments)
-                "poll" -> sendDebugToggleEvent(source, DebugType.POLL_CONNECTION, arguments)
-                "map" -> sendDebugToggleEvent(source, DebugType.MAP_SHOW_ALL_LOCATIONS, arguments)
-                "recipe" -> sendDebugToggleEvent(source, DebugType.RECIPE_SHOW_ALL, arguments)
-                "clarity" -> sendDebugToggleEvent(source, DebugType.CLARITY, arguments)
-                "displayupdates" -> sendDebugToggleEvent(source, DebugType.DISPLAY_UPDATES, arguments)
+                "lvlreq" -> sendDebugToggleEvent(source, arguments, DebugType.LEVEL_REQ)
+                "statchanges" -> sendDebugToggleEvent(source, arguments, DebugType.STAT_CHANGES)
+                "random" -> sendDebugToggleEvent(source, arguments, DebugType.RANDOM_SUCCEED)
+                "aiupdates" -> sendDebugToggleEvent(source, arguments, DebugType.VERBOSE_AI)
+                "poll" -> sendDebugToggleEvent(source, arguments, DebugType.POLL_CONNECTION)
+                "map" -> sendDebugToggleEvent(source, arguments, DebugType.MAP_SHOW_ALL_LOCATIONS)
+                "recipe" -> sendDebugToggleEvent(source, arguments, DebugType.RECIPE_SHOW_ALL)
+                "clarity" -> sendDebugToggleEvent(source, arguments, DebugType.CLARITY)
+                "displayupdates" -> sendDebugToggleEvent(source, arguments, DebugType.DISPLAY_UPDATES)
                 "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(source, arguments)
+                "verbose" -> sendDebugToggleEvent(source, arguments, DebugType.VERBOSE_AI, DebugType.VERBOSE_TIME, DebugType.VERBOSE_WEATHER)
                 "weather" -> sendDebugWeatherEvent(source, arguments)
                 else -> source.displayToMe("Did not understand debug command.")
             }
         }
     }
 
-    private fun sendDebugToggleEvent(source: Thing, type: DebugType, args: Args) {
+    private fun sendDebugToggleEvent(source: Thing, args: Args, vararg types: DebugType) {
         val toggleWords = args.hasAny(listOf("on", "off", "true", "false"))
         val toggledOn = if (toggleWords.isNotEmpty()) {
             toggleWords.contains("on") || toggleWords.contains("true")
         } else {
-            !GameState.getDebugBoolean(type)
+            !GameState.getDebugBoolean(types.first())
         }
 
-        EventManager.postEvent(DebugToggleEvent(source, type, toggledOn))
+        EventManager.postEvent(DebugToggleEvent(source, types.toList(), toggledOn))
     }
 
     private suspend fun sendDebugStatEvent(source: Thing, type: StatKind, args: Args) {

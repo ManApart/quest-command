@@ -65,8 +65,9 @@ object GameManager {
         GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
-        GameState.putDebug(DebugType.AI_UPDATES, testing)
-//        GameState.putDebug(DebugType.AI_UPDATES, true)
+        GameState.putDebug(DebugType.VERBOSE_AI, testing)
+        GameState.putDebug(DebugType.VERBOSE_TIME, testing)
+        GameState.putDebug(DebugType.VERBOSE_WEATHER, testing)
     }
 
     suspend fun newPlayer(

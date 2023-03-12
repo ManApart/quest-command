@@ -66,16 +66,17 @@ class Flame : SpellCommand() {
             val levelRequirement = damageAmount / 2
 
             executeWithWarns(source, FIRE_MAGIC, levelRequirement, totalCost, things) {
-                EventManager.postEvent(postSpell(source.thing, ThingAim(source.thing, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement))
+                EventManager.postEvent(postSpell(source.thing, ThingAim(source.thing, source.body.getParts()), max(1, damageAmount / 3), 0, levelRequirement, cost))
 
+                //Only the first effect has a cast time, the rest are applied immediately after the first one
                 things.forEach { thing ->
-                    EventManager.postEvent(postSpell(source.thing, thing, damageAmount, cost, levelRequirement))
+                    EventManager.postEvent(postSpell(source.thing, thing, damageAmount, cost, levelRequirement, 0))
                 }
             }
         }
     }
 
-    private suspend fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int): CastSpellEvent {
+    private suspend fun postSpell(source: Thing, thing: ThingAim, damageAmount: Int, cost: Int, levelRequirement: Int, castTime: Int): CastSpellEvent {
         val parts = getThingedPartsOrAll(thing, 3)
         val litLevel = max(damageAmount, thing.thing.properties.values.getInt(LIT_LIGHT, 1))
         val effects = listOf(
@@ -85,7 +86,7 @@ class Flame : SpellCommand() {
         )
 
         val condition = Condition("Fire Blasted", Element.FIRE, cost, effects)
-        val spell = Spell("Flame", condition, cost, FIRE_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE)
+        val spell = Spell("Flame", condition, cost, FIRE_MAGIC, levelRequirement, range = Distances.SPEAR_RANGE, castTime = castTime)
         return CastSpellEvent(source, thing, spell)
     }
 

@@ -49,15 +49,19 @@ object EventManager {
     }
 
     private suspend fun <E : Event> startEvent(event: E) {
-        if (event is TemporalEvent && event.timeLeft > 0) {
-            event.creature.mind.ai.actions.add(event)
-            eventsInProgress.add(event)
+        if (event is TemporalEvent) {
+            val greatestCurrentTime = event.creature.mind.ai.actions.maxOfOrNull { it.timeLeft } ?: 0
+            event.timeLeft += greatestCurrentTime
+            if (event.timeLeft > 0) {
+                event.creature.mind.ai.actions.add(event)
+                eventsInProgress.add(event)
+            }
         }
 
         getListeners(event)
             .forEach { it.start(event) }
 
-        if (event !is TemporalEvent || event.timeLeft == 0){
+        if (event !is TemporalEvent || event.timeLeft == 0) {
             completeEvent(event)
         }
 
@@ -68,7 +72,7 @@ object EventManager {
         completeEvents()
     }
 
-    fun removeInProgressEvents(creature: Thing){
+    fun removeInProgressEvents(creature: Thing) {
         eventsInProgress.removeAll(eventsInProgress.filter { it.creature == creature })
     }
 

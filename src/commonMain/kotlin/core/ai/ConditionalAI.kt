@@ -36,7 +36,7 @@ class ConditionalAI : AI() {
         val desire = (RandomManager.getRandomOrNull(topMatches) ?: defaultAgenda).first
         val agenda = AIManager.agendas[desire] ?: AIManager.agendas[defaultAgenda.first]!!.also { displayGlobal("Couldn't find agenda for ${desire}!") }
 
-        if (GameState.getDebugBoolean(DebugType.AI_UPDATES)) displayGlobal("${creature.name} picks ${agenda.name}.")
+        if (GameState.getDebugBoolean(DebugType.VERBOSE_AI)) displayGlobal("${creature.name} picks ${agenda.name}.")
         return Goal(agenda, priority)
     }
 

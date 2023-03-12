@@ -14,14 +14,9 @@ class DebugListListener : EventListener<DebugListEvent>() {
 
 class DebugToggleListener : EventListener<DebugToggleEvent>() {
     override suspend fun complete(event: DebugToggleEvent) {
-        if (event.debugType == DebugType.DEBUG_GROUP) {
-            GameState.putDebug(DebugType.LEVEL_REQ, event.toggledOn)
-            GameState.putDebug(DebugType.STAT_CHANGES, event.toggledOn)
-            GameState.putDebug(DebugType.RANDOM_SUCCEED, event.toggledOn)
-            event.source.displayToMe("Gamestate properties are: " + GameState.properties.toString())
-        } else {
-            GameState.putDebug(event.debugType, event.toggledOn)
-            event.source.displayToMe("Set ${event.debugType.propertyName} to ${GameState.getDebugBoolean(event.debugType)}")
+        event.debugTypes.forEach { debugType ->
+            GameState.putDebug(debugType, event.toggledOn)
+            event.source.displayToMe("Set ${debugType.propertyName} to ${GameState.getDebugBoolean(debugType)}")
         }
     }
 }
