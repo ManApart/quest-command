@@ -39,7 +39,7 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
                 .forEach { it.mind.clearAggroTarget() }
 
             inventory.getAllItems().forEach {
-                EventManager.postEvent(PlaceItemEvent(this, it, silent = true))
+                EventManager.postEvent(PlaceItemEvent(this, it, silent = true, timeLeft = 0))
             }
 
             mind.clearAggroTarget()

@@ -4,7 +4,7 @@ import core.events.TemporalEvent
 import core.thing.Thing
 import traveling.position.Vector
 
-class PlaceItemEvent(
+data class PlaceItemEvent(
     override val creature: Thing,
     val item: Thing,
     val position: Vector = creature.position,

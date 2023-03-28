@@ -22,7 +22,7 @@ suspend fun directAI() {
         //Give player a chance to take an action
     } else {
         val timeToPass = creatureAIs.flatMap { it.actions }.minOfOrNull { it.timeLeft } ?: 1
-        EventManager.postEvent(GameTickEvent(timeToPass))
+        EventManager.postEvent(GameTickEvent(1))
     }
 
 }

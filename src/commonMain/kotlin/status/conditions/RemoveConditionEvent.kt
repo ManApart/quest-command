@@ -3,4 +3,4 @@ package status.conditions
 import core.events.Event
 import core.thing.Thing
 
-class RemoveConditionEvent(val thing: Thing, val condition: Condition) : Event
+data class RemoveConditionEvent(val thing: Thing, val condition: Condition) : Event

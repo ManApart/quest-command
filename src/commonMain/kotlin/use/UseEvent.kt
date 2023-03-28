@@ -19,7 +19,6 @@ private suspend fun calcTimeLeft(source: Thing, used: Thing): Int {
     val weaponWeight = used.getWeight()
     val encumbrance = source.getEncumbrance()
     val agility = max(1, source.soul.getCurrent(AGILITY) - (source.soul.getCurrent(AGILITY) * encumbrance).toInt())
-    val weaponScaleFactor = 10
 
-    return max(1, weaponSize * weaponWeight * weaponScaleFactor / agility)
+    return max(1, weaponSize + weaponWeight - agility)
 }

@@ -3,7 +3,7 @@ package inventory.pickupItem
 import core.events.TemporalEvent
 import core.thing.Thing
 
-class TakeItemEvent(
+data class TakeItemEvent(
     override val creature: Thing,
     val item: Thing,
     val silent: Boolean = false,

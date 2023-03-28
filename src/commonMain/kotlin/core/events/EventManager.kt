@@ -4,6 +4,8 @@ import core.DependencyInjector
 import core.ai.directAI
 import core.thing.Thing
 
+const val MAX_EVENT_LOOPS = 100
+
 object EventManager {
     private var listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
     private val eventQueue = mutableListOf<Event>()
@@ -30,18 +32,20 @@ object EventManager {
      * Called by the main method to execute the queue of events
      */
     suspend fun startEvents() {
+        println(eventQueue.map { it.toString() })
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
         eventCopy.forEach { startEvent(it) }
         directAI()
-        if (eventQueue.isNotEmpty()) {
-            startEvents()
-        }
     }
 
     @Suppress("UNCHECKED_CAST")
     suspend fun <E : Event> getNumberOfMatchingListeners(event: E, ignoring: EventListener<E>): Int {
         return listenerMap[event::class.simpleName!!]?.count { it != ignoring && (it as EventListener<E>).shouldExecute(event) } ?: 0
+    }
+
+    fun hasUnexecutedEvents(): Boolean {
+        return eventQueue.isNotEmpty()
     }
 
     fun getUnexecutedEvents(): List<Event> {

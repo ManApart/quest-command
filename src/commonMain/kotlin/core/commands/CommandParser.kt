@@ -4,6 +4,7 @@ import core.GameState
 import core.Player
 import core.commands.CommandParsers.cleanLine
 import core.events.EventManager
+import core.events.MAX_EVENT_LOOPS
 import core.history.GameLogger
 import core.history.displayToMe
 import core.utility.currentTime
@@ -47,7 +48,13 @@ class CommandParser(private val commandSource: Player) {
             } else {
                 parseSingleCommand(command)
             }
-            EventManager.startEvents()
+            //TODO - move this to even manager
+            var loop = 0
+            while (EventManager.hasUnexecutedEvents() && loop < MAX_EVENT_LOOPS) {
+                EventManager.startEvents()
+                loop++
+            }
+            if (loop == MAX_EVENT_LOOPS) println("Reached max loops, this should not happen!")
             GameLogger.endCurrent()
         }
     }

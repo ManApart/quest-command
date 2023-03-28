@@ -8,16 +8,16 @@ import status.Soul
 import status.effects.Effect
 
 class Condition(
-        override val name: String,
-        val element: Element = Element.NONE,
-        var elementStrength: Int = 1,
-        effects: List<Effect> = listOf(),
-        criticalEffects: List<Effect> = listOf(),
-        val permanent: Boolean = false,
-        age: Int? = null,
-        isCritical: Boolean? = null,
-        isFirstApply: Boolean? = null,
-        val silent: Boolean = false
+    override val name: String,
+    val element: Element = Element.NONE,
+    var elementStrength: Int = 1,
+    effects: List<Effect> = listOf(),
+    criticalEffects: List<Effect> = listOf(),
+    val permanent: Boolean = false,
+    age: Int? = null,
+    isCritical: Boolean? = null,
+    isFirstApply: Boolean? = null,
+    val silent: Boolean = false
 ) : Named {
     val effects = NameSearchableList(effects)
     val criticalEffects = NameSearchableList(criticalEffects)
@@ -43,11 +43,9 @@ class Condition(
     }
 
     fun apply(soul: Soul) {
-        getEffects().forEach { effect ->
-            if (permanent || age < effect.duration) {
-                effect.apply(soul, isFirstApply, silent)
-            }
-        }
+        getEffects()
+            .filter { permanent || age < it.duration }
+            .forEach { it.apply(soul, isFirstApply, silent) }
 
         isFirstApply = false
         age++
