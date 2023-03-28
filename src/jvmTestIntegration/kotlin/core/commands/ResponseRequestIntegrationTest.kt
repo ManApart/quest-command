@@ -17,7 +17,7 @@ class ResponseRequestIntegrationTest {
     fun reset() {
         runBlocking {
             GameManager.newGame(testing = true)
-            runBlocking { EventManager.startEvents() }
+            runBlocking { EventManager.processEvents() }
         }
     }
 

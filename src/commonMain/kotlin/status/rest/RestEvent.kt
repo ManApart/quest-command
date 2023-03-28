@@ -4,5 +4,5 @@ import core.events.TemporalEvent
 import core.thing.Thing
 import time.TimeManager
 
-class RestEvent(override val creature: Thing, val hoursRested: Int, override var timeLeft: Int = hoursRested * TimeManager.ticksInHour) : TemporalEvent {
+data class RestEvent(override val creature: Thing, val hoursRested: Int, override var timeLeft: Int = hoursRested * TimeManager.ticksInHour) : TemporalEvent {
 }

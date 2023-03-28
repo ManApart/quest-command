@@ -48,13 +48,7 @@ class CommandParser(private val commandSource: Player) {
             } else {
                 parseSingleCommand(command)
             }
-            //TODO - move this to even manager
-            var loop = 0
-            while (EventManager.hasUnexecutedEvents() && loop < MAX_EVENT_LOOPS) {
-                EventManager.startEvents()
-                loop++
-            }
-            if (loop == MAX_EVENT_LOOPS) println("Reached max loops, this should not happen!")
+            EventManager.processEvents()
             GameLogger.endCurrent()
         }
     }

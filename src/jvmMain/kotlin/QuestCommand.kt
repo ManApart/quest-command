@@ -11,7 +11,7 @@ import kotlinx.coroutines.runBlocking
 fun main(args: Array<String>) {
     runBlocking {
         GameManager.newOrLoadGame()
-        EventManager.startEvents()
+        EventManager.processEvents()
         if (args.map { it.lowercase().replace("-", "") }.contains("windowed")) {
             runInGui()
         } else {

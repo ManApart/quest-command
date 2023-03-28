@@ -31,7 +31,16 @@ object EventManager {
     /**
      * Called by the main method to execute the queue of events
      */
-    suspend fun startEvents() {
+    suspend fun processEvents() {
+        var loop = 0
+        while (eventQueue.isNotEmpty() && loop < MAX_EVENT_LOOPS) {
+            startEvents()
+            loop++
+        }
+        if (loop == MAX_EVENT_LOOPS) println("Reached max loops, this should not happen!")
+    }
+
+    private suspend fun startEvents() {
         println(eventQueue.map { it.toString() })
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
@@ -42,10 +51,6 @@ object EventManager {
     @Suppress("UNCHECKED_CAST")
     suspend fun <E : Event> getNumberOfMatchingListeners(event: E, ignoring: EventListener<E>): Int {
         return listenerMap[event::class.simpleName!!]?.count { it != ignoring && (it as EventListener<E>).shouldExecute(event) } ?: 0
-    }
-
-    fun hasUnexecutedEvents(): Boolean {
-        return eventQueue.isNotEmpty()
     }
 
     fun getUnexecutedEvents(): List<Event> {
@@ -86,7 +91,7 @@ object EventManager {
             eventsInProgress.removeAll(events)
             events.forEach { completeEvent(it) }
             if (eventQueue.isNotEmpty()) {
-                startEvents()
+                processEvents()
             }
         }
     }

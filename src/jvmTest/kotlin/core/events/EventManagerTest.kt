@@ -49,7 +49,7 @@ class EventManagerTest {
     fun higherPriorityRunsSooner() {
         runBlocking {
             EventManager.postEvent(TestEvent())
-            EventManager.startEvents()
+            EventManager.processEvents()
 
             assertEquals("first", resultList[0])
             assertEquals("second", resultList[1])

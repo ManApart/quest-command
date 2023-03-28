@@ -19,7 +19,7 @@ class ConversationsTest {
         runBlocking {
             EventManager.clear()
             GameManager.newGame(testing = true)
-            runBlocking { EventManager.startEvents() }
+            runBlocking { EventManager.processEvents() }
         }
     }
 

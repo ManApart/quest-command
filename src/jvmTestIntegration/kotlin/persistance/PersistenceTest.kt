@@ -44,7 +44,7 @@ class PersistenceTest {
             EventManager.clear()
             EventManager.reset()
             GameManager.newGame(playerName = "Saved Player", testing = true)
-            EventManager.startEvents()
+            EventManager.processEvents()
             File("./savesTest/").listFiles()?.forEach { it.deleteRecursively() }
         }
     }
@@ -146,7 +146,7 @@ class PersistenceTest {
         runBlocking {
             val preLoadPlayer = GameState.getPlayer("Saved Player")!!
             CommandParsers.parseCommand(preLoadPlayer, "rs 1 && move to wheat && slash wheat && pickup wheat && ne")
-            EventManager.startEvents()
+            EventManager.processEvents()
             preLoadPlayer.thing.properties.tags.add("Saved")
             //subject: thingIsSelf
             //subject: locationIsName
@@ -156,7 +156,7 @@ class PersistenceTest {
             preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
 
             EventManager.postEvent(SaveEvent(preLoadPlayer))
-            EventManager.startEvents()
+            EventManager.processEvents()
             preLoadPlayer.thing.properties.tags.remove("Saved")
             assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
             val equippedItemCount = preLoadPlayer.thing.body.getEquippedItems().size
@@ -165,10 +165,10 @@ class PersistenceTest {
             EventManager.clear()
             EventManager.reset()
             GameManager.newGame(playerName = "Saved Player", testing = true)
-            EventManager.startEvents()
+            EventManager.processEvents()
 
             EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
-            EventManager.startEvents()
+            EventManager.processEvents()
             val postLoadPlayer = GameState.getPlayer("Saved Player")!!
             assertEquals("Saved Player", postLoadPlayer.thing.name)
             assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))

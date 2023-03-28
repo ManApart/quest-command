@@ -34,6 +34,7 @@ class PlayerStatMinned : EventListener<StatMinnedEvent>() {
 
         EventManager.removeInProgressEvents(source.thing)
         with(source.thing) {
+            mind.ai.actions.clear()
             location.getLocation().getCreatures()
                 .filterList { it.mind.getAggroTarget() == this }
                 .forEach { it.mind.clearAggroTarget() }
