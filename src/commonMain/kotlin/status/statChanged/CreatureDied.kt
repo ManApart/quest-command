@@ -23,11 +23,11 @@ class CreatureDied : EventListener<StatMinnedEvent>() {
             .filterList { it.mind.getAggroTarget() == creature }
             .forEach { it.mind.clearAggroTarget() }
 
+        EventManager.removeInProgressEvents(creature)
+        EventManager.postEvent(RemoveScopeEvent(creature))
         creature.inventory.getAllItems().forEach {
             EventManager.postEvent(PlaceItemEvent(creature, it, silent = true))
         }
-        EventManager.removeInProgressEvents(creature)
-        EventManager.postEvent(RemoveScopeEvent(creature))
         EventManager.postEvent(CreatureDiedEvent(creature))
         event.thing.addSoundEffect("Death", "a sharp cry, cut short", 1)
     }

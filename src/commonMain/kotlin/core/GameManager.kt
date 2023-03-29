@@ -60,13 +60,13 @@ object GameManager {
 
     private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
+//        GameState.putDebug(DebugType.VERBOSE_ACTIONS, testing)
+//        GameState.putDebug(DebugType.VERBOSE_AI, testing)
         GameState.properties.values.put(AUTO_LOAD, !testing)
         GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
         GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
-        GameState.putDebug(DebugType.VERBOSE_AI, testing)
-//        GameState.putDebug(DebugType.VERBOSE_ACTIONS, testing)
         GameState.putDebug(DebugType.VERBOSE_TIME, testing)
         GameState.putDebug(DebugType.VERBOSE_WEATHER, testing)
     }

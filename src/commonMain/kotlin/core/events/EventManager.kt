@@ -85,6 +85,7 @@ object EventManager {
     }
 
     fun removeInProgressEvents(creature: Thing) {
+        creature.mind.ai.actions.clear()
         eventsInProgress.removeAll(eventsInProgress.filter { it.creature == creature })
     }
 
