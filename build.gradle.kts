@@ -1,8 +1,8 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 plugins {
-    kotlin("multiplatform") version "1.7.21"
-    kotlin("plugin.serialization") version "1.7.21"
+    kotlin("multiplatform") version "1.8.10"
+    kotlin("plugin.serialization") version "1.8.10"
     `maven-publish`
 }
 
@@ -61,11 +61,13 @@ kotlin {
         }
         withJava()
     }
-    js(LEGACY) {
+    js(IR) {
         binaries.executable()
         browser {
             commonWebpackConfig {
-                cssSupport.enabled = true
+                cssSupport {
+                    enabled.set(true)
+                }
             }
             runTask {
                 devServer = devServer?.copy(port = 3000)
