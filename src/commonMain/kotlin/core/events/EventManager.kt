@@ -1,8 +1,11 @@
 package core.events
 
 import core.DependencyInjector
+import core.GameState
 import core.ai.directAI
+import core.history.displayGlobal
 import core.thing.Thing
+import system.debug.DebugType
 
 const val MAX_EVENT_LOOPS = 100
 
@@ -41,7 +44,7 @@ object EventManager {
     }
 
     private suspend fun startEvents() {
-        println(eventQueue.map { it.toString() })
+        if (GameState.getDebugBoolean(DebugType.VERBOSE_ACTIONS)) displayGlobal(eventQueue.joinToString { it.toString() })
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
         eventCopy.forEach { startEvent(it) }
