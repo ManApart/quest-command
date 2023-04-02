@@ -6,6 +6,7 @@ import core.ai.directAI
 import core.history.displayGlobal
 import core.thing.Thing
 import system.debug.DebugType
+import time.gameTick.GameTickEvent
 
 const val MAX_EVENT_LOOPS = 100
 
@@ -48,7 +49,10 @@ object EventManager {
         val eventCopy = eventQueue.toList()
         eventQueue.clear()
         eventCopy.forEach { startEvent(it) }
-        directAI()
+        val playerTurn = directAI()
+        if (!playerTurn) {
+            tick()
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -79,8 +83,10 @@ object EventManager {
 
     }
 
-    suspend fun tick(timePassed: Int) {
-        eventsInProgress.forEach { it.timeLeft -= timePassed }
+    private suspend fun tick() {
+        val timeToPass = eventsInProgress.minOfOrNull { it.timeLeft } ?: 1
+        eventsInProgress.forEach { it.timeLeft -= timeToPass }
+        postEvent(GameTickEvent(timeToPass))
         completeEvents()
     }
 
@@ -94,9 +100,9 @@ object EventManager {
         if (events.isNotEmpty()) {
             eventsInProgress.removeAll(events)
             events.forEach { completeEvent(it) }
-            if (eventQueue.isNotEmpty()) {
-                processEvents()
-            }
+        }
+        if (eventQueue.isNotEmpty()) {
+            processEvents()
         }
     }
 
