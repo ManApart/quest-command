@@ -72,13 +72,13 @@ class KanbaraCountryside : NetworkResource {
                     restricted(true)
                     connectsTo("Apple Tree Branches", "Kanbara Countryside")
                 }
+                connection("Cave Entrance", x = -100)
             }
 
             locationNode("Apple Tree Branches")
 
-            locationNode("Barren Patch") {
-                connection("Cave Entrance", y = -100)
-            }
+            locationNode("Barren Patch")
+
             locationNode("Cave Entrance") {
                 connection("Cave Mouth")
             }

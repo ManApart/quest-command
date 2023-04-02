@@ -264,7 +264,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(
                 GameState.player,
-                "w && s && take tinder && n && rest 10 && e && s && s && take lantern && t mouth && hold lantern f && ls"
+                "w && s && take tinder && n && rest 10 && e && n && w && take lantern && t mouth && hold lantern f && ls"
             )
             assertEquals("It's too dark to see anything.", GameLogger.getMainHistory().getLastOutput())
             CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")

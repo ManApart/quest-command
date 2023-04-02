@@ -86,8 +86,8 @@ object EventManager {
     private suspend fun tick() {
         val timeToPass = eventsInProgress.minOfOrNull { it.timeLeft } ?: 1
         eventsInProgress.forEach { it.timeLeft -= timeToPass }
-        postEvent(GameTickEvent(timeToPass))
         completeEvents()
+        postEvent(GameTickEvent(timeToPass))
     }
 
     fun removeInProgressEvents(creature: Thing) {
@@ -100,9 +100,6 @@ object EventManager {
         if (events.isNotEmpty()) {
             eventsInProgress.removeAll(events)
             events.forEach { completeEvent(it) }
-        }
-        if (eventQueue.isNotEmpty()) {
-            processEvents()
         }
     }
 

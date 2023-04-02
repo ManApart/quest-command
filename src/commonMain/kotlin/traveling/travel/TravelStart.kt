@@ -31,7 +31,7 @@ class TravelStart : EventListener<TravelStartEvent>() {
             event.currentLocation.isMovingToRestricted(event.destination) -> event.creature.displayToMe("You're not able to get to ${event.destination.name}")
             stamina == 0 -> event.creature.displayToMe("You're too tired to travel.")
             stamina < requiredStamina ->  EventManager.postEvent(MoveEvent(event.creature, destination = connection.source.vector))
-            !event.creature.isSafe() -> event.creature.displayToMe("You can't travel right now.")
+            !event.creature.isSafe() -> event.creature.displayToMe("You can't travel while in danger.")
             event.creature.getEncumbrance() >= 1 -> event.creature.displayToMe("You are too encumbered to travel.")
             else -> {
                 if (!event.quiet) {
