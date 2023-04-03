@@ -13,10 +13,6 @@ suspend fun describeBattle(source: Player) {
         it.display("${it.getDisplayName()} is ${source.position.getDistance(it.position)} away from ${source.thing.getDisplayName()}.")
     }
 
-//    if (!CommandParser.isPlayersTurn()) {
-//        source.display("It is ${CommandParser.commandSource}'s turn.")
-//    }
-
     creatures.forEach {
         it.display("\t${status(it)}")
     }
@@ -30,12 +26,10 @@ private fun status(thing: Thing): String {
 
 private fun printTurnStatus(source: Player, creatures: List<Thing>) {
     val combatantString = creatures.map {
-        ""
-//            //TODO timing
-//        when {
-//            it.mind.ai.action != null -> "${it.name} is preforming an action with ${it.mind.ai.action!!.timeLeft} time left."
-//            else -> "${it.name} is getting ready to make a choice."
-//        }
+        when {
+            it.mind.ai.actions.isNotEmpty()-> "${it.name} is preforming an action with ${it.mind.ai.actions.minOf { action -> action.timeLeft }} time left."
+            else -> "${it.name} is getting ready to make a choice."
+        }
     }.filter { it.isNotBlank() }.joinToString("\n")
 
     if (combatantString.isNotBlank()) {

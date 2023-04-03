@@ -13,7 +13,6 @@ import status.ExpGainedEvent
 import status.stat.CLIMBING
 import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
-import time.ViewTimeEvent
 import traveling.arrive.ArriveEvent
 import traveling.direction.Direction
 import traveling.jump.FallEvent
