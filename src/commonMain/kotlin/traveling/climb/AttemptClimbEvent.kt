@@ -5,4 +5,4 @@ import core.thing.Thing
 import traveling.direction.Direction
 import traveling.location.network.LocationNode
 
-class AttemptClimbEvent(val creature: Thing, val thing: Thing, val thingPart: LocationNode, val desiredDirection: Direction, val quiet: Boolean = false) : Event
+data class AttemptClimbEvent(val creature: Thing, val thing: Thing, val thingPart: LocationNode, val desiredDirection: Direction, val quiet: Boolean = false) : Event

@@ -2,11 +2,9 @@ package use.eat
 
 import core.events.EventListener
 import core.events.EventManager
-import core.history.display
 import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
-import core.utility.then
 import explore.listen.addSoundEffect
 import status.statChanged.StatChangeEvent
 

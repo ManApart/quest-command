@@ -3,7 +3,7 @@ package inventory.putItem
 import core.events.TemporalEvent
 import core.thing.Thing
 
-class TransferItemEvent(
+data class TransferItemEvent(
     override val creature: Thing,
     val item: Thing,
     val source: Thing,
