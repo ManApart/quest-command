@@ -3,6 +3,7 @@ package resources.ai.desire
 import core.GameState
 import core.ai.desire.DesireResource
 import core.ai.desire.desires
+import core.commands.CommandParsers
 import core.thing.Thing
 import status.stat.STAMINA
 import time.TimeManager
@@ -25,6 +26,10 @@ class CommonDesires : DesireResource {
             cond({ _ -> GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) }) {
                 additionalPriority = 2
                 agenda("Eat Food")
+            }
+            cond({ s -> CommandParsers.getConversations().any { it.containsParticipant(s) } }) {
+                priority = 65
+                agenda("Converse")
             }
 
             cond({ s -> GameState.timeManager.isWorkHours() && s.mind.locationByKindExists("MyWorkplace") }) {

@@ -1,5 +1,7 @@
 package core.commands
 
+import conversation.Conversation
+import conversation.ConversationCommandInterceptor
 import core.DependencyInjector
 import core.GameState
 import core.Player
@@ -33,6 +35,10 @@ object CommandParsers {
             parsers[player.name] = CommandParser(player)
         }
         return parsers[player.name]!!
+    }
+
+    fun getConversations(): List<Conversation> {
+        return parsers.values.mapNotNull { it.commandInterceptor }.filter { it is ConversationCommandInterceptor }.map { it as ConversationCommandInterceptor }.map { it.conversation }
     }
 
     private fun loadCommands(): NameSearchableList<Command> {
@@ -101,7 +107,7 @@ object CommandParsers {
 
     suspend fun suggestions(player: Player, args: String): List<String> {
         val input = cleanLine(args)
-        return if (commandNameList.any { it.lowercase() == input.first() }){
+        return if (commandNameList.any { it.lowercase() == input.first() }) {
             val cleanedArgs = if (args.endsWith(" ")) input.removeFirstItem() else input.removeFirstItem().removeLastItem()
             findCommand(input.first()).suggest(player, input.first(), cleanedArgs)
         } else {

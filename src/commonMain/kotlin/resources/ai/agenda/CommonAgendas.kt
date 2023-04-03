@@ -106,6 +106,10 @@ class CommonAgendas : AgendaResource {
             action("Nothing") { creature -> NothingEvent(creature) }
         }
 
+        agenda("Converse") {
+            action("Converse") { creature -> NothingEvent(creature) }
+        }
+
         agenda("Scratch Tree") {
             action("Find Tree") { owner ->
                 val target = owner.location.getLocation().getActivators(perceivedBy = owner).firstOrNull { it.name.contains("Tree") }
