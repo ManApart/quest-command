@@ -20,30 +20,32 @@ actual object ModManager {
         val manifest = if (manifestFile.exists()){
             manifestFile.readLines()
         } else listOf()
+        println("Found ${manifest.size} mods.")
 
         manifest.mapNotNull { fileName ->
             val jarFile = File("./mods/$fileName.jar")
             if (jarFile.exists()) jarFile else null
         }.forEach { loadJar(it) }
+
+        if (manifest.isNotEmpty()) println("Loaded Mods")
     }
 
     private fun loadJar(jarFile: File) {
         val jar = JarFile(jarFile)
 
-        val e: Enumeration<JarEntry> = jar.entries()
-        val urls: Array<URL> = arrayOf(URL("jar:file:" + jarFile.absolutePath + "!/"))
+        val e = jar.entries()
+        val urls = arrayOf(URL("jar:file:" + jarFile.absolutePath + "!/"))
         val cl = URLClassLoader.newInstance(urls)
 
         while (e.hasMoreElements()) {
-            val je: JarEntry = e.nextElement() as JarEntry
+            val je = e.nextElement() as JarEntry
 
             if (je.isDirectory || !je.name.endsWith(".class")) {
                 continue
             }
 
             // -6 because of .class
-            var className: String = je.name.substring(0, je.name.length - 6)
-            className = className.replace('/', '.')
+            val className = je.name.substring(0, je.name.length - 6).replace('/', '.')
 
             val c: Class<*> = cl.loadClass(className)
         }

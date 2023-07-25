@@ -1,5 +1,6 @@
 @file:JvmName("QuestCommand")
 
+import building.ModManager
 import core.GameManager
 import core.GameState
 import core.commands.CommandParsers
@@ -10,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 
 fun main(args: Array<String>) {
     runBlocking {
+        ModManager.applyMods()
         GameManager.newOrLoadGame()
         EventManager.processEvents()
         if (args.map { it.lowercase().replace("-", "") }.contains("windowed")) {
