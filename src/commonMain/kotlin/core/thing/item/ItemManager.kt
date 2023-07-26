@@ -1,5 +1,6 @@
 package core.thing.item
 
+import building.ModManager
 import core.DependencyInjector
 import core.ai.AIManager
 import core.startupLog
@@ -20,7 +21,7 @@ object ItemManager {
     private suspend fun loadItems(): NameSearchableList<Thing> {
         startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
-        return itemsCollection.values().build(ITEM_TAG)
+        return (itemsCollection.values() + ModManager.itemBuilders).build(ITEM_TAG)
     }
 
     suspend fun reset() {

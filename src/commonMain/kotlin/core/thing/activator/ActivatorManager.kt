@@ -1,7 +1,6 @@
 package core.thing.activator
 
 import core.DependencyInjector
-import core.ai.AIManager
 import core.startupLog
 import core.thing.Thing
 import core.thing.activator.dsl.ActivatorsCollection
@@ -9,7 +8,6 @@ import core.thing.build
 import core.thing.thing
 import core.utility.Backer
 import core.utility.NameSearchableList
-import core.utility.lazyM
 import traveling.location.location.LocationThing
 
 const val ACTIVATOR_TAG = "Activator"

@@ -1,5 +1,11 @@
 package building
 
-expect object ModManager {
-    fun applyMods()
+import core.thing.ThingBuilder
+
+object ModManager {
+    val itemBuilders = mutableListOf<ThingBuilder>()
+
+    fun reset(){
+        itemBuilders.clear()
+    }
 }
