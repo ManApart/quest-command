@@ -1,5 +1,6 @@
 package traveling.location.location
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.thing.Thing
@@ -20,8 +21,8 @@ object LocationManager {
         startupLog("Loading Networks.")
         val nodeCollection = DependencyInjector.getImplementation(NetworksCollection::class)
         val locationCollection = DependencyInjector.getImplementation(LocationsCollection::class)
-        val locations = locationCollection.values.build().toNameSearchableList().associateBy { it.name }
-        val nodes = nodeCollection.values.build(locations)
+        val locations = (locationCollection.values + ModManager.locations).build().toNameSearchableList().associateBy { it.name }
+        val nodes = (nodeCollection.values + ModManager.networks).build(locations)
 
         val nodeMap = buildInitialMap(nodes)
         createNeighborsAndNeighborLinks(nodeMap, locations)

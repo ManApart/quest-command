@@ -1,5 +1,6 @@
 package crafting
 
+import building.ModManager
 import core.DependencyInjector
 import core.GameState
 import core.Player
@@ -18,7 +19,7 @@ object RecipeManager {
 
     private suspend fun loadRecipes(): NameSearchableList<Recipe> {
         startupLog("Loading Recipes")
-        return DependencyInjector.getImplementation(RecipesCollection::class).values().build()
+        return (DependencyInjector.getImplementation(RecipesCollection::class).values() + ModManager.recipes).build()
     }
 
     suspend fun reset() {

@@ -1,5 +1,6 @@
 package conversation
 
+import building.ModManager
 import conversation.dsl.Dialogue
 import conversation.dsl.DialogueTree
 import conversation.dsl.DialoguesCollection
@@ -12,7 +13,7 @@ object ConversationManager {
 
     private suspend fun loadDialogue(): List<DialogueTree> {
         startupLog("Loading Dialogue.")
-        return DependencyInjector.getImplementation(DialoguesCollection::class).values()
+        return DependencyInjector.getImplementation(DialoguesCollection::class).values() + ModManager.conversations
     }
 
     suspend fun reset() {

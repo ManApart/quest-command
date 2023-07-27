@@ -1,5 +1,6 @@
 package core.ai
 
+import building.ModManager
 import core.DependencyInjector
 import core.ai.agenda.Agenda
 import core.ai.agenda.AgendasCollection
@@ -18,12 +19,12 @@ object AIManager {
 
     private suspend fun loadDesires(): List<DesireTree> {
         startupLog("Loading AI Desires.")
-        return DependencyInjector.getImplementation(DesiresCollection::class).values()
+        return DependencyInjector.getImplementation(DesiresCollection::class).values() + ModManager.ai
     }
 
     private fun loadAgendas(): Map<String, Agenda> {
         startupLog("Loading AI Agendas.")
-        return DependencyInjector.getImplementation(AgendasCollection::class).values.associateBy { it.name }
+        return (DependencyInjector.getImplementation(AgendasCollection::class).values + ModManager.agendas).associateBy { it.name }
     }
 
     suspend fun reset() {

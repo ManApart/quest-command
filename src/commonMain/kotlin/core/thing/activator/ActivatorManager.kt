@@ -1,5 +1,6 @@
 package core.thing.activator
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.thing.Thing
@@ -19,7 +20,7 @@ object ActivatorManager {
     private suspend fun loadActivators(): NameSearchableList<Thing> {
         startupLog("Loading Activators.")
         val activatorsCollection = DependencyInjector.getImplementation(ActivatorsCollection::class)
-        return activatorsCollection.values().build(ACTIVATOR_TAG)
+        return (activatorsCollection.values() + ModManager.activators).build(ACTIVATOR_TAG)
     }
 
     suspend fun reset() {

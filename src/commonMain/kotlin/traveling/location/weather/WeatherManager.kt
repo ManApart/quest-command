@@ -1,5 +1,6 @@
 package traveling.location.weather
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
@@ -14,7 +15,7 @@ object WeatherManager {
     private fun loadWeather(): NameSearchableList<Weather> {
         startupLog("Loading Weather")
         val collection = DependencyInjector.getImplementation(WeathersCollection::class)
-        return collection.values.toNameSearchableList()
+        return (collection.values + ModManager.weather).toNameSearchableList()
     }
 
     fun reset() {

@@ -1,20 +1,16 @@
 package crafting.material
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
-import core.utility.NameSearchableList
 import core.utility.lazyM
-import core.utility.toNameSearchableList
-import crafting.Recipe
-import crafting.RecipesCollection
-import crafting.build
 
 object MaterialManager {
     private var materials by lazyM { loadMaterials() }
 
     private fun loadMaterials(): Map<String, Material> {
         startupLog("Loading Materials")
-        return (listOf(DEFAULT_MATERIAL) + DependencyInjector.getImplementation(MaterialsCollection::class).values).associateBy { it.name }
+        return (listOf(DEFAULT_MATERIAL) + DependencyInjector.getImplementation(MaterialsCollection::class).values + ModManager.materials).associateBy { it.name }
     }
 
     fun reset() {

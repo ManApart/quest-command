@@ -1,5 +1,6 @@
 package status.effects
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
@@ -17,7 +18,7 @@ object EffectManager {
     private fun loadEffects(): NameSearchableList<EffectBase> {
         startupLog("Loading Effects")
         val parser = DependencyInjector.getImplementation(EffectsCollection::class)
-        return parser.values.toNameSearchableList()
+        return (parser.values + ModManager.effects).toNameSearchableList()
     }
 
     // should effects be parsable from json as well as effect bases?

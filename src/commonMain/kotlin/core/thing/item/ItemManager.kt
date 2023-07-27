@@ -2,14 +2,12 @@ package core.thing.item
 
 import building.ModManager
 import core.DependencyInjector
-import core.ai.AIManager
 import core.startupLog
 import core.thing.Thing
 import core.thing.build
 import core.thing.thing
 import core.utility.Backer
 import core.utility.NameSearchableList
-import core.utility.lazyM
 import traveling.location.location.LocationThing
 
 const val ITEM_TAG = "Item"
@@ -21,7 +19,7 @@ object ItemManager {
     private suspend fun loadItems(): NameSearchableList<Thing> {
         startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
-        return (itemsCollection.values() + ModManager.itemBuilders).build(ITEM_TAG)
+        return (itemsCollection.values() + ModManager.items).build(ITEM_TAG)
     }
 
     suspend fun reset() {

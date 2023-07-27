@@ -1,5 +1,6 @@
 package status.conditions
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
@@ -20,7 +21,7 @@ object ConditionManager {
     private fun loadConditions(): NameSearchableList<ConditionRecipe> {
         startupLog("Loading Conditions.")
         val parser = DependencyInjector.getImplementation(ConditionsCollection::class)
-        return parser.values.toNameSearchableList()
+        return (parser.values + ModManager.conditions).toNameSearchableList()
     }
 
     fun getCondition(name: String, bodyParts: List<Location>): Condition {

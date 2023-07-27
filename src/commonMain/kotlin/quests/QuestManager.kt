@@ -1,5 +1,6 @@
 package quests
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
@@ -11,7 +12,7 @@ object QuestManager {
 
     private fun loadStoryEvents(): List<StoryEvent> {
         startupLog("Loading Story Events.")
-        return DependencyInjector.getImplementation(StoryEventsCollection::class).values.map { it.copy() }
+        return (DependencyInjector.getImplementation(StoryEventsCollection::class).values + ModManager.quests).map { it.copy() }
     }
 
     fun getActiveQuests(): NameSearchableList<Quest> {

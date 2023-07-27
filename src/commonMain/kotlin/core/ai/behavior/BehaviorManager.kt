@@ -1,5 +1,6 @@
 package core.ai.behavior
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.utility.lazyM
@@ -9,7 +10,7 @@ object BehaviorManager {
     private var behaviors by lazyM { loadBehaviors() }
 
     private fun loadBehaviors(): List<Behavior<*>> {
-        return DependencyInjector.getImplementation(BehaviorsCollection::class).values
+        return DependencyInjector.getImplementation(BehaviorsCollection::class).values + ModManager.behaviors
     }
 
     fun reset() {

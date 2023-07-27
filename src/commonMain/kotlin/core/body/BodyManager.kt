@@ -1,5 +1,6 @@
 package core.body
 
+import building.ModManager
 import core.DependencyInjector
 import core.startupLog
 import core.utility.NameSearchableList
@@ -22,8 +23,8 @@ object BodyManager {
         startupLog("Creating Bodies.")
         val bodyCollection = DependencyInjector.getImplementation(BodysCollection::class)
         val bodyPartCollection = DependencyInjector.getImplementation(BodyPartsCollection::class)
-        val bodyParts = bodyPartCollection.values.build().associateBy { it.name }
-        val nodes = bodyCollection.values.build(bodyParts)
+        val bodyParts = (bodyPartCollection.values + ModManager.bodyParts).build().associateBy { it.name }
+        val nodes = (bodyCollection.values + ModManager.bodies).build(bodyParts)
 
         val nodeMap = buildInitialMap(nodes)
         createNeighborsAndNeighborLinks(nodeMap, bodyParts)
