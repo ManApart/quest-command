@@ -1,5 +1,6 @@
 package core.events
 
+import building.ModManager
 import core.DependencyInjector
 import core.GameState
 import core.ai.directAI
@@ -16,7 +17,7 @@ object EventManager {
     private val eventsInProgress = mutableListOf<TemporalEvent>()
 
     fun reset() {
-        listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values
+        listenerMap = DependencyInjector.getImplementation(EventListenerMapCollection::class).values + ModManager.eventListeners
         listenerMap.values.forEach { list -> list.forEach { listener -> listener.reset() } }
     }
 

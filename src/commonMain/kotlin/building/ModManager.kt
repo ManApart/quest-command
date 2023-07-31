@@ -4,6 +4,7 @@ import conversation.dsl.DialogueTree
 import core.ai.agenda.Agenda
 import core.ai.behavior.Behavior
 import core.ai.desire.DesireTree
+import core.events.EventListener
 import core.thing.ThingBuilder
 import crafting.RecipeBuilder
 import crafting.material.Material
@@ -15,6 +16,7 @@ import traveling.location.network.NetworkBuilder
 import traveling.location.weather.Weather
 
 object ModManager {
+    val eventListeners = mutableMapOf<String, MutableList<EventListener<*>>>()
     val activators = mutableListOf<ThingBuilder>()
     val ai = mutableListOf<DesireTree>()
     val agendas = mutableListOf<Agenda>()

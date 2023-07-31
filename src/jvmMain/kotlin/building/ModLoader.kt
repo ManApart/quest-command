@@ -5,9 +5,11 @@ import core.ai.agenda.AgendaResource
 import core.ai.behavior.BehaviorResource
 import core.body.BodyPartResource
 import core.body.BodyResource
+import core.events.EventListener
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.creature.CreatureResource
 import core.thing.item.ItemResource
+import core.utility.putAbsent
 import crafting.RecipeResource
 import crafting.material.MaterialResource
 import kotlinx.coroutines.runBlocking
@@ -18,6 +20,7 @@ import traveling.location.location.LocationResource
 import traveling.location.network.NetworkResource
 import traveling.location.weather.WeatherResource
 import java.io.File
+import java.lang.reflect.ParameterizedType
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarEntry
@@ -56,6 +59,7 @@ private suspend fun loadJar(jarFile: File) {
         val c: Class<*> = cl.loadClass(className)
 
         when {
+            c.superclass == EventListener::class.java -> processListeners(c as Class<EventListener<*>>)
             c.interfaces.contains(ActivatorResource::class.java) -> processActivator(c as Class<ActivatorResource>)
             c.interfaces.contains(AgendaResource::class.java) -> processAgenda(c as Class<AgendaResource>)
             c.interfaces.contains(BehaviorResource::class.java) -> processBehavior(c as Class<BehaviorResource>)
@@ -74,6 +78,12 @@ private suspend fun loadJar(jarFile: File) {
             c.interfaces.contains(WeatherResource::class.java) -> processWeather(c as Class<WeatherResource>)
         }
     }
+}
+
+private fun processListeners(c: Class<EventListener<*>>) {
+    val eventName = ((c.genericSuperclass as ParameterizedType).actualTypeArguments.first() as Class<*>).simpleName
+    ModManager.eventListeners.putAbsent(eventName, mutableListOf())
+    ModManager.eventListeners[eventName]?.add(c.getDeclaredConstructor().newInstance())
 }
 
 private suspend fun processActivator(c: Class<ActivatorResource>) = ModManager.activators.addAll(c.getDeclaredConstructor().newInstance().values())
