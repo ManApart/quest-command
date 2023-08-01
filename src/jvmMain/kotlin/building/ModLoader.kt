@@ -32,15 +32,30 @@ fun loadMods() {
     val manifest = if (manifestFile.exists()) {
         manifestFile.readLines()
     } else listOf()
-    println("Found ${manifest.size} mods.")
 
     runBlocking {
         manifest.mapNotNull { fileName ->
             val jarFile = File("./mods/$fileName.jar")
             if (jarFile.exists()) jarFile else null
-        }.forEach { loadJar(it) }
+        }
+            .also { printModsFound(manifest, it) }
+            .forEach { loadJar(it) }
     }
     if (manifest.isNotEmpty()) println("Loaded Mods")
+}
+
+private fun printModsFound(manifest: List<String>, jarFiles: List<File>) {
+    if (manifest.isNotEmpty()) {
+        if (manifest.size == jarFiles.size) {
+            println("Found ${manifest.size} mods.")
+        } else {
+            val missing = manifest.mapNotNull { fileName ->
+                val jarFile = File("./mods/$fileName.jar")
+                if (!jarFile.exists()) fileName else null
+            }
+            println("Missing ${missing.size} mod jars: ${missing.joinToString()}")
+        }
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
