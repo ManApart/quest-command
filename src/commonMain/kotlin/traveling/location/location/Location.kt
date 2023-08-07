@@ -148,9 +148,7 @@ data class Location(
     }
 
     private fun addThingTo(thing: Thing, listToAddTo: NameSearchableList<Thing>, proxies: List<String>) {
-        if (!getThings().contains(thing)) {
-            listToAddTo.add(thing)
-        }
+        listToAddTo.add(thing)
         if (proxies.isNotEmpty()) {
             listToAddTo.addProxy(thing, proxies)
         }
@@ -336,7 +334,7 @@ data class Location(
     }
 
     fun updateWeather(newWeather: Weather) {
-        if (GameState.getDebugBoolean(DebugType.VERBOSE_WEATHER)){
+        if (GameState.getDebugBoolean(DebugType.VERBOSE_WEATHER)) {
             println("Changing Weather from ${weather.name} to ${newWeather.name}.")
         }
         lastWeatherChange = GameState.timeManager.getTicks()
