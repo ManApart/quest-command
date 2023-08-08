@@ -10,6 +10,7 @@ import core.history.displayToMe
 import core.thing.Thing
 import core.thing.perceivedBy
 import core.utility.filterUniqueByName
+import inventory.pickupItem.getItemCount
 
 class PutItemCommand : core.commands.Command() {
 
@@ -42,9 +43,11 @@ class PutItemCommand : core.commands.Command() {
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val delimiters = listOf(ArgDelimiter(listOf("to", "in")))
         val arguments = Args(args, delimiters)
+        val count = arguments.getNumber() ?: 1
+        val takeAll = args.first() == "all"
         when {
             arguments.isEmpty() && keyword == "put" -> clarifyItemToPlace(source)
-            arguments.hasBase() && (arguments.hasGroup("in") || arguments.hasGroup("to")) -> placeItemInContainer(source, arguments)
+            arguments.hasBase() && (arguments.hasGroup("in") || arguments.hasGroup("to")) -> placeItemInContainer(source, arguments, takeAll, count)
             else -> source.displayToMe("Place what where? Try 'place <item> in <thing>'.")
         }
     }
@@ -57,14 +60,15 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private suspend fun placeItemInContainer(source: Player, args: Args) {
+    private suspend fun placeItemInContainer(source: Player, args: Args, takeAll: Boolean, count: Int) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             val thingString = args.getFirstString("in", "to")
             val destinations = source.thing.currentLocation().getThingsIncludingInventories(thingString).perceivedBy(source.thing).filterUniqueByName()
+            val itemCount = item.getItemCount(takeAll, count)
             when {
                 thingString.isNotBlank() && destinations.isEmpty() -> source.displayToMe("Couldn't find $thingString")
-                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source.thing, item, source.thing, destinations.first(), true))
+                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source.thing, item, source.thing, destinations.first(), itemCount, true))
                 else -> giveToWhat(source, destinations, args.getBaseString())
             }
         } else {
@@ -72,7 +76,7 @@ class PutItemCommand : core.commands.Command() {
         }
     }
 
-    private suspend fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
+    private fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
         source.respond("Couldn't find something to give $itemName to.") {
             message("Give $itemName to what?")
             optionsNamed(creatures)

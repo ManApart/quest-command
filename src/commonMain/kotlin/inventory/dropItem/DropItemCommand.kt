@@ -8,6 +8,7 @@ import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import inventory.pickupItem.getItemCount
 import traveling.location.weather.WeatherManager
 import traveling.position.Vector
 
@@ -23,7 +24,8 @@ class DropItemCommand : core.commands.Command() {
 
     override fun getManual(): String {
         return """
-	Drop <item> - Drop an item an item from your inventory.
+	Drop <item> - Drop an item from your inventory.
+	Drop *<count> <item> - Drop X items from your inventory.
 	Place <item> at <vector> - Place the item at a specific place."""
     }
 
@@ -42,9 +44,11 @@ class DropItemCommand : core.commands.Command() {
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         val arguments = Args(args, delimiters = listOf("at"))
         val vector = parseVector(args) ?: source.position
+        val count = arguments.getNumber() ?: 1
+        val takeAll = args.first() == "all"
         when {
             arguments.isEmpty() -> clarifyItemToDrop(source)
-            arguments.hasBase() -> dropItem(source.thing, arguments, vector)
+            arguments.hasBase() -> dropItem(source.thing, arguments, vector, takeAll, count)
             else -> source.displayToMe("Drop what? Try 'drop <item>'.")
         }
     }
@@ -57,10 +61,10 @@ class DropItemCommand : core.commands.Command() {
         }
     }
 
-    private suspend fun dropItem(source: Thing, args: Args, position: Vector) {
+    private suspend fun dropItem(source: Thing, args: Args, position: Vector, takeAll: Boolean, count: Int) {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
-            EventManager.postEvent(PlaceItemEvent(source, item, position))
+            EventManager.postEvent(PlaceItemEvent(source, item, position, item.getItemCount(takeAll, count)))
         } else {
             source.displayToMe("Couldn't find ${args.getBaseString()}")
         }

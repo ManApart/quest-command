@@ -8,6 +8,7 @@ data class TransferItemEvent(
     val item: Thing,
     val source: Thing,
     val destination: Thing,
+    val count: Int = 1,
     val silent: Boolean = false,
     override var timeLeft: Int = if(creature.isPlayer()) 1 else 0
 ) : TemporalEvent

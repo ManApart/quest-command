@@ -8,26 +8,29 @@ import core.utility.asSubject
 import core.utility.isAre
 import explore.listen.addSoundEffect
 import traveling.position.Vector
+import kotlin.math.min
 
 class PlaceItem : EventListener<PlaceItemEvent>() {
     override suspend fun complete(event: PlaceItemEvent) {
         if (event.creature.canReach(event.position)) {
-            placeItem(event.creature, event.item, event.position, event.silent)
+            placeItem(event.creature, event.item, event.position, event.count, event.silent)
         } else {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to place at ${event.position}." }
         }
     }
 
-    private suspend fun placeItem(source: Thing, item: Thing, position: Vector, silent: Boolean) {
-        if (item.properties.getCount() > 1) {
-            item.properties.incCount(-1)
+    private suspend fun placeItem(source: Thing, item: Thing, position: Vector, desiredCount: Int, silent: Boolean) {
+        val count = min(item.properties.getCount(), desiredCount)
+        val newStack = if (count == item.properties.getCount()) item else item.copy(count)
+        if (item.properties.getCount() > count) {
+            item.properties.incCount(-count)
         } else {
             source.inventory.remove(item)
         }
-        item.location = source.location
-        item.position = position
-        source.location.getLocation().addThing(item)
-        EventManager.postEvent(ItemDroppedEvent(source, item, silent))
+        newStack.location = source.location
+        newStack.position = position
+        source.location.getLocation().addThing(newStack)
+        EventManager.postEvent(ItemDroppedEvent(source, newStack, silent))
         source.addSoundEffect("Placed Item", "a soft thud", 1)
     }
 }

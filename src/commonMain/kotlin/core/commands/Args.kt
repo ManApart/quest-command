@@ -92,12 +92,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
      * Get the first argument that is a number and return it if it exists
      */
     fun getNumber(): Int? {
-        args.forEach {
-            if (it.toIntOrNull() != null) {
-                return it.toInt()
-            }
-        }
-        return null
+        return args.firstNotNullOfOrNull { it.toIntOrNull() }
     }
 
     fun getBaseNumber(): Int? {
