@@ -82,10 +82,10 @@ class Tutorial : StoryEventResource {
             )
         ),
 
-        StoryEvent("Tutorial", 90, "I should travel to Barren Field.",
+        StoryEvent("Tutorial", 90, "I should travel to Barren Patch.",
             ConditionalEvents(InteractEvent::class,
                 { event, _ -> event.creature.isPlayer() && event.interactionTarget.name == "Apple Pie Recipe" },
-                { event, _ -> listOfNotNull(eventWithPlayer(event.creature) { MessageEvent(it, "Once I'm done here I should travel to Barren Field.") }) }
+                { event, _ -> listOfNotNull(eventWithPlayer(event.creature) { MessageEvent(it, "Once I'm done here I should travel to Barren Patch.") }) }
             )
         ),
 
