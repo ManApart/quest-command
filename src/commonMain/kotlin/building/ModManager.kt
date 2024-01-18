@@ -3,6 +3,8 @@ package building
 import conversation.dsl.DialogueTree
 import core.ai.agenda.Agenda
 import core.ai.behavior.Behavior
+import core.ai.composableExp.AIPackage
+import core.ai.composableExp.AIPackageTemplate
 import core.ai.desire.DesireTree
 import core.events.EventListener
 import core.thing.ThingBuilder
@@ -19,6 +21,7 @@ object ModManager {
     val eventListeners = mutableMapOf<String, MutableList<EventListener<*>>>()
     val activators = mutableListOf<ThingBuilder>()
     val ai = mutableListOf<DesireTree>()
+    val ai2 = mutableListOf<AIPackageTemplate>()
     val agendas = mutableListOf<Agenda>()
     val behaviors = mutableListOf<Behavior<*>>()
     val bodies = mutableListOf<NetworkBuilder>()
@@ -38,6 +41,7 @@ object ModManager {
     fun reset(){
         activators.clear()
         ai.clear()
+        ai2.clear()
         agendas.clear()
         behaviors.clear()
         bodies.clear()

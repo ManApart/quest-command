@@ -6,6 +6,9 @@ import core.ai.agenda.Agenda
 import core.ai.agenda.AgendaResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
+import core.ai.composableExp.AIPackage
+import core.ai.composableExp.AIPackageTemplate
+import core.ai.composableExp.AIPackageTemplateResource
 import core.ai.desire.DesireResource
 import core.ai.desire.DesireTree
 import core.body.BodyPartResource
@@ -61,6 +64,7 @@ object ReflectionTools {
 
         generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
         generateResourcesFile(AgendaResource::class, Agenda::class)
+        generateResourcesFile(AIPackageTemplateResource::class, AIPackageTemplate::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
         generateResourcesFile(BodyResource::class, NetworkBuilder::class)
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
