@@ -13,6 +13,7 @@ import core.thing.Thing
 class AIPackageTemplateBuilder(val name: String) {
     private val templates = mutableListOf<String>()
     private val ideas = mutableListOf<Idea>()
+    private val criteriaChildren = mutableMapOf<suspend (Thing) -> Boolean, IdeasBuilder>()
 
 
     fun build(): AIPackageTemplate {
@@ -25,9 +26,29 @@ class AIPackageTemplateBuilder(val name: String) {
         ideas.add(IdeaBuilder(name).apply(initializer).build())
     }
 
+    fun criteria(criteria: suspend (Thing) -> Boolean, initializer: IdeasBuilder.() -> Unit){
+        criteriaChildren[criteria] = IdeasBuilder().apply(initializer)
+    }
+
 }
 
 //DO list of
 fun aiPackage(name: String, initializer: AIPackageTemplateBuilder.() -> Unit): AIPackageTemplate {
     return AIPackageTemplateBuilder(name).apply(initializer).build()
+}
+
+class AIPackageTemplatesBuilder {
+    internal val children = mutableListOf<AIPackageTemplateBuilder>()
+    fun aiPackage(item: AIPackageTemplateBuilder){
+        children.add(item)
+    }
+
+    fun aiPackage(name: String, initializer: AIPackageTemplateBuilder.() -> Unit){
+        children.add(AIPackageTemplateBuilder(name).apply(initializer))
+    }
+
+}
+
+fun aiPackages(initializer: AIPackageTemplatesBuilder.() -> Unit): List<AIPackageTemplate> {
+    return AIPackageTemplatesBuilder().apply(initializer).children.map { it.build() }
 }
