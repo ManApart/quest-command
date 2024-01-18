@@ -1,6 +1,5 @@
 package core.ai.composableExp
 
-import core.events.Event
 import core.thing.Thing
 
 //Build all the templates, but don't flatten them
@@ -12,18 +11,25 @@ import core.thing.Thing
 
 class AIPackageTemplateBuilder(val name: String) {
     private val templates = mutableListOf<String>()
-    private val ideas = mutableListOf<Idea>()
+    private val ideas = mutableListOf<IdeaBuilder>()
     private val criteriaChildren = mutableMapOf<suspend (Thing) -> Boolean, IdeasBuilder>()
-
+    private val priorityOverride = mutableMapOf<String, Int>()
 
     fun build(): AIPackageTemplate {
-        return AIPackageTemplate(name, templates, ideas)
+        return AIPackageTemplate(name, templates, priorityOverride, ideas.map { it.build(name) })
     }
 
     fun template(vararg names: String) = this.templates.addAll(names)
 
-    fun idea(name: String, initializer: IdeaBuilder.() -> Unit = {}) {
-        ideas.add(IdeaBuilder(name).apply(initializer).build())
+    /**
+    Override the priority of an idea inherited from a template.
+     */
+    fun priority(ideaName: String, newPriority: Int){
+
+    }
+
+    fun idea(name: String, priority: Int = 20, initializer: IdeaBuilder.() -> Unit = {}) {
+        ideas.add(IdeaBuilder(name, priority).apply(initializer))
     }
 
     fun criteria(criteria: suspend (Thing) -> Boolean, initializer: IdeasBuilder.() -> Unit){

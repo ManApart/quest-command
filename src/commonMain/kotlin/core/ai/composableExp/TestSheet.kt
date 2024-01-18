@@ -8,7 +8,7 @@ fun testAiPackages() {
         aiPackage("animal") {
             criteria({ !it.isSafe() }) {
                 criteria({ !it.isSafe() }) {
-                    idea("eat") {
+                    idea("eat", 10) {
                         criteria { !it.isSafe() }
                         action { EatFoodEvent(it, it) }
                     }
@@ -20,6 +20,7 @@ fun testAiPackages() {
             }
         }
         aiPackage("predator") {
+            priority("eat", 15)
             template("animal")
             idea("hunt") {
                 criteria { it.soul.getConditions().isEmpty() }

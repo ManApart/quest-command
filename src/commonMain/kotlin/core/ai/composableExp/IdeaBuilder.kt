@@ -4,12 +4,11 @@ import core.events.Event
 import core.thing.Thing
 import kotlinx.coroutines.NonCancellable.children
 
-class IdeaBuilder(val name: String) {
+class IdeaBuilder(val name: String, val priority: Int) {
     internal var criteria: suspend (Thing) -> Boolean = { true }
     private var action: suspend (Thing) -> List<Event> = { listOf() }
 
-
-    fun build(packageName: String) = Idea("$packageName-$name", criteria, action)
+    fun build(packageName: String) = Idea("$packageName-$name", priority, criteria, action)
 
     fun criteria(criteria: suspend (Thing) -> Boolean) {
         this.criteria = criteria
@@ -41,8 +40,8 @@ class IdeasBuilder {
         children.add(item)
     }
 
-    fun idea(name: String, initializer: IdeaBuilder.() -> Unit) {
-        children.add(IdeaBuilder(name).apply(initializer))
+    fun idea(name: String, priority: Int = 20, initializer: IdeaBuilder.() -> Unit) {
+        children.add(IdeaBuilder(name, priority).apply(initializer))
     }
 
     fun criteria(criteria: suspend (Thing) -> Boolean, initializer: IdeasBuilder.() -> Unit) {
