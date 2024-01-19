@@ -18,10 +18,6 @@ class CommonPackages: AIPackageTemplateResource {
                         criteria { !it.isSafe() }
                         action { EatFoodEvent(it, it) }
                     }
-                    idea("wait") {
-                        criteria { !it.isSafe() }
-                        action { EatFoodEvent(it, it) }
-                    }
                 }
             }
         }

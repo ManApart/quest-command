@@ -1,6 +1,7 @@
 package core.ai.packages
 
 import core.thing.Thing
+import core.utility.map
 
 //Build all the templates, but don't flatten them
 //Using the dependency injection, we could have many things producing the templates
@@ -16,7 +17,8 @@ class AIPackageTemplateBuilder(val name: String) {
     private val priorityOverride = mutableMapOf<String, Int>()
 
     fun build(): AIPackageTemplate {
-        return AIPackageTemplate(name, templates, priorityOverride, ideas.map { it.build(name) })
+        val childIdeas = criteriaChildren.flatMap { (parentCriteria, builder) -> builder.getChildren(parentCriteria) }
+        return AIPackageTemplate(name, templates, priorityOverride, (ideas + childIdeas).map { it.build(name) })
     }
 
     fun template(vararg names: String) = this.templates.addAll(names)
@@ -25,7 +27,7 @@ class AIPackageTemplateBuilder(val name: String) {
     Override the priority of an idea inherited from a template.
      */
     fun priority(ideaName: String, newPriority: Int){
-
+        priorityOverride[ideaName] = newPriority
     }
 
     fun idea(name: String, priority: Int = 20, initializer: IdeaBuilder.() -> Unit = {}) {

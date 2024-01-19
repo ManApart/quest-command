@@ -10,8 +10,8 @@ data class AIPackageTemplate(val name: String, val subPackages: List<String>, va
                     ?: subPackage.flatten(reference, flattenedReference).also { flattenedReference[subPackage.name] = it }.ideas.values.flatten()
             }.map { idea ->
                 priorityOverride[it.name]?.let { idea.copy(priority = it) } ?: idea
-            }
-            AIPackage(name, ideas + subIdeas)
+            }.map { it.copy(name = "$name-${it.name}")}
+            AIPackage(name, ideas + subIdeas).also { flattenedReference[name] = it }
         }
     }
 }
