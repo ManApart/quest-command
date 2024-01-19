@@ -1,4 +1,4 @@
-package core.ai.composableExp
+package core.ai.packages
 
 interface AIPackageTemplateResource {
     val values: List<AIPackageTemplate>

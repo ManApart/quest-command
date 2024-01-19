@@ -14,6 +14,7 @@ class ValidationTest {
         runBlocking {
             val warnings =
                 ActivatorValidator().validate() +
+                        AIPackageValidator().validate() +
                         CommandValidator().validate() +
                         QuestValidator().validate() +
                         DesireValidator().validate()

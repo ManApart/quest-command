@@ -3,8 +3,7 @@ package building
 import conversation.dsl.DialogueTree
 import core.ai.agenda.Agenda
 import core.ai.behavior.Behavior
-import core.ai.composableExp.AIPackage
-import core.ai.composableExp.AIPackageTemplate
+import core.ai.packages.AIPackageTemplate
 import core.ai.desire.DesireTree
 import core.events.EventListener
 import core.thing.ThingBuilder

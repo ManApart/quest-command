@@ -6,9 +6,8 @@ import core.ai.agenda.Agenda
 import core.ai.agenda.AgendaResource
 import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
-import core.ai.composableExp.AIPackage
-import core.ai.composableExp.AIPackageTemplate
-import core.ai.composableExp.AIPackageTemplateResource
+import core.ai.packages.AIPackageTemplate
+import core.ai.packages.AIPackageTemplateResource
 import core.ai.desire.DesireResource
 import core.ai.desire.DesireTree
 import core.body.BodyPartResource

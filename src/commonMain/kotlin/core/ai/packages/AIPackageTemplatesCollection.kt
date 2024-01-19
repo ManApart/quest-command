@@ -1,5 +1,5 @@
-package core.ai.composableExp
-import core.ai.composableExp.AIPackageTemplate
+package core.ai.packages
+import core.ai.packages.AIPackageTemplate
 
 interface AIPackageTemplatesCollection {
     val values: List<AIPackageTemplate>

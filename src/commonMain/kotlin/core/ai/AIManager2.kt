@@ -2,8 +2,8 @@ package core.ai
 
 import building.ModManager
 import core.DependencyInjector
-import core.ai.composableExp.AIPackage
-import core.ai.composableExp.AIPackageTemplatesCollection
+import core.ai.packages.AIPackage
+import core.ai.packages.AIPackageTemplatesCollection
 import core.startupLog
 import core.utility.lazyM
 

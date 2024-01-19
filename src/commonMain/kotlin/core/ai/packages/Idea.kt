@@ -1,4 +1,4 @@
-package core.ai.composableExp
+package core.ai.packages
 
 import core.events.Event
 import core.thing.Thing

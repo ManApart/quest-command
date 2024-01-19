@@ -1,12 +1,8 @@
-package core.ai.composableExp
+package core.ai.packages
 
 
-//TODO - we can validate string references before flattening
-//Validate
-// - package name unique
-// - idea name unique
-// - string references exist
 data class AIPackageTemplate(val name: String, val subPackages: List<String>, val priorityOverride: Map<String, Int>, val ideas: List<Idea>) {
+
     fun flatten(reference: Map<String, AIPackageTemplate>, flattenedReference: MutableMap<String, AIPackage>): AIPackage {
         return flattenedReference[name] ?: let {
             val subIdeas = subPackages.mapNotNull { reference[it] }.flatMap { subPackage ->

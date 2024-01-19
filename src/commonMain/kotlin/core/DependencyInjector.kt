@@ -6,8 +6,8 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.ai.agenda.AgendasCollection
 import core.ai.agenda.AgendasGenerated
-import core.ai.composableExp.AIPackageTemplatesCollection
-import core.ai.composableExp.AIPackageTemplatesGenerated
+import core.ai.packages.AIPackageTemplatesCollection
+import core.ai.packages.AIPackageTemplatesGenerated
 import core.ai.desire.DesiresCollection
 import core.ai.desire.DesiresGenerated
 import core.body.BodyPartsCollection
