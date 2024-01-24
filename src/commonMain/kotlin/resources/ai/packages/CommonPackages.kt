@@ -22,8 +22,10 @@ class CommonPackages: AIPackageTemplateResource {
             }
         }
         aiPackage("predator") {
-            priority("eat", 15)
             template("animal")
+            priority("animal-eat", 15)
+            drop("animal-wait")
+
             idea("hunt") {
                 criteria { it.soul.getConditions().isEmpty() }
                 action { RestEvent(it, 1) }
