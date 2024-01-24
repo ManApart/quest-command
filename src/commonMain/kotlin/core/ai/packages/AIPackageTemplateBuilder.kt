@@ -2,12 +2,9 @@ package core.ai.packages
 
 import core.thing.Thing
 
-//Build all the templates, but don't flatten them
-//Using the dependency injection, we could have many things producing the templates
-//Once all templates generated, validate / transform them into ai packages
 //A mind references a single ai package by string
 //Ideas _should_ only have a single instance, so can possibly be optimized
-
+// How do we specify additional priority? Do we need to?
 
 class AIPackageTemplateBuilder(val name: String) {
     private val templates = mutableListOf<String>()
@@ -26,11 +23,11 @@ class AIPackageTemplateBuilder(val name: String) {
     /**
     Override the priority of an idea inherited from a template.
      */
-    fun priority(ideaName: String, newPriority: Int){
+    fun priority(ideaName: String, newPriority: Int) {
         priorityOverride[ideaName] = newPriority
     }
 
-    fun drop(vararg ideaName: String){
+    fun drop(vararg ideaName: String) {
         dropped.addAll(ideaName)
     }
 
@@ -38,8 +35,13 @@ class AIPackageTemplateBuilder(val name: String) {
         ideas.add(IdeaBuilder(name, priority).apply(initializer))
     }
 
-    fun criteria(criteria: suspend (Thing) -> Boolean, initializer: IdeasBuilder.() -> Unit){
-        criteriaChildren[criteria] = IdeasBuilder().apply(initializer)
+    fun tagged(tag: String, initializer: IdeasBuilder.() -> Unit) {
+        val cond: suspend (Thing) -> Boolean = { it.properties.tags.has(tag) }
+        criteriaChildren[cond] = IdeasBuilder().apply(initializer)
+    }
+
+    fun cond(condition: suspend (Thing) -> Boolean, initializer: IdeasBuilder.() -> Unit) {
+        criteriaChildren[condition] = IdeasBuilder().apply(initializer)
     }
 
 }
@@ -51,11 +53,11 @@ fun aiPackage(name: String, initializer: AIPackageTemplateBuilder.() -> Unit): A
 
 class AIPackageTemplatesBuilder {
     internal val children = mutableListOf<AIPackageTemplateBuilder>()
-    fun aiPackage(item: AIPackageTemplateBuilder){
+    fun aiPackage(item: AIPackageTemplateBuilder) {
         children.add(item)
     }
 
-    fun aiPackage(name: String, initializer: AIPackageTemplateBuilder.() -> Unit){
+    fun aiPackage(name: String, initializer: AIPackageTemplateBuilder.() -> Unit) {
         children.add(AIPackageTemplateBuilder(name).apply(initializer))
     }
 

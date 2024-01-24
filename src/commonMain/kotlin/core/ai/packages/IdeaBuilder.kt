@@ -9,15 +9,15 @@ class IdeaBuilder(val name: String, val priority: Int) {
 
     fun build(packageName: String) = Idea("$packageName-$name", priority, criteria, action)
 
-    fun criteria(criteria: suspend (Thing) -> Boolean) {
-        this.criteria = criteria
+    fun cond(condition: suspend (Thing) -> Boolean) {
+        this.criteria = condition
     }
 
     fun actions(action: suspend (Thing) -> List<Event>) {
         this.action = action
     }
 
-    fun action(action: suspend (Thing) -> Event) {
+    fun act(action: suspend (Thing) -> Event) {
         this.action = { listOf(action(it)) }
     }
 
