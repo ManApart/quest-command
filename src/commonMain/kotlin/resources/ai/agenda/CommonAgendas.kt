@@ -37,7 +37,7 @@ class CommonAgendas : AgendaResource {
         }
 
         agendaAction("Eat Targeted Food") { creature ->
-            creature.mind.getUseTarget()?.let { target ->
+            creature.mind.getUseTargetThing()?.let { target ->
                 EatFoodEvent(creature, target)
             }
         }
@@ -90,12 +90,12 @@ class CommonAgendas : AgendaResource {
         agenda("Move to Use Target") {
             actionDetailed("Move to Use Target") {
                 shouldSkip { creature ->
-                    creature.mind.getUseTarget()?.position?.let {
+                    creature.mind.getUseTargetThing()?.position?.let {
                         creature.canReach(it)
                     }
                 }
                 result { creature ->
-                    creature.mind.getUseTarget()?.position?.let {
+                    creature.mind.getUseTargetThing()?.position?.let {
                         startMoveEvent(creature, destination = it)
                     }
                 }
@@ -121,7 +121,7 @@ class CommonAgendas : AgendaResource {
             agenda("Move to Use Target")
 
             action("Scratch Tree") { creature ->
-                creature.mind.getUseTarget()?.let { target ->
+                creature.mind.getUseTargetThing()?.let { target ->
                     clawAttack(target, creature)
                 }
             }
@@ -186,7 +186,7 @@ class CommonAgendas : AgendaResource {
         }
 
         agendaAction("Interact Target") { creature ->
-            creature.mind.getUseTarget()?.let { target ->
+            creature.mind.getUseTargetThing()?.let { target ->
                 InteractEvent(creature, target)
             }
         }

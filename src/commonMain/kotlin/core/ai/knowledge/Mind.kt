@@ -102,18 +102,12 @@ data class Mind(
         }
     }
 
-    fun setUseTarget(enemy: Thing) {
-        learn(Fact(Subject(enemy), "useTarget"))
-    }
-
-    suspend fun getUseTarget(): Thing? {
+    suspend fun getUseTargetThing(): Thing? {
         return knowsThingByKind("useTarget")
     }
 
-    suspend fun clearUseTarget() {
-        getAggroTarget()?.let {
-            memory.forget(Fact(Subject(it), "useTarget"))
-        }
+    fun getUseTarget(): Fact? {
+        return memory.getFirstFact("useTarget")
     }
 
 }

@@ -8,6 +8,10 @@ data class CreatureMemory(
 ) {
     constructor(facts: List<Fact>, listFacts: List<ListFact>) : this(facts.parsedFacts(), listFacts.parsedListFacts())
 
+    fun getFirstFact(kind: String): Fact? {
+        return facts[kind]?.values?.firstOrNull()
+    }
+
     fun getFact(source: Subject, kind: String): Fact? {
         return facts[kind]?.get(source)
     }
@@ -47,6 +51,11 @@ data class CreatureMemory(
 
     fun forget(fact: ListFact) {
         listFacts.remove(fact.kind)
+    }
+
+    fun forget(kind: String){
+        facts.remove(kind)
+        listFacts.remove(kind)
     }
 
     fun forget() {
