@@ -25,6 +25,8 @@ class CommonPackages : AIPackageTemplateResource {
             }
 
             //TODO - need move to location as well
+            //If usetarget in different location, create map to get there
+            //  map available, move to location
             idea("Move to Use Target", 50) {
                 cond { it.hasUseTarget() && !it.canReach(it.mind.getUseTargetThing()!!.position) }
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
