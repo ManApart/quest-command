@@ -70,6 +70,9 @@ kotlin {
     }
     js(IR) {
         binaries.executable()
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
+        }
         browser {
             commonWebpackConfig {
                 cssSupport {
