@@ -1,5 +1,8 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+
 plugins {
     kotlin("multiplatform") version "2.1.0"
     kotlin("plugin.serialization") version "2.1.0"
@@ -14,21 +17,22 @@ repositories {
 
 kotlin {
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "17"
+        withJava()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_19)
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
 
-        this@kotlin.sourceSets {
-            val jvmTestIntegration by creating {
-                dependsOn(this@sourceSets["jvmMain"])
-            }
-            val jvmTools by creating {
-                dependsOn(this@sourceSets["jvmMain"])
-            }
-        }
+//        this@kotlin.sourceSets {
+//            val jvmTestIntegration by creating {
+//                dependsOn(this@sourceSets["jvmMain"])
+//            }
+//            val jvmTools by creating {
+//                dependsOn(this@sourceSets["jvmMain"])
+//            }
+//        }
         compilations {
             val main by getting
             val testIntegration by compilations.creating {
@@ -59,7 +63,6 @@ kotlin {
                 }
             }
         }
-        withJava()
     }
     js(IR) {
         binaries.executable()
