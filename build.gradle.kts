@@ -1,8 +1,8 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 plugins {
-    kotlin("multiplatform") version "2.0.0"
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("multiplatform") version "2.1.0"
+    kotlin("plugin.serialization") version "2.1.0"
     `maven-publish`
 }
 
@@ -21,10 +21,8 @@ kotlin {
             useJUnitPlatform()
         }
 
-
         this@kotlin.sourceSets {
             val jvmTestIntegration by creating {
-
                 dependsOn(this@sourceSets["jvmMain"])
             }
             val jvmTools by creating {
@@ -72,7 +70,7 @@ kotlin {
                 }
             }
             runTask {
-                devServer = devServer?.copy(port = 3000)
+                devServer = devServer.copy(port = 3000)
             }
         }
     }
