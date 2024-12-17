@@ -15,7 +15,6 @@ actual class LazyMutable<T> actual constructor(val initializer: () -> T) : ReadW
 
     @Suppress("UNCHECKED_CAST")
     actual override fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        println("test")
         return if (prop == UNINITIALIZED_VALUE) {
             synchronized(this) {
                 return if (prop == UNINITIALIZED_VALUE) initializer().also { prop = it } else prop as T

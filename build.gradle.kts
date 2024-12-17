@@ -25,19 +25,12 @@ kotlin {
             useJUnitPlatform()
         }
 
-//        this@kotlin.sourceSets {
-//            val jvmTestIntegration by creating {
-//                dependsOn(this@sourceSets["jvmMain"])
-//            }
-//            val jvmTools by creating {
-//                dependsOn(this@sourceSets["jvmMain"])
-//            }
-//        }
         compilations {
             val main by getting
             val testIntegration by compilations.creating {
                 defaultSourceSet {
                     dependencies {
+                        implementation(project)
                         implementation(main.compileDependencyFiles + main.output.classesDirs)
                         implementation(kotlin("test-junit"))
                     }
@@ -48,10 +41,20 @@ kotlin {
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
                     testClassesDirs = output.classesDirs
                 }
+                tasks.register<Test>("test-all") {
+                    description = "Run unit AND integration tests"
+                    dependsOn("jvmTest")
+                    dependsOn("test-integration")
+                    group = "verification"
+                    description = "Runs the integration tests."
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    testClassesDirs = output.classesDirs
+                }
             }
             val tools by compilations.creating {
                 defaultSourceSet {
                     dependencies {
+                        implementation(project)
                         implementation(main.compileDependencyFiles + main.output.classesDirs)
                     }
                 }
@@ -111,11 +114,7 @@ kotlin {
         val jsTest by getting
     }
 
-    task("test-all") {
-        description = "Run unit AND integration tests"
-        dependsOn("test")
-        dependsOn("test-integration")
-    }
+
 }
 
 tasks.getByName<Test>("jvmTest") {
@@ -135,8 +134,4 @@ publishing {
             }
         }
     }
-//    publications {
-//        register<MavenPublication>("gpr") {
-//        }
-//    }
 }
