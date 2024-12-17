@@ -1,5 +1,6 @@
 package core.utility
 
+import kotlinx.atomicfu.locks.synchronized
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

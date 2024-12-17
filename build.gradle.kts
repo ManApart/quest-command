@@ -1,8 +1,8 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 plugins {
-    kotlin("multiplatform") version "1.8.10"
-    kotlin("plugin.serialization") version "1.8.10"
+    kotlin("multiplatform") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     `maven-publish`
 }
 
@@ -21,12 +21,14 @@ kotlin {
             useJUnitPlatform()
         }
 
-        sourceSets {
+
+        this@kotlin.sourceSets {
             val jvmTestIntegration by creating {
-                dependsOn(sourceSets["jvmMain"])
+
+                dependsOn(this@sourceSets["jvmMain"])
             }
             val jvmTools by creating {
-                dependsOn(sourceSets["jvmMain"])
+                dependsOn(this@sourceSets["jvmMain"])
             }
         }
         compilations {
@@ -115,7 +117,7 @@ kotlin {
     }
 }
 
-tasks.getByName<Test>("test") {
+tasks.getByName<Test>("jvmTest") {
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }

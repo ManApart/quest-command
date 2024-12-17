@@ -141,3 +141,4 @@ bin/
 hidden-gradle.properties
 kotlin-js-store/
 mods/
+.kotlin/

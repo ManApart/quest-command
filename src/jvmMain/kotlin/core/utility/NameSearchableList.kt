@@ -1,5 +1,7 @@
 package core.utility
 
+import java.util.*
+
 actual class NameSearchableList<N : Named> actual constructor() : MutableList<N>, ArrayList<N>() {
     private val proxies = HashMap<String, N>()
 
