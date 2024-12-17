@@ -19,7 +19,8 @@ kotlin {
     jvm {
         withJava()
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_19)
+            jvmTarget.set(JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
