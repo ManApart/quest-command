@@ -20,7 +20,7 @@ kotlin {
     jvm {
         withJava()
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_19)
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
