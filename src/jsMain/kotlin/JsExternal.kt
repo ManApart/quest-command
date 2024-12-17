@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 import FakeSync.promise
 import kotlin.js.Promise
 

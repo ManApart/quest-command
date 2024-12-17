@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 
@@ -16,11 +14,13 @@ repositories {
 }
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
     jvm {
         withJava()
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
-            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -70,9 +70,6 @@ kotlin {
     }
     js(IR) {
         binaries.executable()
-        compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
         browser {
             commonWebpackConfig {
                 cssSupport {

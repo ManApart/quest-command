@@ -5,6 +5,25 @@ expect class NameSearchableList<N : Named>() : MutableList<N> {
     constructor(items: Iterable<N>)
     constructor(items: NameSearchableList<N>)
     constructor(items: Iterable<N>, defaultIfEmpty: N)
+    override fun get(index: Int): N
+    override fun add(element: N): Boolean
+    override fun add(index: Int, element: N)
+    override fun addAll(index: Int, elements: Collection<N>): Boolean
+    override fun addAll(elements: Collection<N>): Boolean
+    override fun removeAll(elements: Collection<N>): Boolean
+    override fun retainAll(elements: Collection<N>): Boolean
+    override fun set(index: Int, element: N): N
+    override fun removeAt(index: Int): N
+    override fun listIterator(): MutableListIterator<N>
+    override fun listIterator(index: Int): MutableListIterator<N>
+    override fun subList(fromIndex: Int, toIndex: Int): MutableList<N>
+    override fun isEmpty(): Boolean
+    override fun contains(element: N): Boolean
+    override fun containsAll(elements: Collection<N>): Boolean
+    override fun iterator(): MutableIterator<N>
+    override fun indexOf(element: N): Int
+    override fun lastIndexOf(element: N): Int
+    override val size: Int
     override fun clear()
     override fun toString(): String
     fun <R : Comparable<R>> sortedBy(selector: (N) -> R?): NameSearchableList<N>
