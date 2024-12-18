@@ -28,7 +28,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
-        run: ./gradlew build jar
+        run: ./gradlew build jvmJar
       - name: Docker Build
         run: docker build . -t manapart/quest-command:dev
       - name: Login to DockerHub

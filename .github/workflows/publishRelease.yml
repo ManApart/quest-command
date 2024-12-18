@@ -28,7 +28,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build with Gradle
-        run: ./gradlew build jar
+        run: ./gradlew build jvmJar
       - name: Release
         uses: ncipollo/release-action@v1
         with:
