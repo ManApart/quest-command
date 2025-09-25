@@ -28,6 +28,28 @@ kotlin {
 
         compilations {
             val main by getting
+
+            compilations {
+                tasks.withType<Jar> {
+                    manifest {
+                        attributes["Main-Class"] = "QuestCommand"
+                    }
+                    from({
+                        configurations["jvmRuntimeClasspath"].filter { it.name.endsWith("jar") }.map { zipTree(it) }
+                    })
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                }
+            }
+
+            tasks.register<JavaExec>("jvmRun") {
+                group = "run"
+                description = "Runs the JVM entrypoint."
+                classpath = main.compileDependencyFiles + main.runtimeDependencyFiles + main.output.allOutputs
+                mainClass.set("QuestCommand") // use the fully qualified name if it’s in a package
+                standardInput = System.`in`
+            }
+
+
             val testIntegration by compilations.creating {
                 defaultSourceSet {
                     dependencies {
@@ -63,7 +85,7 @@ kotlin {
                     group = "build"
                     description = "Apply reflection to do build time code generation."
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-                    setMain("building.AppBuilder")
+                    mainClass.set("building.AppBuilder")
                 }
             }
         }
