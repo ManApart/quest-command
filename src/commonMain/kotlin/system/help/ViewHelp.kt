@@ -30,7 +30,7 @@ class ViewHelp : EventListener<ViewHelpEvent>() {
         val groups = CommandParsers.getGroupedCommands()
 
         var groupList = ""
-        groups.forEach { entry ->
+        groups.filter { it.key.isNotBlank() }.forEach { entry ->
             val commandNames = entry.value.joinToString(", ") { it.name }
             groupList += "${entry.key}:\n\t${commandNames}\n"
         }

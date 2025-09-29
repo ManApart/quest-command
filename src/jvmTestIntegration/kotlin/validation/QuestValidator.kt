@@ -2,14 +2,17 @@ package validation
 
 import quests.Quest
 import quests.QuestManager
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class QuestValidator {
 
     private val quests = QuestManager.quests
     private val storyEvents = QuestManager.storyEvents
 
-    fun validate(): Int {
-        return noDuplicateStages()
+    @Test
+    fun validate() {
+        assertEquals(0,noDuplicateStages())
     }
 
     private fun noDuplicateStages(): Int {

@@ -54,6 +54,7 @@ class ConversationsTest {
         assertEquals("Farmer: I be with you.", GameLogger.getMainHistory().getLastOutput())
     }
 
+    //TODO -this is flaky!
     @Test
     fun whereBeMe() {
         runBlocking {

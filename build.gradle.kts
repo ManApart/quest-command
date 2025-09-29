@@ -1,8 +1,9 @@
-@file:Suppress("UNUSED_VARIABLE")
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 
 plugins {
-    kotlin("multiplatform") version "1.8.10"
-    kotlin("plugin.serialization") version "1.8.10"
+    kotlin("multiplatform") version "2.1.0"
+    kotlin("plugin.serialization") version "2.1.0"
     `maven-publish`
 }
 
@@ -13,27 +14,46 @@ repositories {
 }
 
 kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
     jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "17"
+        withJava()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
 
-        sourceSets {
-            val jvmTestIntegration by creating {
-                dependsOn(sourceSets["jvmMain"])
-            }
-            val jvmTools by creating {
-                dependsOn(sourceSets["jvmMain"])
-            }
-        }
         compilations {
             val main by getting
+
+            compilations {
+                tasks.withType<Jar> {
+                    manifest {
+                        attributes["Main-Class"] = "QuestCommand"
+                    }
+                    from({
+                        configurations["jvmRuntimeClasspath"].filter { it.name.endsWith("jar") }.map { zipTree(it) }
+                    })
+                    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                }
+            }
+
+            tasks.register<JavaExec>("runQuestCommand") {
+                group = "run"
+                description = "Runs the JVM entrypoint."
+                classpath = main.compileDependencyFiles + main.runtimeDependencyFiles + main.output.allOutputs
+                mainClass.set("QuestCommand") // use the fully qualified name if it’s in a package
+                standardInput = System.`in`
+            }
+
+
             val testIntegration by compilations.creating {
                 defaultSourceSet {
                     dependencies {
+                        implementation(project)
                         implementation(main.compileDependencyFiles + main.output.classesDirs)
                         implementation(kotlin("test-junit"))
                     }
@@ -44,10 +64,20 @@ kotlin {
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
                     testClassesDirs = output.classesDirs
                 }
+                tasks.register<Test>("test-all") {
+                    description = "Run unit AND integration tests"
+                    dependsOn("jvmTest")
+                    dependsOn("test-integration")
+                    group = "verification"
+                    description = "Runs the integration tests."
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+                    testClassesDirs = output.classesDirs
+                }
             }
             val tools by compilations.creating {
                 defaultSourceSet {
                     dependencies {
+                        implementation(project)
                         implementation(main.compileDependencyFiles + main.output.classesDirs)
                     }
                 }
@@ -55,11 +85,10 @@ kotlin {
                     group = "build"
                     description = "Apply reflection to do build time code generation."
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
-                    setMain("building.AppBuilder")
+                    mainClass.set("building.AppBuilder")
                 }
             }
         }
-        withJava()
     }
     js(IR) {
         binaries.executable()
@@ -70,7 +99,7 @@ kotlin {
                 }
             }
             runTask {
-                devServer = devServer?.copy(port = 3000)
+                devServer = devServer.copy(port = 3000)
             }
         }
     }
@@ -108,14 +137,10 @@ kotlin {
         val jsTest by getting
     }
 
-    task("test-all") {
-        description = "Run unit AND integration tests"
-        dependsOn("test")
-        dependsOn("test-integration")
-    }
+
 }
 
-tasks.getByName<Test>("test") {
+tasks.getByName<Test>("jvmTest") {
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
@@ -132,8 +157,4 @@ publishing {
             }
         }
     }
-//    publications {
-//        register<MavenPublication>("gpr") {
-//        }
-//    }
 }

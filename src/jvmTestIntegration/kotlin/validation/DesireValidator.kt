@@ -2,14 +2,18 @@ package validation
 
 import core.ai.AIManager
 import core.ai.desire.DesireTree
+import kotlinx.coroutines.runBlocking
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 
 class DesireValidator {
     private val agendas = AIManager.agendas
 
-    suspend fun validate(): Int {
-        val desires = AIManager.getDesires()
-        return noGoalsWithoutAgendas(desires) + noAgendaOrphans()
+    @Test
+    fun validate() {
+        val desires = runBlocking { AIManager.getDesires() }
+        assertEquals(0, noGoalsWithoutAgendas(desires) + noAgendaOrphans())
     }
 
     private fun noGoalsWithoutAgendas(desires: List<DesireTree>): Int {

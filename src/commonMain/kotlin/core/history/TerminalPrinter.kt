@@ -1,5 +1,8 @@
 package core.history
 
+import core.GameState
+import system.debug.DebugType
+
 object TerminalPrinter {
     private var lastFlushed = 0
 
@@ -14,6 +17,7 @@ object TerminalPrinter {
                 println(line)
             }
         }
+        if(GameState.getDebugBoolean(DebugType.SHOW_PROMPT)) print("\n> ")
         lastFlushed = history.history.size
     }
 }

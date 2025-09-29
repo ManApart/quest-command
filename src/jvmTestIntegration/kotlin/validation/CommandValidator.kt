@@ -4,13 +4,16 @@ import core.commands.Command
 import core.commands.CommandParsers.commands
 import core.commands.CommandParsers.getCategories
 import core.commands.UnknownCommand
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class CommandValidator {
     private val categories = getCategories()
 
-    fun validate(): Int {
-        return noAliasCategoryOverlap() +
-                noAliasDuplicates()
+    @Test
+    fun validate() {
+        assertEquals(0, noAliasCategoryOverlap() +
+                noAliasDuplicates())
     }
 
     private fun noAliasCategoryOverlap(): Int {

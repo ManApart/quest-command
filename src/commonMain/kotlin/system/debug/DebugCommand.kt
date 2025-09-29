@@ -14,7 +14,7 @@ import traveling.location.weather.WeatherManager
 class DebugCommand : Command() {
 
     override fun getAliases(): List<String> {
-        return listOf("debug", "db")
+        return listOf("Debug", "db")
     }
 
     override fun getDescription(): String {
