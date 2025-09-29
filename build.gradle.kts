@@ -41,7 +41,7 @@ kotlin {
                 }
             }
 
-            tasks.register<JavaExec>("jvmRun") {
+            tasks.register<JavaExec>("runQuestCommand") {
                 group = "run"
                 description = "Runs the JVM entrypoint."
                 classpath = main.compileDependencyFiles + main.runtimeDependencyFiles + main.output.allOutputs

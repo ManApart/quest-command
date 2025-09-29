@@ -14,5 +14,6 @@ enum class DebugType(val propertyName: String) {
     VERBOSE_ACTIONS("Verbose Actions"),
     VERBOSE_TIME("Verbose Time"),
     VERBOSE_WEATHER("Verbose Weather"),
-    POLL_CONNECTION("Poll server on cadence for updates")
+    POLL_CONNECTION("Poll server on cadence for updates"),
+    SHOW_PROMPT("Show command prompt"),
 }

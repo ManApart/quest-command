@@ -69,6 +69,7 @@ object GameManager {
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
         GameState.putDebug(DebugType.VERBOSE_TIME, testing)
         GameState.putDebug(DebugType.VERBOSE_WEATHER, testing)
+        GameState.putDebug(DebugType.SHOW_PROMPT, true)
     }
 
     suspend fun newPlayer(
