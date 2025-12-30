@@ -10,7 +10,7 @@ import use.interaction.nothing.NothingEvent
 
 class CommonPackages : AIPackageTemplateResource {
     override val values = aiPackages {
-        aiPackage("creature") {
+        aiPackage("Creature") {
 
             idea("Rest") {
                 cond { s -> s.soul.getCurrent(STAMINA) < s.soul.getTotal(STAMINA) / 10 }
@@ -39,10 +39,16 @@ class CommonPackages : AIPackageTemplateResource {
                     it.clearUseGoal()
                 }
             }
+            idea("Wander") {
+                act {
+                    val target = it.location.getLocation().getThings(it).random()
+                    startMoveEvent(it, destination = target.position)
+                }
+            }
         }
 
         aiPackage("Commoner") {
-            template("creature")
+            template("Creature")
             idea("Want Food") {
                 cond { GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) }
                 act { owner ->
@@ -52,6 +58,15 @@ class CommonPackages : AIPackageTemplateResource {
                     } ?: NothingEvent(owner)
                 }
             }
+        }
+
+        aiPackage("Predator") {
+            template("Creature")
+            idea("Rest") {
+                cond { !GameState.timeManager.isNight() }
+                act { RestEvent(it, 2) }
+            }
+
         }
 
     }

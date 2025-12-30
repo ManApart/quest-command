@@ -5,6 +5,8 @@ import core.DependencyInjector
 import core.ai.AIManager2
 import core.ai.packages.AIPackageTemplatesCollection
 import kotlinx.coroutines.runBlocking
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 //TODO validate all things/minds reference valid package name
 
@@ -13,10 +15,13 @@ class AIPackageValidator {
     private val packages = runBlocking { AIManager2.aiPackages }
     private val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.ai2)
 
-    fun validate(): Int {
-        return noDuplicatePackageNames() +
-                noDuplicateIdeaNames() +
-                subPackageStringReferenceExists()
+    @Test
+    fun validate() {
+        assertEquals(
+            0, noDuplicatePackageNames() +
+                    noDuplicateIdeaNames() +
+                    subPackageStringReferenceExists()
+        )
     }
 
     private fun noDuplicatePackageNames(): Int {
