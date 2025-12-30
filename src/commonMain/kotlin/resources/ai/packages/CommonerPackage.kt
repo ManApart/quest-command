@@ -7,22 +7,22 @@ class CommonerPackage : AIPackageTemplateResource {
     override val values = aiPackages {
         aiPackage("Commoner") {
             template("Creature")
-            idea("Eat Food"){
+            idea("Eat Food") {
                 //TODO
             }
-            idea("Converse"){
+            idea("Converse") {
                 //TODO
             }
-            idea("Travel to Job Site"){
+            idea("Travel to Job Site") {
                 //TODO
             }
-            idea("Work"){
+            idea("Work") {
                 //TODO
             }
-            idea("Sleep in Bed"){
+            idea("Sleep in Bed") {
                 //TODO
             }
-            idea("Rest"){
+            idea("Rest") {
                 //TODO
             }
         }

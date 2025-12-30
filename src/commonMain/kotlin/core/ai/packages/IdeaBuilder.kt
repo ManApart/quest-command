@@ -18,14 +18,9 @@ class IdeaBuilder(val name: String, val priority: Int) {
         this.action = action
     }
 
-    fun act(action: suspend (Thing) -> Event) {
-        this.action = { listOf(action(it)) }
+    fun act(action: suspend (Thing) -> Event?) {
+        this.action = { listOfNotNull(action(it)) }
     }
-
-    fun actOrNot(action: suspend (Thing) -> Event?) {
-        this.action = { listOf(action(it) ?: NothingEvent(it)) }
-    }
-
 }
 
 class IdeasBuilder {

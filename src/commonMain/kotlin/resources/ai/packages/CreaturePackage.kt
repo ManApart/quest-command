@@ -22,7 +22,7 @@ class CreaturePackage : AIPackageTemplateResource {
             }
 
             idea("Attack", 70) {
-                cond { it.mind.getAggroTarget() != null }
+                cond { it.mind.getAggroTarget() != null && it.canReach(it.mind.getAggroTarget()!!.position) }
                 act {
                     clawAttack(it.mind.getAggroTarget()!!, it)
                 }
@@ -35,6 +35,10 @@ class CreaturePackage : AIPackageTemplateResource {
                 cond { it.hasUseTarget() && !it.canReach(it.mind.getUseTargetThing()!!.position) }
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
             }
+            idea("Move to Aggro Target", 70) {
+                cond { it.hasAggroTarget() && !it.canReach(it.mind.getAggroTarget()!!.position) }
+                act { startMoveEvent(it, destination = it.mind.getAggroTarget()!!.position) }
+            }
 
             //TODO - Maybe last eaten + amount of time
             idea("Want Food") {
@@ -42,8 +46,8 @@ class CreaturePackage : AIPackageTemplateResource {
                     GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) &&
                             s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) } != null
                 }
-                actOrNot { s ->
-                    s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD.name) }
+                act { s ->
+                    s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) }
                         ?.let { s.setUseTarget(it, HowToUse.EAT) }
                 }
             }
