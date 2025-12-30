@@ -9,7 +9,10 @@ import core.ai.packages.*
 import core.properties.TagKey
 import status.rest.RestEvent
 import status.stat.STAMINA
+import traveling.location.RouteFinder
 import traveling.move.startMoveEvent
+import traveling.routes.FindRouteEvent
+import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent
 
 class CreaturePackage : AIPackageTemplateResource {
@@ -28,13 +31,32 @@ class CreaturePackage : AIPackageTemplateResource {
                 }
             }
 
-            //TODO - need move to location as well
-            //If usetarget in different location, create map to get there
-            //  map available, move to location
+            idea("Start Travel") {
+                cond { s ->
+                    (s.mind.getAggroTarget() ?: s.mind.getUseTargetThing())
+                        ?.let { s.location != it.location } ?: false
+                }
+                act { s ->
+                    val goal = (s.mind.getAggroTarget() ?: s.mind.getUseTargetThing())?.location ?: return@act null
+                    val dest = RouteFinder(s.location, goal).getRoute().getNextStep(s.location).destination.location
+
+                    FindRouteEvent(s, s.location, dest, startImmediately = true)
+                }
+            }
+
+            idea("Travel", 60) {
+                cond { s -> s.mind.route != null }
+                act { s ->
+                    s.mind.route?.getNextStep(s.location)?.destination?.location
+                        ?.let { TravelStartEvent(s, destination = it) }
+                }
+            }
+
             idea("Move to Use Target", 50) {
                 cond { it.hasUseTarget() && !it.canReach(it.mind.getUseTargetThing()!!.position) }
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
             }
+
             idea("Move to Aggro Target", 70) {
                 cond { it.hasAggroTarget() && !it.canReach(it.mind.getAggroTarget()!!.position) }
                 act { startMoveEvent(it, destination = it.mind.getAggroTarget()!!.position) }
@@ -55,8 +77,10 @@ class CreaturePackage : AIPackageTemplateResource {
             idea("Eat Targeted Food", 45) {
                 cond { it.canReachGoal(HowToUse.EAT) }
                 actions { s ->
-                    listOfNotNull(s.mind.getUseTargetThing()?.let { EatFoodEvent(s, it) },
-                    s.clearUseGoal())
+                    listOfNotNull(
+                        s.mind.getUseTargetThing()?.let { EatFoodEvent(s, it) },
+                        s.clearUseGoal()
+                    )
                 }
             }
 
