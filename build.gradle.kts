@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 
 plugins {
-    kotlin("multiplatform") version "2.1.0"
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("multiplatform") version "2.3.0"
+    kotlin("plugin.serialization") version "2.3.0"
     `maven-publish`
 }
 
@@ -18,9 +18,8 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvm {
-        withJava()
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -99,7 +98,7 @@ kotlin {
                 }
             }
             runTask {
-                devServer = devServer.copy(port = 3000)
+                devServerProperty.set(devServerProperty.get().copy(port = 3000))
             }
         }
     }
