@@ -7,7 +7,7 @@ import core.thing.ThingBuilder
 import core.thing.thing
 import core.utility.Backer
 
-val burnToAsh = BehaviorRecipe("Burn to Ash", mapOf("name" to "\$itemName"))
+val burnToAsh = BehaviorRecipe("Burn to Ash", mapOf("name" to $$"$itemName"))
 
 val burnable: Backer<ThingBuilder> = Backer(::burnable)
 

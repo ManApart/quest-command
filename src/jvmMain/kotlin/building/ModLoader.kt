@@ -21,6 +21,7 @@ import traveling.location.network.NetworkResource
 import traveling.location.weather.WeatherResource
 import java.io.File
 import java.lang.reflect.ParameterizedType
+import java.net.URI
 import java.net.URL
 import java.net.URLClassLoader
 import java.util.jar.JarEntry
@@ -63,7 +64,7 @@ private suspend fun loadJar(jarFile: File) {
     val jar = JarFile(jarFile)
 
     val e = jar.entries()
-    val urls = arrayOf(URL("jar:file:" + jarFile.absolutePath + "!/"))
+    val urls = arrayOf(URI.create("jar:file:" + jarFile.absolutePath + "!/").toURL())
     val cl = URLClassLoader.newInstance(urls)
 
     while (e.hasMoreElements()) {

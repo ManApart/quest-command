@@ -1,3 +1,3 @@
 package core.ai.packages
 
-class AIPackageTemplatesMock(override val values: List<AIPackage> = listOf()) : AIPackageTemplatesCollection
+class AIPackageTemplatesMock(override val values: List<AIPackageTemplate> = listOf()) : AIPackageTemplatesCollection

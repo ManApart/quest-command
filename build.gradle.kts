@@ -122,6 +122,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
                 implementation("io.ktor:ktor-client-cio:2.0.1")
+                implementation("org.slf4j:slf4j-nop:2.0.17")
             }
         }
         val jvmTest by getting
