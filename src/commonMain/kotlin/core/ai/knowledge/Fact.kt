@@ -9,7 +9,10 @@ data class ListFact(val kind: String, val sources: List<Subject>, val props: Pro
 }
 
 enum class FactKind {
-    USE_TARGET
+    AGGRO_TARGET,
+    LOCATION,
+    RECIPE,
+    USE_TARGET,
 }
 
 enum class HowToUse {

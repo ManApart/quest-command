@@ -131,7 +131,7 @@ class CommonAgendas : AgendaResource {
         agendaAction("Search For Enemy") { owner ->
             val target = owner.location.getLocation().getCreatures(perceivedBy = owner).firstOrNull { !it.properties.tags.has("Predator") }
             target?.let {
-                owner.discover(target, "aggroTarget")
+                owner.discover(target, FactKind.AGGRO_TARGET.name)
             }
         }
 
