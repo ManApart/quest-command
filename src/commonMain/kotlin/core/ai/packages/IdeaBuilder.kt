@@ -28,7 +28,7 @@ class IdeasBuilder {
     private val criteriaChildren = mutableMapOf<suspend (Thing) -> Boolean, IdeasBuilder>()
 
     fun getChildren(parentCriteria: suspend (Thing) -> Boolean = { true }): List<IdeaBuilder> {
-        children.forEach {  it.criteria = { thing -> parentCriteria(thing) && it.criteria(thing) } }
+        children.forEach { it.criteria = { thing -> parentCriteria(thing) && it.criteria(thing) } }
 
         return children + criteriaChildren.flatMap { (criteria, child) ->
             child.getChildren { thing -> parentCriteria(thing) && criteria(thing) }

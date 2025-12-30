@@ -8,6 +8,7 @@ import core.ai.agenda.AgendaResource
 import core.ai.agenda.agendas
 import core.ai.knowledge.DiscoverFactEvent
 import core.ai.knowledge.Fact
+import core.ai.knowledge.FactKind
 import core.ai.knowledge.Subject
 import core.thing.Thing
 import core.utility.RandomManager
@@ -137,7 +138,7 @@ class CommonAgendas : AgendaResource {
         agendaAction("Search For Food") { owner ->
             val target = (owner.inventory.getItems() + owner.location.getLocation().getItems(perceivedBy = owner)).firstOrNull { it.properties.tags.has("Food") }
             target?.let {
-                owner.discover(target, "useTarget")
+                owner.discover(target, FactKind.USE_TARGET.name)
             }
         }
 
@@ -149,7 +150,7 @@ class CommonAgendas : AgendaResource {
             actions("Find Bed") { owner ->
                 owner.mind.knowsThingByKind("MyBed")?.let { target ->
                     listOf(
-                        owner.discover(target, "useTarget"),
+                        owner.discover(target, FactKind.USE_TARGET.name),
                         owner.discover(target.location, "LocationGoal")
                     )
                 }
@@ -190,10 +191,7 @@ class CommonAgendas : AgendaResource {
                 InteractEvent(creature, target)
             }
         }
-
-
     }
-
 }
 
 private fun Thing.discover(target: Thing, kind: String): DiscoverFactEvent {
@@ -218,4 +216,3 @@ private suspend fun clawAttack(target: Thing, creature: Thing): AttackEvent {
     }
     return startAttack(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
 }
-

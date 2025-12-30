@@ -1,15 +1,17 @@
 package resources.ai.packages
 
-import core.ai.packages.AIPackageTemplateResource
-import core.ai.packages.aiPackages
-import core.ai.packages.canReachGoal
-import core.ai.packages.clawAttack
-import core.ai.packages.clearUseGoal
-import core.ai.packages.hasUseTarget
+import conversation.dsl.hasTag
+import core.GameState
+import core.ai.knowledge.HowToUse
+import core.ai.knowledge.clearUseGoal
+import core.ai.knowledge.setUseTarget
+import core.ai.packages.*
+import core.properties.TagKey
 import status.rest.RestEvent
 import status.stat.STAMINA
 import traveling.move.startMoveEvent
 import use.eat.EatFoodEvent
+import use.interaction.nothing.NothingEvent
 
 class CreaturePackage : AIPackageTemplateResource {
     override val values = aiPackages {
@@ -35,13 +37,27 @@ class CreaturePackage : AIPackageTemplateResource {
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
             }
 
+            //TODO - Maybe last eaten + amount of time
+            idea("Want Food") {
+                cond { s ->
+                    GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) &&
+                            s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) } != null
+                }
+                act { s ->
+                    s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD.name) }
+                        ?.let { s.setUseTarget(it, HowToUse.EAT) }
+                        ?: NothingEvent(s)
+                }
+            }
+
             idea("Eat Targeted Food", 50) {
-                cond { it.canReachGoal("eat") }
+                cond { it.canReachGoal(HowToUse.EAT) }
                 act {
                     EatFoodEvent(it, it.mind.getUseTargetThing()!!)
                     it.clearUseGoal()
                 }
             }
+
             idea("Wander") {
                 act {
                     val target = it.location.getLocation().getThings(it).random()

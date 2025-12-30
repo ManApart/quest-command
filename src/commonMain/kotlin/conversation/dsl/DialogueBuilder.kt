@@ -5,6 +5,7 @@ import conversation.dialogue.DialogueEvent
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
 import core.events.Event
+import core.properties.TagKey
 import core.thing.Thing
 import core.utility.Named
 import core.utility.applySuspending
@@ -81,6 +82,8 @@ suspend fun Conversation.subjects(): List<Named>? {
     return history.last().parsed()?.subjects
 }
 
+//TODO - move this  to thing and location node
+suspend fun Named?.hasTag(tag: TagKey) = hasTag(tag.name)
 suspend fun Named?.hasTag(tag: String): Boolean {
     return if (this != null) {
         (this is LocationNode && getLocation().properties.tags.has(tag)) ||

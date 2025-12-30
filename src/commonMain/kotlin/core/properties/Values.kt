@@ -54,6 +54,7 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
         return default
     }
 
+    fun getString(key: ValueKey, default: String = "") = getString(key.name, default)
     fun getString(key: String, default: String = ""): String {
         return properties[key.lowercase()] ?: default
     }

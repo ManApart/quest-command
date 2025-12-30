@@ -16,7 +16,7 @@ class PropsBuilder {
     fun value(key: String, value: String) = values.entry(key, value)
     fun value(key: String, value: Int) = values.entry(key, value)
 
-    fun props(properties: Properties){
+    fun props(properties: Properties) {
         tags.addAll(properties.tags.getAll())
         value(properties.values.getAll())
     }
@@ -36,7 +36,7 @@ class PropsBuilder {
     }
 }
 
-fun props(params: Map<String, String> =  mapOf(), initializer: PropsBuilder.() -> Unit): Properties {
+fun props(params: Map<String, String> = mapOf(), initializer: PropsBuilder.() -> Unit): Properties {
     return PropsBuilder().apply(initializer).build(params)
 }
 
