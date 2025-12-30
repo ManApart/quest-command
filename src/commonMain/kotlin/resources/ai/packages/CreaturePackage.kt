@@ -11,7 +11,6 @@ import status.rest.RestEvent
 import status.stat.STAMINA
 import traveling.move.startMoveEvent
 import use.eat.EatFoodEvent
-import use.interaction.nothing.NothingEvent
 
 class CreaturePackage : AIPackageTemplateResource {
     override val values = aiPackages {
@@ -43,14 +42,13 @@ class CreaturePackage : AIPackageTemplateResource {
                     GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) &&
                             s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) } != null
                 }
-                act { s ->
+                actOrNot { s ->
                     s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD.name) }
                         ?.let { s.setUseTarget(it, HowToUse.EAT) }
-                        ?: NothingEvent(s)
                 }
             }
 
-            idea("Eat Targeted Food", 50) {
+            idea("Eat Targeted Food", 45) {
                 cond { it.canReachGoal(HowToUse.EAT) }
                 act {
                     EatFoodEvent(it, it.mind.getUseTargetThing()!!)

@@ -2,6 +2,7 @@ package core.ai.packages
 
 import core.events.Event
 import core.thing.Thing
+import use.interaction.nothing.NothingEvent
 
 class IdeaBuilder(val name: String, val priority: Int) {
     internal var criteria: suspend (Thing) -> Boolean = { true }
@@ -19,6 +20,10 @@ class IdeaBuilder(val name: String, val priority: Int) {
 
     fun act(action: suspend (Thing) -> Event) {
         this.action = { listOf(action(it)) }
+    }
+
+    fun actOrNot(action: suspend (Thing) -> Event?) {
+        this.action = { listOf(action(it) ?: NothingEvent(it)) }
     }
 
 }

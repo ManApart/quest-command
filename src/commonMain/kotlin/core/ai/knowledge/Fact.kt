@@ -11,6 +11,7 @@ data class ListFact(val kind: String, val sources: List<Subject>, val props: Pro
 enum class FactKind {
     AGGRO_TARGET,
     LOCATION,
+    LOCATION_GOAL,
     RECIPE,
     USE_TARGET,
 }
