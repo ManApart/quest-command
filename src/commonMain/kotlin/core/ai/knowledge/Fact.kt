@@ -17,5 +17,6 @@ enum class FactKind {
 }
 
 enum class HowToUse {
-    EAT
+    EAT,
+    ATTACK
 }

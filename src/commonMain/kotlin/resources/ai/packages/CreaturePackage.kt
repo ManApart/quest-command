@@ -50,9 +50,9 @@ class CreaturePackage : AIPackageTemplateResource {
 
             idea("Eat Targeted Food", 45) {
                 cond { it.canReachGoal(HowToUse.EAT) }
-                act {
-                    EatFoodEvent(it, it.mind.getUseTargetThing()!!)
-                    it.clearUseGoal()
+                actions { s ->
+                    listOfNotNull(s.mind.getUseTargetThing()?.let { EatFoodEvent(s, it) },
+                    s.clearUseGoal())
                 }
             }
 
