@@ -9,11 +9,10 @@ import core.ai.packages.*
 import core.properties.TagKey
 import status.rest.RestEvent
 import status.stat.STAMINA
-import traveling.location.RouteFinder
 import traveling.move.startMoveEvent
-import traveling.routes.FindRouteEvent
 import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent
+import use.interaction.InteractEvent
 
 class CreaturePackage : AIPackageTemplateResource {
     override val values = aiPackages {
@@ -38,9 +37,7 @@ class CreaturePackage : AIPackageTemplateResource {
                 }
                 act { s ->
                     val goal = (s.mind.getAggroTarget() ?: s.mind.getUseTargetThing())?.location ?: return@act null
-                    val dest = RouteFinder(s.location, goal).getRoute().getNextStep(s.location).destination.location
-
-                    FindRouteEvent(s, s.location, dest, startImmediately = true)
+                    plotRouteAndStartTravel(s, goal)
                 }
             }
 
@@ -63,6 +60,7 @@ class CreaturePackage : AIPackageTemplateResource {
             }
 
             //TODO - Maybe last eaten + amount of time
+            //TODO - second version to go look for food
             idea("Want Food") {
                 cond { s ->
                     GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) &&
@@ -74,11 +72,21 @@ class CreaturePackage : AIPackageTemplateResource {
                 }
             }
 
-            idea("Eat Targeted Food", 45) {
+            idea("Eat Food", 45) {
                 cond { it.canReachGoal(HowToUse.EAT) }
                 actions { s ->
                     listOfNotNull(
                         s.mind.getUseTargetThing()?.let { EatFoodEvent(s, it) },
+                        s.clearUseGoal()
+                    )
+                }
+            }
+
+            idea("Interact", 40) {
+                cond { it.canReachGoal(HowToUse.INTERACT) }
+                actions { s ->
+                    listOfNotNull(
+                        s.mind.getUseTargetThing()?.let { InteractEvent(s, it) },
                         s.clearUseGoal()
                     )
                 }

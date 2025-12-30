@@ -67,18 +67,18 @@ class CommonAgendas : AgendaResource {
         agenda("Travel to Location") {
             actionDetailed("Identify Route") {
                 shouldSkip { s ->
-                    val goal = s.mind.knowsLocationByKind("LocationGoal")
+                    val goal = s.mind.knownLocationByKind("LocationGoal")
                     goal == null || s.location == goal || s.mind.route?.destination == goal
                 }
                 result { s ->
-                    s.mind.knowsLocationByKind("LocationGoal")?.let {
+                    s.mind.knownLocationByKind("LocationGoal")?.let {
                         FindRouteEvent(s, s.location, it)
                     }
                 }
             }
             actionDetailed("Travel to Location") {
                 shouldSkip { s ->
-                    s.location == s.mind.knowsLocationByKind("LocationGoal")
+                    s.location == s.mind.knownLocationByKind("LocationGoal")
                 }
                 result { s ->
                     s.mind.route?.let {
@@ -148,7 +148,7 @@ class CommonAgendas : AgendaResource {
 
         agenda("Sleep In Bed") {
             actions("Find Bed") { owner ->
-                owner.mind.knowsThingByKind("MyBed")?.let { target ->
+                owner.mind.knownThingByKind("MyBed")?.let { target ->
                     listOf(
                         owner.discover(target, FactKind.USE_TARGET.name),
                         owner.discover(target.location, "LocationGoal")
@@ -167,7 +167,7 @@ class CommonAgendas : AgendaResource {
 
         agenda("Travel to Job Site") {
             action("Find Work Site") { owner ->
-                owner.mind.knowsLocationByKind("MyWorkplace")?.let { target ->
+                owner.mind.knownLocationByKind("MyWorkplace")?.let { target ->
                     owner.discover(target, "LocationGoal")
                 }
             }

@@ -14,14 +14,17 @@ import core.properties.ValueKey
 import core.properties.Values
 import core.thing.Thing
 import core.utility.RandomManager
+import traveling.location.RouteFinder
+import traveling.location.network.LocationNode
 import traveling.position.ThingAim
+import traveling.routes.FindRouteEvent
 
 
 suspend fun Thing.hasAggroTarget() = mind.getAggroTarget() != null
 suspend fun Thing.hasUseTarget() = mind.getUseTargetThing() != null
 
-suspend fun Thing.canReachGoal(howToUse: HowToUse ) = canReachGoal(howToUse.name)
-suspend fun Thing.canReachGoal(howToUse: String ): Boolean {
+suspend fun Thing.canReachGoal(howToUse: HowToUse) = canReachGoal(howToUse.name)
+suspend fun Thing.canReachGoal(howToUse: String): Boolean {
     val useTarget = mind.getUseTarget()
     return useTarget != null && useTarget.props.values.getString(ValueKey.GOAL) == howToUse && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false
 }
@@ -55,4 +58,10 @@ suspend fun Thing.perceivedItems(): List<Thing> {
 
 suspend fun Thing.perceivedItemsAndInventory(): List<Thing> {
     return (inventory.getItems() + location.getLocation().getItems(perceivedBy = this)).filter { it != this }
+}
+
+fun plotRouteAndStartTravel(s: Thing, goal: LocationNode): FindRouteEvent {
+    val dest = RouteFinder(s.location, goal).getRoute().getNextStep(s.location).destination.location
+
+    return FindRouteEvent(s, s.location, dest, startImmediately = true)
 }

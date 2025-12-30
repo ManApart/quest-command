@@ -10,13 +10,20 @@ data class ListFact(val kind: String, val sources: List<Subject>, val props: Pro
 
 enum class FactKind {
     AGGRO_TARGET,
+    HOME,
     LOCATION,
     LOCATION_GOAL,
+    MY_BED,
+    MY_HOME,
+    MY_WORKPLACE,
     RECIPE,
     USE_TARGET,
+    WORK_TAGS,
 }
 
 enum class HowToUse {
     EAT,
-    ATTACK
+    ATTACK,
+    SLEEP,
+    INTERACT,
 }

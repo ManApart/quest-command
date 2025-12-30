@@ -30,21 +30,22 @@ data class Mind(
         return memory.getFact(source, kind)
     }
 
-    suspend fun knowsThingByKind(kind: FactKind) = knowsThingByKind(kind.name)
-    suspend fun knowsThingByKind(kind: String): Thing? {
+    suspend fun knownThingByKind(kind: FactKind) = knownThingByKind(kind.name)
+    suspend fun knownThingByKind(kind: String): Thing? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
     }
 
     suspend fun thingByKindExists(kind: String): Boolean {
-        return knowsThingByKind(kind) != null
+        return knownThingByKind(kind) != null
     }
-
-    fun knowsLocationByKind(kind: String): LocationNode? {
+    fun knownLocationByKind(kind: FactKind) = knownLocationByKind(kind.name)
+    fun knownLocationByKind(kind: String): LocationNode? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getLocation() }
     }
 
+    fun locationByKindExists(kind: FactKind) = locationByKindExists(kind.name)
     fun locationByKindExists(kind: String): Boolean {
-        return knowsLocationByKind(kind) != null
+        return knownLocationByKind(kind) != null
     }
 
     fun learn(source: Subject, kind: FactKind) = learn(source, kind.name)
@@ -101,7 +102,7 @@ data class Mind(
     }
 
     suspend fun getAggroTarget(): Thing? {
-        return knowsThingByKind(FactKind.AGGRO_TARGET)
+        return knownThingByKind(FactKind.AGGRO_TARGET)
     }
 
     suspend fun clearAggroTarget() {
@@ -111,7 +112,7 @@ data class Mind(
     }
 
     suspend fun getUseTargetThing(): Thing? {
-        return knowsThingByKind(FactKind.USE_TARGET)
+        return knownThingByKind(FactKind.USE_TARGET)
     }
 
     fun getUseTarget(): Fact? {
