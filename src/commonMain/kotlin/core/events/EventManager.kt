@@ -58,6 +58,8 @@ object EventManager {
             }
         }
         eventQueue.clear()
+        //If we're just waiting on the player, allow AI to keep moving
+        if (eventCopy.size == 1 && eventCopy.first() is GameTickEvent) replenishAITurns()
         eventCopy.forEach { startEvent(it) }
         val playerTurn = directAI()
         if (!playerTurn) {
