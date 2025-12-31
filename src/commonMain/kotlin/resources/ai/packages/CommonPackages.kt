@@ -14,6 +14,24 @@ class CommonPackages : AIPackageTemplateResource {
     override val values = aiPackages {
         aiPackage("Predator") {
             template("Creature")
+
+            idea("Attack Goal", 50) {
+                cond { it.canReachGoal(HowToUse.ATTACK) }
+                actions { s ->
+                    listOfNotNull(
+                        s.mind.getUseTargetThing()?.let { clawAttack(it, s) },
+                        s.clearUseGoal()
+                    )
+                }
+            }
+            idea("Hunt", 30) {
+                cond { s -> s.perceivedCreatures().any { !it.hasTag("Predator") } }
+                act { s ->
+                    s.perceivedCreatures().firstOrNull { !it.hasTag("Predator") }
+                        ?.let { s.discover(it, FactKind.AGGRO_TARGET) }
+                }
+            }
+
             idea("Rest") {
                 cond { !GameState.timeManager.isNight() }
                 act { RestEvent(it, 2) }
@@ -26,22 +44,6 @@ class CommonPackages : AIPackageTemplateResource {
                 }
             }
 
-            idea("Attack Goal") {
-                cond { it.canReachGoal(HowToUse.ATTACK) }
-                actions { s ->
-                    listOfNotNull(
-                        s.mind.getUseTargetThing()?.let { clawAttack(it, s) },
-                        s.clearUseGoal()
-                    )
-                }
-            }
-            idea("Hunt") {
-                cond { s -> s.perceivedCreatures().any { !it.hasTag("Predator") } }
-                act { s ->
-                    s.perceivedCreatures().firstOrNull { !it.hasTag("Predator") }
-                        ?.let { s.discover(it, FactKind.AGGRO_TARGET) }
-                }
-            }
         }
     }
 }

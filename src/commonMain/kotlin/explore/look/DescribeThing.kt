@@ -16,11 +16,21 @@ suspend fun describeThing(source: Player, thing: Thing) {
 suspend fun describeThingDetailed(source: Player, thing: Thing) {
     var message = thing.getDisplayName()
     message += "\n\t${thing.description}"
+    message += describeCurrentAction(thing)
     message += describeStatusEffects(thing)
     message += describeEquipSlots(thing)
     message += describeProperties(thing)
     source.displayToMe(message)
     source.displayToOthers("${source.name} examines ${thing.name}.")
+}
+
+//TODO - ideally events have a "description instead of just two-stringing
+private fun describeCurrentAction(thing: Thing): String {
+    if (thing.mind.ai.actions.isNotEmpty()) {
+        val actions = thing.mind.ai.actions.joinToString { it.toString() }
+        return "\n\t${thing.name} is currently doing: $actions"
+    }
+    return ""
 }
 
 private fun describeStatusEffects(thing: Thing): String {
@@ -32,11 +42,8 @@ private fun describeStatusEffects(thing: Thing): String {
 }
 
 private fun describeProperties(thing: Thing): String {
-    if (!thing.properties.isEmpty()) {
-        return "\n\tTags: ${thing.properties.tags}" +
-                "\n\tValues: ${thing.properties.values}"
-    }
-    return ""
+    return (thing.properties.tags.takeIf { !it.isEmpty() }?.let { "\n\tTags: $it" } ?: "") +
+            (thing.properties.values.takeIf { !it.isEmpty() }?.let { "\n\tValues: $it" } ?: "")
 }
 
 private fun describeEquipSlots(thing: Thing): String {

@@ -5,7 +5,6 @@ import core.events.Event
 import core.history.GameLogger
 import core.properties.Properties
 import core.thing.Thing
-import core.utility.lazyM
 import system.debug.DebugType
 import time.TimeManager
 
@@ -64,6 +63,7 @@ fun startupLog(message: String) {
 
 const val AUTO_SAVE = "autosave"
 const val AUTO_LOAD = "autoload"
+const val DEBUG_PACKAGE = "debug package"
 const val VERBOSE_STARTUP = "verbose startup"
 const val TEST_SAVE_FOLDER = "use test save folder"
 const val SKIP_SAVE_STATS = "skip save stats"

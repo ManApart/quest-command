@@ -7,6 +7,8 @@ import core.TagKey
 import core.ai.knowledge.clearUseGoal
 import core.ai.knowledge.setUseTarget
 import core.ai.packages.*
+import core.utility.getRandomRange
+import core.utility.random
 import status.rest.RestEvent
 import status.stat.STAMINA
 import traveling.move.startMoveEvent
@@ -93,9 +95,11 @@ class CreaturePackage : AIPackageTemplateResource {
             }
 
             idea("Wander") {
+                cond { s -> s.location.getLocation().getThings(s).filter { it != s }.isNotEmpty() }
                 act {
-                    val target = it.location.getLocation().getThings(it).random()
-                    startMoveEvent(it, destination = target.position)
+                    it.location.getLocation().getThings(it).random()?.position?.let { pos ->
+                        startMoveEvent(it, destination = pos)
+                    }
                 }
             }
         }

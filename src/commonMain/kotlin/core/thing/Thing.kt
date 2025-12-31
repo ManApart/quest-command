@@ -1,9 +1,6 @@
 package core.thing
 
 import core.GameState
-import core.GameState.properties
-import core.ai.AI
-import core.ai.DumbAI
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
@@ -15,14 +12,11 @@ import core.utility.clamp
 import core.utility.max
 import explore.listen.getSound
 import inventory.Inventory
-import kotlinx.coroutines.NonDisposableHandle.parent
 import status.Soul
 import status.stat.PERCEPTION
 import status.stat.SNEAK
 import system.debug.DebugType
-import traveling.location.Route
 import traveling.location.location.Location
-import traveling.location.location.location
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR

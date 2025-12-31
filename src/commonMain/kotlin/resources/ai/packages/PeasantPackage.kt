@@ -1,5 +1,6 @@
 package resources.ai.packages
 
+import core.AIPackageKeys.PEASANT
 import core.FactKind
 import core.GameState
 import core.HowToUse
@@ -13,7 +14,7 @@ import core.commands.CommandParsers
 
 class PeasantPackage : AIPackageTemplateResource {
     override val values = aiPackages {
-        aiPackage("Commoner") {
+        aiPackage(PEASANT) {
             template("Creature")
             idea("Converse") {
                 cond { s -> CommandParsers.getConversations().any { it.containsParticipant(s) }}

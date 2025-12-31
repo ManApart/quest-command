@@ -1,5 +1,6 @@
 package resources.thing.creature
 
+import core.TagKey.PREDATOR
 import core.thing.creature.CreatureResource
 import core.thing.things
 
@@ -13,7 +14,7 @@ class CommonCreatures : CreatureResource {
             soul("Strength", 1)
             soul("Bare Handed", 2)
             props {
-                tag("Small", "Predator")
+                tag("Small", PREDATOR)
             }
             //TODO - make this a 'death item' that's spawned on death
             item("Poor Quality Meat")

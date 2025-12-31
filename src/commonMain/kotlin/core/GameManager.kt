@@ -59,7 +59,10 @@ object GameManager {
     private fun setDefaultProperties(testing: Boolean) {
         //        GameState.properties.values.put(AUTO_SAVE, true)
 //        GameState.putDebug(DebugType.VERBOSE_ACTIONS, testing)
-//        GameState.putDebug(DebugType.VERBOSE_AI, testing)
+//        GameState.putDebug(DebugType.VERBOSE_AI, true)
+//        GameState.putDebug(DebugType.CLARITY, true)
+//        GameState.properties.values.put(DEBUG_PACKAGE, AIPackageKeys.PREDATOR)
+
         GameState.properties.values.put(AUTO_LOAD, !testing)
         GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
         GameState.properties.values.put(TEST_SAVE_FOLDER, testing)

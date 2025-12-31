@@ -1,5 +1,6 @@
 package core.thing
 
+import core.AIPackageKeys
 import core.TagKey
 import core.TagKey.SOUND_DESCRIPTION
 import core.TagKey.SOUND_LEVEL
@@ -68,7 +69,7 @@ class ThingBuilder(internal val name: String) {
         val allItems = itemNames + bases.flatMap { it.itemNames }
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
-        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(tagsToApply)
+        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         mind.mindInitializer()
@@ -92,6 +93,7 @@ class ThingBuilder(internal val name: String) {
     }
 
     private fun calcHeldSlots(props: Properties): List<Slot> {
+        if(props.tags.has(TagKey.CREATURE)) return emptyList()
         return when {
             props.tags.has("Small") || props.values.getInt("weight", 100) < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
             props.tags.has("Medium") || props.values.getInt("weight", 100) < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
@@ -256,10 +258,10 @@ class ThingBuilder(internal val name: String) {
         }.also { bodyCustomizer.apply(it) }
     }
 
-    private fun discernAI(tags: List<String>) : AI {
+    private fun discernAI(props: Properties) : AI {
         return when {
-//            tags.contains(CREATURE_TAG) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
-            tags.contains(TagKey.CREATURE) -> ConditionalAI()
+            props.tags.has(TagKey.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PREDATOR]!!)
+            props.tags.has(TagKey.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
             else -> DumbAI()
         }
     }

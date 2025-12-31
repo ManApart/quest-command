@@ -10,7 +10,7 @@ import core.utility.RandomManager
 class PackageBasedAI(val aiPackage: AIPackage) : AI() {
     val previousIdeas = mutableListOf<String>()
     override fun toString(): String {
-        return "AI for ${creature.name} using ${aiPackage.name}"
+        return "AI for ${creature.name} using ${aiPackage.name} package"
     }
 
     override suspend fun takeAction() {
