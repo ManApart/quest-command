@@ -13,7 +13,7 @@ object AIPackageManager {
 
     private fun loadAIPackages(): Map<String, AIPackage> {
         startupLog("Loading AI Packages.")
-        val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.ai2).associateBy { it.name }
+        val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.aiPackages).associateBy { it.name }
         val flattenedReference = mutableMapOf<String, AIPackage>()
         return templates.values.map { it.flatten(templates, flattenedReference) }.associateBy { it.name }
     }

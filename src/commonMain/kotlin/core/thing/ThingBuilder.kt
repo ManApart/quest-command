@@ -152,10 +152,6 @@ class ThingBuilder(internal val name: String) {
         this.ai = PlayerControlledAI()
     }
 
-    fun conditionalAI() {
-        this.ai = ConditionalAI()
-    }
-
     fun packageAI(packageName: String) {
         this.ai = PackageBasedAI(AIPackageManager.aiPackages[packageName]!!)
     }

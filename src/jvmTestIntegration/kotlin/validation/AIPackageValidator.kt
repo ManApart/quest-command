@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 class AIPackageValidator {
 
     private val packages = runBlocking { AIPackageManager.aiPackages }
-    private val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.ai2)
+    private val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.aiPackages)
 
     @Test
     fun validate() {

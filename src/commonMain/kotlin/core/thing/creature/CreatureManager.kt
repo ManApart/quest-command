@@ -3,14 +3,12 @@ package core.thing.creature
 import building.ModManager
 import core.DependencyInjector
 import core.TagKey
-import core.ai.AIManager
 import core.startupLog
 import core.thing.Thing
 import core.thing.build
 import core.thing.thing
 import core.utility.Backer
 import core.utility.NameSearchableList
-import core.utility.lazyM
 import core.utility.toNameSearchableList
 import status.stat.*
 import traveling.location.location.LocationThing
