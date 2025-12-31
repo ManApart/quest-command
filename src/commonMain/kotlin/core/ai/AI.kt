@@ -7,6 +7,7 @@ import core.thing.Thing
 abstract class AI {
     lateinit var creature: Thing
     var enabled: Boolean = true
+    var takenTurn: Boolean = false
     abstract suspend fun hear(event: DialogueEvent)
     abstract suspend fun takeAction()
 
@@ -15,6 +16,7 @@ abstract class AI {
     suspend fun chooseAction() {
         if (enabled && !creature.isPlayer()) {
             takeAction()
+            takenTurn = true
         }
     }
 

@@ -257,8 +257,8 @@ class ThingBuilder(internal val name: String) {
     private fun discernAI(props: Properties) : AI {
         return when {
             props.tags.has(TagKey.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PREDATOR]!!)
-            props.tags.has(TagKey.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
             props.tags.has(TagKey.COMMONER) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PEASANT]!!)
+            props.tags.has(TagKey.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
             else -> DumbAI()
         }
     }

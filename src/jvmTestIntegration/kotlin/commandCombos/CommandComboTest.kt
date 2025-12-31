@@ -124,7 +124,7 @@ class CommandComboTest {
         GameState.putDebug(DebugType.RANDOM_SUCCEED, true)
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         runBlocking {
-            CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing")
+            CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing && r 1")
         }
         assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
     }

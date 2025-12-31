@@ -4,6 +4,7 @@ import building.ModManager
 import core.DependencyInjector
 import core.GameState
 import core.ai.directAI
+import core.ai.replenishAITurns
 import core.history.displayGlobal
 import core.thing.Thing
 import system.debug.DebugType
@@ -38,6 +39,7 @@ object EventManager {
      */
     suspend fun processEvents() {
         var loop = 0
+        replenishAITurns()
         while (eventQueue.isNotEmpty() && loop < MAX_EVENT_LOOPS) {
             startEvents()
             loop++
@@ -46,8 +48,15 @@ object EventManager {
     }
 
     private suspend fun startEvents() {
-        if (GameState.getDebugBoolean(DebugType.VERBOSE_ACTIONS)) displayGlobal(eventQueue.joinToString { it.toString() })
         val eventCopy = eventQueue.toList()
+        if (GameState.getDebugBoolean(DebugType.VERBOSE_EVENT_QUEUE)) {
+            if (eventQueue.isNotEmpty()) {
+                displayGlobal("Queue:\n" + eventQueue.joinToString("\n") { "\t $it" })
+            }
+            if (eventsInProgress.isNotEmpty()) {
+                displayGlobal("In Progress:\n" + eventsInProgress.joinToString("\n") { "\t $it" })
+            }
+        }
         eventQueue.clear()
         eventCopy.forEach { startEvent(it) }
         val playerTurn = directAI()
@@ -81,7 +90,6 @@ object EventManager {
         if (event !is TemporalEvent || event.timeLeft == 0) {
             completeEvent(event)
         }
-
     }
 
     private suspend fun tick() {

@@ -60,8 +60,8 @@ object GameManager {
         //        GameState.properties.values.put(AUTO_SAVE, true)
 //        GameState.putDebug(DebugType.VERBOSE_ACTIONS, testing)
 //        GameState.putDebug(DebugType.VERBOSE_AI, true)
+//        GameState.properties.values.put(DEBUG_PACKAGE, AIPackageKeys.PEASANT)
 //        GameState.putDebug(DebugType.CLARITY, true)
-//        GameState.properties.values.put(DEBUG_PACKAGE, AIPackageKeys.PREDATOR)
 
         GameState.properties.values.put(AUTO_LOAD, !testing)
         GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
