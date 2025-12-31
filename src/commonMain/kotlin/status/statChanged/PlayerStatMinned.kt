@@ -1,8 +1,8 @@
 package status.statChanged
 
 import core.GameState
-import core.PLAYER_START_LOCATION
-import core.PLAYER_START_NETWORK
+import core.NetworkKeys.PLAYER_START_LOCATION
+import core.NetworkKeys.PLAYER_START_NETWORK
 import core.Player
 import core.events.EventListener
 import core.events.EventManager

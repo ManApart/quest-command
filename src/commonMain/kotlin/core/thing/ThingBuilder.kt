@@ -1,5 +1,8 @@
 package core.thing
 
+import core.TagKey
+import core.TagKey.SOUND_DESCRIPTION
+import core.TagKey.SOUND_LEVEL
 import core.ai.*
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
@@ -12,7 +15,6 @@ import core.body.BodyManager
 import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
-import core.thing.creature.CREATURE_TAG
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested
@@ -20,8 +22,6 @@ import core.utility.applySuspending
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
 import crafting.material.MaterialManager
-import explore.listen.SOUND_DESCRIPTION
-import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
 import inventory.Inventory
 import status.Soul
@@ -259,7 +259,7 @@ class ThingBuilder(internal val name: String) {
     private fun discernAI(tags: List<String>) : AI {
         return when {
 //            tags.contains(CREATURE_TAG) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
-            tags.contains(CREATURE_TAG) -> ConditionalAI()
+            tags.contains(TagKey.CREATURE) -> ConditionalAI()
             else -> DumbAI()
         }
     }

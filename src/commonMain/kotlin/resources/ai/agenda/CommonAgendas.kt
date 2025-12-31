@@ -3,12 +3,12 @@ package resources.ai.agenda
 import combat.DamageType
 import combat.attack.AttackEvent
 import combat.attack.startAttack
+import core.FactKind
 import core.GameState
 import core.ai.agenda.AgendaResource
 import core.ai.agenda.agendas
 import core.ai.knowledge.DiscoverFactEvent
 import core.ai.knowledge.Fact
-import core.ai.knowledge.FactKind
 import core.ai.knowledge.Subject
 import core.thing.Thing
 import core.utility.RandomManager
@@ -131,14 +131,14 @@ class CommonAgendas : AgendaResource {
         agendaAction("Search For Enemy") { owner ->
             val target = owner.location.getLocation().getCreatures(perceivedBy = owner).firstOrNull { !it.properties.tags.has("Predator") }
             target?.let {
-                owner.discover(target, FactKind.AGGRO_TARGET.name)
+                owner.discover(target, FactKind.AGGRO_TARGET)
             }
         }
 
         agendaAction("Search For Food") { owner ->
             val target = (owner.inventory.getItems() + owner.location.getLocation().getItems(perceivedBy = owner)).firstOrNull { it.properties.tags.has("Food") }
             target?.let {
-                owner.discover(target, FactKind.USE_TARGET.name)
+                owner.discover(target, FactKind.USE_TARGET)
             }
         }
 
@@ -150,7 +150,7 @@ class CommonAgendas : AgendaResource {
             actions("Find Bed") { owner ->
                 owner.mind.knownThingByKind("MyBed")?.let { target ->
                     listOf(
-                        owner.discover(target, FactKind.USE_TARGET.name),
+                        owner.discover(target, FactKind.USE_TARGET),
                         owner.discover(target.location, "LocationGoal")
                     )
                 }

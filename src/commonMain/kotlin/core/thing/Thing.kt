@@ -1,6 +1,7 @@
 package core.thing
 
 import core.GameState
+import core.GameState.properties
 import core.ai.AI
 import core.ai.DumbAI
 import core.ai.behavior.Behavior
@@ -14,12 +15,14 @@ import core.utility.clamp
 import core.utility.max
 import explore.listen.getSound
 import inventory.Inventory
+import kotlinx.coroutines.NonDisposableHandle.parent
 import status.Soul
 import status.stat.PERCEPTION
 import status.stat.SNEAK
 import system.debug.DebugType
 import traveling.location.Route
 import traveling.location.location.Location
+import traveling.location.location.location
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
@@ -59,23 +62,9 @@ data class Thing(
 
     fun getDisplayName(): String {
         val locationDescription = properties.values.getString("locationDescription")
-        val description = if (locationDescription.isBlank()) {
-            ""
-        } else {
-            " $locationDescription"
-        }
-
-        val location = if (position == NO_VECTOR) {
-            ""
-        } else {
-            " $position"
-        }
-
-        val count = if (properties.getCount() != 1) {
-            "" + properties.getCount() + "x "
-        } else {
-            ""
-        }
+        val description = if (locationDescription.isBlank()) "" else " $locationDescription"
+        val location = if (position == NO_VECTOR) "" else " $position"
+        val count = if (properties.getCount() != 1) "" + properties.getCount() + "x " else ""
 
         return count + name + description + location
     }

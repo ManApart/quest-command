@@ -1,8 +1,8 @@
 package system
 
 import core.DependencyInjector
-import core.PLAYER_START_LOCATION
-import core.PLAYER_START_NETWORK
+import core.NetworkKeys.PLAYER_START_LOCATION
+import core.NetworkKeys.PLAYER_START_NETWORK
 import core.body.*
 import core.thing.activator.ActivatorManager
 import core.thing.activator.dsl.ActivatorsCollection

@@ -2,6 +2,7 @@ import conversation.dsl.DialoguesCollection
 import conversation.dsl.DialoguesMock
 import core.DependencyInjector
 import core.GameState
+import core.TagKey
 import core.ai.AIManager
 import core.ai.agenda.AgendasCollection
 import core.ai.agenda.AgendasMock
@@ -25,7 +26,6 @@ import core.thing.activator.ACTIVATOR_TAG
 import core.thing.activator.ActivatorManager
 import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.activator.dsl.ActivatorsMock
-import core.thing.creature.CREATURE_TAG
 import core.thing.item.ITEM_TAG
 import core.thing.item.ItemManager
 import core.thing.item.ItemsCollection
@@ -117,7 +117,7 @@ fun createPackMule(strength: Int = 1): Thing {
         "Pack Mule", body = createInventoryBodyBlocking("Pack Mule"),
         properties = Properties(
             Values(STRENGTH to strength.toString()),
-            Tags(CONTAINER, OPEN, CREATURE_TAG)
+            Tags(CONTAINER, OPEN, TagKey.CREATURE)
         )
     )
 }
@@ -189,4 +189,3 @@ fun createMockedGame() {
         GameLogger.reset()
     }
 }
-

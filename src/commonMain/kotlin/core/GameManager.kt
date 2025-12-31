@@ -1,5 +1,7 @@
 package core
 
+import core.NetworkKeys.PLAYER_START_LOCATION
+import core.NetworkKeys.PLAYER_START_NETWORK
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
@@ -17,10 +19,6 @@ import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
-
-const val PLAYER_START_NETWORK = "Kanbara Countryside"
-const val PLAYER_START_LOCATION = "An Open Field"
-
 
 object GameManager {
     var playing = false

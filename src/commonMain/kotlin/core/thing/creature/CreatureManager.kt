@@ -2,6 +2,7 @@ package core.thing.creature
 
 import building.ModManager
 import core.DependencyInjector
+import core.TagKey
 import core.ai.AIManager
 import core.startupLog
 import core.thing.Thing
@@ -14,8 +15,6 @@ import core.utility.toNameSearchableList
 import status.stat.*
 import traveling.location.location.LocationThing
 
-const val CREATURE_TAG = "Creature"
-
 object CreatureManager {
     private val creatures = Backer(::loadCreatures)
     suspend fun getCreatures() = creatures.get()
@@ -27,7 +26,7 @@ object CreatureManager {
     private suspend fun loadCreatures(): NameSearchableList<Thing> {
         startupLog("Loading Creatures.")
         val collection = DependencyInjector.getImplementation(CreaturesCollection::class)
-        return (collection.values() + ModManager.creatures).build(CREATURE_TAG).toNameSearchableList()
+        return (collection.values() + ModManager.creatures).build(TagKey.CREATURE).toNameSearchableList()
     }
 
     private suspend fun getCreature(name: String): Thing {

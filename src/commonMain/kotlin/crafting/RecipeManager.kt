@@ -2,15 +2,13 @@ package crafting
 
 import building.ModManager
 import core.DependencyInjector
+import core.FactKind
 import core.GameState
 import core.Player
-import core.ai.AIManager
-import core.ai.knowledge.FactKind
 import core.startupLog
 import core.thing.Thing
 import core.utility.Backer
 import core.utility.NameSearchableList
-import core.utility.lazyM
 import core.utility.toNameSearchableList
 import system.debug.DebugType
 
@@ -45,7 +43,7 @@ object RecipeManager {
 
     suspend fun getKnownRecipes(source: Player): NameSearchableList<Recipe> {
         return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) getAllRecipes() else {
-            source.mind.memory.getListFact(FactKind.RECIPE.name)?.sources
+            source.mind.memory.getListFact(FactKind.RECIPE)?.sources
                 ?.mapNotNull { it.topic }?.let { getRecipes(it) }?.toNameSearchableList()
                 ?: NameSearchableList()
         }

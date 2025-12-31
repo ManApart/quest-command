@@ -7,10 +7,6 @@ import core.ai.packages.AIPackageTemplatesCollection
 import core.startupLog
 import core.utility.lazyM
 
-object AIPackageKeys {
-    const val CREATURE = "Creature"
-}
-
 object AIPackageManager {
     var aiPackages by lazyM { loadAIPackages() }
         private set

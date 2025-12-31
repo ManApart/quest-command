@@ -4,14 +4,7 @@ import combat.DamageType
 import combat.attack.AttackEvent
 import combat.attack.startAttack
 import core.GameState
-import core.ai.knowledge.DiscoverFactEvent
-import core.ai.knowledge.Fact
-import core.ai.knowledge.ForgetFactEvent
-import core.ai.knowledge.HowToUse
-import core.ai.knowledge.Subject
-import core.properties.Properties
-import core.properties.ValueKey
-import core.properties.Values
+import core.ValueKey
 import core.thing.Thing
 import core.utility.RandomManager
 import traveling.location.RouteFinder
@@ -23,7 +16,6 @@ import traveling.routes.FindRouteEvent
 suspend fun Thing.hasAggroTarget() = mind.getAggroTarget() != null
 suspend fun Thing.hasUseTarget() = mind.getUseTargetThing() != null
 
-suspend fun Thing.canReachGoal(howToUse: HowToUse) = canReachGoal(howToUse.name)
 suspend fun Thing.canReachGoal(howToUse: String): Boolean {
     val useTarget = mind.getUseTarget()
     return useTarget != null && useTarget.props.values.getString(ValueKey.GOAL) == howToUse && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false

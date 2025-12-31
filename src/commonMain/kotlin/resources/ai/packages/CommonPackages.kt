@@ -1,18 +1,13 @@
 package resources.ai.packages
 
 import conversation.dsl.hasTag
+import core.FactKind
 import core.GameState
-import core.ai.knowledge.FactKind
-import core.ai.knowledge.HowToUse
+import core.HowToUse
 import core.ai.knowledge.clearUseGoal
 import core.ai.knowledge.discover
 import core.ai.knowledge.setUseTarget
-import core.ai.packages.AIPackageTemplateResource
-import core.ai.packages.aiPackages
-import core.ai.packages.canReachGoal
-import core.ai.packages.clawAttack
-import core.ai.packages.perceivedActivators
-import core.ai.packages.perceivedCreatures
+import core.ai.packages.*
 import status.rest.RestEvent
 
 class CommonPackages : AIPackageTemplateResource {

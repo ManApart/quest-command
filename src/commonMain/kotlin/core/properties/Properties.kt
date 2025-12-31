@@ -1,7 +1,7 @@
 package core.properties
 
+import core.TagKey
 import core.thing.activator.ACTIVATOR_TAG
-import core.thing.creature.CREATURE_TAG
 import core.thing.item.ITEM_TAG
 import core.utility.wrapNonEmpty
 import traveling.position.Distances.BOW_RANGE
@@ -11,12 +11,9 @@ import traveling.position.Distances.SPEAR_RANGE
 import traveling.position.Distances.SWORD_RANGE
 
 
-fun props(vararg values: Pair<ValueKey, String>) = Properties(*values.map { (k,v) -> k.name to v }.toTypedArray())
-
 data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(tags: Tags) : this(Values(), tags)
     constructor(vararg tags: String) : this(Values(), Tags(*tags))
-    constructor(vararg tags: TagKey) : this(Values(), Tags(*tags))
     constructor(vararg values: Pair<String, String>) : this(Values(*values), Tags())
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
             Values(base.values, params),
@@ -77,7 +74,7 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     }
 
     fun isCreature(): Boolean {
-        return tags.has(CREATURE_TAG)
+        return tags.has(TagKey.CREATURE)
     }
 
     fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {

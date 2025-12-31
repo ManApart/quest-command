@@ -1,8 +1,8 @@
 package resources.ai.packages
 
+import core.FactKind
 import core.GameState
-import core.ai.knowledge.FactKind
-import core.ai.knowledge.HowToUse
+import core.HowToUse
 import core.ai.knowledge.setUseTarget
 import core.ai.packages.AIPackageTemplateResource
 import core.ai.packages.aiPackages

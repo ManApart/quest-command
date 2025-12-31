@@ -1,5 +1,6 @@
 package core.ai.knowledge
 
+import core.FactKind
 import core.ai.AI
 import core.ai.DumbAI
 import core.thing.Thing
@@ -20,17 +21,14 @@ data class Mind(
         ai.creature = creature
     }
 
-    fun knows(kind: FactKind) = knows(kind.name)
     fun knows(kind: String): ListFact? {
         return memory.getListFact(kind)
     }
 
-    fun knows(source: Subject, kind: FactKind) = knows(source, kind.name)
     fun knows(source: Subject, kind: String): Fact? {
         return memory.getFact(source, kind)
     }
 
-    suspend fun knownThingByKind(kind: FactKind) = knownThingByKind(kind.name)
     suspend fun knownThingByKind(kind: String): Thing? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
     }
@@ -38,29 +36,22 @@ data class Mind(
     suspend fun thingByKindExists(kind: String): Boolean {
         return knownThingByKind(kind) != null
     }
-    fun knownLocationByKind(kind: FactKind) = knownLocationByKind(kind.name)
     fun knownLocationByKind(kind: String): LocationNode? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getLocation() }
     }
 
-    fun locationByKindExists(kind: FactKind) = locationByKindExists(kind.name)
     fun locationByKindExists(kind: String): Boolean {
         return knownLocationByKind(kind) != null
     }
 
-    fun learn(source: Subject, kind: FactKind) = learn(source, kind.name)
     fun learn(source: Subject, kind: String) {
         val fact = memory.getFact(source, kind) ?: Fact(source, kind)
         learn(fact)
     }
 
-    fun learn(kind: FactKind, addition: Subject) = learn(kind.name, listOf(addition))
     fun learn(kind: String, addition: Subject) = learn(kind, listOf(addition))
-    @JvmName("learnTopicsEnum")
-    fun learn(kind: FactKind, additions: List<String>) = learn(kind.name, additions)
     @JvmName("learnTopics")
     fun learn(kind: String, additions: List<String>) = learn(kind, additions.map { Subject(topic = it) })
-    fun learn(kind: FactKind, additions: List<Subject>) = learn(kind.name, additions)
     fun learn(kind: String, additions: List<Subject>) {
         val existing = memory.getListFact(kind)
         val fact = ListFact(kind, additions.toList() + (existing?.sources ?: listOf()))
@@ -98,7 +89,7 @@ data class Mind(
     }
 
     fun setAggroTarget(enemy: Thing) {
-        learn(Fact(Subject(enemy), FactKind.AGGRO_TARGET.name))
+        learn(Fact(Subject(enemy), FactKind.AGGRO_TARGET))
     }
 
     suspend fun getAggroTarget(): Thing? {
@@ -107,7 +98,7 @@ data class Mind(
 
     suspend fun clearAggroTarget() {
         getAggroTarget()?.let {
-            memory.forget(Fact(Subject(it), FactKind.AGGRO_TARGET.name))
+            memory.forget(Fact(Subject(it), FactKind.AGGRO_TARGET))
         }
     }
 
@@ -116,7 +107,7 @@ data class Mind(
     }
 
     fun getUseTarget(): Fact? {
-        return memory.getFirstFact(FactKind.USE_TARGET.name)
+        return memory.getFirstFact(FactKind.USE_TARGET)
     }
 
 }
