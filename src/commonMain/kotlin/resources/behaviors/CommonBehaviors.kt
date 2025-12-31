@@ -91,6 +91,15 @@ class CommonBehaviors : BehaviorResource {
             }
         }
 
+        //TODO - make message to all who perceive it
+        behavior("Tend Crop", InteractEvent::class) {
+            events { event, params ->
+                listOfNotNull(
+                    eventWithPlayer(event.creature) { MessageEvent(it, params["message"] ?: "You tend the ${event.interactionTarget.name}.") },
+                )
+            }
+        }
+
         behavior("Restrict Destination", InteractEvent::class) {
             events { event, params ->
                 val source = event.creature

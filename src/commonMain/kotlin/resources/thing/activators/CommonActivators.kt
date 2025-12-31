@@ -1,5 +1,6 @@
 package resources.thing.activators
 
+import core.TagKey
 import core.properties.CONTAINER
 import core.properties.OPEN
 import core.properties.SIZE
@@ -43,6 +44,7 @@ class CommonActivators : ActivatorResource {
             description("The golden shafts of wheat whisper as they brush against each other.")
             sound(5, "a faint rustling sound")
             param("fireHealth" to 2, "itemName" to "Wheat Field")
+            behavior("Tend Crop")
             behavior(
                 "Slash Harvest",
                 "itemName" to "Wheat Bundle",
@@ -50,7 +52,7 @@ class CommonActivators : ActivatorResource {
                 "count" to 3
             )
             props {
-                tag("Farmable")
+                tag(TagKey.FARMABLE)
             }
         }
 

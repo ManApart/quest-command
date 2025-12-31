@@ -7,7 +7,6 @@ import core.TagKey
 import core.ai.knowledge.clearUseGoal
 import core.ai.knowledge.setUseTarget
 import core.ai.packages.*
-import core.utility.getRandomRange
 import core.utility.random
 import status.rest.RestEvent
 import status.stat.STAMINA
@@ -16,7 +15,7 @@ import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent
 import use.interaction.InteractEvent
 
-class CreaturePackage : AIPackageTemplateResource {
+class CreatureAIPackage : AIPackageTemplateResource {
     override val values = aiPackages {
         aiPackage("Creature") {
 

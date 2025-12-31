@@ -1,5 +1,5 @@
 package core.ai.packages
 
 class AIPackageTemplatesGenerated : AIPackageTemplatesCollection {
-    override val values by lazy { listOf<AIPackageTemplateResource>(resources.ai.packages.CommonPackages(), resources.ai.packages.PeasantPackage(), resources.ai.packages.CreaturePackage()).flatMap { it.values }}
+    override val values by lazy { listOf<AIPackageTemplateResource>(resources.ai.packages.CommonAIPackages(), resources.ai.packages.PeasantAIPackage(), resources.ai.packages.CreatureAIPackage()).flatMap { it.values }}
 }

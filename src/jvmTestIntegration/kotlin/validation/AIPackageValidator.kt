@@ -8,9 +8,6 @@ import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-//TODO validate all things/minds reference valid package name
-// - Check things builder
-
 class AIPackageValidator {
 
     private val packages = runBlocking { AIPackageManager.aiPackages }
@@ -21,7 +18,7 @@ class AIPackageValidator {
         assertEquals(
             0, noDuplicatePackageNames() +
                     noDuplicateIdeaNames() +
-                    subPackageStringReferenceExists()
+                    packageTemplateStringReferenceExists()
         )
     }
 
@@ -55,7 +52,7 @@ class AIPackageValidator {
         return warnings
     }
 
-    private fun subPackageStringReferenceExists(): Int {
+    private fun packageTemplateStringReferenceExists(): Int {
         var warnings = 0
         val packageRef = templates.map { it.name }.toSet()
 

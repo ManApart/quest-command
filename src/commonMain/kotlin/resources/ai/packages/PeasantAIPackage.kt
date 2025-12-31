@@ -12,7 +12,7 @@ import core.ai.packages.perceivedActivators
 import core.ai.packages.plotRouteAndStartTravel
 import core.commands.CommandParsers
 
-class PeasantPackage : AIPackageTemplateResource {
+class PeasantAIPackage : AIPackageTemplateResource {
     override val values = aiPackages {
         aiPackage(PEASANT) {
             template("Creature")

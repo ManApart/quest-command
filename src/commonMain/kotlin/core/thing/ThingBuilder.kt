@@ -258,6 +258,7 @@ class ThingBuilder(internal val name: String) {
         return when {
             props.tags.has(TagKey.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PREDATOR]!!)
             props.tags.has(TagKey.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
+            props.tags.has(TagKey.COMMONER) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PEASANT]!!)
             else -> DumbAI()
         }
     }

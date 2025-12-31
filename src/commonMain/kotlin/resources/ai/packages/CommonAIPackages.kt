@@ -10,7 +10,7 @@ import core.ai.knowledge.setUseTarget
 import core.ai.packages.*
 import status.rest.RestEvent
 
-class CommonPackages : AIPackageTemplateResource {
+class CommonAIPackages : AIPackageTemplateResource {
     override val values = aiPackages {
         aiPackage("Predator") {
             template("Creature")

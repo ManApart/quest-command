@@ -1,5 +1,8 @@
 package resources.thing.creature
 
+import core.FactKind.WORK_TAGS
+import core.TagKey.COMMONER
+import core.TagKey.FARMABLE
 import core.TagKey.PREDATOR
 import core.thing.creature.CreatureResource
 import core.thing.things
@@ -27,10 +30,10 @@ class CommonCreatures : CreatureResource {
             soul("Strength", 3)
             soul("Bare Handed", 2)
             mind{
-                learn("WorkTags", listOf("Farmable"))
+                learn(WORK_TAGS, listOf(FARMABLE))
             }
             props {
-                tag("Commoner")
+                tag(COMMONER)
                 value("Race", "Human")
             }
             item("Brown Pants", "Old Shirt")
