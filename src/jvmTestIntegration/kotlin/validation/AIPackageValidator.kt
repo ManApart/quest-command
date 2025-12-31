@@ -2,17 +2,18 @@ package validation
 
 import building.ModManager
 import core.DependencyInjector
-import core.ai.AIManager2
+import core.ai.AIPackageManager
 import core.ai.packages.AIPackageTemplatesCollection
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 //TODO validate all things/minds reference valid package name
+// - Check things builder
 
 class AIPackageValidator {
 
-    private val packages = runBlocking { AIManager2.aiPackages }
+    private val packages = runBlocking { AIPackageManager.aiPackages }
     private val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.ai2)
 
     @Test

@@ -4,6 +4,7 @@ import core.GameState
 import core.Player
 import core.ai.ConditionalAI
 import core.ai.DumbAI
+import core.ai.PackageBasedAI
 import core.ai.PlayerControlledAI
 import core.ai.knowledge.Mind
 import core.history.displayToMe
@@ -16,6 +17,7 @@ fun describeMind(source: Player, thing: Thing, mind: Mind) {
         mind.ai is DumbAI -> source.displayToMe("${thing.getDisplayName()} is without thought.")
         !GameState.getDebugBoolean(DebugType.CLARITY) -> source.displayToMe("You are unable to perceive the thought of ${thing.getDisplayName()}.")
         mind.ai is ConditionalAI -> ponderThing(source, thing, mind.ai)
+        mind.ai is PackageBasedAI -> ponderThing(source, thing, mind.ai)
         else -> source.displayToMe("You are unable to perceive the thought of ${thing.getDisplayName()}.")
     }
 }
@@ -29,6 +31,14 @@ private fun ponderThing(source: Player, thing: Thing, ai: ConditionalAI) {
             message += "\n\tis working towards ${goal?.name ?: ""}"
             message += "\n\tis on step ${goal?.progress}: ${goal?.steps?.get(goal?.progress ?: 0)?.name ?: ""}"
         }
+        source.displayToMe(message)
+    }
+}
+
+private fun ponderThing(source: Player, thing: Thing, ai: PackageBasedAI) {
+    var message = thing.getDisplayName() + " has take the following actions (top first)"
+    with(ai) {
+            message += "\n\t" + ai.previousIdeas.reversed().joinToString("\n\t")
         source.displayToMe(message)
     }
 }

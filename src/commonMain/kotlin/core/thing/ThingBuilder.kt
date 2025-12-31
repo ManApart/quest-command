@@ -68,7 +68,7 @@ class ThingBuilder(internal val name: String) {
         val allItems = itemNames + bases.flatMap { it.itemNames }
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
-        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if (tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
+        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(tagsToApply)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         mind.mindInitializer()
@@ -152,6 +152,10 @@ class ThingBuilder(internal val name: String) {
 
     fun conditionalAI() {
         this.ai = ConditionalAI()
+    }
+
+    fun packageAI(packageName: String) {
+        this.ai = PackageBasedAI(AIPackageManager.aiPackages[packageName]!!)
     }
 
     fun dumbAI() {
@@ -250,6 +254,14 @@ class ThingBuilder(internal val name: String) {
             possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
             else -> Body(material = bodyMaterial)
         }.also { bodyCustomizer.apply(it) }
+    }
+
+    private fun discernAI(tags: List<String>) : AI {
+        return when {
+//            tags.contains(CREATURE_TAG) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
+            tags.contains(CREATURE_TAG) -> ConditionalAI()
+            else -> DumbAI()
+        }
     }
 
 }

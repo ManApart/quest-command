@@ -7,7 +7,11 @@ import core.ai.packages.AIPackageTemplatesCollection
 import core.startupLog
 import core.utility.lazyM
 
-object AIManager2 {
+object AIPackageKeys {
+    const val CREATURE = "Creature"
+}
+
+object AIPackageManager {
     var aiPackages by lazyM { loadAIPackages() }
         private set
 
@@ -21,5 +25,4 @@ object AIManager2 {
     fun reset() {
         aiPackages = loadAIPackages()
     }
-
 }

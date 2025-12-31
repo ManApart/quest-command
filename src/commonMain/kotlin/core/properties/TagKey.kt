@@ -1,5 +1,6 @@
 package core.properties
 
 enum class TagKey {
-    FOOD
+    FOOD,
+    CREATURE,
 }
