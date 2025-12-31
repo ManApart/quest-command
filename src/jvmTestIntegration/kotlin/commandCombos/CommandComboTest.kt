@@ -129,7 +129,6 @@ class CommandComboTest {
         assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
     }
 
-
     @Test
     fun doNotAttackDeadThing() {
         val input = "s && slash torso of rat && sl rat && sl && slash rat"

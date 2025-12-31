@@ -18,7 +18,7 @@ suspend fun Thing.hasUseTarget() = mind.getUseTargetThing() != null
 
 suspend fun Thing.canReachGoal(howToUse: String): Boolean {
     val useTarget = mind.getUseTarget()
-    return useTarget != null && useTarget.props.values.getString(ValueKey.GOAL) == howToUse && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false
+    return useTarget != null && useTarget.props.values.getString(ValueKey.GOAL) == howToUse.lowercase() && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false
 }
 
 suspend fun clawAttack(target: Thing, creature: Thing): AttackEvent {

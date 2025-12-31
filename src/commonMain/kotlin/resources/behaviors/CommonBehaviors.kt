@@ -100,7 +100,7 @@ class CommonBehaviors : BehaviorResource {
         behavior("Tend Crop", InteractEvent::class) {
             event { event, params ->
                 val message = params[ParameterKeys.MESSAGE] ?: "You tend the ${event.interactionTarget.name}."
-                val messageToOthers = params[ParameterKeys.MESSAGE_TO_OTHERS] ?: "${event.creature} tends the ${event.interactionTarget.name}."
+                val messageToOthers = params[ParameterKeys.MESSAGE_TO_OTHERS] ?: "${event.creature.name} tends the ${event.interactionTarget.name}."
                 MessageEvent(event.creature, message, messageToOthers, false)
             }
         }

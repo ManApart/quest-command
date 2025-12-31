@@ -10,7 +10,6 @@ abstract class AI {
     var takenTurn: Boolean = false
     abstract suspend fun hear(event: DialogueEvent)
     abstract suspend fun takeAction()
-
     val actions = mutableListOf<TemporalEvent>()
 
     suspend fun chooseAction() {
@@ -19,6 +18,4 @@ abstract class AI {
             takenTurn = true
         }
     }
-
-
 }
