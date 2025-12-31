@@ -43,3 +43,10 @@ object NetworkKeys {
     const val PLAYER_START_NETWORK = "Kanbara Countryside"
     const val PLAYER_START_LOCATION = "An Open Field"
 }
+
+object ParameterKeys {
+    const val COUNT = "count"
+    const val MESSAGE = "message"
+    const val MESSAGE_TO_OTHERS = "messageToOthers"
+    const val ITEM_NAME = "itemName"
+}
