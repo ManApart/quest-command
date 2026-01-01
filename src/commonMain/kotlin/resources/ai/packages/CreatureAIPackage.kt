@@ -51,7 +51,9 @@ class CreatureAIPackage : AIPackageTemplateResource {
             }
 
             idea("Move to Use Target", 50) {
-                cond { it.hasUseTarget() && !it.canReach(it.mind.getUseTargetThing()!!.position) }
+                cond { s ->
+                    s.mind.getUseTargetThing()?.position?.let { !s.canReach(it) } ?: false
+                }
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
             }
 
