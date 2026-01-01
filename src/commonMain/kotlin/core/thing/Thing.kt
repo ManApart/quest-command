@@ -177,10 +177,10 @@ data class Thing(
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 
-    fun canReach(position: Vector): Boolean {
+    fun canReach(targetPos: Vector): Boolean {
         val range = body.getRange()
-        val centerOfCreature = position + Vector(z = body.getSize().z / 2)
-        val distance = centerOfCreature.getDistance(position)
+        val centerOfCreature = this.position + Vector(z = body.getSize().z / 2)
+        val distance = centerOfCreature.getDistance(targetPos)
         return range >= distance
     }
 

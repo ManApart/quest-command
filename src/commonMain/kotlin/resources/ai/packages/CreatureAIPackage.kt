@@ -51,9 +51,7 @@ class CreatureAIPackage : AIPackageTemplateResource {
             }
 
             idea("Move to Use Target", 50) {
-                cond { s ->
-                    s.mind.getUseTargetThing()?.position?.let { !s.canReach(it) } ?: false
-                }
+                cond { s -> s.mind.getUseTargetThing()?.let { !s.canReach(it.position) } ?: false }
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
             }
 
@@ -88,9 +86,8 @@ class CreatureAIPackage : AIPackageTemplateResource {
             idea("Interact", 40) {
                 cond { it.canReachGoal(HowToUse.INTERACT) }
                 actions { s ->
-                    //TODO - ignoreDistance shouldn't be needed. Move to field first
                     listOfNotNull(
-                        s.mind.getUseTargetThing()?.let { InteractEvent(s, it, ignoreDistance = true) },
+                        s.mind.getUseTargetThing()?.let { InteractEvent(s, it) },
                         s.clearUseGoal()
                     )
                 }

@@ -14,7 +14,6 @@ import traveling.routes.FindRouteEvent
 
 
 suspend fun Thing.hasAggroTarget() = mind.getAggroTarget() != null
-suspend fun Thing.hasUseTarget() = mind.getUseTargetThing() != null
 
 suspend fun Thing.canReachGoal(howToUse: String): Boolean {
     val useTarget = mind.getUseTarget()
