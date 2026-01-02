@@ -6,6 +6,7 @@ import core.TagKey.FARMABLE
 import core.TagKey.PREDATOR
 import core.thing.creature.CreatureResource
 import core.thing.things
+import status.stat.AGILITY
 
 class CommonCreatures : CreatureResource {
 
@@ -29,6 +30,7 @@ class CommonCreatures : CreatureResource {
             soul("Health", 10)
             soul("Strength", 3)
             soul("Bare Handed", 2)
+            soul(AGILITY, 1)
             mind{
                 learn(WORK_TAGS, listOf(FARMABLE))
             }

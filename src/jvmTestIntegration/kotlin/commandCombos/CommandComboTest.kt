@@ -286,4 +286,16 @@ class CommandComboTest {
             assertTrue(tags.hasAll(listOf("Bronze", "Weapon")))
         }
     }
+
+    @Test
+    fun farmerTendsWheat() {
+        runBlocking {
+            CommandParsers.parseCommand(
+                GameState.player,
+                "w && e && rs 1 && mv wheat && rs 1"
+            )
+
+            assertTrue(GameLogger.getMainHistory().contains("Farmer tends the Wheat Field."))
+        }
+    }
 }
