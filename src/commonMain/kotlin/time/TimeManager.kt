@@ -80,7 +80,7 @@ class TimeManager(private var ticks: Long = 0) {
 
     fun isWorkHours(): Boolean {
         val percent = getPercentDayComplete()
-        return percent > 25 || percent < 50
+        return percent > 25 && percent < 50
     }
 
     private fun debugTimeUpdate() {

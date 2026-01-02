@@ -4,7 +4,9 @@ import core.AIPackageKeys.PEASANT
 import core.FactKind
 import core.GameState
 import core.HowToUse
+import core.ValueKey
 import core.ai.knowledge.setUseTarget
+import core.ai.knowledge.useTargetGoal
 import core.ai.packages.AIPackageTemplateResource
 import core.ai.packages.aiPackages
 import core.ai.packages.canReachGoal
@@ -50,7 +52,7 @@ class PeasantAIPackage : AIPackageTemplateResource {
                 }
             }
             idea("Want to Sleep in Bed", takesTurn = false) {
-                cond { s -> GameState.timeManager.isNight() && s.mind.knownThingByKind(FactKind.MY_BED) != null }
+                cond { s -> GameState.timeManager.isNight() && s.mind.knownThingByKind(FactKind.MY_BED) != null && s.useTargetGoal() != HowToUse.SLEEP }
                 act { s -> s.mind.knownThingByKind(FactKind.MY_BED)?.let { s.setUseTarget(it, HowToUse.SLEEP) } }
             }
             idea("Sleep in Bed") {
