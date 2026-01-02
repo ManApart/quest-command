@@ -17,6 +17,7 @@ class CommonCreatures : CreatureResource {
             soul("Health", 3)
             soul("Strength", 1)
             soul("Bare Handed", 2)
+            soul(AGILITY, 1)
             props {
                 tag("Small", PREDATOR)
             }
@@ -31,7 +32,7 @@ class CommonCreatures : CreatureResource {
             soul("Strength", 3)
             soul("Bare Handed", 2)
             soul(AGILITY, 1)
-            mind{
+            mind {
                 learn(WORK_TAGS, listOf(FARMABLE))
             }
             props {

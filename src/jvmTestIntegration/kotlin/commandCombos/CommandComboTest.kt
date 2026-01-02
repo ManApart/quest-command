@@ -290,9 +290,10 @@ class CommandComboTest {
     @Test
     fun farmerTendsWheat() {
         runBlocking {
+            GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
-                "w && e && rs 1 && mv wheat && rs 1"
+                "rs 8 && w && e && rs 1 && mv wheat && rs 1"
             )
 
             assertTrue(GameLogger.getMainHistory().contains("Farmer tends the Wheat Field."))
