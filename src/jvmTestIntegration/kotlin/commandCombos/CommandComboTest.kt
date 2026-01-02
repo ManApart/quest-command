@@ -263,7 +263,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(
                 GameState.player,
-                "w && s && take tinder && n && rest 10 && e && n && w && take lantern && t mouth && hold lantern f && ls"
+                "w && s && mv to range && take tinder && rest 10 && n && rest 10 && e && n && w && take lantern && t mouth && hold lantern f && ls"
             )
             assertEquals("It's too dark to see anything.", GameLogger.getMainHistory().getLastOutput())
             CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
@@ -276,7 +276,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(
                 GameState.player,
-                "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger"
+                "w && n && w && debug recipe && mv to chest && take all from chest && mv to forge && take tinder && debug stat smithing 2 && use tinder on forge && craft dagger"
             )
 
             val dagger = GameState.player.inventory.getItem("Bronze Dagger")
