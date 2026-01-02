@@ -62,7 +62,7 @@ class CreatureAIPackage : AIPackageTemplateResource {
 
             //TODO - Maybe last eaten + amount of time
             //TODO - second version to go look for food
-            idea("Want Food") {
+            idea("Want Food", takesTurn = false) {
                 cond { s ->
                     GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) &&
                             s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) } != null

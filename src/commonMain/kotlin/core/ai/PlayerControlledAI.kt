@@ -13,9 +13,10 @@ class PlayerControlledAI : AI() {
         event.speaker.display("" + event.speaker.name + ": " + event.line)
     }
 
-    override suspend fun takeAction() {
+    override suspend fun takeAction(): Boolean {
         creature.displayToMe("What do you do, ${creature.name}?")
         creature.displayToOthersGlobal("${creature.name} does what?")
+        return true
     }
 
 }

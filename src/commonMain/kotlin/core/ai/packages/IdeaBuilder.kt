@@ -4,11 +4,11 @@ import core.events.Event
 import core.thing.Thing
 import use.interaction.nothing.NothingEvent
 
-class IdeaBuilder(val name: String, val priority: Int) {
+class IdeaBuilder(val name: String, val priority: Int, val takesTurn: Boolean) {
     internal var criteria: suspend (Thing) -> Boolean = { true }
     private var action: suspend (Thing) -> List<Event> = { listOf() }
 
-    fun build(packageName: String) = Idea("$packageName-$name", priority, criteria, action)
+    fun build(packageName: String) = Idea("$packageName-$name", priority, takesTurn, criteria, action)
 
     fun cond(condition: suspend (Thing) -> Boolean) {
         this.criteria = condition
@@ -39,8 +39,8 @@ class IdeasBuilder {
         children.add(item)
     }
 
-    fun idea(name: String, priority: Int = 20, initializer: IdeaBuilder.() -> Unit) {
-        children.add(IdeaBuilder(name, priority).apply(initializer))
+    fun idea(name: String, priority: Int = 20, takesTurn: Boolean = true, initializer: IdeaBuilder.() -> Unit) {
+        children.add(IdeaBuilder(name, priority, takesTurn).apply(initializer))
     }
 
     fun criteria(criteria: suspend (Thing) -> Boolean, initializer: IdeasBuilder.() -> Unit) {

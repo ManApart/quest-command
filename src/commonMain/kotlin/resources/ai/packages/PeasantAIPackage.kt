@@ -37,7 +37,7 @@ class PeasantAIPackage : AIPackageTemplateResource {
                     s.mind.knownLocationByKind(FactKind.MY_HOME)?.let { plotRouteAndStartTravel(s, it) }
                 }
             }
-            idea("Work") {
+            idea("Work", takesTurn = false) {
                 cond { s ->
                     GameState.timeManager.isWorkHours()
                             && s.location == s.mind.knownLocationByKind(FactKind.MY_WORKPLACE)
@@ -49,7 +49,7 @@ class PeasantAIPackage : AIPackageTemplateResource {
                     }
                 }
             }
-            idea("Want to Sleep in Bed") {
+            idea("Want to Sleep in Bed", takesTurn = false) {
                 cond { s -> GameState.timeManager.isNight() && s.mind.knownThingByKind(FactKind.MY_BED) != null }
                 act { s -> s.mind.knownThingByKind(FactKind.MY_BED)?.let { s.setUseTarget(it, HowToUse.SLEEP) } }
             }

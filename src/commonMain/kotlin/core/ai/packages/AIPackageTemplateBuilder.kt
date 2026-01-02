@@ -31,8 +31,8 @@ class AIPackageTemplateBuilder(val name: String) {
         dropped.addAll(ideaName)
     }
 
-    fun idea(name: String, priority: Int = 20, initializer: IdeaBuilder.() -> Unit = {}) {
-        ideas.add(IdeaBuilder(name, priority).apply(initializer))
+    fun idea(name: String, priority: Int = 20, takesTurn: Boolean = true, initializer: IdeaBuilder.() -> Unit = {}) {
+        ideas.add(IdeaBuilder(name, priority, takesTurn).apply(initializer))
     }
 
     fun tagged(tag: String, initializer: IdeasBuilder.() -> Unit) {

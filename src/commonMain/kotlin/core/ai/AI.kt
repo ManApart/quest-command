@@ -9,13 +9,12 @@ abstract class AI {
     var enabled: Boolean = true
     var takenTurn: Boolean = false
     abstract suspend fun hear(event: DialogueEvent)
-    abstract suspend fun takeAction()
+    abstract suspend fun takeAction(): Boolean
     val actions = mutableListOf<TemporalEvent>()
 
     suspend fun chooseAction() {
         if (enabled && !creature.isPlayer()) {
-            takeAction()
-            takenTurn = true
+            takenTurn = takeAction()
         }
     }
 }

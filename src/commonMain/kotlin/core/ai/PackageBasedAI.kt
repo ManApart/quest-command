@@ -14,10 +14,11 @@ class PackageBasedAI(val aiPackage: AIPackage) : AI() {
         return "AI for ${creature.name} using ${aiPackage.name} package"
     }
 
-    override suspend fun takeAction() {
-        aiPackage.pickIdea(creature)
-            .also { previousIdeas.add(it.name) }
-            .action(creature).forEach { EventManager.postEvent(it) }
+    override suspend fun takeAction(): Boolean {
+        val idea = aiPackage.pickIdea(creature)
+        previousIdeas.add(idea.name)
+        idea.action(creature).forEach { EventManager.postEvent(it) }
+        return idea.takesTurn
     }
 
     override suspend fun hear(event: DialogueEvent) {
