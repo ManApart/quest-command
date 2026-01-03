@@ -19,7 +19,7 @@ class PeasantAIPackage : AIPackageTemplateResource {
         aiPackage(PEASANT) {
             template("Creature")
             idea("Converse") {
-                cond { s -> CommandParsers.getConversations().any { it.containsParticipant(s) }}
+                cond { s -> CommandParsers.getConversations().any { it.containsParticipant(s) } }
             }
             idea("Go to Work") {
                 cond { s ->
@@ -54,12 +54,6 @@ class PeasantAIPackage : AIPackageTemplateResource {
             idea("Want to Sleep in Bed", takesTurn = false) {
                 cond { s -> GameState.timeManager.isNight() && s.mind.knownThingByKind(FactKind.MY_BED) != null && s.useTargetGoal() != HowToUse.SLEEP }
                 act { s -> s.mind.knownThingByKind(FactKind.MY_BED)?.let { s.setUseTarget(it, HowToUse.SLEEP) } }
-            }
-            idea("Sleep in Bed") {
-                cond { s ->
-                    GameState.timeManager.isNight() && s.canReachGoal(HowToUse.SLEEP)
-                }
-
             }
         }
     }

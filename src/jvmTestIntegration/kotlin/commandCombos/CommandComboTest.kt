@@ -299,4 +299,17 @@ class CommandComboTest {
             assertTrue(GameLogger.getMainHistory().contains("Farmer tends the Wheat Field."))
         }
     }
+
+    @Test
+    fun farmerSleeps() {
+        runBlocking {
+            GameState.putDebug(DebugType.CLARITY, true)
+            CommandParsers.parseCommand(
+                GameState.player,
+                "rs 3 && w && s && mv bed"
+            )
+
+            assertTrue(GameLogger.getMainHistory().contains(""))
+        }
+    }
 }
