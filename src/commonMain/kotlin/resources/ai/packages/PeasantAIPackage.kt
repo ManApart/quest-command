@@ -52,7 +52,9 @@ class PeasantAIPackage : AIPackageTemplateResource {
                 }
             }
             idea("Want to Sleep in Bed", takesTurn = false) {
-                cond { s -> GameState.timeManager.isNight() && s.mind.knownThingByKind(FactKind.MY_BED) != null && s.useTargetGoal() != HowToUse.SLEEP }
+                cond { s ->
+                    GameState.timeManager.isNight() && s.mind.knownThingByKind(FactKind.MY_BED) != null && s.useTargetGoal() != HowToUse.SLEEP.lowercase()
+                }
                 act { s -> s.mind.knownThingByKind(FactKind.MY_BED)?.let { s.setUseTarget(it, HowToUse.SLEEP) } }
             }
         }

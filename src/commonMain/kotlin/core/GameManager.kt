@@ -65,6 +65,7 @@ object GameManager {
         GameState.properties.values.put(AUTO_LOAD, !testing)
         GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
         GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
+        GameState.properties.values.put(TEST_MODE, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
         GameState.putDebug(DebugType.VERBOSE_TIME, testing)

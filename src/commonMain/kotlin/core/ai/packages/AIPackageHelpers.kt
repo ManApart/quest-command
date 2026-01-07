@@ -13,8 +13,6 @@ import traveling.position.ThingAim
 import traveling.routes.FindRouteEvent
 
 
-suspend fun Thing.hasAggroTarget() = mind.getAggroTarget() != null
-
 suspend fun Thing.canReachGoal(howToUse: String): Boolean {
     val useTarget = mind.getUseTarget()
     return useTarget != null && useTarget.props.values.getString(ValueKey.GOAL) == howToUse.lowercase() && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false

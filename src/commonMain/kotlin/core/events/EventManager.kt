@@ -3,6 +3,7 @@ package core.events
 import building.ModManager
 import core.DependencyInjector
 import core.GameState
+import core.TEST_MODE
 import core.ai.directAI
 import core.ai.replenishAITurns
 import core.history.displayGlobal
@@ -44,7 +45,10 @@ object EventManager {
             startEvents()
             loop++
         }
-        if (loop == MAX_EVENT_LOOPS) println("Reached max loops, this should not happen!")
+        if (loop == MAX_EVENT_LOOPS) {
+            if (GameState.properties.values.getBoolean(TEST_MODE)) throw IllegalStateException("Reached max loops, this should not happen!")
+            println("Reached max loops, this should not happen!")
+        }
     }
 
     private suspend fun startEvents() {

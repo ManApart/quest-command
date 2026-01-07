@@ -124,7 +124,7 @@ class CommonBehaviors : BehaviorResource {
             events { event, params ->
                 val hoursRested = params["hoursRested"]?.toIntOrNull() ?: 10
                 listOf(
-                    MessageEvent(event.creature, "You rest for $hoursRested hours.", "${event.creature} rests for $hoursRested hours."),
+                    MessageEvent(event.creature, "You rest for $hoursRested hours.", "${event.creature.name} rests for $hoursRested hours."),
                     RestEvent(event.creature, hoursRested)
                 )
             }

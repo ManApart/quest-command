@@ -31,7 +31,7 @@ class CreatureAIPackage : AIPackageTemplateResource {
                 }
             }
 
-            idea("Start Travel") {
+            idea("Start Travel", 50) {
                 cond { s ->
                     (s.mind.getAggroTarget() ?: s.mind.getUseTargetThing())
                         ?.let { s.location != it.location } ?: false
@@ -51,12 +51,12 @@ class CreatureAIPackage : AIPackageTemplateResource {
             }
 
             idea("Move to Use Target", 50) {
-                cond { s -> s.mind.getUseTargetThing()?.let { !s.canReach(it.position) } ?: false }
+                cond { s -> s.mind.getUseTargetThing()?.let { s.location == it.location && !s.canReach(it.position) } ?: false }
                 act { startMoveEvent(it, destination = it.mind.getUseTargetThing()!!.position) }
             }
 
             idea("Move to Aggro Target", 70) {
-                cond { it.hasAggroTarget() && !it.canReach(it.mind.getAggroTarget()!!.position) }
+                cond { s -> s.mind.getAggroTarget()?.let { s.location == it.location && !s.canReach(it.position) } ?: false }
                 act { startMoveEvent(it, destination = it.mind.getAggroTarget()!!.position) }
             }
 
@@ -93,11 +93,21 @@ class CreatureAIPackage : AIPackageTemplateResource {
                 }
             }
 
+            idea("Rest", 40) {
+                cond { it.canReachGoal(HowToUse.SLEEP) }
+                actions { s ->
+                    listOfNotNull(
+                        s.mind.getUseTargetThing()?.let { InteractEvent(s, it) },
+                        s.clearUseGoal()
+                    )
+                }
+            }
+
             idea("Wander", 10) {
                 cond { s -> s.location.getLocation().getThings(s).filter { it != s }.isNotEmpty() }
                 act {
                     it.location.getLocation().getThings(it).random()?.position?.let { pos ->
-                        startMoveEvent(it, destination = pos)
+                        startMoveEvent(it, destination = pos.floor())
                     }
                 }
             }

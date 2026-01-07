@@ -306,10 +306,10 @@ class CommandComboTest {
             GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
-                "rs 3 && w && s && mv bed"
+                "rs 3 && w && s && rs 1 && rs 10 && mv bed"
             )
 
-            assertTrue(GameLogger.getMainHistory().contains(""))
+            assertTrue(GameLogger.getMainHistory().contains("Farmer rests for 10 hours."))
         }
     }
 }
