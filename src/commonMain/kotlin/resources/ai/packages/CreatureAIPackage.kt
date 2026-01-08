@@ -19,11 +19,6 @@ class CreatureAIPackage : AIPackageTemplateResource {
     override val values = aiPackages {
         aiPackage("Creature") {
 
-            idea("Rest") {
-                cond { s -> s.soul.getCurrent(STAMINA) < s.soul.getTotal(STAMINA) / 10 }
-                act { RestEvent(it, 2) }
-            }
-
             idea("Attack", 70) {
                 cond { it.mind.getAggroTarget() != null && it.canReach(it.mind.getAggroTarget()!!.position) }
                 act {
@@ -93,7 +88,12 @@ class CreatureAIPackage : AIPackageTemplateResource {
                 }
             }
 
-            idea("Rest", 40) {
+            idea("Rest") {
+                cond { s -> s.soul.getCurrent(STAMINA) < s.soul.getTotal(STAMINA) / 10 }
+                act { RestEvent(it, 2) }
+            }
+
+            idea("Sleep", 40) {
                 cond { it.canReachGoal(HowToUse.SLEEP) }
                 actions { s ->
                     listOfNotNull(
