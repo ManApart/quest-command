@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM openjdk:25-rc-jdk
 
 COPY ./build/libs/quest-command-jvm-dev.jar /tmp
 WORKDIR /tmp
