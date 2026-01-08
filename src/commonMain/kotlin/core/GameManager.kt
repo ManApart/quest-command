@@ -1,5 +1,7 @@
 package core
 
+import core.NetworkKeys.PLAYER_START_LOCATION
+import core.NetworkKeys.PLAYER_START_NETWORK
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
@@ -17,10 +19,6 @@ import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
-
-const val PLAYER_START_NETWORK = "Kanbara Countryside"
-const val PLAYER_START_LOCATION = "An Open Field"
-
 
 object GameManager {
     var playing = false
@@ -59,12 +57,14 @@ object GameManager {
     }
 
     private fun setDefaultProperties(testing: Boolean) {
-        //        GameState.properties.values.put(AUTO_SAVE, true)
-//        GameState.putDebug(DebugType.VERBOSE_ACTIONS, testing)
-//        GameState.putDebug(DebugType.VERBOSE_AI, testing)
+//        GameState.putDebug(DebugType.VERBOSE_AI, true)
+//        GameState.properties.values.put(DEBUG_PACKAGE, AIPackageKeys.PEASANT)
+//        GameState.putDebug(DebugType.CLARITY, true)
+
         GameState.properties.values.put(AUTO_LOAD, !testing)
         GameState.putDebug(DebugType.POLL_CONNECTION, !testing)
         GameState.properties.values.put(TEST_SAVE_FOLDER, testing)
+        GameState.properties.values.put(TEST_MODE, testing)
         GameState.properties.values.put(SKIP_SAVE_STATS, testing)
         GameState.properties.values.put(PRINT_WITHOUT_FLUSH, testing)
         GameState.putDebug(DebugType.VERBOSE_TIME, testing)

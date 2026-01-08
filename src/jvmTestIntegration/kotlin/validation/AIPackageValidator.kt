@@ -1,0 +1,73 @@
+package validation
+
+import building.ModManager
+import core.DependencyInjector
+import core.ai.AIPackageManager
+import core.ai.packages.AIPackageTemplatesCollection
+import core.ai.packages.ideas
+import kotlinx.coroutines.runBlocking
+import kotlin.test.Test
+import kotlin.test.assertEquals
+
+class AIPackageValidator {
+
+    private val packages = runBlocking { AIPackageManager.aiPackages }
+    private val templates = (DependencyInjector.getImplementation(AIPackageTemplatesCollection::class).values + ModManager.aiPackages)
+
+    @Test
+    fun validate() {
+        assertEquals(
+            0, noDuplicatePackageNames() +
+                    noDuplicateIdeaNames() +
+                    packageTemplateStringReferenceExists()
+        )
+    }
+
+    private fun noDuplicatePackageNames(): Int {
+        var warnings = 0
+        val names = mutableListOf<String>()
+
+        templates.forEach { template ->
+            if (names.contains(template.name)) {
+                println("WARN: AI Package Template '${template.name}' has a duplicate name.")
+                warnings++
+            } else {
+                names.add(template.name)
+            }
+        }
+        return warnings
+    }
+
+    private fun noDuplicateIdeaNames(): Int {
+        var warnings = 0
+        packages.values.forEach { pack ->
+            val names = mutableListOf<String>()
+            pack.ideas.values.flatten().forEach { idea ->
+                if (names.contains(idea.name)) {
+                    println("WARN: Idea '${idea.name}' inside package '${pack.name}' has a duplicate name.")
+                    warnings++
+                } else {
+                    names.add(idea.name)
+                }
+            }
+        }
+        return warnings
+    }
+
+    private fun packageTemplateStringReferenceExists(): Int {
+        var warnings = 0
+        val packageRef = templates.map { it.name }.toSet()
+
+        templates.forEach { template ->
+            template.subPackages.forEach { reference ->
+                if (!packageRef.contains(reference)) {
+                    println("WARN: AI Package Template ${template.name} references non existent package template $reference.")
+                    warnings++
+                }
+            }
+        }
+        return warnings
+    }
+
+
+}

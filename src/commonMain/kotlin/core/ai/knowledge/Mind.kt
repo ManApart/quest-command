@@ -1,5 +1,6 @@
 package core.ai.knowledge
 
+import core.FactKind
 import core.ai.AI
 import core.ai.DumbAI
 import core.thing.Thing
@@ -28,20 +29,19 @@ data class Mind(
         return memory.getFact(source, kind)
     }
 
-    suspend fun knowsThingByKind(kind: String): Thing? {
+    suspend fun knownThingByKind(kind: String): Thing? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getThing() }
     }
 
     suspend fun thingByKindExists(kind: String): Boolean {
-        return knowsThingByKind(kind) != null
+        return knownThingByKind(kind) != null
     }
-
-    fun knowsLocationByKind(kind: String): LocationNode? {
+    fun knownLocationByKind(kind: String): LocationNode? {
         return memory.getSubjects(kind).firstNotNullOfOrNull { it.getLocation() }
     }
 
     fun locationByKindExists(kind: String): Boolean {
-        return knowsLocationByKind(kind) != null
+        return knownLocationByKind(kind) != null
     }
 
     fun learn(source: Subject, kind: String) {
@@ -71,49 +71,43 @@ data class Mind(
     }
 
     fun knows(location: LocationNode): Boolean {
-        val fact = knows("Location") ?: return false
+        val fact = knows(FactKind.LOCATION) ?: return false
         return fact.sources.contains(Subject(location))
     }
 
     fun knows(recipe: Recipe): Boolean {
-        val fact = knows("Recipe") ?: return false
+        val fact = knows(FactKind.RECIPE) ?: return false
         return fact.sources.contains(Subject(recipe.name))
     }
 
     fun discover(location: LocationNode) {
-        learn("Location", Subject(location))
+        learn(FactKind.LOCATION, Subject(location))
     }
 
     fun discover(recipe: Recipe) {
-        learn("Recipe", Subject(recipe.name))
+        learn(FactKind.RECIPE, Subject(recipe.name))
     }
 
     fun setAggroTarget(enemy: Thing) {
-        learn(Fact(Subject(enemy), "aggroTarget"))
+        learn(Fact(Subject(enemy), FactKind.AGGRO_TARGET))
     }
 
     suspend fun getAggroTarget(): Thing? {
-        return knowsThingByKind("aggroTarget")
+        return knownThingByKind(FactKind.AGGRO_TARGET)
     }
 
     suspend fun clearAggroTarget() {
         getAggroTarget()?.let {
-            memory.forget(Fact(Subject(it), "aggroTarget"))
+            memory.forget(Fact(Subject(it), FactKind.AGGRO_TARGET))
         }
     }
 
-    fun setUseTarget(enemy: Thing) {
-        learn(Fact(Subject(enemy), "useTarget"))
+    suspend fun getUseTargetThing(): Thing? {
+        return knownThingByKind(FactKind.USE_TARGET)
     }
 
-    suspend fun getUseTarget(): Thing? {
-        return knowsThingByKind("useTarget")
-    }
-
-    suspend fun clearUseTarget() {
-        getAggroTarget()?.let {
-            memory.forget(Fact(Subject(it), "useTarget"))
-        }
+    fun getUseTarget(): Fact? {
+        return memory.getFirstFact(FactKind.USE_TARGET)
     }
 
 }

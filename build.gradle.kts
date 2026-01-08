@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 
 plugins {
-    kotlin("multiplatform") version "2.1.0"
-    kotlin("plugin.serialization") version "2.1.0"
+    kotlin("multiplatform") version "2.3.0"
+    kotlin("plugin.serialization") version "2.3.0"
     `maven-publish`
 }
 
@@ -18,9 +18,8 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvm {
-        withJava()
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.JVM_25)
         }
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
@@ -99,7 +98,7 @@ kotlin {
                 }
             }
             runTask {
-                devServer = devServer.copy(port = 3000)
+                devServerProperty.set(devServerProperty.get().copy(port = 3000))
             }
         }
     }
@@ -123,6 +122,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
                 implementation("io.ktor:ktor-client-cio:2.0.1")
+                implementation("org.slf4j:slf4j-nop:2.0.17")
             }
         }
         val jvmTest by getting

@@ -1,8 +1,8 @@
 package building
 
 import conversation.dsl.DialogueTreeResource
-import core.ai.agenda.AgendaResource
 import core.ai.behavior.BehaviorResource
+import core.ai.packages.AIPackageTemplateResource
 import core.body.BodyPartResource
 import core.body.BodyResource
 import core.events.EventListener
@@ -21,10 +21,11 @@ import traveling.location.network.NetworkResource
 import traveling.location.weather.WeatherResource
 import java.io.File
 import java.lang.reflect.ParameterizedType
-import java.net.URL
+import java.net.URI
 import java.net.URLClassLoader
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
+import kotlin.jvm.java
 
 fun loadMods() {
     ModManager.reset()
@@ -63,7 +64,7 @@ private suspend fun loadJar(jarFile: File) {
     val jar = JarFile(jarFile)
 
     val e = jar.entries()
-    val urls = arrayOf(URL("jar:file:" + jarFile.absolutePath + "!/"))
+    val urls = arrayOf(URI.create("jar:file:" + jarFile.absolutePath + "!/").toURL())
     val cl = URLClassLoader.newInstance(urls)
 
     while (e.hasMoreElements()) {
@@ -76,7 +77,7 @@ private suspend fun loadJar(jarFile: File) {
         when {
             c.superclass == EventListener::class.java -> processListeners(c as Class<EventListener<*>>)
             c.interfaces.contains(ActivatorResource::class.java) -> processActivator(c as Class<ActivatorResource>)
-            c.interfaces.contains(AgendaResource::class.java) -> processAgenda(c as Class<AgendaResource>)
+            c.interfaces.contains(AIPackageTemplateResource::class.java) -> processAIPackageTemplateResource(c as Class<AIPackageTemplateResource>)
             c.interfaces.contains(BehaviorResource::class.java) -> processBehavior(c as Class<BehaviorResource>)
             c.interfaces.contains(BodyResource::class.java) -> processBody(c as Class<BodyResource>)
             c.interfaces.contains(BodyPartResource::class.java) -> processBodyPart(c as Class<BodyPartResource>)
@@ -102,7 +103,7 @@ private fun processListeners(c: Class<EventListener<*>>) {
 }
 
 private suspend fun processActivator(c: Class<ActivatorResource>) = ModManager.activators.addAll(c.getDeclaredConstructor().newInstance().values())
-private fun processAgenda(c: Class<AgendaResource>) = ModManager.agendas.addAll(c.getDeclaredConstructor().newInstance().values)
+private fun processAIPackageTemplateResource(c: Class<AIPackageTemplateResource>) = ModManager.aiPackages.addAll(c.getDeclaredConstructor().newInstance().values)
 private fun processBehavior(c: Class<BehaviorResource>) = ModManager.behaviors.addAll(c.getDeclaredConstructor().newInstance().values)
 private fun processBody(c: Class<BodyResource>) = ModManager.bodies.addAll(c.getDeclaredConstructor().newInstance().values)
 private fun processBodyPart(c: Class<BodyPartResource>) = ModManager.bodyParts.addAll(c.getDeclaredConstructor().newInstance().values)

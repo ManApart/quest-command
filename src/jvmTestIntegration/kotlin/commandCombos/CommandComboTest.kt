@@ -124,11 +124,10 @@ class CommandComboTest {
         GameState.putDebug(DebugType.RANDOM_SUCCEED, true)
         GameState.putDebug(DebugType.RANDOM_RESPONSE, 0)
         runBlocking {
-            CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing")
+            CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing && r 1")
         }
         assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
     }
-
 
     @Test
     fun doNotAttackDeadThing() {
@@ -226,16 +225,16 @@ class CommandComboTest {
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
 
         val expected = """
-            An Open Field is a part of Kanbara Countryside. It is neighbored by:
-              Name             Distance  Direction Path  
-              Apple Tree       100       N               
-              Barren Patch     100       S               
-              Training Circle  100       E               
-              Farmer's Hut     100       W               
-              Windmill         180       NE
-              """.trimIndent().trim()
+        An Open Field is a part of Kanbara Countryside. It is neighbored by:
+        Name             Distance  Direction Path
+        Apple Tree       100       N
+        Barren Patch     100       S
+        Training Circle  100       E
+        Farmer's Hut     100       W
+        Windmill         180       NE
+        """.trimIndent().trim()
 
-        assertEquals(expected, GameLogger.getMainHistory().getLastOutput().trimIndent().trim())
+        assertEquals(expected, GameLogger.getMainHistory().getLastOutput().split("\n").joinToString("\n") { it.trim() }.trimIndent().trim())
     }
 
     @Test
@@ -264,7 +263,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(
                 GameState.player,
-                "w && s && take tinder && n && rest 10 && e && n && w && take lantern && t mouth && hold lantern f && ls"
+                "w && s && mv to range && take tinder && rest 10 && n && rest 10 && e && n && w && take lantern && t mouth && hold lantern f && ls"
             )
             assertEquals("It's too dark to see anything.", GameLogger.getMainHistory().getLastOutput())
             CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
@@ -277,7 +276,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(
                 GameState.player,
-                "w && n && w && debug recipe && mv to chest && take tinder && take all from chest && mv to forge && debug stat smithing 2 && use tinder on forge && craft dagger"
+                "w && n && w && debug recipe && mv to chest && take all from chest && mv to forge && take tinder && debug stat smithing 2 && use tinder on forge && craft dagger"
             )
 
             val dagger = GameState.player.inventory.getItem("Bronze Dagger")
@@ -285,6 +284,32 @@ class CommandComboTest {
 
             val tags = dagger.properties.tags
             assertTrue(tags.hasAll(listOf("Bronze", "Weapon")))
+        }
+    }
+
+    @Test
+    fun farmerTendsWheat() {
+        runBlocking {
+            GameState.putDebug(DebugType.CLARITY, true)
+            CommandParsers.parseCommand(
+                GameState.player,
+                "rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
+            )
+
+            assertTrue(GameLogger.getMainHistory().contains("Farmer tends the Wheat Field."))
+        }
+    }
+
+    @Test
+    fun farmerSleeps() {
+        runBlocking {
+            GameState.putDebug(DebugType.CLARITY, true)
+            CommandParsers.parseCommand(
+                GameState.player,
+                "rs 3 && w && s && rs 1 && rs 10 && mv bed"
+            )
+
+            assertTrue(GameLogger.getMainHistory().contains("Farmer rests for 10 hours."))
         }
     }
 }

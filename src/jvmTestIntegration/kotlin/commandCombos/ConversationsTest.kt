@@ -8,6 +8,7 @@ import core.events.EventManager
 import core.history.GameLogger
 import kotlinx.coroutines.runBlocking
 import system.debug.DebugType
+import traveling.location.location.LocationManager
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -20,6 +21,7 @@ class ConversationsTest {
             EventManager.clear()
             GameManager.newGame(testing = true)
             runBlocking { EventManager.processEvents() }
+            disableFarmerAI()
         }
     }
 
@@ -54,7 +56,6 @@ class ConversationsTest {
         assertEquals("Farmer: I be with you.", GameLogger.getMainHistory().getLastOutput())
     }
 
-    //TODO -this is flaky!
     @Test
     fun whereBeMe() {
         runBlocking {
@@ -80,5 +81,11 @@ class ConversationsTest {
             CommandParsers.parseCommand(GameState.player, "what is kanbara?")
         }
         assertEquals("Farmer: What you mean? You mean Kanbara Gate or Kanbara City?", GameLogger.getMainHistory().getLastOutput())
+    }
+
+    private suspend fun disableFarmerAI() {
+        LocationManager.findLocationInAnyNetwork(GameState.player.thing, "Farmer's Hut")!!.getLocation()
+            .getThings("Farmer").first()
+            .mind.ai.enabled = false
     }
 }

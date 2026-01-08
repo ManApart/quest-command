@@ -1,8 +1,6 @@
 package core.thing
 
 import core.GameState
-import core.ai.AI
-import core.ai.DumbAI
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
@@ -18,7 +16,6 @@ import status.Soul
 import status.stat.PERCEPTION
 import status.stat.SNEAK
 import system.debug.DebugType
-import traveling.location.Route
 import traveling.location.location.Location
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
@@ -59,23 +56,9 @@ data class Thing(
 
     fun getDisplayName(): String {
         val locationDescription = properties.values.getString("locationDescription")
-        val description = if (locationDescription.isBlank()) {
-            ""
-        } else {
-            " $locationDescription"
-        }
-
-        val location = if (position == NO_VECTOR) {
-            ""
-        } else {
-            " $position"
-        }
-
-        val count = if (properties.getCount() != 1) {
-            "" + properties.getCount() + "x "
-        } else {
-            ""
-        }
+        val description = if (locationDescription.isBlank()) "" else " $locationDescription"
+        val location = if (position == NO_VECTOR) "" else " $position"
+        val count = if (properties.getCount() != 1) "" + properties.getCount() + "x " else ""
 
         return count + name + description + location
     }
@@ -194,10 +177,10 @@ data class Thing(
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 
-    fun canReach(position: Vector): Boolean {
+    fun canReach(targetPos: Vector): Boolean {
         val range = body.getRange()
-        val centerOfCreature = position + Vector(z = body.getSize().z / 2)
-        val distance = centerOfCreature.getDistance(position)
+        val centerOfCreature = this.position + Vector(z = body.getSize().z / 2)
+        val distance = centerOfCreature.getDistance(targetPos)
         return range >= distance
     }
 

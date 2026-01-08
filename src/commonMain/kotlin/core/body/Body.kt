@@ -202,7 +202,7 @@ data class Body(
     }
 
     fun getRange(): Int {
-        val size = getSize()
+        val size = getSize() * 2
         return max(size.x, size.y, size.z) / 2
     }
 

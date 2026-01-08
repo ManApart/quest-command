@@ -81,6 +81,7 @@ suspend fun Conversation.subjects(): List<Named>? {
     return history.last().parsed()?.subjects
 }
 
+//TODO - move this  to thing and location node
 suspend fun Named?.hasTag(tag: String): Boolean {
     return if (this != null) {
         (this is LocationNode && getLocation().properties.tags.has(tag)) ||

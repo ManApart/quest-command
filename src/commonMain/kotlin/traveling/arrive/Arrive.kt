@@ -33,6 +33,11 @@ class Arrive : EventListener<ArriveEvent>() {
                         }
                     }
                 }
+                creature.mind.route?.let { route ->
+                    if (route.destination == player.location){
+                        creature.mind.route = null
+                    }
+                }
             }
         }
     }

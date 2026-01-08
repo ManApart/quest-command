@@ -5,7 +5,7 @@ import core.utility.*
 
 @kotlinx.serialization.Serializable
 data class Values(private val properties: MutableMap<String, String> = mutableMapOf()) {
-    constructor(vararg props: Pair<String, String>): this(props.toMap().toMutableMap())
+    constructor(vararg props: Pair<String, String>) : this(props.toMap().toMutableMap())
     constructor(base: Values, params: Map<String, String> = mapOf()) : this(base.properties.apply(params).toMutableMap())
 
     init {
@@ -13,9 +13,7 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
     }
 
     override fun toString(): String {
-        return if (properties.isEmpty()) {
-            ""
-        } else {
+        return if (properties.isEmpty()) "" else {
             properties.entries.joinToString(", ") { "${it.key} ${it.value}" }
         }
     }
@@ -28,7 +26,7 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
         return properties.hashCode()
     }
 
-    private fun parseProperties(){
+    private fun parseProperties() {
         val base = properties.toMap()
         properties.clear()
         base.entries.forEach {
@@ -54,6 +52,7 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
         return default
     }
 
+    operator fun get(key: String) = getString(key)
     fun getString(key: String, default: String = ""): String {
         return properties[key.lowercase()] ?: default
     }

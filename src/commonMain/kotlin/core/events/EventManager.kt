@@ -3,7 +3,9 @@ package core.events
 import building.ModManager
 import core.DependencyInjector
 import core.GameState
+import core.TEST_MODE
 import core.ai.directAI
+import core.ai.replenishAITurns
 import core.history.displayGlobal
 import core.thing.Thing
 import system.debug.DebugType
@@ -38,17 +40,30 @@ object EventManager {
      */
     suspend fun processEvents() {
         var loop = 0
+        replenishAITurns()
         while (eventQueue.isNotEmpty() && loop < MAX_EVENT_LOOPS) {
             startEvents()
             loop++
         }
-        if (loop == MAX_EVENT_LOOPS) println("Reached max loops, this should not happen!")
+        if (loop == MAX_EVENT_LOOPS) {
+            if (GameState.properties.values.getBoolean(TEST_MODE)) throw IllegalStateException("Reached max loops, this should not happen!")
+            println("Reached max loops, this should not happen!")
+        }
     }
 
     private suspend fun startEvents() {
-        if (GameState.getDebugBoolean(DebugType.VERBOSE_ACTIONS)) displayGlobal(eventQueue.joinToString { it.toString() })
         val eventCopy = eventQueue.toList()
+        if (GameState.getDebugBoolean(DebugType.VERBOSE_EVENT_QUEUE)) {
+            if (eventQueue.isNotEmpty()) {
+                displayGlobal("Queue:\n" + eventQueue.joinToString("\n") { "\t $it" })
+            }
+            if (eventsInProgress.isNotEmpty()) {
+                displayGlobal("In Progress:\n" + eventsInProgress.joinToString("\n") { "\t $it" })
+            }
+        }
         eventQueue.clear()
+        //If we're just waiting on the player, allow AI to keep moving
+        if (eventCopy.size == 1 && eventCopy.first() is GameTickEvent) replenishAITurns()
         eventCopy.forEach { startEvent(it) }
         val playerTurn = directAI()
         if (!playerTurn) {
@@ -81,7 +96,6 @@ object EventManager {
         if (event !is TemporalEvent || event.timeLeft == 0) {
             completeEvent(event)
         }
-
     }
 
     private suspend fun tick() {

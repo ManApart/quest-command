@@ -1,5 +1,9 @@
 package core.thing
 
+import core.AIPackageKeys
+import core.TagKey
+import core.TagKey.SOUND_DESCRIPTION
+import core.TagKey.SOUND_LEVEL
 import core.ai.*
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
@@ -12,7 +16,6 @@ import core.body.BodyManager
 import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
-import core.thing.creature.CREATURE_TAG
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested
@@ -20,8 +23,6 @@ import core.utility.applySuspending
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
 import crafting.material.MaterialManager
-import explore.listen.SOUND_DESCRIPTION
-import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
 import inventory.Inventory
 import status.Soul
@@ -68,7 +69,7 @@ class ThingBuilder(internal val name: String) {
         val allItems = itemNames + bases.flatMap { it.itemNames }
         val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
-        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: if (tagsToApply.contains(CREATURE_TAG)) ConditionalAI() else DumbAI()
+        val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         mind.mindInitializer()
@@ -92,6 +93,7 @@ class ThingBuilder(internal val name: String) {
     }
 
     private fun calcHeldSlots(props: Properties): List<Slot> {
+        if(props.tags.has(TagKey.CREATURE)) return emptyList()
         return when {
             props.tags.has("Small") || props.values.getInt("weight", 100) < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
             props.tags.has("Medium") || props.values.getInt("weight", 100) < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
@@ -150,8 +152,8 @@ class ThingBuilder(internal val name: String) {
         this.ai = PlayerControlledAI()
     }
 
-    fun conditionalAI() {
-        this.ai = ConditionalAI()
+    fun packageAI(packageName: String) {
+        this.ai = PackageBasedAI(AIPackageManager.aiPackages[packageName]!!)
     }
 
     fun dumbAI() {
@@ -232,7 +234,7 @@ class ThingBuilder(internal val name: String) {
             description(t.description)
             location(t.location)
             t.parent?.let { parent(t.parent) }
-            mind(Mind(t.mind.ai, CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
+            mind(Mind(t.mind.ai.copy(), CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
             body(Body(t.body))
             equipSlotOptions(t.equipSlots)
             item(t.inventory.getAllItems().map { it.name })
@@ -250,6 +252,15 @@ class ThingBuilder(internal val name: String) {
             possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
             else -> Body(material = bodyMaterial)
         }.also { bodyCustomizer.apply(it) }
+    }
+
+    private fun discernAI(props: Properties) : AI {
+        return when {
+            props.tags.has(TagKey.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PREDATOR]!!)
+            props.tags.has(TagKey.COMMONER) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PEASANT]!!)
+            props.tags.has(TagKey.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
+            else -> DumbAI()
+        }
     }
 
 }

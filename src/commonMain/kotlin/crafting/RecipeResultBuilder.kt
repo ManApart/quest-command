@@ -46,13 +46,13 @@ class RecipeResultBuilder {
         this.getItem = getItem
     }
 
-    suspend fun build(): RecipeResult {
+    fun build(): RecipeResult {
         if (description.isBlank()) buildDescription()
 
         if (getItem != null) return RecipeResult(description, getItem!!)
 
         val baseItemGetter: suspend (Map<String, Pair<RecipeIngredient, Thing>>) -> Thing = when {
-            (ingredientReference != null) -> { usedIngredients -> (usedIngredients[ingredientReference!!.toString()])!!.second }
+            (ingredientReference != null) -> { usedIngredients -> (usedIngredients[ingredientReference!!])!!.second }
             (itemName != null) -> { _ -> ItemManager.getItem(itemName!!) }
             else -> throw IllegalStateException("Recipe must have an item name or item reference")
         }
@@ -79,4 +79,3 @@ class RecipeResultBuilder {
 fun result(initializer: RecipeResultBuilder.() -> Unit): RecipeResultBuilder {
     return RecipeResultBuilder().apply(initializer)
 }
-

@@ -22,6 +22,7 @@ suspend fun startMoveEvent(
 private suspend fun calcTimeLeft(source: Thing, moveThing: Vector, speedScalar: Float): Int {
     val agility = getUnencumberedAgility(source)
     val distance = source.position.getDistance(moveThing)
+    if (distance == 0) return 1
     val speed = max(agility - distance, 1)
 
     return max(1, 100 / (speedScalar * speed).toInt())

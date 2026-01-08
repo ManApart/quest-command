@@ -79,6 +79,8 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return pointAlongPath + getVectorInDirection(pointAlongPath, amount)
     }
 
+    fun floor() = Vector(x, y, 0)
+
     fun isFurtherAlongSameDirectionThan(other: Vector): Boolean {
         val xSign = (x >= 0 && other.x >= 0) || (x <= 0 && other.x <= 0)
         val ySign = (y >= 0 && other.y >= 0) || (y <= 0 && other.y <= 0)

@@ -1,5 +1,7 @@
 package explore.listen
 
+import core.TagKey.SOUND_DESCRIPTION
+import core.TagKey.SOUND_LEVEL
 import core.events.EventListener
 import core.history.displayToMe
 import core.thing.Thing
@@ -11,8 +13,6 @@ import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.max
 
-const val SOUND_DESCRIPTION = "Sound Description"
-const val SOUND_LEVEL = "Sound Level"
 const val SOUND_LEVEL_DEFAULT = 5
 
 data class Sound(val description: String, val level: Int, val distance: Vector, val strength: Int)

@@ -1,6 +1,5 @@
 package traveling.travel
 
-import combat.attack.AttackEvent
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe

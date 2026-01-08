@@ -1,12 +1,12 @@
 package traveling.location.location
 
+import core.TagKey.SOUND_DESCRIPTION
+import core.TagKey.SOUND_LEVEL
 import core.conditional.ConditionalString
 import core.conditional.ConditionalStringBuilder
 import core.conditional.unBuild
 import core.properties.Properties
 import core.properties.PropsBuilder
-import explore.listen.SOUND_DESCRIPTION
-import explore.listen.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
 import traveling.scope.LIGHT
 

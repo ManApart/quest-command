@@ -10,7 +10,6 @@ import system.debug.DebugType
  * Only displayed to this thing (you)
  */
 fun Player.displayToMe(message: String) = GameLogger.getHistory(this).print(message)
-
 fun Thing.displayToMe(message: String) {
     GameState.getPlayer(this)?.let {
         GameLogger.getHistory(it).print(message)
