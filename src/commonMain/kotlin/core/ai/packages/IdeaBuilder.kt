@@ -8,7 +8,7 @@ class IdeaBuilder(val name: String, val priority: Int, val takesTurn: Boolean) {
     internal var criteria: suspend (Thing) -> Boolean = { true }
     private var action: suspend (Thing) -> List<Event> = { listOf() }
 
-    fun build(packageName: String) = Idea("$packageName-$name", priority, takesTurn, criteria, action)
+    fun build() = Idea(name, priority, takesTurn, criteria, action)
 
     fun cond(condition: suspend (Thing) -> Boolean) {
         this.criteria = condition

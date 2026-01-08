@@ -4,6 +4,7 @@ import building.ModManager
 import core.DependencyInjector
 import core.ai.AIPackageManager
 import core.ai.packages.AIPackageTemplatesCollection
+import core.ai.packages.ideas
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -39,14 +40,15 @@ class AIPackageValidator {
 
     private fun noDuplicateIdeaNames(): Int {
         var warnings = 0
-        val names = mutableListOf<String>()
-
-        packages.values.flatMap { it.ideas.values.flatten() }.forEach { idea ->
-            if (names.contains(idea.name)) {
-                println("WARN: Idea '${idea.name}' has a duplicate name.")
-                warnings++
-            } else {
-                names.add(idea.name)
+        packages.values.forEach { pack ->
+            val names = mutableListOf<String>()
+            pack.ideas.values.flatten().forEach { idea ->
+                if (names.contains(idea.name)) {
+                    println("WARN: Idea '${idea.name}' inside package '${pack.name}' has a duplicate name.")
+                    warnings++
+                } else {
+                    names.add(idea.name)
+                }
             }
         }
         return warnings

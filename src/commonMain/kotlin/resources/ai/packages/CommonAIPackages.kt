@@ -32,7 +32,7 @@ class CommonAIPackages : AIPackageTemplateResource {
                 }
             }
 
-            idea("Rest") {
+            idea("Sleep Outside") {
                 cond { !GameState.timeManager.isNight() }
                 act { RestEvent(it, 2) }
             }
