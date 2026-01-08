@@ -3,6 +3,7 @@ package core.ai
 import conversation.ConversationManager
 import conversation.dialogue.DialogueEvent
 import core.ai.packages.AIPackage
+import core.ai.packages.aiPackage
 import core.events.EventManager
 import core.events.TemporalEvent
 import core.history.display
@@ -10,9 +11,8 @@ import core.utility.RandomManager
 
 class PackageBasedAI(val aiPackage: AIPackage) : AI() {
     val previousIdeas = mutableListOf<String>()
-    override fun toString(): String {
-        return "AI for ${creature.name} using ${aiPackage.name} package"
-    }
+    override fun toString() = "AI for ${creature.name} using ${aiPackage.name} package"
+    override fun copy() = PackageBasedAI(aiPackage)
 
     override suspend fun takeAction(): Boolean {
         val idea = aiPackage.pickIdea(creature)

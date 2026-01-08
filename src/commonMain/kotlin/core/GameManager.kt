@@ -57,7 +57,6 @@ object GameManager {
     }
 
     private fun setDefaultProperties(testing: Boolean) {
-        //        GameState.properties.values.put(AUTO_SAVE, true)
 //        GameState.putDebug(DebugType.VERBOSE_AI, true)
 //        GameState.properties.values.put(DEBUG_PACKAGE, AIPackageKeys.PEASANT)
 //        GameState.putDebug(DebugType.CLARITY, true)

@@ -234,7 +234,7 @@ class ThingBuilder(internal val name: String) {
             description(t.description)
             location(t.location)
             t.parent?.let { parent(t.parent) }
-            mind(Mind(t.mind.ai, CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
+            mind(Mind(t.mind.ai.copy(), CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
             body(Body(t.body))
             equipSlotOptions(t.equipSlots)
             item(t.inventory.getAllItems().map { it.name })

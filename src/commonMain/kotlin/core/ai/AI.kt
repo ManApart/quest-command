@@ -8,6 +8,7 @@ abstract class AI {
     lateinit var creature: Thing
     var enabled: Boolean = true
     var takenTurn: Boolean = false
+    abstract fun copy(): AI
     abstract suspend fun hear(event: DialogueEvent)
     abstract suspend fun takeAction(): Boolean
     val actions = mutableListOf<TemporalEvent>()

@@ -6,9 +6,9 @@ import core.history.displayToMe
 import core.history.displayToOthersGlobal
 
 class PlayerControlledAI : AI() {
-    override fun toString(): String {
-        return "Player Controlled AI for ${creature.name}"
-    }
+    override fun toString() = "Player Controlled AI for ${creature.name}"
+    override fun copy() = PlayerControlledAI()
+
     override suspend fun hear(event: DialogueEvent) {
         event.speaker.display("" + event.speaker.name + ": " + event.line)
     }
@@ -18,5 +18,4 @@ class PlayerControlledAI : AI() {
         creature.displayToOthersGlobal("${creature.name} does what?")
         return true
     }
-
 }

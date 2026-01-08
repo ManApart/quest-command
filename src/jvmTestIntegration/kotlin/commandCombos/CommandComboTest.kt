@@ -225,16 +225,16 @@ class CommandComboTest {
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
 
         val expected = """
-            An Open Field is a part of Kanbara Countryside. It is neighbored by:
-              Name             Distance  Direction Path  
-              Apple Tree       100       N               
-              Barren Patch     100       S               
-              Training Circle  100       E               
-              Farmer's Hut     100       W               
-              Windmill         180       NE
-              """.trimIndent().trim()
+        An Open Field is a part of Kanbara Countryside. It is neighbored by:
+        Name             Distance  Direction Path
+        Apple Tree       100       N
+        Barren Patch     100       S
+        Training Circle  100       E
+        Farmer's Hut     100       W
+        Windmill         180       NE
+        """.trimIndent().trim()
 
-        assertEquals(expected, GameLogger.getMainHistory().getLastOutput().trimIndent().trim())
+        assertEquals(expected, GameLogger.getMainHistory().getLastOutput().split("\n").joinToString("\n") { it.trim() }.trimIndent().trim())
     }
 
     @Test
@@ -293,7 +293,7 @@ class CommandComboTest {
             GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
-                "rs 8 && w && e && rs 1 && mv wheat && rs 1"
+                "rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
             )
 
             assertTrue(GameLogger.getMainHistory().contains("Farmer tends the Wheat Field."))

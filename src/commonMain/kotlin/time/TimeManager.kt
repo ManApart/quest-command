@@ -85,7 +85,7 @@ class TimeManager(private var ticks: Long = 0) {
 
     private fun debugTimeUpdate() {
         if (GameState.getDebugBoolean(DebugType.VERBOSE_TIME)) {
-            if (getHoursPassed() != debugTimeHour){
+            if (getHoursPassed() != debugTimeHour) {
                 debugTimeHour = getHoursPassed()
                 println(getTimeString())
             }
