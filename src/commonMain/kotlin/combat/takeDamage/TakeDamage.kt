@@ -5,7 +5,7 @@ import core.events.EventListener
 import core.events.EventManager
 import core.thing.Thing
 import explore.listen.addSoundEffect
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
 import status.statChanged.StatChangeEvent
 import traveling.location.location.Location
 import kotlin.math.max

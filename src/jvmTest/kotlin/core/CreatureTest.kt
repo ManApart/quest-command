@@ -5,13 +5,12 @@ import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
 import core.thing.item.ITEM_TAG
-import createItem
 import createMockedGame
 import inventory.createInventoryBody
 import kotlinx.coroutines.runBlocking
-import kotlin.test.Test
-import status.stat.STRENGTH
+import status.stat.Attributes.STRENGTH
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CreatureTest {

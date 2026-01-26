@@ -1,15 +1,10 @@
 package crafting
 
+
 import core.thing.Thing
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.Test
-
-
-import status.stat.COOKING
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
+import status.stat.Skills.COOKING
+import kotlin.test.*
 
 
 class RecipeIngredientBuilderTest {

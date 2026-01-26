@@ -1,5 +1,6 @@
 package crafting
 
+
 import core.DependencyInjector
 import core.GameManager
 import core.properties.Properties
@@ -7,9 +8,7 @@ import core.properties.Tags
 import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking
-
-
-import status.stat.COOKING
+import status.stat.Skills.COOKING
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

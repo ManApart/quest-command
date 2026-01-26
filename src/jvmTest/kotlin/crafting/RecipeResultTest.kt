@@ -1,12 +1,11 @@
 package crafting
 
+
 import core.thing.Thing
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.assertThrows
+import status.stat.Skills.COOKING
 import kotlin.test.Test
-
-
-import status.stat.COOKING
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 

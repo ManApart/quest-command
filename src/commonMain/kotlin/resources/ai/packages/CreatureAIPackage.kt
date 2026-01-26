@@ -9,7 +9,7 @@ import core.ai.knowledge.setUseTarget
 import core.ai.packages.*
 import core.utility.random
 import status.rest.RestEvent
-import status.stat.STAMINA
+import status.stat.Attributes.STAMINA
 import traveling.move.startMoveEvent
 import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent

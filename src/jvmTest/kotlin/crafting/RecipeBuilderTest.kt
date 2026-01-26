@@ -1,13 +1,12 @@
 package crafting
 
+
 import core.properties.Properties
 import core.properties.Tags
 import kotlinx.coroutines.runBlocking
-
-
-import status.stat.COOKING
-import kotlin.test.assertEquals
+import status.stat.Skills.COOKING
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class RecipeBuilderTest {
 

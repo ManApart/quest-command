@@ -6,7 +6,7 @@ import core.TagKey.FARMABLE
 import core.TagKey.PREDATOR
 import core.thing.creature.CreatureResource
 import core.thing.things
-import status.stat.AGILITY
+import status.stat.Attributes.AGILITY
 
 class CommonCreatures : CreatureResource {
 

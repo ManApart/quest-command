@@ -1,12 +1,11 @@
 package resources.storyEvents
 
 import core.GameState
-import core.eventWithPlayer
 import quests.ConditionalEvents
 import quests.StoryEvent
 import quests.StoryEventResource
 import status.LevelUpEvent
-import status.stat.STAMINA
+import status.stat.Attributes.STAMINA
 import status.statChanged.StatMinnedEvent
 import system.message.MessageEvent
 import traveling.climb.ClimbCompleteEvent

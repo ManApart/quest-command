@@ -1,10 +1,10 @@
 package core.properties
 
-import kotlin.test.Test
-import status.stat.AIR_MAGIC
-import status.stat.HEALTH
-import status.stat.WATER_MAGIC
+import status.stat.Attributes.HEALTH
+import status.stat.MagicSkills.AIR_MAGIC
+import status.stat.MagicSkills.WATER_MAGIC
 import traveling.location.location.HEAT
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class GuardsTest {

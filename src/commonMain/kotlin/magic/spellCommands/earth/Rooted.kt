@@ -11,7 +11,7 @@ import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
-import status.stat.EARTH_MAGIC
+import status.stat.MagicSkills.EARTH_MAGIC
 import traveling.position.ThingAim
 import traveling.position.toCommandString
 

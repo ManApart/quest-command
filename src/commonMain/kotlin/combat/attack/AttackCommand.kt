@@ -8,7 +8,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.capitalize2
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
 import traveling.position.ThingAim
 import use.startUseEvent
 

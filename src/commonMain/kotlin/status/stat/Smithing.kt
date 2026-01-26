@@ -1,6 +1,7 @@
 package status.stat
 
 import core.thing.Thing
+import status.stat.Skills.SMITHING
 
 fun canSmith(crafter: Thing, ingredient: Thing, difficultyScale: Float): Boolean {
     return canCraft(crafter, ingredient, SMITHING, difficultyScale)

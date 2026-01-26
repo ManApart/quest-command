@@ -1,33 +1,35 @@
 package status.stat
 
-import core.thing.Thing
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 
-//Attributes
-const val AGILITY = "Agility"
-const val HEALTH = "Health"
-const val PERCEPTION = "Perception"
-const val STAMINA = "Stamina"
-const val STRENGTH = "Strength"
-const val WISDOM = "Wisdom"
-const val FOCUS = "Focus"
+object Attributes {
+    const val AGILITY = "Agility"
+    const val HEALTH = "Health"
+    const val PERCEPTION = "Perception"
+    const val STAMINA = "Stamina"
+    const val STRENGTH = "Strength"
+    const val WISDOM = "Wisdom"
+    const val FOCUS = "Focus"
+}
 
-//Skills
-const val CLIMBING = "Climbing"
-const val BARE_FOOT = "Barefoot"
-const val BARE_HANDED = "Bare Handed"
-const val COOKING = "Cooking"
-const val CRAFTSMANSHIP = "Craftsmanship"
-const val SMITHING = "Smithing"
-const val SNEAK = "Sneak"
+object Skills {
+    const val CLIMBING = "Climbing"
+    const val BARE_FOOT = "Barefoot"
+    const val BARE_HANDED = "Bare Handed"
+    const val COOKING = "Cooking"
+    const val CRAFTSMANSHIP = "Craftsmanship"
+    const val SMITHING = "Smithing"
+    const val SNEAK = "Sneak"
+}
 
-//Magic Skills
-const val AIR_MAGIC = "AirMagic"
-const val EARTH_MAGIC = "EarthMagic"
-const val FIRE_MAGIC = "FireMagic"
-const val WATER_MAGIC = "WaterMagic"
+object MagicSkills {
+    const val AIR_MAGIC = "AirMagic"
+    const val EARTH_MAGIC = "EarthMagic"
+    const val FIRE_MAGIC = "FireMagic"
+    const val WATER_MAGIC = "WaterMagic"
+}
 
 class LeveledStat(
     val name: String,

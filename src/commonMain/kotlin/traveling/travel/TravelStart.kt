@@ -7,8 +7,8 @@ import core.history.displayToOthers
 import core.thing.Thing
 import core.utility.clamp
 import explore.listen.addSoundEffect
-import status.stat.SNEAK
-import status.stat.STAMINA
+import status.stat.Attributes.STAMINA
+import status.stat.Skills.SNEAK
 import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent

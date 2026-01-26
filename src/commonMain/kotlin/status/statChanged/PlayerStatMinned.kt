@@ -10,8 +10,8 @@ import core.history.displayToMe
 import core.history.displayToOthers
 import core.utility.filterList
 import inventory.dropItem.PlaceItemEvent
-import status.stat.HEALTH
-import status.stat.STAMINA
+import status.stat.Attributes.HEALTH
+import status.stat.Attributes.STAMINA
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationPoint

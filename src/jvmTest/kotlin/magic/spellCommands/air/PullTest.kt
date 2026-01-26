@@ -17,8 +17,8 @@ import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
-import status.stat.AIR_MAGIC
-import status.stat.FOCUS
+import status.stat.Attributes.FOCUS
+import status.stat.MagicSkills.AIR_MAGIC
 import status.stat.StatEffect
 import traveling.position.NO_VECTOR
 import traveling.position.ThingAim

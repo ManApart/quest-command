@@ -7,7 +7,7 @@ import core.utility.filterList
 import explore.listen.addSoundEffect
 import inventory.dropItem.PlaceItemEvent
 import status.CreatureDiedEvent
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
 import traveling.scope.remove.RemoveScopeEvent
 
 class CreatureDied : EventListener<StatMinnedEvent>() {

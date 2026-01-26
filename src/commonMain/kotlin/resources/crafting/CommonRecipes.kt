@@ -2,10 +2,11 @@ package resources.crafting
 
 import core.thing.thing
 import crafting.RecipeResource
-import crafting.material.Material
 import crafting.recipes
 import status.stat.*
-import traveling.location.connection
+import status.stat.Skills.COOKING
+import status.stat.Skills.CRAFTSMANSHIP
+import status.stat.Skills.SMITHING
 
 class CommonRecipes : RecipeResource {
     override suspend fun values() = recipes {

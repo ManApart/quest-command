@@ -11,8 +11,8 @@ import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
-import status.stat.AGILITY
-import status.stat.AIR_MAGIC
+import status.stat.Attributes.AGILITY
+import status.stat.MagicSkills.AIR_MAGIC
 import traveling.position.Distances
 import traveling.position.ThingAim
 import traveling.position.toCommandString

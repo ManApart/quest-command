@@ -13,8 +13,8 @@ import core.utility.max
 import explore.listen.getSound
 import inventory.Inventory
 import status.Soul
-import status.stat.PERCEPTION
-import status.stat.SNEAK
+import status.stat.Attributes.PERCEPTION
+import status.stat.Skills.SNEAK
 import system.debug.DebugType
 import traveling.location.location.Location
 import traveling.location.network.LocationNode

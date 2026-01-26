@@ -10,8 +10,8 @@ import core.utility.isAre
 import core.utility.withS
 import explore.listen.addSoundEffect
 import status.ExpGainedEvent
-import status.stat.CLIMBING
-import status.stat.STAMINA
+import status.stat.Attributes.STAMINA
+import status.stat.Skills.CLIMBING
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
 import traveling.direction.Direction

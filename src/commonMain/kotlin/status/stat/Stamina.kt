@@ -1,6 +1,7 @@
 package status.stat
 
 import core.thing.Thing
+import status.stat.Attributes.STAMINA
 import traveling.position.Distances
 import traveling.position.Vector
 

@@ -10,7 +10,7 @@ import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
-import status.stat.WATER_MAGIC
+import status.stat.MagicSkills.WATER_MAGIC
 import traveling.position.Distances
 import traveling.position.ThingAim
 

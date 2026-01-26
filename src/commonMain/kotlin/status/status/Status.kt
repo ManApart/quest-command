@@ -8,9 +8,9 @@ import core.properties.ENCUMBRANCE
 import core.utility.asSubjectPossessive
 import core.utility.capitalize2
 import core.utility.then
-import status.stat.FOCUS
-import status.stat.HEALTH
-import status.stat.STAMINA
+import status.stat.Attributes.FOCUS
+import status.stat.Attributes.HEALTH
+import status.stat.Attributes.STAMINA
 
 class Status : EventListener<StatusEvent>() {
 

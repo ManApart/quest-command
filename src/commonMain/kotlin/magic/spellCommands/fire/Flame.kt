@@ -12,7 +12,7 @@ import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
 import status.effects.EffectManager
-import status.stat.FIRE_MAGIC
+import status.stat.MagicSkills.FIRE_MAGIC
 import traveling.position.Distances
 import traveling.position.ThingAim
 import traveling.position.toCommandString

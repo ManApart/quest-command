@@ -3,7 +3,7 @@ package use.actions
 import core.events.EventListener
 import core.events.EventManager
 import explore.listen.addSoundEffect
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
 import status.statChanged.StatChangeEvent
 import use.UseEvent
 

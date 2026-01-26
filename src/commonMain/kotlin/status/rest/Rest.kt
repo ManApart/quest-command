@@ -5,9 +5,9 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.utility.then
 import explore.listen.addSoundEffect
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
+import status.stat.Attributes.STAMINA
 import status.stat.LeveledStat
-import status.stat.STAMINA
 import status.statChanged.StatChangeEvent
 
 class Rest : EventListener<RestEvent>() {

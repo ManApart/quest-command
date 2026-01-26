@@ -9,8 +9,8 @@ import core.utility.clamp
 import core.utility.isAre
 import core.utility.then
 import explore.listen.addSoundEffect
-import status.stat.SNEAK
-import status.stat.STAMINA
+import status.stat.Attributes.STAMINA
+import status.stat.Skills.SNEAK
 import status.stat.getMaxPossibleMovement
 import status.stat.getStaminaCost
 import status.statChanged.StatChangeEvent

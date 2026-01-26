@@ -19,9 +19,9 @@ import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
-import status.stat.FOCUS
+import status.stat.Attributes.FOCUS
+import status.stat.MagicSkills.WATER_MAGIC
 import status.stat.StatEffect
-import status.stat.WATER_MAGIC
 import traveling.position.ThingAim
 import kotlin.test.*
 

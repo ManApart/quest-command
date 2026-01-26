@@ -10,7 +10,11 @@ import core.thing.thing
 import core.utility.Backer
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
-import status.stat.*
+import status.stat.Attributes.FOCUS
+import status.stat.Attributes.HEALTH
+import status.stat.Attributes.PERCEPTION
+import status.stat.Attributes.STAMINA
+import status.stat.Attributes.STRENGTH
 import traveling.location.location.LocationThing
 
 object CreatureManager {

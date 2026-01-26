@@ -4,7 +4,7 @@ import core.Player
 import core.history.display
 import core.history.displayToMe
 import core.thing.Thing
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
 
 //TODO - only display to me?
 suspend fun describeBattle(source: Player) {

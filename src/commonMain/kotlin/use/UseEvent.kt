@@ -2,7 +2,7 @@ package use
 
 import core.events.TemporalEvent
 import core.thing.Thing
-import status.stat.AGILITY
+import status.stat.Attributes.AGILITY
 import kotlin.math.max
 
 /**

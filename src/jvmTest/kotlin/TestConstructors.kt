@@ -46,7 +46,7 @@ import status.conditions.ConditionsGenerated
 import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
-import status.stat.STRENGTH
+import status.stat.Attributes.STRENGTH
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock

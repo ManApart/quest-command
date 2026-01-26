@@ -2,7 +2,7 @@ package combat.block
 
 import core.events.TemporalEvent
 import core.thing.Thing
-import status.stat.AGILITY
+import status.stat.Attributes.AGILITY
 import traveling.location.location.Location
 import kotlin.math.max
 

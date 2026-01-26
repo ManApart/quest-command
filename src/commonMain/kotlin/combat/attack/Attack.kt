@@ -11,8 +11,8 @@ import core.utility.asSubject
 import core.utility.asSubjectPossessive
 import core.utility.then
 import explore.listen.addSoundEffect
-import status.stat.BARE_HANDED
-import status.stat.HEALTH
+import status.stat.Attributes
+import status.stat.Skills.BARE_HANDED
 import traveling.location.location.Location
 import traveling.position.Distances
 import traveling.position.ThingAim
@@ -25,7 +25,7 @@ class Attack : EventListener<AttackEvent>() {
         val thingDistance = source.position.getDistance(event.aim.thing.position)
         val weaponRange = getRange(source, event.sourcePart)
         val damageSource = event.sourcePart.getEquippedWeapon()?.name ?: event.sourcePart.name
-        if (event.aim.thing.soul.getCurrent(HEALTH) > 0) {
+        if (event.aim.thing.soul.getCurrent(Attributes.HEALTH) > 0) {
             val offensiveDamage = getOffensiveDamage(source, event.sourcePart, event.type)
 
             when {

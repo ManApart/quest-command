@@ -13,7 +13,7 @@ import magic.spellCommands.SpellCommand
 import magic.spells.MoveThingSpell
 import status.conditions.Condition
 import status.effects.EffectManager
-import status.stat.AIR_MAGIC
+import status.stat.MagicSkills.AIR_MAGIC
 import traveling.direction.Direction
 import traveling.position.ThingAim
 import traveling.position.toCommandString
