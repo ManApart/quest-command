@@ -1,5 +1,11 @@
 package core
 
+import core.GameStateKeys.AUTO_LOAD
+import core.GameStateKeys.LAST_SAVE_GAME_NAME
+import core.GameStateKeys.PRINT_WITHOUT_FLUSH
+import core.GameStateKeys.SKIP_SAVE_STATS
+import core.GameStateKeys.TEST_MODE
+import core.GameStateKeys.TEST_SAVE_FOLDER
 import core.NetworkKeys.PLAYER_START_LOCATION
 import core.NetworkKeys.PLAYER_START_NETWORK
 import core.commands.CommandParsers

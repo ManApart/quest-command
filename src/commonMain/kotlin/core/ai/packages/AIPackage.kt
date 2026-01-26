@@ -1,7 +1,7 @@
 package core.ai.packages
 
-import core.DEBUG_PACKAGE
 import core.GameState
+import core.GameStateKeys.DEBUG_PACKAGE
 import core.thing.Thing
 import system.debug.DebugType
 

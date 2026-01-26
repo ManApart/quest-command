@@ -1,7 +1,7 @@
 package core.history
 
-import core.AUTO_SAVE
 import core.GameState
+import core.GameStateKeys.AUTO_SAVE
 import core.events.Event
 import core.events.EventListener
 import core.events.EventManager

@@ -1,7 +1,7 @@
 package core.commands
 
-import core.AUTO_SAVE
 import core.GameState
+import core.GameStateKeys.AUTO_SAVE
 import core.Player
 import core.history.SessionHistory
 import core.history.displayToMe

@@ -3,10 +3,12 @@ package system.persistance
 import LocalForage.config
 import LocalForageConfig
 import core.*
+import core.GameStateKeys.AUTO_LOAD
+import core.GameStateKeys.LAST_SAVE_GAME_NAME
+import core.GameStateKeys.SKIP_SAVE_STATS
 import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.SessionHistory
-import core.history.TerminalPrinter
 import core.properties.Properties
 import core.properties.PropertiesP
 import getForage

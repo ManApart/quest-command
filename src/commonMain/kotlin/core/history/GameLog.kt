@@ -1,7 +1,7 @@
 package core.history
 
 import core.GameState
-import core.PRINT_WITHOUT_FLUSH
+import core.GameStateKeys.PRINT_WITHOUT_FLUSH
 import core.Player
 
 class GameLog(val listener: Player) {

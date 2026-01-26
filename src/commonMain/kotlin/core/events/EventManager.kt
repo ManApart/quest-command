@@ -3,7 +3,7 @@ package core.events
 import building.ModManager
 import core.DependencyInjector
 import core.GameState
-import core.TEST_MODE
+import core.GameStateKeys.TEST_MODE
 import core.ai.directAI
 import core.ai.replenishAITurns
 import core.history.displayGlobal
