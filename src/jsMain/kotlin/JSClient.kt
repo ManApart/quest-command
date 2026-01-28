@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLButtonElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
 import system.connection.WebClient
 import system.help.getCommandGroups
@@ -51,15 +52,7 @@ fun Document.startClient() {
 //        println("Pressed " + keyboardEvent.key)
                 when (keyboardEvent.key) {
                     "Enter" -> {
-                        val input = prompt.value
-                        prompt.value = ""
-                        suggestionsDiv.innerHTML = ""
-                        if (input.lowercase() == "clear") {
-                            clearScreen()
-                        } else {
-                            CommandParsers.parseCommand(GameState.player, input)
-                            updateOutput()
-                        }
+                        submitCommand(prompt.value)
                     }
 
                     "Tab" -> tabComplete()
@@ -79,6 +72,17 @@ fun Document.startClient() {
     }
 }
 
+private suspend fun submitCommand(input: String) {
+    prompt.value = ""
+    suggestionsDiv.innerHTML = ""
+    if (input.lowercase() == "clear") {
+        clearScreen()
+    } else {
+        CommandParsers.parseCommand(GameState.player, input)
+        updateOutput()
+    }
+}
+
 fun addHistoryMessageAfterCallback(message: String) {
     /*
         The history was closed while we were doing the callback, so we need to add to the previous history
@@ -94,7 +98,8 @@ fun updateOutput() {
     outputDiv.innerHTML = history.subList(historyStart, history.size).joinToString("<br>") { it.toHtml() }
     //TODO - implement response options if connected to server
     if (!isConnectedToServer()) {
-        CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions()?.let { updateSuggestions(null, it) }
+        val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: getCommandGroups().map { "commands $it" }
+        updateSuggestions(null, suggestions)
     }
     scrollToBottom()
 }
@@ -105,6 +110,7 @@ private fun InputOutput.toHtml(): String {
 
 private fun scrollToBottom() {
     window.scrollTo(0.0, document.body?.scrollHeight?.toDouble() ?: 100.0)
+    (document.getElementById("prompt") as HTMLElement).focus()
 }
 
 private fun clearScreen() {
@@ -127,17 +133,8 @@ private suspend fun tabComplete() {
     }
 }
 
-private suspend fun clickSuggestion(button: HTMLButtonElement) {
-    val command = button.getAttribute("command")
-}
+private suspend fun clickSuggestion(button: HTMLButtonElement) = submitCommand(button.getAttribute("command") ?: "")
 
-/*
-TODO
-- If has response option, show those as buttons
-- If no response option, show commands + aliases
-- Make commands list be a response
- */
-//TODO - make these clickable buttons
 private suspend fun tabHint() {
     val input = prompt.value.lowercase()
     val lastInput = input.split(" ").lastOrNull()
