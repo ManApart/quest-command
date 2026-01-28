@@ -7,6 +7,7 @@ import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
 import core.history.TerminalPrinter.optionsToPrintIfTheyExist
+import core.utility.capitalize2
 import core.utility.minOverlap
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -16,18 +17,16 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import system.connection.WebClient
 import system.help.getCommandGroups
 import system.persistance.createDB
 
-private typealias Display = String
-private typealias CommandToRun = String
-
 private lateinit var outputDiv: Element
 private lateinit var prompt: HTMLInputElement
 private lateinit var suggestionsDiv: Element
-private var suggestions = listOf<Pair<Display, CommandToRun>>()
+private var suggestions = listOf<String>()
 private var historyStart = 0
 
 fun main() {
@@ -65,6 +64,13 @@ fun Document.startClient() {
 
                     "Tab" -> tabComplete()
                     else -> tabHint()
+                }
+            }
+        }
+        document.onclick = { e ->
+            CoroutineScope(GlobalScope.coroutineContext).launch {
+                if (e.target is HTMLButtonElement) {
+                    clickSuggestion(e.target as HTMLButtonElement)
                 }
             }
         }
@@ -111,7 +117,7 @@ private suspend fun tabComplete() {
     val input = prompt.value.split(" ").lastOrNull()
     if (!input.isNullOrBlank()) {
         val prePrompt = prompt.value.substring(0, prompt.value.indexOf(input))
-        val overlap = suggestions.map { it.second }.minOverlap()
+        val overlap = suggestions.minOverlap()
         println("Suggestions: ${suggestions.joinToString()}")
         when {
             suggestions.size == 1 -> prompt.value = prePrompt + suggestions.first()
@@ -121,12 +127,9 @@ private suspend fun tabComplete() {
     }
 }
 
-/*
-TODO
-- Response Request options NOT be part of input/output
-- Display by printing in terminal
-- In gui make them suggestion buttons
- */
+private suspend fun clickSuggestion(button: HTMLButtonElement) {
+    val command = button.getAttribute("command")
+}
 
 /*
 TODO
@@ -145,25 +148,23 @@ private suspend fun tabHint() {
             updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
         }
     } else {
-        //Combine tab hints and responce options, make response options buttons
-        //TODO - make these into buttons that are like "help <command>" etc
-        updateSuggestions(lastInput, getCommandGroups().map { it to "commands $it" })
+        updateSuggestions(lastInput, getCommandGroups().map { "commands $it" })
     }
 }
 
 private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
 
-
-
-private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) = updateSuggestions(lastInput, allSuggestions.map { it to it })
-private fun updateSuggestions(lastInput: String?, allSuggestions: List<Pair<Display, CommandToRun>>) {
+private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) {
     suggestions = if (lastInput.isNullOrBlank()) {
         allSuggestions
     } else {
         allSuggestions.filter {
-            val option = it.second.lowercase()
+            val option = it.lowercase()
             option.startsWith(lastInput)
         }
     }
-    suggestionsDiv.innerHTML = suggestions.map { it.first }.joinToString(" ")
+    suggestionsDiv.innerHTML = suggestions.joinToString(" ") {
+        val display = if (it.startsWith("commands ")) it.replace("commands ", "") else it
+        """<button class="suggestion-button" command="$it">${display.capitalize2()}</button>"""
+    }
 }

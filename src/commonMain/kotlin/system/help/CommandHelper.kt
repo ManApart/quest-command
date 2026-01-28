@@ -12,7 +12,7 @@ fun isCommand(args: List<String>) =
         args.size == 1 && CommandParsers.findCommand(args[0]) !is UnknownCommand
 
 fun getCommandGroups(): List<String> {
-    return CommandParsers.commands.map { it.getCategory() }.flatten().distinct().filterNot { it.isBlank() }
+    return CommandParsers.commands.flatMap { it.getCategory() }.distinct().filterNot { it.isBlank() }
 }
 
 fun getCommands(group: String): List<Command> {
