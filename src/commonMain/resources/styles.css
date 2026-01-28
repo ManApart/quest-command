@@ -88,5 +88,9 @@ input:focus-visible {
 }
 
 .suggestion-button {
-
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+  border-radius: 1px;
+  padding: 5px;
 }
