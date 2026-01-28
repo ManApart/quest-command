@@ -6,6 +6,7 @@ import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
+import core.history.TerminalPrinter.optionsToPrintIfTheyExist
 import core.utility.minOverlap
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -85,6 +86,10 @@ fun addHistoryMessageAfterCallback(message: String) {
 fun updateOutput() {
     val history = GameLogger.getMainHistory().history
     outputDiv.innerHTML = history.subList(historyStart, history.size).joinToString("<br>") { it.toHtml() }
+    //TODO - implement response options if connected to server
+    if (!isConnectedToServer()) {
+        CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions()?.let { updateSuggestions(null, it) }
+    }
     scrollToBottom()
 }
 
@@ -116,22 +121,37 @@ private suspend fun tabComplete() {
     }
 }
 
+/*
+TODO
+- Response Request options NOT be part of input/output
+- Display by printing in terminal
+- In gui make them suggestion buttons
+ */
+
+/*
+TODO
+- If has response option, show those as buttons
+- If no response option, show commands + aliases
+- Make commands list be a response
+ */
 //TODO - make these clickable buttons
 private suspend fun tabHint() {
     val input = prompt.value.lowercase()
     val lastInput = input.split(" ").lastOrNull()
     if (input.isNotBlank()) {
-        if (CommandParsers.getParser(GameState.player).commandInterceptor != null) {
+        if (isConnectedToServer()) {
             updateSuggestions(lastInput, WebClient.getSuggestions(input))
         } else {
             updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
         }
     } else {
+        //Combine tab hints and responce options, make response options buttons
         //TODO - make these into buttons that are like "help <command>" etc
-        //TODO Need a "list commands in group" option different from help
         updateSuggestions(lastInput, getCommandGroups().map { it to "commands $it" })
     }
 }
+
+private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
 
 
 

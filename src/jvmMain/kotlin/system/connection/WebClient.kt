@@ -1,5 +1,6 @@
 package system.connection
 
+import core.Player
 import core.history.GameLogger
 import core.history.TerminalPrinter
 import core.history.displayGlobal
@@ -91,7 +92,7 @@ object WebClient {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun pollForUpdates() {
+    fun pollForUpdates(player: Player) {
         doPolling = true
         GlobalScope.launch {
             while (doPolling) {
@@ -102,7 +103,7 @@ object WebClient {
                             if (updates.isNotEmpty() && !updates.first().startsWith("No history for")) {
                                 updates.forEach { displayGlobal(it) }
                                 GameLogger.endCurrent()
-                                TerminalPrinter.print()
+                                TerminalPrinter.print(player)
                             }
                         }
                         delay(1000)

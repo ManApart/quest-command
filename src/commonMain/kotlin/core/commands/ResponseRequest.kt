@@ -1,6 +1,7 @@
 package core.commands
 
 import core.utility.toNameSearchableListOfStrings
+import kotlin.math.max
 
 class ResponseRequest(
     val message: String,
@@ -53,7 +54,8 @@ class ResponseRequest(
 
     private fun getNumberResponse(input: String): String? {
         if (responseKeys.exists("#") && input.toIntOrNull() != null) {
-            return responses["#"]?.replace("#", input)
+            val adjusted = max(0,input.toInt()).toString()
+            return responses["#"]?.replace("#", adjusted)
         }
         return null
     }

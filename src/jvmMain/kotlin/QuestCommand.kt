@@ -24,9 +24,9 @@ fun main(args: Array<String>) {
 
 private suspend fun runInTerminal() {
     CommandParsers.parseInitialCommand(GameState.player)
-    TerminalPrinter.print()
+    TerminalPrinter.print(GameState.player)
     while (GameManager.playing) {
         CommandParsers.parseCommand(GameState.player, readlnOrNull() ?: "")
-        TerminalPrinter.print()
+        TerminalPrinter.print(GameState.player)
     }
 }

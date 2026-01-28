@@ -1,6 +1,8 @@
 import core.GameState
+import core.Player
 import core.commands.CommandParsers
 import core.history.GameLogger
+import core.history.TerminalPrinter
 import core.utility.minOverlap
 import kotlinx.coroutines.runBlocking
 import system.connection.WebClient
@@ -91,7 +93,7 @@ class TerminalGui : JFrame() {
                 runBlocking {
                     CommandParsers.parseCommand(GameState.player, text)
                     text = ""
-                    updateOutput()
+                    updateOutput(GameState.player)
                     suggestionsArea.text = ""
                 }
             }
@@ -119,18 +121,18 @@ class TerminalGui : JFrame() {
 
         runBlocking {
             CommandParsers.parseInitialCommand(GameState.player)
-            updateOutput()
+            updateOutput(GameState.player)
             prompt.grabFocus()
             pack()
             setSize(1000, 800)
         }
     }
 
-    private fun updateOutput() {
+    private fun updateOutput(player: Player) {
         val history = GameLogger.getMainHistory().history
         output.text = history.subList(historyStart, history.size).joinToString("\n") {
             "\n> ${it.input}\n${it.outPut.joinToString("\n")}"
-        }
+        } + (TerminalPrinter.optionsToPrintIfTheyExist(player)?.let { "\n${it.joinToString(", ")}" } ?: "")
     }
 
     private suspend fun tabComplete() {

@@ -21,13 +21,9 @@ class RequestResponseBuilder(private val defaultBehavior: () -> Unit) {
         }
         if (displayedOptions.isNotEmpty() && displayedOptions.size != options.size) throw Exception("Displayed options must be same size as options.")
 
-        val optionsForMessage = displayedOptions.ifEmpty { options }
-
         val additionalOptions = displayedOptions.mapIndexed { i, displayedOption -> displayedOption to options[i] }.toMap()
-
-        val fullMessage = "$message\n\t${optionsForMessage.joinToString(", ")}"
         val messageOptions = options.associateWith(line) + additionalOptions
-        return ResponseRequest(fullMessage, messageOptions, value, useDefault, defaultValue)
+        return ResponseRequest(message, messageOptions, value, useDefault, defaultValue)
     }
 
     fun message(message: String) {

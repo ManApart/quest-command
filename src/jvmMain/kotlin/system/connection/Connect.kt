@@ -14,7 +14,7 @@ actual class Connect : EventListener<ConnectEvent>() {
             CommandParsers.getParser(event.source).commandInterceptor = ConnectionCommandInterceptor()
             event.source.displayToMe("Connected. Server info: $info")
             WebClient.getServerHistory().takeLast(10).forEach { event.source.displayToMe(it) }
-            if (GameState.getDebugBoolean(DebugType.POLL_CONNECTION)) WebClient.pollForUpdates()
+            if (GameState.getDebugBoolean(DebugType.POLL_CONNECTION)) WebClient.pollForUpdates(event.source)
         } else {
             event.source.displayToMe("Could not connect to ${event.playerName} on ${event.host}:${event.port}")
         }
