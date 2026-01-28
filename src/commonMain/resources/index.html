@@ -4,12 +4,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Quest Command</title>
+  <link rel="manifest" href="qc-manifest.json" />
   <link href="styles.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="favicon.png" />
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js");
+    }
+  </script>
+  <script src="quest-command.js"></script>
 </head>
 
 <body>
-  <script src="quest-command.js"></script>
   <div id="ad">
     <span><a href="https://github.com/ManApart/quest-command" target="_blank">Source</a></span>
     <span><a href="https://github.com/ManApart/quest-command/wiki" target="_blank">Manual</a></span>

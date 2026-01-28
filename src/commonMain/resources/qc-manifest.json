@@ -1,0 +1,13 @@
+{
+  "name": "Quest Command",
+  "short_name": "QC",
+  "description": "Text based fantasy world sim",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "128x128"
+    }
+  ],
+  "display": "standalone"
+}
