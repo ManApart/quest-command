@@ -17,12 +17,16 @@ import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLInputElement
 import system.connection.WebClient
+import system.help.getCommandGroups
 import system.persistance.createDB
+
+private typealias Display = String
+private typealias CommandToRun = String
 
 private lateinit var outputDiv: Element
 private lateinit var prompt: HTMLInputElement
 private lateinit var suggestionsDiv: Element
-private var suggestions = listOf<String>()
+private var suggestions = listOf<Pair<Display, CommandToRun>>()
 private var historyStart = 0
 
 fun main() {
@@ -64,6 +68,7 @@ fun Document.startClient() {
             }
         }
         scrollToBottom()
+        tabHint()
     }
 }
 
@@ -101,7 +106,7 @@ private suspend fun tabComplete() {
     val input = prompt.value.split(" ").lastOrNull()
     if (!input.isNullOrBlank()) {
         val prePrompt = prompt.value.substring(0, prompt.value.indexOf(input))
-        val overlap = suggestions.minOverlap()
+        val overlap = suggestions.map { it.second }.minOverlap()
         println("Suggestions: ${suggestions.joinToString()}")
         when {
             suggestions.size == 1 -> prompt.value = prePrompt + suggestions.first()
@@ -111,6 +116,7 @@ private suspend fun tabComplete() {
     }
 }
 
+//TODO - make these clickable buttons
 private suspend fun tabHint() {
     val input = prompt.value.lowercase()
     val lastInput = input.split(" ").lastOrNull()
@@ -120,17 +126,24 @@ private suspend fun tabHint() {
         } else {
             updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
         }
+    } else {
+        //TODO - make these into buttons that are like "help <command>" etc
+        //TODO Need a "list commands in group" option different from help
+        updateSuggestions(lastInput, getCommandGroups().map { it to "commands $it" })
     }
 }
 
-private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) {
+
+
+private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) = updateSuggestions(lastInput, allSuggestions.map { it to it })
+private fun updateSuggestions(lastInput: String?, allSuggestions: List<Pair<Display, CommandToRun>>) {
     suggestions = if (lastInput.isNullOrBlank()) {
         allSuggestions
     } else {
         allSuggestions.filter {
-            val option = it.lowercase()
+            val option = it.second.lowercase()
             option.startsWith(lastInput)
         }
     }
-    suggestionsDiv.innerHTML = suggestions.joinToString(" ")
+    suggestionsDiv.innerHTML = suggestions.map { it.first }.joinToString(" ")
 }

@@ -114,5 +114,4 @@ object CommandParsers {
             commandNameList
         }.map { it.capitalize2() }.sorted().toSet().toList()
     }
-
 }

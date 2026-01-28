@@ -29,14 +29,14 @@ class CommandsCommand : Command() {
 
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
         when {
-            args.isEmpty() -> clarifyCommandGroup(source)
+            args.isEmpty() -> clarifyCommandGroups(source)
             args.size == 1 && isCommand(args) -> CommandParsers.parseCommand(source, args[1])
             args.size == 1 && isCommandGroup(args) -> clarifyCommand(source, args[0])
             args.size == 2 -> CommandParsers.parseCommand(source, args[2])
         }
     }
 
-    private fun clarifyCommandGroup(source: Player) {
+    private fun clarifyCommandGroups(source: Player) {
         source.respond({}) {
             options(getCommandGroups())
             command { "commands $it" }
