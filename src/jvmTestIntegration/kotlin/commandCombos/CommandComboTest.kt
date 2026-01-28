@@ -7,8 +7,8 @@ import core.events.EventManager
 import core.history.GameLogger
 import kotlinx.coroutines.runBlocking
 import quests.QuestManager
-import status.stat.COOKING
-import status.stat.HEALTH
+import status.stat.Attributes.HEALTH
+import status.stat.Skills.COOKING
 import system.debug.DebugType
 import kotlin.test.*
 
@@ -133,8 +133,11 @@ class CommandComboTest {
     fun doNotAttackDeadThing() {
         val input = "s && slash torso of rat && sl rat && sl && slash rat"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        val expected = "Slash what with Rusty Dagger?\n\tOld Shirt, Brown Pants, Small Pouch, Rusty Dagger, Player, Poor Quality Meat"
+        val expected = "Slash what with Rusty Dagger?"
         assertEquals(expected, GameLogger.getMainHistory().getLastOutput())
+        val expectedOptions = "Old Shirt, Brown Pants, Small Pouch, Rusty Dagger, Player, Poor Quality Meat"
+        val options = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions()?.joinToString(", ")
+        assertEquals(expectedOptions, options)
     }
 
     private val travelToGate = "w && n && sw && rest 10 && w && rs 10 && w"

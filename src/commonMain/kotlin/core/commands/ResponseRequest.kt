@@ -1,5 +1,6 @@
 package core.commands
 
+import core.utility.capitalizePhrase
 import core.utility.toNameSearchableListOfStrings
 import kotlin.math.max
 
@@ -61,7 +62,7 @@ class ResponseRequest(
     }
 
     fun getOptions(): List<String> {
-        return responseKeys.map { it.name }.toList()
+        return responseKeys.map { it.name.capitalizePhrase() }.toList()
     }
 
     fun hasValue(): Boolean {

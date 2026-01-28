@@ -29,6 +29,8 @@ fun String.capitalize2(): String {
     return replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
 }
 
+fun String.capitalizePhrase() = split(" ").joinToString(" ") { it.capitalize2() }
+
 fun <T> List<T>.joinToStringAnd(transform: ((T) -> CharSequence)? = null): String {
     return joinToStringWithDifferentLast("and", transform)
 }
