@@ -2,7 +2,6 @@ const VERSION = "0.0.1";
 const CACHE_NAME = `quest-command-${VERSION}`;
 
 const APP_STATIC_RESOURCES = [
-    "/",
     "/index.html",
     "/quest-command.js",
     "/styles.css",
@@ -14,6 +13,7 @@ self.addEventListener("install", (event) => {
         (async () => {
             const cache = await caches.open(CACHE_NAME);
             await cache.addAll(APP_STATIC_RESOURCES);
+            console.log("Installed", cache.keys())
         })()
     );
 });
@@ -34,24 +34,34 @@ self.addEventListener("activate", (event) => {
     );
 });
 
-self.addEventListener("fetch", (event) => {
-    // As a single page app, direct app to always go to cached home page.
-    if (event.request.mode === "navigate") {
-        event.respondWith(caches.match("/"));
-        return;
-    }
 
-    // For all other requests, go to the cache first, and then the network.
+self.addEventListener('fetch', function (event) {
+    console.log("Fetching", event.request)
     event.respondWith(
-        (async () => {
-            const cache = await caches.open(CACHE_NAME);
-            const cachedResponse = await cache.match(event.request);
-            if (cachedResponse) {
-                // Return the cached response if it's available.
-                return cachedResponse;
+        caches.match(event.request).then(function (response) {
+            if (response) {
+                return response;
             }
-            // If resource isn't in the cache, return a 404.
-            return new Response(null, { status: 404 });
-        })()
+
+            // if not found in cache, return default offline content (only if this is a navigation request)
+            if (event.request.mode === 'navigate') {
+                console.log("navigating")
+                //TODO - this gives connection refused
+                caches.match('/games/quest-command/index.html').then(function (response) {
+                // caches.match('index.html').then(function (response) {
+                    console.log("navigating to index")
+                    if (response) {
+                        return response;
+                    } else {
+                        console.log("Fetch Default")
+                        return fetch(event.request);
+                    }
+                })
+            } else {
+                console.log("Non Navigate")
+                return fetch(event.request);
+            }
+
+        })
     );
 });

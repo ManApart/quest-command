@@ -2,7 +2,7 @@
   "name": "Quest Command",
   "short_name": "QC",
   "description": "Text based fantasy world sim",
-  "start_url": "/",
+  "start_url": "/games/quest-command/index.html",
   "icons": [
     {
       "src": "favicon.png",

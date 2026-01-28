@@ -31,7 +31,7 @@ Getting `Unresolved reference: packageName`? You're probably running gradle on s
 ### Pushing to web
 
 ```
-./gradlew jsBrowserDistribution && aws s3 sync build/distributions/ s3://austinkucera.com/games/quest-command/
+./gradlew jsBrowserDistribution && aws s3 sync build/dist/js/productionExecutable/ s3://austinkucera.com/games/quest-command/
 ```
 
 ### Visual Git Log
