@@ -1,9 +1,9 @@
 package traveling.location.weather
 
-import core.TagKey.SOUND_DESCRIPTION
-import core.TagKey.SOUND_LEVEL
 import core.properties.Properties
 import core.properties.PropsBuilder
+import core.properties.TagKey.SOUND_DESCRIPTION
+import core.properties.TagKey.SOUND_LEVEL
 import explore.listen.SOUND_LEVEL_DEFAULT
 import traveling.scope.LIGHT
 

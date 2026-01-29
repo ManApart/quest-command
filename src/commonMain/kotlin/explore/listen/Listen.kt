@@ -1,9 +1,9 @@
 package explore.listen
 
-import core.TagKey.SOUND_DESCRIPTION
-import core.TagKey.SOUND_LEVEL
 import core.events.EventListener
 import core.history.displayToMe
+import core.properties.TagKey.SOUND_DESCRIPTION
+import core.properties.TagKey.SOUND_LEVEL
 import core.thing.Thing
 import core.utility.joinToStringAnd
 import status.stat.StatKind

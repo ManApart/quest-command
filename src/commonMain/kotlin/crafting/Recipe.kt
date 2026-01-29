@@ -1,8 +1,8 @@
 package crafting
 
 import core.properties.Properties
+import core.properties.TagKey.ITEM
 import core.thing.Thing
-import core.thing.item.ITEM_TAG
 import core.utility.Named
 import status.Soul
 
@@ -74,7 +74,7 @@ data class Recipe(
         usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>
     ): List<Thing> {
         return results.map { result ->
-            result.getResult(crafter, tool, usedIngredients).also { it.properties.tags.add(ITEM_TAG) }
+            result.getResult(crafter, tool, usedIngredients).also { it.properties.tags.add(ITEM) }
         }
     }
 

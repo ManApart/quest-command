@@ -5,18 +5,18 @@ import core.GameState
 import core.body.*
 import core.history.GameLogger
 import core.properties.Properties
+import core.properties.TagKey.ITEM
 import core.properties.Tags
 import core.thing.Thing
-import core.thing.item.ITEM_TAG
 import core.thing.thing
 import createClosedChest
 import createItem
 import createMockedGame
 import kotlinx.coroutines.runBlocking
-import kotlin.test.Test
 import system.debug.DebugType
 import traveling.location.location.locationRecipe
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 class ViewInventoryTest {
@@ -59,7 +59,7 @@ class ViewInventoryTest {
                 body("body")
                 props { tag("Container") }
             }.build()
-            val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
+            val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
             creature.inventory.add(item)
             creature.body.equip(item)
             val event = ViewInventoryEvent(GameState.player, creature)
@@ -72,7 +72,7 @@ class ViewInventoryTest {
     fun listInventoryEquippedNested() {
         runBlocking {
             val item = createItem("Apple")
-            val pouch = Thing("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM_TAG)))
+            val pouch = Thing("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
             pouch.inventory.add(item)
 
             val chest = locationRecipe("Chest") { slot("Chest") }

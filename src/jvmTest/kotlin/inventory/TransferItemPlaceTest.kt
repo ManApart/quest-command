@@ -1,5 +1,6 @@
 package inventory
 
+
 import core.DependencyInjector
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
@@ -8,9 +9,9 @@ import core.body.*
 import core.properties.CAN_HOLD
 import core.properties.COUNT
 import core.properties.Properties
+import core.properties.TagKey.ITEM
 import core.properties.Tags
 import core.thing.Thing
-import core.thing.item.ITEM_TAG
 import createChest
 import createClosedChest
 import createItem
@@ -19,9 +20,6 @@ import createPouch
 import inventory.putItem.TransferItem
 import inventory.putItem.TransferItemEvent
 import kotlinx.coroutines.runBlocking
-import kotlin.test.Test
-
-
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
@@ -30,10 +28,7 @@ import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
 import traveling.location.network.networks
-import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
+import kotlin.test.*
 
 class TransferItemPlaceTest {
 
@@ -115,7 +110,7 @@ class TransferItemPlaceTest {
             BodyManager.reset()
 
             val creature = createChest()
-            val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM_TAG)))
+            val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM)))
             creature.inventory.add(item)
 
 

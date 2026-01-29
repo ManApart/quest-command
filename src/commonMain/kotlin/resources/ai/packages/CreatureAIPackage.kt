@@ -3,10 +3,10 @@ package resources.ai.packages
 import conversation.dsl.hasTag
 import core.GameState
 import core.HowToUse
-import core.TagKey
 import core.ai.knowledge.clearUseGoal
 import core.ai.knowledge.setUseTarget
 import core.ai.packages.*
+import core.properties.TagKey
 import core.utility.random
 import status.rest.RestEvent
 import status.stat.Attributes.STAMINA

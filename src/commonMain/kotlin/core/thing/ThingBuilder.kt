@@ -1,9 +1,6 @@
 package core.thing
 
 import core.AIPackageKeys
-import core.TagKey
-import core.TagKey.SOUND_DESCRIPTION
-import core.TagKey.SOUND_LEVEL
 import core.ai.*
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
@@ -16,6 +13,9 @@ import core.body.BodyManager
 import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
+import core.properties.TagKey
+import core.properties.TagKey.SOUND_DESCRIPTION
+import core.properties.TagKey.SOUND_LEVEL
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested

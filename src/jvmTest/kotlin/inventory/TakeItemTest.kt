@@ -4,10 +4,10 @@ import core.DependencyInjector
 import core.body.*
 import core.properties.COUNT
 import core.properties.Properties
+import core.properties.TagKey.ITEM
 import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
-import core.thing.item.ITEM_TAG
 import createPouch
 import inventory.pickupItem.TakeItem
 import inventory.pickupItem.TakeItemEvent
@@ -45,7 +45,7 @@ class TakeItemTest {
         runBlocking {
             val creature = getCreatureWithCapacity()
             val location = runBlocking { creature.location.getLocation() }
-            val item = Thing("Apple", properties = Properties(Tags(ITEM_TAG)))
+            val item = Thing("Apple", properties = Properties(Tags(ITEM)))
             location.addThing(item)
 
             TakeItem().complete(TakeItemEvent(creature, item))
@@ -73,7 +73,7 @@ class TakeItemTest {
         runBlocking {
             val creature = getCreatureWithCapacity()
             val location = runBlocking { creature.location.getLocation() }
-            val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM_TAG)))
+            val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM)))
             location.addThing(item)
 
             TakeItem().complete(TakeItemEvent(creature, item))

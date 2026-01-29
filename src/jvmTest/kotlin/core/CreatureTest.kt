@@ -1,10 +1,10 @@
 package core
 
 import core.properties.Properties
+import core.properties.TagKey.ITEM
 import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
-import core.thing.item.ITEM_TAG
 import createMockedGame
 import inventory.createInventoryBody
 import kotlinx.coroutines.runBlocking
@@ -91,7 +91,7 @@ class CreatureTest {
     private fun createItem(weight: Int): Thing {
         val properties = Properties(
             Values("weight" to weight.toString()),
-            Tags(ITEM_TAG)
+            Tags(ITEM)
         )
         return Thing("Thing", properties = properties)
     }

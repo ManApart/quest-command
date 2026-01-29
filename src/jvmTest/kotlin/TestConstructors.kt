@@ -2,7 +2,6 @@ import conversation.dsl.DialoguesCollection
 import conversation.dsl.DialoguesMock
 import core.DependencyInjector
 import core.GameState
-import core.TagKey
 import core.ai.AIPackageManager
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
@@ -16,13 +15,13 @@ import core.events.EventListenerMapMock
 import core.events.EventManager
 import core.history.GameLogger
 import core.properties.*
+import core.properties.TagKey.ITEM
 import core.thing.Thing
 import core.thing.ThingBuilder
 import core.thing.activator.ACTIVATOR_TAG
 import core.thing.activator.ActivatorManager
 import core.thing.activator.dsl.ActivatorsCollection
 import core.thing.activator.dsl.ActivatorsMock
-import core.thing.item.ITEM_TAG
 import core.thing.item.ItemManager
 import core.thing.item.ItemsCollection
 import core.thing.item.ItemsMock
@@ -65,7 +64,7 @@ fun createItemBuilder(name: String = "Apple", weight: Int = 1): ThingBuilder {
         thing(name) {
             props {
                 value("weight" to weight)
-                tag(ITEM_TAG)
+                tag(ITEM)
             }
         }
     }
@@ -81,7 +80,7 @@ fun createPouch(size: Int = 5, weight: Int = 1): Thing {
                 SIZE to size.toString(),
                 WEIGHT to weight.toString()
             ),
-            Tags(ITEM_TAG, CONTAINER, OPEN, ITEM_TAG)
+            Tags(ITEM, CONTAINER, OPEN, ITEM)
         )
     )
 }

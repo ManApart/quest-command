@@ -1,9 +1,9 @@
 package resources.thing.creature
 
 import core.FactKind.WORK_TAGS
-import core.TagKey.COMMONER
-import core.TagKey.FARMABLE
-import core.TagKey.PREDATOR
+import core.properties.TagKey.COMMONER
+import core.properties.TagKey.FARMABLE
+import core.properties.TagKey.PREDATOR
 import core.thing.creature.CreatureResource
 import core.thing.things
 import status.stat.Attributes.AGILITY

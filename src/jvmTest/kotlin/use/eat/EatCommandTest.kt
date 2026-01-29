@@ -4,9 +4,9 @@ import core.GameManager
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.Properties
+import core.properties.TagKey.ITEM
 import core.properties.Tags
 import core.thing.Thing
-import core.thing.item.ITEM_TAG
 import core.utility.PoorMansInstrumenter
 import createMockedGame
 import kotlinx.coroutines.runBlocking
@@ -27,7 +27,7 @@ class EatCommandTest {
         runBlocking {
             val player = GameManager.newPlayer(location = NOWHERE_NODE)
             val timer = PoorMansInstrumenter(10000)
-            val item = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
+            val item = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM)))
             timer.printElapsed("new item")
             player.inventory.add(item)
             timer.printElapsed("add item")
@@ -47,8 +47,8 @@ class EatCommandTest {
     fun eatMultipleFoodGivesChoice() {
         runBlocking {
             val player = GameManager.newPlayer(location = NOWHERE_NODE)
-            val fruit = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM_TAG)))
-            val pie = Thing("Pear Pie", properties = Properties(tags = Tags("Food", ITEM_TAG)))
+            val fruit = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM)))
+            val pie = Thing("Pear Pie", properties = Properties(tags = Tags("Food", ITEM)))
             player.inventory.add(fruit)
             player.inventory.add(pie)
             runBlocking { EatCommand().execute(player, "eat", listOf("Pear")) }

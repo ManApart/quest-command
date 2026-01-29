@@ -2,6 +2,7 @@ package core.thing.item
 
 import building.ModManager
 import core.DependencyInjector
+import core.properties.TagKey.ITEM
 import core.startupLog
 import core.thing.Thing
 import core.thing.build
@@ -10,8 +11,6 @@ import core.utility.Backer
 import core.utility.NameSearchableList
 import traveling.location.location.LocationThing
 
-const val ITEM_TAG = "Item"
-
 object ItemManager {
     private val items = Backer(::loadItems)
     suspend fun getItems() = items.get()
@@ -19,7 +18,7 @@ object ItemManager {
     private suspend fun loadItems(): NameSearchableList<Thing> {
         startupLog("Loading Items.")
         val itemsCollection = DependencyInjector.getImplementation(ItemsCollection::class)
-        return (itemsCollection.values() + ModManager.items).build(ITEM_TAG)
+        return (itemsCollection.values() + ModManager.items).build(ITEM)
     }
 
     suspend fun reset() {

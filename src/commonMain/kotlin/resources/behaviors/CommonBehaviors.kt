@@ -9,7 +9,6 @@ import core.eventWithPlayer
 import core.properties.COUNT
 import core.properties.propValChanged.PropertyStatMinnedEvent
 import core.thing.activator.ActivatorManager
-import core.thing.item.ITEM_TAG
 import core.utility.parseLocation
 import crafting.DiscoverRecipeEvent
 import crafting.RecipeManager

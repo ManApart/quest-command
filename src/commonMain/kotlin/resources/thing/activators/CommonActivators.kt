@@ -1,9 +1,9 @@
 package resources.thing.activators
 
-import core.TagKey
 import core.properties.CONTAINER
 import core.properties.OPEN
 import core.properties.SIZE
+import core.properties.TagKey
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.things
 import resources.thing.burnToAsh
