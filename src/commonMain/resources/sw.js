@@ -5,7 +5,6 @@ const APP_STATIC_RESOURCES = [
     "/index.html",
     "/quest-command.js",
     "/styles.css",
-    "/favicon.png",
 ];
 
 self.addEventListener("install", (event) => {
@@ -35,33 +34,22 @@ self.addEventListener("activate", (event) => {
 });
 
 
-self.addEventListener('fetch', function (event) {
-    console.log("Fetching", event.request)
+self.addEventListener("fetch", (event) => {
     event.respondWith(
-        caches.match(event.request).then(function (response) {
-            if (response) {
-                return response;
+        (async () => {
+            const cached = await caches.match(event.request);
+            if (cached) {
+                return cached;
             }
 
-            // if not found in cache, return default offline content (only if this is a navigation request)
-            if (event.request.mode === 'navigate') {
-                console.log("navigating")
-                //TODO - this gives connection refused
-                caches.match('/games/quest-command/index.html').then(function (response) {
-                // caches.match('index.html').then(function (response) {
-                    console.log("navigating to index")
-                    if (response) {
-                        return response;
-                    } else {
-                        console.log("Fetch Default")
-                        return fetch(event.request);
-                    }
-                })
-            } else {
-                console.log("Non Navigate")
-                return fetch(event.request);
+            if (event.request.mode === "navigate") {
+                const index = await caches.match("/index.html");
+                if (index) {
+                    return index;
+                }
             }
 
-        })
+            return fetch(event.request);
+        })()
     );
 });

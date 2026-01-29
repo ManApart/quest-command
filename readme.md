@@ -31,9 +31,15 @@ Getting `Unresolved reference: packageName`? You're probably running gradle on s
 ### Pushing to web
 
 ```
-./gradlew jsBrowserDistribution && aws s3 sync build/dist/js/productionExecutable/ s3://austinkucera.com/games/quest-command/
+./gradlew jsBrowserDistribution && aws s3 sync build/dist/js/productionExecutable/ s3://austinkucera.com/games/quest-command/ && bust-caches
 ```
 
 ### Visual Git Log
 
 `gource -a 1 -s 1 --file-idle-time 0 --key -f`
+
+
+### PWA
+
+If local host is blocked, update site settings for local host and make sure basically nothing is blocked
+`brave://settings/content/siteDetails?site=http%3A%2F%2Flocalhost%3A3000`
