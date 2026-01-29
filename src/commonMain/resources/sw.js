@@ -2,9 +2,9 @@ const VERSION = "0.0.1";
 const CACHE_NAME = `quest-command-${VERSION}`;
 
 const APP_STATIC_RESOURCES = [
-    "/index.html",
-    "/quest-command.js",
-    "/styles.css",
+    "/games/quest-command/index.html",
+    "/games/quest-command/quest-command.js",
+    "/games/quest-command/styles.css",
 ];
 
 self.addEventListener("install", (event) => {
@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event) => {
             }
 
             if (event.request.mode === "navigate") {
-                const index = await caches.match("/index.html");
+                const index = await caches.match("/games/quest-command/index.html");
                 if (index) {
                     return index;
                 }
