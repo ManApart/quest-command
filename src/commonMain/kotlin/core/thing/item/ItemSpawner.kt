@@ -3,7 +3,7 @@ package core.thing.item
 import core.events.EventListener
 import core.events.EventManager
 import core.history.displayGlobal
-import core.properties.COUNT
+import core.properties.ValueKey.COUNT
 import traveling.position.NO_VECTOR
 import traveling.scope.spawn.ItemSpawnedEvent
 import traveling.scope.spawn.SpawnItemEvent

@@ -4,12 +4,10 @@ import core.AIPackageKeys.PEASANT
 import core.FactKind
 import core.GameState
 import core.HowToUse
-import core.ValueKey
 import core.ai.knowledge.setUseTarget
 import core.ai.knowledge.useTargetGoal
 import core.ai.packages.AIPackageTemplateResource
 import core.ai.packages.aiPackages
-import core.ai.packages.canReachGoal
 import core.ai.packages.perceivedActivators
 import core.ai.packages.plotRouteAndStartTravel
 import core.commands.CommandParsers

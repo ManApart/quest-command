@@ -4,7 +4,7 @@ import combat.DamageType
 import combat.attack.AttackEvent
 import combat.attack.startAttack
 import core.GameState
-import core.ValueKey
+import core.properties.ValueKey
 import core.thing.Thing
 import core.utility.RandomManager
 import traveling.location.RouteFinder

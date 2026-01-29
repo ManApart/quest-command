@@ -6,10 +6,6 @@ object AIPackageKeys {
     const val PEASANT = "Peasant"
 }
 
-object ValueKey {
-    const val GOAL = "Goal"
-}
-
 object HowToUse {
     const val ATTACK = "Attack"
     const val EAT = "Eat"

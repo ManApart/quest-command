@@ -6,11 +6,11 @@ import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
 import core.body.*
-import core.properties.CAN_HOLD
-import core.properties.COUNT
 import core.properties.Properties
 import core.properties.TagKey.ITEM
 import core.properties.Tags
+import core.properties.ValueKey
+import core.properties.ValueKey.CAN_HOLD
 import core.thing.Thing
 import createChest
 import createClosedChest
@@ -144,7 +144,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val creature = createChest()
             val item = createItem(weight = 1)
-            item.properties.values.put(COUNT, 2)
+            item.properties.values.put(ValueKey.COUNT, 2)
             creature.inventory.add(item)
 
             val chest = createChest(size = 5)

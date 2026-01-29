@@ -1,6 +1,14 @@
 package core.properties
 
 import core.properties.TagKey.ITEM
+import core.properties.TagKey.LARGE
+import core.properties.TagKey.LONG
+import core.properties.TagKey.MEDIUM
+import core.properties.TagKey.RANGED
+import core.properties.TagKey.SHORT
+import core.properties.TagKey.SMALL
+import core.properties.ValueKey.CAN_HOLD
+import core.properties.ValueKey.COUNT
 import core.thing.activator.ACTIVATOR_TAG
 import core.utility.wrapNonEmpty
 import traveling.position.Distances.BOW_RANGE

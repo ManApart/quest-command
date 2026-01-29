@@ -9,4 +9,13 @@ object TagKey {
     const val SOUND_DESCRIPTION = "Sound Description"
     const val SOUND_LEVEL = "Sound Level"
     const val ITEM = "Item"
+    const val SIZE = "Size"
+    const val SMALL = "Small"
+    const val SHORT = "Short"
+    const val MEDIUM = "Medium"
+    const val LARGE = "Large"
+    const val LONG = "Long"
+    const val RANGED = "Ranged"
+    const val CONTAINER = "Container"
+    const val OPEN = "Open"
 }

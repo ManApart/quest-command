@@ -7,7 +7,7 @@ import core.GameState
 import core.Player
 import core.commands.Args
 import core.events.EventManager
-import core.properties.WEIGHT
+import core.properties.ValueKey.WEIGHT
 import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking

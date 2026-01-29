@@ -1,9 +1,9 @@
 package core.ai.knowledge
 
 import core.FactKind
-import core.ValueKey
 import core.events.Event
 import core.properties.Properties
+import core.properties.ValueKey
 import core.thing.Thing
 import traveling.location.network.LocationNode
 

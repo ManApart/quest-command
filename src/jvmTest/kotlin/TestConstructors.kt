@@ -14,8 +14,15 @@ import core.events.EventListenerMapCollection
 import core.events.EventListenerMapMock
 import core.events.EventManager
 import core.history.GameLogger
-import core.properties.*
+import core.properties.Properties
+import core.properties.TagKey
+import core.properties.TagKey.CONTAINER
 import core.properties.TagKey.ITEM
+import core.properties.TagKey.OPEN
+import core.properties.TagKey.SIZE
+import core.properties.Tags
+import core.properties.ValueKey.WEIGHT
+import core.properties.Values
 import core.thing.Thing
 import core.thing.ThingBuilder
 import core.thing.activator.ACTIVATOR_TAG

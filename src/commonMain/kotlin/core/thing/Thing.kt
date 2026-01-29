@@ -7,6 +7,8 @@ import core.body.Body
 import core.body.Slot
 import core.events.Event
 import core.properties.*
+import core.properties.ValueKey.COUNT
+import core.properties.ValueKey.WEIGHT
 import core.utility.Named
 import core.utility.clamp
 import core.utility.max

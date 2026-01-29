@@ -6,7 +6,7 @@ import core.ai.behavior.BehaviorResource
 import core.ai.behavior.behaviors
 import core.commands.commandEvent.CommandEvent
 import core.eventWithPlayer
-import core.properties.COUNT
+import core.properties.ValueKey.COUNT
 import core.properties.propValChanged.PropertyStatMinnedEvent
 import core.thing.activator.ActivatorManager
 import core.utility.parseLocation

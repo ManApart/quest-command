@@ -1,15 +1,14 @@
 package inventory
 
 import core.body.Body
-import core.properties.CONTAINER
-import core.properties.OPEN
 import core.properties.Properties
-import core.properties.SIZE
+import core.properties.TagKey.CONTAINER
+import core.properties.TagKey.OPEN
+import core.properties.TagKey.SIZE
 import core.thing.Thing
 import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
-import crafting.material.DEFAULT_MATERIAL
 import traveling.location.location.Location
 
 suspend fun inventory(name: String = "Inventory") : Inventory {
