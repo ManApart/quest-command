@@ -18,6 +18,7 @@ class HelpCommand : Command() {
                 "\n\tHelp Commands extended - Return a list of commands and all their aliases." +
                 "\n\tHelp <Command Group> - Return the list of commands within a group of commands" +
                 "\n\tHelp <Command> - Return the manual for that command" +
+                "\n\tHelp version - View the current commit" +
                 "\nNotes:" +
                 "\n\tNames in brackets are params. EX: 'Travel <location>' should be typed as 'Travel Kanbara'" +
                 "\n\tWords that start with a * are optional" +
@@ -46,7 +47,9 @@ class HelpCommand : Command() {
             args.isEmpty() && keyword == "help" -> clarifyHelp(source)
             args.isEmpty() -> EventManager.postEvent(ViewHelpEvent(source))
 
-            args.size == 1 && args[0] == "commands" -> EventManager.postEvent(
+            args.size == 1 && args[0] == "version" -> EventManager.postEvent(ViewVersionEvent(source))
+
+                args.size == 1 && args[0] == "commands" -> EventManager.postEvent(
                 ViewHelpEvent(
                     source,
                     commandGroups = true

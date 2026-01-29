@@ -5,3 +5,5 @@ import core.commands.Command
 import core.events.Event
 
 data class ViewHelpEvent(val source: Player, val commandGroups: Boolean = false, val commandManual: Command? = null, val args: List<String> = listOf()) : Event
+
+class ViewVersionEvent(val source: Player): Event

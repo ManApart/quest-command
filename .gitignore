@@ -142,3 +142,4 @@ hidden-gradle.properties
 kotlin-js-store/
 mods/
 .kotlin/
+src/commonMain/kotlin/system/help/VersionHolder.kt

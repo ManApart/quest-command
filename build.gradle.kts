@@ -86,6 +86,13 @@ kotlin {
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
                     mainClass.set("building.AppBuilder")
                 }
+
+                tasks.register<JavaExec>("versionMarker") {
+                    group = "build"
+                    classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
+//                    workingDir = project.rootDir
+                    mainClass.set("building.VersionMarker")
+                }
             }
         }
     }
@@ -145,6 +152,13 @@ tasks.getByName<Test>("jvmTest") {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
 }
+
+//tasks.named("build") {
+//    dependsOn("versionMarker")
+//}
+//tasks.withType<KotlinCompilationTask<*>>().configureEach {
+//    dependsOn("versionMarker")
+//}
 
 publishing {
     repositories {

@@ -7,8 +7,8 @@ import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
 import kotlinx.coroutines.runBlocking
-import status.stat.AGILITY
-import status.stat.STRENGTH
+import status.stat.Attributes.AGILITY
+import status.stat.Attributes.STRENGTH
 import traveling.location.location.Location
 import traveling.location.location.LocationRecipe
 import traveling.location.network.LocationNode
