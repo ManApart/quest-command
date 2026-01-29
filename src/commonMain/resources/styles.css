@@ -1,96 +1,121 @@
 :root {
-  --background: rgb(34, 34, 34);
-  --text: rgb(238, 238, 238);
-  --mid: rgb(65, 65, 65);
-  --prompt: rgb(56, 87, 146);
-  --highlight: gray
+    --background: rgb(34, 34, 34);
+    --text: rgb(238, 238, 238);
+    --mid: rgb(65, 65, 65);
+    --prompt: rgb(56, 87, 146);
+    --highlight: gray
 }
 
 ::-webkit-scrollbar {
-  width: 20px;
+    width: 20px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+    background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--mid);
+    background: var(--mid);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--highlight);
+    background: var(--highlight);
 }
 
 body {
-  color: var(--text);
-  background-color: var(--background);
-  font-size: 1.3em;
-  margin: 0px;
+    color: var(--text);
+    background-color: var(--background);
+    font-size: 1.3em;
+    margin: 0px;
 }
 
 #ad {
-  text-align: center;
+    text-align: center;
 }
 
 #ad a {
-  color: white;
+    color: white;
 }
 
 #ad a:visited {
-  color: white;
+    color: white;
 }
 
 #ad span {
-  padding-right: 20px;
-  padding-left: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
-#terminal {}
+#terminal {
+}
 
 #output-block {
-  padding: 10px;
-  font-size: 1.3em;
+    padding: 10px;
+    font-size: 1.3em;
+    text-wrap: auto;
 }
 
 #input-block {
-  position: float;
-  bottom: 0;
-  width: 100%;
+    bottom: 0;
+    width: 100%;
 }
 
 #prompt {
-  color: var(--text);
-  background-color: var(--background);
-  font-size: 1.3em;
-  width: 96%;
-  height: 30px;
-  margin: 0px;
-  padding: 0px;
-  border: 0px;
-  padding-bottom: 10px;
-  padding-left: 2px;
+    color: var(--text);
+    background-color: var(--background);
+    font-size: 1.3em;
+    width: 96%;
+    height: 30px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    padding-bottom: 10px;
+    padding-left: 2px;
 }
 
 input:focus-visible {
-  outline: 0px;
+    outline: 0px;
 }
 
 #suggestions {
-  color: gray;
+    color: gray;
 }
 
-#hidden-tab{
-  width: 0px;
-  padding: 0px;
-  margin: 0px;
-  border: 0px;
+#hidden-tab {
+    width: 0px;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
 }
 
 .suggestion-button {
-  background-color: black;
-  color: white;
-  border: 1px solid white;
-  border-radius: 1px;
-  padding: 5px;
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 1px;
+    padding: 5px;
+}
+
+@media (max-width: 1000px) {
+    body {
+        font-size: 2.5em;
+    }
+
+    #output-block {
+        font-size: 1em;
+    }
+
+    #prompt {
+        font-size: 2em;
+        width: 95%;
+        height: 100px;
+    }
+
+    .suggestion-button {
+        font-size: 1em;
+        padding: 30px;
+        margin: 5px;
+        border: 3px solid white;
+        border-radius: 5px;
+    }
 }

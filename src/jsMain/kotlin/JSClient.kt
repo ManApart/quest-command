@@ -67,8 +67,8 @@ fun Document.startClient() {
                 }
             }
         }
-        scrollToBottom()
         tabHint()
+        scrollToBottom()
     }
 }
 
