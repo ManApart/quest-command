@@ -157,9 +157,6 @@ tasks.getByName<Test>("jvmTest") {
 tasks.named("build") {
     dependsOn("versionMarker")
 }
-//tasks.withType<KotlinCompilationTask<*>>().configureEach {
-//    dependsOn("versionMarker")
-//}
 
 publishing {
     repositories {

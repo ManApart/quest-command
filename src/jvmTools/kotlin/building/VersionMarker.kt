@@ -8,10 +8,10 @@ fun main() {
     generateVersion()
 }
 
-//TODO - tag + commit
 fun generateVersion(){
+    val tag = File(".").runCommand("git describe --tags --abbrev=0")!!.split("\n").first()
     val version = File(".").runCommand("git rev-parse HEAD")!!.split("\n").first()
-    File("src/commonMain/resources/version.txt").writeText(version)
+    File("src/commonMain/resources/version.txt").writeText("$tag $version")
 }
 
 private fun File.runCommand(command: String): String? {
