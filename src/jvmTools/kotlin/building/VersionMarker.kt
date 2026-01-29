@@ -5,6 +5,10 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 fun main() {
+    generateVersion()
+}
+
+fun generateVersion(){
     val version = File(".").runCommand("git rev-parse HEAD")!!.split("\n").first()
     val versionText = """
         package system.help

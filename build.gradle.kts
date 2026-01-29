@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 
 plugins {
@@ -91,7 +92,7 @@ kotlin {
                     group = "build"
                     classpath = compileDependencyFiles + runtimeDependencyFiles + output.allOutputs
 //                    workingDir = project.rootDir
-                    mainClass.set("building.VersionMarker")
+                    mainClass.set("building.VersionMarkerKt")
                 }
             }
         }
@@ -153,9 +154,9 @@ tasks.getByName<Test>("jvmTest") {
     }
 }
 
-//tasks.named("build") {
-//    dependsOn("versionMarker")
-//}
+tasks.named("build") {
+    dependsOn("versionMarker")
+}
 //tasks.withType<KotlinCompilationTask<*>>().configureEach {
 //    dependsOn("versionMarker")
 //}
