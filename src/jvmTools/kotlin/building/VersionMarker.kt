@@ -8,14 +8,10 @@ fun main() {
     generateVersion()
 }
 
+//TODO - tag + commit
 fun generateVersion(){
     val version = File(".").runCommand("git rev-parse HEAD")!!.split("\n").first()
-    val versionText = """
-        package system.help
-        
-        const val APP_VERSION = "$version"
-        """.trimIndent()
-    File("src/commonMain/kotlin/system/help/VersionHolder.kt").writeText(versionText)
+    File("src/commonMain/resources/version.txt").writeText(version)
 }
 
 private fun File.runCommand(command: String): String? {
