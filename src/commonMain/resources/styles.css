@@ -88,6 +88,14 @@ input:focus-visible {
     border: 0px;
 }
 
+#refresh-button {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 1px;
+    padding: 2px;
+}
+
 .suggestion-button {
     background-color: black;
     color: white;
@@ -109,6 +117,11 @@ input:focus-visible {
         font-size: 2em;
         width: 95%;
         height: 100px;
+    }
+
+    #refresh-button {
+        font-size: .5em;
+        padding: 10px;
     }
 
     .suggestion-button {
