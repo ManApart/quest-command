@@ -103,7 +103,7 @@ fun updateOutput() {
     outputDiv.innerHTML = history.subList(historyStart, history.size).filter { it.input.isNotBlank() || it.outPut.isNotEmpty() }.joinToString("<br>") { it.toHtml() }
     //TODO - implement response options if connected to server
     if (!isConnectedToServer()) {
-        val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: getCommandGroups().map { "commands $it" }
+        val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: defaultSuggestions(history.last())
         updateSuggestions(null, suggestions)
     }
     scrollToBottom()
@@ -150,8 +150,16 @@ private suspend fun tabHint() {
             updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
         }
     } else {
-        updateSuggestions(lastInput, getCommandGroups().map { "commands $it" })
+        updateSuggestions(lastInput, defaultSuggestions())
     }
+}
+
+private fun defaultSuggestions(previousCommand: InputOutput? = null): List<String> {
+    if (previousCommand?.input == "alias") {
+        return previousCommand.outPut.flatMap { it.split("\n") }.drop(1)
+            .mapNotNull { line -> line.split(" ").firstOrNull { it.isNotBlank() } }
+    }
+    return listOf("alias") + getCommandGroups().map { "commands $it" }
 }
 
 private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
@@ -166,7 +174,7 @@ private fun updateSuggestions(promptInput: String?, allSuggestions: List<String>
         }
     }
     val previous = GameLogger.getMainHistory().history.last().input
-    val back = if (previous.startsWith("commands ")) {
+    val back = if (previous.startsWith("commands ") || previous == "alias") {
         """<button class="suggestion-button" command="">Back</button>"""
     } else ""
     suggestionsDiv.innerHTML = back + suggestions.joinToString(" ") {

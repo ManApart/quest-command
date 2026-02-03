@@ -118,6 +118,7 @@ input:focus-visible {
     border: 1px solid var(--text);
     border-radius: 1px;
     padding: 5px;
+    margin: 5px;
 }
 
 @media (max-width: 1000px) {
@@ -151,7 +152,6 @@ input:focus-visible {
     .suggestion-button {
         font-size: 1em;
         padding: 30px;
-        margin: 5px;
         border: 3px solid var(--text);
         border-radius: 5px;
     }
