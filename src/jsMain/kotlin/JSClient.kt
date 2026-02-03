@@ -6,27 +6,20 @@ import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
 import core.history.InputOutput
-import core.history.TerminalPrinter.optionsToPrintIfTheyExist
 import core.utility.capitalize2
 import core.utility.minOverlap
-import io.ktor.client.utils.EmptyContent.setProperty
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.dom.addClass
-import kotlinx.dom.hasClass
-import kotlinx.dom.removeClass
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLObjectElement
-import org.w3c.dom.HTMLOrSVGImageElement
 import org.w3c.dom.svg.SVGPathElement
 import system.connection.WebClient
 import system.help.getCommandGroups
@@ -71,15 +64,11 @@ fun Document.startClient() {
         }
         document.onclick = { e ->
             CoroutineScope(GlobalScope.coroutineContext).launch {
-                println(e.target)
                 if (e.target is HTMLButtonElement) {
                     val button = (e.target as HTMLButtonElement)
                     if (button.id == "theme-toggle") toggleTheme() else clickSuggestion(button)
                 } else if (e.target is HTMLObjectElement && (e.target as HTMLObjectElement).parentElement is HTMLButtonElement) {
                     if (((e.target as HTMLObjectElement).parentElement as HTMLButtonElement).id == "theme-toggle") toggleTheme()
-                } else {
-                    println("Unknown")
-                    println(e.target)
                 }
             }
         }
@@ -111,7 +100,7 @@ fun addHistoryMessageAfterCallback(message: String) {
 
 fun updateOutput() {
     val history = GameLogger.getMainHistory().history
-    outputDiv.innerHTML = history.subList(historyStart, history.size).joinToString("<br>") { it.toHtml() }
+    outputDiv.innerHTML = history.subList(historyStart, history.size).filter { it.input.isNotBlank() || it.outPut.isNotEmpty() }.joinToString("<br>") { it.toHtml() }
     //TODO - implement response options if connected to server
     if (!isConnectedToServer()) {
         val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: getCommandGroups().map { "commands $it" }
@@ -167,16 +156,20 @@ private suspend fun tabHint() {
 
 private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
 
-private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) {
-    suggestions = if (lastInput.isNullOrBlank()) {
+private fun updateSuggestions(promptInput: String?, allSuggestions: List<String>) {
+    suggestions = if (promptInput.isNullOrBlank()) {
         allSuggestions
     } else {
         allSuggestions.filter {
             val option = it.lowercase()
-            option.startsWith(lastInput)
+            option.startsWith(promptInput)
         }
     }
-    suggestionsDiv.innerHTML = suggestions.joinToString(" ") {
+    val previous = GameLogger.getMainHistory().history.last().input
+    val back = if (previous.startsWith("commands ")) {
+        """<button class="suggestion-button" command="">Back</button>"""
+    } else ""
+    suggestionsDiv.innerHTML = back + suggestions.joinToString(" ") {
         val display = if (it.startsWith("commands ")) it.replace("commands ", "") else it
         """<button class="suggestion-button" command="$it">${display.capitalize2()}</button>"""
     }
