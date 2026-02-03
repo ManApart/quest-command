@@ -121,7 +121,7 @@ fun updateOutput() {
 }
 
 private fun InputOutput.toHtml(): String {
-    return "<br/>> $input<br/>${outPut.joinToString("<br/>") { it.replace("\n", "<br/>") }}"
+    return "<br/>> $input<br/>${outPut.joinToString("<br/>") { it.replace("<", "`").replace(">", "`").replace("\n", "<br/>") }}"
 }
 
 private fun scrollToBottom() {
