@@ -1,8 +1,8 @@
 :root {
-    --background: rgb(34, 34, 34);
+    --background: #222222;
     --text: rgb(238, 238, 238);
     --mid: rgb(65, 65, 65);
-    --prompt: rgb(56, 87, 146);
+    --prompt: #151515;
     --highlight: gray
 }
 
@@ -22,6 +22,10 @@
     background: var(--highlight);
 }
 
+::selection {
+    background-color: var(--highlight);
+}
+
 body {
     color: var(--text);
     background-color: var(--background);
@@ -34,11 +38,11 @@ body {
 }
 
 #ad a {
-    color: white;
+    color: var(--text);
 }
 
 #ad a:visited {
-    color: white;
+    color: var(--text);
 }
 
 #ad span {
@@ -62,23 +66,18 @@ body {
 
 #prompt {
     color: var(--text);
-    background-color: var(--background);
+    background-color: var(--prompt);
     font-size: 1.3em;
     width: 96%;
     height: 30px;
     margin: 0px;
-    padding: 0px;
+    margin-bottom: 5px;
+    padding: 5px;
     border: 0px;
-    padding-bottom: 10px;
-    padding-left: 2px;
 }
 
 input:focus-visible {
     outline: 0px;
-}
-
-#suggestions {
-    color: gray;
 }
 
 #hidden-tab {
@@ -89,17 +88,34 @@ input:focus-visible {
 }
 
 #refresh-button {
-    background-color: black;
-    color: white;
-    border: 1px solid white;
+    background-color: var(--background);
+    color: var(--text);
+    border: 1px solid var(--text);
     border-radius: 1px;
     padding: 2px;
 }
 
+#theme-toggle {
+    background-color: var(--background);
+    padding: 0;
+    border: none;
+    float: right;
+    margin-right: 5px;
+
+    img, object {
+        width: 40px;
+        pointer-events: none;
+    }
+}
+
+#suggestions {
+    margin: 5px;
+}
+
 .suggestion-button {
-    background-color: black;
-    color: white;
-    border: 1px solid white;
+    background-color: var(--background);
+    color: var(--text);
+    border: 1px solid var(--text);
     border-radius: 1px;
     padding: 5px;
 }
@@ -124,11 +140,19 @@ input:focus-visible {
         padding: 10px;
     }
 
+    #theme-toggle {
+        margin-right: 5px;
+
+        img, object {
+            width: 100px;
+        }
+    }
+
     .suggestion-button {
         font-size: 1em;
         padding: 30px;
         margin: 5px;
-        border: 3px solid white;
+        border: 3px solid var(--text);
         border-radius: 5px;
     }
 }

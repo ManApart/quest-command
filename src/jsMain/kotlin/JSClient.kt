@@ -9,17 +9,25 @@ import core.history.InputOutput
 import core.history.TerminalPrinter.optionsToPrintIfTheyExist
 import core.utility.capitalize2
 import core.utility.minOverlap
+import io.ktor.client.utils.EmptyContent.setProperty
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.dom.addClass
+import kotlinx.dom.hasClass
+import kotlinx.dom.removeClass
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLObjectElement
+import org.w3c.dom.HTMLOrSVGImageElement
+import org.w3c.dom.svg.SVGPathElement
 import system.connection.WebClient
 import system.help.getCommandGroups
 import system.persistance.createDB
@@ -29,6 +37,7 @@ private lateinit var prompt: HTMLInputElement
 private lateinit var suggestionsDiv: Element
 private var suggestions = listOf<String>()
 private var historyStart = 0
+private var darkTheme = true
 
 fun main() {
     window.onload = {
@@ -62,8 +71,15 @@ fun Document.startClient() {
         }
         document.onclick = { e ->
             CoroutineScope(GlobalScope.coroutineContext).launch {
+                println(e.target)
                 if (e.target is HTMLButtonElement) {
-                    clickSuggestion(e.target as HTMLButtonElement)
+                    val button = (e.target as HTMLButtonElement)
+                    if (button.id == "theme-toggle") toggleTheme() else clickSuggestion(button)
+                } else if (e.target is HTMLObjectElement && (e.target as HTMLObjectElement).parentElement is HTMLButtonElement) {
+                    if (((e.target as HTMLObjectElement).parentElement as HTMLButtonElement).id == "theme-toggle") toggleTheme()
+                } else {
+                    println("Unknown")
+                    println(e.target)
                 }
             }
         }
@@ -163,5 +179,38 @@ private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) 
     suggestionsDiv.innerHTML = suggestions.joinToString(" ") {
         val display = if (it.startsWith("commands ")) it.replace("commands ", "") else it
         """<button class="suggestion-button" command="$it">${display.capitalize2()}</button>"""
+    }
+}
+
+private fun toggleTheme() {
+    console.log("Toggling Theme")
+    val svg = (document.getElementById("theme-icon") as HTMLObjectElement).getSVGDocument()!!
+    with(document.body!!.style) {
+        darkTheme = !darkTheme
+        if (darkTheme) {
+            setProperty("--background", "#222222")
+            setProperty("--text", "rgb(238, 238, 238)")
+            setProperty("--mid", "rgb(65, 65, 65)")
+            setProperty("--prompt", "#151515")
+            setProperty("--highlight", "gray")
+            svg.toggleColor("circle", "stroke", "#efd79c")
+            svg.toggleColor("rays", "fill", "#efd79c")
+        } else {
+            setProperty("--background", "#efd79c")
+            setProperty("--text", "#222222")
+            setProperty("--mid", "rgb(65, 65, 65)")
+            setProperty("--prompt", "#ceba87")
+            setProperty("--highlight", "gray")
+            svg.toggleColor("circle", "stroke", "#222222")
+            svg.toggleColor("rays", "fill", "#222222")
+        }
+    }
+}
+
+
+private fun Document.toggleColor(id: String, prop: String, color: String) {
+    val el = getElementById(id)!!
+    if (el.tagName.equals("path", ignoreCase = true)) {
+        el.unsafeCast<SVGPathElement>().style.setProperty(prop, color)
     }
 }
