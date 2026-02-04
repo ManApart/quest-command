@@ -14,6 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.dom.addClass
+import kotlinx.dom.removeClass
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLButtonElement
@@ -83,8 +85,10 @@ private suspend fun submitCommand(input: String) {
     if (input.lowercase() == "clear") {
         clearScreen()
     } else {
+        prompt.addClass("hidden")
         CommandParsers.parseCommand(GameState.player, input)
         updateOutput()
+        prompt.removeClass("hidden")
     }
 }
 

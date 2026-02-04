@@ -62,6 +62,7 @@ body {
 #input-block {
     bottom: 0;
     width: 100%;
+    background-color: var(--prompt);
 }
 
 #prompt {
@@ -119,6 +120,10 @@ input:focus-visible {
     border-radius: 1px;
     padding: 5px;
     margin: 5px;
+}
+
+.hidden {
+    display: none;
 }
 
 @media (max-width: 1000px) {
