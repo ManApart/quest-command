@@ -91,9 +91,6 @@ private suspend fun submitCommand(input: String) {
         prompt.addClass("hidden")
         CommandParsers.parseCommand(GameState.player, input)
         updateOutput()
-        loading.addClass("hidden")
-        prompt.removeClass("hidden")
-        scrollToBottom()
     }
 }
 
@@ -115,6 +112,8 @@ fun updateOutput() {
         val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: defaultSuggestions(history.last())
         updateSuggestions(null, suggestions)
     }
+    loading.addClass("hidden")
+    prompt.removeClass("hidden")
     scrollToBottom()
 }
 

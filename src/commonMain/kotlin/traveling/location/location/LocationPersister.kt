@@ -47,7 +47,6 @@ data class LocationP(
 
     suspend fun parsed(path: String, locationNode: LocationNode): Location {
         val folderPath = path.removeSuffix(".json")
-
         val activators = getThings(folderPath, "activators", locationNode)
         val creatures = getThings(folderPath, "creatures", locationNode)
         val items = getThings(folderPath, "items", locationNode)

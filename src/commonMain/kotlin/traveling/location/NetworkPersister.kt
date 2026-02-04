@@ -5,6 +5,7 @@ import core.thing.Thing
 import system.persistance.clean
 import system.persistance.getFiles
 import traveling.location.location.LocationManager
+import traveling.location.network.network
 
 //TODO - save discovered
 suspend fun persist(dataObject: Network, path: String, ignoredThings: List<Thing>) {
@@ -20,9 +21,8 @@ suspend fun persist(dataObject: Network, path: String, ignoredThings: List<Thing
 suspend fun load(path: String, name: String): Network {
     val network = if (LocationManager.networkExists(name)) {
         LocationManager.getNetwork(name)
-    } else {
-        BodyManager.getBody(name).layout
-    }
+    } else BodyManager.getBody(name).layout
+
     getFiles(path).forEach {
         network.getLocationNode(it.nameWithoutExtension).loadPath = it.path
     }

@@ -11,6 +11,7 @@ import core.history.GameLogger
 import core.history.SessionHistory
 import core.properties.Properties
 import core.properties.PropertiesP
+import core.utility.map
 import getForage
 import getForageKeys
 import kotlinx.serialization.decodeFromString
@@ -148,7 +149,7 @@ actual suspend fun writeSave(directoryName: String, saveName: String, json: Stri
 }
 
 actual suspend fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
-    val depth = path.count { it == '/' } + 1
+    val depth = path.count { it == '/' }.let { if (path.endsWith("/")) it else it + 1 }
     return getForageKeys().filter {
         it.startsWith(path)
                 && it.endsWith(".json")
