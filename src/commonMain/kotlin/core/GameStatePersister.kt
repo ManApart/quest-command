@@ -8,11 +8,11 @@ import quests.QuestP
 @kotlinx.serialization.Serializable
 data class GameStateP(
     val gameName: String,
-    val characterNames: List<String>,
-    val quests: List<QuestP>,
+    val characterNames: List<String> = emptyList(),
+    val quests: List<QuestP> = emptyList(),
     val time: Long,
-    val properties: PropertiesP,
-    val aliases: Map<String, String>,
+    val properties: PropertiesP = PropertiesP(),
+    val aliases: Map<String, String> = emptyMap(),
 ) {
     constructor() : this(GameState.gameName, GameState.players.values.map { it.name }, QuestManager.quests.filter { it.hasStarted() }.map { QuestP(it) }, GameState.timeManager.getTicks(), PropertiesP(GameState.properties), GameState.aliases)
 

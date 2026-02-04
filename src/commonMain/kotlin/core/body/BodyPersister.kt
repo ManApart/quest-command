@@ -32,7 +32,7 @@ suspend fun load(path: String, name: String): Body {
 data class BodyP(
     val name: String,
     val material: String,
-    val slots: Map<String, String>,
+    val slots: Map<String, String> = emptyMap(),
 ) {
     constructor(b: Body) : this(b.name, b.material.name, b.getSlotMap())
 

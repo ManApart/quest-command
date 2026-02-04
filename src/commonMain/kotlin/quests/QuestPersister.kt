@@ -6,7 +6,7 @@ data class QuestP(
     val stage: Int,
     val complete: Boolean,
     val active: Boolean,
-    val journalEntries: List<String>
+    val journalEntries: List<String> = emptyList(),
 ) {
     constructor(b: Quest) : this(b.name, b.stage, b.complete, b.active, b.getAllJournalEntries())
 

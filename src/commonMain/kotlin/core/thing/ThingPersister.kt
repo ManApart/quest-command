@@ -40,7 +40,7 @@ suspend fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
 @kotlinx.serialization.Serializable
 data class ThingP(
     val name: String,
-    val mind: MindP,
+    val mind: MindP = MindP(),
     val behaviorRecipes: List<BehaviorRecipe> = emptyList(),
     val equipSlots: List<List<String>> = emptyList(),
     val description: String,

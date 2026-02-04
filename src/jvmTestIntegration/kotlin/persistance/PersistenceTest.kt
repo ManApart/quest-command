@@ -26,6 +26,7 @@ import status.effects.EffectBase
 import status.effects.EffectP
 import status.stat.LeveledStat
 import status.stat.LeveledStatP
+import system.mapper
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
 import traveling.location.Network
@@ -167,7 +168,7 @@ class PersistenceTest {
             GameManager.newGame(playerName = "Saved Player", testing = true)
             EventManager.processEvents()
 
-            EventManager.postEvent(LoadEvent(preLoadPlayer, "Kanbara"))
+            EventManager.postEvent(LoadEvent(preLoadPlayer, "kanbara"))
             EventManager.processEvents()
             val postLoadPlayer = GameState.getPlayer("Saved Player")!!
             assertEquals("Saved Player", postLoadPlayer.thing.name)
