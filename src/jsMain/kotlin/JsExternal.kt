@@ -32,3 +32,9 @@ suspend fun setForage(key: String, value: Any) {
         LocalForage.setItem(key, value)
     }
 }
+
+suspend fun setForages(keysToValues: Map<String,String>) {
+    promise {
+        Promise.all(keysToValues.map { LocalForage.setItem(it.key, it.value) }.toTypedArray())
+    }
+}

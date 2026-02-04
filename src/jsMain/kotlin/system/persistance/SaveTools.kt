@@ -17,6 +17,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import setForage
+import setForages
 import system.mapper
 import traveling.location.Network
 import traveling.location.location.LocationManager
@@ -25,6 +26,8 @@ import traveling.location.network.NOWHERE_NODE
 fun createDB() {
     config(LocalForageConfig("quest-command"))
 }
+
+private val saveUpdates = mutableMapOf<String, String>()
 
 actual class File actual constructor(pathIn: String) {
     actual val path = pathIn
@@ -68,6 +71,7 @@ actual suspend fun save(rawGameName: String) {
     LocationManager.getNetworks().forEach { save(gamePath, it) }
     saveGameState(gamePath)
     saveTopLevelMetadata(gameName)
+    saveFlush()
 }
 
 private suspend fun saveSessionStats() {
@@ -140,7 +144,7 @@ actual suspend fun getGamesMetaData(): Properties {
 }
 
 actual suspend fun writeSave(directoryName: String, saveName: String, json: String) {
-    setForage(saveName, json)
+    saveUpdates[saveName] = json
 }
 
 actual suspend fun getFiles(path: String, ignoredFileNames: List<String>): List<File> {
@@ -162,4 +166,9 @@ private suspend fun getFolders(path: String, ignoredFileNames: List<String> = li
         .filter { folder -> folder != path && folder.isNotBlank() && ignoredFileNames.none { folder.endsWith(it) } }
         .map { File(it) }
         .toList()
+}
+
+suspend fun saveFlush() {
+    setForages(saveUpdates)
+    saveUpdates.clear()
 }
