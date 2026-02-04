@@ -11,9 +11,9 @@ suspend fun persist(dataObject: Network, path: String, ignoredThings: List<Thing
     val cleanedPath = clean(path, dataObject.name)
 
     dataObject.getLocationNodes()
-            .filter { it.hasLoadedLocation() }
-            .map { it.getLocation() }
-            .map { traveling.location.location.persist(it, cleanedPath, ignoredThings) }
+        .filter { it.hasLoadedLocation() }
+        .map { it.getLocation() }
+        .forEach { traveling.location.location.persist(it, cleanedPath, ignoredThings) }
 }
 
 @Suppress("UNCHECKED_CAST")

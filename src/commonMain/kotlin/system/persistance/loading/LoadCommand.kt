@@ -27,7 +27,7 @@ class LoadCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return when{
+        return when {
             args.isEmpty() -> listOf("ls") + getGameNames()
             else -> listOf()
         }
@@ -37,7 +37,11 @@ class LoadCommand : Command() {
         val argString = args.joinToString(" ")
         when {
             argString == "ls" -> EventManager.postEvent(ListSavesEvent(source))
-            args.isEmpty() -> source.displayToMe("Please specify a save to load or use ls to list current saves.")
+            args.isEmpty() -> {
+                source.displayToMe("Please specify a save to load.")
+                EventManager.postEvent(ListSavesEvent(source))
+            }
+
             else -> EventManager.postEvent(LoadEvent(source, args.joinToString(" ")))
         }
     }

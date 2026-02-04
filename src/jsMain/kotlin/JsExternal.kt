@@ -2,6 +2,7 @@
 
 import FakeSync.promise
 import kotlin.js.Promise
+import kotlin.js.unsafeCast
 
 @JsModule("localforage")
 @JsNonModule
@@ -22,8 +23,8 @@ suspend fun <T> getForage(key: String) : T? {
 
 suspend fun getForageKeys() : List<String> {
     return promise {
-        LocalForage.keys() as Promise<List<String>>
-    }!!.toString().split(",")
+        LocalForage.keys().unsafeCast<Promise<Array<String>>>()
+    }!!.toList()
 }
 
 suspend fun setForage(key: String, value: Any) {

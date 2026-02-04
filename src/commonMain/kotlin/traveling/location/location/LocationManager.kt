@@ -42,8 +42,12 @@ object LocationManager {
         return networks.getOrNull(name) != null
     }
 
+    fun getNetworkOrNull(name: String): Network? {
+        return networks.getOrNull(name)
+    }
+
     fun getNetwork(name: String): Network {
-        return networks.getOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
+        return getNetworkOrNull(name) ?: throw IllegalArgumentException("Network $name does not exist!")
     }
 
     fun getNetworks(): List<Network> {

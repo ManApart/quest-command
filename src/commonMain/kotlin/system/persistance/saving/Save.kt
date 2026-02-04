@@ -7,10 +7,10 @@ import system.persistance.save
 
 class Save : EventListener<SaveEvent>() {
     override suspend fun complete(event: SaveEvent) {
-        save(GameState.gameName)
+        save(GameState.gameName.lowercase())
 
         if (!event.silent) {
-            displayGlobal("Saved ${event.source.thing.name} in ${GameState.gameName}.")
+            displayGlobal("Saved ${event.source.thing.name} in ${GameState.gameName.lowercase()}.")
         }
     }
 }

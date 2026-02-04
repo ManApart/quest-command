@@ -57,8 +57,8 @@ class PersistenceTest {
     @Test
     fun behaviorRecipe() {
         val original = BehaviorRecipe("thing", mapOf("this" to "that"))
-        val json = Json.encodeToString(original)
-        val parsed: BehaviorRecipe = Json.decodeFromString(json)
+        val json = mapper.encodeToString(original)
+        val parsed: BehaviorRecipe = mapper.decodeFromString(json)
         assertEquals(original, parsed)
     }
 
@@ -70,8 +70,8 @@ class PersistenceTest {
         }
         //retain casing
         original.values.put("check", "Upper")
-        val json = Json.encodeToString(PropertiesP(original))
-        val parsed: PropertiesP = Json.decodeFromString(json)
+        val json = mapper.encodeToString(PropertiesP(original))
+        val parsed: PropertiesP = mapper.decodeFromString(json)
         val actual = parsed.parsed()
         assertEquals(original, actual)
         assertEquals(original.values.getString("check"), actual.values.getString("check"))
@@ -80,8 +80,8 @@ class PersistenceTest {
     @Test
     fun leveledStat() {
         val original = LeveledStat("health", 1, 1, 2)
-        val json = Json.encodeToString(LeveledStatP(original))
-        val parsed: LeveledStatP = Json.decodeFromString(json)
+        val json = mapper.encodeToString(LeveledStatP(original))
+        val parsed: LeveledStatP = mapper.decodeFromString(json)
         val actual = parsed.parsed()
         with(actual) {
             assertEquals(original.name, name)
@@ -101,8 +101,8 @@ class PersistenceTest {
             val location = Location(LocationNode("Head"), recipe = locationRecipe)
             val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
             val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
-            val json = Json.encodeToString(EffectP(original))
-            val parsed: EffectP = Json.decodeFromString(json)
+            val json = mapper.encodeToString(EffectP(original))
+            val parsed: EffectP = mapper.decodeFromString(json)
             assertEffectMatches(original, parsed.parsed(body))
         }
     }
@@ -125,8 +125,8 @@ class PersistenceTest {
             val original = Condition("Fever", effects = listOf(effect))
             val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
 
-            val json = Json.encodeToString(ConditionP(original))
-            val parsed: ConditionP = Json.decodeFromString(json)
+            val json = mapper.encodeToString(ConditionP(original))
+            val parsed: ConditionP = mapper.decodeFromString(json)
 
             with(parsed) {
                 assertEquals(original.name, name)

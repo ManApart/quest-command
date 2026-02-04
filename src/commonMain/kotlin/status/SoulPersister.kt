@@ -6,8 +6,8 @@ import status.stat.LeveledStatP
 
 @kotlinx.serialization.Serializable
 data class SoulP(
-    val stats: List<LeveledStatP>,
-    val conditions: List<ConditionP>,
+    val stats: List<LeveledStatP> = emptyList(),
+    val conditions: List<ConditionP> = emptyList(),
 
 ){
     constructor(b: Soul): this(b.getStats().map { LeveledStatP(it)}, b.getConditions().map { ConditionP(it) })

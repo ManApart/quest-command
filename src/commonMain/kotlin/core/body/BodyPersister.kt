@@ -2,7 +2,7 @@ package core.body
 
 import crafting.material.MaterialManager
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import system.mapper
 import system.persistance.*
 
 suspend fun persist(dataObject: Body, path: String) {
@@ -14,7 +14,7 @@ suspend fun persist(dataObject: Body, path: String) {
     dataObject.getEquippedItems().forEach { core.thing.persistToDisk(it, path) }
 
     val saveName = cleanPathToFile("json", prefix)
-    val json = Json.encodeToString(BodyP(dataObject))
+    val json = mapper.encodeToString(BodyP(dataObject))
     writeSave(path, saveName, json)
 }
 

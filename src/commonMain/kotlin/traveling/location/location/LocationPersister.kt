@@ -8,13 +8,14 @@ import crafting.material.MaterialManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import system.mapper
 import system.persistance.*
 import traveling.location.network.LocationNode
 
 suspend fun persist(dataObject: Location, path: String, ignoredThings: List<Thing> = listOf()) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile(".json", prefix)
-    val locationJson = Json.encodeToString(LocationP(dataObject))
+    val locationJson = mapper.encodeToString(LocationP(dataObject))
     writeSave(path, saveName, locationJson)
 
     dataObject.getActivators().forEach { core.thing.persistToDisk(it, clean(prefix, "activators")) }
@@ -27,7 +28,7 @@ suspend fun persist(dataObject: Location, path: String, ignoredThings: List<Thin
 }
 
 suspend fun load(path: String, locationNode: LocationNode): Location {
-    val json: LocationP = Json.decodeFromString(File(path).readText())
+    val json: LocationP = mapper.decodeFromString(File(path).readText())
     return json.parsed(path, locationNode)
 }
 
@@ -40,7 +41,7 @@ private suspend fun getThings(folderPath: String, folderName: String, parent: Lo
 data class LocationP(
     val name: String,
     val materialName: String,
-    val properties: PropertiesP,
+    val properties: PropertiesP = PropertiesP(),
 ) {
     constructor(b: Location) : this(b.name, b.material.name, PropertiesP(b.properties))
 

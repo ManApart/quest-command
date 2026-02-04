@@ -3,6 +3,7 @@ package core
 import core.thing.ThingP
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import system.mapper
 import system.persistance.clean
 import system.persistance.cleanPathToFile
 import system.persistance.writeSave
@@ -12,7 +13,7 @@ suspend fun persist(dataObject: Player, path: String) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
     val playerP = PlayerP(dataObject)
-    val data = Json.encodeToString(playerP)
+    val data = mapper.encodeToString(playerP)
 
     writeSave(path, saveName, data)
     playerP.persistReferences(path)

@@ -43,3 +43,4 @@ Getting `Unresolved reference: packageName`? You're probably running gradle on s
 
 If local host is blocked, update site settings for local host and make sure basically nothing is blocked
 `brave://settings/content/siteDetails?site=http%3A%2F%2Flocalhost%3A3000`
+Also make sure that service workers are disabled / pushed through to network to get latest code when doing development

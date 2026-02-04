@@ -2,8 +2,8 @@ package core.properties
 
 @kotlinx.serialization.Serializable
 data class PropertiesP(
-    val tags: List<String>,
-    val values: Map<String, String>
+    val tags: List<String> = emptyList(),
+    val values: Map<String, String> = emptyMap(),
 ) {
     constructor(b: Properties) : this(b.tags.getAll(), b.values.getAll())
 

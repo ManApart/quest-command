@@ -2,6 +2,7 @@ package traveling.location
 
 import core.utility.NameSearchableList
 import core.utility.Named
+import system.persistance.cleanPathPart
 import traveling.direction.Direction
 import traveling.location.location.LocationPoint
 import traveling.location.location.LocationRecipe
@@ -33,7 +34,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
 
     private fun findRootNode(): LocationNode {
         return locationNodes.firstOrNull { it.isRoot }
-                ?: locationNodes.first()
+            ?: locationNodes.first()
     }
 
     private fun findRootNodeHeight(): Int {
@@ -41,17 +42,20 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
     }
 
     fun getLocationNode(name: String): LocationNode {
-        return locationNodes.get(name)
+        return getLocationNodeOrNull(name)
+            ?: throw RuntimeException("Could not find location node $name in list ${locationNodes.joinToString { it.name }}")
     }
+
     fun getLocationNodeOrNull(name: String): LocationNode? {
         return locationNodes.getOrNull(name)
+            ?: locationNodes.firstOrNull { cleanPathPart(it.name) == name }
     }
 
     fun getLocationNodes(): List<LocationNode> {
         return locationNodes.toList()
     }
 
-    fun hasLocation(name: String) : Boolean {
+    fun hasLocation(name: String): Boolean {
         return locationNodes.exists(name)
     }
 
@@ -80,7 +84,7 @@ class Network(override val name: String, locationNodes: List<LocationNode> = lis
 
     private fun getFurthestLocation(direction: Direction = Direction.BELOW): LocationNode? {
         return getFurthestLocations(direction)
-                .maxByOrNull { rootNode.getDistanceTo(it) }
+            .maxByOrNull { rootNode.getDistanceTo(it) }
     }
 
     fun getFurthestLocations(direction: Direction = Direction.BELOW): List<LocationNode> {

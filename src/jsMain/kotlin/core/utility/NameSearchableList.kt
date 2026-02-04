@@ -152,7 +152,7 @@ actual class NameSearchableList<N : Named> actual constructor() : MutableList<N>
 
 
     actual fun get(name: String): N {
-        return getOrNull(name) ?: throw RuntimeException("Could not find $name in list ${toStringExtended()}")
+        return getOrNull(name) ?: throw RuntimeException("Could not find $name in name searchable list ${toStringExtended()}")
     }
 
     //TODO - eventually sort by best match

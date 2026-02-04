@@ -17,6 +17,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import setForage
+import system.mapper
 import traveling.location.Network
 import traveling.location.location.LocationManager
 import traveling.location.network.NOWHERE_NODE
@@ -53,7 +54,7 @@ actual suspend fun getCharacterSaves(gameName: String): List<String> {
 actual suspend inline fun <reified T> loadFromPath(path: String): T? {
     val file = File(path)
     return if (file.exists()) {
-        Json.decodeFromString(file.readText())
+        mapper.decodeFromString(file.readText())
     } else null
 }
 
@@ -76,27 +77,26 @@ private suspend fun saveSessionStats() {
 }
 
 private suspend fun saveGameState(path: String) {
-    GameState.properties.values.put(AUTO_LOAD, true)
     val gameStateSaveName = cleanPathToFile(".json", path, "gameState")
-    val json = Json.encodeToString(GameStateP())
+    val json = mapper.encodeToString(GameStateP())
     writeSave(path, gameStateSaveName, json)
 }
 
 private suspend fun saveTopLevelMetadata(gameName: String) {
     val gameMetaData = Properties()
     gameMetaData.values.put(LAST_SAVE_GAME_NAME, gameName)
-    gameMetaData.values.put(AUTO_LOAD, true)
-    val json = Json.encodeToString(PropertiesP(gameMetaData))
+    gameMetaData.values.put(AUTO_LOAD, GameState.properties.values.getBoolean(AUTO_LOAD))
+    val json = mapper.encodeToString(PropertiesP(gameMetaData))
     writeSave(getSaveFolder(), cleanPathToFile(".json", getSaveFolder(), "games"), json)
 }
 
 actual suspend fun save(gameName: String, network: Network) {
     network.getLocationNodes()
-        .filter { it.hasLoadedLocation() }
-        .map {
+        .filter { it.hasLoadedLocation() && it != NOWHERE_NODE }
+        .forEach {
             val path = clean(gameName, network.name)
             traveling.location.location.persist(it.getLocation(), path)
-            if (it !== NOWHERE_NODE) it.loadPath = cleanPathToFile(".json", path, it.name)
+            it.loadPath = cleanPathToFile(".json", path, it.name)
             it.flushLocation()
         }
 }

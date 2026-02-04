@@ -5,9 +5,9 @@ import core.properties.PropertiesP
 
 @kotlinx.serialization.Serializable
 data class MindP(
-    val playerControlledAI: Boolean,
-    val facts: List<FactP>,
-    val listFacts: List<ListFactP>,
+    val playerControlledAI: Boolean = false,
+    val facts: List<FactP> = emptyList(),
+    val listFacts: List<ListFactP> = emptyList(),
 ) {
     constructor(b: Mind) : this(b.ai is PlayerControlledAI, b.memory.getAllFacts().map { FactP(it) }, b.memory.getAllListFacts().map { ListFactP(it) })
 }

@@ -7,7 +7,7 @@ data class EffectP(
     val base: EffectBase,
     val amount: Int,
     val duration: Int,
-    val bodyPartTargets: List<String>
+    val bodyPartTargets: List<String> = emptyList(),
     ){
     constructor(b: Effect): this(b.base, b.amount, b.duration, b.bodyPartTargets.map { it.name })
 

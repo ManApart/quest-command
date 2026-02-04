@@ -10,7 +10,7 @@ import system.debug.DebugType
 import time.TimeManager
 
 object GameState {
-    var gameName = "Kanbara"
+    var gameName = "kanbara"
     var properties = Properties()
     val timeManager = TimeManager()
     //The default player is just a stub replaced by new game or load.
@@ -61,4 +61,3 @@ fun eventWithPlayer(creature: Thing, event: (Player) -> Event): Event? {
 fun startupLog(message: String) {
     if (GameState.properties.values.getBoolean(VERBOSE_STARTUP)) println(message)
 }
-

@@ -19,7 +19,7 @@ class Load : EventListener<LoadEvent>() {
         val saves = allSaves.filter { it.lowercase().contains(gameName.lowercase()) }
 
         when {
-            saves.isEmpty() -> event.source.respond("No saves found.") {
+            gameName.isBlank() || saves.isEmpty() -> event.source.respond("No saves found.") {
                 message("Could not find a match for $gameName. What game would you like to load?")
                 options(allSaves)
                 command { "load $it" }
@@ -35,7 +35,6 @@ class Load : EventListener<LoadEvent>() {
 
     private suspend fun loadGameAndPlayer(gameName: String) {
         system.persistance.loadGame(gameName)
-        GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName}.")
+        GameState.player.thing.displayToMe("Now playing ${GameState.player.thing.name} in ${GameState.gameName.lowercase()}.")
     }
-
 }

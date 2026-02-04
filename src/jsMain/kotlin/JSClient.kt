@@ -29,6 +29,7 @@ import system.persistance.createDB
 
 private lateinit var outputDiv: Element
 private lateinit var prompt: HTMLInputElement
+private lateinit var loading: Element
 private lateinit var suggestionsDiv: Element
 private var suggestions = listOf<String>()
 private var historyStart = 0
@@ -45,6 +46,7 @@ fun Document.startClient() {
     outputDiv = getElementById("output-block")!!
     prompt = getElementById("prompt")!! as HTMLInputElement
     suggestionsDiv = getElementById("suggestions")!!
+    loading = getElementById("loading")!!
 
     CoroutineScope(GlobalScope.coroutineContext).launch {
         GameManager.newOrLoadGame()
@@ -85,10 +87,13 @@ private suspend fun submitCommand(input: String) {
     if (input.lowercase() == "clear") {
         clearScreen()
     } else {
+        loading.removeClass("hidden")
         prompt.addClass("hidden")
         CommandParsers.parseCommand(GameState.player, input)
         updateOutput()
+        loading.addClass("hidden")
         prompt.removeClass("hidden")
+        scrollToBottom()
     }
 }
 
@@ -188,7 +193,6 @@ private fun updateSuggestions(promptInput: String?, allSuggestions: List<String>
 }
 
 private fun toggleTheme() {
-    console.log("Toggling Theme")
     val svg = (document.getElementById("theme-icon") as HTMLObjectElement).getSVGDocument()!!
     with(document.body!!.style) {
         darkTheme = !darkTheme
