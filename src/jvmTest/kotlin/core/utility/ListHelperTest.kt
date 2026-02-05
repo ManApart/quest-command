@@ -89,4 +89,16 @@ class ListHelperTest {
         assertEquals("lo", actual)
     }
 
+    @Test
+    fun noOverlap() {
+        val actual = listOf("stuff", "load").minOverlap()
+        assertEquals("", actual)
+    }
+
+    @Test
+    fun differentLengths() {
+        val actual = listOf("n", "load").minOverlap()
+        assertEquals("", actual)
+    }
+
 }

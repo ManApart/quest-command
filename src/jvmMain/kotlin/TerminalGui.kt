@@ -140,42 +140,31 @@ class TerminalGui : JFrame() {
         if (!input.isNullOrBlank()) {
             val prePrompt = prompt.text.substring(0, prompt.text.indexOf(input))
             val overlap = suggestions.minOverlap()
-//            println("Suggestions: ${suggestions.joinToString()}")
             when {
                 suggestions.size == 1 -> prompt.text = prePrompt + suggestions.first()
                 suggestions.size > 1 && overlap.length > input.length -> prompt.text = prePrompt + overlap
             }
             tabHint()
         } else if (suggestions.size == 1) {
-            prompt.text = prompt.text + suggestions.first()
+            prompt.text += suggestions.first()
         }
     }
 
     private suspend fun tabHint() {
         val input = prompt.text.lowercase()
-        val lastInput = input.split(" ").lastOrNull()
         if (input.isNotBlank()) {
-
             if (CommandParsers.getParser(GameState.player).commandInterceptor != null) {
                 WebClient.getSuggestions(input) { suggestions ->
-                    updateSuggestions(lastInput, suggestions)
+                    updateSuggestions(suggestions)
                 }
             } else {
-                updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
+                updateSuggestions(CommandParsers.suggestions(GameState.player, input))
             }
-        }
+        } else updateSuggestions(emptyList())
     }
 
-    private fun updateSuggestions(lastInput: String?, allSuggestions: List<String>) {
-        suggestions = if (lastInput.isNullOrBlank()) {
-            allSuggestions
-        } else {
-            allSuggestions.filter {
-                val option = it.lowercase()
-                option.startsWith(lastInput)
-            }
-        }
-
+    private fun updateSuggestions(allSuggestions: List<String>) {
+        suggestions = allSuggestions
         suggestionsArea.text = suggestions.joinToString(" ")
     }
 }

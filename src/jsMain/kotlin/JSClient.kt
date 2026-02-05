@@ -110,7 +110,7 @@ fun updateOutput() {
     //TODO - implement response options if connected to server
     if (!isConnectedToServer()) {
         val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: defaultSuggestions(history.last())
-        updateSuggestions(null, suggestions)
+        updateSuggestions(suggestions)
     }
     loading.addClass("hidden")
     prompt.removeClass("hidden")
@@ -150,15 +150,14 @@ private suspend fun clickSuggestion(button: HTMLButtonElement) = submitCommand(b
 
 private suspend fun tabHint() {
     val input = prompt.value.lowercase()
-    val lastInput = input.split(" ").lastOrNull()
     if (input.isNotBlank()) {
         if (isConnectedToServer()) {
-            updateSuggestions(lastInput, WebClient.getSuggestions(input))
+            updateSuggestions(WebClient.getSuggestions(input))
         } else {
-            updateSuggestions(lastInput, CommandParsers.suggestions(GameState.player, input))
+            updateSuggestions(CommandParsers.suggestions(GameState.player, input))
         }
     } else {
-        updateSuggestions(lastInput, defaultSuggestions())
+        updateSuggestions(defaultSuggestions())
     }
 }
 
@@ -172,15 +171,8 @@ private fun defaultSuggestions(previousCommand: InputOutput? = null): List<Strin
 
 private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
 
-private fun updateSuggestions(promptInput: String?, allSuggestions: List<String>) {
-    suggestions = if (promptInput.isNullOrBlank()) {
-        allSuggestions
-    } else {
-        allSuggestions.filter {
-            val option = it.lowercase()
-            option.startsWith(promptInput)
-        }
-    }
+private fun updateSuggestions(allSuggestions: List<String>) {
+    suggestions = allSuggestions
     val previous = GameLogger.getMainHistory().history.last().input
     val back = if (previous.startsWith("commands ") || previous == "alias") {
         """<button class="suggestion-button" command="">Back</button>"""

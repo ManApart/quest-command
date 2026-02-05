@@ -91,6 +91,6 @@ fun <E> List<E>.safeSubList(start: Int = 0, end: Int = this.size): List<E> {
 fun List<String>.minOverlap(): String {
     if (size <= 1) return ""
     val example = first().toCharArray()
-    val overlap = removeFirstItem().minOf { it.toCharArray().mapIndexed { i, c -> if (example[i] == c) 1 else 0 }.sum() }
+    val overlap = removeFirstItem().minOf { it.toCharArray().mapIndexed { i, c -> if (example.getOrNull(i) == c) 1 else 0 }.sum() }
     return first().substring(0, overlap)
 }
