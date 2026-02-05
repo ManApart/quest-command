@@ -152,11 +152,12 @@ private suspend fun clickSuggestion(button: HTMLButtonElement) = submitCommand(b
 private suspend fun tabHint() {
     val input = prompt.value.lowercase()
     if (input.isNotBlank()) {
-        if (isConnectedToServer()) {
-            updateSuggestions(WebClient.getSuggestions(input))
-        } else {
-            updateSuggestions(CommandParsers.suggestions(GameState.player, input))
-        }
+        val prefix = if (CommandParsers.isCommand(input)) input else input.split(" ").dropLast(1).joinToString(" ")
+        val options = if (isConnectedToServer()) {
+            WebClient.getSuggestions(input)
+        } else CommandParsers.suggestions(GameState.player, input)
+        println("Opt: $options")
+        updateSuggestions(options.associateWith { "$prefix $it".trim() })
     } else {
         updateSuggestions(defaultSuggestions())
     }
@@ -173,11 +174,11 @@ private fun defaultSuggestions(previousCommand: InputOutput? = null): Map<TabDis
 
 private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
 
-private typealias TabDisplay=String
-private typealias TabCommand=String
-private fun updateSuggestions(allSuggestions: List<String>) = updateSuggestions(allSuggestions.associateWith { it })
+private typealias TabDisplay = String
+private typealias TabCommand = String
+
 private fun updateSuggestions(displayToCommand: Map<TabDisplay, TabCommand>) {
-    suggestions = displayToCommand.values.toList()
+    suggestions = displayToCommand.keys.toList()
     val previous = GameLogger.getMainHistory().history.last().input
 
     val back = if (previous.startsWith("commands ") || previous == "alias") {

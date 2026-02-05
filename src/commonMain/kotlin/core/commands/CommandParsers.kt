@@ -7,7 +7,6 @@ import core.GameState
 import core.Player
 import core.utility.*
 import magic.castSpell.CastCommand
-import kotlin.text.contains
 
 object CommandParsers {
     private var commandsCollection = DependencyInjector.getImplementation(CommandsCollection::class)
@@ -15,7 +14,7 @@ object CommandParsers {
     val unknownCommand by lazy { commands.first { it::class == UnknownCommand::class } as UnknownCommand }
     val castCommand by lazy { commands.first { it::class == CastCommand::class } as CastCommand }
     private val parsers = mutableMapOf<String, CommandParser>()
-    private val commandNameList by lazy { commands.map { it.getAliases().first() }.filter { it.isNotBlank() } }
+    private val commandNameList by lazy { commands.map { it.getAliases().first().lowercase() }.filter { it.isNotBlank() } }
 
     init {
         GameState.players.values.forEach { addParser(it) }
@@ -106,14 +105,15 @@ object CommandParsers {
         return line.lowercase().split(" ").asSequence().map { it.trim() }.filter { it.isNotBlank() }.toList()
     }
 
+    fun isCommand(input: String) = commandNameList.contains(input)
+
     suspend fun suggestions(player: Player, args: String): List<String> {
         val input = cleanLine(args)
         val firstInput = input.first()
-        val names = commandNameList.map { it.lowercase() }
         return when {
             (input.isEmpty() || input.all { it.isBlank() }) -> commandNameList
 
-            names.contains(firstInput) -> {
+            commandNameList.contains(firstInput) -> {
                 val cleanedArgs = if (args.endsWith(" ")) input.removeFirstItem() else input.removeFirstItem().removeLastItem()
                 val suggestions = findCommand(firstInput).suggest(player, firstInput, cleanedArgs)
                 if (input.size > 1) {
@@ -121,7 +121,7 @@ object CommandParsers {
                 } else suggestions
             }
 
-            names.any { it.startsWith(firstInput) } -> names.filter { it.startsWith(firstInput) }.also { println("starts with: $it") }
+            commandNameList.any { it.startsWith(firstInput) } -> commandNameList.filter { it.startsWith(firstInput) }.also { println("starts with: $it") }
 
             else -> emptyList()
         }.map { it.capitalize2() }.sorted().toSet().toList()
