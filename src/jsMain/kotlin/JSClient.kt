@@ -2,6 +2,7 @@
 
 import core.GameManager
 import core.GameState
+import core.commands.Command
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
@@ -109,7 +110,7 @@ fun updateOutput() {
     outputDiv.innerHTML = history.subList(historyStart, history.size).filter { it.input.isNotBlank() || it.outPut.isNotEmpty() }.joinToString("<br>") { it.toHtml() }
     //TODO - implement response options if connected to server
     if (!isConnectedToServer()) {
-        val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions() ?: defaultSuggestions(history.last())
+        val suggestions = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions()?.associateWith { it } ?: defaultSuggestions(history.last())
         updateSuggestions(suggestions)
     }
     loading.addClass("hidden")
@@ -139,7 +140,7 @@ private suspend fun tabComplete() {
         val overlap = suggestions.minOverlap()
         println("Suggestions: ${suggestions.joinToString()}")
         when {
-            suggestions.size == 1 -> prompt.value = prePrompt + suggestions.first()
+            suggestions.size == 1 -> prompt.value = prePrompt + suggestions.first() + " "
             suggestions.size > 1 && overlap.length > input.length -> prompt.value = prePrompt + overlap
         }
         tabHint()
@@ -161,25 +162,29 @@ private suspend fun tabHint() {
     }
 }
 
-private fun defaultSuggestions(previousCommand: InputOutput? = null): List<String> {
+private fun defaultSuggestions(previousCommand: InputOutput? = null): Map<TabDisplay, TabCommand> {
     if (previousCommand?.input == "alias") {
         return previousCommand.outPut.flatMap { it.split("\n") }.drop(1)
             .mapNotNull { line -> line.split(" ").firstOrNull { it.isNotBlank() } }
+            .associateWith { it }
     }
-    return listOf("alias") + getCommandGroups().map { "commands $it" }
+    return (listOf("alias" to "alias") + getCommandGroups().map { it to "commands $it" }).toMap()
 }
 
 private fun isConnectedToServer() = CommandParsers.getParser(GameState.player).commandInterceptor != null
 
-private fun updateSuggestions(allSuggestions: List<String>) {
-    suggestions = allSuggestions
+private typealias TabDisplay=String
+private typealias TabCommand=String
+private fun updateSuggestions(allSuggestions: List<String>) = updateSuggestions(allSuggestions.associateWith { it })
+private fun updateSuggestions(displayToCommand: Map<TabDisplay, TabCommand>) {
+    suggestions = displayToCommand.values.toList()
     val previous = GameLogger.getMainHistory().history.last().input
+
     val back = if (previous.startsWith("commands ") || previous == "alias") {
         """<button class="suggestion-button" command="">Back</button>"""
     } else ""
-    suggestionsDiv.innerHTML = back + suggestions.joinToString(" ") {
-        val display = if (it.startsWith("commands ")) it.replace("commands ", "") else it
-        """<button class="suggestion-button" command="$it">${display.capitalize2()}</button>"""
+    suggestionsDiv.innerHTML = back + displayToCommand.entries.joinToString(" ") { (display, cmd) ->
+        """<button class="suggestion-button" command="$cmd">${display.capitalize2()}</button>"""
     }
 }
 
@@ -206,7 +211,6 @@ private fun toggleTheme() {
         }
     }
 }
-
 
 private fun Document.toggleColor(id: String, prop: String, color: String) {
     val el = getElementById(id)!!

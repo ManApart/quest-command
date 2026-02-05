@@ -141,7 +141,7 @@ class TerminalGui : JFrame() {
             val prePrompt = prompt.text.substring(0, prompt.text.indexOf(input))
             val overlap = suggestions.minOverlap()
             when {
-                suggestions.size == 1 -> prompt.text = prePrompt + suggestions.first()
+                suggestions.size == 1 -> prompt.text = prePrompt + suggestions.first() + " "
                 suggestions.size > 1 && overlap.length > input.length -> prompt.text = prePrompt + overlap
             }
             tabHint()
@@ -154,9 +154,7 @@ class TerminalGui : JFrame() {
         val input = prompt.text.lowercase()
         if (input.isNotBlank()) {
             if (CommandParsers.getParser(GameState.player).commandInterceptor != null) {
-                WebClient.getSuggestions(input) { suggestions ->
-                    updateSuggestions(suggestions)
-                }
+                WebClient.getSuggestions(input) { updateSuggestions(it) }
             } else {
                 updateSuggestions(CommandParsers.suggestions(GameState.player, input))
             }

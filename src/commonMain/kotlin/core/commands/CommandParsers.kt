@@ -121,7 +121,7 @@ object CommandParsers {
                 } else suggestions
             }
 
-            names.any { it.startsWith(firstInput) } -> names.filter { it.startsWith(firstInput) }
+            names.any { it.startsWith(firstInput) } -> names.filter { it.startsWith(firstInput) }.also { println("starts with: $it") }
 
             else -> emptyList()
         }.map { it.capitalize2() }.sorted().toSet().toList()
