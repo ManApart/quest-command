@@ -38,8 +38,8 @@ object RandomManager {
     }
 
     fun getRandom(min: Int, max: Int): Int {
-        if (GameState.properties.values.hasInt(DebugType.RANDOM_RESPONSE.propertyName)) {
-            return GameState.properties.values.getInt(DebugType.RANDOM_RESPONSE.propertyName)
+        if (GameState.properties.values.hasInt(DebugType.RANDOM_RESPONSE.description)) {
+            return GameState.properties.values.getInt(DebugType.RANDOM_RESPONSE.description)
         }
         return (min..max).random()
     }

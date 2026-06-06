@@ -25,6 +25,7 @@ class DebugCommand : Command() {
         return """ 
     Debug - Toggle various debug settings all on or off at once.
     Debug list - View the gamestate's properties.
+    Debug options - View the options you can toggle directly
     Debug lvlreq <on/off> - Toggle the requirement for skills/spells to have a specific level.
     Debug statchanges <on/off> - Toggle whether stats (stamina, focus, health, etc) can be depleted.
     Debug random <on/off> - Toggle random chances always succeeding. 
@@ -44,9 +45,10 @@ class DebugCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
+        val commandNames = DebugType.entries.map { it.commandName }
         return when {
-            args.isEmpty() -> listOf("list", "levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "stat", "prop", "tag", "weather", "aiupdates")
-            args.last() in listOf("levelreq", "statchanges", "random", "map", "clarity", "displayupdates", "aiupdates") -> listOf("on", "off")
+            args.isEmpty() -> listOf("list", "options", "stat", "prop", "tag", "weather") + commandNames
+            args.last() in commandNames -> listOf("on", "off")
             args.last() == "weather" -> WeatherManager.getAllWeather().map { it.name }
             args.last() == "on" -> source.getPerceivedThingNames()
             else -> listOf()
@@ -61,20 +63,13 @@ class DebugCommand : Command() {
         } else {
             when (args.first()) {
                 "list" -> EventManager.postEvent(DebugListEvent(source))
-                "lvlreq" -> sendDebugToggleEvent(source, arguments, DebugType.LEVEL_REQ)
-                "statchanges" -> sendDebugToggleEvent(source, arguments, DebugType.STAT_CHANGES)
-                "random" -> sendDebugToggleEvent(source, arguments, DebugType.RANDOM_SUCCEED)
-                "aiupdates" -> sendDebugToggleEvent(source, arguments, DebugType.VERBOSE_AI)
-                "poll" -> sendDebugToggleEvent(source, arguments, DebugType.POLL_CONNECTION)
-                "map" -> sendDebugToggleEvent(source, arguments, DebugType.MAP_SHOW_ALL_LOCATIONS)
-                "recipe" -> sendDebugToggleEvent(source, arguments, DebugType.RECIPE_SHOW_ALL)
-                "clarity" -> sendDebugToggleEvent(source, arguments, DebugType.CLARITY)
-                "displayupdates" -> sendDebugToggleEvent(source, arguments, DebugType.DISPLAY_UPDATES)
+                "options" -> EventManager.postEvent(DebugOptionsEvent(source))
                 "stat" -> sendDebugStatEvent(source, StatKind.LEVELED, arguments)
                 "prop" -> sendDebugStatEvent(source, StatKind.PROP_VAL, arguments)
                 "tag" -> sendDebugTagEvent(source, arguments)
                 "verbose" -> sendDebugToggleEvent(source, arguments, DebugType.VERBOSE_AI, DebugType.VERBOSE_TIME, DebugType.VERBOSE_WEATHER)
                 "weather" -> sendDebugWeatherEvent(source, arguments)
+                in DebugType.entries.map { it.commandName }.toList() -> sendDebugToggleEvent(source, arguments, DebugType.entries.first { it.commandName == args.first() })
                 else -> source.displayToMe("Did not understand debug command.")
             }
         }

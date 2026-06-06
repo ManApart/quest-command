@@ -41,15 +41,15 @@ object GameState {
     }
 
     fun getDebugBoolean(key: DebugType): Boolean {
-        return properties.values.getBoolean(key.propertyName)
+        return properties.values.getBoolean(key.description)
     }
 
     fun putDebug(key: DebugType, value: Boolean) {
-        return properties.values.put(key.propertyName, value)
+        return properties.values.put(key.description, value)
     }
 
     fun putDebug(key: DebugType, value: Int) {
-        return properties.values.put(key.propertyName, value)
+        return properties.values.put(key.description, value)
     }
 
 }

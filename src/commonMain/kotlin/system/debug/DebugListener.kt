@@ -12,11 +12,17 @@ class DebugListListener : EventListener<DebugListEvent>() {
     }
 }
 
+class DebugOptionListener : EventListener<DebugOptionsEvent>() {
+    override suspend fun complete(event: DebugOptionsEvent) {
+        event.source.displayToMe("Debug options are: \n\t" + DebugType.entries.joinToString("\n\t") { "${it.commandName}: (${it.description})" })
+    }
+}
+
 class DebugToggleListener : EventListener<DebugToggleEvent>() {
     override suspend fun complete(event: DebugToggleEvent) {
         event.debugTypes.forEach { debugType ->
             GameState.putDebug(debugType, event.toggledOn)
-            event.source.displayToMe("Set ${debugType.propertyName} to ${GameState.getDebugBoolean(debugType)}")
+            event.source.displayToMe("Set ${debugType.description} to ${GameState.getDebugBoolean(debugType)}")
         }
     }
 }
