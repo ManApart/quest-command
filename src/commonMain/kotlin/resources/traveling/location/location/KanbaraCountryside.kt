@@ -1,15 +1,17 @@
 package resources.traveling.location.location
 
+import traveling.location.network.NetworkKeys.KANBARA
+import traveling.location.network.NetworkKeys.KANBARA_COUNTRYSIDE
 import traveling.location.network.NetworkResource
 import traveling.location.network.networks
 
 class KanbaraCountryside : NetworkResource {
     override val values = networks {
-        network("Kanbara Countryside") {
+        network(KANBARA_COUNTRYSIDE) {
             locationNode("Kanbara Road") {
                 connection {
                     x(-10)
-                    connectsTo("Kanbara Gate", "Kanbara")
+                    connectsTo("Kanbara Gate", KANBARA)
                 }
                 connection("Northern Woods", y = 10)
                 connection("Southern Woods", y = -10)
@@ -27,7 +29,7 @@ class KanbaraCountryside : NetworkResource {
                 location("Farmer's Hut") {
                     creature("Farmer") {
                         learnBedLocation("Simple Bed", "Farmer's Hut Interior", "Kanbara Countryside")
-                        learnWorkLocation("An Open Field", "Kanbara Countryside")
+                        learnWorkLocation("An Open Field", KANBARA_COUNTRYSIDE)
                     }
                 }
             }
@@ -50,7 +52,7 @@ class KanbaraCountryside : NetworkResource {
                     part("Stairs")
                     z(20)
                     restricted(true)
-                    connectsTo("Windmill - Second Floor", "Kanbara Countryside")
+                    connectsTo("Windmill - Second Floor", KANBARA_COUNTRYSIDE)
                 }
             }
 
@@ -60,7 +62,7 @@ class KanbaraCountryside : NetworkResource {
                     part("Stairs")
                     z(20)
                     restricted(true)
-                    connectsTo("Windmill - Third Floor", "Kanbara Countryside")
+                    connectsTo("Windmill - Third Floor", KANBARA_COUNTRYSIDE)
                 }
             }
 
@@ -70,7 +72,7 @@ class KanbaraCountryside : NetworkResource {
                     part("Branches")
                     z(15)
                     restricted(true)
-                    connectsTo("Apple Tree Branches", "Kanbara Countryside")
+                    connectsTo("Apple Tree Branches", KANBARA_COUNTRYSIDE)
                 }
                 connection("Cave Entrance", x = -100)
             }
@@ -87,7 +89,7 @@ class KanbaraCountryside : NetworkResource {
                     thing("Wall Crack")
                     restricted(true)
                     hidden(true)
-                    connectsTo("Cave Tunnel", "Kanbara Countryside")
+                    connectsTo("Cave Tunnel", KANBARA_COUNTRYSIDE)
                 }
             }
             locationNode("Cave Tunnel")
@@ -96,14 +98,14 @@ class KanbaraCountryside : NetworkResource {
                 connection {
                     x(10)
                     y(-10)
-                    connectsTo("Kanbara City", "Kanbara")
+                    connectsTo("Kanbara City", KANBARA)
                 }
             }
             locationNode("Dwarven Tear River West") {
                 connection {
                     x(-10)
                     y(10)
-                    connectsTo("Kanbara City", "Kanbara")
+                    connectsTo("Kanbara City", KANBARA)
                 }
                 connection("Dwarven Tear River East", x = -10)
                 connection("Dwarven Tear River North Fork", x = 100, y = -200)

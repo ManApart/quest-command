@@ -1,11 +1,12 @@
 package resources.traveling.location.location
 
+import traveling.location.network.NetworkKeys.KANBARA
 import traveling.location.network.NetworkResource
 import traveling.location.network.networks
 
 class KanbaraCity : NetworkResource {
     override val values = networks {
-        network("Kanbara") {
+        network(KANBARA) {
             locationNode("Kanbara Gate") {
                 connection("Kanbara City") {
                     restricted(true)
@@ -32,7 +33,7 @@ class KanbaraCity : NetworkResource {
                 connection {
                     thing("City Wall")
                     part("Wall Top")
-                    connectsTo("Kanbara City", "Kanbara", "City Wall", "Wall Top")
+                    connectsTo("Kanbara City", KANBARA, "City Wall", "Wall Top")
                     restricted(true)
                     y(100)
                 }
@@ -44,7 +45,7 @@ class KanbaraCity : NetworkResource {
                 connection {
                     thing("City Wall")
                     part("Wall Top")
-                    connectsTo("Kanbara City South", "Kanbara", "City Wall", "Wall Top")
+                    connectsTo("Kanbara City South", KANBARA, "City Wall", "Wall Top")
                     restricted(true)
                     y(-100)
                 }
