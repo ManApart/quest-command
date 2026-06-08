@@ -2,8 +2,8 @@ package status.statChanged
 
 import core.events.EventListener
 import core.history.displayToMe
-import status.stat.Attributes.HEALTH
-import status.stat.Attributes.STAMINA
+import status.stat.AttributeStrings.HEALTH
+import status.stat.AttributeStrings.STAMINA
 
 class PlayerStatMaxed : EventListener<StatMaxedEvent>() {
     override suspend fun shouldExecute(event: StatMaxedEvent): Boolean {

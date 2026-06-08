@@ -3,9 +3,9 @@ package inventory
 import core.DependencyInjector
 import core.body.*
 import core.properties.Properties
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.properties.Tags
-import core.properties.ValueKey.COUNT
+import core.properties.ValueStrings.COUNT
 import core.properties.Values
 import core.thing.Thing
 import createPouch

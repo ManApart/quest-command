@@ -4,9 +4,9 @@ import core.thing.thing
 import crafting.RecipeResource
 import crafting.recipes
 import status.stat.*
-import status.stat.Skills.COOKING
-import status.stat.Skills.CRAFTSMANSHIP
-import status.stat.Skills.SMITHING
+import status.stat.SkillStrings.COOKING
+import status.stat.SkillStrings.CRAFTSMANSHIP
+import status.stat.SkillStrings.SMITHING
 
 class CommonRecipes : RecipeResource {
     override suspend fun values() = recipes {

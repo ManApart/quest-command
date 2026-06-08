@@ -3,8 +3,8 @@ package magic.castSpell
 import core.GameState
 import core.events.EventListener
 import core.history.displayToMe
-import status.stat.Attributes.FOCUS
-import status.stat.Attributes.HEALTH
+import status.stat.AttributeStrings.FOCUS
+import status.stat.AttributeStrings.HEALTH
 import system.debug.DebugType
 
 class CastSpell : EventListener<CastSpellEvent>() {

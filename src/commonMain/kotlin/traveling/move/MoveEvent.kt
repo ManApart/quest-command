@@ -2,7 +2,7 @@ package traveling.move
 
 import core.events.TemporalEvent
 import core.thing.Thing
-import status.stat.Attributes.AGILITY
+import status.stat.AttributeStrings.AGILITY
 import traveling.position.Vector
 import kotlin.math.max
 

@@ -4,7 +4,7 @@ import combat.DamageType
 import combat.attack.AttackEvent
 import combat.attack.startAttack
 import core.GameState
-import core.properties.ValueKey
+import core.properties.ValueStrings
 import core.thing.Thing
 import core.utility.RandomManager
 import traveling.location.RouteFinder
@@ -15,7 +15,7 @@ import traveling.routes.FindRouteEvent
 
 suspend fun Thing.canReachGoal(howToUse: String): Boolean {
     val useTarget = mind.getUseTarget()
-    return useTarget != null && useTarget.props.values.getString(ValueKey.GOAL) == howToUse.lowercase() && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false
+    return useTarget != null && useTarget.props.values.getString(ValueStrings.GOAL) == howToUse.lowercase() && useTarget.source.getThing()?.position?.let { pos -> canReach(pos) } ?: false
 }
 
 suspend fun clawAttack(target: Thing, creature: Thing): AttackEvent {

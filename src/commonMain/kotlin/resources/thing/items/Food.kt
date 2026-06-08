@@ -1,7 +1,7 @@
 package resources.thing.items
 
-import core.properties.ValueKey.HEAL_AMOUNT
-import core.properties.ValueKey.WEIGHT
+import core.properties.ValueStrings.HEAL_AMOUNT
+import core.properties.ValueStrings.WEIGHT
 import core.thing.item.ItemResource
 import core.thing.things
 import crafting.material.MaterialStrings.FOOD

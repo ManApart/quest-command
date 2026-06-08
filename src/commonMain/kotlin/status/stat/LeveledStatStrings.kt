@@ -1,13 +1,13 @@
 package status.stat
 
-object MagicSkills {
+object MagicSkillStrings {
     const val AIR_MAGIC = "AirMagic"
     const val EARTH_MAGIC = "EarthMagic"
     const val FIRE_MAGIC = "FireMagic"
     const val WATER_MAGIC = "WaterMagic"
 }
 
-object Attributes {
+object AttributeStrings {
     const val AGILITY = "Agility"
     const val HEALTH = "Health"
     const val PERCEPTION = "Perception"
@@ -17,7 +17,7 @@ object Attributes {
     const val FOCUS = "Focus"
 }
 
-object Skills {
+object SkillStrings {
     const val CLIMBING = "Climbing"
     const val BARE_FOOT = "Barefoot"
     const val BARE_HANDED = "Bare Handed"

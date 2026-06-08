@@ -5,7 +5,7 @@ import core.GameState
 import core.body.*
 import core.history.GameLogger
 import core.properties.Properties
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.properties.Tags
 import core.thing.Thing
 import core.thing.thing

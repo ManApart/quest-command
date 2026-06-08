@@ -4,7 +4,7 @@ package crafting
 import core.properties.Properties
 import core.properties.Tags
 import kotlinx.coroutines.runBlocking
-import status.stat.Skills.COOKING
+import status.stat.SkillStrings.COOKING
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -1,6 +1,6 @@
 package core.ai.knowledge
 
-import core.FactKind
+import core.FactKindStrings
 import core.ai.AI
 import core.ai.DumbAI
 import core.thing.Thing
@@ -71,43 +71,43 @@ data class Mind(
     }
 
     fun knows(location: LocationNode): Boolean {
-        val fact = knows(FactKind.LOCATION) ?: return false
+        val fact = knows(FactKindStrings.LOCATION) ?: return false
         return fact.sources.contains(Subject(location))
     }
 
     fun knows(recipe: Recipe): Boolean {
-        val fact = knows(FactKind.RECIPE) ?: return false
+        val fact = knows(FactKindStrings.RECIPE) ?: return false
         return fact.sources.contains(Subject(recipe.name))
     }
 
     fun discover(location: LocationNode) {
-        learn(FactKind.LOCATION, Subject(location))
+        learn(FactKindStrings.LOCATION, Subject(location))
     }
 
     fun discover(recipe: Recipe) {
-        learn(FactKind.RECIPE, Subject(recipe.name))
+        learn(FactKindStrings.RECIPE, Subject(recipe.name))
     }
 
     fun setAggroTarget(enemy: Thing) {
-        learn(Fact(Subject(enemy), FactKind.AGGRO_TARGET))
+        learn(Fact(Subject(enemy), FactKindStrings.AGGRO_TARGET))
     }
 
     suspend fun getAggroTarget(): Thing? {
-        return knownThingByKind(FactKind.AGGRO_TARGET)
+        return knownThingByKind(FactKindStrings.AGGRO_TARGET)
     }
 
     suspend fun clearAggroTarget() {
         getAggroTarget()?.let {
-            memory.forget(Fact(Subject(it), FactKind.AGGRO_TARGET))
+            memory.forget(Fact(Subject(it), FactKindStrings.AGGRO_TARGET))
         }
     }
 
     suspend fun getUseTargetThing(): Thing? {
-        return knownThingByKind(FactKind.USE_TARGET)
+        return knownThingByKind(FactKindStrings.USE_TARGET)
     }
 
     fun getUseTarget(): Fact? {
-        return memory.getFirstFact(FactKind.USE_TARGET)
+        return memory.getFirstFact(FactKindStrings.USE_TARGET)
     }
 
 }

@@ -1,8 +1,6 @@
 package status.statChanged
 
 import core.GameState
-import core.NetworkKeys.PLAYER_START_LOCATION
-import core.NetworkKeys.PLAYER_START_NETWORK
 import core.Player
 import core.events.EventListener
 import core.events.EventManager
@@ -10,11 +8,13 @@ import core.history.displayToMe
 import core.history.displayToOthers
 import core.utility.filterList
 import inventory.dropItem.PlaceItemEvent
-import status.stat.Attributes.HEALTH
-import status.stat.Attributes.STAMINA
+import status.stat.AttributeStrings.HEALTH
+import status.stat.AttributeStrings.STAMINA
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationPoint
+import traveling.location.network.NetworkStrings.PLAYER_START_LOCATION
+import traveling.location.network.NetworkStrings.PLAYER_START_NETWORK
 
 class PlayerStatMinned : EventListener<StatMinnedEvent>() {
     override suspend fun shouldExecute(event: StatMinnedEvent): Boolean {

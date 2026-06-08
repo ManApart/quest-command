@@ -4,8 +4,8 @@ import core.GameState
 import core.events.EventManager
 import core.history.display
 import core.properties.Properties
-import core.properties.TagKey.CONTAINER
-import core.properties.TagKey.SIZE
+import core.properties.TagStrings.CONTAINER
+import core.properties.TagStrings.SIZE
 import core.thing.Thing
 import core.thing.activator.ActivatorManager
 import core.thing.creature.CreatureManager

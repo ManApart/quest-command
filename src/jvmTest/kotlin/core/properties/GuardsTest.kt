@@ -1,8 +1,8 @@
 package core.properties
 
-import status.stat.Attributes.HEALTH
-import status.stat.MagicSkills.AIR_MAGIC
-import status.stat.MagicSkills.WATER_MAGIC
+import status.stat.AttributeStrings.HEALTH
+import status.stat.MagicSkillStrings.AIR_MAGIC
+import status.stat.MagicSkillStrings.WATER_MAGIC
 import traveling.location.location.HEAT
 import kotlin.test.Test
 import kotlin.test.assertEquals

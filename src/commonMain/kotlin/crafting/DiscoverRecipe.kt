@@ -4,7 +4,7 @@ import core.events.EventListener
 import core.events.EventManager
 import core.history.displayToMe
 import status.ExpGainedEvent
-import status.stat.Skills.COOKING
+import status.stat.SkillStrings.COOKING
 
 class DiscoverRecipe : EventListener<DiscoverRecipeEvent>() {
 

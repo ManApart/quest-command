@@ -2,9 +2,9 @@ package inventory
 
 import core.body.Body
 import core.properties.Properties
-import core.properties.TagKey.CONTAINER
-import core.properties.TagKey.OPEN
-import core.properties.TagKey.SIZE
+import core.properties.TagStrings.CONTAINER
+import core.properties.TagStrings.OPEN
+import core.properties.TagStrings.SIZE
 import core.thing.Thing
 import core.thing.item.ItemManager
 import core.utility.NameSearchableList

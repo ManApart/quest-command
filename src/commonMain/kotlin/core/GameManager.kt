@@ -1,13 +1,11 @@
 package core
 
-import core.GameStateKeys.AUTO_LOAD
-import core.GameStateKeys.LAST_SAVE_GAME_NAME
-import core.GameStateKeys.PRINT_WITHOUT_FLUSH
-import core.GameStateKeys.SKIP_SAVE_STATS
-import core.GameStateKeys.TEST_MODE
-import core.GameStateKeys.TEST_SAVE_FOLDER
-import core.NetworkKeys.PLAYER_START_LOCATION
-import core.NetworkKeys.PLAYER_START_NETWORK
+import core.GameStateStrings.AUTO_LOAD
+import core.GameStateStrings.LAST_SAVE_GAME_NAME
+import core.GameStateStrings.PRINT_WITHOUT_FLUSH
+import core.GameStateStrings.SKIP_SAVE_STATS
+import core.GameStateStrings.TEST_MODE
+import core.GameStateStrings.TEST_SAVE_FOLDER
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
@@ -15,17 +13,17 @@ import core.thing.Thing
 import core.thing.item.ItemManager
 import core.thing.thing
 import quests.QuestManager
-import status.stat.Attributes.AGILITY
-import status.stat.Attributes.FOCUS
-import status.stat.Attributes.HEALTH
-import status.stat.Attributes.PERCEPTION
-import status.stat.Attributes.STAMINA
-import status.stat.Attributes.STRENGTH
-import status.stat.Attributes.WISDOM
-import status.stat.Skills.CLIMBING
-import status.stat.Skills.COOKING
-import status.stat.Skills.CRAFTSMANSHIP
-import status.stat.Skills.SMITHING
+import status.stat.AttributeStrings.AGILITY
+import status.stat.AttributeStrings.FOCUS
+import status.stat.AttributeStrings.HEALTH
+import status.stat.AttributeStrings.PERCEPTION
+import status.stat.AttributeStrings.STAMINA
+import status.stat.AttributeStrings.STRENGTH
+import status.stat.AttributeStrings.WISDOM
+import status.stat.SkillStrings.CLIMBING
+import status.stat.SkillStrings.COOKING
+import status.stat.SkillStrings.CRAFTSMANSHIP
+import status.stat.SkillStrings.SMITHING
 import system.debug.DebugType
 import system.persistance.getGameNames
 import system.persistance.getGamesMetaData
@@ -35,6 +33,8 @@ import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
+import traveling.location.network.NetworkStrings.PLAYER_START_LOCATION
+import traveling.location.network.NetworkStrings.PLAYER_START_NETWORK
 
 object GameManager {
     var playing = false

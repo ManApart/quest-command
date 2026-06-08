@@ -2,7 +2,7 @@ package core.thing.item
 
 import building.ModManager
 import core.DependencyInjector
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.startupLog
 import core.thing.Thing
 import core.thing.build

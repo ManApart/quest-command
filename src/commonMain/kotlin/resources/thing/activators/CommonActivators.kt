@@ -1,9 +1,9 @@
 package resources.thing.activators
 
-import core.properties.TagKey
-import core.properties.TagKey.CONTAINER
-import core.properties.TagKey.OPEN
-import core.properties.TagKey.SIZE
+import core.properties.TagStrings
+import core.properties.TagStrings.CONTAINER
+import core.properties.TagStrings.OPEN
+import core.properties.TagStrings.SIZE
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.things
 import resources.thing.burnToAsh
@@ -52,7 +52,7 @@ class CommonActivators : ActivatorResource {
                 "count" to 3
             )
             props {
-                tag(TagKey.FARMABLE)
+                tag(TagStrings.FARMABLE)
             }
         }
 

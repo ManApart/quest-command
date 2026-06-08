@@ -2,7 +2,7 @@ package crafting
 
 import building.ModManager
 import core.DependencyInjector
-import core.FactKind
+import core.FactKindStrings
 import core.GameState
 import core.Player
 import core.startupLog
@@ -43,7 +43,7 @@ object RecipeManager {
 
     suspend fun getKnownRecipes(source: Player): NameSearchableList<Recipe> {
         return if (GameState.getDebugBoolean(DebugType.RECIPE_SHOW_ALL)) getAllRecipes() else {
-            source.mind.memory.getListFact(FactKind.RECIPE)?.sources
+            source.mind.memory.getListFact(FactKindStrings.RECIPE)?.sources
                 ?.mapNotNull { it.topic }?.let { getRecipes(it) }?.toNameSearchableList()
                 ?: NameSearchableList()
         }

@@ -1,6 +1,6 @@
 package core
 
-object GameStateKeys {
+object GameStateStrings {
     const val AUTO_SAVE = "autosave"
     const val AUTO_LOAD = "autoload"
     const val DEBUG_PACKAGE = "debug package"

@@ -1,12 +1,12 @@
 package resources.thing.creature
 
-import core.FactKind.WORK_TAGS
-import core.properties.TagKey.COMMONER
-import core.properties.TagKey.FARMABLE
-import core.properties.TagKey.PREDATOR
+import core.FactKindStrings.WORK_TAGS
+import core.properties.TagStrings.COMMONER
+import core.properties.TagStrings.FARMABLE
+import core.properties.TagStrings.PREDATOR
 import core.thing.creature.CreatureResource
 import core.thing.things
-import status.stat.Attributes.AGILITY
+import status.stat.AttributeStrings.AGILITY
 
 class CommonCreatures : CreatureResource {
 

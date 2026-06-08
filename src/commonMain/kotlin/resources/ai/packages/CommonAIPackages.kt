@@ -1,9 +1,9 @@
 package resources.ai.packages
 
 import conversation.dsl.hasTag
-import core.FactKind
+import core.FactKindStrings
 import core.GameState
-import core.HowToUse
+import core.HowToUseStrings
 import core.ai.knowledge.clearUseGoal
 import core.ai.knowledge.discover
 import core.ai.knowledge.setUseTarget
@@ -16,7 +16,7 @@ class CommonAIPackages : AIPackageTemplateResource {
             template("Creature")
 
             idea("Attack Goal", 50) {
-                cond { it.canReachGoal(HowToUse.ATTACK) }
+                cond { it.canReachGoal(HowToUseStrings.ATTACK) }
                 actions { s ->
                     listOfNotNull(
                         s.mind.getUseTargetThing()?.let { clawAttack(it, s) },
@@ -28,7 +28,7 @@ class CommonAIPackages : AIPackageTemplateResource {
                 cond { s -> s.perceivedCreatures().any { !it.hasTag("Predator") } }
                 act { s ->
                     s.perceivedCreatures().firstOrNull { !it.hasTag("Predator") }
-                        ?.let { s.discover(it, FactKind.AGGRO_TARGET) }
+                        ?.let { s.discover(it, FactKindStrings.AGGRO_TARGET) }
                 }
             }
 
@@ -40,7 +40,7 @@ class CommonAIPackages : AIPackageTemplateResource {
             idea("Find Tree to Scratch") {
                 cond { s -> s.perceivedActivators().any { it.name.contains("Tree") } }
                 act { s ->
-                    s.perceivedActivators().firstOrNull { it.name.contains("Tree") }?.let { s.setUseTarget(it, HowToUse.ATTACK) }
+                    s.perceivedActivators().firstOrNull { it.name.contains("Tree") }?.let { s.setUseTarget(it, HowToUseStrings.ATTACK) }
                 }
             }
 

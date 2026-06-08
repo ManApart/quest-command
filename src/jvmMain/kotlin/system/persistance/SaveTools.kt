@@ -1,9 +1,9 @@
 package system.persistance
 
 import core.*
-import core.GameStateKeys.AUTO_LOAD
-import core.GameStateKeys.LAST_SAVE_GAME_NAME
-import core.GameStateKeys.SKIP_SAVE_STATS
+import core.GameStateStrings.AUTO_LOAD
+import core.GameStateStrings.LAST_SAVE_GAME_NAME
+import core.GameStateStrings.SKIP_SAVE_STATS
 import core.commands.CommandParsers
 import core.history.GameLogger
 import core.history.SessionHistory
@@ -12,7 +12,6 @@ import core.properties.Properties
 import core.properties.PropertiesP
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import system.mapper
 import traveling.location.Network
 import traveling.location.location.LocationManager

@@ -1,14 +1,14 @@
 package core
 
 import core.properties.Properties
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
 import createMockedGame
 import inventory.createInventoryBody
 import kotlinx.coroutines.runBlocking
-import status.stat.Attributes.STRENGTH
+import status.stat.AttributeStrings.STRENGTH
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -1,19 +1,19 @@
 package core
 
-object AIPackageKeys {
+object AIPackageStrings {
     const val CREATURE = "Creature"
     const val PREDATOR = "Predator"
     const val PEASANT = "Peasant"
 }
 
-object HowToUse {
+object HowToUseStrings {
     const val ATTACK = "Attack"
     const val EAT = "Eat"
     const val INTERACT = "Interact"
     const val SLEEP = "Sleep"
 }
 
-object FactKind {
+object FactKindStrings {
     const val AGGRO_TARGET = "AggroTarget"
     const val HOME = "Home"
     const val LOCATION = "Location"
@@ -25,7 +25,7 @@ object FactKind {
     const val WORK_TAGS = "WorkTags"
 }
 
-object ParameterKeys {
+object ParameterKeyStrings {
     const val COUNT = "count"
     const val MESSAGE = "message"
     const val MESSAGE_TO_OTHERS = "messageToOthers"

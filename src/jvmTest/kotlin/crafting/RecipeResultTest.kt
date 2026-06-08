@@ -4,7 +4,7 @@ package crafting
 import core.thing.Thing
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.assertThrows
-import status.stat.Skills.COOKING
+import status.stat.SkillStrings.COOKING
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

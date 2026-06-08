@@ -1,6 +1,6 @@
 package core.properties
 
-object ValueKey {
+object ValueStrings {
     const val GOAL = "Goal"
     const val HEAL_AMOUNT = "healAmount"
     const val WEIGHT = "weight"

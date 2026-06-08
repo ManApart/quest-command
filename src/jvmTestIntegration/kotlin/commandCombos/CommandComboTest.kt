@@ -7,8 +7,8 @@ import core.events.EventManager
 import core.history.GameLogger
 import kotlinx.coroutines.runBlocking
 import quests.QuestManager
-import status.stat.Attributes.HEALTH
-import status.stat.Skills.COOKING
+import status.stat.AttributeStrings.HEALTH
+import status.stat.SkillStrings.COOKING
 import system.debug.DebugType
 import kotlin.test.*
 

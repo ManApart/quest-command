@@ -5,7 +5,7 @@ import core.Player
 import core.commands.Args
 import core.history.displayToMe
 import core.utility.Named
-import status.stat.Attributes.FOCUS
+import status.stat.AttributeStrings.FOCUS
 import system.debug.DebugType
 import traveling.position.ThingAim
 

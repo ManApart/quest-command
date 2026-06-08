@@ -1,14 +1,14 @@
 package core.properties
 
-import core.properties.TagKey.ITEM
-import core.properties.TagKey.LARGE
-import core.properties.TagKey.LONG
-import core.properties.TagKey.MEDIUM
-import core.properties.TagKey.RANGED
-import core.properties.TagKey.SHORT
-import core.properties.TagKey.SMALL
-import core.properties.ValueKey.CAN_HOLD
-import core.properties.ValueKey.COUNT
+import core.properties.TagStrings.ITEM
+import core.properties.TagStrings.LARGE
+import core.properties.TagStrings.LONG
+import core.properties.TagStrings.MEDIUM
+import core.properties.TagStrings.RANGED
+import core.properties.TagStrings.SHORT
+import core.properties.TagStrings.SMALL
+import core.properties.ValueStrings.CAN_HOLD
+import core.properties.ValueStrings.COUNT
 import core.thing.activator.ACTIVATOR_TAG
 import core.utility.wrapNonEmpty
 import traveling.position.Distances.BOW_RANGE
@@ -81,7 +81,7 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     }
 
     fun isCreature(): Boolean {
-        return tags.has(TagKey.CREATURE)
+        return tags.has(TagStrings.CREATURE)
     }
 
     fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {

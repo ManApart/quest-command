@@ -3,7 +3,7 @@ package inventory
 import core.DependencyInjector
 import core.body.*
 import core.properties.Properties
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.properties.Tags
 import core.thing.Thing
 import createPouch

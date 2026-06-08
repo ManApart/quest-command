@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.display
 import core.utility.asSubject
 import explore.listen.addSoundEffect
-import status.stat.Attributes.AGILITY
-import status.stat.Attributes.HEALTH
+import status.stat.AttributeStrings.AGILITY
+import status.stat.AttributeStrings.HEALTH
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
 import traveling.location.location.LocationPoint

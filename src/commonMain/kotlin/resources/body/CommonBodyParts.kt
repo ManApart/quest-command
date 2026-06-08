@@ -1,8 +1,8 @@
 package resources.body
 
 import core.body.BodyPartResource
-import core.properties.TagKey.CONTAINER
-import core.properties.TagKey.OPEN
+import core.properties.TagStrings.CONTAINER
+import core.properties.TagStrings.OPEN
 import traveling.location.location.locations
 
 class CommonBodyParts : BodyPartResource {

@@ -4,7 +4,7 @@ import core.events.EventManager
 import magic.castSpell.CastSpellEvent
 import status.conditions.AddConditionEvent
 import status.conditions.Condition
-import status.stat.Attributes.FOCUS
+import status.stat.AttributeStrings.FOCUS
 import status.statChanged.StatChangeEvent
 import traveling.move.MoveEvent
 import traveling.position.Vector

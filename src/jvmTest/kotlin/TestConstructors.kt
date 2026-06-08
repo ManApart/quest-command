@@ -15,13 +15,13 @@ import core.events.EventListenerMapMock
 import core.events.EventManager
 import core.history.GameLogger
 import core.properties.Properties
-import core.properties.TagKey
-import core.properties.TagKey.CONTAINER
-import core.properties.TagKey.ITEM
-import core.properties.TagKey.OPEN
-import core.properties.TagKey.SIZE
+import core.properties.TagStrings
+import core.properties.TagStrings.CONTAINER
+import core.properties.TagStrings.ITEM
+import core.properties.TagStrings.OPEN
+import core.properties.TagStrings.SIZE
 import core.properties.Tags
-import core.properties.ValueKey.WEIGHT
+import core.properties.ValueStrings.WEIGHT
 import core.properties.Values
 import core.thing.Thing
 import core.thing.ThingBuilder
@@ -52,7 +52,7 @@ import status.conditions.ConditionsGenerated
 import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
-import status.stat.Attributes.STRENGTH
+import status.stat.AttributeStrings.STRENGTH
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
@@ -119,7 +119,7 @@ fun createPackMule(strength: Int = 1): Thing {
         "Pack Mule", body = createInventoryBodyBlocking("Pack Mule"),
         properties = Properties(
             Values(STRENGTH to strength.toString()),
-            Tags(CONTAINER, OPEN, TagKey.CREATURE)
+            Tags(CONTAINER, OPEN, TagStrings.CREATURE)
         )
     )
 }

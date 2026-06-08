@@ -1,6 +1,6 @@
 package traveling.location.network
 
-object NetworkKeys {
+object NetworkStrings {
     const val PLAYER_START_NETWORK = "Kanbara Countryside"
     const val PLAYER_START_LOCATION = "An Open Field"
     const val KANBARA = "Kanbara"

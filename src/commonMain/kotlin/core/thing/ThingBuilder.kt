@@ -1,6 +1,6 @@
 package core.thing
 
-import core.AIPackageKeys
+import core.AIPackageStrings
 import core.ai.*
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorRecipe
@@ -13,9 +13,9 @@ import core.body.BodyManager
 import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
-import core.properties.TagKey
-import core.properties.TagKey.SOUND_DESCRIPTION
-import core.properties.TagKey.SOUND_LEVEL
+import core.properties.TagStrings
+import core.properties.TagStrings.SOUND_DESCRIPTION
+import core.properties.TagStrings.SOUND_LEVEL
 import core.utility.MapBuilder
 import core.utility.apply
 import core.utility.applyNested
@@ -93,7 +93,7 @@ class ThingBuilder(internal val name: String) {
     }
 
     private fun calcHeldSlots(props: Properties): List<Slot> {
-        if(props.tags.has(TagKey.CREATURE)) return emptyList()
+        if(props.tags.has(TagStrings.CREATURE)) return emptyList()
         return when {
             props.tags.has("Small") || props.values.getInt("weight", 100) < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
             props.tags.has("Medium") || props.values.getInt("weight", 100) < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
@@ -256,9 +256,9 @@ class ThingBuilder(internal val name: String) {
 
     private fun discernAI(props: Properties) : AI {
         return when {
-            props.tags.has(TagKey.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PREDATOR]!!)
-            props.tags.has(TagKey.COMMONER) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.PEASANT]!!)
-            props.tags.has(TagKey.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageKeys.CREATURE]!!)
+            props.tags.has(TagStrings.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageStrings.PREDATOR]!!)
+            props.tags.has(TagStrings.COMMONER) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageStrings.PEASANT]!!)
+            props.tags.has(TagStrings.CREATURE) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageStrings.CREATURE]!!)
             else -> DumbAI()
         }
     }

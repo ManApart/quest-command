@@ -1,6 +1,6 @@
 package core
 
-import core.GameStateKeys.VERBOSE_STARTUP
+import core.GameStateStrings.VERBOSE_STARTUP
 import core.commands.CommandParsers
 import core.events.Event
 import core.history.GameLogger

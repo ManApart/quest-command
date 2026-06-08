@@ -1,6 +1,6 @@
 package core.thing.item
 
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.thing.ThingBuilder
 
 class ItemsMock(val values: List<ThingBuilder> = listOf()) : ItemsCollection {

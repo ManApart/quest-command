@@ -5,8 +5,8 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.utility.then
 import explore.listen.addSoundEffect
-import status.stat.Attributes.HEALTH
-import status.stat.Attributes.STAMINA
+import status.stat.AttributeStrings.HEALTH
+import status.stat.AttributeStrings.STAMINA
 import status.stat.LeveledStat
 import status.statChanged.StatChangeEvent
 

@@ -1,7 +1,7 @@
 package resources.traveling.location.location
 
-import traveling.location.network.NetworkKeys.KANBARA
-import traveling.location.network.NetworkKeys.KANBARA_COUNTRYSIDE
+import traveling.location.network.NetworkStrings.KANBARA
+import traveling.location.network.NetworkStrings.KANBARA_COUNTRYSIDE
 import traveling.location.network.NetworkResource
 import traveling.location.network.networks
 

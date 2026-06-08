@@ -1,5 +1,5 @@
 package crafting.material
 
-object MaterialStrings{
+object MaterialStrings {
     const val FOOD = "Food"
 }

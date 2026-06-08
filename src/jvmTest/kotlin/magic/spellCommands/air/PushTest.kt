@@ -7,7 +7,7 @@ import core.GameState
 import core.Player
 import core.commands.Args
 import core.events.EventManager
-import core.properties.ValueKey.WEIGHT
+import core.properties.ValueStrings.WEIGHT
 import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking
@@ -17,8 +17,8 @@ import status.effects.EffectBase
 import status.effects.EffectManager
 import status.effects.EffectsCollection
 import status.effects.EffectsMock
-import status.stat.Attributes.FOCUS
-import status.stat.MagicSkills.AIR_MAGIC
+import status.stat.AttributeStrings.FOCUS
+import status.stat.MagicSkillStrings.AIR_MAGIC
 import status.stat.StatEffect
 import traveling.position.NO_VECTOR
 import traveling.position.ThingAim

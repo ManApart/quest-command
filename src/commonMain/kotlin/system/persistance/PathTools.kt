@@ -1,7 +1,7 @@
 package system.persistance
 
 import core.GameState
-import core.GameStateKeys.TEST_SAVE_FOLDER
+import core.GameStateStrings.TEST_SAVE_FOLDER
 
 val ignoredGameSaveNames = listOf("games", "gameState")
 

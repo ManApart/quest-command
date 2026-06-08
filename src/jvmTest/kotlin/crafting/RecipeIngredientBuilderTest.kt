@@ -3,7 +3,7 @@ package crafting
 
 import core.thing.Thing
 import org.junit.jupiter.api.assertThrows
-import status.stat.Skills.COOKING
+import status.stat.SkillStrings.COOKING
 import kotlin.test.*
 
 

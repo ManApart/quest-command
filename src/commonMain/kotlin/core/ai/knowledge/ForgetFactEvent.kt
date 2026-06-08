@@ -1,6 +1,6 @@
 package core.ai.knowledge
 
-import core.FactKind
+import core.FactKindStrings
 import core.events.Event
 import core.thing.Thing
 
@@ -11,5 +11,5 @@ data class ForgetFactEvent(val source: Thing, val fact: Fact? = null, val listFa
 }
 
 fun Thing.clearUseGoal(): ForgetFactEvent {
-    return ForgetFactEvent(this, kind = FactKind.USE_TARGET)
+    return ForgetFactEvent(this, kind = FactKindStrings.USE_TARGET)
 }

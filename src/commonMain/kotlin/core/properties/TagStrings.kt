@@ -1,6 +1,6 @@
 package core.properties
 
-object TagKey {
+object TagStrings {
     const val CREATURE = "Creature"
     const val COMMONER = "Commoner"
     const val FOOD = "Food"

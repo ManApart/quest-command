@@ -1,7 +1,7 @@
 package crafting
 
 import core.properties.Properties
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.thing.Thing
 import core.utility.Named
 import status.Soul

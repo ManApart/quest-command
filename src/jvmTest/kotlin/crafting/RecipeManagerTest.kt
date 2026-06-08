@@ -8,7 +8,7 @@ import core.properties.Tags
 import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking
-import status.stat.Skills.COOKING
+import status.stat.SkillStrings.COOKING
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

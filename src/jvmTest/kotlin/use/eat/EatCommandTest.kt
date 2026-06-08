@@ -4,7 +4,7 @@ import core.GameManager
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.Properties
-import core.properties.TagKey.ITEM
+import core.properties.TagStrings.ITEM
 import core.properties.Tags
 import core.thing.Thing
 import core.utility.PoorMansInstrumenter

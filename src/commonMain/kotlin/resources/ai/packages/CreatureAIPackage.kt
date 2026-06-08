@@ -2,14 +2,14 @@ package resources.ai.packages
 
 import conversation.dsl.hasTag
 import core.GameState
-import core.HowToUse
+import core.HowToUseStrings
 import core.ai.knowledge.clearUseGoal
 import core.ai.knowledge.setUseTarget
 import core.ai.packages.*
-import core.properties.TagKey
+import core.properties.TagStrings
 import core.utility.random
 import status.rest.RestEvent
-import status.stat.Attributes.STAMINA
+import status.stat.AttributeStrings.STAMINA
 import traveling.move.startMoveEvent
 import traveling.travel.TravelStartEvent
 import use.eat.EatFoodEvent
@@ -60,16 +60,16 @@ class CreatureAIPackage : AIPackageTemplateResource {
             idea("Want Food", takesTurn = false) {
                 cond { s ->
                     GameState.timeManager.getPercentDayComplete() in listOf(25, 50, 75) &&
-                            s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) } != null
+                            s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagStrings.FOOD) } != null
                 }
                 act { s ->
-                    s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagKey.FOOD) }
-                        ?.let { s.setUseTarget(it, HowToUse.EAT) }
+                    s.perceivedItemsAndInventory().firstOrNull { it.hasTag(TagStrings.FOOD) }
+                        ?.let { s.setUseTarget(it, HowToUseStrings.EAT) }
                 }
             }
 
             idea("Eat Food", 45) {
-                cond { it.canReachGoal(HowToUse.EAT) }
+                cond { it.canReachGoal(HowToUseStrings.EAT) }
                 actions { s ->
                     listOfNotNull(
                         s.mind.getUseTargetThing()?.let { EatFoodEvent(s, it) },
@@ -79,7 +79,7 @@ class CreatureAIPackage : AIPackageTemplateResource {
             }
 
             idea("Interact", 40) {
-                cond { it.canReachGoal(HowToUse.INTERACT) }
+                cond { it.canReachGoal(HowToUseStrings.INTERACT) }
                 actions { s ->
                     listOfNotNull(
                         s.mind.getUseTargetThing()?.let { InteractEvent(s, it) },
@@ -94,7 +94,7 @@ class CreatureAIPackage : AIPackageTemplateResource {
             }
 
             idea("Sleep", 40) {
-                cond { it.canReachGoal(HowToUse.SLEEP) }
+                cond { it.canReachGoal(HowToUseStrings.SLEEP) }
                 actions { s ->
                     listOfNotNull(
                         s.mind.getUseTargetThing()?.let { InteractEvent(s, it) },
