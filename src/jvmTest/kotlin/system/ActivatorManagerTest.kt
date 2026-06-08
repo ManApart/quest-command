@@ -1,8 +1,6 @@
 package system
 
 import core.DependencyInjector
-import core.NetworkKeys.PLAYER_START_LOCATION
-import core.NetworkKeys.PLAYER_START_NETWORK
 import core.body.*
 import core.thing.activator.ActivatorManager
 import core.thing.activator.dsl.ActivatorsCollection
@@ -17,6 +15,8 @@ import traveling.location.location.LocationThing
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
 import traveling.location.network.DEFAULT_NETWORK
+import traveling.location.network.NetworkStrings.PLAYER_START_LOCATION
+import traveling.location.network.NetworkStrings.PLAYER_START_NETWORK
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
 import traveling.location.network.networks
