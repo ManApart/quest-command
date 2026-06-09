@@ -1,11 +1,11 @@
 package resources.behaviors
 
-import core.ParameterKeyStrings
-import core.ParameterKeyStrings.ITEM_NAME
 import core.ai.behavior.BehaviorResource
 import core.ai.behavior.behaviors
 import core.commands.commandEvent.CommandEvent
 import core.eventWithPlayer
+import core.properties.ParameterStrings
+import core.properties.ParameterStrings.ITEM_NAME
 import core.properties.ValueStrings.COUNT
 import core.properties.propValChanged.PropertyStatMinnedEvent
 import core.thing.activator.ActivatorManager
@@ -87,8 +87,8 @@ class CommonBehaviors : BehaviorResource {
                 event.used.properties.tags.has("Sharp")
             }
             events { event, params ->
-                val message = params[ParameterKeyStrings.MESSAGE] ?: "You harvest ${event.usedOn} with ${event.used}."
-                val messageToOthers = params[ParameterKeyStrings.MESSAGE_TO_OTHERS] ?: "${event.creature} harvests ${event.usedOn} with ${event.used}."
+                val message = params[ParameterStrings.MESSAGE] ?: "You harvest ${event.usedOn} with ${event.used}."
+                val messageToOthers = params[ParameterStrings.MESSAGE_TO_OTHERS] ?: "${event.creature} harvests ${event.usedOn} with ${event.used}."
                 listOf(
                     MessageEvent(event.creature, message, messageToOthers, false),
                     SpawnItemEvent(params[ITEM_NAME] ?: "Apple", params[COUNT]?.toInt() ?: 1, thingLocation = event.usedOn.location, positionParent = event.usedOn)
@@ -98,8 +98,8 @@ class CommonBehaviors : BehaviorResource {
 
         behavior("Tend Crop", InteractEvent::class) {
             event { event, params ->
-                val message = params[ParameterKeyStrings.MESSAGE] ?: "You tend the ${event.interactionTarget.name}."
-                val messageToOthers = params[ParameterKeyStrings.MESSAGE_TO_OTHERS] ?: "${event.creature.name} tends the ${event.interactionTarget.name}."
+                val message = params[ParameterStrings.MESSAGE] ?: "You tend the ${event.interactionTarget.name}."
+                val messageToOthers = params[ParameterStrings.MESSAGE_TO_OTHERS] ?: "${event.creature.name} tends the ${event.interactionTarget.name}."
                 MessageEvent(event.creature, message, messageToOthers, false)
             }
         }

@@ -24,10 +24,3 @@ object FactKindStrings {
     const val USE_TARGET = "UseTarget"
     const val WORK_TAGS = "WorkTags"
 }
-
-object ParameterKeyStrings {
-    const val COUNT = "count"
-    const val MESSAGE = "message"
-    const val MESSAGE_TO_OTHERS = "messageToOthers"
-    const val ITEM_NAME = "itemName"
-}

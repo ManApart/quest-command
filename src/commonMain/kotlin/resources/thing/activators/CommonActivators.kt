@@ -1,9 +1,13 @@
 package resources.thing.activators
 
+import core.properties.ParameterStrings.FIRE_HEALTH
+import core.properties.ParameterStrings.ITEM_NAME
 import core.properties.TagStrings
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
 import core.properties.TagStrings.SIZE
+import core.properties.TagStrings.WOOD
+import core.properties.ValueStrings
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.things
 import resources.thing.burnToAsh
@@ -19,7 +23,7 @@ class CommonActivators : ActivatorResource {
             body("tree")
             props {
                 value("chopHealth", 5)
-                value("fireHealth", 5)
+                value(ValueStrings.FIRE_HEALTH, 5)
                 tag("Climbable", "Container", "Flammable", "Open", "Wood")
             }
             item("Apple")
@@ -32,7 +36,7 @@ class CommonActivators : ActivatorResource {
             material("Bark")
             extends(burnable.get())
             description("The branches are too thin to sit on comfortably, but their leaves rustle contentedly.")
-            param("fireHealth" to 5, "itemName" to "Apple Tree Branches")
+            param(FIRE_HEALTH to 5, ITEM_NAME to "Apple Tree Branches")
             props {
                 tag("Wood")
             }
@@ -43,11 +47,11 @@ class CommonActivators : ActivatorResource {
             material("Plant")
             description("The golden shafts of wheat whisper as they brush against each other.")
             sound(5, "a faint rustling sound")
-            param("fireHealth" to 2, "itemName" to "Wheat Field")
+            param(FIRE_HEALTH to 2, ITEM_NAME to "Wheat Field")
             behavior("Tend Crop")
             behavior(
                 "Slash Harvest",
-                "itemName" to "Wheat Bundle",
+                ITEM_NAME to "Wheat Bundle",
                 "message" to "The wheat falls with little more than a whisper.",
                 "count" to 3
             )
@@ -60,9 +64,9 @@ class CommonActivators : ActivatorResource {
             extends(burnable.get())
             material("Wood")
             description("A pile of logs.")
-            param("fireHealth" to 5, "itemName" to "Ash")
+            param(FIRE_HEALTH to 5, ITEM_NAME to "Ash")
             props {
-                tag("Wood")
+                tag(WOOD)
             }
         }
 

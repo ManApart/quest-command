@@ -1,6 +1,8 @@
 package resources.thing
 
 import core.ai.behavior.BehaviorRecipe
+import core.properties.ParameterStrings.FIRE_HEALTH
+import core.properties.ParameterStrings.ITEM_NAME
 import core.properties.props
 import core.thing.Thing
 import core.thing.ThingBuilder
@@ -13,7 +15,7 @@ val burnable: Backer<ThingBuilder> = Backer(::burnable)
 
 private suspend fun burnable(): ThingBuilder {
     return thing("Burnable") {
-        param("fireHealth" to 1, "itemName" to "Item")
+        param(FIRE_HEALTH to 1, ITEM_NAME to "Item")
         props {
             value("fireHealth", "\$fireHealth")
             tag("Flammable")

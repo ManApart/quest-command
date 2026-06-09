@@ -18,4 +18,5 @@ object TagStrings {
     const val RANGED = "Ranged"
     const val CONTAINER = "Container"
     const val OPEN = "Open"
+    const val WOOD = "Wood"
 }

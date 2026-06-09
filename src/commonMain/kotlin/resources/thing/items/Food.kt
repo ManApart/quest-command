@@ -1,5 +1,6 @@
 package resources.thing.items
 
+import core.properties.ParameterStrings
 import core.properties.ValueStrings.HEAL_AMOUNT
 import core.properties.ValueStrings.WEIGHT
 import core.thing.item.ItemResource
@@ -35,8 +36,8 @@ class Food : ItemResource {
             material(FOOD)
             description("It's stems lightly scratch your hands.")
             extends(burnable.get())
-            param("fireHealth", 1)
-            param("itemName", "Wheat Bundle")
+            param(ParameterStrings.FIRE_HEALTH, 1)
+            param(ParameterStrings.ITEM_NAME, "Wheat Bundle")
             props {
                 value(HEAL_AMOUNT, 1)
                 value(WEIGHT, 1)
