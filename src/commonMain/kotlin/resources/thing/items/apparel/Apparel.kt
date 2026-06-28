@@ -8,6 +8,8 @@ import core.properties.TagStrings.OPEN
 import core.properties.ValueStrings.WEIGHT
 import core.thing.item.ItemResource
 import core.thing.things
+import crafting.material.MaterialStrings.CLOTH
+import crafting.material.MaterialStrings.LEATHER
 import resources.thing.burnable
 
 class Apparel : ItemResource {
@@ -15,7 +17,7 @@ class Apparel : ItemResource {
     override suspend fun values() = things {
         thing("Brown Pants") {
             extends(burnable.get())
-            material("Cloth")
+            material(CLOTH)
             description("These pants used to be white.")
             param(FIRE_HEALTH to 1)
             param(ITEM_NAME to "Brown Pants")
@@ -28,7 +30,7 @@ class Apparel : ItemResource {
 
         thing("Old Shirt") {
             extends(burnable.get())
-            material("Cloth")
+            material(CLOTH)
             description("A faint scent of soil oozes from the worn cloth.")
             param(FIRE_HEALTH to 1)
             param(ITEM_NAME to "Old Shirt")
@@ -40,7 +42,7 @@ class Apparel : ItemResource {
         }
 
         thing("Small Pouch") {
-            material("Leather")
+            material(LEATHER)
             description("A pouch for storing small items.")
             param(FIRE_HEALTH to 1)
             param(ITEM_NAME to "Small Pouch")

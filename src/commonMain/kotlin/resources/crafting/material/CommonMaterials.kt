@@ -1,60 +1,62 @@
 package resources.crafting.material
 
 import crafting.material.MaterialResource
+import crafting.material.MaterialStrings.ADAMANT
+import crafting.material.MaterialStrings.AIR
+import crafting.material.MaterialStrings.BLACKENED_STEEL
+import crafting.material.MaterialStrings.BRONZE
+import crafting.material.MaterialStrings.CLOTH
+import crafting.material.MaterialStrings.DIRT
+import crafting.material.MaterialStrings.FLESH
+import crafting.material.MaterialStrings.FOOD
+import crafting.material.MaterialStrings.FUR
+import crafting.material.MaterialStrings.GRAVEL
+import crafting.material.MaterialStrings.IRON
+import crafting.material.MaterialStrings.LEATHER
+import crafting.material.MaterialStrings.MITHRIL
+import crafting.material.MaterialStrings.PLANT
+import crafting.material.MaterialStrings.STEEL
+import crafting.material.MaterialStrings.STONE
+import crafting.material.MaterialStrings.WATER
+import crafting.material.MaterialStrings.WOOD
 import crafting.material.materials
 
 class CommonMaterials : MaterialResource {
     override val values = materials {
-        material("Air", 0, 0)
-        material("Bark", 30, 60)
-        material("Cloth", 25, 50)
-        material("Dirt", 50, 50)
-        material("Flesh", 40, 20)
-        material("Food", 10, 20)
-        material("Fur", 30, 50)
-        material("Plant", 15, 40)
-        material("Gravel", 60, 60)
-        material("Leather", 30, 30)
-        material("Wood", 50, 30)
-        material("Stone", 70, 40)
-        material("Water", 5, 0)
-
-        group("Gems") {
-            props {
-                tag("Gem")
-            }
-            material("Topaz", 80, 5) {
-                value("Quality", 1)
-            }
-            material("Sapphire", 80, 5) {
-                value("Quality", 2)
-            }
-            material("Diamond", 100, 5) {
-                value("Quality", 3)
-            }
-        }
+        material(AIR, 0, 0)
+        material(CLOTH, 25, 50)
+        material(DIRT, 50, 50)
+        material(FLESH, 40, 20)
+        material(FOOD, 10, 20)
+        material(FUR, 30, 50)
+        material(PLANT, 15, 40)
+        material(GRAVEL, 60, 60)
+        material(LEATHER, 30, 30)
+        material(WOOD, 50, 30)
+        material(STONE, 70, 40)
+        material(WATER, 5, 0)
 
         group("Metals") {
             props {
                 tag("Metal")
             }
 
-            material("Bronze", 60, 30) {
+            material(BRONZE, 60, 30) {
                 value("Quality", 1)
             }
-            material("Iron", 70, 20) {
+            material(IRON, 70, 20) {
                 value("Quality", 2)
             }
-            material("Steel", 80, 15) {
+            material(STEEL, 80, 15) {
                 value("Quality", 3)
             }
-            material("Blackened Steel", 85, 15) {
+            material(BLACKENED_STEEL, 85, 15) {
                 value("Quality", 4)
             }
-            material("Adamant", 90, 10) {
+            material(ADAMANT, 90, 10) {
                 value("Quality", 5)
             }
-            material("Mithril", 95, 5) {
+            material(MITHRIL, 95, 5) {
                 value("Quality", 6)
             }
         }

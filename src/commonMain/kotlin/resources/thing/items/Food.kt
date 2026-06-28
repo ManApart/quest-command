@@ -5,6 +5,7 @@ import core.properties.ValueStrings.HEAL_AMOUNT
 import core.properties.ValueStrings.WEIGHT
 import core.thing.item.ItemResource
 import core.thing.things
+import crafting.material.MaterialStrings.FLESH
 import crafting.material.MaterialStrings.FOOD
 import resources.thing.burnable
 
@@ -63,7 +64,7 @@ class Food : ItemResource {
         }
 
         thing("Poor Quality Meat") {
-            material("Flesh")
+            material(FLESH)
             description("It's pale and oily.")
             props {
                 value(WEIGHT, 1)

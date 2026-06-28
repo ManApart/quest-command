@@ -2,6 +2,7 @@ package resources.thing.items
 
 import core.thing.item.ItemResource
 import core.thing.things
+import crafting.material.MaterialStrings.IRON
 import resources.thing.burnable
 
 class Weapons : ItemResource {
@@ -10,7 +11,7 @@ class Weapons : ItemResource {
         thing(burnable.get())
 
         thing("Rusty Dagger") {
-            material("Iron")
+            material(IRON)
             body("Dagger")
             description("It once held a cutting edge, but those days are little remembered.")
             equipSlotOptions("Right Hand Grip")
@@ -25,7 +26,7 @@ class Weapons : ItemResource {
         }
 
         thing("Dulled Hatchet") {
-            material("Iron")
+            material(IRON)
             description("The handle has been polished through much use.")
             equipSlotOptions("Right Hand Grip")
             equipSlotOptions("Left Hand Grip")

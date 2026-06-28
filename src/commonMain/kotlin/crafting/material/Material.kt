@@ -3,9 +3,10 @@ package crafting.material
 import core.ai.behavior.Behavior
 import core.properties.Properties
 import core.utility.Named
+import crafting.material.MaterialStrings.VOID
 import magic.Element
 
-val DEFAULT_MATERIAL = Material("Void", 0, 0, Properties()) { 0 }
+val DEFAULT_MATERIAL = Material(VOID, 0, 0, Properties()) { 0 }
 
 //Density 0 is void, 100 is diamond
 //Roughness 0 is perectly smooth, 100 is sandpaper

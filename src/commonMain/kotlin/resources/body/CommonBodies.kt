@@ -1,6 +1,10 @@
 package resources.body
 
 import core.body.BodyResource
+import crafting.material.MaterialStrings.IRON
+import crafting.material.MaterialStrings.LEATHER
+import crafting.material.MaterialStrings.STONE
+import crafting.material.MaterialStrings.WOOD
 import traveling.location.network.networks
 
 class CommonBodies : BodyResource {
@@ -48,11 +52,11 @@ class CommonBodies : BodyResource {
 
         network("Tree") {
             locationNode("Branches"){
-                material("Wood")
+                material(WOOD)
             }
             locationNode("Trunk") {
                 isRoot(true)
-                material("Wood")
+                material(WOOD)
                 connection("Branches", z = 15)
             }
         }
@@ -60,24 +64,24 @@ class CommonBodies : BodyResource {
         network("City Wall") {
             locationNode("Foundation") {
                 isRoot(true)
-                material("Stone")
+                material(STONE)
                 connection("Lower Shelf", z = 1)
                 connection("Scraggy Lower Shelf", x = 1, z = 1)
             }
             locationNode("Lower Shelf") {
-                material("Stone")
+                material(STONE)
                 connection("Wall Mid", z = 1)
             }
             locationNode("Scraggy Lower Shelf") {
-                material("Stone")
+                material(STONE)
                 connection("Wall Mid", z = 1)
             }
             locationNode("Wall Mid") {
-                material("Stone")
+                material(STONE)
                 connection("Wall Top", z = 1)
             }
             locationNode("Wall Top"){
-                material("Stone")
+                material(STONE)
             }
         }
 
@@ -96,20 +100,20 @@ class CommonBodies : BodyResource {
         network("Medium Container")
         network("Dagger") {
             locationNode("Handle") {
-                material("Leather")
+                material(LEATHER)
                 isRoot(true)
                 connection("Pommel", z = -1)
                 connection("Guard", z = 1)
             }
             locationNode("Pommel") {
-                material("Iron")
+                material(IRON)
             }
             locationNode("Guard") {
-                material("Iron")
+                material(IRON)
                 connection("Blade", z = 1)
             }
             locationNode("Blade") {
-                material("Iron")
+                material(IRON)
             }
         }
     }

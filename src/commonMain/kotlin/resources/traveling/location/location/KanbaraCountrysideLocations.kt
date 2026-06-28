@@ -1,5 +1,7 @@
 package resources.traveling.location.location
 
+import crafting.material.MaterialStrings.GRAVEL
+import crafting.material.MaterialStrings.PLANT
 import traveling.location.location.LocationResource
 import traveling.location.location.locations
 
@@ -12,7 +14,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Kanbara City") {
             extends("Outside")
-            material("Gravel")
+            material(GRAVEL)
             description("The city of Kanbara is one of the most densely packed cities in all of Lenovia.")
             activator("City Wall")
             props {
@@ -22,7 +24,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Kanbara Gate") {
             extends("Outside")
-            material("Gravel")
+            material(GRAVEL)
             description("The large gate of Kanbara seems to be its only entrance point.")
             activator("Kanbara Gate (Closed)")
             props {
@@ -47,7 +49,7 @@ class KanbaraCountrysideLocations : LocationResource {
 
         location("Clovenwood") {
             extends("Outside")
-            material("Plant")
+            material(PLANT)
             description("Mint and ginger float on the wind. The result of the unique plants that grow around and through the village lead to its name.")
         }
 

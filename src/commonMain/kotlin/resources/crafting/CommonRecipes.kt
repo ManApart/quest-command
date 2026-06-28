@@ -2,6 +2,7 @@ package resources.crafting
 
 import core.thing.thing
 import crafting.RecipeResource
+import crafting.material.MaterialStrings.LEATHER
 import crafting.recipes
 import status.stat.*
 import status.stat.SkillStrings.COOKING
@@ -122,7 +123,7 @@ class CommonRecipes : RecipeResource {
                     thing("$metalUsed Dagger") {
                         body("Dagger") {
                             part("Handle") {
-                                material("Leather")
+                                material(LEATHER)
                             }
                             part("Pommel") {
                                 material(inlayUsed)

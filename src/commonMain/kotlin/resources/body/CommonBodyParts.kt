@@ -3,84 +3,87 @@ package resources.body
 import core.body.BodyPartResource
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
+import crafting.material.MaterialStrings.CLOTH
+import crafting.material.MaterialStrings.FLESH
+import crafting.material.MaterialStrings.STONE
 import traveling.location.location.locations
 
 class CommonBodyParts : BodyPartResource {
     override val values = locations {
         location("Head") {
-            material("Flesh")
+            material(FLESH)
             slot("Head Inner", "Head", "Head Outer")
         }
 
         location("Chest") {
-            material("Flesh")
+            material(FLESH)
             slot("Chest Inner", "Chest", "Chest Outer")
         }
 
         location("Right Arm") {
-            material("Flesh")
+            material(FLESH)
             slot("Right Arm Inner", "Right Arm", "Right Arm Outer")
         }
 
         location("Left Arm") {
-            material("Flesh")
+            material(FLESH)
             slot("Left Arm Inner", "Left Arm", "Left Arm Outer")
         }
 
         location("Right Hand") {
-            material("Flesh")
+            material(FLESH)
             slot("Right Hand", "Right Hand Grip")
         }
 
         location("Left Hand") {
-            material("Flesh")
+            material(FLESH)
             slot("Left Hand", "Left Hand Grip")
         }
 
         location("Waist") {
-            material("Flesh")
+            material(FLESH)
             slot("Waist Inner", "Waist", "Waist Outer", "Belt Front", "BeltLeft", "Belt Right", "Belt Back")
         }
 
         location("Right Leg") {
-            material("Flesh")
+            material(FLESH)
             slot("Right Leg Inner", "Right Leg", "Right Leg Outer")
         }
 
 
         location("Left Leg") {
-            material("Flesh")
+            material(FLESH)
             slot("Left Leg Inner", "Left Leg", "Left Leg Outer")
         }
 
 
         location("Right Foot") {
-            material("Flesh")
+            material(FLESH)
             slot("Right Foot")
         }
 
         location("Left Foot") {
-            material("Flesh")
+            material(FLESH)
             slot("Left Leg")
         }
 
         location("Canine Head") {
-            material("Flesh")
+            material(FLESH)
             slot("Canine Head")
         }
 
         location("Canine Body") {
-            material("Flesh")
+            material(FLESH)
             slot("Canine Body")
         }
 
         location("Small Claws") {
-            material("Flesh")
+            material(FLESH)
             slot("Small Claws")
         }
 
         location("Grain Chute") {
-            material("Stone")
+            material(STONE)
             props {
                 tag("Open", "Container")
                 value("size", 3)
@@ -88,7 +91,7 @@ class CommonBodyParts : BodyPartResource {
         }
 
         location("Grain Bin") {
-            material("Stone")
+            material(STONE)
             props {
                 tag("Open","Container")
                 value("size", 3)
@@ -97,7 +100,7 @@ class CommonBodyParts : BodyPartResource {
         }
 
         location("Sack") {
-            material("Cloth")
+            material(CLOTH)
             props {
                 tag("Container")
                 value("weight", 1)

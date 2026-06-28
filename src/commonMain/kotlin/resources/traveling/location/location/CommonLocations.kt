@@ -2,17 +2,22 @@ package resources.traveling.location.location
 
 import core.GameState
 import core.utility.RandomManager
+import crafting.material.MaterialStrings.DIRT
+import crafting.material.MaterialStrings.GRAVEL
+import crafting.material.MaterialStrings.PLANT
+import crafting.material.MaterialStrings.STONE
+import crafting.material.MaterialStrings.WOOD
 import traveling.location.location.LocationResource
 import traveling.location.location.locations
 
 class CommonLocations : LocationResource {
     override val values = locations {
         location("World") {
-            material("Dirt")
+            material(DIRT)
         }
 
         location("Inside") {
-            material("Dirt")
+            material(DIRT)
             props { tag("Inside") }
             weather {
                 option("Distant Rain") { RandomManager.isSuccess(40) }
@@ -23,14 +28,14 @@ class CommonLocations : LocationResource {
 
         location("Inside Building") {
             extends("Inside")
-            material("Wood")
+            material(WOOD)
             activator("Wall Scone", x = 10)
             activator("Wall Scone", x = -10)
             lightLevel(2)
         }
 
         location("Outside") {
-            material("Dirt")
+            material(DIRT)
             props { tag("Outside") }
             weather {
                 option("Windy") { RandomManager.isSuccess(20) }
@@ -48,7 +53,7 @@ class CommonLocations : LocationResource {
 
         location("City Wall") {
             extends("Outside")
-            material("Gravel")
+            material(GRAVEL)
             activator("City Wall")
             props {
                 tag("City")
@@ -109,7 +114,7 @@ class CommonLocations : LocationResource {
 
         location("Field") {
             extends("Outside")
-            material("Plant")
+            material(PLANT)
             description {
                 option("The red sun fills the waving grasses, making them glow. They sway like licks of flame.") {
                     GameState.timeManager.getHour() in 20..30 || GameState.timeManager.getHour() in 70..80
@@ -125,7 +130,7 @@ class CommonLocations : LocationResource {
 
         location("Apple Tree") {
             extends("Outside")
-            material("Plant")
+            material(PLANT)
             description("The tree's leaves rustle in the wind, dusting it with the smell of apples.")
             sound(1, "the soft rustle of many leaves")
             activator("Apple Tree")
@@ -165,7 +170,7 @@ class CommonLocations : LocationResource {
 
         location("Windmill") {
             extends("Inside Building")
-            material("Stone")
+            material(STONE)
             description("Large hewed stone encircle encircle a patchwork floor. It smells of wheat and yeast.")
             activator("Grain Bin")
             activator("Stairs")
@@ -192,14 +197,14 @@ class CommonLocations : LocationResource {
 
         location("Cave Mouth") {
             extends("Inside")
-            material("Stone")
+            material(STONE)
             description("The air is humid and heavy, interrupted by gasps of cooler wind from outside.")
             activator("Wall Crack")
         }
 
         location("Cave Tunnel") {
             extends("Inside")
-            material("Stone")
+            material(STONE)
             description("The damp, cool stone runs along either side of the tunnel.")
         }
     }

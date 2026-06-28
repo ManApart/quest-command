@@ -143,3 +143,4 @@ kotlin-js-store/
 mods/
 .kotlin/
 src/commonMain/resources/version.txt
+tool-config.json
