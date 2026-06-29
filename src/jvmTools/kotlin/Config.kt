@@ -30,5 +30,6 @@ data class Config(
 
 @Serializable
 data class FancyReplaceConfig(
+    val functionName: String = "",
     val keywords: List<String> = emptyList(),
 )

@@ -2,6 +2,7 @@ package traveling.location.location
 
 import core.conditional.ConditionalString
 import core.properties.Properties
+import core.properties.TagStrings.SMALL
 import core.properties.Tags
 import kotlin.test.Test
 
@@ -22,7 +23,7 @@ class LocationRecipeBuilderTest{
 
         val location = locationRecipe("Place"){
             extends("Inside")
-            props { tag("Small") }
+            props { tag(SMALL) }
         }
 
         val actual = listOf(base, location).build().last()

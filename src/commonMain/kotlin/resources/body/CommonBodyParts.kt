@@ -102,7 +102,7 @@ class CommonBodyParts : BodyPartResource {
         location("Sack") {
             material(CLOTH)
             props {
-                tag("Container")
+                tag(CONTAINER)
                 value("weight", 1)
                 value("defense", 1)
             }

@@ -5,6 +5,7 @@ import core.GameState
 import core.body.*
 import core.history.GameLogger
 import core.properties.Properties
+import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.ITEM
 import core.properties.Tags
 import core.thing.Thing
@@ -57,7 +58,7 @@ class ViewInventoryTest {
 
             val creature = thing("Soldier") {
                 body("body")
-                props { tag("Container") }
+                props { tag(CONTAINER) }
             }.build()
             val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
             creature.inventory.add(item)
@@ -83,7 +84,7 @@ class ViewInventoryTest {
 
             val creature = thing("Soldier") {
                 body("body")
-                props { tag("Container") }
+                props { tag(CONTAINER) }
             }.build()
             creature.inventory.add(pouch)
             creature.body.equip(pouch)

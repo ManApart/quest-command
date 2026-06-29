@@ -1,5 +1,6 @@
 package resources.thing.items
 
+import core.properties.TagStrings.SMALL
 import core.thing.item.ItemResource
 import core.thing.things
 import crafting.material.MaterialStrings.BRONZE
@@ -84,7 +85,7 @@ class Items : ItemResource {
             material(LEATHER)
             description("It's odd to think this was once something's skin.")
             props {
-                tag("Small")
+                tag(SMALL)
             }
         }
 
