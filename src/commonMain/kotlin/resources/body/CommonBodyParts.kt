@@ -85,7 +85,7 @@ class CommonBodyParts : BodyPartResource {
         location("Grain Chute") {
             material(STONE)
             props {
-                tag("Open", "Container")
+                tag(OPEN, CONTAINER)
                 value("size", 3)
             }
         }
@@ -93,7 +93,7 @@ class CommonBodyParts : BodyPartResource {
         location("Grain Bin") {
             material(STONE)
             props {
-                tag("Open","Container")
+                tag(OPEN,CONTAINER)
                 value("size", 3)
                 value("CanHold", "Grounded")
             }

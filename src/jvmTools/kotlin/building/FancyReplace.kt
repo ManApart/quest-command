@@ -10,7 +10,7 @@ fun main() {
         .also { println("Processing ${it.size} kt files") }
         .forEach { file ->
             val initial = file.readText()
-            val contents = config.fancyReplace.singleParamFunction(initial)
+            val contents = config.fancyReplace.multiParamFunction(initial)
             if (initial != contents) {
                 if (config.dryRun) {
                     println(file.name)
@@ -25,10 +25,15 @@ private fun File.listFilesRecursive(exclude: (File) -> Boolean): List<File> {
     return files + folders.flatMap { it.listFilesRecursive(exclude) }
 }
 
-private fun FancyReplaceConfig.singleParamFunction(initial: String): String {
-    return keywords.fold(initial) { acc, keyword ->
-        val oldVal = "${functionName}(\"$keyword\")"
-        val newVal = "${functionName}(${keyword.uppercase()})"
+private fun FancyReplaceConfig.multiParamFunction(initial: String): String {
+    val regex = Regex("""${functionName}\(([^)]*)\)""")
+    return regex.findAll(initial).fold(initial) { acc, matchGroup ->
+        val match = matchGroup.groupValues[1]
+        val oldVal = "${functionName}($match)"
+        val newParams = keywords.fold(match) { acc, keyword ->
+            acc.replace("\"$keyword\"", keyword.uppercase())
+        }
+        val newVal = "${functionName}($newParams)"
         acc.replace(oldVal, newVal)
     }
 }

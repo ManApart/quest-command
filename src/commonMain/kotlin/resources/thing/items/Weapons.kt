@@ -1,5 +1,6 @@
 package resources.thing.items
 
+import core.properties.TagStrings.SMALL
 import core.thing.item.ItemResource
 import core.thing.things
 import crafting.material.MaterialStrings.IRON
@@ -21,7 +22,7 @@ class Weapons : ItemResource {
                 value("slashDamage", 1)
                 value("stabDamage", 2)
                 value("range", 2)
-                tag("Weapon", "Sharp", "Small")
+                tag("Weapon", "Sharp", SMALL)
             }
         }
 
@@ -34,7 +35,7 @@ class Weapons : ItemResource {
                 value("weight", 4)
                 value("chopDamage", 4)
                 value("range", 5)
-                tag("Weapon", "Sharp", "Small")
+                tag("Weapon", "Sharp", SMALL)
             }
         }
 

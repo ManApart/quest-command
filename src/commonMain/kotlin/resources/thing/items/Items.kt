@@ -76,7 +76,7 @@ class Items : ItemResource {
             props {
                 value("fireHealth", 2)
                 value(LIT_LIGHT, 7)
-                tag("Metal", "Flammable", "Light", "Small")
+                tag("Metal", "Flammable", "Light", SMALL)
             }
             behavior("Burn Out", "fireHealth" to 5)
         }
@@ -93,7 +93,7 @@ class Items : ItemResource {
             material(BRONZE)
             description("A bar of pure metal, ready to be worked into something more.")
             props {
-                tag("Ingot", "Small")
+                tag("Ingot", SMALL)
             }
         }
 
@@ -101,7 +101,7 @@ class Items : ItemResource {
             material(IRON)
             description("A bar of pure metal, ready to be worked into something more.")
             props {
-                tag("Ingot", "Small")
+                tag("Ingot", SMALL)
             }
         }
 

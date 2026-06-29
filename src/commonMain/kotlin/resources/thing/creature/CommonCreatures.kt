@@ -4,6 +4,7 @@ import core.FactKindStrings.WORK_TAGS
 import core.properties.TagStrings.COMMONER
 import core.properties.TagStrings.FARMABLE
 import core.properties.TagStrings.PREDATOR
+import core.properties.TagStrings.SMALL
 import core.thing.creature.CreatureResource
 import core.thing.things
 import status.stat.AttributeStrings.AGILITY
@@ -19,7 +20,7 @@ class CommonCreatures : CreatureResource {
             soul("Bare Handed", 2)
             soul(AGILITY, 1)
             props {
-                tag("Small", PREDATOR)
+                tag(SMALL, PREDATOR)
             }
             //TODO - make this a 'death item' that's spawned on death
             item("Poor Quality Meat")

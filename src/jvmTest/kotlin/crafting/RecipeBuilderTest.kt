@@ -2,6 +2,7 @@ package crafting
 
 
 import core.properties.Properties
+import core.properties.TagStrings.FOOD
 import core.properties.Tags
 import kotlinx.coroutines.runBlocking
 import status.stat.SkillStrings.COOKING
@@ -27,7 +28,7 @@ class RecipeBuilderTest {
                 verb("slice")
                 skill(COOKING, 1)
                 ingredient("Fruit") {
-                    tag("Food", "Slicable")
+                    tag(FOOD, "Slicable")
                 }
                 toolProps {
                     tag("Sharp")

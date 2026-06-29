@@ -1,5 +1,7 @@
 package resources.crafting
 
+import core.properties.TagStrings.FOOD
+import core.properties.TagStrings.SMALL
 import core.thing.thing
 import crafting.RecipeResource
 import crafting.material.MaterialStrings.LEATHER
@@ -15,7 +17,7 @@ class CommonRecipes : RecipeResource {
             verb("slice")
             skill(COOKING, 1)
             ingredient("Base") {
-                tag("Food", "Slicable")
+                tag(FOOD, "Slicable")
             }
             toolProps {
                 tag("Sharp")
@@ -143,7 +145,7 @@ class CommonRecipes : RecipeResource {
                             value("slashDamage", metalQuality)
                             value("stabDamage", (metalQuality * 1.5).toInt())
                             value("range", 2)
-                            tag("Weapon", "Sharp", "Small", metalUsed)
+                            tag("Weapon", "Sharp", SMALL, metalUsed)
                         }
                     }.build()
                 }

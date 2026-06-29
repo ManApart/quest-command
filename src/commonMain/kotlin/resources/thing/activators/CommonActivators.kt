@@ -27,7 +27,7 @@ class CommonActivators : ActivatorResource {
             props {
                 value("chopHealth", 5)
                 value(ValueStrings.FIRE_HEALTH, 5)
-                tag("Climbable", "Container", "Flammable", "Open", "Wood")
+                tag("Climbable", CONTAINER, "Flammable", OPEN, WOOD)
             }
             item("Apple")
             behavior("Chop Tree", "treeName" to "Apple Tree", "resultItemName" to "Apple")
@@ -133,7 +133,7 @@ class CommonActivators : ActivatorResource {
             body("Grain Chute")
             props {
                 value("size", 3)
-                tag("Open", "Container")
+                tag(OPEN, CONTAINER)
             }
             behavior(
                 "Mill",
@@ -150,7 +150,7 @@ class CommonActivators : ActivatorResource {
             body("Grain Bin")
             props {
                 value("size", 3)
-                tag("Open", "Container")
+                tag(OPEN, CONTAINER)
             }
         }
 
