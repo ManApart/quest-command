@@ -16,10 +16,8 @@ class Arrive : EventListener<ArriveEvent>() {
             if (origin != destination) {
                 val player = creature
                 player.position = destination.vector
-                if (!destination.thingName.isNullOrBlank() && !destination.partName.isNullOrBlank()) {
+                if (!destination.thingName.isNullOrBlank()) {
                     val climbThing = destination.location.getLocation().getThings(destination.thingName).first()
-                    val part = climbThing.body.getPartLocation(destination.partName)
-                    player.location = part
                     player.setClimbing(climbThing)
                     if (!silent) creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
                 } else {

@@ -185,10 +185,6 @@ data class Body(
         }
     }
 
-    fun getClimbEntryParts(): List<LocationNode> {
-        return layout.getFurthestLocations(Direction.BELOW)
-    }
-
     fun getPositionInLocation(part: Location, parentOffset: Vector): Vector {
         return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode.getVectorDistanceTo(
             getPartLocation(

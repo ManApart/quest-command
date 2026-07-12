@@ -9,6 +9,7 @@ import core.thing.Thing
 import core.utility.wrapNonEmpty
 import system.debug.DebugType
 import traveling.direction.Direction
+import traveling.location.CLIMBING
 import traveling.location.Route
 import traveling.location.RouteNeighborFinder
 import traveling.location.network.LocationNode
@@ -66,7 +67,7 @@ private fun getExits(location: LocationNode, climbThing: Thing): List<String> {
     }
 
     val things = climbThing.location.getNeighborConnections()
-        .filter { (it.source.thingName == climbThing.name && it.source.partName == location.name) }
+        .filter { (it.source.thingName == climbThing.name && it.kind == CLIMBING) }
         .map { it.destination.location.name }
 
     return (things + dismountLocation).filterNotNull()

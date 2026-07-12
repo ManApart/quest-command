@@ -21,10 +21,32 @@ class KanbaraCity : NetworkResource {
                     restricted(true)
                     origin(-10, -20)
                 }
+                connection {
+                    thing("City Wall")
+                    climbing()
+                    connectsTo("Kanbara City Wall Top North", KANBARA, "City Wall")
+                    restricted(true)
+                    y(100)
+                }
             }
 
             locationNode("Kanbara City South") {
                 location("Kanbara City")
+                connection {
+                    thing("City Wall")
+                    climbing()
+                    connectsTo("Kanbara City Wall Top South", KANBARA, "City Wall")
+                    restricted(true)
+                    y(-100)
+                }
+            }
+
+            locationNode("Kanbara Wall Top North") {
+                location("City Wall")
+            }
+
+            locationNode("Kanbara Wall Top South") {
+                location("City Wall")
             }
 
             locationNode("Kanbara Wall North") {
@@ -32,8 +54,8 @@ class KanbaraCity : NetworkResource {
                 connection("Kanbara Gate", x = 100, y = -100)
                 connection {
                     thing("City Wall")
-                    part("Wall Top")
-                    connectsTo("Kanbara City", KANBARA, "City Wall", "Wall Top")
+                    climbing()
+                    connectsTo("Kanbara City Wall Top North", KANBARA, "City Wall")
                     restricted(true)
                     y(100)
                 }
@@ -44,8 +66,9 @@ class KanbaraCity : NetworkResource {
                 connection("Kanbara Gate", x = 100, y = 100)
                 connection {
                     thing("City Wall")
-                    part("Wall Top")
-                    connectsTo("Kanbara City South", KANBARA, "City Wall", "Wall Top")
+                    climbing()
+                    //TODO - if you can climb up, should be able to jump down something
+                    connectsTo("Kanbara City Wall Top South", KANBARA, "City Wall")
                     restricted(true)
                     y(-100)
                 }

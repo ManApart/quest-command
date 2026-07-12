@@ -122,10 +122,9 @@ class ClimbCommand : Command() {
         val localClimbableThings = source.currentLocation().findThingsByTag("Climbable")
         val connections = source.location.getNeighborConnections().filter { connection ->
             localClimbableThings.none { it.name == connection.source.thingName }
-                    && connection.destination.hasThingAndPart()
         }
         val connectedThings =
-            connections.map { it.destination.location.getLocation().getThings(it.destination.thingName!!) }.flatten()
+            connections.flatMap { it.destination.location.getLocation().getThings(it.destination.thingName!!) }
         return NameSearchableList(localClimbableThings + connectedThings)
     }
 
@@ -189,23 +188,6 @@ class ClimbCommand : Command() {
             currentLocation.getNeighbors()
         } else {
             getEntryPoints(player, thing)
-        }
-    }
-
-    private suspend fun getEntryPoints(player: Thing, thing: Thing): List<LocationNode> {
-        val sourceConnection = player.location.getNeighborConnections()
-            .firstOrNull { it.source.hasThingAndPart() && it.source.thingName == thing.name }
-        val destConnection = player.location.getNeighborConnections()
-            .firstOrNull { it.destination.hasThingAndPart() && it.destination.thingName == thing.name }
-
-        return if (thing.body.getParts().size > 1 && thing.location == player.location) {
-            thing.body.getClimbEntryParts()
-        } else if (sourceConnection != null && thing.body.hasPart(sourceConnection.source.partName ?: "")) {
-            listOf(thing.body.getPartLocation(sourceConnection.source.partName!!))
-        } else if (destConnection != null && thing.body.hasPart(destConnection.destination.partName ?: "")) {
-            listOf(thing.body.getPartLocation(destConnection.destination.partName!!))
-        } else {
-            thing.body.getClimbEntryParts()
         }
     }
 

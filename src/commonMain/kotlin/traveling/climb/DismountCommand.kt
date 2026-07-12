@@ -7,7 +7,6 @@ import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 import traveling.location.location.LocationPoint
-import traveling.location.weather.WeatherManager
 import traveling.position.NO_VECTOR
 
 class DismountCommand : Command() {
@@ -21,7 +20,7 @@ class DismountCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Dismount -Stop climbing (only at top or bottom of obstacle)"""
+	    Dismount - Stop climbing (only at top or bottom of obstacle)"""
     }
 
     override fun getCategory(): List<String> {
@@ -38,8 +37,7 @@ class DismountCommand : Command() {
             val exit = getExitLocation(source)
             val climbThing = source.climbThing!!
             val thingLocation = LocationPoint(climbThing.location)
-            val part = source.location
-            val origin = LocationPoint(climbThing.location, NO_VECTOR, climbThing.name, part.name)
+            val origin = LocationPoint(climbThing.location, NO_VECTOR, climbThing.name)
 
             when {
                 exit != null -> EventManager.postEvent(ClimbCompleteEvent(source, source.climbThing!!, origin, exit))
@@ -51,13 +49,12 @@ class DismountCommand : Command() {
         }
     }
 
-    private suspend fun getExitLocation(source: Thing) : LocationPoint? {
+    private fun getExitLocation(source: Thing) : LocationPoint? {
         val climbThing = source.climbThing!!
         val location = climbThing.location
-        val part = climbThing.body.getPart(source.location.name)
 
         return climbThing.location.getNeighborConnections().firstOrNull {
-            it.source.equals(location, climbThing, part)
+            it.source.equals(location, climbThing)
         }?.destination
     }
 

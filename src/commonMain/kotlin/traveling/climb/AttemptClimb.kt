@@ -137,18 +137,18 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private fun fall(event: AttemptClimbEvent) {
-        EventManager.postEvent(FallEvent(event.creature, event.thing.location, event.creature.location.getDistanceToLowestNodeInNetwork(), "You lose your grip on ${event.thingPart.name}."))
+        EventManager.postEvent(FallEvent(event.creature, event.thing.location, event.creature.location.getDistanceToLowestNodeInNetwork(), "You lose your grip on ${event.thing}."))
     }
 
     private fun dismountFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
         val destination = LocationPoint(event.thing.location)
-        val origin = connectedLocation ?: LocationPoint(event.thing.location, NO_VECTOR, event.thing.name, event.thingPart.name)
+        val origin = connectedLocation ?: LocationPoint(event.thing.location, NO_VECTOR, event.thing.name)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.thing, origin, destination))
     }
 
     private fun dismountToConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
-        val origin = LocationPoint(event.thing.location, NO_VECTOR, event.thing.name, event.thingPart.name)
+        val origin = LocationPoint(event.thing.location, NO_VECTOR, event.thing.name)
         val destination = connectedLocation ?: LocationPoint(event.thing.location)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.thing, origin, destination))
