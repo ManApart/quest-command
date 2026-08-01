@@ -16,6 +16,7 @@ import traveling.location.network.LocationNode
 
 suspend fun describeClimbJourney(source: Player, detailed: Boolean = false) {
     val location = source.thing.location
+    //TODO - this is not correct
     val distance = getDistance(location).wrapNonEmpty("", " ")
     val exits = getExits(location, source.thing.climbThing!!)
     val exitString = if (exits.isEmpty()) {
@@ -60,11 +61,7 @@ private fun getRouteString(source: Thing, route: Route): List<String> {
 }
 
 private fun getExits(location: LocationNode, climbThing: Thing): List<String> {
-    val dismountLocation = if (climbThing.body.getClimbEntryParts().contains(location)) {
-        climbThing.location.name
-    } else {
-        null
-    }
+    val dismountLocation = location.name.takeIf { climbThing.location == location }
 
     val things = climbThing.location.getNeighborConnections()
         .filter { (it.source.thingName == climbThing.name && it.kind == CLIMBING) }

@@ -8,7 +8,6 @@ import core.properties.IS_CLIMBING
 import core.thing.Thing
 import traveling.direction.Direction
 
-//TODO - eventually jump to specific part while climbing (in any direction)
 class JumpCommand : Command() {
     override fun getAliases(): List<String> {
         return listOf("Jump", "j")
@@ -36,6 +35,7 @@ class JumpCommand : Command() {
     }
 
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
+        //TODO - not right
         if (source.properties.values.getBoolean(IS_CLIMBING)) {
             val playerLocation = source.location
             val thingLocation= source.climbThing!!.location

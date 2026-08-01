@@ -22,7 +22,7 @@ class PlayerJump : EventListener<JumpEvent>() {
         event.creature.display{"${event.creature.asSubject(it)} jump from ${event.source}"}
         val damage = calculateJumpDamage(event)
 
-        event.creature.finishClimbing()
+        event.creature.setNotClimbing()
 
         if (damage != 0) {
             EventManager.postEvent(StatChangeEvent(event.creature, "Falling", HEALTH, damage))

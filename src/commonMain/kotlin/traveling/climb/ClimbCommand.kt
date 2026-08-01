@@ -7,10 +7,7 @@ import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 import core.utility.NameSearchableList
-import core.utility.filterList
 import traveling.direction.Direction
-import traveling.direction.getDirection
-import traveling.location.network.LocationNode
 
 class ClimbCommand : Command() {
 
@@ -26,9 +23,8 @@ class ClimbCommand : Command() {
 
     override fun getManual(): String {
         return """
-	Climb <part> of <thing> - Climb (onto) the thing
-	Climb <direction> - Continue climbing in <direction>
-	Climb to <part> - Climb to <part>
+	Climb <thing> - Climb (onto) the thing
+	Climb <direction> - Climb in <direction>
 	Climb s - The s flag silences travel, meaning a minimum amount of output"""
     }
 
@@ -38,9 +34,8 @@ class ClimbCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() && source.thing.climbThing == null -> source.getPerceivedThingNames() + source.getPerceivedPartNames()
-            args.isEmpty() -> Direction.values().map { it.name } + listOf("to")
-            args.last() == "to" -> source.getPerceivedPartNames()
+            args.isEmpty() && source.thing.climbThing == null -> source.getPerceivedThings().filter { it.properties.tags.has("Climbable") }.map { it.name }
+            args.isEmpty() -> Direction.entries.map { it.name }
             else -> listOf()
         }
     }
@@ -56,6 +51,7 @@ class ClimbCommand : Command() {
                 arguments,
                 source.thing.climbThing!!
             )
+
             else -> processNewClimb(source, keyword, arguments)
         }
     }
@@ -68,40 +64,30 @@ class ClimbCommand : Command() {
             arguments.getBaseString()
         }
         val things = findAllThings(source)
-        val desiredDirection = arguments.getDirection()
+        val desiredDirection = arguments.getDirection().let { if (it == Direction.NONE) Direction.ABOVE else it }
         val matchByName = things.getOrNull(thingName)
-        val matchByDirection = getDirectionMatches(source, things, desiredDirection)
-        val confidentMatch = getConfidentMatch(matchByName, matchByDirection)
         val quiet = arguments.hasFlag("s")
 
-        if (confidentMatch != null) {
-            if (!confidentMatch.properties.tags.has("Climbable")) {
-                source.displayToMe("${confidentMatch.name} cannot be climbed.")
+        if (matchByName != null) {
+            if (!matchByName.properties.tags.has("Climbable")) {
+                source.displayToMe("${matchByName.name} cannot be climbed.")
             } else {
-                val parts = getEntryPoints(source, confidentMatch)
-                when {
-                    parts.isEmpty() -> source.displayToMe("${confidentMatch.name} does not have any parts to climb.")
-                    parts.size == 1 -> EventManager.postEvent(
-                        AttemptClimbEvent(
-                            source,
-                            confidentMatch,
-                            parts.first(),
-                            getDirection(source, desiredDirection, confidentMatch, parts.first()),
-                            quiet
-                        )
+                EventManager.postEvent(
+                    AttemptClimbEvent(
+                        source,
+                        matchByName,
+                        desiredDirection,
+                        quiet
                     )
-                    parts.size > 1 -> clarifyClimbPart(player, source.location, confidentMatch)
-                }
+                )
             }
         } else if (isAlias(keyword) && things.size == 1) {
             val match = things.first()
-            val parts = getEntryPoints(source, match)
             EventManager.postEvent(
                 AttemptClimbEvent(
                     source,
                     match,
-                    parts.first(),
-                    getDirection(source, desiredDirection, match, parts.first()),
+                    desiredDirection,
                     quiet
                 )
             )
@@ -128,38 +114,23 @@ class ClimbCommand : Command() {
         return NameSearchableList(localClimbableThings + connectedThings)
     }
 
-    private suspend fun getDirectionMatches(
-        player: Thing,
-        things: NameSearchableList<Thing>,
-        desiredDirection: Direction
-    ): List<ClimbOption> {
-        return things
-            .filterList { getEntryPoints(player, it).isNotEmpty() }
-            .map { ClimbOption(it, getDirection(player, it, getEntryPoints(player, it).first())) }
-            .filter { it.direction == desiredDirection }
-    }
 
     private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
-        val climbOptions = options
-            .filterList { getEntryPoints(player.thing, it).isNotEmpty() }
-            .map { ClimbOption(it, getDirection(player.thing, it, getEntryPoints(player.thing, it).first())) }
-            .filter { desiredDirection == Direction.NONE || it.direction == desiredDirection }
-
         when {
-            climbOptions.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
-            climbOptions.size == 1 && desiredDirection != Direction.NONE -> CommandParsers.parseCommand(
+            options.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
+            options.size == 1 && desiredDirection != Direction.NONE -> CommandParsers.parseCommand(
                 player,
                 "climb $desiredDirection ${options[0]}"
             )
-            options.size == 1 && options.size == climbOptions.size && options.first().name == climbOptions.first().thing.name -> player.displayToMe(
-                "Unable to climb ${options.first().name}."
-            )
-            climbOptions.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
+
+
+            options.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
             desiredDirection != Direction.NONE -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
-                displayedOptions(climbOptions.map { "${it.thing.name} (${it.direction})" })
-                options(climbOptions.map { "climb ${it.direction} ${it.thing.name}" })
+                displayedOptions(options.map { it.name })
+                options(options.map { "climb ${it.name}" })
             }
+
             else -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
                 optionsNamed(options)
@@ -168,30 +139,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private suspend fun clarifyClimbPart(player: Player, currentLocation: LocationNode, thing: Thing) {
-        val options = getAvailableOptions(player.thing, currentLocation, thing)
-
-        if (options.isEmpty()) {
-            player.displayToMe("${thing.name} doesn't seem to have anything to climb.")
-        } else {
-            player.respond("No parts of ${thing.name} to climb.") {
-                message("Climb what part of ${thing.name}?")
-                optionsNamed(options)
-                command { "climb $it of ${thing.name}" }
-            }
-        }
-    }
-
-    private suspend fun getAvailableOptions(player: Thing, currentLocation: LocationNode, thing: Thing): List<LocationNode> {
-        //If in same network, all neighbor nodes available, otherwise only entry points
-        return if (currentLocation.network == thing.body.layout) {
-            currentLocation.getNeighbors()
-        } else {
-            getEntryPoints(player, thing)
-        }
-    }
-
-    private suspend fun processClimbing(player: Player, keyword: String, arguments: Args, thing: Thing) {
+    private fun processClimbing(player: Player, keyword: String, arguments: Args, thing: Thing) {
         val direction = arguments.getDirection()
         when {
             arguments.isEmpty() -> {
@@ -200,30 +148,10 @@ class ClimbCommand : Command() {
                 } else {
                     Direction.ABOVE
                 }
-                climbInDirection(player, keywordDirection, thing)
+                EventManager.postEvent(AttemptClimbEvent(player.thing, thing, keywordDirection))
             }
-            direction != Direction.NONE -> climbInDirection(player, direction, thing)
-            else -> climbToPart(player, arguments, thing)
-        }
-    }
 
-    private suspend fun climbInDirection(player: Player, direction: Direction, thing: Thing) {
-        val location = player.location.getNeighbors(direction).firstOrNull()
-        if (location != null) {
-            EventManager.postEvent(AttemptClimbEvent(player.thing, thing, location, direction))
-        } else {
-            clarifyClimbPart(player, player.location, thing)
-        }
-    }
-
-    private suspend fun climbToPart(player: Player, arguments: Args, thing: Thing) {
-        val partArgs = arguments.getBaseString()
-        if (thing.body.hasPart(partArgs)) {
-            val part = thing.body.getPartLocation(partArgs)
-            val direction = getDirection(player.thing, thing, part)
-            EventManager.postEvent(AttemptClimbEvent(player.thing, thing, part, direction))
-        } else {
-            clarifyClimbPart(player, player.location, thing)
+            else -> EventManager.postEvent(AttemptClimbEvent(player.thing, thing, direction))
         }
     }
 

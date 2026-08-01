@@ -33,11 +33,7 @@ data class Player(
     val location get() = thing.location
     val position get() = thing.position
 
-    suspend fun getPerceivedThingNames(): List<String> {
-        return location.getLocation().getThings(perceivedBy = thing).map { it.name }
-    }
+    suspend fun getPerceivedThings() = location.getLocation().getThings(perceivedBy = thing)
+    suspend fun getPerceivedThingNames() = getPerceivedThings().map { it.name }
 
-    suspend fun getPerceivedPartNames(): List<String> {
-        return location.getLocation().getThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body.getParts().map { it.name } }.toSet().toList()
-    }
 }

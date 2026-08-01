@@ -21,6 +21,7 @@ class Arrive : EventListener<ArriveEvent>() {
                     player.setClimbing(climbThing)
                     if (!silent) creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
                 } else {
+                    player.setNotClimbing()
                     player.location = destination.location
                     if (!silent) {
                         if (quiet) {
