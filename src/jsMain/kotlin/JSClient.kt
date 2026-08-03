@@ -57,12 +57,12 @@ fun Document.startClient() {
         window.onkeyup = { keyboardEvent ->
             CoroutineScope(GlobalScope.coroutineContext).launch {
 //        println("Pressed " + keyboardEvent.key)
-                when (keyboardEvent.key) {
-                    "Enter" -> {
+                when  {
+                    (keyboardEvent.key == "Enter" || keyboardEvent.keyCode == 13) -> {
                         submitCommand(prompt.value)
                     }
 
-                    "Tab" -> tabComplete()
+                    keyboardEvent.key == "Tab" -> tabComplete()
                     else -> tabHint()
                 }
             }
@@ -71,7 +71,11 @@ fun Document.startClient() {
             CoroutineScope(GlobalScope.coroutineContext).launch {
                 if (e.target is HTMLButtonElement) {
                     val button = (e.target as HTMLButtonElement)
-                    if (button.id == "theme-toggle") toggleTheme() else clickSuggestion(button)
+                    when (button.id) {
+                        "theme-toggle" -> toggleTheme()
+                        "submit-prompt" -> submitCommand(prompt.value)
+                        else  -> clickSuggestion(button)
+                    }
                 } else if (e.target is HTMLObjectElement && (e.target as HTMLObjectElement).parentElement is HTMLButtonElement) {
                     if (((e.target as HTMLObjectElement).parentElement as HTMLButtonElement).id == "theme-toggle") toggleTheme()
                 }
@@ -186,7 +190,7 @@ private fun updateSuggestions(displayToCommand: Map<TabDisplay, TabCommand>) {
     } else ""
     suggestionsDiv.innerHTML = back + displayToCommand.entries.joinToString(" ") { (display, cmd) ->
         """<button class="suggestion-button" command="$cmd">${display.capitalize2()}</button>"""
-    }
+    } + """<button id="submit-prompt" class="suggestion-button">-></button>"""
 }
 
 private fun toggleTheme() {

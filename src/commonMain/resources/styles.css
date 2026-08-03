@@ -113,6 +113,10 @@ input:focus-visible {
     margin: 5px;
 }
 
+#submit-prompt {
+    display: none;
+}
+
 .suggestion-button {
     background-color: var(--background);
     color: var(--text);
@@ -152,6 +156,10 @@ input:focus-visible {
         img, object {
             width: 100px;
         }
+    }
+
+    #submit-prompt {
+        display: inline-block;
     }
 
     .suggestion-button {
