@@ -193,6 +193,10 @@ data class Body(
         ))
     }
 
+    fun getHeight(): Int {
+        return getSize().z
+    }
+
     fun getSize(): Vector {
         return layout.getSize()
     }

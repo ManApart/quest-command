@@ -15,7 +15,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     val direction: Direction by lazy { calculateDirection() }
 
     override fun toString(): String {
-        return if (z == 0){
+        return if (z == 0) {
             "($x, $y)"
         } else {
             "($x, $y, $z)"
@@ -41,6 +41,10 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return result
     }
 
+    fun plusX(x: Int) = plus(Vector(x))
+    fun plusY(y: Int) = plus(Vector(y = y))
+    fun plusZ(z: Int) = plus(Vector(z = z))
+
     operator fun plus(other: Vector): Vector {
         return Vector(x + other.x, y + other.y, z + other.z)
     }
@@ -63,7 +67,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
      */
     fun closer(goal: Vector, amount: Int): Vector {
         val distance = getDistance(goal)
-        if (distance == 0 || amount > distance){
+        if (distance == 0 || amount > distance) {
             return goal
         }
         return getVectorInDirection(goal, amount)
@@ -200,7 +204,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
 
     fun getVectorInDirection(thing: Vector, distance: Int): Vector {
         val percent = distance / getDistance(thing).toFloat()
-        if (percent.isNaN()){
+        if (percent.isNaN()) {
             return thing
         }
         val inversePercent = 1 - percent
@@ -216,7 +220,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return other.minByOrNull { getDistance(it) } ?: other.first()
     }
 
-    fun isNearer(to: Vector, than: Vector): Boolean{
+    fun isNearer(to: Vector, than: Vector): Boolean {
         return getDistance(to) < getDistance(than)
     }
 

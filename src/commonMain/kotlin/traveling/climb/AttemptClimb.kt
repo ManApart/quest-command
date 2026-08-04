@@ -16,7 +16,6 @@ import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
 import traveling.direction.Direction
 import traveling.jump.FallEvent
-import traveling.location.RouteFinder
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
 import traveling.position.NO_VECTOR
@@ -31,7 +30,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         if (!isWithinRange(event)) {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.climbThing.name}." }
         } else {
-            val distance = getDistance(event.creature.location, event.thingPart)
+            val distance = event.climbThing.body.getHeight()
             val chance = getChance(event.creature, distance)
 
             event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
@@ -39,7 +38,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
             if (event.creature.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
                 advance(event, distance, chance)
             } else {
-                fall(event)
+                fall(event, distance)
             }
             event.climbThing.consume(event)
         }
@@ -50,47 +49,29 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
                 || event.climbThing.location != event.creature.location
     }
 
-    private fun getDistance(source: LocationNode, destination: LocationNode): Int {
-        return if (source.parent == destination.parent) {
-            val routeFinder = RouteFinder(source, destination)
-            if (routeFinder.hasRoute()) {
-                routeFinder.getRoute().getDistance()
-            } else {
-                0
-            }
-        } else {
-            destination.getDistanceToLowestNodeInNetwork()
-        }
-    }
-
-    private fun getChance(creature: Thing, segmentDistance: Int): Double {
+    private fun getChance(creature: Thing, distance: Int): Double {
         //TODO - segment difficulty by material
         val skill = creature.soul.getCurrent(CLIMBING)
         val segmentDifficulty = 1
-        val challenge = max(segmentDistance * segmentDifficulty, 1)
+        val challenge = max(distance * segmentDifficulty, 1)
         return skill / challenge.toDouble()
     }
 
     private suspend fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
         val directionString = getDirectionString(event.desiredDirection)
         when {
-            distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.thingPart.name}.")
-            distance == 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${event.thingPart.name}."}
-            else -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString towards ${event.thingPart.name}."}
+            distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.climbThing.name}.")
+            distance == 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${event.climbThing.name}."}
+            else -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString ${event.climbThing.name}."}
         }
 
         event.creature.setClimbing(event.climbThing)
         awardEXP(event.creature, chance)
 
-        if (isDemountableEdgeNode(event)) {
-            val connectedLocation = getConnectedLocation(event.climbThing.location, event.climbThing, event.thingPart)
-            if (creatureIsComingFromConnection(event, connectedLocation)) {
-                dismountFromConnection(event, connectedLocation)
-            } else {
-                dismountToConnection(event, connectedLocation)
-            }
-        } else {
-            continueClimbing(event)
+        val connectedLocation = getConnectedLocation(event.climbThing.location, event.climbThing, event.desiredDirection)
+        when {
+            connectedLocation == null && event.desiredDirection == Direction.ABOVE -> climbToTop(event)
+            else -> dismount(event, connectedLocation)
         }
     }
 
@@ -113,42 +94,26 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         }
     }
 
-    /**
-     * Thing part is at the edge of the network (in the desired direction) and is either 0 feet from the ground or has a connected exit)
-     */
-    private suspend fun isDemountableEdgeNode(event: AttemptClimbEvent): Boolean {
-        return event.thingPart.isAnOuterNode(event.desiredDirection)
-                && (event.thingPart.getDistanceToLowestNodeInNetwork() == 0 || getConnectedLocation(event.climbThing.location, event.climbThing, event.thingPart) != null)
+    private fun getConnectedLocation(thingLocation: LocationNode, climbThing: Thing, direction: Direction): LocationPoint? {
+        val neighbors = thingLocation.getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
+        return if (direction == Direction.ABOVE){
+            neighbors.firstOrNull { it.source.equals(thingLocation, climbThing) }?.destination
+        } else {
+            neighbors.firstOrNull { it.destination.equals(thingLocation, climbThing) }?.source
+        }
     }
 
-    private suspend fun getConnectedLocation(thingLocation: LocationNode, climbThing: Thing, part: LocationNode): LocationPoint? {
-        return thingLocation.getNeighborConnections()
-            .firstOrNull { it.source.equals(thingLocation, climbThing, climbThing.body.getPart(part.name)) }
-            ?.destination
+    private fun fall(event: AttemptClimbEvent, distance: Int) {
+        EventManager.postEvent(FallEvent(event.creature, event.climbThing.location, distance, "You lose your grip on ${event.climbThing}."))
     }
 
-    private fun creatureIsComingFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?): Boolean {
-        return connectedLocation?.location == event.creature.location
+    private suspend fun climbToTop(event: AttemptClimbEvent) {
+        event.creature.position = event.climbThing.position.plusZ(event.climbThing.body.getHeight())
+        event.creature.display { event.creature.asSubject(it) + " " + event.creature.withS("climb", it) + " to the top of ${event.climbThing.name}." }
     }
 
-
-    private fun continueClimbing(event: AttemptClimbEvent) {
-        EventManager.postEvent(ArriveEvent(event.creature, LocationPoint(event.creature.location), LocationPoint(event.thingPart), "Climb", silent = true))
-    }
-
-    private fun fall(event: AttemptClimbEvent) {
-        EventManager.postEvent(FallEvent(event.creature, event.climbThing.location, event.creature.location.getDistanceToLowestNodeInNetwork(), "You lose your grip on ${event.climbThing}."))
-    }
-
-    private fun dismountFromConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
-        val destination = LocationPoint(event.climbThing.location)
-        val origin = connectedLocation ?: LocationPoint(event.climbThing.location, NO_VECTOR, event.climbThing.name)
-
-        EventManager.postEvent(ClimbCompleteEvent(event.creature, event.climbThing, origin, destination))
-    }
-
-    private fun dismountToConnection(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
-        val origin = LocationPoint(event.climbThing.location, NO_VECTOR, event.climbThing.name)
+    private fun dismount(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
+        val origin = LocationPoint(event.climbThing.location, event.creature.position, event.climbThing.name)
         val destination = connectedLocation ?: LocationPoint(event.climbThing.location)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.climbThing, origin, destination))
