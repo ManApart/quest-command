@@ -1,5 +1,7 @@
 package traveling.direction
 
+import core.thing.Thing
+import traveling.location.network.LocationNode
 import traveling.position.Vector
 
 enum class Direction(val shortcut: String, val vector: Vector) {
@@ -24,7 +26,7 @@ enum class Direction(val shortcut: String, val vector: Vector) {
      * EX: to the north west
      */
     fun directionString(): String {
-        return when (this){
+        return when (this) {
             ABOVE -> this.name.lowercase()
             BELOW -> this.name.lowercase()
             NONE -> ""
@@ -33,7 +35,7 @@ enum class Direction(val shortcut: String, val vector: Vector) {
     }
 
     companion object {
-        fun getDirection(value: String) : Direction {
+        fun getDirection(value: String): Direction {
             val cleaned = value.lowercase().trim()
             return values().firstOrNull {
                 cleaned == it.name.lowercase() || cleaned == it.shortcut.lowercase()
@@ -42,3 +44,7 @@ enum class Direction(val shortcut: String, val vector: Vector) {
     }
 
 }
+
+fun Thing.getDirectionTo(other: Thing) = if (location == other.location) getDirectionToWithinLocation(other) else location.getDirectionTo(other.location)
+private fun Thing.getDirectionToWithinLocation(other: Thing) = position.calculateDirection(other.position)
+fun LocationNode.getDirectionTo(other: LocationNode) = getConnection(other)?.vector?.direction ?: Direction.NONE

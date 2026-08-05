@@ -7,11 +7,14 @@ import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
 import core.utility.NameSearchableList
+import core.utility.filterList
 import traveling.direction.Direction
+import traveling.direction.Direction.Companion.getDirection
+import traveling.direction.getDirectionTo
+import traveling.location.CLIMBING
+import kotlin.collections.filter
 
 class ClimbCommand : Command() {
-
-    private class ClimbOption(val thing: Thing, val direction: Direction)
 
     override fun getAliases(): List<String> {
         return listOf("Climb", "cl", "scale", "descend")
@@ -63,25 +66,27 @@ class ClimbCommand : Command() {
         } else {
             arguments.getBaseString()
         }
-        val things = findAllThings(source)
         val desiredDirection = arguments.getDirection().let { if (it == Direction.NONE) Direction.ABOVE else it }
+        val things = findAllThings(source)
         val matchByName = things.getOrNull(thingName)
+        val matchByDirection = things.toList().filter { source.getDirectionTo(it) == desiredDirection }
+        val confidentMatch = matchByName ?: matchByDirection.takeIf { it.size == 1 }?.first()
         val quiet = arguments.hasFlag("s")
 
-        if (matchByName != null) {
-            if (!matchByName.properties.tags.has("Climbable")) {
-                source.displayToMe("${matchByName.name} cannot be climbed.")
+        if (confidentMatch != null) {
+            if (!confidentMatch.properties.tags.has("Climbable")) {
+                source.displayToMe("${confidentMatch.name} cannot be climbed.")
             } else {
                 EventManager.postEvent(
                     AttemptClimbEvent(
                         source,
-                        matchByName,
+                        confidentMatch,
                         desiredDirection,
                         quiet
                     )
                 )
             }
-        } else if (isAlias(keyword) && things.size == 1) {
+        } else if (things.size == 1 && isAlias(keyword)) {
             val match = things.first()
             EventManager.postEvent(
                 AttemptClimbEvent(
@@ -96,24 +101,16 @@ class ClimbCommand : Command() {
         }
     }
 
-    private fun getConfidentMatch(namedMatch: Thing?, directionMatches: List<ClimbOption>): Thing? {
-        return namedMatch ?: if (directionMatches.size == 1) {
-            directionMatches.first().thing
-        } else {
-            null
-        }
-    }
-
     private suspend fun findAllThings(source: Thing): NameSearchableList<Thing> {
         val localClimbableThings = source.currentLocation().findThingsByTag("Climbable")
         val connections = source.location.getNeighborConnections().filter { connection ->
-            localClimbableThings.none { it.name == connection.source.thingName }
+            connection.kind == CLIMBING && localClimbableThings.none { it.name == connection.source.thingName }
         }
-        val connectedThings =
-            connections.flatMap { it.destination.location.getLocation().getThings(it.destination.thingName!!) }
+        val connectedThings = connections.flatMap { c ->
+            c.destination.thingName?.let { c.destination.location.getLocation().getThings(it) } ?: listOf()
+        }
         return NameSearchableList(localClimbableThings + connectedThings)
     }
-
 
     private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
         when {

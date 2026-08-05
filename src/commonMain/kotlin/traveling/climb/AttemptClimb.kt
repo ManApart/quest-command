@@ -3,6 +3,7 @@ package traveling.climb
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
+import core.history.displayToMe
 import core.thing.Thing
 import core.utility.RandomManager
 import core.utility.asSubject
@@ -15,7 +16,9 @@ import status.stat.SkillStrings.CLIMBING
 import status.statChanged.StatChangeEvent
 import traveling.arrive.ArriveEvent
 import traveling.direction.Direction
+import traveling.direction.getDirectionTo
 import traveling.jump.FallEvent
+import traveling.location.connection
 import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
 import traveling.position.NO_VECTOR
@@ -29,6 +32,10 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     override suspend fun complete(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.climbThing.name}." }
+        } else if (event.creature.location == event.climbThing.location && event.creature.position.y >= event.climbThing.body.getHeight()) {
+            event.creature.displayToMe("You're already at the top of ${event.climbThing.name}.")
+        } else if (isAtDestination(event)) {
+            event.creature.displayToMe("You've already climbed ${event.climbThing.name}.")
         } else {
             val distance = event.climbThing.body.getHeight()
             val chance = getChance(event.creature, distance)
@@ -49,6 +56,11 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
                 || event.climbThing.location != event.creature.location
     }
 
+    private fun isAtDestination(event: AttemptClimbEvent): Boolean {
+        val actualDirection = event.creature.location.getDirectionTo(event.climbThing.location)
+        return actualDirection != event.desiredDirection && event.climbThing.location != event.creature.location
+    }
+
     private fun getChance(creature: Thing, distance: Int): Double {
         //TODO - segment difficulty by material
         val skill = creature.soul.getCurrent(CLIMBING)
@@ -61,8 +73,8 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         val directionString = getDirectionString(event.desiredDirection)
         when {
             distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.climbThing.name}.")
-            distance == 0 -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${event.climbThing.name}."}
-            else -> event.creature.display{"${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString ${event.climbThing.name}."}
+            distance == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${event.climbThing.name}." }
+            else -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString ${event.climbThing.name}." }
         }
 
         event.creature.setClimbing(event.climbThing)
@@ -96,7 +108,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     private fun getConnectedLocation(thingLocation: LocationNode, climbThing: Thing, direction: Direction): LocationPoint? {
         val neighbors = thingLocation.getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
-        return if (direction == Direction.ABOVE){
+        return if (direction == Direction.ABOVE) {
             neighbors.firstOrNull { it.source.equals(thingLocation, climbThing) }?.destination
         } else {
             neighbors.firstOrNull { it.destination.equals(thingLocation, climbThing) }?.source
