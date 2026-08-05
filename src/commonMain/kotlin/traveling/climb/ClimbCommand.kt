@@ -61,12 +61,12 @@ class ClimbCommand : Command() {
 
     private suspend fun processNewClimb(player: Player, keyword: String, arguments: Args) {
         val source = player.thing
+        val desiredDirection = arguments.getDirection().let { if (it == Direction.NONE) Direction.ABOVE else it }
         val thingName = if (arguments.getString("to") != "") {
             arguments.getString("to")
         } else {
             arguments.getBaseString()
-        }
-        val desiredDirection = arguments.getDirection().let { if (it == Direction.NONE) Direction.ABOVE else it }
+        }.replace(desiredDirection.name.lowercase(), "").trim()
         val things = findAllThings(source)
         val matchByName = things.getOrNull(thingName)
         val matchByDirection = things.toList().filter { source.getDirectionTo(it) == desiredDirection }
