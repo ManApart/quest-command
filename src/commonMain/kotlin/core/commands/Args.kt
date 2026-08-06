@@ -128,7 +128,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     fun getDirection(): Direction {
-        val directions = hasAny(Direction.entries.map { it.name })
+        val directions = hasAny(Direction.entries.flatMap { it.wordList })
         return if (directions.isNotEmpty()) {
             Direction.getDirection(directions.first())
         } else {

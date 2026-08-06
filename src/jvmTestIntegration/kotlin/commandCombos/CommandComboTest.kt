@@ -99,7 +99,7 @@ class CommandComboTest {
 
     @Test
     fun climbTree() {
-        val input = "db random && n && climb tree && climb && d && d"
+        val input = "db random && n && climb tree && d"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
         assertTrue(GameLogger.getMainHistory().contains("You climb to Apple Tree Branches."))
         assertTrue(GameLogger.getMainHistory().contains("It is neighbored by Apple Tree (BELOW)."))

@@ -13,7 +13,7 @@ import core.utility.NameSearchableList
 class UnEquipItemCommand : Command() {
     private val delimiters = listOf("from")
     override fun getAliases(): List<String> {
-        return listOf("UnEquip")
+        return listOf("uq")
     }
 
     override fun getDescription(): String {

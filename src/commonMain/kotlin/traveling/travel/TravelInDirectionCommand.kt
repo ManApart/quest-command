@@ -13,12 +13,7 @@ import traveling.location.network.LocationNode
 
 class TravelInDirectionCommand : Command() {
     override fun getAliases(): List<String> {
-        val aliases = mutableListOf("Direction")
-        Direction.values().forEach {
-            aliases.add(it.name)
-            aliases.add(it.shortcut)
-        }
-        return aliases
+        return listOf("Direction") + Direction.entries.flatMap { listOf(it.name, it.shortcut) }
     }
 
     override fun getDescription(): String {
@@ -36,7 +31,7 @@ class TravelInDirectionCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return Direction.values().map { it.name }
+        return Direction.entries.map { it.name }
     }
 
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
