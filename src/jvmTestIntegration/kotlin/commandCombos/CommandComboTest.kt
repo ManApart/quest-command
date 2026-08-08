@@ -293,7 +293,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(
                 GameState.player,
-                "rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
+                "db clarity && rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
             )
 
             assertHistory("Farmer tends the Wheat Field.")
