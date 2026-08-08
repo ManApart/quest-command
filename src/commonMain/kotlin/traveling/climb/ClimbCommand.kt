@@ -8,6 +8,7 @@ import core.properties.IS_CLIMBING
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.filterList
+import core.utility.toNameSearchableList
 import traveling.direction.Direction
 import traveling.direction.Direction.Companion.getDirection
 import traveling.direction.getDirectionTo
@@ -68,13 +69,10 @@ class ClimbCommand : Command() {
         } else {
             arguments.getBaseString()
         }.replace(desiredDirection.name.lowercase(), "").trim()
-        val things = findAllThings(source)
-        val matchByName = things.getOrNull(thingName)
+        val things = player.location.determineClimbThings().filter { it.getDirection(source) == desiredDirection }.map { it.thing }
+        val matchByName = things.toNameSearchableList().getOrNull(thingName)
 
-        val matchByDirection = things.toList().filter {
-          source.canClimbInDirection(it, desiredDirection) || source.getDirectionTo(it) == desiredDirection
-        }
-        val confidentMatch = matchByName ?: matchByDirection.takeIf { it.size == 1 }?.first()
+        val confidentMatch = matchByName ?: things.takeIf { it.size == 1 }?.first()
         val quiet = arguments.hasFlag("s")
 
         if (confidentMatch != null) {
@@ -105,22 +103,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private suspend fun findAllThings(source: Thing): NameSearchableList<Thing> {
-        val localClimbableThings = source.currentLocation().findThingsByTag("Climbable")
-        val connections = source.location.getNeighborConnections().filter { connection ->
-            connection.kind == CLIMBING && localClimbableThings.none { it.name == connection.source.thingName }
-        }
-        val connectedThings = connections.flatMap { c ->
-            c.destination.thingName?.let { c.destination.location.getLocation().getThings(it) } ?: listOf()
-        }
-        return NameSearchableList(localClimbableThings + connectedThings)
-    }
-
-    private fun Thing.canClimbInDirection(climbThing: Thing, desiredDirection: Direction): Boolean{
-        return location.getConnectedLocation(climbThing, desiredDirection) != null
-    }
-
-    private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {
+    private suspend fun clarifyClimbThing(player: Player, options: List<Thing>, desiredDirection: Direction) {
         when {
             options.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
             options.size == 1 && desiredDirection != Direction.NONE -> CommandParsers.parseCommand(
@@ -159,6 +142,5 @@ class ClimbCommand : Command() {
             else -> EventManager.postEvent(AttemptClimbEvent(player.thing, thing, direction))
         }
     }
-
 
 }

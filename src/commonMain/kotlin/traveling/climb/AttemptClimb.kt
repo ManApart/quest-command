@@ -125,27 +125,10 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
 }
 
-//fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
-//    val neighbors = getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
-//    return if (direction == Direction.ABOVE) {
-//        neighbors.firstOrNull { it.source.equals(this, climbThing) }?.destination
-//    } else {
-//        neighbors.firstOrNull { it.destination.equals(this, climbThing) }?.source
-//    }
-//}
-
-//fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
-//    return getNeighborConnections().filter {
-//        it.kind == traveling.location.CLIMBING && it.source.equals(this, climbThing)
-//    }
-//        .map { it.destination }
-//        .firstOrNull { getDirectionTo(it.location) == direction }
-//}
 fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
-    return getNeighborConnections().filter {
-        //TODO - has does not work because it's only comparing name
-        it.kind == traveling.location.CLIMBING && it.has(climbThing)
-    }
-        .mapNotNull { it.opposite(this) }
-        .firstOrNull { dest -> getDirectionTo(dest.location) == direction }
+    val neighbors = getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
+    val localClimb = neighbors.firstOrNull { it.source.equals(this, climbThing) }?.destination
+    val remoteClimb = neighbors.firstOrNull { it.destination.equals(this, climbThing) }?.source
+    return listOfNotNull(localClimb, remoteClimb)
+        .firstOrNull { getDirectionTo(it.location) == direction }
 }
