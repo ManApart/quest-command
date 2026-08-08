@@ -27,18 +27,19 @@ import kotlin.math.max
 
 class AttemptClimb : EventListener<AttemptClimbEvent>() {
     override suspend fun shouldExecute(event: AttemptClimbEvent): Boolean {
-        return event.creature.isPlayer() && event.climbThing.properties.tags.has("Climbable")
+        return event.creature.isPlayer() && event.climbThing.thing.properties.tags.has("Climbable")
     }
 
     override suspend fun complete(event: AttemptClimbEvent) {
+        val climbed = event.climbThing.thing
         if (!isWithinRange(event)) {
-            event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.climbThing.name}." }
-        } else if (event.creature.climbThing == event.climbThing && event.creature.location == event.climbThing.location && event.creature.position.y >= event.climbThing.body.getHeight()) {
-            event.creature.displayToMe("You're already at the top of ${event.climbThing.name}.")
+            event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${climbed.name}." }
+        } else if (event.creature.climbThing == event.climbThing && event.creature.location == climbed.location && event.creature.position.y >= climbed.body.getHeight()) {
+            event.creature.displayToMe("You're already at the top of ${climbed.name}.")
         } else if (isAtDestination(event)) {
-            event.creature.displayToMe("You've already climbed ${event.climbThing.name}.")
+            event.creature.displayToMe("You've already climbed ${climbed.name}.")
         } else {
-            val distance = event.climbThing.body.getHeight()
+            val distance = climbed.body.getHeight()
             val chance = getChance(event.creature, distance)
 
             event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
@@ -48,18 +49,18 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
             } else {
                 fall(event, distance)
             }
-            event.climbThing.consume(event)
+            climbed.consume(event)
         }
     }
 
     private suspend fun isWithinRange(event: AttemptClimbEvent): Boolean {
-        return event.creature.climbThing != null || event.climbThing.isWithinRangeOf(event.creature)
-                || event.climbThing.location != event.creature.location
+        return event.creature.climbThing != null || event.climbThing.thing.isWithinRangeOf(event.creature)
+                || event.climbThing.thing.location != event.creature.location
     }
 
     private fun isAtDestination(event: AttemptClimbEvent): Boolean {
-        val actualDirection = event.creature.location.getDirectionTo(event.climbThing.location)
-        return actualDirection != event.desiredDirection && event.climbThing.location != event.creature.location
+        val actualDirection = event.creature.location.getDirectionTo(event.climbThing.thing.location)
+        return actualDirection != event.desiredDirection && event.climbThing.thing.location != event.creature.location
     }
 
     private fun getChance(creature: Thing, distance: Int): Double {
@@ -71,29 +72,22 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private suspend fun advance(event: AttemptClimbEvent, distance: Int, chance: Double) {
+        val climbed = event.climbThing.thing
         val directionString = getDirectionString(event.desiredDirection)
         when {
-            distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${event.climbThing.name}.")
-            distance == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${event.climbThing.name}." }
-            else -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString ${event.climbThing.name}." }
+            distance == 0 && event.desiredDirection == Direction.BELOW -> event.creature.display("You descend ${climbed.name}.")
+            distance == 0 -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} ${climbed.name}." }
+            else -> event.creature.display { "${event.creature.asSubject(it)} ${event.creature.withS("climb", it)} $distance ft$directionString ${climbed.name}." }
         }
 
-        event.creature.setClimbing(event.climbThing)
+        event.creature.setClimbing(climbed)
         awardEXP(event.creature, chance)
 
-        val connectedLocation = event.climbThing.location.getConnectedLocation(event.climbThing, event.desiredDirection)
+        val connectedLocation = event.climbThing.exit
         when {
             connectedLocation == null && event.desiredDirection == Direction.ABOVE -> climbToTop(event)
             else -> dismount(event, connectedLocation)
         }
-    }
-
-    private fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
-        val neighbors = getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
-        val localClimb = neighbors.firstOrNull { it.source.equals(this, climbThing) }?.destination
-        val remoteClimb = neighbors.firstOrNull { it.destination.equals(this, climbThing) }?.source
-        return listOfNotNull(localClimb, remoteClimb)
-            .firstOrNull { getDirectionTo(it.location) == direction }
     }
 
     private fun awardEXP(creature: Thing, chance: Double) {
@@ -116,17 +110,17 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private fun fall(event: AttemptClimbEvent, distance: Int) {
-        EventManager.postEvent(FallEvent(event.creature, event.climbThing.location, distance, "You lose your grip on ${event.climbThing}."))
+        EventManager.postEvent(FallEvent(event.creature, event.creature.location, distance, "You lose your grip on ${event.climbThing.thing.name}."))
     }
 
     private suspend fun climbToTop(event: AttemptClimbEvent) {
-        event.creature.position = event.climbThing.position.plusZ(event.climbThing.body.getHeight())
-        event.creature.display { event.creature.asSubject(it) + " " + event.creature.withS("climb", it) + " to the top of ${event.climbThing.name}." }
+        event.creature.position = event.climbThing.thing.position.plusZ(event.climbThing.thing.body.getHeight())
+        event.creature.display { event.creature.asSubject(it) + " " + event.creature.withS("climb", it) + " to the top of ${event.climbThing.thing.name}." }
     }
 
     private fun dismount(event: AttemptClimbEvent, connectedLocation: LocationPoint?) {
-        val origin = LocationPoint(event.climbThing.location, event.creature.position, event.climbThing.name)
-        val destination = connectedLocation ?: LocationPoint(event.climbThing.location)
+        val origin = LocationPoint(event.climbThing.thing.location, event.creature.position, event.climbThing.thing.name)
+        val destination = connectedLocation ?: LocationPoint(event.climbThing.thing.location)
 
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.climbThing, origin, destination))
     }

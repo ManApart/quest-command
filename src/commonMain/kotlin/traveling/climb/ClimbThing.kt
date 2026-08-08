@@ -5,11 +5,12 @@ import traveling.direction.Direction
 import traveling.direction.getDirectionTo
 import traveling.location.CLIMBING
 import traveling.location.Connection
+import traveling.location.location.LocationPoint
 import traveling.location.network.LocationNode
 
-data class ClimbThing(val thing: Thing, val connection: Connection? = null, val exit: LocationNode? = null) {
-    private val start = if (connection != null && exit != null) connection.opposite(exit)?.location else null
-    private val directionToExit = start?.getDirectionTo(exit!!)
+data class ClimbThing(val thing: Thing, val connection: Connection? = null, val exit: LocationPoint? = null) {
+    private val start = if (connection != null && exit != null) connection.opposite(exit.location)?.location else null
+    private val directionToExit = start?.getDirectionTo(exit!!.location)
 
     fun getDirection(climber: Thing): Direction {
         if (climber.location == thing.location) {
@@ -24,7 +25,7 @@ suspend fun LocationNode.determineClimbThings(): List<ClimbThing> {
     val connectionThings = getNeighborConnections().filter { connection ->
         connection.kind == CLIMBING
     }.mapNotNull { c ->
-        (c.source.getThing() ?: c.destination.getThing())?.let { thing -> ClimbThing(thing, c, c.destination.location) }
+        (c.source.getThing() ?: c.destination.getThing())?.let { thing -> ClimbThing(thing, c, c.destination) }
     }
     val localThings = getLocation().findThingsByTag("Climbable").filter { connectionThings.none { ct -> ct.thing == it } }.map { ClimbThing(it) }
 

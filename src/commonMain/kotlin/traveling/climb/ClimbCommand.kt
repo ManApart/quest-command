@@ -6,15 +6,8 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
-import core.utility.NameSearchableList
-import core.utility.filterList
 import core.utility.toNameSearchableList
 import traveling.direction.Direction
-import traveling.direction.Direction.Companion.getDirection
-import traveling.direction.getDirectionTo
-import traveling.location.CLIMBING
-import traveling.location.network.LocationNode
-import kotlin.collections.filter
 
 class ClimbCommand : Command() {
 
@@ -50,7 +43,7 @@ class ClimbCommand : Command() {
         val arguments = Args(args, delimiters)
         when {
             source.thing.getEncumbrance() >= 1 -> source.displayToMe("You are too encumbered to climb.")
-            source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(
+            source.thing.climbThing != null && source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(
                 source,
                 keyword,
                 arguments,
@@ -69,15 +62,16 @@ class ClimbCommand : Command() {
         } else {
             arguments.getBaseString()
         }.replace(desiredDirection.name.lowercase(), "").trim()
-        val things = player.location.determineClimbThings().filter { it.getDirection(source) == desiredDirection }.map { it.thing }
-        val matchByName = things.toNameSearchableList().getOrNull(thingName)
+        val things = player.location.determineClimbThings().filter { it.getDirection(source) == desiredDirection }
+        val matchThing = things.map { it.thing }.toNameSearchableList().getOrNull(thingName)
+        val matchByName = things.firstOrNull { it.thing == matchThing }
 
         val confidentMatch = matchByName ?: things.takeIf { it.size == 1 }?.first()
         val quiet = arguments.hasFlag("s")
 
         if (confidentMatch != null) {
-            if (!confidentMatch.properties.tags.has("Climbable")) {
-                source.displayToMe("${confidentMatch.name} cannot be climbed.")
+            if (!confidentMatch.thing.properties.tags.has("Climbable")) {
+                source.displayToMe("${confidentMatch.thing.name} cannot be climbed.")
             } else {
                 EventManager.postEvent(
                     AttemptClimbEvent(source, confidentMatch, desiredDirection, quiet)
@@ -93,7 +87,7 @@ class ClimbCommand : Command() {
         }
     }
 
-    private suspend fun clarifyClimbThing(player: Player, options: List<Thing>, desiredDirection: Direction) {
+    private suspend fun clarifyClimbThing(player: Player, options: List<ClimbThing>, desiredDirection: Direction) {
         when {
             options.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
             options.size == 1 && desiredDirection != Direction.NONE -> CommandParsers.parseCommand(
@@ -105,13 +99,13 @@ class ClimbCommand : Command() {
             options.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
             desiredDirection != Direction.NONE -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
-                displayedOptions(options.map { it.name })
-                options(options.map { "climb ${it.name}" })
+                displayedOptions(options.map { it.thing.name })
+                options(options.map { "climb ${it.thing.name}" })
             }
 
             else -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
-                optionsNamed(options)
+                optionsNamed(options.map { it.thing })
                 command { "climb $it" }
             }
         }
@@ -126,10 +120,10 @@ class ClimbCommand : Command() {
                 } else {
                     Direction.ABOVE
                 }
-                EventManager.postEvent(AttemptClimbEvent(player.thing, thing, keywordDirection))
+                EventManager.postEvent(AttemptClimbEvent(player.thing, ClimbThing(thing), keywordDirection))
             }
 
-            else -> EventManager.postEvent(AttemptClimbEvent(player.thing, thing, direction))
+            else -> EventManager.postEvent(AttemptClimbEvent(player.thing, ClimbThing(thing), direction))
         }
     }
 
