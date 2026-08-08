@@ -42,8 +42,7 @@ class ClimbCommand : Command() {
     }
 
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
-        val delimiters = listOf(ArgDelimiter(listOf("to")))
-        val arguments = Args(args, delimiters)
+        val arguments = args(args, "to")
         when {
             source.thing.getEncumbrance() >= 1 -> source.displayToMe("You are too encumbered to climb.")
             source.thing.climbThing != null && source.properties.values.getBoolean(IS_CLIMBING) -> processClimbing(
