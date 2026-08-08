@@ -291,7 +291,6 @@ class CommandComboTest {
     @Test
     fun farmerTendsWheat() {
         runBlocking {
-            GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
                 "rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
@@ -304,10 +303,9 @@ class CommandComboTest {
     @Test
     fun farmerSleeps() {
         runBlocking {
-            GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
-                "rs 3 && w && s && rs 1 && rs 10 && mv bed"
+                "db clarity && rs 3 && w && s && rs 1 && rs 10 && mv bed"
             )
 
             assertHistory("Farmer rests for 10 hours.")
