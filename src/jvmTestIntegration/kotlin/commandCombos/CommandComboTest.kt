@@ -140,7 +140,7 @@ class CommandComboTest {
         assertEquals(expectedOptions, options)
     }
 
-    private val travelToGate = "w && n && sw && rest 10 && w && rs 10 && w"
+    private val travelToGate = "db clarity && w && n && sw && rest 10 && w && rs 10 && w"
 
     @Test
     fun useGate() {
@@ -153,19 +153,17 @@ class CommandComboTest {
     fun enterKanbaraThroughGate() {
         val input = "$travelToGate && use gate && w"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameLogger.getMainHistory().contains("You travel to Kanbara City."))
-        assertTrue(
-            GameLogger.getMainHistory()
-                .contains("It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).")
-        )
+
+        assertHistory("You travel", "You travel to Kanbara City.")
+        assertHistory("It is neighbored by", "It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (NORTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).")
     }
 
     @Test
     fun enterKanbaraThroughWall() {
         val input =
-            "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && mv to wall && cl && cl && cl && cl && d && d && d && ls"
+            "$travelToGate && db random && sw && rs 10 && mv to wall && cl && ls"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameLogger.getMainHistory().contains("You are at Kanbara City South."))
+        assertHistory("You are at", "You are at Kanbara City South.")
     }
 
     @Test
@@ -314,5 +312,9 @@ class CommandComboTest {
 
             assertTrue(GameLogger.getMainHistory().contains("Farmer rests for 10 hours."))
         }
+    }
+
+    fun assertHistory(starts: String, expected: String) {
+        assertEquals(expected, GameLogger.getMainHistory().getLatest(starts))
     }
 }

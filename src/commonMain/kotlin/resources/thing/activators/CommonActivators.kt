@@ -112,7 +112,7 @@ class CommonActivators : ActivatorResource {
                 "destinationNetwork" to "Kanbara",
                 "destinationLocation" to "Kanbara City",
                 "makeRestricted" to false,
-                "message" to "The gates swing closed.",
+                "message" to "The gates swing open.",
                 "replacementActivator" to "Kanbara Gate (Open)"
             )
         }
@@ -166,7 +166,7 @@ class CommonActivators : ActivatorResource {
 
         thing("City Wall") {
             material(STONE)
-            description("The squared stones rise high above you.")
+            description("The squared stones rise high and straight.")
             body("City Wall")
             props {
                 tag("Climbable")

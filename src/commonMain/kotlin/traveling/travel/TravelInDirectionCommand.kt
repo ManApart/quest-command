@@ -51,7 +51,8 @@ class TravelInDirectionCommand : Command() {
                     when {
                         openNeighbors.size == 1 -> EventManager.postEvent(TravelStartEvent(source.thing, destination = openNeighbors.first(), quiet = quiet))
                         openNeighbors.size > 1 -> requestLocation(source, openNeighbors)
-                        openNeighbors.isEmpty() && neighbors.isNotEmpty() -> CommandParsers.parseCommand(source, "climb $direction $quietFlag")
+                        openNeighbors.isEmpty() && neighbors.isNotEmpty() && direction == Direction.ABOVE || direction == Direction.BELOW -> CommandParsers.parseCommand(source, "climb $direction $quietFlag")
+                        openNeighbors.isEmpty() && neighbors.isNotEmpty() -> source.displayToMe("Could not find a way to the $direction.")
                         else -> source.displayToMe("Could not find a location to the $direction.")
                     }
                 }

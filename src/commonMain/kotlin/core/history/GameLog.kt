@@ -62,4 +62,8 @@ class GameLog(val listener: Player) {
         return current?.outPut?.contains(line) ?: false || history.any { history -> history.outPut.any { it.contains(line) } }
     }
 
+    fun getLatest(startsWith: String): String? {
+        return current?.outPut?.reversed()?.firstOrNull { it.startsWith(startsWith) } ?: history.reversed().firstNotNullOfOrNull { h -> h.outPut.reversed().firstOrNull { it.startsWith(startsWith) } }
+    }
+
 }

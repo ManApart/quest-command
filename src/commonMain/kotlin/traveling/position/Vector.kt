@@ -7,6 +7,10 @@ import kotlin.math.abs
 
 val NO_VECTOR: Vector = Vector()
 
+/*
+X and Y are coordinates on the map
+Z is height
+ */
 class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     /**
      * The direction this vector is relative to 0.0.0

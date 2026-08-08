@@ -88,6 +88,14 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         }
     }
 
+    private fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
+        val neighbors = getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
+        val localClimb = neighbors.firstOrNull { it.source.equals(this, climbThing) }?.destination
+        val remoteClimb = neighbors.firstOrNull { it.destination.equals(this, climbThing) }?.source
+        return listOfNotNull(localClimb, remoteClimb)
+            .firstOrNull { getDirectionTo(it.location) == direction }
+    }
+
     private fun awardEXP(creature: Thing, chance: Double) {
         val amount = if (chance >= 1) {
             0
@@ -123,12 +131,4 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.climbThing, origin, destination))
     }
 
-}
-
-fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
-    val neighbors = getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
-    val localClimb = neighbors.firstOrNull { it.source.equals(this, climbThing) }?.destination
-    val remoteClimb = neighbors.firstOrNull { it.destination.equals(this, climbThing) }?.source
-    return listOfNotNull(localClimb, remoteClimb)
-        .firstOrNull { getDirectionTo(it.location) == direction }
 }

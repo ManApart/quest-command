@@ -80,23 +80,13 @@ class ClimbCommand : Command() {
                 source.displayToMe("${confidentMatch.name} cannot be climbed.")
             } else {
                 EventManager.postEvent(
-                    AttemptClimbEvent(
-                        source,
-                        confidentMatch,
-                        desiredDirection,
-                        quiet
-                    )
+                    AttemptClimbEvent(source, confidentMatch, desiredDirection, quiet)
                 )
             }
         } else if (things.size == 1 && isAlias(keyword)) {
             val match = things.first()
             EventManager.postEvent(
-                AttemptClimbEvent(
-                    source,
-                    match,
-                    desiredDirection,
-                    quiet
-                )
+                AttemptClimbEvent(source, match, desiredDirection, quiet)
             )
         } else {
             clarifyClimbThing(player, things, desiredDirection)
