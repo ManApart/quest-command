@@ -156,6 +156,13 @@ class CommonLocations : LocationResource {
             item("Apple")
         }
 
+        location("Small Trees") {
+            extends("Outside")
+            material(PLANT)
+            description("There are a number of immature trees here.")
+            activator("Tree")
+        }
+
         location("Barren Patch") {
             extends("Outside")
             description("The surrounding grasses are yellow and thin. Towards the center the ground is nothing more than packed dirt.")

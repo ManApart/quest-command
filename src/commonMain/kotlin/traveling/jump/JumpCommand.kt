@@ -28,18 +28,17 @@ class JumpCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return when{
+        return when {
             args.isEmpty() -> source.thing.currentLocation().getActivators(perceivedBy = source.thing).map { it.name }
             else -> listOf()
         }
     }
 
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
-        //TODO - not right
-        if (source.properties.values.getBoolean(IS_CLIMBING)) {
+        if (source.properties.values.getBoolean(IS_CLIMBING) && source.climbThing != null) {
             val playerLocation = source.location
-            val thingLocation= source.climbThing!!.location
-            EventManager.postEvent(JumpEvent(source, source = playerLocation, destination = thingLocation, fallDistance = playerLocation.getDistanceToLowestNodeInNetwork()))
+            val climbThing = source.climbThing!!
+            EventManager.postEvent(JumpEvent(source, source = playerLocation, destination = climbThing.location, fallDistance = climbThing.body.getHeight()))
         } else {
             val found = source.location.getNeighbors(Direction.BELOW).firstOrNull()
             if (found != null) {

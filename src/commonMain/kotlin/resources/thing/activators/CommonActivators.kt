@@ -34,6 +34,18 @@ class CommonActivators : ActivatorResource {
             behavior(burnToAsh)
             behavior("Climbable")
         }
+        thing("Tree") {
+            material(WOOD)
+            description("The tree is small and sturdy.")
+            body("tree")
+            props {
+                value("chopHealth", 5)
+                value(ValueStrings.FIRE_HEALTH, 5)
+                tag("Climbable", CONTAINER, "Flammable", OPEN, WOOD)
+            }
+            behavior(burnToAsh)
+            behavior("Climbable")
+        }
 
         thing("Apple Tree Branches") {
             material(WOOD)

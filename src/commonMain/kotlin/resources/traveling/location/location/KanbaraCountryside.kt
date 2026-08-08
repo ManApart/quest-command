@@ -19,6 +19,9 @@ class KanbaraCountryside : NetworkResource {
                 connection("Clovenwood", x = 2000, y = 1600)
                 connection("Cadeya", x = 3000, y = 2500)
             }
+            locationNode("Northern Woods"){
+                location("Small Trees")
+            }
             locationNode("Kentle") {
                 connection("Farmer's Hut", y = -500)
                 connection("Windmill", x = 250, y = -400)
