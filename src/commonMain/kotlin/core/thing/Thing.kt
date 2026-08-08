@@ -191,7 +191,7 @@ data class Thing(
         this.climbThing = climbThing
     }
 
-    fun finishClimbing() {
+    fun setNotClimbing() {
         properties.values.put(IS_CLIMBING, false)
         climbThing = null
     }

@@ -4,6 +4,7 @@ import core.thing.Thing
 import core.utility.NameSearchableList
 import crafting.Recipe
 import traveling.location.Route
+import traveling.location.location.Location
 import traveling.location.network.LocationNode
 
 data class Player(
@@ -33,11 +34,12 @@ data class Player(
     val location get() = thing.location
     val position get() = thing.position
 
-    suspend fun getPerceivedThingNames(): List<String> {
-        return location.getLocation().getThings(perceivedBy = thing).map { it.name }
+    suspend fun getPerceivedThings() = location.getLocation().getThings(perceivedBy = thing)
+    suspend fun getPerceivedThingNames() = getPerceivedThings().map { it.name }
+    suspend fun getPerceivedParts(): List<Location> {
+        return getPerceivedThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body.getParts() }.toSet().toList()
     }
 
-    suspend fun getPerceivedPartNames(): List<String> {
-        return location.getLocation().getThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body.getParts().map { it.name } }.toSet().toList()
-    }
+    suspend fun getPerceivedPartNames() = getPerceivedParts().toList().map { it.name }.toSet().toList()
+
 }

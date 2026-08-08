@@ -19,7 +19,7 @@ class CommandComboTest {
         runBlocking {
             EventManager.clear()
             GameManager.newGame(testing = true)
-            runBlocking { EventManager.processEvents() }
+            EventManager.processEvents()
         }
     }
 
@@ -99,11 +99,11 @@ class CommandComboTest {
 
     @Test
     fun climbTree() {
-        val input = "db random && n && climb tree && climb && d && d"
+        val input = "db random && n && climb tree && d"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameLogger.getMainHistory().contains("You climb to Apple Tree Branches."))
-        assertTrue(GameLogger.getMainHistory().contains("It is neighbored by Apple Tree (BELOW)."))
-        assertTrue(GameLogger.getMainHistory().contains("You climb back off Apple Tree."))
+        assertHistory("You climb to Apple Tree Branches.")
+        assertHistory("It is neighbored by Apple Tree (BELOW).")
+        assertHistory("You climb back off Apple Tree.")
     }
 
     @Test
@@ -126,7 +126,7 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(GameState.player, "s && nothing && nothing && nothing && nothing && nothing && nothing && r 1")
         }
-        assertTrue(GameLogger.getMainHistory().contains("Oh dear, you have died!"))
+        assertHistory("Oh dear, you have died!")
     }
 
     @Test
@@ -140,32 +140,30 @@ class CommandComboTest {
         assertEquals(expectedOptions, options)
     }
 
-    private val travelToGate = "w && n && sw && rest 10 && w && rs 10 && w"
+    private val travelToGate = "db clarity && w && n && sw && rest 10 && w && rs 10 && w"
 
     @Test
     fun useGate() {
         val input = "$travelToGate && use gate"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertEquals("Kanbara City is now available from Kanbara Gate.", GameLogger.getMainHistory().getLastOutput())
+        assertLast("Kanbara City is now available from Kanbara Gate.")
     }
 
     @Test
     fun enterKanbaraThroughGate() {
         val input = "$travelToGate && use gate && w"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameLogger.getMainHistory().contains("You travel to Kanbara City."))
-        assertTrue(
-            GameLogger.getMainHistory()
-                .contains("It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (SOUTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).")
-        )
+
+        assertHistory("You travel", "You travel to Kanbara City.")
+        assertHistory("It is neighbored by", "It is neighbored by Kanbara Gate (EAST), Kanbara Pub, Kanbara Manor (NORTH_WEST), Kanbara City South (SOUTH_WEST), Kanbara Wall North (NORTH), Dwarven Tear River East (NORTH_WEST), Dwarven Tear River West (SOUTH_EAST).")
     }
 
     @Test
     fun enterKanbaraThroughWall() {
         val input =
-            "w && n && sw && rest 10 && w && rs 10 && w && sw && rs 10 && mv to wall && cl && cl && cl && cl && d && d && d && ls"
+            "$travelToGate && db random && sw && rs 10 && mv to wall && cl && ls"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertTrue(GameLogger.getMainHistory().contains("You are at Kanbara City South."))
+        assertHistory("You are at", "You are at Kanbara City South.")
     }
 
     @Test
@@ -173,19 +171,19 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(GameState.player, "co pub && w && n && co pub")
             assertEquals("Kentle", GameState.player.thing.location.name)
-            assertEquals("Kanbara Pub is SOUTH_WEST of you.", GameLogger.getMainHistory().getLastOutput())
+            assertHistory("Kanbara Pub is SOUTH_WEST of you.")
 
             CommandParsers.parseCommand(GameState.player, "rs 10 && sw && rs 10 && w && rest 10 && w && co pub")
             assertEquals("Kanbara Gate", GameState.player.thing.location.name)
-            assertEquals("Kanbara Pub is WEST of you.", GameLogger.getMainHistory().getLastOutput())
+            assertHistory("Kanbara Pub is WEST of you.")
 
             CommandParsers.parseCommand(GameState.player, "use gate && w && co pub")
             assertEquals("Kanbara City", GameState.player.thing.location.name)
-            assertEquals("Kanbara Pub is near you.", GameLogger.getMainHistory().getLastOutput())
+            assertHistory("Kanbara Pub is near you.")
 
             CommandParsers.parseCommand(GameState.player, "t pub && co pub")
             assertEquals("Kanbara Pub", GameState.player.thing.location.name)
-            assertEquals("You are at Kanbara Pub.", GameLogger.getMainHistory().getLastOutput())
+            assertHistory("You are at Kanbara Pub.")
         }
     }
 
@@ -194,7 +192,7 @@ class CommandComboTest {
         val input =
             "move to wheat && slash wheat && pickup wheat && ne && a && a && put wheat in chute && d && d && take wheat from bin"
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
-        assertEquals("You picked up Wheat Flour.", GameLogger.getMainHistory().getLastOutput())
+        assertLast("You picked up Wheat Flour.")
     }
 
     @Test
@@ -245,13 +243,13 @@ class CommandComboTest {
         runBlocking {
             CommandParsers.parseCommand(GameState.player, "poison 1 for 5 on head of self")
             assertEquals(1, GameState.player.thing.soul.getNonSoundConditions().size)
-            assertTrue(GameLogger.getMainHistory().contains("Poison decreases Your Health by 1 (9/10)."))
+            assertHistory("Poison decreases Your Health by 1 (9/10).")
 
             CommandParsers.parseCommand(GameState.player, "wait 5")
             CommandParsers.parseCommand(GameState.player, "wait 1")
             assertEquals(0, GameState.player.thing.soul.getNonSoundConditions().size)
             assertEquals(5, GameState.player.thing.soul.getCurrent(HEALTH))
-            assertTrue(GameLogger.getMainHistory().contains("Player is no longer Poisoned."))
+            assertHistory("Player is no longer Poisoned.")
         }
     }
 
@@ -268,9 +266,9 @@ class CommandComboTest {
                 GameState.player,
                 "w && s && mv to range && take tinder && rest 10 && n && rest 10 && e && n && w && take lantern && t mouth && hold lantern f && ls"
             )
-            assertEquals("It's too dark to see anything.", GameLogger.getMainHistory().getLastOutput())
+            assertLast("It's too dark to see anything.")
             CommandParsers.parseCommand(GameState.player, "use tinder on lantern && ls")
-            assertEquals("It contains Wall Crack.", GameLogger.getMainHistory().getLastOutput())
+            assertLast("It contains Wall Crack.")
         }
     }
 
@@ -293,26 +291,36 @@ class CommandComboTest {
     @Test
     fun farmerTendsWheat() {
         runBlocking {
-            GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
-                "rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
+                "db clarity && rs 8 && w && rs 1 && e && rs 1 && rs 10 && mv wheat"
             )
 
-            assertTrue(GameLogger.getMainHistory().contains("Farmer tends the Wheat Field."))
+            assertHistory("Farmer tends the Wheat Field.")
         }
     }
 
     @Test
     fun farmerSleeps() {
         runBlocking {
-            GameState.putDebug(DebugType.CLARITY, true)
             CommandParsers.parseCommand(
                 GameState.player,
-                "rs 3 && w && s && rs 1 && rs 10 && mv bed"
+                "db clarity && rs 3 && w && s && rs 1 && rs 10 && mv bed"
             )
 
-            assertTrue(GameLogger.getMainHistory().contains("Farmer rests for 10 hours."))
+            assertHistory("Farmer rests for 10 hours.")
         }
+    }
+
+    fun assertLast(expected: String){
+        assertEquals(expected, GameLogger.getMainHistory().getLastOutput())
+    }
+
+    fun assertHistory(expected: String) {
+        assertTrue(GameLogger.getMainHistory().contains(expected))
+    }
+
+    fun assertHistory(starts: String, expected: String) {
+        assertEquals(expected, GameLogger.getMainHistory().getLatest(starts))
     }
 }

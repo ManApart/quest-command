@@ -17,7 +17,7 @@ fun Thing.asSubject(listener: Player): String {
 }
 
 /**
- * Returns S on the end if you are NOT the subject, otherwise without the s (bob travels, you travel)
+ * Returns s on the end if you are NOT the subject, otherwise without the s (bob travels, you travel)
  */
 fun Player.withS(word: String, listener: Player) = thing.withS(word, listener)
 fun Thing.withS(word: String, listener: Player): String {

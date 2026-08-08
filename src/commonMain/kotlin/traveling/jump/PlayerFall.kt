@@ -27,7 +27,7 @@ class PlayerFall : EventListener<FallEvent>() {
         if (event.creature.location != event.destination){
             EventManager.postEvent(ArriveEvent(event.creature, destination = LocationPoint(event.destination), method = "fall"))
         }
-        event.creature.finishClimbing()
+        event.creature.setNotClimbing()
     }
 
     private suspend fun takeDamage(event: FallEvent) {

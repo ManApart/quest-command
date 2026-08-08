@@ -148,12 +148,19 @@ class CommonLocations : LocationResource {
 
         location("Apple Tree Branches") {
             extends("Outside")
-            material("Bark")
+            material("Wood")
             description("The crisp smell of apples permeates the air.")
             activator("Apple Tree Branches")
             item("Apple")
             item("Apple")
             item("Apple")
+        }
+
+        location("Small Trees") {
+            extends("Outside")
+            material(PLANT)
+            description("There are a number of immature trees here.")
+            activator("Tree")
         }
 
         location("Barren Patch") {

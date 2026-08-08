@@ -34,6 +34,18 @@ class CommonActivators : ActivatorResource {
             behavior(burnToAsh)
             behavior("Climbable")
         }
+        thing("Tree") {
+            material(WOOD)
+            description("The tree is small and sturdy.")
+            body("tree")
+            props {
+                value("chopHealth", 5)
+                value(ValueStrings.FIRE_HEALTH, 5)
+                tag("Climbable", CONTAINER, "Flammable", OPEN, WOOD)
+            }
+            behavior(burnToAsh)
+            behavior("Climbable")
+        }
 
         thing("Apple Tree Branches") {
             material(WOOD)
@@ -112,7 +124,7 @@ class CommonActivators : ActivatorResource {
                 "destinationNetwork" to "Kanbara",
                 "destinationLocation" to "Kanbara City",
                 "makeRestricted" to false,
-                "message" to "The gates swing closed.",
+                "message" to "The gates swing open.",
                 "replacementActivator" to "Kanbara Gate (Open)"
             )
         }
@@ -166,7 +178,7 @@ class CommonActivators : ActivatorResource {
 
         thing("City Wall") {
             material(STONE)
-            description("The squared stones rise high above you.")
+            description("The squared stones rise high and straight.")
             body("City Wall")
             props {
                 tag("Climbable")

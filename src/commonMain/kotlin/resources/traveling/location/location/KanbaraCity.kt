@@ -18,7 +18,6 @@ class KanbaraCity : NetworkResource {
                 connection("Kanbara Pub")
                 connection("Kanbara Manor", x = -10, y = 10)
                 connection("Kanbara City South") {
-                    restricted(true)
                     origin(-10, -20)
                 }
             }
@@ -32,10 +31,10 @@ class KanbaraCity : NetworkResource {
                 connection("Kanbara Gate", x = 100, y = -100)
                 connection {
                     thing("City Wall")
-                    part("Wall Top")
-                    connectsTo("Kanbara City", KANBARA, "City Wall", "Wall Top")
+                    climbing()
+                    connectsTo("Kanbara City", KANBARA, "City Wall")
                     restricted(true)
-                    y(100)
+                    y(-100)
                 }
             }
 
@@ -44,8 +43,8 @@ class KanbaraCity : NetworkResource {
                 connection("Kanbara Gate", x = 100, y = 100)
                 connection {
                     thing("City Wall")
-                    part("Wall Top")
-                    connectsTo("Kanbara City South", KANBARA, "City Wall", "Wall Top")
+                    climbing()
+                    connectsTo("Kanbara City South", KANBARA, "City Wall")
                     restricted(true)
                     y(-100)
                 }

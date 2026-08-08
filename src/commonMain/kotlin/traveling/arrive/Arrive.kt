@@ -1,5 +1,6 @@
 package traveling.arrive
 
+import core.GameState.player
 import core.events.EventListener
 import core.history.display
 import core.history.displayToMe
@@ -14,16 +15,14 @@ class Arrive : EventListener<ArriveEvent>() {
     override suspend fun complete(event: ArriveEvent) {
         with(event) {
             if (origin != destination) {
-                val player = creature
-                player.position = destination.vector
-                if (!destination.thingName.isNullOrBlank() && !destination.partName.isNullOrBlank()) {
-                    val climbThing = destination.location.getLocation().getThings(destination.thingName).first()
-                    val part = climbThing.body.getPartLocation(destination.partName)
-                    player.location = part
-                    player.setClimbing(climbThing)
+                creature.setNotClimbing()
+                creature.location = destination.location
+                if (!destination.thingName.isNullOrBlank()) {
+                    val destThing = destination.location.getLocation().getThings(destination.thingName).first()
+                    creature.position = destThing.position
                     if (!silent) creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
                 } else {
-                    player.location = destination.location
+                    creature.position = destination.vector
                     if (!silent) {
                         if (quiet) {
                             creature.display { "${creature.asSubject(it)} ${creature.withS(method, it)} to ${destination}." }
@@ -34,7 +33,7 @@ class Arrive : EventListener<ArriveEvent>() {
                     }
                 }
                 creature.mind.route?.let { route ->
-                    if (route.destination == player.location){
+                    if (route.destination == creature.location) {
                         creature.mind.route = null
                     }
                 }

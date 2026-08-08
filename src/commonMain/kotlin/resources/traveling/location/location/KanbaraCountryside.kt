@@ -19,6 +19,9 @@ class KanbaraCountryside : NetworkResource {
                 connection("Clovenwood", x = 2000, y = 1600)
                 connection("Cadeya", x = 3000, y = 2500)
             }
+            locationNode("Northern Woods"){
+                location("Small Trees")
+            }
             locationNode("Kentle") {
                 connection("Farmer's Hut", y = -500)
                 connection("Windmill", x = 250, y = -400)
@@ -49,9 +52,9 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Windmill") {
                 connection("Stairs") {
                     thing("Stairs")
-                    part("Stairs")
+                    climbing()
                     z(20)
-                    restricted(true)
+                    restricted()
                     connectsTo("Windmill - Second Floor", KANBARA_COUNTRYSIDE)
                 }
             }
@@ -59,9 +62,9 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Windmill - Second Floor") {
                 connection("Stairs") {
                     thing("Stairs")
-                    part("Stairs")
+                    climbing()
                     z(20)
-                    restricted(true)
+                    restricted()
                     connectsTo("Windmill - Third Floor", KANBARA_COUNTRYSIDE)
                 }
             }
@@ -69,9 +72,9 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Apple Tree") {
                 connection {
                     thing("Apple Tree")
-                    part("Branches")
+                    climbing()
                     z(15)
-                    restricted(true)
+                    restricted()
                     connectsTo("Apple Tree Branches", KANBARA_COUNTRYSIDE)
                 }
                 connection("Cave Entrance", x = -100)
@@ -87,8 +90,8 @@ class KanbaraCountryside : NetworkResource {
             locationNode("Cave Mouth") {
                 connection("Wall Crack") {
                     thing("Wall Crack")
-                    restricted(true)
-                    hidden(true)
+                    restricted()
+                    hidden()
                     connectsTo("Cave Tunnel", KANBARA_COUNTRYSIDE)
                 }
             }

@@ -1,8 +1,10 @@
 package traveling.location
 
+import core.thing.Thing
 import traveling.location.location.LocationPoint
+import traveling.location.network.LocationNode
 
-class Connection(val source: LocationPoint, val destination: LocationPoint, var restricted: Boolean = false, var hidden: Boolean = false) {
+class Connection(val source: LocationPoint, val destination: LocationPoint, val kind: String? = null, var restricted: Boolean = false, var hidden: Boolean = false) {
     /*
     The vector most count for inverting.
     0,-100,0 -> 0,0,0
@@ -18,12 +20,19 @@ class Connection(val source: LocationPoint, val destination: LocationPoint, var 
     }
 
     fun invert(): Connection {
-        return Connection(destination, source, restricted, hidden)
+        return Connection(destination, source, kind, restricted, hidden)
     }
 
-    fun isNetworkConnection() : Boolean {
-        return source.location.parent != destination.location.parent
+    fun has(thing: Thing): Boolean {
+        return source.thingName == thing.name || destination.thingName == thing.name
     }
 
+    fun opposite(end: LocationNode): LocationPoint? {
+        return when {
+            source.location == end -> destination
+            destination.location ==end -> source
+            else -> null
+        }
+    }
 
 }

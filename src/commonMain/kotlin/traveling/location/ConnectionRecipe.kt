@@ -5,7 +5,7 @@ import traveling.position.Vector
 
 class ConnectionRecipe(
         val thing: String? = null,
-        val part: String? = null,
+        val kind: String? = null,
         val originPoint: Vector = NO_VECTOR,
         val destinationPoint: Vector = NO_VECTOR,
         name: String? = null,

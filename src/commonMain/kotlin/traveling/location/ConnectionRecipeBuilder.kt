@@ -6,7 +6,7 @@ import traveling.position.Vector
 class ConnectionRecipeBuilder {
     private var name: String? = null
     private var thing: String? = null
-    private var part: String? = null
+    private var kind: String? = null
     private var restricted = false
     private var oneWay = false
     private var hidden = false
@@ -15,7 +15,7 @@ class ConnectionRecipeBuilder {
     private var destinationPoint = NO_VECTOR
 
     fun build(): ConnectionRecipe {
-        return ConnectionRecipe(thing, part, originPoint, destinationPoint, name, connectsTo, restricted, oneWay, hidden)
+        return ConnectionRecipe(thing, kind, originPoint, destinationPoint, name, connectsTo, restricted, oneWay, hidden)
     }
 
     fun name(name: String) {
@@ -26,19 +26,23 @@ class ConnectionRecipeBuilder {
         this.thing = thing
     }
 
-    fun part(part: String) {
-        this.part = part
+    fun kind(kind: String) {
+        this.kind = kind
     }
 
-    fun restricted(yes: Boolean) {
+    fun climbing() {
+        this.kind = CLIMBING
+    }
+
+    fun restricted(yes: Boolean = true) {
         this.restricted = yes
     }
 
-    fun oneWay(yes: Boolean) {
+    fun oneWay(yes: Boolean = true) {
         this.oneWay = yes
     }
 
-    fun hidden(yes: Boolean) {
+    fun hidden(yes: Boolean = true) {
         this.hidden = yes
     }
 
@@ -46,8 +50,8 @@ class ConnectionRecipeBuilder {
         this.connectsTo = connectionThing
     }
 
-    fun connectsTo(location: String, network: String? = null, thing: String? = null, part: String? = null) {
-        this.connectsTo = ConnectionThing(location, network, thing, part)
+    fun connectsTo(location: String, network: String? = null, thing: String? = null) {
+        this.connectsTo = ConnectionThing(location, network, thing)
     }
 
     fun origin(v: Vector) {

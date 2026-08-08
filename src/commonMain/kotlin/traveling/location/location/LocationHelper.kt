@@ -33,9 +33,9 @@ fun createNeighborsAndNeighborLinks(nodeMap: MutableMap<String, MutableList<Loca
                     connectionNetwork.add(neighbor)
                 }
 
-                val originPoint = LocationPoint(node, protoConnection.originPoint, protoConnection.thing, protoConnection.part)
-                val destinationPoint = LocationPoint(neighbor, protoConnection.destinationPoint, protoConnection.connection.thing, protoConnection.connection.part)
-                val locationLink = Connection(originPoint, destinationPoint, protoConnection.restricted, protoConnection.hidden)
+                val originPoint = LocationPoint(node, protoConnection.originPoint, protoConnection.thing)
+                val destinationPoint = LocationPoint(neighbor, protoConnection.destinationPoint, protoConnection.connection.thing)
+                val locationLink = Connection(originPoint, destinationPoint, protoConnection.kind, protoConnection.restricted, protoConnection.hidden)
                 node.addConnection(locationLink)
 
                 if (!protoConnection.oneWay) {

@@ -28,7 +28,7 @@ class DodgeCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() -> Direction.values().map { it.name }
+            args.isEmpty() -> Direction.entries.map { it.name }
             else -> listOf()
         }
     }

@@ -13,11 +13,11 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
     }
 
     override suspend fun complete(event: ClimbCompleteEvent) {
-        event.climbThing.consume(event)
+        event.climbThing.thing.consume(event)
         val climbBackOff = event.destination.location == event.origin.location
 
         if (climbBackOff) {
-            event.creature.display { "${event.creature.asSubject(it)} climb back off ${event.climbThing.name}." }
+            event.creature.display { "${event.creature.asSubject(it)} climb back off ${event.climbThing.thing.name}." }
         }
 
         val position = event.origin.location.getPositionRelativeTo(event.destination.location)
@@ -25,6 +25,6 @@ class ClimbComplete : EventListener<ClimbCompleteEvent>() {
 
         event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
         EventManager.postEvent(ArriveEvent(event.creature, event.origin, event.destination, method, silent = climbBackOff))
-        event.creature.finishClimbing()
+        event.creature.setNotClimbing()
     }
 }
