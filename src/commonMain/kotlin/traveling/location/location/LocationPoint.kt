@@ -23,4 +23,8 @@ class LocationPoint(val location: LocationNode, val vector: Vector = NO_VECTOR, 
         return location == this.location
                 && (thing == null || thing.name == thingName)
     }
+
+    suspend fun getThing(): Thing? {
+        return thingName?.let { location.getLocation().getThings(it)}?.firstOrNull()
+    }
 }

@@ -12,6 +12,7 @@ import traveling.direction.Direction
 import traveling.direction.Direction.Companion.getDirection
 import traveling.direction.getDirectionTo
 import traveling.location.CLIMBING
+import traveling.location.network.LocationNode
 import kotlin.collections.filter
 
 class ClimbCommand : Command() {
@@ -69,7 +70,10 @@ class ClimbCommand : Command() {
         }.replace(desiredDirection.name.lowercase(), "").trim()
         val things = findAllThings(source)
         val matchByName = things.getOrNull(thingName)
-        val matchByDirection = things.toList().filter { source.getDirectionTo(it) == desiredDirection }
+
+        val matchByDirection = things.toList().filter {
+          source.canClimbInDirection(it, desiredDirection) || source.getDirectionTo(it) == desiredDirection
+        }
         val confidentMatch = matchByName ?: matchByDirection.takeIf { it.size == 1 }?.first()
         val quiet = arguments.hasFlag("s")
 
@@ -110,6 +114,10 @@ class ClimbCommand : Command() {
             c.destination.thingName?.let { c.destination.location.getLocation().getThings(it) } ?: listOf()
         }
         return NameSearchableList(localClimbableThings + connectedThings)
+    }
+
+    private fun Thing.canClimbInDirection(climbThing: Thing, desiredDirection: Direction): Boolean{
+        return location.getConnectedLocation(climbThing, desiredDirection) != null
     }
 
     private suspend fun clarifyClimbThing(player: Player, options: NameSearchableList<Thing>, desiredDirection: Direction) {

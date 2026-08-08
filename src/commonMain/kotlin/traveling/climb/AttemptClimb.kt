@@ -20,6 +20,7 @@ import traveling.direction.getDirectionTo
 import traveling.jump.FallEvent
 import traveling.location.connection
 import traveling.location.location.LocationPoint
+import traveling.location.location.location
 import traveling.location.network.LocationNode
 import traveling.position.NO_VECTOR
 import kotlin.math.max
@@ -32,7 +33,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     override suspend fun complete(event: AttemptClimbEvent) {
         if (!isWithinRange(event)) {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${event.climbThing.name}." }
-        } else if (event.creature.location == event.climbThing.location && event.creature.position.y >= event.climbThing.body.getHeight()) {
+        } else if (event.creature.climbThing == event.climbThing && event.creature.location == event.climbThing.location && event.creature.position.y >= event.climbThing.body.getHeight()) {
             event.creature.displayToMe("You're already at the top of ${event.climbThing.name}.")
         } else if (isAtDestination(event)) {
             event.creature.displayToMe("You've already climbed ${event.climbThing.name}.")
@@ -80,7 +81,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         event.creature.setClimbing(event.climbThing)
         awardEXP(event.creature, chance)
 
-        val connectedLocation = getConnectedLocation(event.climbThing.location, event.climbThing, event.desiredDirection)
+        val connectedLocation = event.climbThing.location.getConnectedLocation(event.climbThing, event.desiredDirection)
         when {
             connectedLocation == null && event.desiredDirection == Direction.ABOVE -> climbToTop(event)
             else -> dismount(event, connectedLocation)
@@ -106,15 +107,6 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         }
     }
 
-    private fun getConnectedLocation(thingLocation: LocationNode, climbThing: Thing, direction: Direction): LocationPoint? {
-        val neighbors = thingLocation.getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
-        return if (direction == Direction.ABOVE) {
-            neighbors.firstOrNull { it.source.equals(thingLocation, climbThing) }?.destination
-        } else {
-            neighbors.firstOrNull { it.destination.equals(thingLocation, climbThing) }?.source
-        }
-    }
-
     private fun fall(event: AttemptClimbEvent, distance: Int) {
         EventManager.postEvent(FallEvent(event.creature, event.climbThing.location, distance, "You lose your grip on ${event.climbThing}."))
     }
@@ -131,4 +123,29 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         EventManager.postEvent(ClimbCompleteEvent(event.creature, event.climbThing, origin, destination))
     }
 
+}
+
+//fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
+//    val neighbors = getNeighborConnections().filter { it.kind == traveling.location.CLIMBING }
+//    return if (direction == Direction.ABOVE) {
+//        neighbors.firstOrNull { it.source.equals(this, climbThing) }?.destination
+//    } else {
+//        neighbors.firstOrNull { it.destination.equals(this, climbThing) }?.source
+//    }
+//}
+
+//fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
+//    return getNeighborConnections().filter {
+//        it.kind == traveling.location.CLIMBING && it.source.equals(this, climbThing)
+//    }
+//        .map { it.destination }
+//        .firstOrNull { getDirectionTo(it.location) == direction }
+//}
+fun LocationNode.getConnectedLocation(climbThing: Thing, direction: Direction): LocationPoint? {
+    return getNeighborConnections().filter {
+        //TODO - has does not work because it's only comparing name
+        it.kind == traveling.location.CLIMBING && it.has(climbThing)
+    }
+        .mapNotNull { it.opposite(this) }
+        .firstOrNull { dest -> getDirectionTo(dest.location) == direction }
 }
