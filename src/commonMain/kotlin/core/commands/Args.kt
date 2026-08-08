@@ -136,6 +136,10 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         }
     }
 
+    fun getDirectionFromBase(): Direction {
+        return getBaseGroup().firstNotNullOfOrNull { arg -> Direction.getDirection(arg).takeIf { it != Direction.NONE } } ?: Direction.NONE
+    }
+
     fun hasFlag(flag: String): Boolean {
         val flagAlt = if (flag.startsWith("-")) {
             flag.substring(1)
@@ -276,6 +280,6 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
 
 }
 
-fun List<String>.removeAll(wordsToRemove: List<String>): List<String>{
+fun List<String>.removeAll(wordsToRemove: List<String>): List<String> {
     return this.filterNot { wordsToRemove.contains(it) }
 }

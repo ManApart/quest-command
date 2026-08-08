@@ -6,8 +6,10 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.properties.IS_CLIMBING
 import core.thing.Thing
+import core.utility.takeIfOne
 import core.utility.toNameSearchableList
 import traveling.direction.Direction
+import kotlin.text.contains
 
 class ClimbCommand : Command() {
 
@@ -22,7 +24,8 @@ class ClimbCommand : Command() {
     override fun getManual(): String {
         return """
 	Climb <thing> - Climb (onto) the thing
-	Climb <direction> - Climb in <direction>
+	Climb <Above/Below> - Climb in <direction>
+	Climb to <location> - Climb to a location
 	Climb s - The s flag silences travel, meaning a minimum amount of output"""
     }
 
@@ -39,7 +42,7 @@ class ClimbCommand : Command() {
     }
 
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
-        val delimiters = listOf(ArgDelimiter(listOf("of", "to")))
+        val delimiters = listOf(ArgDelimiter(listOf("to")))
         val arguments = Args(args, delimiters)
         when {
             source.thing.getEncumbrance() >= 1 -> source.displayToMe("You are too encumbered to climb.")
@@ -56,17 +59,15 @@ class ClimbCommand : Command() {
 
     private suspend fun processNewClimb(player: Player, keyword: String, arguments: Args) {
         val source = player.thing
-        val desiredDirection = arguments.getDirection().let { if (it == Direction.NONE) Direction.ABOVE else it }
-        val thingName = if (arguments.getString("to") != "") {
-            arguments.getString("to")
-        } else {
-            arguments.getBaseString()
-        }.replace(desiredDirection.name.lowercase(), "").trim()
-        val things = player.location.determineClimbThings().filter { it.getDirection(source) == desiredDirection }
-        val matchThing = things.map { it.thing }.toNameSearchableList().getOrNull(thingName)
-        val matchByName = things.firstOrNull { it.thing == matchThing }
+        val desiredDirection = arguments.getDirectionFromBase().let { if (it == Direction.NONE) Direction.ABOVE else it }
+        val toName = arguments.getString("to").takeIf { it.isNotBlank() }
+        val thingName = arguments.getBaseString().replace(desiredDirection.name.lowercase(), "").trim()
 
-        val confidentMatch = matchByName ?: things.takeIf { it.size == 1 }?.first()
+        val things = player.location.determineClimbThings().filter { it.getDirection(source) == desiredDirection }.hasToName(toName)
+        val matchThings = things.map { it.thing }.toNameSearchableList().getAll(thingName)
+        val matchesByName = things.filter { matchThings.contains(it.thing) }.hasToName(toName)
+
+        val confidentMatch = matchesByName.takeIfOne() ?: things.takeIfOne()
         val quiet = arguments.hasFlag("s")
 
         if (confidentMatch != null) {
@@ -87,6 +88,10 @@ class ClimbCommand : Command() {
         }
     }
 
+    private fun List<ClimbThing>.hasToName(toName: String?) = if (toName == null) this else filter {
+        it.exit?.location?.name?.lowercase()?.contains(toName) == true
+    }
+
     private suspend fun clarifyClimbThing(player: Player, options: List<ClimbThing>, desiredDirection: Direction) {
         when {
             options.isEmpty() -> player.displayToMe("There doesn't seem to be anything to climb.")
@@ -95,18 +100,10 @@ class ClimbCommand : Command() {
                 "climb $desiredDirection ${options[0]}"
             )
 
-
             options.size == 1 -> CommandParsers.parseCommand(player, "climb ${options[0]}")
-            desiredDirection != Direction.NONE -> player.respond("There is nothing to climb.") {
-                message("Climb what?")
-                displayedOptions(options.map { it.thing.name })
-                options(options.map { "climb ${it.thing.name}" })
-            }
-
             else -> player.respond("There is nothing to climb.") {
                 message("Climb what?")
-                optionsNamed(options.map { it.thing })
-                command { "climb $it" }
+                options(options.map { "climb ${it.getName("to")}" })
             }
         }
     }

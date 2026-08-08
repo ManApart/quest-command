@@ -20,6 +20,11 @@ data class ClimbThing(val thing: Thing, val connection: Connection? = null, val 
         if (directionToExit != null) return directionToExit
         return Direction.NONE
     }
+
+    fun getName(delim: String): String {
+        val exitString = exit?.location?.name?.let { " $delim $it" } ?: ""
+        return "${thing.name}$exitString"
+    }
 }
 
 suspend fun LocationNode.determineClimbThings(): List<ClimbThing> {

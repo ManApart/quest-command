@@ -94,3 +94,7 @@ fun List<String>.minOverlap(): String {
     val overlap = removeFirstItem().minOf { it.toCharArray().mapIndexed { i, c -> if (example.getOrNull(i) == c) 1 else 0 }.sum() }
     return first().substring(0, overlap)
 }
+
+fun <T> List<T>.takeIfOne(): T? {
+    return takeIf { it.size == 1 }?.first()
+}
