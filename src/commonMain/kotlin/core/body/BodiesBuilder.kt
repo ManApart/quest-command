@@ -23,7 +23,7 @@ fun List<BodyBuilder>.build(): NameSearchableList<Body2> {
     val builders = associateBy { it.name }
     return builders.values.map {
         try {
-            it.buildWithBase()
+            it.build()
         } catch (e: Exception){
             println("Failed to build ${it.name}: ${e.message ?: e.cause ?: e.toString()}")
             throw e

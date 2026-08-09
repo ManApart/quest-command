@@ -4,7 +4,9 @@ import core.GameState
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
+import core.body.Body2
 import core.body.Slot
+import core.body.body
 import core.events.Event
 import core.properties.*
 import core.properties.ValueStrings.COUNT
@@ -12,6 +14,7 @@ import core.properties.ValueStrings.WEIGHT
 import core.utility.Named
 import core.utility.clamp
 import core.utility.max
+import crafting.material.MaterialStrings.FLESH
 import explore.listen.getSound
 import inventory.Inventory
 import status.Soul
@@ -50,6 +53,13 @@ data class Thing(
     init {
         mind.updateCreature(this)
         soul.parent = this
+    }
+
+    //TODO - this is for testing only
+    val body2: Body2 = body("Human") {
+        dimensions(6, 2, 10)
+        mat(FLESH)
+        parts("Head", "Right Arm", "Left Arm", "Waist", "Right Leg", "Left Leg", "Right Foot", "Left Foot")
     }
 
     override fun toString(): String {

@@ -30,9 +30,13 @@ class BodyBuilder(internal val name: String) {
         parts.add(BodyPartBuilder(name).apply(initializer))
     }
 
-    fun buildWithBase(): Body2 {
+    fun build(): Body2 {
         val mat = MaterialManager.getMaterial(material)
         val bodyParts = parts.map { it.build(mat) }
         return Body2(name, dimensions, bodyParts)
     }
+}
+
+fun body(name: String, initializer: BodyBuilder.() -> Unit): Body2 {
+    return BodyBuilder(name).apply(initializer).build()
 }
