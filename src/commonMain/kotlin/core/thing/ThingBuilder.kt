@@ -10,6 +10,8 @@ import core.ai.knowledge.MindP
 import core.body.Body
 import core.body.BodyCustomizer
 import core.body.BodyManager
+import core.body.EquipTarget
+import core.body.Layer
 import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
@@ -40,6 +42,7 @@ class ThingBuilder(internal val name: String) {
     private var baseNames = mutableListOf<String>()
     private var bases = mutableListOf<ThingBuilder>()
     private val slots = mutableListOf<List<String>>()
+    private val equipTargets = mutableListOf<EquipTarget>()
     private var ai: AI? = null
     private var mind: Mind? = null
     private var mindP: MindP? = null
@@ -74,6 +77,8 @@ class ThingBuilder(internal val name: String) {
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         mind.mindInitializer()
         val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
+        //TODO - apply nested params to equip targets
+        val equipTargets = (equipTargets + bases.flatMap { it.equipTargets })
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
 
         return Thing(
@@ -87,6 +92,7 @@ class ThingBuilder(internal val name: String) {
             behaviors = allBehaviors,
             body = body,
             equipSlots = equipSlots,
+            equipTargets = equipTargets,
             inventory = inventory,
             properties = props,
         )
@@ -200,6 +206,10 @@ class ThingBuilder(internal val name: String) {
 
     fun parent(parent: Thing) {
         this.parent = parent
+    }
+
+    fun equipTo(layer: Layer, vararg parts: String){
+        this.equipTargets.add(EquipTarget(layer, parts.toList()))
     }
 
     /**

@@ -17,6 +17,8 @@ class Weapons : ItemResource {
             description("It once held a cutting edge, but those days are little remembered.")
             equipSlotOptions("Right Hand Grip")
             equipSlotOptions("Left Hand Grip")
+            equipTo("grip", "Right Hand")
+            equipTo("grip", "Left Hand")
             props {
                 value("weight", 1)
                 value("slashDamage", 1)

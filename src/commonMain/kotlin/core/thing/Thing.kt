@@ -42,6 +42,7 @@ data class Thing(
     val mind: Mind = Mind(),
     val body: Body = Body("None"),
     val equipSlots: List<Slot> = listOf(),
+    val equipTargets: List<EquipTarget> = listOf(),
     val inventory: Inventory = Inventory(name, body),
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
@@ -50,8 +51,6 @@ data class Thing(
 ) : Named {
     var position = Vector()
     var climbThing: Thing? = null
-    //TODO - get from builders
-    val equipTargets = listOf<EquipTarget>()
 
     init {
         mind.updateCreature(this)
@@ -171,7 +170,7 @@ data class Thing(
         val inventory = Inventory(inventory.name, body)
         val soul = soul.copy()
 
-        return Thing(name, description, location, parent, mind, body, equipSlots, inventory, props, soul, behaviors, params)
+        return Thing(name, description, location, parent, mind, body, equipSlots, equipTargets, inventory, props, soul, behaviors, params)
     }
 
     fun getPositionInLocation(part: Location): Vector {
