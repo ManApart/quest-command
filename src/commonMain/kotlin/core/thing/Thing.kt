@@ -5,6 +5,7 @@ import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
 import core.body.Body2
+import core.body.EquipTarget
 import core.body.Slot
 import core.body.body
 import core.events.Event
@@ -49,6 +50,8 @@ data class Thing(
 ) : Named {
     var position = Vector()
     var climbThing: Thing? = null
+    //TODO - get from builders
+    val equipTargets = listOf<EquipTarget>()
 
     init {
         mind.updateCreature(this)

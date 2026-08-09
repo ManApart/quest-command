@@ -13,6 +13,7 @@ data class Body2(
     private val dimensions: Vector = NO_VECTOR,
     val parts: List<BodyPart>
 ) : Named {
+    private val namedParts = parts.associateBy { it.name }
 
     fun getSize(scale: Float): Vector {
         return (dimensions * scale)
@@ -22,20 +23,20 @@ data class Body2(
         return (dimensions.z * scale).roundToInt()
     }
 
-    fun canEquip(item: Thing): EquipTarget? {
-        return null
+    fun equipOptions(item: Thing): List<EquipTarget> {
+        return item.equipTargets.filter { canEquip(item, it) }
     }
 
     fun canEquip(item: Thing, target: EquipTarget): Boolean {
-        return false
+        return target.parts.all { namedParts[it]?.canEquip(item, target.layer) == true }
     }
 
-    fun equip(itemEquipped: Thing, target: EquipTarget) {
-
+    fun equip(item: Thing, target: EquipTarget) {
+        target.parts.forEach { namedParts[it]?.equip(item, target.layer) }
     }
 
     fun unEquip(item: Thing) {
-
+        parts.forEach { it.unEquip(item) }
     }
 
 }
