@@ -45,6 +45,17 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
         return default
     }
 
+    fun getDouble(key: String, default: Double = 0.0): Double {
+        if (properties.containsKey(key.lowercase())) {
+            return try {
+                properties[key.lowercase()]!!.toDouble()
+            } catch (e: NumberFormatException) {
+                default
+            }
+        }
+        return default
+    }
+
     fun getBoolean(key: String, default: Boolean = false): Boolean {
         if (properties.containsKey(key.lowercase())) {
             return properties[key.lowercase()]!!.toBoolean()
