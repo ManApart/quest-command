@@ -1,5 +1,6 @@
 package resources.body
 
+import core.body.Body2Resource
 import core.body.bodies
 import crafting.material.MaterialStrings.FLESH
 import crafting.material.MaterialStrings.IRON
@@ -7,8 +8,8 @@ import crafting.material.MaterialStrings.LEATHER
 import crafting.material.MaterialStrings.STONE
 import crafting.material.MaterialStrings.WOOD
 
-class CommonBodies2 {
-    val values = bodies {
+class CommonBodies2 : Body2Resource{
+    override val values = bodies {
         body("Human") {
             dimensions(6, 2, 10)
             mat(FLESH)
