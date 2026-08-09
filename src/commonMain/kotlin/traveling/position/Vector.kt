@@ -8,8 +8,9 @@ import kotlin.math.abs
 val NO_VECTOR: Vector = Vector()
 
 /*
-X and Y are coordinates on the map
-Z is height
+X = East/West
+Y = North/South
+Z = Height
  */
 class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     /**
@@ -59,6 +60,10 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
 
     operator fun times(magnitude: Int): Vector {
         return Vector(x * magnitude, y * magnitude, z * magnitude)
+    }
+
+    operator fun times(magnitude: Float): Vector {
+        return Vector((x * magnitude).roundToInt(), (y * magnitude).roundToInt(), (z * magnitude).roundToInt())
     }
 
     operator fun times(other: Vector): Vector {
