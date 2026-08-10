@@ -10,6 +10,14 @@ import core.ai.knowledge.MindP
 import core.body.Body
 import core.body.BodyCustomizer
 import core.body.BodyManager
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.LEFT_LEG
+import core.body.BodyPartStrings.RIGHT_HAND
+import core.body.BodyPartStrings.RIGHT_LEG
+import core.body.BodyPartStrings.WAIST
+import core.body.EquipLayerStrings.ARMOR
+import core.body.EquipLayerStrings.CLOTHING
+import core.body.EquipLayerStrings.GRIP
 import core.body.EquipTarget
 import core.body.Layer
 import core.body.Slot
@@ -99,7 +107,7 @@ class ThingBuilder(internal val name: String) {
     }
 
     private fun calcHeldSlots(props: Properties): List<Slot> {
-        if(props.tags.has(TagStrings.CREATURE)) return emptyList()
+        if (props.tags.has(TagStrings.CREATURE)) return emptyList()
         return when {
             props.tags.has("Small") || props.values.getInt("weight", 100) < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
             props.tags.has("Medium") || props.values.getInt("weight", 100) < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
@@ -193,7 +201,7 @@ class ThingBuilder(internal val name: String) {
         this.bodyCustomizer = BodyCustomizer().apply(initializer)
     }
 
-    fun material(material: String){
+    fun material(material: String) {
         this.bodyMaterial = material
     }
 
@@ -208,8 +216,25 @@ class ThingBuilder(internal val name: String) {
         this.parent = parent
     }
 
-    fun equipTo(layer: Layer, vararg parts: String){
-        this.equipTargets.add(EquipTarget(layer, parts.toList()))
+    fun equipToHoldOneHand() = equipToEither(GRIP, RIGHT_HAND, LEFT_HAND)
+    fun equipToHoldTwoHand() = equipTo(GRIP, RIGHT_HAND, LEFT_HAND)
+    fun equipArmorPants() = equipTo(ARMOR, WAIST, RIGHT_LEG, LEFT_LEG)
+    fun equipPants() = equipTo(CLOTHING, WAIST, RIGHT_LEG, LEFT_LEG)
+
+    /**
+    Equips to one part at this layer
+     **/
+    fun equipToEither(layer: Layer, vararg parts: String) {
+        parts.forEach {
+            equipTargets.add(EquipTarget(layer, listOf(it)))
+        }
+    }
+
+    /**
+    Equips to all parts at this layer
+     **/
+    fun equipTo(layer: Layer, vararg parts: String) {
+        equipTargets.add(EquipTarget(layer, parts.toList()))
     }
 
     /**
@@ -264,7 +289,7 @@ class ThingBuilder(internal val name: String) {
         }.also { bodyCustomizer.apply(it) }
     }
 
-    private fun discernAI(props: Properties) : AI {
+    private fun discernAI(props: Properties): AI {
         return when {
             props.tags.has(TagStrings.PREDATOR) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageStrings.PREDATOR]!!)
             props.tags.has(TagStrings.COMMONER) -> PackageBasedAI(AIPackageManager.aiPackages[AIPackageStrings.PEASANT]!!)
