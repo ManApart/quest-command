@@ -20,15 +20,15 @@ data class Body2(
         return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
-    fun getSize(scale: Float): Vector {
+    fun getSize(scale: Double): Vector {
         return (dimensions * scale)
     }
 
-    fun getHeight(scale: Float): Int {
+    fun getHeight(scale: Double): Int {
         return (dimensions.z * scale).roundToInt()
     }
 
-    fun getRange(scale: Float): Int {
+    fun getRange(scale: Double): Int {
         val size = getSize(scale) * 2
         return max(size.x, size.y, size.z) / 2
     }

@@ -5,12 +5,24 @@ import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
 import core.body.Body2
+import core.body.BodyPartStrings.CHEST
+import core.body.BodyPartStrings.HEAD
+import core.body.BodyPartStrings.LEFT_ARM
+import core.body.BodyPartStrings.LEFT_FOOT
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.LEFT_LEG
+import core.body.BodyPartStrings.RIGHT_ARM
+import core.body.BodyPartStrings.RIGHT_FOOT
+import core.body.BodyPartStrings.RIGHT_HAND
+import core.body.BodyPartStrings.RIGHT_LEG
+import core.body.BodyPartStrings.WAIST
 import core.body.EquipTarget
 import core.body.Slot
 import core.body.body
 import core.events.Event
 import core.properties.*
 import core.properties.ValueStrings.COUNT
+import core.properties.ValueStrings.SCALE
 import core.properties.ValueStrings.WEIGHT
 import core.utility.Named
 import core.utility.clamp
@@ -61,7 +73,7 @@ data class Thing(
     val body2: Body2 = body("Human") {
         dimensions(6, 2, 10)
         mat(FLESH)
-        parts("Head", "Right Arm", "Left Arm", "Waist", "Right Leg", "Left Leg", "Right Foot", "Left Foot")
+        parts(HEAD, CHEST, RIGHT_ARM, LEFT_ARM, RIGHT_HAND, LEFT_HAND, WAIST, RIGHT_LEG, LEFT_LEG, RIGHT_FOOT, LEFT_FOOT)
     }
 
     override fun toString(): String {
@@ -222,6 +234,18 @@ data class Thing(
 
     fun getSize(): Int {
         return properties.values.getInt("size", body.getSize().getDistance())
+    }
+
+    fun getSize2(): Vector {
+        return body2.getSize(properties.values.getDouble(SCALE, 1.0))
+    }
+
+    fun getHeight(): Int {
+        return body2.getHeight(properties.values.getDouble(SCALE, 1.0))
+    }
+
+    fun getRange(): Int {
+        return body2.getHeight(properties.values.getDouble(SCALE, 1.0))
     }
 
     fun getClarity(): Int {

@@ -8,4 +8,5 @@ object ValueStrings {
     const val FIRE_HEALTH = "fireHealth"
     const val HEAL_AMOUNT = "healAmount"
     const val WEIGHT = "weight"
+    const val SCALE = "scale"
 }

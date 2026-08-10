@@ -84,6 +84,12 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
         properties[lowKey] = guarded
     }
 
+    fun put(key: String, value: Double) {
+        val lowKey = key.lowercase()
+        val guarded = getGuardedValue(lowKey, getString(lowKey), value.toString())
+        properties[lowKey] = guarded
+    }
+
     fun put(key: String, value: Boolean) {
         val lowKey = key.lowercase()
         val guarded = getGuardedValue(lowKey, getString(lowKey), value.toString())

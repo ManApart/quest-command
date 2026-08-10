@@ -62,7 +62,7 @@ class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return Vector(x * magnitude, y * magnitude, z * magnitude)
     }
 
-    operator fun times(magnitude: Float): Vector {
+    operator fun times(magnitude: Double): Vector {
         return Vector((x * magnitude).roundToInt(), (y * magnitude).roundToInt(), (z * magnitude).roundToInt())
     }
 
