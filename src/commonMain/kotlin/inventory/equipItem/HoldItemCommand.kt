@@ -2,6 +2,9 @@ package inventory.equipItem
 
 import core.Player
 import core.body.Body
+import core.body.Body2
+import core.body.EquipLayerStrings.GRIP
+import core.body.EquipTarget
 import core.body.Slot
 import core.commands.*
 import core.events.EventManager
@@ -31,7 +34,7 @@ class HoldItemCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when{
-            args.isEmpty() -> source.thing.currentLocation().getThingsIncludingInventories().toList().filter { source.thing.perceives(it) }.map { it.name }
+            args.isEmpty() -> source.thing.currentLocation().getThingsIncludingInventories(source.thing).map { it.name }
             args.size == 1 -> listOf("in")
             args.last() == "in" -> listOf("right", "left")
             args.last() in listOf("right", "left") -> listOf("hand")
@@ -47,23 +50,23 @@ class HoldItemCommand : Command() {
             suggestEquippableItems(source)
         } else {
             val item = getItem(source.thing, arguments)
-            val attachPointGuess = getAttachPoint(arguments)
-            val body = source.body
+            val handGuess = if (arguments.hasGroup("in")) arguments.getString("in") else null
+            val body = source.body2
             val force = arguments.hasFlag("f")
 
             if (item == null) {
                 source.displayToMe("Could not find ${arguments.getBaseString()}. (Did you mean 'hold item in <hand>?")
             } else {
-                if (!item.canEquipTo(body)) {
+                if (!body.canEquip(item)) {
                     source.displayToMe("You can't hold ${item.name}.")
                 } else {
-                    val slot = findSlot(attachPointGuess, body, item)
-                    if (slot == null) {
-                        suggestAttachPoints(source, attachPointGuess, item)
+                    val target = findTarget(handGuess, body, item)
+                    if (target == null) {
+                        suggestAttachPoints(source, handGuess, item)
                     } else {
-                        val equippedItems = slot.getEquippedItems(body)
+                        val equippedItems = body.getEquippedAt(target)
                         if (equippedItems.isNotEmpty() && !force) {
-                            confirmEquip(source, item, equippedItems, attachPointGuess)
+                            confirmEquip(source, item, equippedItems, handGuess)
                         } else {
                             EventManager.postEvent(EquipItemEvent(source.thing, item, slot))
                         }
@@ -78,15 +81,11 @@ class HoldItemCommand : Command() {
         return source.currentLocation().getItemsIncludingPlayerInventory(itemName, source).firstOrNull()
     }
 
-    private fun getAttachPoint(args: Args): String? {
-        return if (args.hasGroup("in")) args.getString("in") else null
-    }
-
-    private suspend fun findSlot(attachPointGuess: String?, body: Body, item: Thing): Slot? {
-        return if (attachPointGuess == null) {
-           body.getEmptyEquipSlot(item) ?: body.getDefaultSlot(item)
+    private fun findTarget(handGuess: String?, body: Body2, item: Thing): EquipTarget? {
+        return if (handGuess == null) {
+            body.getDefaultTarget(item)
         } else {
-            item.findSlot(body, attachPointGuess)
+            body.findEquipTarget(item, handGuess, GRIP)
         }
     }
 
@@ -99,11 +98,12 @@ class HoldItemCommand : Command() {
     }
 
     private suspend fun getEquipableItems(source: Thing): List<Thing> {
-        val body = source.body
-        val equippedItems = body.getEquippedItems()
-        return source.inventory.getAllItems().filter { it.canEquipTo(body) && !equippedItems.contains(it) }
+        val body = source.body2
+        val equippedItems = body.getEquipped()
+        return source.inventory.getAllItems().filter { body.canEquip(it) && !equippedItems.contains(it) }
     }
 
+    //TODO - still make sense?
     private suspend fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
         source.respondSuspend("There is no place you can hold ${item.name}.") {
             message("Could not find attach point $attachPointGuess. Where would you like to hold ${item.name}?")

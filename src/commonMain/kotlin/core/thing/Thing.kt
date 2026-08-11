@@ -138,27 +138,27 @@ data class Thing(
         return 1 - getEncumbrance()
     }
 
-    suspend fun canEquipTo(body: Body): Boolean {
-        return equipSlots.any { slot ->
-            body.canEquip(slot)
-        }
-    }
-
-    suspend fun getEquippedSlot(body: Body): Slot {
-        return equipSlots.first { it.itemIsEquipped(this, body) }
-    }
-
-    suspend fun findSlot(body: Body, attachPoint: String): Slot? {
-        return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
-    }
-
-    suspend fun findSlotFromPart(body: Body, partName: String): Slot? {
-        return body.getPartOrNull(partName)?.let { part ->
-            equipSlots.firstOrNull { slot ->
-                slot.attachPoints.all { part.hasAttachPoint(it) }
-            }
-        }
-    }
+//    suspend fun canEquipTo(body: Body): Boolean {
+//        return equipSlots.any { slot ->
+//            body.canEquip(slot)
+//        }
+//    }
+//
+//    suspend fun getEquippedSlot(body: Body): Slot {
+//        return equipSlots.first { it.itemIsEquipped(this, body) }
+//    }
+//
+//    suspend fun findSlot(body: Body, attachPoint: String): Slot? {
+//        return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
+//    }
+//
+//    suspend fun findSlotFromPart(body: Body, partName: String): Slot? {
+//        return body.getPartOrNull(partName)?.let { part ->
+//            equipSlots.firstOrNull { slot ->
+//                slot.attachPoints.all { part.hasAttachPoint(it) }
+//            }
+//        }
+//    }
 
     fun getDamage(): Int {
         val chop = properties.values.getInt("chopDamage", 0)

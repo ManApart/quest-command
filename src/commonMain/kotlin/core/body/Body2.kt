@@ -34,19 +34,51 @@ data class Body2(
     }
 
     fun equipOptions(item: Thing): List<EquipTarget> {
-        return item.equipTargets.filter { canEquip(item, it) }
+        return item.equipTargets.filter { canEquip(it) }
     }
 
-    fun canEquip(item: Thing, target: EquipTarget): Boolean {
-        return target.parts.all { parts.getOrNull(it)?.canEquip(item, target.layer) == true }
+    fun getEmptyEquipOptions(item: Thing): List<EquipTarget> {
+        return item.equipTargets.filter { canEquipWithoutUnequippingOther(it) }
+    }
+
+    fun getDefaultTarget(item: Thing): EquipTarget? {
+        return getEmptyEquipOptions(item).firstOrNull() ?: equipOptions(item).firstOrNull()
+    }
+
+    fun canEquip(item: Thing): Boolean {
+        return item.equipTargets.firstOrNull { canEquip(it) } != null
+    }
+
+    fun canEquip(target: EquipTarget): Boolean {
+        return target.parts.all { parts.getOrNull(it) != null }
+    }
+
+    fun canEquipWithoutUnequippingOther(target: EquipTarget): Boolean {
+        return target.parts.all {
+            val part = parts.getOrNull(it)
+            part != null && part.getEquipped(target.layer) == null
+        }
     }
 
     fun equip(item: Thing, target: EquipTarget) {
-        target.parts.forEach { parts.getOrNull(it)?.equip(item, target.layer) }
+        target.parts.mapNotNull { parts.getOrNull(it) }.forEach {
+            it.unEquip(target.layer)
+            it.equip(item, target.layer)
+        }
     }
 
-    fun getEquipped() = parts.flatMap { it.getEquipped() }.toSet().toList()
+    fun findEquipTarget(item: Thing, part: String, layer: String): EquipTarget? {
+        return item.equipTargets.firstOrNull { t ->
+            t.layer.lowercase().contains(layer) && t.parts.any { it.lowercase().contains(part) }
+        }
+    }
+
     fun isEquipped(item: Thing) = getEquipped().contains(item)
+    fun getEquipped() = parts.flatMap { it.getEquipped() }.toSet().toList()
+
+    fun getEquippedAt(target: EquipTarget): List<Thing> {
+        return target.parts.mapNotNull { getEquippedAt(it, target.layer) }
+    }
     fun getEquippedAt(part: String, layer: Layer): Thing? {
         return parts.getOrNull(part)?.getEquipped(layer)
     }

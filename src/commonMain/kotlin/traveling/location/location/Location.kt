@@ -190,8 +190,8 @@ data class Location(
         return getThingsByName(getThings(), name)
     }
 
-    suspend fun getThingsIncludingInventories(): NameSearchableList<Thing> {
-        val baseThings = getThings()
+    suspend fun getThingsIncludingInventories(perceivedBy: Thing? = null): NameSearchableList<Thing> {
+        val baseThings = getThings(perceivedBy)
         return baseThings + baseThings.flatMap { it.inventory.getAllItems() }
     }
 
