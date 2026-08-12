@@ -43,8 +43,7 @@ class HoldItemCommand : Command() {
     }
 
     override suspend fun execute(source: Player, keyword: String, args: List<String>) {
-        val delimiters = listOf(ArgDelimiter(listOf("in")))
-        val arguments = Args(args, delimiters, flags = listOf("f"))
+        val arguments = Args(args, delims("in"), flags = listOf("f"))
 
         if (arguments.isEmpty()) {
             suggestEquippableItems(source)

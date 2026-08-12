@@ -6,7 +6,7 @@ import traveling.direction.Direction
 
 private const val BASE = "base"
 
-fun args(args: List<String>, delimiter: String) = Args(args, listOf(ArgDelimiter(listOf(delimiter))))
+fun args(args: List<String>, vararg delimiters: String) = Args(args, delims(delimiters.toList()))
 
 class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = listOf(), excludedWords: List<String> = listOf(), flags: List<String> = listOf()) {
     constructor(origArgs: List<String>, delimiters: List<String>) : this(origArgs, delimiters.map { ArgDelimiter(listOf(it)) })

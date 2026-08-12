@@ -73,6 +73,12 @@ data class Body2(
         }
     }
 
+    fun findEquipTargetByLayer(item: Thing, layer: String): EquipTarget? {
+        return item.equipTargets.firstOrNull { t ->
+            t.layer.lowercase().contains(layer)
+        }
+    }
+
     fun findEquipTarget(item: Thing, part: String, layer: String): EquipTarget? {
         return item.equipTargets.firstOrNull { t ->
             t.layer.lowercase().contains(layer) && t.parts.any { it.lowercase().contains(part) }
@@ -85,6 +91,7 @@ data class Body2(
     fun getEquippedAt(target: EquipTarget): List<Thing> {
         return target.parts.mapNotNull { getEquippedAt(it, target.layer) }
     }
+
     fun getEquippedAt(part: String, layer: Layer): Thing? {
         return parts.getOrNull(part)?.getEquipped(layer)
     }

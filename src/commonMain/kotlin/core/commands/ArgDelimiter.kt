@@ -21,6 +21,9 @@ class ArgDelimiter(aliases: List<String>) {
     }
 }
 
+fun delims(vararg delimiters: String) = delimiters.map { ArgDelimiter(it) }
+fun delims(delimiters: List<String>) = delimiters.map { ArgDelimiter(it) }
+
 fun List<ArgDelimiter>.contains(string: String): Boolean {
     return any { it.contains(string) }
 }
