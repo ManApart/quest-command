@@ -246,6 +246,8 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return getString(BASE)
     }
 
+    fun getStringIfDelimExists(delimiter: String) = if (hasGroup(delimiter)) getString(delimiter) else null
+
     fun getString(delimiter: String): String {
         return getStrings(delimiter).firstOrNull() ?: ""
     }

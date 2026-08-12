@@ -1,11 +1,11 @@
 package inventory.equipItem
 
 import core.Player
-import core.body.Body
 import core.body.Body2
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.RIGHT_HAND
 import core.body.EquipLayerStrings.GRIP
 import core.body.EquipTarget
-import core.body.Slot
 import core.commands.*
 import core.events.EventManager
 import core.history.displayToMe
@@ -50,7 +50,7 @@ class HoldItemCommand : Command() {
             suggestEquippableItems(source)
         } else {
             val item = getItem(source.thing, arguments)
-            val handGuess = if (arguments.hasGroup("in")) arguments.getString("in") else null
+            val handGuess = arguments.getStringIfDelimExists("in")
             val body = source.body2
             val force = arguments.hasFlag("f")
 
@@ -62,13 +62,13 @@ class HoldItemCommand : Command() {
                 } else {
                     val target = findTarget(handGuess, body, item)
                     if (target == null) {
-                        suggestAttachPoints(source, handGuess, item)
+                        suggestHand(source, handGuess, item)
                     } else {
                         val equippedItems = body.getEquippedAt(target)
                         if (equippedItems.isNotEmpty() && !force) {
                             confirmEquip(source, item, equippedItems, handGuess)
                         } else {
-                            EventManager.postEvent(EquipItemEvent(source.thing, item, slot))
+                            EventManager.postEvent(EquipItemEvent(source.thing, item, target))
                         }
                     }
                 }
@@ -103,19 +103,16 @@ class HoldItemCommand : Command() {
         return source.inventory.getAllItems().filter { body.canEquip(it) && !equippedItems.contains(it) }
     }
 
-    //TODO - still make sense?
-    private suspend fun suggestAttachPoints(source: Player, attachPointGuess: String?, item: Thing) {
+    private suspend fun suggestHand(source: Player, handGuess: String?, item: Thing) {
         source.respondSuspend("There is no place you can hold ${item.name}.") {
-            message("Could not find attach point $attachPointGuess. Where would you like to hold ${item.name}?")
-            val options = source.thing.body.getParts().filter { it.hasAttachPoint("Grip") }
-            optionsNamed(options)
+            message("Could not find attach point $handGuess. Where would you like to hold ${item.name}?")
+            options(RIGHT_HAND, LEFT_HAND)
             command { "hold ${item.name} in $it" }
         }
-
     }
 
-    private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, attachPoint: String?) {
-        val toPart = if (attachPoint.isNullOrBlank()) "" else " to $attachPoint"
+    private fun confirmEquip(source: Player, newEquip: Thing, equippedItems: List<Thing>, partGuess: String?) {
+        val toPart = if (partGuess.isNullOrBlank()) "" else " to $partGuess"
         source.respond({}) {
             message("Replace ${equippedItems.joinToString(", "){it.name}} with ${newEquip.name}?")
             yesNoOptions("hold ${newEquip.name}$toPart f", "")

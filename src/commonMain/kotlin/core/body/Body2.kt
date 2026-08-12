@@ -67,6 +67,12 @@ data class Body2(
         }
     }
 
+    fun findEquipTarget(item: Thing, part: String): EquipTarget? {
+        return item.equipTargets.firstOrNull { t ->
+            t.parts.any { it.lowercase().contains(part) }
+        }
+    }
+
     fun findEquipTarget(item: Thing, part: String, layer: String): EquipTarget? {
         return item.equipTargets.firstOrNull { t ->
             t.layer.lowercase().contains(layer) && t.parts.any { it.lowercase().contains(part) }
