@@ -72,7 +72,7 @@ class AttackCommand : Command() {
                 } else {
                     //If we got an alias, process with a default value of the body root part
                     if (isAlias(keyword) || thing.thing.body2.parts.size == 1) {
-                        processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body.getRootPart())))
+                        processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body2.core)))
                         //Otherwise clarify body parts.
                     } else {
                         clarifyThingPart(source, keyword, thing, weaponName)

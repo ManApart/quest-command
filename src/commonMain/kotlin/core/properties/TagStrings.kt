@@ -19,4 +19,5 @@ object TagStrings {
     const val CONTAINER = "Container"
     const val OPEN = "Open"
     const val WOOD = "Wood"
+    const val WEAPON = "Weapon"
 }

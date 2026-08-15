@@ -1,5 +1,6 @@
 package core.body
 
+import combat.block.BlockHelper
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.Named
@@ -17,6 +18,7 @@ data class Body2(
     val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),
 ) : Named {
     val core = parts.first()
+    val blockHelper = BlockHelper()
 
     override fun toString(): String {
         return name + ": [" + parts.joinToString { it.name } + "]"

@@ -1,17 +1,13 @@
 package core.body
 
 import combat.block.BlockHelper
-import core.history.display
-import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
-import traveling.direction.Direction
 import traveling.location.Network
 import traveling.location.location.Location
-import traveling.location.network.LocationNode
 import traveling.position.Vector
 
 val NONE = Body("None", DEFAULT_MATERIAL)

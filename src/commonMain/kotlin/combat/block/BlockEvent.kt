@@ -1,21 +1,21 @@
 package combat.block
 
+import core.body.BodyPart
 import core.events.TemporalEvent
 import core.thing.Thing
 import status.stat.AttributeStrings.AGILITY
-import traveling.location.location.Location
 import kotlin.math.max
 
 
 class BlockEvent(
     override val creature: Thing,
-    val partThatWillShield: Location,
-    val partThatWillBeShielded: Location,
+    val partThatWillShield: BodyPart,
+    val partsThatWillBeShielded: List<BodyPart>,
     override var timeLeft: Int = if (creature.isPlayer()) 1 else 0
 ) : TemporalEvent
 
-suspend fun startBlockEvent(source: Thing, partThatWillShield: Location, partThatWillBeShielded: Location, timeLeft: Int? = null): BlockEvent {
-    return BlockEvent(source, partThatWillShield, partThatWillBeShielded, timeLeft ?: calcTimeLeft(source))
+suspend fun startBlockEvent(source: Thing, partThatWillShield: BodyPart, partsThatWillBeShielded: List<BodyPart>, timeLeft: Int? = null): BlockEvent {
+    return BlockEvent(source, partThatWillShield, partsThatWillBeShielded, timeLeft ?: calcTimeLeft(source))
 }
 
 private suspend fun calcTimeLeft(source: Thing): Int {

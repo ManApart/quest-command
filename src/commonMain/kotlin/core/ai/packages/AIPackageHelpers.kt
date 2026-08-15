@@ -4,6 +4,8 @@ import combat.DamageType
 import combat.attack.AttackEvent
 import combat.attack.startAttack
 import core.GameState
+import core.body.BodyPartStrings.LEFT_FOOT
+import core.body.BodyPartStrings.RIGHT_FOOT
 import core.properties.ValueStrings
 import core.thing.Thing
 import core.utility.RandomManager
@@ -19,17 +21,13 @@ suspend fun Thing.canReachGoal(howToUse: String): Boolean {
 }
 
 suspend fun clawAttack(target: Thing, creature: Thing): AttackEvent {
-    val enemyBody = target.body
-    val possibleParts = listOf(
-        enemyBody.getPart("Right Foot"),
-        enemyBody.getPart("Left Foot")
+    val enemyBody = target.body2
+    val possibleParts = listOfNotNull(
+        enemyBody.parts.getOrNull(RIGHT_FOOT),
+        enemyBody.parts.getOrNull(LEFT_FOOT),
     )
     val thingPart = listOf(RandomManager.getRandom(possibleParts))
-    val partToAttackWith = if (creature.body.hasPart("Small Claws")) {
-        creature.body.getPart("Small Claws")
-    } else {
-        creature.body.getRootPart()
-    }
+    val partToAttackWith = creature.body2.parts.getOrNull("Small Claws") ?: creature.body2.core
     return startAttack(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
 }
 

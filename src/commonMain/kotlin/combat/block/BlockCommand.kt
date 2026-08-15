@@ -36,7 +36,7 @@ class BlockCommand : Command() {
         }
     }
 
-    //TODO
+    //TODO - allow as many parts as they like to block
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
         val handHelper = handHelper(source, arguments.getString("with"), "block")

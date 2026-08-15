@@ -84,43 +84,43 @@ data class Location(
         changeWeatherIfEnoughTimeHasPassed()
     }
 
-    fun hasAttachPoint(attachPoint: String): Boolean {
-        return equippedItems.map { it.key.lowercase() }.contains(attachPoint.lowercase())
-    }
+//    fun hasAttachPoint(attachPoint: String): Boolean {
+//        return equippedItems.map { it.key.lowercase() }.contains(attachPoint.lowercase())
+//    }
+//
+//    fun getEquippedItem(slot: String): Thing? {
+//        return equippedItems[slot.lowercase()]
+//    }
+//
+//    fun getEquippedItems(): List<Thing> {
+//        return equippedItems.values.filterNotNull()
+//    }
+//
+//    fun getEquippedItemMap(): Map<String, Thing?> {
+//        return equippedItems
+//    }
+//
+//    fun getEquippedWeapon(): Thing? {
+//        return equippedItems.values.firstOrNull { it?.properties?.tags?.has("Weapon") ?: false }
+//    }
+//
+//    suspend fun equipItem(attachPoint: String, item: Thing) {
+//        if (!equippedItems.containsKey(attachPoint.lowercase())) {
+//            item.display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
+//        } else {
+//            equippedItems[attachPoint.lowercase()] = item
+//            addThing(item)
+//        }
+//    }
 
-    fun getEquippedItem(slot: String): Thing? {
-        return equippedItems[slot.lowercase()]
-    }
-
-    fun getEquippedItems(): List<Thing> {
-        return equippedItems.values.filterNotNull()
-    }
-
-    fun getEquippedItemMap(): Map<String, Thing?> {
-        return equippedItems
-    }
-
-    fun getEquippedWeapon(): Thing? {
-        return equippedItems.values.firstOrNull { it?.properties?.tags?.has("Weapon") ?: false }
-    }
-
-    suspend fun equipItem(attachPoint: String, item: Thing) {
-        if (!equippedItems.containsKey(attachPoint.lowercase())) {
-            item.display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
-        } else {
-            equippedItems[attachPoint.lowercase()] = item
-            addThing(item)
-        }
-    }
-
-    fun unEquip(item: Thing) {
-        equippedItems.keys.forEach {
-            if (equippedItems[it] == item) {
-                equippedItems[it] = null
-            }
-        }
-        removeThing(item)
-    }
+//    fun unEquip(item: Thing) {
+//        equippedItems.keys.forEach {
+//            if (equippedItems[it] == item) {
+//                equippedItems[it] = null
+//            }
+//        }
+//        removeThing(item)
+//    }
 
     fun isEmpty(): Boolean {
         return getThings().isEmpty()
@@ -162,7 +162,7 @@ data class Location(
         thing.properties.values.clear("locationDescription")
     }
 
-    suspend fun removeThingIncludingPlayerInventory(source: Thing, thing: Thing) {
+    fun removeThingIncludingPlayerInventory(source: Thing, thing: Thing) {
         if (source.inventory.exists(thing)) {
             source.inventory.remove(thing)
         } else {
@@ -199,7 +199,7 @@ data class Location(
         return getThingsByName(getThingsIncludingInventories(), name)
     }
 
-    suspend fun getThingsIncludingTopLevelInventories(): NameSearchableList<Thing> {
+    fun getThingsIncludingTopLevelInventories(): NameSearchableList<Thing> {
         val baseThings = getThings()
         return baseThings + baseThings.flatMap { it.inventory.getItems() }
     }
@@ -284,15 +284,15 @@ data class Location(
         return getThingsByName(items, name)
     }
 
-    suspend fun getItemsIncludingPlayerInventory(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
-        return source.inventory.getItems() + getItems(source, perceivedBy)
-    }
+//    suspend fun getItemsIncludingPlayerInventory(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
+//        return source.inventory.getItems() + getItems(source, perceivedBy)
+//    }
 
     suspend fun getItemsIncludingPlayerInventory(source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems() + getItems(source)
     }
 
-    suspend fun getItemsIncludingPlayerInventory(name: String, source: Thing): NameSearchableList<Thing> {
+    fun getItemsIncludingPlayerInventory(name: String, source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems(name) + getItems(source, name)
     }
 
@@ -312,7 +312,7 @@ data class Location(
         return activators.filter { it.properties.hasAll(properties) }
     }
 
-    suspend fun getAllSouls(source: Thing): List<Soul> {
+    fun getAllSouls(source: Thing): List<Soul> {
         val things = mutableSetOf(source)
         things.addAll(source.inventory.getAllItems())
 
@@ -323,9 +323,9 @@ data class Location(
         return things.map { it.soul }.toList()
     }
 
-    fun getAllInventories(): List<Inventory> {
-        return getThings().asSequence().map { it.inventory }.toList()
-    }
+//    fun getAllInventories(): List<Inventory> {
+//        return getThings().asSequence().map { it.inventory }.toList()
+//    }
 
     fun changeWeatherIfEnoughTimeHasPassed() {
         if (lastWeatherChange == 0L || GameState.timeManager.getHoursPassed(lastWeatherChange) >= recipe.weatherChangeFrequency) {
@@ -341,7 +341,7 @@ data class Location(
         this.weather = newWeather
     }
 
-    suspend fun applyWeatherEffects() {
+    fun applyWeatherEffects() {
         val conditionRecipes = weather.conditionNames
         conditionRecipes.forEach { recipeName ->
             getThings().forEach { thing ->
@@ -352,10 +352,10 @@ data class Location(
         }
     }
 
-    suspend fun canHold(item: Thing): Boolean {
-        return properties.tags.has(CONTAINER) && hasRoomFor(item)
-                && item.properties.canBeHeldByContainerWithProperties(properties)
-    }
+//    suspend fun canHold(item: Thing): Boolean {
+//        return properties.tags.has(CONTAINER) && hasRoomFor(item)
+//                && item.properties.canBeHeldByContainerWithProperties(properties)
+//    }
 
     /**
      * How much do all of the items in this location weigh?

@@ -1,6 +1,7 @@
 package combat.attack
 
 import combat.DamageType
+import core.body.BodyPart
 import core.events.TemporalEvent
 import core.thing.Thing
 import status.stat.AttributeStrings.AGILITY
@@ -9,12 +10,12 @@ import traveling.position.ThingAim
 import kotlin.math.max
 
 
-data class AttackEvent(override val creature: Thing, val sourcePart: Location, val aim: ThingAim, val type: DamageType, override var timeLeft: Int = 1) : TemporalEvent
+data class AttackEvent(override val creature: Thing, val sourcePart: BodyPart, val aim: ThingAim, val type: DamageType, override var timeLeft: Int = 1) : TemporalEvent
 
-suspend fun startAttack(source: Thing, sourcePart: Location, thing: ThingAim, type: DamageType, timeLeft: Int? = null): AttackEvent {
+suspend fun startAttack(source: Thing, sourcePart: BodyPart, thing: ThingAim, type: DamageType, timeLeft: Int? = null): AttackEvent {
     return AttackEvent(source, sourcePart, thing, type, timeLeft ?: calcTimeLeft(source, sourcePart))
 }
-private suspend fun calcTimeLeft(source: Thing, sourcePart: Location): Int {
+private suspend fun calcTimeLeft(source: Thing, sourcePart: BodyPart): Int {
     val weaponSize = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: 1
     val weaponWeight = sourcePart.getEquippedWeapon()?.getWeight() ?: 1
     val encumbrance = source.getEncumbrance()
