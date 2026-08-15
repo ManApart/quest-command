@@ -8,6 +8,7 @@ import core.ai.knowledge.CreatureMemory
 import core.ai.knowledge.Mind
 import core.ai.knowledge.MindP
 import core.body.Body
+import core.body.Body2
 import core.body.BodyCustomizer
 import core.body.BodyManager
 import core.body.BodyPartStrings.LEFT_HAND
@@ -81,7 +82,8 @@ class ThingBuilder(internal val name: String) {
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
-        val inventory = Inventory(name, body)
+        //TODO
+        val inventory = Inventory(name, Body2())
         inventory.addAllByName(allItems)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }

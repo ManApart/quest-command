@@ -56,7 +56,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val item = createItem("Apple", weight = 5)
             val creature = createChest()
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(5)
 
@@ -73,12 +73,12 @@ class TransferItemPlaceTest {
             //Capacity = 10 * Strength
             val creature = createChest()
             val item = createItem("Apple", weight = 10)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val packMule = createPackMule(1)
 
             val pouch = createPouch(15)
-            packMule.inventory.add(pouch)
+            packMule.add(pouch)
 
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, packMule)) }
 
@@ -111,7 +111,7 @@ class TransferItemPlaceTest {
 
             val creature = createChest()
             val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM)))
-            creature.inventory.add(item)
+            creature.add(item)
 
 
             val packMule = createPackMule(1)
@@ -128,7 +128,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val creature = createChest()
             val item = createItem("Apple", weight = 5)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(10)
 
@@ -145,7 +145,7 @@ class TransferItemPlaceTest {
             val creature = createChest()
             val item = createItem(weight = 1)
             item.properties.values.put(ValueStrings.COUNT, 2)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(size = 5)
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
@@ -163,7 +163,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val creature = Thing("Creature")
             val item = createItem("Apple", 1)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(5)
 
@@ -179,7 +179,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val creature = Thing("Creature")
             val item = createItem("Apple", weight = 1)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createClosedChest(5)
 
@@ -195,7 +195,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val creature = Thing("Creature")
             val item = createItem("Apple", weight = 5)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(1)
 
@@ -211,7 +211,7 @@ class TransferItemPlaceTest {
         runBlocking {
             val creature = Thing("Creature")
             val item = createItem("Apple", weight = 1)
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(size = 0)
 
@@ -226,7 +226,7 @@ class TransferItemPlaceTest {
 //    fun chestWithNoCapacityTagAtLocation() {
 //        val creature = Thing("Creature")
 //        val item = createItem("Apple", weight = 1)
-//        creature.inventory.add(item)
+//        creature.add(item)
 //
 ////        val chest = Thing("Chest", properties = Properties(Tags("Container", "Open", "Activator"))))
 //
@@ -244,7 +244,7 @@ class TransferItemPlaceTest {
             val creature = createChest()
             val item = createItem()
             item.properties.tags.add("Food", "Fruit")
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(5)
             chest.body.getRootPart().properties.values.put(CAN_HOLD, "Food,Apparel")
@@ -262,7 +262,7 @@ class TransferItemPlaceTest {
             val creature = Thing("Creature")
             val item = createItem()
             item.properties.tags.add("Food", "Fruit")
-            creature.inventory.add(item)
+            creature.add(item)
 
             val chest = createChest(5)
             chest.body.getRootPart().properties.values.put(CAN_HOLD, "Weapon,Apparel")

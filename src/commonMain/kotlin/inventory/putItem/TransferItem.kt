@@ -29,8 +29,8 @@ class TransferItem : EventListener<TransferItemEvent>() {
     }
 
     private suspend fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
-        val newStack = item.copy(1)
-        if (destination.inventory.attemptToAdd(newStack)) {
+        val newStack = item.copy(count = 1)
+        if (destination.attemptToAdd(newStack)) {
             removeFromSource(source, item)
             EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
         } else {

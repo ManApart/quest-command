@@ -4,6 +4,7 @@ import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
+import core.utility.toNameSearchableList
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.roundToInt
@@ -13,7 +14,7 @@ import kotlin.math.roundToInt
 data class Body2(
     override val name: String = "None",
     private val dimensions: Vector = NO_VECTOR,
-    val parts: NameSearchableList<BodyPart>
+    val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList()
 ) : Named {
 
     override fun toString(): String {
@@ -37,12 +38,12 @@ data class Body2(
         return item.equipTargets.filter { canEquip(it) }
     }
 
-    fun getEmptyEquipOptions(item: Thing): List<EquipTarget> {
+    fun emptyEquipOptions(item: Thing): List<EquipTarget> {
         return item.equipTargets.filter { canEquipWithoutUnequippingOther(it) }
     }
 
     fun getDefaultTarget(item: Thing): EquipTarget? {
-        return getEmptyEquipOptions(item).firstOrNull() ?: equipOptions(item).firstOrNull()
+        return emptyEquipOptions(item).firstOrNull() ?: equipOptions(item).firstOrNull()
     }
 
     fun canEquip(item: Thing): Boolean {
@@ -60,6 +61,7 @@ data class Body2(
         }
     }
 
+    fun equipToEmpty(item: Thing) = emptyEquipOptions(item).firstOrNull()?.let { equip(item, it) }
     fun equip(item: Thing) = equip(item, getDefaultTarget(item)!!)
     fun equip(item: Thing, target: EquipTarget): EquipTarget {
         target.parts.mapNotNull { parts.getOrNull(it) }.forEach {

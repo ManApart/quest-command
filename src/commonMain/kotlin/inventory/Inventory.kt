@@ -1,37 +1,35 @@
 package inventory
 
-import core.body.Body
+import core.body.Body2
 import core.properties.Properties
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
-import core.properties.TagStrings.SIZE
 import core.thing.Thing
 import core.thing.item.ItemManager
+import core.thing.thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
-import traveling.location.location.Location
 
-suspend fun inventory(name: String = "Inventory") : Inventory {
-    return Inventory(name, createInventoryBody(name))
+fun inventory(name: String = "Inventory"): Inventory {
+    return Inventory(name, Body2(name))
 }
 
-suspend fun inventory(name: String, items: List<Thing>) : Inventory {
-    return Inventory(name, Body().also { it.layout.rootNode.getLocation().addThings(items) })
+fun inventory(name: String, items: List<Thing>): Inventory {
+    return Inventory(name, Body2(), items.toMutableList())
 }
 
-data class Inventory(val name: String = "Inventory", private val body: Body) {
-    //TODO
-//    constructor(name: String, items: List<Thing>) : this(name, Body().also { it.layout.rootNode.getLocation().addThings(items) })
+data class Inventory(val name: String = "Inventory", private val body: Body2, private val items: MutableList<Thing> = mutableListOf()) {
+    constructor(name: String, items: List<Thing>) : this(name, Body2(), items.toMutableList())
 
     override fun toString(): String {
         return name
     }
 
-    suspend fun exists(item: Thing): Boolean {
-        return getItemsNameSearchable().exists(item) || NameSearchableList(getAllItems()).exists(item)
+    fun exists(item: Thing): Boolean {
+        return items.contains(item) || getAllItems().contains(item)
     }
 
-    suspend fun getItem(name: String?): Thing? {
+    fun getItem(name: String?): Thing? {
         return if (name == null) {
             null
         } else {
@@ -39,105 +37,108 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
         }
     }
 
-    suspend fun getItems(name: String): List<Thing> {
+    fun getItems(name: String): List<Thing> {
         return getAllItems().toNameSearchableList().getAll(name)
     }
 
     /**
      * Return all items of this inventory and any sub-inventory
      */
-    suspend fun getAllItems(): List<Thing> {
+    fun getAllItems(): List<Thing> {
         val items = getItems()
         return (items + items.flatMap { it.inventory.getAllItems() }).toSet().toList()
     }
 
-    suspend fun getItems(): List<Thing> {
-        return body.getParts().flatMap { it.getItems() }.toSet().toList()
-    }
-
-    private suspend fun getItemsNameSearchable(): NameSearchableList<Thing> {
-        return getItems().toNameSearchableList()
+    fun getItems(): List<Thing> {
+        return items.toList()
     }
 
     suspend fun addAllByName(items: List<String>) {
         if (items.isNotEmpty()) {
-            addAll(ItemManager.getItems(items))
+            addAll(ItemManager.getItems(items), 0)
         }
     }
 
-    suspend fun addAll(items: List<Thing>) {
-        items.forEach { add(it) }
+    fun addAll(items: List<Thing>, capacity: Int) {
+        items.forEach { add(it, capacity) }
     }
 
-    private suspend fun findLocationWith(item: Thing): Location? {
-        return body.getParts().firstOrNull { it.getItems().contains(item) }
-                ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationWith(item) }
+    fun add(item: Thing, capacity: Int) {
+        if (!attemptToAdd(item, capacity)) {
+            addStackOrSingle(item)
+        }
     }
 
-    private suspend fun findLocationThatCanTake(item: Thing): Location? {
-        return body.getParts().firstOrNull { it.canHold(item) }
-                ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationThatCanTake(item) }
+    //Eventually add count of item
+    fun attemptToAdd(item: Thing, capacity: Int): Boolean {
+        if (rootHasRoomFor(item, capacity)) {
+            addStackOrSingle(item)
+            return true
+        }
+        return getItems().filter { it.isOpenContainer() }.any { it.attemptToAdd(item) }
     }
 
-    //TODO
-    //Eventually add count
-    suspend fun attemptToAdd(item: Thing): Boolean {
-//        val equipSlot = body.getEmptyEquipSlot(item)
-//        if (equipSlot != null) {
-//            body.equip(item, equipSlot)
-//            return true
-//        }
+    private fun rootHasRoomFor(item: Thing, capacity: Int): Boolean {
+        val used = getWeight()
+        return item.getWeight() + used <= capacity
+    }
 
-        val location = findLocationThatCanTake(item) ?: return false
-        val match = location.getItems(item.name).firstOrNull()
-
+    private fun addStackOrSingle(item: Thing) {
+        val match = items.toNameSearchableList().getOrNull(item.name)
         if (match != null && item.isStackable(match)) {
             match.properties.incCount(item.properties.getCount())
         } else {
-            location.addThing(item)
-        }
-
-        return true
-    }
-
-    suspend fun add(item: Thing) {
-        if (!attemptToAdd(item)) {
-            body.getRootPart().addThing(item)
+            items.add(item)
+            body.equipToEmpty(item)
         }
     }
 
-    suspend fun remove(item: Thing, count: Int = 1) {
-        val location = findLocationWith(item)
-        if (location != null) {
-            if (item.properties.getCount() > count) {
-                item.properties.incCount(-count)
-            } else {
-                location.removeThing(item)
-                //TODO
-                throw NotImplementedError()
-//                body.unEquip(item)
-            }
+    fun remove(item: Thing, count: Int = 1): Int {
+        return if (items.contains(item)) {
+            removeStackOrSingle(item, count)
+        } else {
+            items.firstNotNullOfOrNull { it.inventory.remove(item, count).takeIf { removed -> removed != 0 } } ?: 0
         }
     }
 
-    suspend fun findItemsByProperties(properties: Properties): List<Thing> {
+    private fun removeStackOrSingle(item: Thing, count: Int): Int {
+        val currentCount = item.properties.getCount()
+        val result = currentCount - count
+
+        return if (result < 1) {
+            items.remove(item)
+            body.unEquip(item)
+            currentCount
+        } else {
+            item.properties.incCount(-count)
+            count
+        }
+    }
+
+    fun findItemsByProperties(properties: Properties): List<Thing> {
         return getAllItems().filter { it.properties.hasAll(properties) }
     }
 
-    suspend fun getWeight(): Int {
+    fun getWeight(): Int {
         return getItems().sumOf { it.getWeight() }
     }
 
 }
 
-suspend fun createInventoryBody(name: String = "Inventory", capacity: Int? = null): Body {
-    return Body(name).also {
-        with(it.getRootPart().properties.tags) {
-            add(CONTAINER)
-            add(OPEN)
-        }
-        if (capacity != null) {
-            it.getRootPart().properties.values.put(SIZE, capacity)
-        }
-    }
+
+private fun Thing.isOpenContainer() = with(properties.tags) {
+    has(CONTAINER) && has(OPEN)
 }
+
+//
+//suspend fun createInventoryBody(name: String = "Inventory"): Body2 {
+//    return Body2(name).also {
+//        with(it.getRootPart().properties.tags) {
+//            add(CONTAINER)
+//            add(OPEN)
+//        }
+//        if (capacity != null) {
+//            it.getRootPart().properties.values.put(SIZE, capacity)
+//        }
+//    }
+//}

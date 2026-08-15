@@ -55,7 +55,9 @@ data class Thing(
     val body: Body = Body("None"),
     val equipSlots: List<Slot> = listOf(),
     val equipTargets: List<EquipTarget> = listOf(),
-    val inventory: Inventory = Inventory(name, body),
+    //TODO
+    val inventory: Inventory = Inventory(name, Body2()),
+//    val inventory: Inventory = Inventory(name, body),
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
@@ -160,6 +162,9 @@ data class Thing(
 //        }
 //    }
 
+    fun add(item: Thing) = inventory.add( item, getTotalCapacity())
+    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getTotalCapacity())
+
     fun getDamage(): Int {
         val chop = properties.values.getInt("chopDamage", 0)
         val stab = properties.values.getInt("stabDamage", 0)
@@ -171,7 +176,7 @@ data class Thing(
         return name == other.name && properties.matches(other.properties)
     }
 
-    suspend fun getWeight(): Int {
+    fun getWeight(): Int {
         return properties.values.getInt(WEIGHT, 1) + inventory.getWeight()
     }
 
@@ -179,7 +184,7 @@ data class Thing(
         val props = Properties(properties)
         props.values.put(COUNT, count)
         val body = body.copy()
-        val inventory = Inventory(inventory.name, body)
+        val inventory = Inventory(inventory.name, body2)
         val soul = soul.copy()
 
         return Thing(name, description, location, parent, mind, body, equipSlots, equipTargets, inventory, props, soul, behaviors, params)

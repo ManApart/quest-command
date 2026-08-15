@@ -14,7 +14,7 @@ class SpawnItem : EventListener<ItemSpawnedEvent>() {
             event.item.location.getLocation().addThing(event.item)
             event.item.display("$name appeared.")
         } else {
-            event.thing.inventory.add(event.item)
+            event.thing.add(event.item)
             EventManager.postEvent(ItemPickedUpEvent(event.thing, event.item, true))
         }
     }

@@ -129,7 +129,7 @@ object GameManager {
         val body = player.body2
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {
             val item = ItemManager.getItem(it)
-            inventory.add(item)
+            player.add(item)
             if (!body.isEquipped(item)) {
                 body.equip(item)
             }
@@ -137,7 +137,7 @@ object GameManager {
         val pouch = inventory.getItem("Small Pouch")!!
         listOf("Apple").forEach {
             val item = ItemManager.getItem(it)
-            pouch.inventory.add(item)
+            pouch.add(item)
         }
     }
 

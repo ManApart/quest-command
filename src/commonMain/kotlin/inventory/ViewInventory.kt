@@ -36,7 +36,7 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
 
     }
 
-    private suspend fun inventoryToString(inventory: Inventory, body: Body2, depth: Int = 0): String {
+    private fun inventoryToString(inventory: Inventory, body: Body2, depth: Int = 0): String {
         var message = ""
         getSortedInventory(inventory, body)
             .forEach {
@@ -54,7 +54,7 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
         return "\n" + tabs + asterisk + item.name
     }
 
-    private suspend fun getSortedInventory(inventory: Inventory, body: Body2): List<Thing> {
+    private fun getSortedInventory(inventory: Inventory, body: Body2): List<Thing> {
         val equippedItems = inventory.getItems().filter { body.isEquipped(it) }.sortedBy { it.name }
         val unEquippedItems = inventory.getItems().filter { !body.isEquipped(it) }.sortedBy { it.name }
         return equippedItems + unEquippedItems

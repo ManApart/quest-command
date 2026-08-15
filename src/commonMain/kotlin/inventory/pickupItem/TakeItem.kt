@@ -18,8 +18,8 @@ class TakeItem : EventListener<TakeItemEvent>() {
     }
 
     private suspend fun takeItem(taker: Thing, item: Thing, silent: Boolean) {
-        val newStack = item.copy(1)
-        if (taker.inventory.attemptToAdd(newStack)) {
+        val newStack = item.copy(count = 1)
+        if (taker.attemptToAdd(newStack)) {
             if (item.properties.getCount() > 1) {
                 item.properties.incCount(-1)
             } else {
