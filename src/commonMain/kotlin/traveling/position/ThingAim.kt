@@ -1,9 +1,10 @@
 package traveling.position
 
+import core.body.BodyPart
 import core.thing.Thing
 import traveling.location.location.Location
 
-class ThingAim(val thing: Thing, val bodyPartThings: List<Location> = listOf()) {
+class ThingAim(val thing: Thing, val bodyPartThings: List<BodyPart> = listOf()) {
     override fun toString(): String {
         return if (bodyPartThings.isEmpty()) {
             thing.toString()
@@ -16,12 +17,11 @@ class ThingAim(val thing: Thing, val bodyPartThings: List<Location> = listOf()) 
         return bodyPartThings.joinToString(" ") { it.name } + " of " + thing.name
     }
 
-    suspend fun isLookingAtBody(): Boolean {
-        return this.thing.body.getParts().size == this.bodyPartThings.size
+    fun isLookingAtBody(): Boolean {
+        return this.thing.body2.parts.size == this.bodyPartThings.size
     }
 }
 
 fun List<ThingAim>.toCommandString(): String {
     return joinToString(" and ") { it.toCommandString() }
 }
-

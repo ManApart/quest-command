@@ -14,8 +14,9 @@ import kotlin.math.roundToInt
 data class Body2(
     override val name: String = "None",
     private val dimensions: Vector = NO_VECTOR,
-    val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList()
+    val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),
 ) : Named {
+    val core = parts.first()
 
     override fun toString(): String {
         return name + ": [" + parts.joinToString { it.name } + "]"

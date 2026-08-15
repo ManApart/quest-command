@@ -24,22 +24,22 @@ class CommonBodies2 : Body2Resource {
         body("Human") {
             dimensions(6, 2, 10)
             mat(FLESH)
-            parts(HEAD, CHEST, RIGHT_ARM, LEFT_ARM, RIGHT_HAND, LEFT_HAND, WAIST, RIGHT_LEG, LEFT_LEG, RIGHT_FOOT, LEFT_FOOT)
+            parts(CHEST, HEAD, RIGHT_ARM, LEFT_ARM, RIGHT_HAND, LEFT_HAND, WAIST, RIGHT_LEG, LEFT_LEG, RIGHT_FOOT, LEFT_FOOT)
         }
         body("Rat") {
             dimensions(2, 4, 2)
             mat(FLESH)
-            parts("Canine Head", "Canine Torso", "Small Claws")
+            parts("Canine Torso", "Canine Head", "Small Claws")
         }
         body("Tree") {
             dimensions(1, 1, 15)
             mat(WOOD)
-            parts("Branches", "Trunk")
+            parts("Trunk", "Branches")
         }
         body("City Wall") {
             dimensions(100, 10, 20)
             mat(STONE)
-            parts("Branches", "Trunk")
+            parts("Trunk", "Branches")
         }
         body("Wall Crack") {
             dimensions(5, 5, 10)
@@ -48,10 +48,10 @@ class CommonBodies2 : Body2Resource {
         }
         body("Dagger") {
             mat(IRON)
-            parts("Pommel", "Guard", "Blade")
             part("Handle") {
                 mat(LEATHER)
             }
+            parts("Pommel", "Guard", "Blade")
         }
     } + bodies("Stairs", "Sack", "Grain Bin", "Grain Chute", "Medium Container")
 }

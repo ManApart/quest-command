@@ -36,7 +36,7 @@ class EquipItemCommand : Command() {
         return when {
             args.isEmpty() -> source.inventory.getAllItems().map { it.name }
             args.size == 1 -> listOf("on", "to")
-            args.last() == "on" -> source.thing.body.getParts().map { it.name }
+            args.last() == "on" -> source.thing.body2.parts.map { it.name }
             args.last() == "to" -> {
                 val arguments = args(args, "on", "to")
                 val item = getItem(source.thing, arguments)

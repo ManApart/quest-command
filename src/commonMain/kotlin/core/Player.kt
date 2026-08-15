@@ -1,11 +1,8 @@
 package core
 
+import core.body.BodyPart
 import core.thing.Thing
-import core.utility.NameSearchableList
-import crafting.Recipe
 import traveling.location.Route
-import traveling.location.location.Location
-import traveling.location.network.LocationNode
 
 data class Player(
     val name: String,
@@ -37,8 +34,8 @@ data class Player(
 
     suspend fun getPerceivedThings() = location.getLocation().getThings(perceivedBy = thing)
     suspend fun getPerceivedThingNames() = getPerceivedThings().map { it.name }
-    suspend fun getPerceivedParts(): List<Location> {
-        return getPerceivedThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body.getParts() }.toSet().toList()
+    suspend fun getPerceivedParts(): List<BodyPart> {
+        return getPerceivedThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body2.parts }.toSet().toList()
     }
 
     suspend fun getPerceivedPartNames() = getPerceivedParts().toList().map { it.name }.toSet().toList()

@@ -22,7 +22,13 @@ class BodyBuilder(internal val name: String) {
         material = m
     }
 
+    /**
+    Note that the first part is considered the core for aiming etc
+     */
     fun parts(names: List<String>) = names.forEach { part(it) }
+    /**
+    Note that the first part is considered the core for aiming etc
+     */
     fun parts(vararg names: String) = names.forEach { part(it) }
     fun part(name: String) {
         parts.add(BodyPartBuilder(name))
@@ -34,7 +40,7 @@ class BodyBuilder(internal val name: String) {
 
     fun build(): Body2 {
         val mat = MaterialManager.getMaterial(material)
-        val bodyParts = parts.map { it.build(mat) }
+        val bodyParts = parts.map { it.build(mat) }.takeIf { it.isNotEmpty() } ?: listOf(BodyPart(name, mat))
         return Body2(name, dimensions, bodyParts.toNameSearchableList())
     }
 }

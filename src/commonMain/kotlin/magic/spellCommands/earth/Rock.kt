@@ -6,7 +6,7 @@ import core.commands.clarify
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.CastSpellEvent
-import magic.castSpell.getThingedPartsOrRootPart
+import magic.castSpell.getThingedPartsOrCorePart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
@@ -77,7 +77,7 @@ class Rock : SpellCommand() {
 
             executeWithWarns(source, EARTH_MAGIC, levelRequirement, totalCost, things, maxThingCount = 1) {
                 val thing = things.first()
-                val parts = getThingedPartsOrRootPart(thing)
+                val parts = getThingedPartsOrCorePart(thing)
                 val amount = getDamageAmount(size, power)
                 val castTime = getCastTime(size, power)
 

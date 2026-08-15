@@ -95,6 +95,7 @@ class CommonBodyParts : BodyPartResource {
             props {
                 tag(OPEN,CONTAINER)
                 value("size", 3)
+                //TODO - move to Thing
                 value("CanHold", "Grounded")
             }
         }

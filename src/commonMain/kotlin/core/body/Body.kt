@@ -75,33 +75,33 @@ data class Body(
 //        return parts().asSequence().map { it.getEquippedItem(attachPoint) }.filterNotNull().toList()
 //    }
 
-    suspend fun hasPart(part: String): Boolean {
-        return parts().exists(part)
-    }
-
-    suspend fun getPart(part: String): Location {
-        return parts().get(part)
-    }
-
-    suspend fun getPartOrNull(part: String): Location? {
-        return if (hasPart(part)) parts().get(part) else null
-    }
-
-    suspend fun getParts(): List<Location> {
-        return parts().toList()
-    }
-
-    suspend fun getAnyParts(names: List<String>): List<Location> {
-        return parts().getAny(names)
-    }
-
-    fun getPartLocation(part: String): LocationNode {
-        return layout.getLocationNode(part)
-    }
-
-    suspend fun getRootPart(): Location {
-        return layout.rootNode.getLocation()
-    }
+//    suspend fun hasPart(part: String): Boolean {
+//        return parts().exists(part)
+//    }
+//
+//    suspend fun getPart(part: String): Location {
+//        return parts().get(part)
+//    }
+//
+//    suspend fun getPartOrNull(part: String): Location? {
+//        return if (hasPart(part)) parts().get(part) else null
+//    }
+//
+//    suspend fun getParts(): List<Location> {
+//        return parts().toList()
+//    }
+//
+//    suspend fun getAnyParts(names: List<String>): List<Location> {
+//        return parts().getAny(names)
+//    }
+//
+//    fun getPartLocation(part: String): LocationNode {
+//        return layout.getLocationNode(part)
+//    }
+//
+//    suspend fun getRootPart(): Location {
+//        return layout.rootNode.getLocation()
+//    }
 
 //    private suspend fun getPartsWithAttachPoint(attachPoint: String): List<Location> {
 //        return parts().filter { it.hasAttachPoint(attachPoint) }
@@ -185,13 +185,13 @@ data class Body(
 //        }
 //    }
 
-    fun getPositionInLocation(part: Location, parentOffset: Vector): Vector {
-        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode.getVectorDistanceTo(
-            getPartLocation(
-                part.name
-            )
-        ))
-    }
+//    fun getPositionInLocation(part: Location, parentOffset: Vector): Vector {
+//        return parentOffset + Vector(z = layout.rootNodeHeight) + (layout.rootNode.getVectorDistanceTo(
+//            getPartLocation(
+//                part.name
+//            )
+//        ))
+//    }
 
     fun getHeight(): Int {
         return getSize().z

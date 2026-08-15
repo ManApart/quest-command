@@ -1,5 +1,6 @@
 package inventory.putItem
 
+import core.GameState.properties
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -35,7 +36,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
             EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
         } else {
             source.displayToMe("Could not find a place for ${item.name}.")
-            val canHold = destination.body.getRootPart().properties.values.getString("CanHold").split(",")
+            val canHold = destination.properties.values.getString("CanHold").split(",")
             if (canHold.isNotEmpty()) source.displayToMe("${destination.name} can only hold items that are ${canHold.joinToStringOr()}.")
         }
     }

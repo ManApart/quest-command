@@ -64,7 +64,7 @@ class Pull : SpellCommand() {
 
             executeWithWarns(source, AIR_MAGIC, levelRequirement, totalCost, things) {
                 things.forEach { thing ->
-                    val parts = thing.thing.body.getParts()
+                    val parts = thing.thing.body2.parts
                     val effects = listOf(EffectManager.getEffect("Air Blasted", 0, 0, parts))
                     val condition = Condition("Air Blasted", Element.AIR, power, effects)
                     val distance = calcDistance(thing.thing, power)

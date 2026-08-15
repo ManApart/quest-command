@@ -6,7 +6,7 @@ import core.commands.clarify
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.CastSpellEvent
-import magic.castSpell.getThingedPartsOrRootPart
+import magic.castSpell.getThingedPartsOrCorePart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
@@ -76,7 +76,7 @@ class Rooted : SpellCommand() {
             executeWithWarns(source, EARTH_MAGIC, levelRequirement, totalCost, things, maxThingCount = 1) {
                 val thing = things.first()
                 val amount = (power * thing.thing.getEncumbrancePhysicalOnly()).toInt()
-                val parts = getThingedPartsOrRootPart(thing)
+                val parts = getThingedPartsOrCorePart(thing)
                 val effects = listOf(
                     EffectManager.getEffect("Encased Agility", amount, duration, parts),
                     EffectManager.getEffect("Encased Encumbrance", 100, duration, parts),

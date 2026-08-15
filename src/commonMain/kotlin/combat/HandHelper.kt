@@ -1,27 +1,27 @@
 package combat
 
+import core.body.BodyPart
+import core.body.EquipLayerStrings.GRIP
 import core.thing.Thing
 import core.utility.NameSearchableList
-import traveling.location.location.Location
+import core.utility.toNameSearchableList
 
-class HandHelper(val hand: Location, val weapon: Thing?)
+class HandHelper(val hand: BodyPart, val weapon: Thing?)
 
-suspend fun handHelper(creature: Thing, source: String, desiredSkill: String): HandHelper {
-    val rightHand = creature.body.getPart("right hand")
-    val leftHand = creature.body.getPart("left hand")
-    val rightWeapon = rightHand.getEquippedItem("right hand grip")
-    val leftWeapon = leftHand.getEquippedItem("left hand grip")
-    val weapons = NameSearchableList<Thing>()
-    if (rightWeapon != null) weapons.add(rightWeapon)
-    if (leftWeapon != null) weapons.add(leftWeapon)
+fun handHelper(creature: Thing, source: String, desiredSkill: String): HandHelper {
+    val rightHand = creature.body2.parts.get("right hand")
+    val leftHand = creature.body2.parts.get("left hand")
+    val rightWeapon = rightHand.getEquipped(GRIP)
+    val leftWeapon = leftHand.getEquipped(GRIP)
+    val weapons = listOfNotNull(rightWeapon, leftWeapon).toNameSearchableList()
 
-    val hand: Location
+    val hand: BodyPart
     val weapon: Thing?
 
     when {
         isHand(source) -> {
             hand = getHand(source, rightHand, leftHand)
-            weapon = getWeapon(hand)
+            weapon = hand.getEquipped(GRIP)
         }
 
         isWeapon(source, weapons) -> {
@@ -64,22 +64,10 @@ private fun getWeapon(source: String, weapons: NameSearchableList<Thing>): Thing
     return weapons.get(source)
 }
 
-private fun getWeapon(source: Location): Thing? {
-    return source.getEquippedItem("right hand grip") ?: source.getEquippedItem("left hand grip")
+private fun getHand(source: String, rightHand: BodyPart, leftHand: BodyPart): BodyPart {
+    return if (listOf("left", "l").contains(source)) leftHand else rightHand
 }
 
-private fun getHand(source: String, rightHand: Location, leftHand: Location): Location {
-    return if (listOf("left", "l").contains(source)) {
-        leftHand
-    } else {
-        rightHand
-    }
-}
-
-private fun getHand(weapon: Thing, rightHand: Location, leftHand: Location): Location {
-    return if (weapon == getWeapon(rightHand)) {
-        rightHand
-    } else {
-        leftHand
-    }
+private fun getHand(weapon: Thing, rightHand: BodyPart, leftHand: BodyPart): BodyPart {
+    return if (weapon == rightHand.getEquipped(GRIP)) rightHand else leftHand
 }

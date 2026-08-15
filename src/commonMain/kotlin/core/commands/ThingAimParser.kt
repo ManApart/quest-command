@@ -1,5 +1,6 @@
 package core.commands
 
+import core.body.BodyPart
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.NameSearchableList
@@ -57,9 +58,9 @@ private fun parseThing(name: String, things: NameSearchableList<Thing>): Thing? 
     return things.getOrNull(name)
 }
 
-suspend fun parseBodyParts(thing: Thing, names: List<String>): List<Location> {
+fun parseBodyParts(thing: Thing, names: List<String>): List<BodyPart> {
     if (names.size == 1 && (names.first().lowercase() == "all" || names.first().lowercase() == "body")) {
-        return thing.body.getParts()
+        return thing.body2.parts
     }
-    return thing.body.getAnyParts(names)
+    return thing.body2.parts.getAny(names)
 }

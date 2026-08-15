@@ -71,7 +71,7 @@ class AttackCommand : Command() {
                     processAttack(sourceT, arguments, attackType, handHelper, thing)
                 } else {
                     //If we got an alias, process with a default value of the body root part
-                    if (isAlias(keyword) || thing.thing.body.getParts().size == 1) {
+                    if (isAlias(keyword) || thing.thing.body2.parts.size == 1) {
                         processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body.getRootPart())))
                         //Otherwise clarify body parts.
                     } else {
@@ -112,7 +112,7 @@ class AttackCommand : Command() {
     private suspend fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
         player.respondSuspend("Unable to find a part of ${thing.thing.name} to attack.") {
             message("${keyword.capitalize2()} what part of ${thing.thing.name} with $weaponName?")
-            optionsNamed(thing.thing.body.getParts())
+            optionsNamed(thing.thing.body2.parts)
             command { "$keyword $it of ${thing.thing.name}" }
         }
     }

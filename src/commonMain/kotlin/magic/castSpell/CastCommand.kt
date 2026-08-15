@@ -2,15 +2,12 @@ package magic.castSpell
 
 import core.DependencyInjector
 import core.Player
+import core.body.BodyPart
 import core.commands.*
-import core.events.EventManager
 import core.history.displayToMe
-import core.thing.Thing
 import core.utility.NameSearchableList
-import magic.ViewWordHelpEvent
 import magic.spellCommands.SpellCommand
 import magic.spellCommands.SpellCommandsCollection
-import traveling.location.location.Location
 import traveling.position.ThingAim
 
 class CastCommand : Command() {
@@ -99,9 +96,9 @@ class CastCommand : Command() {
     }
 }
 
-suspend fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<Location> {
+fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<BodyPart> {
     val parts = thingAim.bodyPartThings.ifEmpty {
-        thingAim.thing.body.getParts()
+        thingAim.thing.body2.parts
     }
 
     return if (maxParts > 0) {
@@ -112,8 +109,8 @@ suspend fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<L
 
 }
 
-suspend fun getThingedPartsOrRootPart(thingAim: ThingAim): List<Location> {
+fun getThingedPartsOrCorePart(thingAim: ThingAim): List<BodyPart> {
     return thingAim.bodyPartThings.ifEmpty {
-        listOfNotNull(thingAim.thing.body.getRootPart())
+        listOfNotNull(thingAim.thing.body2.core)
     }
 }

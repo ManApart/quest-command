@@ -6,7 +6,7 @@ import core.commands.clarify
 import core.events.EventManager
 import magic.Element
 import magic.castSpell.CastSpellEvent
-import magic.castSpell.getThingedPartsOrRootPart
+import magic.castSpell.getThingedPartsOrCorePart
 import magic.spellCommands.SpellCommand
 import magic.spells.Spell
 import status.conditions.Condition
@@ -77,7 +77,7 @@ class Poison : SpellCommand() {
 
             executeWithWarns(source, WATER_MAGIC, levelRequirement, totalCost, things) {
                 things.forEach { thing ->
-                    val parts = getThingedPartsOrRootPart(thing)
+                    val parts = getThingedPartsOrCorePart(thing)
                     val effects = listOf(
                         EffectManager.getEffect("Poison", amount, duration, parts),
                         EffectManager.getEffect("Wet", 0, duration + 1, parts)
