@@ -1,6 +1,7 @@
 package combat.takeDamage
 
 import combat.DamageType
+import core.body.BodyPart
 import core.events.EventListener
 import core.events.EventManager
 import core.thing.Thing
@@ -22,9 +23,9 @@ class TakeDamage : EventListener<TakeDamageEvent>() {
         event.source.addSoundEffect("Pain", "a sharp intake of breath")
     }
 
-    private fun getUndefendedDamage(source: Thing, damage: Int, attackedPart: Location, attackType: DamageType): Int {
+    private fun getUndefendedDamage(source: Thing, damage: Int, attackedPart: BodyPart, attackType: DamageType): Int {
         var damageDefended = source.soul.getStatOrNull(attackType.defense)?.current ?: 0
-        attackedPart.getEquippedItems().forEach {
+        attackedPart.getEquipped().forEach {
             damageDefended += it.properties.getDefense(attackType.defense)
         }
         return max(damage-damageDefended, 0)

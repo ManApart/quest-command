@@ -2,6 +2,7 @@ package status.effects
 
 import building.ModManager
 import core.DependencyInjector
+import core.body.BodyPart
 import core.startupLog
 import core.utility.NameSearchableList
 import core.utility.lazyM
@@ -22,7 +23,7 @@ object EffectManager {
     }
 
     // should effects be parsable from json as well as effect bases?
-    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartThings: List<Location> = listOf()): Effect {
+    fun getEffect(baseName: String, amount: Int, duration: Int, bodyPartThings: List<BodyPart> = listOf()): Effect {
         return Effect(effects.get(baseName), amount, duration, bodyPartThings)
     }
 

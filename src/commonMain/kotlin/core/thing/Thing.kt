@@ -172,11 +172,7 @@ data class Thing(
         return Thing(name, description, location, parent, mind, body, body2, equipSlots, equipTargets, inventory, props, soul, behaviors, params)
     }
 
-    fun getPositionInLocation(part: Location): Vector {
-        return body.getPositionInLocation(part, position)
-    }
-
-    suspend fun isWithinRangeOf(creature: Thing?): Boolean {
+    fun isWithinRangeOf(creature: Thing?): Boolean {
         if (creature == null
             || creature.inventory.exists(this)
             || getTopParent().location == NOWHERE_NODE

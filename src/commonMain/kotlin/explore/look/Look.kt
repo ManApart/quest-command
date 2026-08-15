@@ -13,7 +13,7 @@ class Look : EventListener<LookEvent>() {
             event.source.properties.values.getBoolean(IS_CLIMBING) -> describeClimbJourney(event.source)
             event.body != null && event.thing != null -> describePerceived(event.source, event.thing) { describeBody(event.source, event.thing) }
             event.thing != null -> describePerceived(event.source, event.thing) { describeThing(event.source, event.thing) }
-            event.location != null -> describeLocation(event.source, event.location)
+            //TODO - look at body part
             event.source.mind.getAggroTarget() != null -> describeBattle(event.source)
             else -> describeLocation(event.source, event.source.thing.currentLocation())
         }

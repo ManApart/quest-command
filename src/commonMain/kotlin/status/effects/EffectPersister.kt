@@ -11,7 +11,9 @@ data class EffectP(
     ){
     constructor(b: Effect): this(b.base, b.amount, b.duration, b.bodyPartTargets.map { it.name })
 
+    //TODO
     suspend fun parsed(body: Body): Effect {
-        return Effect(base, amount, duration, bodyPartTargets.map { body.getPart(it) })
+        return Effect(base, amount, duration, emptyList())
+//        return Effect(base, amount, duration, bodyPartTargets.map { body.getPart(it) })
     }
 }
