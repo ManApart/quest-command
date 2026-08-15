@@ -35,7 +35,7 @@ class CraftTest {
         runBlocking {
             val baker = createBaker()
             val ingredient = createItem("Apple")
-            baker.inventory.add(ingredient)
+            baker.thing.add(ingredient)
 
             val recipe = Recipe("Apples of Silver and Gold", mapOf("Apple" to RecipeIngredient("Apple")), results = listOf(RecipeResult("Gold"), RecipeResult("Silver")))
 
@@ -63,7 +63,7 @@ class CraftTest {
         runBlocking {
             val baker = createBaker()
             val ingredient = createItemBuilder("Apple")
-            baker.inventory.add(ingredient.build())
+            baker.thing.add(ingredient.build())
             val recipe = Recipe("Apples of Silver and Gold", mapOf("Fruit" to RecipeIngredient("Apple")), results = listOf(RecipeResult("Fruit", listOf("Cooked"), listOf())))
             val craftEvent = CraftRecipeEvent(baker, recipe)
 
@@ -86,7 +86,7 @@ class CraftTest {
     private suspend fun createBaker(): Player {
         val baker = GameManager.newPlayer()
         val pouch = createPouch(size = 30)
-        baker.thing.inventory.add(pouch)
+        baker.thing.add(pouch)
         return baker
     }
 }

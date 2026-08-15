@@ -29,7 +29,7 @@ class EatCommandTest {
             val timer = PoorMansInstrumenter(10000)
             val item = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM)))
             timer.printElapsed("new item")
-            player.inventory.add(item)
+            player.thing.add(item)
             timer.printElapsed("add item")
             runBlocking { EatCommand().execute(player, "eat", listOf("Pear")) }
             timer.printElapsed("execute event")
@@ -49,8 +49,8 @@ class EatCommandTest {
             val player = GameManager.newPlayer(location = NOWHERE_NODE)
             val fruit = Thing("Pear", properties = Properties(tags = Tags("Food", ITEM)))
             val pie = Thing("Pear Pie", properties = Properties(tags = Tags("Food", ITEM)))
-            player.inventory.add(fruit)
-            player.inventory.add(pie)
+            player.thing.add(fruit)
+            player.thing.add(pie)
             runBlocking { EatCommand().execute(player, "eat", listOf("Pear")) }
             val events = EventManager.getUnexecutedEvents()
 

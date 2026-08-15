@@ -6,7 +6,6 @@ import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
 import core.thing.Thing
 import core.thing.item.ItemManager
-import core.thing.thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 

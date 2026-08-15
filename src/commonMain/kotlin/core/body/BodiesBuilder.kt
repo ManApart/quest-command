@@ -5,11 +5,11 @@ import core.utility.toNameSearchableList
 
 class BodiesBuilder {
     internal val children = mutableListOf<BodyBuilder>()
-    fun body(body: BodyBuilder){
+    fun body(body: BodyBuilder) {
         children.add(body)
     }
 
-    fun body(name: String, initializer: BodyBuilder.() -> Unit){
+    fun body(name: String, initializer: BodyBuilder.() -> Unit) {
         children.add(BodyBuilder(name).apply(initializer))
     }
 }
@@ -24,7 +24,7 @@ fun List<BodyBuilder>.build(): NameSearchableList<Body2> {
     return builders.values.map {
         try {
             it.build()
-        } catch (e: Exception){
+        } catch (e: Exception) {
             println("Failed to build ${it.name}: ${e.message ?: e.cause ?: e.toString()}")
             throw e
         }

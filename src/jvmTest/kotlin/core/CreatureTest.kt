@@ -6,7 +6,6 @@ import core.properties.Tags
 import core.properties.Values
 import core.thing.Thing
 import createMockedGame
-import inventory.createInventoryBody
 import kotlinx.coroutines.runBlocking
 import status.stat.AttributeStrings.STRENGTH
 import kotlin.test.BeforeTest
@@ -24,7 +23,7 @@ class CreatureTest {
         runBlocking {
             val creature = Thing("creature")
             creature.soul.addStat(STRENGTH, 10)
-            creature.inventory.add(createItem(0))
+            creature.add(createItem(0))
 
             assertEquals(100, creature.getTotalCapacity())
             assertEquals(0, creature.inventory.getWeight())
@@ -37,7 +36,7 @@ class CreatureTest {
         runBlocking {
             val creature = createCreature()
             creature.soul.addStat(STRENGTH, 10)
-            creature.inventory.add(createItem(50))
+            creature.add(createItem(50))
 
             assertEquals(100, creature.getTotalCapacity())
             assertEquals(50, creature.inventory.getWeight())
@@ -50,7 +49,7 @@ class CreatureTest {
         runBlocking {
             val creature = Thing("creature")
             creature.soul.addStat(STRENGTH, 10)
-            creature.inventory.add(createItem(75))
+            creature.add(createItem(75))
 
             assertEquals(100, creature.getTotalCapacity())
             assertEquals(75, creature.inventory.getWeight())
@@ -63,7 +62,7 @@ class CreatureTest {
         runBlocking {
             val creature = Thing("creature")
             creature.soul.addStat(STRENGTH, 10)
-            creature.inventory.add(createItem(100))
+            creature.add(createItem(100))
 
             assertEquals(100, creature.getTotalCapacity())
             assertEquals(100, creature.inventory.getWeight())
@@ -76,7 +75,7 @@ class CreatureTest {
         runBlocking {
             val creature = Thing("creature")
             creature.soul.addStat(STRENGTH, 100)
-            creature.inventory.add(createItem(500))
+            creature.add(createItem(500))
 
             assertEquals(1000, creature.getTotalCapacity())
             assertEquals(500, creature.inventory.getWeight())
@@ -84,8 +83,8 @@ class CreatureTest {
         }
     }
 
-    private suspend fun createCreature(): Thing {
-        return Thing("creature", body = createInventoryBody())
+    private fun createCreature(): Thing {
+        return Thing("creature")
     }
 
     private fun createItem(weight: Int): Thing {

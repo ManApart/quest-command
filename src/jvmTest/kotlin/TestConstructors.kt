@@ -39,7 +39,6 @@ import crafting.RecipesMock
 import crafting.material.MaterialManager
 import crafting.material.MaterialsCollection
 import crafting.material.MaterialsMock
-import inventory.createInventoryBody
 import kotlinx.coroutines.runBlocking
 import magic.spellCommands.SpellCommandsCollection
 import magic.spellCommands.SpellCommandsMock
@@ -81,7 +80,6 @@ fun createItemBuilder(name: String = "Apple", weight: Int = 1): ThingBuilder {
 fun createPouch(size: Int = 5, weight: Int = 1): Thing {
     return Thing(
         "Pouch",
-        body = createInventoryBodyBlocking("Pouch", size),
         properties = Properties(
             Values(
                 SIZE to size.toString(),
@@ -95,7 +93,7 @@ fun createPouch(size: Int = 5, weight: Int = 1): Thing {
 // Chest is a container
 fun createChest(size: Int = 10): Thing {
     return Thing(
-        "Chest", body = createInventoryBodyBlocking("Chest", size),
+        "Chest",
         properties = Properties(
             Values(SIZE to size.toString()),
             Tags(CONTAINER, OPEN, ACTIVATOR_TAG)
@@ -106,7 +104,6 @@ fun createChest(size: Int = 10): Thing {
 fun createClosedChest(size: Int = 10): Thing {
     return Thing(
         "Closed Chest",
-        body = createInventoryBodyBlocking("Closed Chest", size),
         properties = Properties(
             Values(SIZE to size.toString()),
             Tags(CONTAINER, ACTIVATOR_TAG)
@@ -116,7 +113,7 @@ fun createClosedChest(size: Int = 10): Thing {
 
 fun createPackMule(strength: Int = 1): Thing {
     return Thing(
-        "Pack Mule", body = createInventoryBodyBlocking("Pack Mule"),
+        "Pack Mule",
         properties = Properties(
             Values(STRENGTH to strength.toString()),
             Tags(CONTAINER, OPEN, TagStrings.CREATURE)
@@ -124,10 +121,6 @@ fun createPackMule(strength: Int = 1): Thing {
     )
 }
 
-
-fun createInventoryBodyBlocking(name: String = "Inventory", capacity: Int? = null): Body {
-    return runBlocking { createInventoryBody(name, capacity) }
-}
 
 fun createMockedGame() {
     runBlocking {

@@ -94,7 +94,7 @@ class TakeItemTest {
         val creature = Thing("Thing", properties = Properties(tags = Tags("Container", "Open", "Creature")))
 //        val pouch = Thing("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)
-        creature.inventory.add(pouch)
+        creature.add(pouch)
         return creature
     }
 

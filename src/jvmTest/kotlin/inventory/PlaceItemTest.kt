@@ -46,7 +46,7 @@ class PlaceItemTest {
         runBlocking {
             val creature = Thing("Creature")
             val item = Thing("Apple")
-            creature.inventory.add(item)
+            creature.add(item)
             val scope = runBlocking { creature.location.getLocation() }
 
             PlaceItem().complete(PlaceItemEvent(creature, item))

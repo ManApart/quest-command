@@ -22,6 +22,7 @@ class BodyBuilder(internal val name: String) {
         material = m
     }
 
+    fun parts(names: List<String>) = names.forEach { part(it) }
     fun parts(vararg names: String) = names.forEach { part(it) }
     fun part(name: String) {
         parts.add(BodyPartBuilder(name))
@@ -36,6 +37,10 @@ class BodyBuilder(internal val name: String) {
         val bodyParts = parts.map { it.build(mat) }
         return Body2(name, dimensions, bodyParts.toNameSearchableList())
     }
+}
+
+fun body(name: String, vararg parts: String): Body2 {
+    return BodyBuilder(name).apply { parts(parts.toList()) }.build()
 }
 
 fun body(name: String, initializer: BodyBuilder.() -> Unit): Body2 {

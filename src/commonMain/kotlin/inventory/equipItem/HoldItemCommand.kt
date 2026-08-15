@@ -96,7 +96,7 @@ class HoldItemCommand : Command() {
         }
     }
 
-    private suspend fun getEquipableItems(source: Thing): List<Thing> {
+    private fun getEquipableItems(source: Thing): List<Thing> {
         val body = source.body2
         val equippedItems = body.getEquipped()
         return source.inventory.getAllItems().filter { body.canEquip(it) && !equippedItems.contains(it) }

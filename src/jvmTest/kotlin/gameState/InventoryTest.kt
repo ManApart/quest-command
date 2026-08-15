@@ -52,10 +52,10 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 2)
             val pouch = createPouch(weight = 2)
-            pouch.inventory.add(item)
+            pouch.add(item)
 
             val inventory = inventory()
-            inventory.add(pouch)
+            inventory.add(pouch, 100)
 
             assertEquals(item, inventory.getItem("Apple"))
         }
@@ -66,10 +66,10 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 2)
             val pouch = createPouch(weight = 1)
-            pouch.inventory.add(item)
+            pouch.add(item)
 
             val inventory = inventory()
-            inventory.add(pouch)
+            inventory.add(pouch, 100)
 
             assertTrue(inventory.exists(item))
         }
@@ -80,7 +80,7 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 2)
             val inventory = inventory()
-            inventory.add(item)
+            inventory.add(item, 100)
             inventory.remove(item)
 
             assertEquals(0, inventory.getAllItems().size)
@@ -92,10 +92,10 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 2)
             val pouch = createPouch(weight = 1)
-            pouch.inventory.add(item)
+            pouch.add(item)
 
             val inventory = inventory()
-            inventory.add(pouch)
+            inventory.add(pouch, 100)
             inventory.remove(item)
 
             assertEquals(1, inventory.getAllItems().size)
@@ -107,7 +107,7 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 1)
             val inventory = inventory()
-            inventory.add(item)
+            inventory.add(item, 100)
             assertEquals(1, inventory.getWeight())
         }
     }
@@ -117,10 +117,10 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 2)
             val pouch = createPouch(weight = 1)
-            pouch.inventory.add(item)
+            pouch.add(item)
 
             val inventory = inventory()
-            inventory.add(pouch)
+            inventory.add(pouch, 100)
             assertEquals(3, inventory.getWeight())
         }
     }
@@ -131,30 +131,18 @@ class InventoryTest {
             val apple = createItem("Apple", weight = 1)
             val pear = createItem("pear", weight = 2)
 
-            val rightHand = LocationRecipe("Right Hand")
-            val leftHand = LocationRecipe("Left Hand")
-            val body = createBody(listOf(rightHand, leftHand))
-            val inventory = Inventory("Inventory", body)
+            val inventory = inventory()
+            inventory.add(apple, 100)
+            inventory.add(apple, 100)
+            inventory.add(pear, 100)
 
-            body.getParts().first().addThing(apple)
-            body.getParts().last().addThing(apple)
-            body.getParts().first().addThing(pear)
+            val items = inventory.getItems()
 
-            assertEquals(2, inventory.getItems().size)
-            assertTrue(inventory.getItems().contains(apple))
-            assertTrue(inventory.getItems().contains(pear))
+            assertEquals(2, items.size)
+            assertTrue(items.contains(apple))
+            assertEquals(2,apple.properties.getCount())
+            assertTrue(items.contains(pear))
             assertEquals(3, inventory.getWeight())
         }
     }
-
-    @Test
-    fun thing() {
-        runBlocking {
-            val inventory = inventory()
-            val item = createItem()
-            inventory.add(item)
-            inventory.getAllItems()
-        }
-    }
-
 }

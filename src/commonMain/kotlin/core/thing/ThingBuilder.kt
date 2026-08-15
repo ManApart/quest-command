@@ -9,6 +9,7 @@ import core.ai.knowledge.Mind
 import core.ai.knowledge.MindP
 import core.body.Body
 import core.body.Body2
+import core.body.BodyBuilder
 import core.body.BodyCustomizer
 import core.body.BodyManager
 import core.body.BodyPartStrings.LEFT_HAND
@@ -60,8 +61,10 @@ class ThingBuilder(internal val name: String) {
     private var mindP: MindP? = null
     private var mindInitializer: Mind.() -> Unit = {}
     private var body: Body? = null
+    private var body2: Body2? = null
     private var bodyMaterial: String = DEFAULT_MATERIAL.name
     private var bodyName: String? = null
+    private var bodyBuilder: (BodyBuilder.() -> Unit)? = null
     private var location: LocationNode? = null
     private var parent: Thing? = null
     private var bodyCustomizer: BodyCustomizer = BodyCustomizer()
@@ -77,13 +80,14 @@ class ThingBuilder(internal val name: String) {
 
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
         val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
+        val possibleBody2 = body2 ?: basesR.firstNotNullOfOrNull { it.body2 }
         val bodyMat = (listOf(bodyMaterial) + basesR.map { it.bodyMaterial }).firstOrNull { it != DEFAULT_MATERIAL.name } ?: DEFAULT_MATERIAL.name
         val body = discernBody(possibleBody, possibleBodyName, MaterialManager.getMaterial(bodyMat), bodyCustomizer)
+        val body2 = discernBody2(possibleBody2, possibleBodyName, bodyBuilder)
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
-        //TODO
-        val inventory = Inventory(name, Body2())
+        val inventory = Inventory(name, body2)
         inventory.addAllByName(allItems)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
@@ -104,6 +108,7 @@ class ThingBuilder(internal val name: String) {
             soul = actualSoul,
             behaviors = allBehaviors,
             body = body,
+            body2 = body2,
             equipSlots = equipSlots,
             equipTargets = equipTargets,
             inventory = inventory,
@@ -207,14 +212,19 @@ class ThingBuilder(internal val name: String) {
         this.mindInitializer = initializer
     }
 
-    fun body(body: String, initializer: BodyCustomizer.() -> Unit = {}) {
-        this.bodyName = body
-        this.bodyCustomizer = BodyCustomizer().apply(initializer)
-    }
+//    fun body(body: String, initializer: BodyCustomizer.() -> Unit = {}) {
+//        this.bodyName = body
+//        this.bodyCustomizer = BodyCustomizer().apply(initializer)
+//    }
 
     fun body(body: Body, initializer: BodyCustomizer.() -> Unit = {}) {
         this.body = body
         this.bodyCustomizer = BodyCustomizer().apply(initializer)
+    }
+
+    fun body(name: String, initializer: BodyBuilder.() -> Unit = {}) {
+        this.bodyName = name
+        this.bodyBuilder = initializer
     }
 
     fun material(material: String) {
@@ -304,6 +314,14 @@ class ThingBuilder(internal val name: String) {
             possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
             else -> Body(material = bodyMaterial)
         }.also { bodyCustomizer.apply(it) }
+    }
+
+    private fun discernBody2(possibleBody: Body2?, possibleBodyName: String?, builder: (BodyBuilder.() -> Unit)?): Body2 {
+        return when {
+            possibleBody != null -> possibleBody
+            possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName).apply(builder).build()
+            else -> BodyManager.getBody2(possibleBodyName!!)
+        }
     }
 
     private fun discernAI(props: Properties): AI {

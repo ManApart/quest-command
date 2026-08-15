@@ -63,6 +63,7 @@ data class Body2(
 
     fun equipToEmpty(item: Thing) = emptyEquipOptions(item).firstOrNull()?.let { equip(item, it) }
     fun equip(item: Thing) = equip(item, getDefaultTarget(item)!!)
+    fun equip(item: Thing, part: String, layer: String) = equip(item, EquipTarget(layer, listOf(part)))
     fun equip(item: Thing, target: EquipTarget): EquipTarget {
         target.parts.mapNotNull { parts.getOrNull(it) }.forEach {
             it.unEquip(target.layer)
@@ -98,6 +99,10 @@ data class Body2(
 
     fun getEquippedAt(part: String, layer: Layer): Thing? {
         return parts.getOrNull(part)?.getEquipped(layer)
+    }
+
+    fun getEquippedAt(layer: Layer): List<Thing> {
+        return parts.mapNotNull { it.getEquipped(layer) }
     }
 
     fun getEquippedTarget(item: Thing): EquipTarget? {

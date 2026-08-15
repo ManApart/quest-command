@@ -1,5 +1,11 @@
 package core.body
 
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.RIGHT_FOOT
+import core.body.BodyPartStrings.RIGHT_HAND
+import core.body.BodyPartStrings.RIGHT_LEG
+import core.body.EquipLayerStrings.CLOTHING
+import core.body.EquipLayerStrings.GRIP
 import kotlin.test.Test
 import core.thing.thing
 import kotlinx.coroutines.runBlocking
@@ -7,6 +13,8 @@ import kotlinx.coroutines.runBlocking
 
 import traveling.location.location.LocationRecipe
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class BodyEquipTest {
 
@@ -15,16 +23,15 @@ class BodyEquipTest {
     fun equipItem() {
         runBlocking {
             val item = thing("Dagger") {
-                equipSlot("Grip")
+                equipTo(GRIP, "Hand")
             }.build()
-            val part = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
-            val body = createBody(part)
+            val body = body("Test", "Hand")
 
             body.equip(item)
 
-            assertEquals(1, body.getEquippedItems().size)
-            assertEquals(1, body.getEquippedItemsAt("Grip").size)
-            assertEquals(item, body.getEquippedItemsAt("Grip").first())
+            assertEquals(1, body.getEquipped().size)
+            assertEquals(1, body.getEquippedAt(GRIP).size)
+            assertEquals(item, body.getEquippedAt(GRIP).first())
         }
     }
 
@@ -32,16 +39,15 @@ class BodyEquipTest {
     fun unEquipItem() {
         runBlocking {
             val item = thing("Dagger") {
-                equipSlot("Grip")
+                equipTo(GRIP, "Hand")
             }.build()
-            val part = LocationRecipe("Hand", slots = listOf("Grip", "Glove"))
-            val body = createBody(part)
+            val body = body("Test", "Hand")
 
             body.equip(item)
             body.unEquip(item)
 
-            assertEquals(0, body.getEquippedItems().size)
-            assertEquals(0, body.getEquippedItemsAt("Grip").size)
+            assertEquals(0, body.getEquipped().size)
+            assertEquals(0, body.getEquippedAt(GRIP).size)
         }
     }
 
@@ -49,21 +55,22 @@ class BodyEquipTest {
     fun equipItemToFreeSlot() {
         runBlocking {
             val dagger = thing("Dagger") {
-                equipSlotOptions("Right Grip", "Left Grip")
+                equipTo(GRIP, RIGHT_HAND)
+                equipTo(GRIP, LEFT_HAND)
             }.build()
             val hatchet = thing("Hatchet") {
-                equipSlotOptions("Right Grip", "Left Grip")
+                equipTo(GRIP, RIGHT_HAND)
+                equipTo(GRIP, LEFT_HAND)
             }.build()
-            val rightHand = LocationRecipe("Right Hand", slots = listOf("Right Grip", "Right Glove"))
-            val leftHand = LocationRecipe("Left Hand", slots = listOf("Left Grip", "Left Glove"))
-            val body = createBody(listOf(rightHand, leftHand))
+
+            val body = body("Test", RIGHT_HAND, LEFT_HAND)
 
             body.equip(dagger)
             body.equip(hatchet)
 
-            assertEquals(2, body.getEquippedItems().size)
-            assertEquals(1, body.getEquippedItemsAt("Right Grip").size)
-            assertEquals(1, body.getEquippedItemsAt("Left Grip").size)
+            assertEquals(2, body.getEquipped().size)
+            assertNotNull(body.getEquippedAt(RIGHT_HAND, GRIP))
+            assertNotNull(body.getEquippedAt(LEFT_HAND, GRIP))
         }
     }
 
@@ -71,15 +78,15 @@ class BodyEquipTest {
     fun equipPrefersRightSide() {
         runBlocking {
             val dagger = thing("Dagger") {
-                equipSlotOptions("Right Grip", "Left Grip")
+                equipTo(GRIP, RIGHT_HAND)
+                equipTo(GRIP, LEFT_HAND)
             }.build()
-            val rightHand = LocationRecipe("Right Hand", slots = listOf("Right Grip", "Right Glove"))
-            val leftHand = LocationRecipe("Left Hand", slots = listOf("Left Grip", "Left Glove"))
-            val body = createBody(listOf(leftHand, rightHand))
+
+            val body = body("Test", RIGHT_HAND, LEFT_HAND)
 
             body.equip(dagger)
 
-            assertEquals(1, body.getEquippedItemsAt("Right Grip").size)
+            assertNotNull(body.getEquippedAt(RIGHT_HAND, GRIP))
         }
     }
 
@@ -87,23 +94,23 @@ class BodyEquipTest {
     fun replaceEquippedItem() {
         runBlocking {
             val dagger = thing("Dagger") {
-                equipSlotOptions("Right Grip", "Left Grip")
+                equipTo(GRIP, RIGHT_HAND)
+                equipTo(GRIP, LEFT_HAND)
             }.build()
             val hatchet = thing("Hatchet") {
-                equipSlotOptions("Right Grip", "Left Grip")
+                equipTo(GRIP, RIGHT_HAND)
+                equipTo(GRIP, LEFT_HAND)
             }.build()
 
-            val rightHand = LocationRecipe("Right Hand", slots = listOf("Right Grip", "Right Glove"))
-            val leftHand = LocationRecipe("Left Hand", slots = listOf("Left Grip", "Left Glove"))
-            val body = createBody(listOf(rightHand, leftHand))
-            val slot = Slot(listOf("Right Grip"))
+            val body = body("Test", RIGHT_HAND, LEFT_HAND)
 
-            body.equip(dagger, slot)
-            body.equip(hatchet, slot)
+            body.equip(dagger, RIGHT_HAND, GRIP)
+            body.equip(hatchet, RIGHT_HAND, GRIP)
 
-            assertEquals(1, body.getEquippedItems().size)
-            assertEquals(1, body.getEquippedItemsAt("Right Grip").size)
-            assertEquals(0, body.getEquippedItemsAt("Left Grip").size)
+            assertEquals(1, body.getEquipped().size)
+            assertEquals(1, body.getEquippedAt(RIGHT_HAND).size)
+            assertEquals(hatchet, body.getEquippedAt(RIGHT_HAND, GRIP))
+            assertNull(body.getEquippedAt(LEFT_HAND))
         }
     }
 
@@ -111,23 +118,21 @@ class BodyEquipTest {
     fun replaceOverlappedEquippedItem() {
         runBlocking {
             val shoe = thing("Shoe") {
-                equipSlotOptions("Right Foot")
+                equipTo(CLOTHING, RIGHT_FOOT)
             }.build()
             val boot = thing("Boot") {
-                equipSlot("Right Foot", "Right Leg")
+                equipTo(CLOTHING, RIGHT_FOOT, RIGHT_LEG)
             }.build()
 
-            val rightFoot = LocationRecipe("Right Foot", slots = listOf("Right Foot"))
-            val rightLeg = LocationRecipe("Right Leg", slots = listOf("Right Leg"))
-            val body = createBody(listOf(rightFoot, rightLeg))
+            val body = body("Test", RIGHT_FOOT, RIGHT_LEG)
 
-            body.equip(boot, boot.equipSlots.first())
-            body.equip(shoe, shoe.equipSlots.first())
+            body.equip(boot, boot.equipTargets.first())
+            body.equip(shoe, shoe.equipTargets.first())
 
-            assertEquals(1, body.getEquippedItems().size)
-            assertEquals(0, body.getEquippedItemsAt("Right Leg").size)
-            assertEquals(1, body.getEquippedItemsAt("Right Foot").size)
-            assertEquals(shoe, body.getEquippedItemsAt("Right Foot").first())
+            assertEquals(1, body.getEquipped().size)
+            assertEquals(0, body.getEquippedAt("Right Leg").size)
+            assertEquals(1, body.getEquippedAt("Right Foot").size)
+            assertEquals(shoe, body.getEquippedAt("Right Foot").first())
         }
     }
 }

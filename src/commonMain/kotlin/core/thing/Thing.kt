@@ -5,29 +5,18 @@ import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
 import core.body.Body2
-import core.body.BodyPartStrings.CHEST
-import core.body.BodyPartStrings.HEAD
-import core.body.BodyPartStrings.LEFT_ARM
-import core.body.BodyPartStrings.LEFT_FOOT
-import core.body.BodyPartStrings.LEFT_HAND
-import core.body.BodyPartStrings.LEFT_LEG
-import core.body.BodyPartStrings.RIGHT_ARM
-import core.body.BodyPartStrings.RIGHT_FOOT
-import core.body.BodyPartStrings.RIGHT_HAND
-import core.body.BodyPartStrings.RIGHT_LEG
-import core.body.BodyPartStrings.WAIST
 import core.body.EquipTarget
 import core.body.Slot
-import core.body.body
 import core.events.Event
-import core.properties.*
+import core.properties.ENCUMBRANCE
+import core.properties.IS_CLIMBING
+import core.properties.Properties
 import core.properties.ValueStrings.COUNT
 import core.properties.ValueStrings.SCALE
 import core.properties.ValueStrings.WEIGHT
 import core.utility.Named
 import core.utility.clamp
 import core.utility.max
-import crafting.material.MaterialStrings.FLESH
 import explore.listen.getSound
 import inventory.Inventory
 import status.Soul
@@ -53,11 +42,10 @@ data class Thing(
     val parent: Thing? = null,
     val mind: Mind = Mind(),
     val body: Body = Body("None"),
+    val body2: Body2 = Body2("None"),
     val equipSlots: List<Slot> = listOf(),
     val equipTargets: List<EquipTarget> = listOf(),
-    //TODO
-    val inventory: Inventory = Inventory(name, Body2()),
-//    val inventory: Inventory = Inventory(name, body),
+    val inventory: Inventory = Inventory(name, body2),
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
@@ -69,13 +57,6 @@ data class Thing(
     init {
         mind.updateCreature(this)
         soul.parent = this
-    }
-
-    //TODO - this is for testing only
-    val body2: Body2 = body("Human") {
-        dimensions(6, 2, 10)
-        mat(FLESH)
-        parts(HEAD, CHEST, RIGHT_ARM, LEFT_ARM, RIGHT_HAND, LEFT_HAND, WAIST, RIGHT_LEG, LEFT_LEG, RIGHT_FOOT, LEFT_FOOT)
     }
 
     override fun toString(): String {
@@ -162,7 +143,7 @@ data class Thing(
 //        }
 //    }
 
-    fun add(item: Thing) = inventory.add( item, getTotalCapacity())
+    fun add(item: Thing) = inventory.add(item, getTotalCapacity())
     fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getTotalCapacity())
 
     fun getDamage(): Int {
@@ -184,10 +165,11 @@ data class Thing(
         val props = Properties(properties)
         props.values.put(COUNT, count)
         val body = body.copy()
+        val body2 = body2.copy()
         val inventory = Inventory(inventory.name, body2)
         val soul = soul.copy()
 
-        return Thing(name, description, location, parent, mind, body, equipSlots, equipTargets, inventory, props, soul, behaviors, params)
+        return Thing(name, description, location, parent, mind, body, body2, equipSlots, equipTargets, inventory, props, soul, behaviors, params)
     }
 
     fun getPositionInLocation(part: Location): Vector {

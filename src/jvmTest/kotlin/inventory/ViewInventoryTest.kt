@@ -32,7 +32,7 @@ class ViewInventoryTest {
     fun listInventory() {
         runBlocking {
             val creature = createClosedChest()
-            creature.inventory.add(createItem())
+            creature.add(createItem())
             val event = ViewInventoryEvent(GameState.player, creature)
             runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Closed Chest has:\n\tApple"))
@@ -61,8 +61,8 @@ class ViewInventoryTest {
                 props { tag(CONTAINER) }
             }.build()
             val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
-            creature.inventory.add(item)
-            creature.body.equip(item)
+            creature.add(item)
+            creature.body2.equip(item)
             val event = ViewInventoryEvent(GameState.player, creature)
             runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Chestplate"))
@@ -74,7 +74,7 @@ class ViewInventoryTest {
         runBlocking {
             val item = createItem("Apple")
             val pouch = Thing("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
-            pouch.inventory.add(item)
+            pouch.add(item)
 
             val chest = locationRecipe("Chest") { slot("Chest") }
 
@@ -86,8 +86,8 @@ class ViewInventoryTest {
                 body("body")
                 props { tag(CONTAINER) }
             }.build()
-            creature.inventory.add(pouch)
-            creature.body.equip(pouch)
+            creature.add(pouch)
+            creature.body2.equip(pouch)
 
             val event = ViewInventoryEvent(GameState.player, creature)
             runBlocking { ViewInventory().complete(event) }
@@ -99,7 +99,7 @@ class ViewInventoryTest {
     fun creatureWithoutTagDoesNotListInventory() {
         runBlocking {
             val creature = Thing("Chest")
-            creature.inventory.add(Thing("Apple"))
+            creature.add(Thing("Apple"))
             val event = ViewInventoryEvent(GameState.player, creature)
             runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Cannot view inventory of Chest"))

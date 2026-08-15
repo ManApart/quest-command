@@ -49,7 +49,7 @@ class TransferItemTakeTest {
 
             val chest = Thing("Chest", properties = Properties(tags = Tags("Container", "Open")))
             val item = Thing("Apple", properties = Properties(Tags(ITEM)))
-            chest.inventory.add(item)
+            chest.add(item)
 
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, chest, creature)) }
 
@@ -65,7 +65,7 @@ class TransferItemTakeTest {
 
             val chest = Thing("Chest", properties = Properties(tags = Tags("Open")))
             val item = Thing("Apple", properties = Properties(Tags(ITEM)))
-            chest.inventory.add(item)
+            chest.add(item)
 
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
 
@@ -81,7 +81,7 @@ class TransferItemTakeTest {
 
             val chest = Thing("Chest", properties = Properties(tags = Tags("Container")))
             val item = Thing("Apple", properties = Properties(Tags(ITEM)))
-            chest.inventory.add(item)
+            chest.add(item)
 
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
 
@@ -94,7 +94,7 @@ class TransferItemTakeTest {
         val creature = Thing("Thing", properties = Properties(tags = Tags("Container", "Open", "Creature")))
 //        val pouch = Thing("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
         val pouch = createPouch(15)
-        creature.inventory.add(pouch)
+        creature.add(pouch)
         return creature
     }
 
