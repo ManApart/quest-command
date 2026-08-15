@@ -86,7 +86,7 @@ class TakeItemTest {
             assertEquals(1, inInventory.properties.values.getInt(COUNT))
             assertEquals(2, inLocation.properties.values.getInt(COUNT))
             assertEquals(location, inLocation.location.getLocation())
-            assertEquals(creature.inventory.getItem("Pouch")?.body?.getRootPart(), inInventory.location.getLocation())
+            assertEquals(NOWHERE_NODE, inInventory.location)
         }
     }
 

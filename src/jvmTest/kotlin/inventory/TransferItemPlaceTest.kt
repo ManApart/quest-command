@@ -2,6 +2,7 @@ package inventory
 
 
 import core.DependencyInjector
+import core.GameState.properties
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
@@ -247,7 +248,7 @@ class TransferItemPlaceTest {
             creature.add(item)
 
             val chest = createChest(5)
-            chest.body.getRootPart().properties.values.put(CAN_HOLD, "Food,Apparel")
+            chest.properties.values.put(CAN_HOLD, "Food,Apparel")
 
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
 
@@ -265,7 +266,7 @@ class TransferItemPlaceTest {
             creature.add(item)
 
             val chest = createChest(5)
-            chest.body.getRootPart().properties.values.put(CAN_HOLD, "Weapon,Apparel")
+            chest.properties.values.put(CAN_HOLD, "Weapon,Apparel")
 
             runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
 

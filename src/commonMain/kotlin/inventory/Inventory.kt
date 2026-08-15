@@ -8,6 +8,7 @@ import core.thing.Thing
 import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
+import traveling.location.network.NOWHERE_NODE
 
 fun inventory(name: String = "Inventory"): Inventory {
     return Inventory(name, Body2(name))
@@ -89,6 +90,7 @@ data class Inventory(val name: String = "Inventory", private val body: Body2, pr
         } else {
             items.add(item)
             body.equipToEmpty(item)
+            item.location = NOWHERE_NODE
         }
     }
 

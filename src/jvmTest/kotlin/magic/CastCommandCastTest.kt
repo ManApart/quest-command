@@ -4,8 +4,10 @@ import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.GameState.player
+import core.body.BodyPart
 import core.events.EventManager
 import core.thing.Thing
+import crafting.material.DEFAULT_MATERIAL
 import createMockedGame
 import kotlinx.coroutines.runBlocking
 import magic.castSpell.CastCommand
@@ -102,7 +104,7 @@ class CastCommandCastTest {
     @Test
     fun limitParts() {
         runBlocking {
-            val part = Location(LocationNode("leg"))
+            val part = BodyPart("Leg", DEFAULT_MATERIAL)
             val thing = ThingAim(Thing("Bob"), listOf(part))
 
             val results = getThingedPartsOrAll(thing, 3)

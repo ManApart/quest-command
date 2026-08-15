@@ -1,6 +1,5 @@
 package combat.block
 
-import combat.HandHelper
 import combat.handHelper
 import core.Player
 import core.commands.Args
@@ -21,6 +20,7 @@ class BlockCommand : Command() {
     override fun getManual(): String {
         return """
 	Block <part> with <hand> - Attempt to block a direction with the item in your left/right hand. (Only works in battle).
+    Block <part1>,<part2> - Block multiple parts. The more parts blocked the lower chance you have of blocking
 	You stop blocking next time you choose an action."""
     }
 
@@ -36,12 +36,11 @@ class BlockCommand : Command() {
         }
     }
 
-    //TODO - allow as many parts as they like to block
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
         val handHelper = handHelper(source, arguments.getString("with"), "block")
-        val shieldedPart = parseBodyParts(source, arguments.getBaseGroup()).firstOrNull() ?: handHelper.hand
-        EventManager.postEvent(startBlockEvent(source, handHelper.hand, shieldedPart))
+        val shieldedParts = parseBodyParts(source, arguments.getBaseGroup())
+        EventManager.postEvent(startBlockEvent(source, handHelper.hand, shieldedParts))
     }
 
 }

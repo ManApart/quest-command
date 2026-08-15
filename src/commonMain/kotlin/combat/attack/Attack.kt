@@ -2,6 +2,7 @@ package combat.attack
 
 import combat.DamageType
 import combat.takeDamage.TakeDamageEvent
+import core.body.BodyPart
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -13,7 +14,6 @@ import core.utility.then
 import explore.listen.addSoundEffect
 import status.stat.AttributeStrings
 import status.stat.SkillStrings.BARE_HANDED
-import traveling.location.location.Location
 import traveling.position.Distances
 import traveling.position.ThingAim
 import use.UseEvent
@@ -38,6 +38,7 @@ class Attack : EventListener<AttackEvent>() {
                         event.aim.thing
                     )
                 )
+
                 else -> event.creature.displayToMe("Nothing happens.")
             }
         } else {
@@ -78,22 +79,19 @@ class Attack : EventListener<AttackEvent>() {
         processSound(event, attackedParts)
     }
 
-    private fun processSound(event: AttackEvent, attackedParts: List<Location>) {
+    private fun processSound(event: AttackEvent, attackedParts: List<BodyPart>) {
         val soundLevel = if (attackedParts.isEmpty()) 10 else 30
         event.creature.addSoundEffect("Attacking", "the din of battle", soundLevel)
     }
 
-    private fun getAttackedParts(source: Thing, sourcePart: Location, thing: ThingAim): List<Location> {
-        val sourcePosition = source.getPositionInLocation(sourcePart)
+    private fun getAttackedParts(source: Thing, sourcePart: BodyPart, target: ThingAim): List<BodyPart> {
+        val sourcePosition = source.position
         val range = getRange(source, sourcePart)
-        return thing.bodyPartThings.filter {
-            val thingPartPosition = thing.thing.getPositionInLocation(it)
-            val distance = sourcePosition.getDistance(thingPartPosition)
-            range >= distance
-        }
+        val distance = sourcePosition.getDistance(target.thing.position)
+        return if (range >= distance) target.bodyPartThings else emptyList()
     }
 
-    private fun getRange(source: Thing, sourcePart: Location): Int {
+    private fun getRange(source: Thing, sourcePart: BodyPart): Int {
         val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
         val bodyRange = source.body.getRange()
         return weaponRange + bodyRange
@@ -101,7 +99,7 @@ class Attack : EventListener<AttackEvent>() {
 
     private suspend fun processAttackHit(
         event: AttackEvent,
-        attackedPart: Location,
+        attackedPart: BodyPart,
         verb: String,
         damageSource: String,
         defender: ThingAim,
@@ -124,12 +122,13 @@ class Attack : EventListener<AttackEvent>() {
         )
     }
 
-    private fun getOffensiveDamage(sourceCreature: Thing, sourcePart: Location, type: DamageType): Int {
+    private fun getOffensiveDamage(sourceCreature: Thing, sourcePart: BodyPart, type: DamageType): Int {
         return when {
             sourcePart.getEquippedWeapon() != null -> sourcePart.getEquippedWeapon()!!.properties.values.getInt(
                 type.damage,
                 0
             )
+
             else -> sourceCreature.soul.getCurrent(BARE_HANDED)
         }
     }
