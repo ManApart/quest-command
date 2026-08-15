@@ -13,14 +13,14 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
     override suspend fun complete(event: ViewEquippedEvent) {
 
         with(event) {
-            val body = target.body
-            val items = body.getEquippedItems()
+            val body = target.body2
+            val items = body.getEquipped()
             val subject = target.asSubject(source)
             if (items.isEmpty()) {
                 val doesNot = target.ifYouWord(source, "don't", "doesn't")
                 source.displayToMe("$subject $doesNot have anything equipped!")
             } else {
-                val itemList = items.joinToStringSuspend("\n\t") { "${it.name} equipped to ${it.getEquippedSlot(body).description}" }
+                val itemList = items.joinToStringSuspend("\n\t") { "${it.name} equipped to ${body.getEquippedTarget(it)}" }
                 val has = target.ifYouWord(source, "have", "has")
                 source.displayToMe("$subject $has the following items equipped:\n\t$itemList")
             }

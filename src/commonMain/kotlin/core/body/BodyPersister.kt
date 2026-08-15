@@ -9,13 +9,14 @@ suspend fun persist(dataObject: Body, path: String) {
     if (dataObject.name == NONE.name) {
         return
     }
-    val prefix = clean(path, dataObject.name)
-    traveling.location.persist(dataObject.layout, path, dataObject.getEquippedItems())
-    dataObject.getEquippedItems().forEach { core.thing.persistToDisk(it, path) }
-
-    val saveName = cleanPathToFile("json", prefix)
-    val json = mapper.encodeToString(BodyP(dataObject))
-    writeSave(path, saveName, json)
+    //TODO - persist Body2
+//    val prefix = clean(path, dataObject.name)
+//    traveling.location.persist(dataObject.layout, path, dataObject.getEquippedItems())
+//    dataObject.getEquippedItems().forEach { core.thing.persistToDisk(it, path) }
+//
+//    val saveName = cleanPathToFile("json", prefix)
+//    val json = mapper.encodeToString(BodyP(dataObject))
+//    writeSave(path, saveName, json)
 }
 
 
@@ -34,15 +35,17 @@ data class BodyP(
     val material: String,
     val slots: Map<String, String> = emptyMap(),
 ) {
-    constructor(b: Body) : this(b.name, b.material.name, b.getSlotMap())
+//    constructor(b: Body) : this(b.name, b.material.name, b.getSlotMap())
 
+    //TODO - persist
     suspend fun parsed(path: String): Body {
-        val filePath = cleanPathToFile(".json", path, name)
-        val networkFolderPath = clean(path, name)
-        val network = traveling.location.load(networkFolderPath, name)
-        val equippedItems = getFiles(path, listOf(filePath)).map { core.thing.loadFromDisk(it.path, network) }
-        return Body(name, MaterialManager.getMaterial(material), network, slots.toMutableMap()).apply {
-            equipItems(equippedItems)
-        }
+//        val filePath = cleanPathToFile(".json", path, name)
+//        val networkFolderPath = clean(path, name)
+//        val network = traveling.location.load(networkFolderPath, name)
+//        val equippedItems = getFiles(path, listOf(filePath)).map { core.thing.loadFromDisk(it.path, network) }
+//        return Body(name, MaterialManager.getMaterial(material), network, slots.toMutableMap()).apply {
+//            equipItems(equippedItems)
+//        }
+        throw NotImplementedError()
     }
 }

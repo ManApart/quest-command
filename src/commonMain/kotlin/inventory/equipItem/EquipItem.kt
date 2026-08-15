@@ -12,12 +12,13 @@ class EquipItem : EventListener<EquipItemEvent>() {
         if (!event.item.isWithinRangeOf(event.creature)) {
             event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to equip ${event.item}."}
         } else {
-            if (event.slot != null) {
-                event.creature.body.equip(event.item, event.slot)
+            val body = event.creature.body2
+            val target = if (event.target != null) {
+                body.equip(event.item, event.target)
             } else {
-                event.creature.body.equip(event.item)
+                body.equip(event.item)
             }
-            EventManager.postEvent(ItemEquippedEvent(event.creature, event.item, event.item.getEquippedSlot(event.creature.body)))
+            EventManager.postEvent(ItemEquippedEvent(event.creature, event.item, target))
             event.creature.addSoundEffect("Equipping", "the tightening of straps and muscle")
         }
     }

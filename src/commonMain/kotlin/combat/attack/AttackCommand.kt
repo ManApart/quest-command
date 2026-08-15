@@ -15,7 +15,7 @@ import use.startUseEvent
 class AttackCommand : Command() {
     override fun getAliases(): List<String> {
         val aliases = mutableListOf("Attack")
-        AttackType.values().forEach {
+        AttackType.entries.forEach {
             aliases.add(it.name.lowercase())
             aliases.add(it.alias.lowercase())
         }
@@ -44,7 +44,7 @@ class AttackCommand : Command() {
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.getPerceivedThingNames() + source.getPerceivedPartNames()
-            args.last() == "with" -> listOf("right", "left") + source.body.getEquippedItems().map { it.name }
+            args.last() == "with" -> listOf("right", "left") + source.body2.getEquipped().map { it.name }
             args.last() == "of" -> listOf("right", "left") + source.getPerceivedThingNames()
             source.getPerceivedThingNames().contains(args.last()) -> listOf("with")
             source.getPerceivedPartNames().contains(args.last()) -> listOf("of")

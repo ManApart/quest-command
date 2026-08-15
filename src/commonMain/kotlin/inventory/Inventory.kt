@@ -79,13 +79,14 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
                 ?: body.getParts().flatMap { it.getItems() }.firstNotNullOfOrNull { it.inventory.findLocationThatCanTake(item) }
     }
 
+    //TODO
     //Eventually add count
     suspend fun attemptToAdd(item: Thing): Boolean {
-        val equipSlot = body.getEmptyEquipSlot(item)
-        if (equipSlot != null) {
-            body.equip(item, equipSlot)
-            return true
-        }
+//        val equipSlot = body.getEmptyEquipSlot(item)
+//        if (equipSlot != null) {
+//            body.equip(item, equipSlot)
+//            return true
+//        }
 
         val location = findLocationThatCanTake(item) ?: return false
         val match = location.getItems(item.name).firstOrNull()
@@ -112,7 +113,9 @@ data class Inventory(val name: String = "Inventory", private val body: Body) {
                 item.properties.incCount(-count)
             } else {
                 location.removeThing(item)
-                body.unEquip(item)
+                //TODO
+                throw NotImplementedError()
+//                body.unEquip(item)
             }
         }
     }

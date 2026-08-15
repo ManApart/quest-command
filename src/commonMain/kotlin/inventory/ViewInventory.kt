@@ -1,6 +1,6 @@
 package inventory
 
-import core.body.Body
+import core.body.Body2
 import core.events.EventListener
 import core.history.displayToMe
 import core.history.displayToOthers
@@ -23,7 +23,7 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
                         "${event.target.name} has:${
                             inventoryToString(
                                 event.target.inventory,
-                                event.target.body
+                                event.target.body2
                             )
                         }"
                     )
@@ -36,7 +36,7 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
 
     }
 
-    private suspend fun inventoryToString(inventory: Inventory, body: Body, depth: Int = 0): String {
+    private suspend fun inventoryToString(inventory: Inventory, body: Body2, depth: Int = 0): String {
         var message = ""
         getSortedInventory(inventory, body)
             .forEach {
@@ -48,13 +48,13 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
         return message
     }
 
-    private suspend fun printItem(item: Thing, body: Body, tabCount: Int): String {
+    private fun printItem(item: Thing, body: Body2, tabCount: Int): String {
         val asterisk = body.isEquipped(item).then("* ", "")
         val tabs = "\t".repeat(tabCount)
         return "\n" + tabs + asterisk + item.name
     }
 
-    private suspend fun getSortedInventory(inventory: Inventory, body: Body): List<Thing> {
+    private suspend fun getSortedInventory(inventory: Inventory, body: Body2): List<Thing> {
         val equippedItems = inventory.getItems().filter { body.isEquipped(it) }.sortedBy { it.name }
         val unEquippedItems = inventory.getItems().filter { !body.isEquipped(it) }.sortedBy { it.name }
         return equippedItems + unEquippedItems

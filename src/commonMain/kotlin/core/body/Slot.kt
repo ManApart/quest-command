@@ -12,25 +12,25 @@ data class Slot(val attachPoints: List<String>) {
     suspend fun getEquippedItems(body: Body) : List<Thing> {
         val items = mutableListOf<Thing>()
         attachPoints.forEach {
-            items.addAll(body.getEquippedItemsAt(it))
+//            items.addAll(body.getEquippedItemsAt(it))
         }
         return items
     }
 
     suspend fun itemIsEquipped(item: Thing, body: Body) : Boolean {
         attachPoints.forEach {
-            if (!body.getEquippedItemsAt(it).contains(item)) {
-                return false
-            }
+//            if (!body.getEquippedItemsAt(it).contains(item)) {
+//                return false
+//            }
         }
         return true
     }
 
     suspend fun isEmpty(body: Body) : Boolean {
         attachPoints.forEach {
-            if (body.getEquippedItemsAt(it).isNotEmpty()) {
-                return false
-            }
+//            if (body.getEquippedItemsAt(it).isNotEmpty()) {
+//                return false
+//            }
         }
         return true
     }

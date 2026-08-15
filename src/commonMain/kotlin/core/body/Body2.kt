@@ -60,11 +60,13 @@ data class Body2(
         }
     }
 
-    fun equip(item: Thing, target: EquipTarget) {
+    fun equip(item: Thing) = equip(item, getDefaultTarget(item)!!)
+    fun equip(item: Thing, target: EquipTarget): EquipTarget {
         target.parts.mapNotNull { parts.getOrNull(it) }.forEach {
             it.unEquip(target.layer)
             it.equip(item, target.layer)
         }
+        return target
     }
 
     fun findEquipTarget(item: Thing, part: String): EquipTarget? {
@@ -94,6 +96,10 @@ data class Body2(
 
     fun getEquippedAt(part: String, layer: Layer): Thing? {
         return parts.getOrNull(part)?.getEquipped(layer)
+    }
+
+    fun getEquippedTarget(item: Thing): EquipTarget? {
+        return item.equipTargets.firstOrNull { getEquippedAt(it).contains(item) }
     }
 
     fun unEquip(item: Thing) {

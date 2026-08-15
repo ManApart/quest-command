@@ -31,11 +31,12 @@ class BlockCommand : Command() {
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.body.getParts().map { it.name }
-            args.last() == "with" -> listOf("right", "left") + source.body.getEquippedItems().map { it.name }
+            args.last() == "with" -> listOf("right", "left") + source.body2.getEquipped().map { it.name }
             else -> listOf("with")
         }
     }
 
+    //TODO
     override suspend fun execute(source: Thing, keyword: String, args: List<String>) {
         val arguments = Args(args, listOf("with"))
         val handHelper = handHelper(source, arguments.getString("with"), "block")

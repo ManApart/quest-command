@@ -1,5 +1,6 @@
 package core.body
 
+import core.utility.toNameSearchableList
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.MaterialManager
 import traveling.position.NO_VECTOR
@@ -33,7 +34,7 @@ class BodyBuilder(internal val name: String) {
     fun build(): Body2 {
         val mat = MaterialManager.getMaterial(material)
         val bodyParts = parts.map { it.build(mat) }
-        return Body2(name, dimensions, bodyParts)
+        return Body2(name, dimensions, bodyParts.toNameSearchableList())
     }
 }
 

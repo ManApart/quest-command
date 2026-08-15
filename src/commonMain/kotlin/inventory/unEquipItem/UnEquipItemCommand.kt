@@ -9,6 +9,7 @@ import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
 import core.utility.NameSearchableList
+import core.utility.toNameSearchableList
 
 class UnEquipItemCommand : Command() {
     private val delimiters = listOf("from")
@@ -32,7 +33,7 @@ class UnEquipItemCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() -> source.body.getEquippedItems().map { it.name } + source.body.getParts().map { it.name }
+            args.isEmpty() -> source.body2.getEquipped().map { it.name } + source.body.getParts().map { it.name }
             else -> listOf()
         }
     }
@@ -57,9 +58,9 @@ class UnEquipItemCommand : Command() {
         }
     }
 
-    private suspend fun getItem(source: Thing, args: Args): Thing? {
+    private fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
-        val items = source.body.getEquippedItems()
+        val items = source.body2.getEquipped().toNameSearchableList()
         return if (items.exists(itemName)) {
             items.get(itemName)
         } else {
@@ -69,7 +70,7 @@ class UnEquipItemCommand : Command() {
 
     private suspend fun getUnequippedItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
-        val equippedItems = source.body.getEquippedItems()
+        val equippedItems = source.body2.getEquipped()
         val items = NameSearchableList(source.inventory.getItems().filter { !equippedItems.contains(it) })
         return if (items.exists(itemName)) {
             items.get(itemName)
@@ -81,7 +82,7 @@ class UnEquipItemCommand : Command() {
     private suspend fun clarifyItem(source: Player) {
         source.respondSuspend("There are no items you can unequip.") {
             message("What do you want to un-equip?")
-            optionsNamed(source.body.getEquippedItems())
+            optionsNamed(source.body2.getEquipped())
             command { "unequip $it" }
         }
     }

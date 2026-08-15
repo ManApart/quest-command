@@ -30,7 +30,7 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
 
     private fun List<String>.extractCommas(): List<String> {
         return if (delimiters.contains(",")) {
-            map { extractCommas(it) }.flatten()
+            flatMap { extractCommas(it) }
         } else {
             this
         }

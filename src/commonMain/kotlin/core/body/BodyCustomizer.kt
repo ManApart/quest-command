@@ -14,7 +14,9 @@ class BodyCustomizer {
 
     suspend fun apply(base: Body): Body {
         transform(base.layout)
-        return Body(base.name, base.material, base.layout, base.getSlotMap().toMutableMap())
+        //TODO
+        throw NotImplementedError()
+//        return Body(base.name, base.material, base.layout, base.getSlotMap().toMutableMap())
     }
 
     private suspend fun transform(layout: Network) {
