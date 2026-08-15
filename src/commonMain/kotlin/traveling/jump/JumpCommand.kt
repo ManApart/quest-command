@@ -40,7 +40,7 @@ class JumpCommand : Command() {
         if (source.properties.values.getBoolean(IS_CLIMBING) && source.thing.climbThing != null) {
             val playerLocation = source.location
             val climbThing = source.thing.climbThing!!
-            EventManager.postEvent(JumpEvent(source.thing, source = playerLocation, destination = climbThing.location, fallDistance = climbThing.body.getHeight()))
+            EventManager.postEvent(JumpEvent(source.thing, source = playerLocation, destination = climbThing.location, fallDistance = climbThing.getHeight()))
         } else {
             val arguments = args(args, "to")
             val toName = arguments.getString("to").takeIf { it.isNotBlank() }

@@ -189,18 +189,18 @@ data class Body(
 //        ))
 //    }
 
-    fun getHeight(): Int {
-        return getSize().z
-    }
-
-    fun getSize(): Vector {
-        return layout.getSize()
-    }
-
-    fun getRange(): Int {
-        val size = getSize() * 2
-        return max(size.x, size.y, size.z) / 2
-    }
+//    fun getHeight(): Int {
+//        return getSize().z
+//    }
+//
+//    fun getSize(): Vector {
+//        return layout.getSize()
+//    }
+//
+//    fun getRange(): Int {
+//        val size = getSize() * 2
+//        return max(size.x, size.y, size.z) / 2
+//    }
 
 //    fun getSlotMap(): Map<String, String> {
 //        return slotMap.toMap()

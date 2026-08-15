@@ -11,6 +11,7 @@ import core.events.Event
 import core.properties.ENCUMBRANCE
 import core.properties.IS_CLIMBING
 import core.properties.Properties
+import core.properties.ValueStrings.SIZE
 import core.properties.ValueStrings.COUNT
 import core.properties.ValueStrings.SCALE
 import core.properties.ValueStrings.WEIGHT
@@ -180,15 +181,15 @@ data class Thing(
             return true
         }
 
-        val range = creature.body.getRange()
-        val centerOfCreature = creature.position + Vector(z = creature.body.getSize().z / 2)
+        val range = creature.getRange()
+        val centerOfCreature = creature.position + Vector(z = creature.getDimensions().z / 2)
         val distance = centerOfCreature.getDistance(position)
         return getTopParent().location == creature.getTopParent().location && range >= distance
     }
 
     fun canReach(targetPos: Vector): Boolean {
-        val range = body.getRange()
-        val centerOfCreature = this.position + Vector(z = body.getSize().z / 2)
+        val range = getRange()
+        val centerOfCreature = this.position + Vector(z = getDimensions().z / 2)
         val distance = centerOfCreature.getDistance(targetPos)
         return range >= distance
     }
@@ -215,11 +216,15 @@ data class Thing(
         return location.getLocation()
     }
 
+//    fun getSize(): Int {
+//        return properties.values.getInt("size", body.getSize().getDistance())
+//    }
+
     fun getSize(): Int {
-        return properties.values.getInt("size", body.getSize().getDistance())
+        return properties.values.getInt(SIZE, getDimensions().getDistance())
     }
 
-    fun getSize2(): Vector {
+    fun getDimensions(): Vector {
         return body2.getSize(properties.values.getDouble(SCALE, 1.0))
     }
 

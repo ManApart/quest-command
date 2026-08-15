@@ -16,5 +16,5 @@ suspend fun describeClimbJourney(source: Player, detailed: Boolean = false) {
 }
 
 private fun getDistance(creature: Thing): String {
-    return (creature.climbThing?.body?.getHeight() ?: creature.position.z).toString()
+    return (creature.climbThing?.getHeight() ?: creature.position.z).toString()
 }

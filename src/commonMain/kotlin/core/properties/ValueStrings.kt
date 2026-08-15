@@ -9,4 +9,5 @@ object ValueStrings {
     const val HEAL_AMOUNT = "healAmount"
     const val WEIGHT = "weight"
     const val SCALE = "scale"
+    const val SIZE = "size"
 }

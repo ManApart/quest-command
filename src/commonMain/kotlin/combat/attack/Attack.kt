@@ -93,7 +93,7 @@ class Attack : EventListener<AttackEvent>() {
 
     private fun getRange(source: Thing, sourcePart: BodyPart): Int {
         val weaponRange = sourcePart.getEquippedWeapon()?.properties?.getRange() ?: Distances.MIN_RANGE
-        val bodyRange = source.body.getRange()
+        val bodyRange = source.getRange()
         return weaponRange + bodyRange
     }
 

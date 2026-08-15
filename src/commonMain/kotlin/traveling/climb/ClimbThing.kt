@@ -14,7 +14,7 @@ data class ClimbThing(val thing: Thing, val connection: Connection? = null, val 
 
     fun getDirection(climber: Thing): Direction {
         if (climber.location == thing.location) {
-            if (climber.position.z < thing.position.z + thing.body.getHeight()) return Direction.ABOVE
+            if (climber.position.z < thing.position.z + thing.getHeight()) return Direction.ABOVE
             if (climber.position.z > thing.position.z) return Direction.BELOW
         }
         if (directionToExit != null) return directionToExit

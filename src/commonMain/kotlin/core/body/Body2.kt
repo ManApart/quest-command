@@ -10,7 +10,7 @@ import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.roundToInt
 
-//scale is passed in from prop on parent
+val NONE2 = Body2()
 
 data class Body2(
     override val name: String = "None",

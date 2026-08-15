@@ -34,12 +34,12 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
         val climbed = event.climbThing.thing
         if (!isWithinRange(event)) {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${climbed.name}." }
-        } else if (event.creature.climbThing == event.climbThing && event.creature.location == climbed.location && event.creature.position.y >= climbed.body.getHeight()) {
+        } else if (event.creature.climbThing == event.climbThing && event.creature.location == climbed.location && event.creature.position.y >= climbed.getHeight()) {
             event.creature.displayToMe("You're already at the top of ${climbed.name}.")
         } else if (isAtDestination(event)) {
             event.creature.displayToMe("You've already climbed ${climbed.name}.")
         } else {
-            val distance = climbed.body.getHeight()
+            val distance = climbed.getHeight()
             val chance = getChance(event.creature, distance)
 
             event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
@@ -114,7 +114,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private suspend fun climbToTop(event: AttemptClimbEvent) {
-        event.creature.position = event.climbThing.thing.position.plusZ(event.climbThing.thing.body.getHeight())
+        event.creature.position = event.climbThing.thing.position.plusZ(event.climbThing.thing.getHeight())
         event.creature.display { event.creature.asSubject(it) + " " + event.creature.withS("climb", it) + " to the top of ${event.climbThing.thing.name}." }
     }
 
