@@ -2,36 +2,27 @@ package explore.look
 
 import core.Player
 import core.body.NONE
-import core.history.StringTable
 import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
 import crafting.material.DEFAULT_MATERIAL
-import traveling.location.RouteNeighborFinder
+import traveling.position.NO_VECTOR
 
 suspend fun describeBody(source: Player, thing: Thing) {
-    val body = thing.body
-    val routes = RouteNeighborFinder(body.layout.rootNode, 100).getNeighbors()
-
-    val routeTable = if (routes.isNotEmpty()) {
-        val input = mutableListOf(listOf("Name", "Distance", "Direction Path"))
-        input.add(listOf(body.layout.rootNode.name, "0", "N/A"))
-        input.addAll(routes.map { it.getRouteString() })
-        val table = StringTable(input, 2, rightPadding = 2)
-
-        table.getString()
-    } else ""
-
+    val body = thing.body2
     if (body.name == NONE.name) {
-        val materialString = if (body.material.name != DEFAULT_MATERIAL.name) " It is made of ${body.material.name}." else ""
+        val materialString = if (body.core.material.name != DEFAULT_MATERIAL.name) " It is made of ${body.core.material.name}." else ""
         source.displayToMe("This has no body.$materialString")
     } else {
-        source.displayToMe("${body.name} body:\n$routeTable")
+        val parts = body.parts.joinToString(", ") { it.name }
+        source.displayToMe("${body.name} body has parts: $parts")
     }
     source.displayToOthers("${source.name} looks at ${thing.name}'s body.")
 }
 
 suspend fun describeBodyDetailed(source: Player, thing: Thing) {
     describeBody(source, thing)
-    source.displayToOthers("${source.name} looks at ${thing.name}'s body.")
+    if (thing.getDimensions() != NO_VECTOR) {
+        source.displayToMe("${thing.body2.name} body has dimensions: ${thing.getDimensions()}")
+    }
 }

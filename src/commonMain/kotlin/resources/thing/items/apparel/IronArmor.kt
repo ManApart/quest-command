@@ -1,5 +1,10 @@
 package resources.thing.items.apparel
 
+import core.body.BodyPartStrings.CHEST
+import core.body.BodyPartStrings.HEAD
+import core.body.BodyPartStrings.LEFT_ARM
+import core.body.BodyPartStrings.RIGHT_ARM
+import core.body.EquipLayerStrings.ARMOR
 import core.thing.item.ItemResource
 import core.thing.things
 import crafting.material.MaterialStrings.IRON
@@ -14,7 +19,7 @@ class IronArmor : ItemResource {
                 value("weight", 5)
                 value("defense", 5)
             }
-            equipSlot("Head Outer")
+            equipTo(ARMOR, HEAD)
         }
 
         thing("Iron Chest Plate") {
@@ -24,7 +29,7 @@ class IronArmor : ItemResource {
                 value("weight", 10)
                 value("defense", 10)
             }
-            equipSlot("Chest Outer", "Right Arm Outer", "Left Arm Outer")
+            equipTo(ARMOR, CHEST, RIGHT_ARM, LEFT_ARM)
         }
 
         thing("Iron Grieves") {
@@ -34,7 +39,7 @@ class IronArmor : ItemResource {
                 value("weight", 10)
                 value("defense", 10)
             }
-            equipSlot("Waist Outer", "Right Leg Outer", "Left Leg Outer")
+            equipArmorPants()
         }
 
     }

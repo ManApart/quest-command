@@ -3,6 +3,8 @@ package building
 import conversation.dsl.DialogueTree
 import core.ai.behavior.Behavior
 import core.ai.packages.AIPackageTemplate
+import core.body.Body2
+import core.body.BodyBuilder
 import core.events.EventListener
 import core.thing.ThingBuilder
 import crafting.RecipeBuilder
@@ -19,7 +21,7 @@ object ModManager {
     val activators = mutableListOf<ThingBuilder>()
     val aiPackages = mutableListOf<AIPackageTemplate>()
     val behaviors = mutableListOf<Behavior<*>>()
-    val bodies = mutableListOf<NetworkBuilder>()
+    val bodies = mutableListOf<BodyBuilder>()
     val bodyParts = mutableListOf<LocationRecipeBuilder>()
     val creatures = mutableListOf<ThingBuilder>()
     val conditions = mutableListOf<ConditionRecipe>()

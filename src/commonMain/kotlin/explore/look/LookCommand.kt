@@ -52,7 +52,7 @@ class LookCommand : Command() {
         val thing = getThing(args, source)
         when {
             thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
-            thing.isLookingAtBody() -> EventManager.postEvent(LookEvent(source, thing.thing, body = thing.thing.body))
+            thing.isLookingAtBody() -> EventManager.postEvent(LookEvent(source, thing.thing, body = thing.thing.body2))
             thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, part = thing.bodyPartThings.first()))
             else -> EventManager.postEvent(LookEvent(source, thing = thing.thing))
         }

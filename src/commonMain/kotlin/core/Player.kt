@@ -23,7 +23,6 @@ data class Player(
     }
 
     val soul get() = thing.soul
-    val body get() = thing.body
     val body2 get() = thing.body2
     val properties get() = thing.properties
     val mind get() = thing.mind

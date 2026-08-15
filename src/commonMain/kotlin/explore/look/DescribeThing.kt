@@ -4,7 +4,6 @@ import core.Player
 import core.history.displayToMe
 import core.history.displayToOthers
 import core.thing.Thing
-import core.utility.joinToStringAnd
 
 suspend fun describeThing(source: Player, thing: Thing) {
     var message = thing.getDisplayName()
@@ -47,9 +46,9 @@ private fun describeProperties(thing: Thing): String {
 }
 
 private fun describeEquipSlots(thing: Thing): String {
-    if (thing.equipSlots.isNotEmpty()) {
-        val slots = thing.equipSlots.joinToString(" or ") { it.attachPoints.joinToStringAnd() }
-        return "\n\tIt can be equipped to $slots."
+    if (thing.equipTargets.isNotEmpty()) {
+        val targets = thing.equipTargets.joinToString(" or ")
+        return "\n\tIt can be equipped to $targets."
     }
     return ""
 }

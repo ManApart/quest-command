@@ -1,7 +1,6 @@
 package inventory.equipItem
 
 import core.body.EquipTarget
-import core.body.Slot
 import core.events.TemporalEvent
 import core.thing.Thing
 

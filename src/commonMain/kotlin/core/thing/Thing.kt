@@ -3,17 +3,15 @@ package core.thing
 import core.GameState
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
-import core.body.Body
 import core.body.Body2
 import core.body.EquipTarget
-import core.body.Slot
 import core.events.Event
 import core.properties.ENCUMBRANCE
 import core.properties.IS_CLIMBING
 import core.properties.Properties
-import core.properties.ValueStrings.SIZE
 import core.properties.ValueStrings.COUNT
 import core.properties.ValueStrings.SCALE
+import core.properties.ValueStrings.SIZE
 import core.properties.ValueStrings.WEIGHT
 import core.utility.Named
 import core.utility.clamp
@@ -42,9 +40,7 @@ data class Thing(
     var location: LocationNode = NOWHERE_NODE,
     val parent: Thing? = null,
     val mind: Mind = Mind(),
-    val body: Body = Body("None"),
     val body2: Body2 = Body2("None"),
-    val equipSlots: List<Slot> = listOf(),
     val equipTargets: List<EquipTarget> = listOf(),
     val inventory: Inventory = Inventory(name, body2),
     val properties: Properties = Properties(),
@@ -103,13 +99,13 @@ data class Thing(
     /**
      * Return how encumbered the creature is, as a percent from 0-1
      */
-    suspend fun getEncumbrance(): Float {
+    fun getEncumbrance(): Float {
         val soulEncumbrance = soul.parent.properties.values.getInt(ENCUMBRANCE, 0) / 100f
         val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, soulEncumbrance + physicalEncumbrance))
     }
 
-    suspend fun getEncumbrancePhysicalOnly(): Float {
+    fun getEncumbrancePhysicalOnly(): Float {
         val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, physicalEncumbrance))
     }
@@ -118,7 +114,7 @@ data class Thing(
      * Return the inverse (1-percent) how encumbered the creature is, as a percent from 0-1.
      * Useful if multiplying this by some other stat. At 0% encumbered the stat is at 100%. At 100% encumbered the stat is 0%.
      */
-    suspend fun getEncumbranceInverted(): Float {
+    fun getEncumbranceInverted(): Float {
         return 1 - getEncumbrance()
     }
 
@@ -165,12 +161,11 @@ data class Thing(
     fun copy(count: Int): Thing {
         val props = Properties(properties)
         props.values.put(COUNT, count)
-        val body = body.copy()
         val body2 = body2.copy()
         val inventory = Inventory(inventory.name, body2)
         val soul = soul.copy()
 
-        return Thing(name, description, location, parent, mind, body, body2, equipSlots, equipTargets, inventory, props, soul, behaviors, params)
+        return Thing(name, description, location, parent, mind, body2, equipTargets, inventory, props, soul, behaviors, params)
     }
 
     fun isWithinRangeOf(creature: Thing?): Boolean {
@@ -225,7 +220,7 @@ data class Thing(
     }
 
     fun getDimensions(): Vector {
-        return body2.getSize(properties.values.getDouble(SCALE, 1.0))
+        return body2.getDimensions(properties.values.getDouble(SCALE, 1.0))
     }
 
     fun getHeight(): Int {
@@ -233,7 +228,7 @@ data class Thing(
     }
 
     fun getRange(): Int {
-        return body2.getHeight(properties.values.getDouble(SCALE, 1.0))
+        return body2.getRange(properties.values.getDouble(SCALE, 1.0))
     }
 
     fun getClarity(): Int {

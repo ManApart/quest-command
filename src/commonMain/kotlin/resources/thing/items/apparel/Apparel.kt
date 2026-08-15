@@ -1,5 +1,9 @@
 package resources.thing.items.apparel
 
+import core.body.BodyPartStrings.CHEST
+import core.body.BodyPartStrings.WAIST
+import core.body.EquipLayerStrings.BELT
+import core.body.EquipLayerStrings.CLOTHING
 import core.properties.DEFENSE
 import core.properties.ParameterStrings.FIRE_HEALTH
 import core.properties.ParameterStrings.ITEM_NAME
@@ -25,7 +29,7 @@ class Apparel : ItemResource {
                 value(WEIGHT, 1)
                 value(DEFENSE, 1)
             }
-            equipSlot("Waist", "Right Leg", "Left Leg")
+            equipPants()
         }
 
         thing("Old Shirt") {
@@ -38,7 +42,7 @@ class Apparel : ItemResource {
                 value(WEIGHT, 1)
                 value(DEFENSE, 1)
             }
-            equipSlot("Chest")
+            equipTo(CLOTHING, CHEST)
         }
 
         thing("Small Pouch") {
@@ -52,7 +56,7 @@ class Apparel : ItemResource {
                 value(DEFENSE, 1)
             }
             body("Sack")
-            equipSlotOptions("Belt Front", "Belt Left", "Belt Right", "Belt Back")
+            equipTo(BELT, WAIST)
         }
     }
 }

@@ -37,11 +37,11 @@ class RecipeIngredientBuilder {
         this.tags.addAll(tags)
     }
 
-    fun material(tag: String){
+    fun material(tag: String) {
         this.materialProps.apply { tag(tag) }
     }
 
-    fun material(customizer: PropsBuilder.() -> Unit){
+    fun material(customizer: PropsBuilder.() -> Unit) {
         this.materialProps.apply(customizer)
     }
 
@@ -52,7 +52,7 @@ class RecipeIngredientBuilder {
         toolProps.apply(initializer)
     }
 
-    fun optional(){
+    fun optional() {
         this.optional = true
     }
 
@@ -90,7 +90,7 @@ class RecipeIngredientBuilder {
         if (properties.isNotEmpty()) criteria.add { _, _, tool -> matchesTool(tool, properties) }
 
         val matProps = materialProps.build()
-        if (matProps.isNotEmpty()) criteria.add { _, ingredient, _ -> ingredient.body.material.properties.hasAll(matProps) }
+        if (matProps.isNotEmpty()) criteria.add { _, ingredient, _ -> ingredient.body2.getAllMaterials().any { it.properties.hasAll(matProps) } }
 
         if (criteria.isEmpty()) throw IllegalArgumentException("Recipe must include at least one criteria.")
 
@@ -105,10 +105,8 @@ class RecipeIngredientBuilder {
         val nameString = itemName?.capitalize2() ?: "Something"
         val tagString = if (tags.isNotEmpty()) tags.joinToStringAnd().wrapNonEmpty("(", ")") else null
         val toolString = if (toolProps.isNotEmpty()) toolProps.toString() else null
-        val skillString = if (skillMap.isNotEmpty()) skillMap.entries.joinToString(", ") { (skill, level)-> "$skill = $level" }.wrapNonEmpty("(", ")") else null
+        val skillString = if (skillMap.isNotEmpty()) skillMap.entries.joinToString(", ") { (skill, level) -> "$skill = $level" }.wrapNonEmpty("(", ")") else null
 
         description = listOfNotNull(nameString, tagString, toolString, skillString).joinToString(" ")
     }
 }
-
-

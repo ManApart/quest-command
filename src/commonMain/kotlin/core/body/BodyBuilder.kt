@@ -6,9 +6,8 @@ import crafting.material.MaterialManager
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 
-class BodyBuilder(internal val name: String) {
+class BodyBuilder(internal val name: String, private var material: String = DEFAULT_MATERIAL.name) {
     private var dimensions = NO_VECTOR
-    private var material = DEFAULT_MATERIAL.name
     private val parts = mutableListOf<BodyPartBuilder>()
 
     fun dimensions(width: Int, length: Int, height: Int) =

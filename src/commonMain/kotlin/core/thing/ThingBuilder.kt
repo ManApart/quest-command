@@ -7,11 +7,7 @@ import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.CreatureMemory
 import core.ai.knowledge.Mind
 import core.ai.knowledge.MindP
-import core.body.Body
-import core.body.Body2
-import core.body.BodyBuilder
-import core.body.BodyCustomizer
-import core.body.BodyManager
+import core.body.*
 import core.body.BodyPartStrings.LEFT_HAND
 import core.body.BodyPartStrings.LEFT_LEG
 import core.body.BodyPartStrings.RIGHT_HAND
@@ -20,9 +16,6 @@ import core.body.BodyPartStrings.WAIST
 import core.body.EquipLayerStrings.ARMOR
 import core.body.EquipLayerStrings.CLOTHING
 import core.body.EquipLayerStrings.GRIP
-import core.body.EquipTarget
-import core.body.Layer
-import core.body.Slot
 import core.properties.Properties
 import core.properties.PropsBuilder
 import core.properties.TagStrings
@@ -36,8 +29,6 @@ import core.utility.apply
 import core.utility.applyNested
 import core.utility.applySuspending
 import crafting.material.DEFAULT_MATERIAL
-import crafting.material.Material
-import crafting.material.MaterialManager
 import explore.listen.SOUND_LEVEL_DEFAULT
 import inventory.Inventory
 import status.Soul
@@ -54,20 +45,17 @@ class ThingBuilder(internal val name: String) {
     private val itemNames = mutableListOf<String>()
     private var baseNames = mutableListOf<String>()
     private var bases = mutableListOf<ThingBuilder>()
-    private val slots = mutableListOf<List<String>>()
     private val equipTargets = mutableListOf<EquipTarget>()
     private var ai: AI? = null
     private var mind: Mind? = null
     private var mindP: MindP? = null
     private var mindInitializer: Mind.() -> Unit = {}
-    private var body: Body? = null
     private var body2: Body2? = null
     private var bodyMaterial: String = DEFAULT_MATERIAL.name
     private var bodyName: String? = null
     private var bodyBuilder: (BodyBuilder.() -> Unit)? = null
     private var location: LocationNode? = null
     private var parent: Thing? = null
-    private var bodyCustomizer: BodyCustomizer = BodyCustomizer()
 
     suspend fun build(additionalBases: List<ThingBuilder> = listOf(), tagsToApply: List<String> = listOf()): Thing {
         val bases = bases + additionalBases
@@ -79,11 +67,9 @@ class ThingBuilder(internal val name: String) {
         val desc = (description ?: basesR.firstNotNullOfOrNull { it.description } ?: "").apply(params)
 
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
-        val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
         val possibleBody2 = body2 ?: basesR.firstNotNullOfOrNull { it.body2 }
         val bodyMat = (listOf(bodyMaterial) + basesR.map { it.bodyMaterial }).firstOrNull { it != DEFAULT_MATERIAL.name } ?: DEFAULT_MATERIAL.name
-        val body = discernBody(possibleBody, possibleBodyName, MaterialManager.getMaterial(bodyMat), bodyCustomizer)
-        val body2 = discernBody2(possibleBody2, possibleBodyName, bodyBuilder)
+        val body2 = discernBody2(possibleBody2, possibleBodyName, bodyBuilder, bodyMat)
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
@@ -93,7 +79,6 @@ class ThingBuilder(internal val name: String) {
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
         mind.mindInitializer()
-        val equipSlots = ((slots + bases.flatMap { it.slots }).applyNested(params).map { Slot(it) } + calcHeldSlots(props)).toSet().toList()
         calcItemTargets(props)
         val equipTargets = (equipTargets + bases.flatMap { it.equipTargets }).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
@@ -107,9 +92,7 @@ class ThingBuilder(internal val name: String) {
             params = params,
             soul = actualSoul,
             behaviors = allBehaviors,
-            body = body,
             body2 = body2,
-            equipSlots = equipSlots,
             equipTargets = equipTargets,
             inventory = inventory,
             properties = props,
@@ -124,15 +107,6 @@ class ThingBuilder(internal val name: String) {
             } else if (props.tags.has(MEDIUM) || weight < 6) {
                 equipToHoldTwoHand()
             }
-        }
-    }
-
-    private fun calcHeldSlots(props: Properties): List<Slot> {
-        if (props.tags.has(TagStrings.CREATURE)) return emptyList()
-        return when {
-            props.tags.has("Small") || props.values.getInt("weight", 100) < 3 -> listOf(Slot(listOf("Right Hand Grip")), Slot(listOf("Left Hand Grip")))
-            props.tags.has("Medium") || props.values.getInt("weight", 100) < 6 -> listOf(Slot(listOf("Right Hand Grip", "Left Hand Grip")))
-            else -> listOf()
         }
     }
 
@@ -217,9 +191,8 @@ class ThingBuilder(internal val name: String) {
 //        this.bodyCustomizer = BodyCustomizer().apply(initializer)
 //    }
 
-    fun body(body: Body, initializer: BodyCustomizer.() -> Unit = {}) {
-        this.body = body
-        this.bodyCustomizer = BodyCustomizer().apply(initializer)
+    fun body(body: Body2) {
+        this.body2 = body
     }
 
     fun body(name: String, initializer: BodyBuilder.() -> Unit = {}) {
@@ -263,24 +236,6 @@ class ThingBuilder(internal val name: String) {
 
     fun equipTo(target: EquipTarget) = equipTargets.add(target)
 
-    /**
-     * Each string is a single attach point for a given slot. 5 strings = 5 slots
-     */
-    fun equipSlotOptions(vararg equipSlots: String) = equipSlots.forEach { slots.add(listOf(it)) }
-
-    /**
-     * Each list of strings creates a single equip slot. 5 lists = 5 slots
-     */
-    fun equipSlotOptions(vararg equipSlots: List<String>) = slots.addAll(equipSlots.map { it.toList() })
-
-    fun equipSlotOptions(equipSlots: List<Slot>) = slots.addAll(equipSlots.map { it.attachPoints })
-
-    /**
-     * Add a single equip slot, with each string being an attach point in that slot.
-     * This means that an equip slot with 5 attachment points will require all 5 points to be empty in order to equip the item
-     */
-    fun equipSlot(vararg attachPoints: String) = slots.add(attachPoints.toList())
-
     fun sound(description: String) {
         sound(SOUND_LEVEL_DEFAULT, description)
     }
@@ -296,8 +251,7 @@ class ThingBuilder(internal val name: String) {
             location(t.location)
             t.parent?.let { parent(t.parent) }
             mind(Mind(t.mind.ai.copy(), CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
-            body(Body(t.body))
-            equipSlotOptions(t.equipSlots)
+            body(t.body2.copy())
             t.equipTargets.forEach { equipTo(it) }
             item(t.inventory.getAllItems().map { it.name })
             props(t.properties)
@@ -308,18 +262,10 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    private suspend fun discernBody(possibleBody: Body?, possibleBodyName: String?, bodyMaterial: Material, bodyCustomizer: BodyCustomizer): Body {
+    private fun discernBody2(possibleBody: Body2?, possibleBodyName: String?, builder: (BodyBuilder.() -> Unit)?, bodyMat: String): Body2 {
         return when {
             possibleBody != null -> possibleBody
-            possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
-            else -> Body(material = bodyMaterial)
-        }.also { bodyCustomizer.apply(it) }
-    }
-
-    private fun discernBody2(possibleBody: Body2?, possibleBodyName: String?, builder: (BodyBuilder.() -> Unit)?): Body2 {
-        return when {
-            possibleBody != null -> possibleBody
-            possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName).apply(builder).build()
+            possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName, bodyMat).apply(builder).build()
             else -> BodyManager.getBody2(possibleBodyName!!)
         }
     }

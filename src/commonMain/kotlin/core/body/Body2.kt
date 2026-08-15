@@ -10,7 +10,7 @@ import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.roundToInt
 
-val NONE2 = Body2()
+val NONE = Body2()
 
 data class Body2(
     override val name: String = "None",
@@ -24,7 +24,11 @@ data class Body2(
         return name + ": [" + parts.joinToString { it.name } + "]"
     }
 
-    fun getSize(scale: Double): Vector {
+    fun getSize(scale: Double): Int {
+        return getDimensions(scale).getDistance()
+    }
+
+    fun getDimensions(scale: Double): Vector {
         return (dimensions * scale)
     }
 
@@ -33,7 +37,7 @@ data class Body2(
     }
 
     fun getRange(scale: Double): Int {
-        val size = getSize(scale) * 2
+        val size = getDimensions(scale) * 2
         return max(size.x, size.y, size.z) / 2
     }
 
@@ -115,5 +119,7 @@ data class Body2(
     fun unEquip(item: Thing) {
         parts.forEach { it.unEquip(item) }
     }
+
+    fun getAllMaterials() = parts.map { it.material }.toSet().toList()
 
 }

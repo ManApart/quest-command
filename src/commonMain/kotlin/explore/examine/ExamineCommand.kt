@@ -57,7 +57,7 @@ class ExamineCommand : Command() {
         when {
             thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
             lookingAtMind -> EventManager.postEvent(ExamineEvent(source, thing.thing, mind = thing.thing.mind))
-            thing.isLookingAtBody() -> EventManager.postEvent(ExamineEvent(source, thing.thing, body = thing.thing.body))
+            thing.isLookingAtBody() -> EventManager.postEvent(ExamineEvent(source, thing.thing, body = thing.thing.body2))
             thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(ExamineEvent(source, part = thing.bodyPartThings.firstOrNull()))
             else -> EventManager.postEvent(ExamineEvent(source, thing = thing.thing))
         }
