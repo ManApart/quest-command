@@ -90,7 +90,7 @@ class RecipeIngredientBuilder {
         if (properties.isNotEmpty()) criteria.add { _, _, tool -> matchesTool(tool, properties) }
 
         val matProps = materialProps.build()
-        if (matProps.isNotEmpty()) criteria.add { _, ingredient, _ -> ingredient.body2.getAllMaterials().any { it.properties.hasAll(matProps) } }
+        if (matProps.isNotEmpty()) criteria.add { _, ingredient, _ -> ingredient.body.getAllMaterials().any { it.properties.hasAll(matProps) } }
 
         if (criteria.isEmpty()) throw IllegalArgumentException("Recipe must include at least one criteria.")
 

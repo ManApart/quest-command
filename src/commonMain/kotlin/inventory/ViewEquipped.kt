@@ -13,7 +13,7 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
     override suspend fun complete(event: ViewEquippedEvent) {
 
         with(event) {
-            val body = target.body2
+            val body = target.body
             val items = body.getEquipped()
             val subject = target.asSubject(source)
             if (items.isEmpty()) {

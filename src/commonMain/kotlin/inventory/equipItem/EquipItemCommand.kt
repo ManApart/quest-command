@@ -1,7 +1,7 @@
 package inventory.equipItem
 
 import core.Player
-import core.body.Body2
+import core.body.Body
 import core.body.EquipLayerStrings.ARMOR
 import core.body.EquipLayerStrings.CLOTHING
 import core.body.EquipLayerStrings.GRIP
@@ -36,7 +36,7 @@ class EquipItemCommand : Command() {
         return when {
             args.isEmpty() -> source.inventory.getAllItems().map { it.name }
             args.size == 1 -> listOf("on", "to")
-            args.last() == "on" -> source.thing.body2.parts.map { it.name }
+            args.last() == "on" -> source.thing.body.parts.map { it.name }
             args.last() == "to" -> {
                 val arguments = args(args, "on", "to")
                 val item = getItem(source.thing, arguments)
@@ -56,7 +56,7 @@ class EquipItemCommand : Command() {
             val item = getItem(source.thing, arguments)
             val partGuess = arguments.getStringIfDelimExists("on")
             val layerGuess = arguments.getStringIfDelimExists("to")
-            val body = source.body2
+            val body = source.body
             val force = arguments.hasFlag("f")
 
             if (item == null) {
@@ -87,7 +87,7 @@ class EquipItemCommand : Command() {
         return source.inventory.getItem(itemName)
     }
 
-    private fun findTarget(partGuess: String?, body: Body2, item: Thing, layerGuess: String?): EquipTarget? {
+    private fun findTarget(partGuess: String?, body: Body, item: Thing, layerGuess: String?): EquipTarget? {
         return when {
             partGuess != null && layerGuess != null -> body.findEquipTarget(item, partGuess, layerGuess)
             partGuess == null && layerGuess == null -> body.getDefaultTarget(item)
@@ -105,7 +105,7 @@ class EquipItemCommand : Command() {
     }
 
     private suspend fun getEquipableItems(source: Thing): List<Thing> {
-        val body = source.body2
+        val body = source.body
         val equippedItems = body.getEquipped()
         return source.inventory.getAllItems().filter { body.canEquip(it) && !equippedItems.contains(it) }
     }

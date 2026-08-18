@@ -44,7 +44,7 @@ class AttackCommand : Command() {
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
             args.isEmpty() -> source.getPerceivedThingNames() + source.getPerceivedPartNames()
-            args.last() == "with" -> listOf("right", "left") + source.body2.getEquipped().map { it.name }
+            args.last() == "with" -> listOf("right", "left") + source.body.getEquipped().map { it.name }
             args.last() == "of" -> listOf("right", "left") + source.getPerceivedThingNames()
             source.getPerceivedThingNames().contains(args.last()) -> listOf("with")
             source.getPerceivedPartNames().contains(args.last()) -> listOf("of")
@@ -71,8 +71,8 @@ class AttackCommand : Command() {
                     processAttack(sourceT, arguments, attackType, handHelper, thing)
                 } else {
                     //If we got an alias, process with a default value of the body root part
-                    if (isAlias(keyword) || thing.thing.body2.parts.size == 1) {
-                        processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body2.core)))
+                    if (isAlias(keyword) || thing.thing.body.parts.size == 1) {
+                        processAttack(sourceT, arguments, attackType, handHelper, ThingAim(thing.thing, listOf(thing.thing.body.core)))
                         //Otherwise clarify body parts.
                     } else {
                         clarifyThingPart(source, keyword, thing, weaponName)
@@ -112,7 +112,7 @@ class AttackCommand : Command() {
     private suspend fun clarifyThingPart(player: Player, keyword: String, thing: ThingAim, weaponName: String) {
         player.respondSuspend("Unable to find a part of ${thing.thing.name} to attack.") {
             message("${keyword.capitalize2()} what part of ${thing.thing.name} with $weaponName?")
-            optionsNamed(thing.thing.body2.parts)
+            optionsNamed(thing.thing.body.parts)
             command { "$keyword $it of ${thing.thing.name}" }
         }
     }

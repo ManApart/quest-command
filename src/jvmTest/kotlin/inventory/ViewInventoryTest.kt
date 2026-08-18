@@ -62,7 +62,7 @@ class ViewInventoryTest {
             }.build()
             val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
             creature.add(item)
-            creature.body2.equip(item)
+            creature.body.equip(item)
             val event = ViewInventoryEvent(GameState.player, creature)
             runBlocking { ViewInventory().complete(event) }
             assertTrue(GameLogger.getMainHistory().contains("Soldier has:\n\t* Chestplate"))
@@ -87,7 +87,7 @@ class ViewInventoryTest {
                 props { tag(CONTAINER) }
             }.build()
             creature.add(pouch)
-            creature.body2.equip(pouch)
+            creature.body.equip(pouch)
 
             val event = ViewInventoryEvent(GameState.player, creature)
             runBlocking { ViewInventory().complete(event) }

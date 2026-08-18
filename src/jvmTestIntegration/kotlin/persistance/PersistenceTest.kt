@@ -160,7 +160,7 @@ class PersistenceTest {
             EventManager.processEvents()
             preLoadPlayer.thing.properties.tags.remove("Saved")
             assertFalse(preLoadPlayer.thing.properties.tags.has("Saved"))
-            val equippedItemCount = preLoadPlayer.thing.body2.getEquipped().size
+            val equippedItemCount = preLoadPlayer.thing.body.getEquipped().size
 
             //Wipe Game
             EventManager.clear()
@@ -173,7 +173,7 @@ class PersistenceTest {
             val postLoadPlayer = GameState.getPlayer("Saved Player")!!
             assertEquals("Saved Player", postLoadPlayer.thing.name)
             assertTrue(postLoadPlayer.thing.properties.tags.has("Saved"))
-            assertEquals(equippedItemCount, postLoadPlayer.thing.body2.getEquipped().size)
+            assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquipped().size)
             assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
 
             val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material

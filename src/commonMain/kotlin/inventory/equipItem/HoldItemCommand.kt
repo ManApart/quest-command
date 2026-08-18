@@ -1,7 +1,7 @@
 package inventory.equipItem
 
 import core.Player
-import core.body.Body2
+import core.body.Body
 import core.body.BodyPartStrings.LEFT_HAND
 import core.body.BodyPartStrings.RIGHT_HAND
 import core.body.EquipLayerStrings.GRIP
@@ -50,7 +50,7 @@ class HoldItemCommand : Command() {
         } else {
             val item = getItem(source.thing, arguments)
             val handGuess = arguments.getStringIfDelimExists("in")
-            val body = source.body2
+            val body = source.body
             val force = arguments.hasFlag("f")
 
             if (item == null) {
@@ -80,7 +80,7 @@ class HoldItemCommand : Command() {
         return source.currentLocation().getItemsIncludingPlayerInventory(itemName, source).firstOrNull()
     }
 
-    private fun findTarget(handGuess: String?, body: Body2, item: Thing): EquipTarget? {
+    private fun findTarget(handGuess: String?, body: Body, item: Thing): EquipTarget? {
         return if (handGuess == null) {
             body.getDefaultTarget(item)
         } else {
@@ -97,7 +97,7 @@ class HoldItemCommand : Command() {
     }
 
     private fun getEquipableItems(source: Thing): List<Thing> {
-        val body = source.body2
+        val body = source.body
         val equippedItems = body.getEquipped()
         return source.inventory.getAllItems().filter { body.canEquip(it) && !equippedItems.contains(it) }
     }

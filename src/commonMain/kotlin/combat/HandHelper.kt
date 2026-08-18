@@ -9,8 +9,8 @@ import core.utility.toNameSearchableList
 class HandHelper(val hand: BodyPart, val weapon: Thing?)
 
 fun handHelper(creature: Thing, source: String, desiredSkill: String): HandHelper {
-    val rightHand = creature.body2.parts.get("right hand")
-    val leftHand = creature.body2.parts.get("left hand")
+    val rightHand = creature.body.parts.get("right hand")
+    val leftHand = creature.body.parts.get("left hand")
     val rightWeapon = rightHand.getEquipped(GRIP)
     val leftWeapon = leftHand.getEquipped(GRIP)
     val weapons = listOfNotNull(rightWeapon, leftWeapon).toNameSearchableList()

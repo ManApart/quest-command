@@ -10,10 +10,10 @@ import traveling.position.NO_VECTOR
 import traveling.position.Vector
 
 //TODO - persist equipped items
-suspend fun persist(dataObject: Body2, path: String) {
+suspend fun persist(dataObject: Body, path: String) {
     //If Body is none or not custom, don't persist
     if (dataObject.name == NONE.name) return
-    if (BodyManager.getBody2(dataObject.name) == dataObject) return
+    if (BodyManager.getBody(dataObject.name) == dataObject) return
 
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
@@ -22,12 +22,12 @@ suspend fun persist(dataObject: Body2, path: String) {
 }
 
 
-suspend fun load(path: String, name: String): Body2 {
+suspend fun load(path: String, name: String): Body {
     if (name == NONE.name) return NONE
 
     val filePath = cleanPathToFile(".json", path, name)
     val json: BodyP? = loadFromPath(filePath)
-    return json?.parsed() ?: BodyManager.getBody2(name)
+    return json?.parsed() ?: BodyManager.getBody(name)
 }
 
 @Serializable
@@ -36,10 +36,10 @@ data class BodyP(
     val dimensions: Vector = NO_VECTOR,
     val parts: List<BodyPartP> = emptyList(),
 ) {
-    constructor(b: Body2) : this(b.name, b.getDimensionsUnscaled(), b.parts.map { BodyPartP(it) })
+    constructor(b: Body) : this(b.name, b.getDimensionsUnscaled(), b.parts.map { BodyPartP(it) })
 
-    fun parsed(): Body2 {
-        return Body2(name, dimensions, parts.map { it.parsed() }.toNameSearchableList())
+    fun parsed(): Body {
+        return Body(name, dimensions, parts.map { it.parsed() }.toNameSearchableList())
     }
 }
 

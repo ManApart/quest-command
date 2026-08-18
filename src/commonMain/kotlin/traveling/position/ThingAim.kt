@@ -18,7 +18,7 @@ class ThingAim(val thing: Thing, val bodyPartThings: List<BodyPart> = listOf()) 
     }
 
     fun isLookingAtBody(): Boolean {
-        return this.thing.body2.parts.size == this.bodyPartThings.size
+        return this.thing.body.parts.size == this.bodyPartThings.size
     }
 }
 

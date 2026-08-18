@@ -345,7 +345,7 @@ data class Location(
         val conditionRecipes = weather.conditionNames
         conditionRecipes.forEach { recipeName ->
             getThings().forEach { thing ->
-                val parts = thing.body2.parts
+                val parts = thing.body.parts
                 val condition = ConditionManager.getCondition(recipeName, parts)
                 EventManager.postEvent(AddConditionEvent(thing, condition))
             }

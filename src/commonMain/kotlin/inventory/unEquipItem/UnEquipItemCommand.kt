@@ -33,7 +33,7 @@ class UnEquipItemCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() -> source.body2.getEquipped().map { it.name } + source.body2.parts.map { it.name }
+            args.isEmpty() -> source.body.getEquipped().map { it.name } + source.body.parts.map { it.name }
             else -> listOf()
         }
     }
@@ -60,7 +60,7 @@ class UnEquipItemCommand : Command() {
 
     private fun getItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
-        val items = source.body2.getEquipped().toNameSearchableList()
+        val items = source.body.getEquipped().toNameSearchableList()
         return if (items.exists(itemName)) {
             items.get(itemName)
         } else {
@@ -70,7 +70,7 @@ class UnEquipItemCommand : Command() {
 
     private suspend fun getUnequippedItem(source: Thing, args: Args): Thing? {
         val itemName = args.getBaseString()
-        val equippedItems = source.body2.getEquipped()
+        val equippedItems = source.body.getEquipped()
         val items = NameSearchableList(source.inventory.getItems().filter { !equippedItems.contains(it) })
         return if (items.exists(itemName)) {
             items.get(itemName)
@@ -82,7 +82,7 @@ class UnEquipItemCommand : Command() {
     private suspend fun clarifyItem(source: Player) {
         source.respondSuspend("There are no items you can unequip.") {
             message("What do you want to un-equip?")
-            optionsNamed(source.body2.getEquipped())
+            optionsNamed(source.body.getEquipped())
             command { "unequip $it" }
         }
     }

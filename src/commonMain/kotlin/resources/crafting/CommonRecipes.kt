@@ -117,10 +117,10 @@ class CommonRecipes : RecipeResource {
                 description("A dagger of the type of metal given, optionally with its handle inlaid with a gem.")
                 produces { _, _, usedIngredients ->
                     val ingot = usedIngredients["Ingot"]!!.second
-                    val metalUsed = ingot.body2.core.material.name
-                    val metalQuality = ingot.body2.core.material.properties.values.getInt("Quality")
+                    val metalUsed = ingot.body.core.material.name
+                    val metalQuality = ingot.body.core.material.properties.values.getInt("Quality")
                     val inlay = usedIngredients["Inlay"]?.second
-                    val inlayUsed = inlay?.body2?.core?.material?.name ?: metalUsed
+                    val inlayUsed = inlay?.body?.core?.material?.name ?: metalUsed
                     val inlayString = if (inlay != null) " inlaid with ${inlay.name}" else ""
                     thing("$metalUsed Dagger") {
                         body("Dagger") {

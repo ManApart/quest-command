@@ -3,7 +3,7 @@ package building
 import conversation.dsl.DialogueTreeResource
 import core.ai.behavior.BehaviorResource
 import core.ai.packages.AIPackageTemplateResource
-import core.body.Body2Resource
+import core.body.BodyResource
 import core.events.EventListener
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.creature.CreatureResource
@@ -77,7 +77,7 @@ private suspend fun loadJar(jarFile: File) {
             c.interfaces.contains(ActivatorResource::class.java) -> processActivator(c as Class<ActivatorResource>)
             c.interfaces.contains(AIPackageTemplateResource::class.java) -> processAIPackageTemplateResource(c as Class<AIPackageTemplateResource>)
             c.interfaces.contains(BehaviorResource::class.java) -> processBehavior(c as Class<BehaviorResource>)
-            c.interfaces.contains(Body2Resource::class.java) -> processBody(c as Class<Body2Resource>)
+            c.interfaces.contains(BodyResource::class.java) -> processBody(c as Class<BodyResource>)
             c.interfaces.contains(CreatureResource::class.java) -> processCreature(c as Class<CreatureResource>)
             c.interfaces.contains(ConditionResource::class.java) -> processCondition(c as Class<ConditionResource>)
             c.interfaces.contains(DialogueTreeResource::class.java) -> processConversation(c as Class<DialogueTreeResource>)
@@ -102,7 +102,7 @@ private fun processListeners(c: Class<EventListener<*>>) {
 private suspend fun processActivator(c: Class<ActivatorResource>) = ModManager.activators.addAll(c.getDeclaredConstructor().newInstance().values())
 private fun processAIPackageTemplateResource(c: Class<AIPackageTemplateResource>) = ModManager.aiPackages.addAll(c.getDeclaredConstructor().newInstance().values)
 private fun processBehavior(c: Class<BehaviorResource>) = ModManager.behaviors.addAll(c.getDeclaredConstructor().newInstance().values)
-private fun processBody(c: Class<Body2Resource>) = ModManager.bodies.addAll(c.getDeclaredConstructor().newInstance().values)
+private fun processBody(c: Class<BodyResource>) = ModManager.bodies.addAll(c.getDeclaredConstructor().newInstance().values)
 private suspend fun processCreature(c: Class<CreatureResource>) = ModManager.creatures.addAll(c.getDeclaredConstructor().newInstance().values())
 private fun processCondition(c: Class<ConditionResource>) = ModManager.conditions.addAll(c.getDeclaredConstructor().newInstance().values)
 private suspend fun processConversation(c: Class<DialogueTreeResource>) = ModManager.conversations.addAll(c.getDeclaredConstructor().newInstance().values())

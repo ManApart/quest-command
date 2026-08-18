@@ -3,7 +3,7 @@ package core.thing
 import core.GameState
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
-import core.body.Body2
+import core.body.Body
 import core.body.EquipTarget
 import core.events.Event
 import core.properties.ENCUMBRANCE
@@ -40,9 +40,9 @@ data class Thing(
     var location: LocationNode = NOWHERE_NODE,
     val parent: Thing? = null,
     val mind: Mind = Mind(),
-    val body2: Body2 = Body2("None"),
+    val body: Body = Body("None"),
     val equipTargets: List<EquipTarget> = listOf(),
-    val inventory: Inventory = Inventory(name, body2),
+    val inventory: Inventory = Inventory(name, body),
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
@@ -161,11 +161,11 @@ data class Thing(
     fun copy(count: Int): Thing {
         val props = Properties(properties)
         props.values.put(COUNT, count)
-        val body2 = body2.copy()
-        val inventory = Inventory(inventory.name, body2)
+        val body = body.copy()
+        val inventory = Inventory(inventory.name, body)
         val soul = soul.copy()
 
-        return Thing(name, description, location, parent, mind, body2, equipTargets, inventory, props, soul, behaviors, params)
+        return Thing(name, description, location, parent, mind, body, equipTargets, inventory, props, soul, behaviors, params)
     }
 
     fun isWithinRangeOf(creature: Thing?): Boolean {
@@ -220,15 +220,15 @@ data class Thing(
     }
 
     fun getDimensions(): Vector {
-        return body2.getDimensions(properties.values.getDouble(SCALE, 1.0))
+        return body.getDimensions(properties.values.getDouble(SCALE, 1.0))
     }
 
     fun getHeight(): Int {
-        return body2.getHeight(properties.values.getDouble(SCALE, 1.0))
+        return body.getHeight(properties.values.getDouble(SCALE, 1.0))
     }
 
     fun getRange(): Int {
-        return body2.getRange(properties.values.getDouble(SCALE, 1.0))
+        return body.getRange(properties.values.getDouble(SCALE, 1.0))
     }
 
     fun getClarity(): Int {

@@ -19,7 +19,7 @@ fun bodies(initializer: BodiesBuilder.() -> Unit): List<BodyBuilder> {
     return BodiesBuilder().apply(initializer).children
 }
 
-fun List<BodyBuilder>.build(): NameSearchableList<Body2> {
+fun List<BodyBuilder>.build(): NameSearchableList<Body> {
     val builders = associateBy { it.name }
     return builders.values.map {
         try {

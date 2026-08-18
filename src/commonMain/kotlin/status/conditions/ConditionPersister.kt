@@ -1,6 +1,6 @@
 package status.conditions
 
-import core.body.Body2
+import core.body.Body
 import magic.Element
 import status.effects.EffectP
 
@@ -20,7 +20,7 @@ data class ConditionP(
 ){
     constructor(b: Condition): this(b.name, b.element, b.elementStrength, b.effects.map { EffectP(it) }, b.criticalEffects.map { EffectP(it) }, b.permanent, b.age, b.isCritical, b.isFirstApply, b.silent)
 
-    suspend fun parsed(body: Body2): Condition {
+    suspend fun parsed(body: Body): Condition {
         return Condition(name, element, elementStrength, effects.map { it.parsed(body) }, criticalEffects.map { it.parsed(body) }, permanent, age, isCritical, silent = silent)
     }
 }

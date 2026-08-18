@@ -6,7 +6,7 @@ import core.ai.behavior.Behavior
 import core.ai.behavior.BehaviorResource
 import core.ai.packages.AIPackageTemplate
 import core.ai.packages.AIPackageTemplateResource
-import core.body.Body2Resource
+import core.body.BodyResource
 import core.body.BodyBuilder
 import core.body.BodyPartResource
 import core.commands.Command
@@ -61,7 +61,7 @@ object ReflectionTools {
         generateResourcesFile(ActivatorResource::class, ThingBuilder::class)
         generateResourcesFile(AIPackageTemplateResource::class, AIPackageTemplate::class)
         generateResourcesFile(ConditionResource::class, ConditionRecipe::class)
-        generateResourcesFile(Body2Resource::class, BodyBuilder::class)
+        generateResourcesFile(BodyResource::class, BodyBuilder::class)
         generateResourcesFile(BodyPartResource::class, LocationRecipeBuilder::class)
         generateResourcesFile(CreatureResource::class, ThingBuilder::class)
         generateResourcesFile(ItemResource::class, ThingBuilder::class)

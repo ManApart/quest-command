@@ -17,7 +17,7 @@ suspend fun persist(dataObject: Player, path: String) {
     val data = mapper.encodeToString(playerP)
 
     writeSave(path, saveName, data)
-    core.body.persist(dataObject.thing.body2, prefix)
+    core.body.persist(dataObject.thing.body, prefix)
 }
 
 @kotlinx.serialization.Serializable

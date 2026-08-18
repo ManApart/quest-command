@@ -1,5 +1,5 @@
 package core.body
 
-interface Body2Resource {
+interface BodysCollection {
     val values: List<BodyBuilder>
 }

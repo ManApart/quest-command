@@ -37,17 +37,17 @@ class BodyBuilder(internal val name: String, private var material: String = DEFA
         parts.add(BodyPartBuilder(name).apply(initializer))
     }
 
-    fun build(): Body2 {
+    fun build(): Body {
         val mat = MaterialManager.getMaterial(material)
         val bodyParts = parts.map { it.build(mat) }.takeIf { it.isNotEmpty() } ?: listOf(BodyPart(name, mat))
-        return Body2(name, dimensions, bodyParts.toNameSearchableList())
+        return Body(name, dimensions, bodyParts.toNameSearchableList())
     }
 }
 
-fun body(name: String, vararg parts: String): Body2 {
+fun body(name: String, vararg parts: String): Body {
     return BodyBuilder(name).apply { parts(parts.toList()) }.build()
 }
 
-fun body(name: String, initializer: BodyBuilder.() -> Unit): Body2 {
+fun body(name: String, initializer: BodyBuilder.() -> Unit): Body {
     return BodyBuilder(name).apply(initializer).build()
 }

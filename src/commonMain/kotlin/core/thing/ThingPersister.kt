@@ -23,7 +23,7 @@ suspend fun persistToDisk(dataObject: Thing, path: String) {
     writeSave(path, saveName, data)
 
 //    inventory.persist(dataObject.inventory, clean(prefix, "inventory"))
-    core.body.persist(dataObject.body2, prefix)
+    core.body.persist(dataObject.body, prefix)
 }
 
 suspend fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
@@ -48,7 +48,7 @@ data class ThingP(
     internal constructor(b: Thing) : this(
         b.name,
         MindP(b.mind),
-        b.body2.name,
+        b.body.name,
         b.behaviors.map { BehaviorRecipe(it.name, it.params) },
         b.description,
         b.location.network.name,

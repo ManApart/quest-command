@@ -60,7 +60,7 @@ private fun parseThing(name: String, things: NameSearchableList<Thing>): Thing? 
 
 fun parseBodyParts(thing: Thing, names: List<String>): List<BodyPart> {
     if (names.size == 1 && (names.first().lowercase() == "all" || names.first().lowercase() == "body")) {
-        return thing.body2.parts
+        return thing.body.parts
     }
-    return thing.body2.parts.getAny(names)
+    return thing.body.parts.getAny(names)
 }

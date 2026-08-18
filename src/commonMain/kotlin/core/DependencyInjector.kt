@@ -6,8 +6,8 @@ import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsGenerated
 import core.ai.packages.AIPackageTemplatesCollection
 import core.ai.packages.AIPackageTemplatesGenerated
-import core.body.Body2sCollection
-import core.body.Body2sGenerated
+import core.body.BodysCollection
+import core.body.BodysGenerated
 import core.commands.CommandsCollection
 import core.commands.CommandsGenerated
 import core.events.EventListenerMapCollection
@@ -76,7 +76,7 @@ object DependencyInjector {
             ActivatorsCollection::class to ActivatorsGenerated(),
             AIPackageTemplatesCollection::class to AIPackageTemplatesGenerated(),
             BehaviorsCollection::class to BehaviorsGenerated(),
-            Body2sCollection::class to Body2sGenerated(),
+            BodysCollection::class to BodysGenerated(),
             CreaturesCollection::class to CreaturesGenerated(),
             ConditionsCollection::class to ConditionsGenerated(),
             CommandsCollection::class to CommandsGenerated(),

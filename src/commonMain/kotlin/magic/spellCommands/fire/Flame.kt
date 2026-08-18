@@ -66,7 +66,7 @@ class Flame : SpellCommand() {
             val levelRequirement = damageAmount / 2
 
             executeWithWarns(source, FIRE_MAGIC, levelRequirement, totalCost, things) {
-                EventManager.postEvent(postSpell(source.thing, ThingAim(source.thing, source.body2.parts),  damageAmount / 3, 0, levelRequirement, cost))
+                EventManager.postEvent(postSpell(source.thing, ThingAim(source.thing, source.body.parts),  damageAmount / 3, 0, levelRequirement, cost))
 
                 //Only the first effect has a cast time, the rest are applied immediately after the first one
                 things.forEach { thing ->

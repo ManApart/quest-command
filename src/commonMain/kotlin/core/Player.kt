@@ -23,7 +23,7 @@ data class Player(
     }
 
     val soul get() = thing.soul
-    val body2 get() = thing.body2
+    val body get() = thing.body
     val properties get() = thing.properties
     val mind get() = thing.mind
     val ai get() = thing.mind.ai
@@ -34,7 +34,7 @@ data class Player(
     suspend fun getPerceivedThings() = location.getLocation().getThings(perceivedBy = thing)
     suspend fun getPerceivedThingNames() = getPerceivedThings().map { it.name }
     suspend fun getPerceivedParts(): List<BodyPart> {
-        return getPerceivedThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body2.parts }.toSet().toList()
+        return getPerceivedThings().toList().filter { thing.perceives(it) }.flatMap { thing -> thing.body.parts }.toSet().toList()
     }
 
     suspend fun getPerceivedPartNames() = getPerceivedParts().toList().map { it.name }.toSet().toList()

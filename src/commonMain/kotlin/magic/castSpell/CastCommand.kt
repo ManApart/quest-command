@@ -98,7 +98,7 @@ class CastCommand : Command() {
 
 fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<BodyPart> {
     val parts = thingAim.bodyPartThings.ifEmpty {
-        thingAim.thing.body2.parts
+        thingAim.thing.body.parts
     }
 
     return if (maxParts > 0) {
@@ -111,6 +111,6 @@ fun getThingedPartsOrAll(thingAim: ThingAim, maxParts: Int = -1): List<BodyPart>
 
 fun getThingedPartsOrCorePart(thingAim: ThingAim): List<BodyPart> {
     return thingAim.bodyPartThings.ifEmpty {
-        listOfNotNull(thingAim.thing.body2.core)
+        listOfNotNull(thingAim.thing.body.core)
     }
 }

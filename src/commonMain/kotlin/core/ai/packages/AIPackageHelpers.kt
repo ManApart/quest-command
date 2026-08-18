@@ -21,13 +21,13 @@ suspend fun Thing.canReachGoal(howToUse: String): Boolean {
 }
 
 suspend fun clawAttack(target: Thing, creature: Thing): AttackEvent {
-    val enemyBody = target.body2
+    val enemyBody = target.body
     val possibleParts = listOfNotNull(
         enemyBody.parts.getOrNull(RIGHT_FOOT),
         enemyBody.parts.getOrNull(LEFT_FOOT),
     )
     val thingPart = listOf(RandomManager.getRandom(possibleParts))
-    val partToAttackWith = creature.body2.parts.getOrNull("Small Claws") ?: creature.body2.core
+    val partToAttackWith = creature.body.parts.getOrNull("Small Claws") ?: creature.body.core
     return startAttack(creature, partToAttackWith, ThingAim(GameState.player.thing, thingPart), DamageType.SLASH)
 }
 

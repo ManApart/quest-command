@@ -10,9 +10,9 @@ import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.roundToInt
 
-val NONE = Body2()
+val NONE = Body()
 
-data class Body2(
+data class Body(
     override val name: String = "None",
     private val dimensions: Vector = NO_VECTOR,
     val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),

@@ -11,7 +11,7 @@ import traveling.location.location.Location
 class Block : EventListener<BlockEvent>() {
 
     override suspend fun complete(event: BlockEvent) {
-        val blockHelper = event.creature.body2.blockHelper
+        val blockHelper = event.creature.body.blockHelper
         blockHelper.shield = getShield(event.partThatWillShield)
         blockHelper.blockBodyPart = event.partThatWillShield
         blockHelper.blockedBodyParts.addAll(event.partsThatWillBeShielded)

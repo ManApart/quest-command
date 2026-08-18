@@ -3,7 +3,7 @@ package building
 import conversation.dsl.DialogueTree
 import core.ai.behavior.Behavior
 import core.ai.packages.AIPackageTemplate
-import core.body.Body2
+import core.body.Body
 import core.body.BodyBuilder
 import core.events.EventListener
 import core.thing.ThingBuilder

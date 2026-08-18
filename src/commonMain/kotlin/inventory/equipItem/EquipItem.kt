@@ -12,7 +12,7 @@ class EquipItem : EventListener<EquipItemEvent>() {
         if (!event.item.isWithinRangeOf(event.creature)) {
             event.creature.display{event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to equip ${event.item}."}
         } else {
-            val body = event.creature.body2
+            val body = event.creature.body
             val target = if (event.target != null) {
                 body.equip(event.item, event.target)
             } else {

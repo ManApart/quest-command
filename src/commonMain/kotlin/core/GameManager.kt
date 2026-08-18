@@ -126,7 +126,7 @@ object GameManager {
 
     suspend fun giveStartingItems(player: Thing) {
         val inventory = player.inventory
-        val body = player.body2
+        val body = player.body
         listOf("Brown Pants", "Old Shirt", "Rusty Dagger", "Small Pouch").forEach {
             val item = ItemManager.getItem(it)
             player.add(item)

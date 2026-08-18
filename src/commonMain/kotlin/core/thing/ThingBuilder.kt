@@ -52,7 +52,7 @@ class ThingBuilder(internal val name: String) {
     private var mind: Mind? = null
     private var mindP: MindP? = null
     private var mindInitializer: Mind.() -> Unit = {}
-    private var body2: Body2? = null
+    private var body: Body? = null
     private var bodyMaterial: String = DEFAULT_MATERIAL.name
     private var bodyName: String? = null
     private var bodyBuilder: (BodyBuilder.() -> Unit)? = null
@@ -70,13 +70,13 @@ class ThingBuilder(internal val name: String) {
         val desc = (description ?: basesR.firstNotNullOfOrNull { it.description } ?: "").apply(params)
 
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
-        val possibleBody2 = body2 ?: basesR.firstNotNullOfOrNull { it.body2 }
+        val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
         val bodyMat = (listOf(bodyMaterial) + basesR.map { it.bodyMaterial }).firstOrNull { it != DEFAULT_MATERIAL.name } ?: DEFAULT_MATERIAL.name
-        val body2 = discernBody2(possibleBody2, possibleBodyName, bodyBuilder, bodyMat)
+        val body = discernBody(possibleBody, possibleBodyName, bodyBuilder, bodyMat)
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
-        val inventory = Inventory(name, body2)
+        val inventory = Inventory(name, body)
         inventory.addAllByName(allItems)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
@@ -96,7 +96,7 @@ class ThingBuilder(internal val name: String) {
             params = params,
             soul = actualSoul,
             behaviors = allBehaviors,
-            body2 = body2,
+            body = body,
             equipTargets = equipTargets,
             inventory = inventory,
             properties = props,
@@ -190,8 +190,8 @@ class ThingBuilder(internal val name: String) {
         this.mindInitializer = initializer
     }
 
-    fun body(body: Body2) {
-        this.body2 = body
+    fun body(body: Body) {
+        this.body = body
     }
 
     fun body(name: String, initializer: BodyBuilder.() -> Unit = {}) {
@@ -254,7 +254,7 @@ class ThingBuilder(internal val name: String) {
             location(t.location)
             t.parent?.let { parent(t.parent) }
             mind(Mind(t.mind.ai.copy(), CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
-            body(t.body2.copy())
+            body(t.body.copy())
             t.equipTargets.forEach { equipTo(it) }
             item(t.inventory.getAllItems().map { it.name })
             props(t.properties)
@@ -265,11 +265,11 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    private fun discernBody2(possibleBody: Body2?, possibleBodyName: String?, builder: (BodyBuilder.() -> Unit)?, bodyMat: String): Body2 {
+    private fun discernBody(possibleBody: Body?, possibleBodyName: String?, builder: (BodyBuilder.() -> Unit)?, bodyMat: String): Body {
         return when {
             possibleBody != null -> possibleBody
             possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName, bodyMat).apply(builder).build()
-            else -> BodyManager.getBody2(possibleBodyName!!)
+            else -> BodyManager.getBody(possibleBodyName!!)
         }
     }
 

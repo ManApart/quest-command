@@ -13,9 +13,9 @@ object BodyManager {
         bodies2 = createBodies2()
     }
 
-    private fun createBodies2(): NameSearchableList<Body2> {
+    private fun createBodies2(): NameSearchableList<Body> {
         startupLog("Creating Bodies.")
-        return DependencyInjector.getImplementation(Body2sCollection::class).values
+        return DependencyInjector.getImplementation(BodysCollection::class).values
             .map { it.build() }.toNameSearchableList()
     }
 
@@ -23,5 +23,5 @@ object BodyManager {
         return bodies2.firstOrNull { it.name.lowercase() == name.lowercase() } != null
     }
 
-    fun getBody2(name: String) = bodies2.get(name).copy()
+    fun getBody(name: String) = bodies2.get(name).copy()
 }

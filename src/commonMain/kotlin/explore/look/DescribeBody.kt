@@ -9,7 +9,7 @@ import crafting.material.DEFAULT_MATERIAL
 import traveling.position.NO_VECTOR
 
 suspend fun describeBody(source: Player, thing: Thing) {
-    val body = thing.body2
+    val body = thing.body
     if (body.name == NONE.name) {
         val materialString = if (body.core.material.name != DEFAULT_MATERIAL.name) " It is made of ${body.core.material.name}." else ""
         source.displayToMe("This has no body.$materialString")
@@ -23,6 +23,6 @@ suspend fun describeBody(source: Player, thing: Thing) {
 suspend fun describeBodyDetailed(source: Player, thing: Thing) {
     describeBody(source, thing)
     if (thing.getDimensions() != NO_VECTOR) {
-        source.displayToMe("${thing.body2.name} body has dimensions: ${thing.getDimensions()}")
+        source.displayToMe("${thing.body.name} body has dimensions: ${thing.getDimensions()}")
     }
 }

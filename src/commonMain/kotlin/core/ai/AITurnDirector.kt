@@ -16,7 +16,7 @@ suspend fun directAI(): Boolean {
     val creatureAIs = getCreatureAIs()
 
     creatureAIs.filter { !it.takenTurn && it.actions.isEmpty() }.forEach {
-        it.creature.body2.blockHelper.resetStance()
+        it.creature.body.blockHelper.resetStance()
         it.chooseAction()
     }
 

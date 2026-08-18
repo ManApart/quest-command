@@ -30,8 +30,8 @@ class BlockCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() -> source.body2.parts.map { it.name }
-            args.last() == "with" -> listOf("right", "left") + source.body2.getEquipped().map { it.name }
+            args.isEmpty() -> source.body.parts.map { it.name }
+            args.last() == "with" -> listOf("right", "left") + source.body.getEquipped().map { it.name }
             else -> listOf("with")
         }
     }

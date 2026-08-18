@@ -1,6 +1,6 @@
 package inventory
 
-import core.body.Body2
+import core.body.Body
 import core.properties.Properties
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
@@ -11,15 +11,15 @@ import core.utility.toNameSearchableList
 import traveling.location.network.NOWHERE_NODE
 
 fun inventory(name: String = "Inventory"): Inventory {
-    return Inventory(name, Body2(name))
+    return Inventory(name, Body(name))
 }
 
 fun inventory(name: String, items: List<Thing>): Inventory {
-    return Inventory(name, Body2(), items.toMutableList())
+    return Inventory(name, Body(), items.toMutableList())
 }
 
-data class Inventory(val name: String = "Inventory", private val body: Body2, private val items: MutableList<Thing> = mutableListOf()) {
-    constructor(name: String, items: List<Thing>) : this(name, Body2(), items.toMutableList())
+data class Inventory(val name: String = "Inventory", private val body: Body, private val items: MutableList<Thing> = mutableListOf()) {
+    constructor(name: String, items: List<Thing>) : this(name, Body(), items.toMutableList())
 
     override fun toString(): String {
         return name
@@ -132,8 +132,8 @@ private fun Thing.isOpenContainer() = with(properties.tags) {
 }
 
 //
-//suspend fun createInventoryBody(name: String = "Inventory"): Body2 {
-//    return Body2(name).also {
+//suspend fun createInventoryBody(name: String = "Inventory"): Body {
+//    return Body(name).also {
 //        with(it.getRootPart().properties.tags) {
 //            add(CONTAINER)
 //            add(OPEN)
