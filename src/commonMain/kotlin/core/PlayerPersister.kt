@@ -1,6 +1,7 @@
 package core
 
 import core.thing.ThingP
+import core.thing.thing
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import system.mapper
@@ -16,7 +17,7 @@ suspend fun persist(dataObject: Player, path: String) {
     val data = mapper.encodeToString(playerP)
 
     writeSave(path, saveName, data)
-    playerP.persistReferences(path)
+    core.body.persist(dataObject.thing.body2, prefix)
 }
 
 @kotlinx.serialization.Serializable
@@ -27,10 +28,5 @@ data class PlayerP(
 
     suspend fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
         return Player(playerName, thing.parsed(path, parentLocation))
-    }
-
-    suspend fun persistReferences(path: String) {
-        val prefix = clean(path, thing.name)
-        thing.persistReferences(prefix)
     }
 }

@@ -31,6 +31,9 @@ data class Body2(
     fun getDimensions(scale: Double): Vector {
         return (dimensions * scale)
     }
+    fun getDimensionsUnscaled(): Vector {
+        return dimensions
+    }
 
     fun getHeight(scale: Double): Int {
         return (dimensions.z * scale).roundToInt()

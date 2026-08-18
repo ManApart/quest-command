@@ -1,6 +1,7 @@
 package status.effects
 
-import core.body.Body
+import core.body.Body2
+
 
 @kotlinx.serialization.Serializable
 data class EffectP(
@@ -11,9 +12,7 @@ data class EffectP(
     ){
     constructor(b: Effect): this(b.base, b.amount, b.duration, b.bodyPartTargets.map { it.name })
 
-    //TODO
-    suspend fun parsed(body: Body): Effect {
-        return Effect(base, amount, duration, emptyList())
-//        return Effect(base, amount, duration, bodyPartTargets.map { body.getPart(it) })
+    fun parsed(body: Body2): Effect {
+        return Effect(base, amount, duration, bodyPartTargets.map { body.parts.get(it) })
     }
 }

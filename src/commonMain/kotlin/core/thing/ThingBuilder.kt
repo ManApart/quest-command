@@ -34,6 +34,8 @@ import inventory.Inventory
 import status.Soul
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
+import traveling.position.NO_VECTOR
+import traveling.position.Vector
 
 class ThingBuilder(internal val name: String) {
     private var propsBuilder = PropsBuilder()
@@ -56,6 +58,7 @@ class ThingBuilder(internal val name: String) {
     private var bodyBuilder: (BodyBuilder.() -> Unit)? = null
     private var location: LocationNode? = null
     private var parent: Thing? = null
+    private var position: Vector = NO_VECTOR
 
     suspend fun build(additionalBases: List<ThingBuilder> = listOf(), tagsToApply: List<String> = listOf()): Thing {
         val bases = bases + additionalBases
@@ -82,6 +85,7 @@ class ThingBuilder(internal val name: String) {
         calcItemTargets(props)
         val equipTargets = (equipTargets + bases.flatMap { it.equipTargets }).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
+        val pos = position.takeIf { it != NO_VECTOR } ?: basesR.firstNotNullOfOrNull { b -> b.position.takeIf { it != NO_VECTOR } } ?: NO_VECTOR
 
         return Thing(
             name,
@@ -96,7 +100,7 @@ class ThingBuilder(internal val name: String) {
             equipTargets = equipTargets,
             inventory = inventory,
             properties = props,
-        )
+        ).apply { position = pos }
     }
 
     private fun calcItemTargets(props: Properties) {
@@ -186,11 +190,6 @@ class ThingBuilder(internal val name: String) {
         this.mindInitializer = initializer
     }
 
-//    fun body(body: String, initializer: BodyCustomizer.() -> Unit = {}) {
-//        this.bodyName = body
-//        this.bodyCustomizer = BodyCustomizer().apply(initializer)
-//    }
-
     fun body(body: Body2) {
         this.body2 = body
     }
@@ -213,6 +212,10 @@ class ThingBuilder(internal val name: String) {
 
     fun parent(parent: Thing) {
         this.parent = parent
+    }
+
+    fun position(pos: Vector) {
+        this.position = pos
     }
 
     fun equipToHoldOneHand() = equipToEither(GRIP, RIGHT_HAND, LEFT_HAND)

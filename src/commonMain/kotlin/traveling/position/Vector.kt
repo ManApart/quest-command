@@ -1,6 +1,8 @@
 package traveling.position
 
 import core.utility.toDegrees
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import traveling.direction.Direction
 import kotlin.math.*
 import kotlin.math.abs
@@ -12,6 +14,7 @@ X = East/West
 Y = North/South
 Z = Height
  */
+@Serializable
 class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     /**
      * The direction this vector is relative to 0.0.0
