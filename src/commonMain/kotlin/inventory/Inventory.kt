@@ -1,6 +1,7 @@
 package inventory
 
 import core.body.Body
+import core.body.body
 import core.properties.Properties
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
@@ -10,19 +11,11 @@ import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.network.NOWHERE_NODE
 
-fun inventory(name: String = "Inventory"): Inventory {
-    return Inventory(name, Body(name))
-}
-
-fun inventory(name: String, items: List<Thing>): Inventory {
-    return Inventory(name, Body(), items.toMutableList())
-}
-
-data class Inventory(val name: String = "Inventory", private val body: Body, private val items: MutableList<Thing> = mutableListOf()) {
-    constructor(name: String, items: List<Thing>) : this(name, Body(), items.toMutableList())
+class Inventory(items: List<Thing> = emptyList()) {
+    private val items: MutableList<Thing> = items.toMutableList()
 
     override fun toString(): String {
-        return name
+        return "${items.size} items"
     }
 
     fun exists(item: Thing): Boolean {
@@ -53,26 +46,26 @@ data class Inventory(val name: String = "Inventory", private val body: Body, pri
         return items.toList()
     }
 
-    suspend fun addAllByName(items: List<String>) {
+    suspend fun addAllByName(items: List<String>, body: Body) {
         if (items.isNotEmpty()) {
-            addAll(ItemManager.getItems(items), 0)
+            addAll(ItemManager.getItems(items), 0, body)
         }
     }
 
-    fun addAll(items: List<Thing>, capacity: Int) {
-        items.forEach { add(it, capacity) }
+    fun addAll(items: List<Thing>, capacity: Int, body: Body) {
+        items.forEach { add(it, capacity, body) }
     }
 
-    fun add(item: Thing, capacity: Int) {
-        if (!attemptToAdd(item, capacity)) {
-            addStackOrSingle(item)
+    fun add(item: Thing, capacity: Int, body: Body) {
+        if (!attemptToAdd(item, capacity, body)) {
+            addStackOrSingle(item, body)
         }
     }
 
     //Eventually add count of item
-    fun attemptToAdd(item: Thing, capacity: Int): Boolean {
+    fun attemptToAdd(item: Thing, capacity: Int, body: Body): Boolean {
         if (rootHasRoomFor(item, capacity)) {
-            addStackOrSingle(item)
+            addStackOrSingle(item, body)
             return true
         }
         return getItems().filter { it.isOpenContainer() }.any { it.attemptToAdd(item) }
@@ -83,7 +76,7 @@ data class Inventory(val name: String = "Inventory", private val body: Body, pri
         return item.getWeight() + used <= capacity
     }
 
-    private fun addStackOrSingle(item: Thing) {
+    private fun addStackOrSingle(item: Thing, body: Body) {
         val match = items.toNameSearchableList().getOrNull(item.name)
         if (match != null && item.isStackable(match)) {
             match.properties.incCount(item.properties.getCount())
@@ -94,15 +87,15 @@ data class Inventory(val name: String = "Inventory", private val body: Body, pri
         }
     }
 
-    fun remove(item: Thing, count: Int = 1): Int {
+    fun remove(item: Thing, count: Int = 1, body: Body): Int {
         return if (items.contains(item)) {
-            removeStackOrSingle(item, count)
+            removeStackOrSingle(item, count, body)
         } else {
-            items.firstNotNullOfOrNull { it.inventory.remove(item, count).takeIf { removed -> removed != 0 } } ?: 0
+            items.firstNotNullOfOrNull { it.inventory.remove(item, count, body).takeIf { removed -> removed != 0 } } ?: 0
         }
     }
 
-    private fun removeStackOrSingle(item: Thing, count: Int): Int {
+    private fun removeStackOrSingle(item: Thing, count: Int, body: Body): Int {
         val currentCount = item.properties.getCount()
         val result = currentCount - count
 
@@ -130,16 +123,3 @@ data class Inventory(val name: String = "Inventory", private val body: Body, pri
 private fun Thing.isOpenContainer() = with(properties.tags) {
     has(CONTAINER) && has(OPEN)
 }
-
-//
-//suspend fun createInventoryBody(name: String = "Inventory"): Body {
-//    return Body(name).also {
-//        with(it.getRootPart().properties.tags) {
-//            add(CONTAINER)
-//            add(OPEN)
-//        }
-//        if (capacity != null) {
-//            it.getRootPart().properties.values.put(SIZE, capacity)
-//        }
-//    }
-//}

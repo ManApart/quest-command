@@ -27,7 +27,7 @@ class Craft : EventListener<CraftRecipeEvent>() {
                 val ingredients = event.recipe.getUsedIngredients(sourceT, sourceT.inventory.getAllItems(), event.tool)
                 val usedIngredientList = ingredients.map { it.value.second }
                 val results = event.recipe.getResults(event.source.thing, event.tool, ingredients)
-                removeIngredients(sourceT.inventory, usedIngredientList)
+                removeIngredients(sourceT, usedIngredientList)
                 addResults(results, sourceT)
                 EventManager.postEvent(DiscoverRecipeEvent(event.source, event.recipe))
 //            TODO - Add XP
@@ -41,9 +41,9 @@ class Craft : EventListener<CraftRecipeEvent>() {
         }
     }
 
-    private fun removeIngredients(inventory: Inventory, ingredients: List<Thing>) {
+    private fun removeIngredients(from: Thing, ingredients: List<Thing>) {
         ingredients.forEach {
-            inventory.remove(it)
+            from.remove(it)
         }
     }
 

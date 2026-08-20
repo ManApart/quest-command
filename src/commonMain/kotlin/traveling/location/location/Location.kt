@@ -164,7 +164,7 @@ data class Location(
 
     fun removeThingIncludingPlayerInventory(source: Thing, thing: Thing) {
         if (source.inventory.exists(thing)) {
-            source.inventory.remove(thing)
+            source.remove(thing)
         } else {
             removeThing(thing)
         }

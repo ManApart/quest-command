@@ -41,11 +41,11 @@ class TransferItem : EventListener<TransferItemEvent>() {
         }
     }
 
-    private suspend fun removeFromSource(source: Thing, item: Thing) {
+    private fun removeFromSource(source: Thing, item: Thing) {
         if (item.properties.getCount() > 1) {
             item.properties.incCount(-1)
         } else {
-            source.inventory.remove(item)
+            source.remove(item)
         }
     }
 

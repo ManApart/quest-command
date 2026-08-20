@@ -22,7 +22,7 @@ class PlaceItem : EventListener<PlaceItemEvent>() {
         if (item.properties.getCount() > 1) {
             item.properties.incCount(-1)
         } else {
-            source.inventory.remove(item)
+            source.remove(item)
         }
         item.location = source.location
         item.position = position

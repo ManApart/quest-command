@@ -42,7 +42,7 @@ data class Thing(
     val mind: Mind = Mind(),
     val body: Body = Body("None"),
     val equipTargets: List<EquipTarget> = listOf(),
-    val inventory: Inventory = Inventory(name, body),
+    val inventory: Inventory = Inventory(),
     val properties: Properties = Properties(),
     val soul: Soul = Soul(),
     val behaviors: List<Behavior<*>> = listOf(),
@@ -118,30 +118,9 @@ data class Thing(
         return 1 - getEncumbrance()
     }
 
-//    suspend fun canEquipTo(body: Body): Boolean {
-//        return equipSlots.any { slot ->
-//            body.canEquip(slot)
-//        }
-//    }
-//
-//    suspend fun getEquippedSlot(body: Body): Slot {
-//        return equipSlots.first { it.itemIsEquipped(this, body) }
-//    }
-//
-//    suspend fun findSlot(body: Body, attachPoint: String): Slot? {
-//        return equipSlots.firstOrNull { it.contains(attachPoint) && body.canEquip(it) }
-//    }
-//
-//    suspend fun findSlotFromPart(body: Body, partName: String): Slot? {
-//        return body.getPartOrNull(partName)?.let { part ->
-//            equipSlots.firstOrNull { slot ->
-//                slot.attachPoints.all { part.hasAttachPoint(it) }
-//            }
-//        }
-//    }
-
-    fun add(item: Thing) = inventory.add(item, getTotalCapacity())
-    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getTotalCapacity())
+    fun add(item: Thing) = inventory.add(item, getTotalCapacity(), body)
+    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getTotalCapacity(), body)
+    fun remove(item: Thing, count: Int = 1) = inventory.remove(item, count, body)
 
     fun getDamage(): Int {
         val chop = properties.values.getInt("chopDamage", 0)
@@ -162,7 +141,7 @@ data class Thing(
         val props = Properties(properties)
         props.values.put(COUNT, count)
         val body = body.copy()
-        val inventory = Inventory(inventory.name, body)
+        val inventory = Inventory()
         val soul = soul.copy()
 
         return Thing(name, description, location, parent, mind, body, equipTargets, inventory, props, soul, behaviors, params)

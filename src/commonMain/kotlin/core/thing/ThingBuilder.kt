@@ -76,8 +76,8 @@ class ThingBuilder(internal val name: String) {
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
-        val inventory = Inventory(name, body)
-        inventory.addAllByName(allItems)
+        val inventory = Inventory()
+        inventory.addAllByName(allItems, body)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
