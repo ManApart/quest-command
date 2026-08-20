@@ -59,6 +59,7 @@ class ThingBuilder(internal val name: String) {
     private var location: LocationNode? = null
     private var parent: Thing? = null
     private var position: Vector = NO_VECTOR
+    private var inventory = Inventory()
 
     suspend fun build(additionalBases: List<ThingBuilder> = listOf(), tagsToApply: List<String> = listOf()): Thing {
         val bases = bases + additionalBases
@@ -76,7 +77,6 @@ class ThingBuilder(internal val name: String) {
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val allItems = itemNames + bases.flatMap { it.itemNames }
-        val inventory = Inventory()
         inventory.addAllByName(allItems, body)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
@@ -148,6 +148,10 @@ class ThingBuilder(internal val name: String) {
     fun soul(key: String, value: Int) = soulBuilder.entry(key, value)
     fun soul(soul: Soul) {
         this.soulBuilt = soul
+    }
+
+    fun inventory(inventory: Inventory){
+        this.inventory = inventory
     }
 
     fun description(desc: String) {

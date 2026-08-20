@@ -2,6 +2,8 @@ package core.body
 
 import core.utility.toNameSearchableList
 import crafting.material.MaterialManager
+import inventory.Inventory
+import inventory.ViewEquipped
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import system.mapper
@@ -22,24 +24,30 @@ suspend fun persist(dataObject: Body, path: String) {
 }
 
 
-suspend fun load(path: String, name: String): Body {
+suspend fun load(path: String, name: String, inventory: Inventory): Body {
     if (name == NONE.name) return NONE
 
     val filePath = cleanPathToFile(".json", path, name)
     val json: BodyP? = loadFromPath(filePath)
-    return json?.parsed() ?: BodyManager.getBody(name)
+    return json?.parsed(inventory) ?: BodyManager.getBody(name)
 }
+
+private typealias ItemName = String
 
 @Serializable
 data class BodyP(
     val name: String,
     val dimensions: Vector = NO_VECTOR,
     val parts: List<BodyPartP> = emptyList(),
+    val equipped: Map<ItemName, EquipTarget> = emptyMap(),
 ) {
+    //TODO - persist equipped
     constructor(b: Body) : this(b.name, b.getDimensionsUnscaled(), b.parts.map { BodyPartP(it) })
 
-    fun parsed(): Body {
-        return Body(name, dimensions, parts.map { it.parsed() }.toNameSearchableList())
+    fun parsed(inventory: Inventory): Body {
+        //TODO also equip all items per the persisted equip list
+        throw NotImplementedError()
+//        return Body(name, dimensions, parts.map { it.parsed() }.toNameSearchableList())
     }
 }
 

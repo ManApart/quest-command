@@ -3,6 +3,8 @@ package core.thing
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.MindP
 import core.properties.PropertiesP
+import inventory.Inventory
+import inventory.persist
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import status.SoulP
@@ -15,22 +17,22 @@ import traveling.location.Network
 import traveling.location.location.LocationManager
 import traveling.position.Vector
 
-//TODO - persist inventory
-suspend fun persistToDisk(dataObject: Thing, path: String) {
+suspend fun persist(dataObject: Thing, path: String) {
     val prefix = clean(path, dataObject.name)
     val saveName = cleanPathToFile("json", prefix)
     val data = mapper.encodeToString(ThingP(dataObject))
     writeSave(path, saveName, data)
 
-//    inventory.persist(dataObject.inventory, clean(prefix, "inventory"))
+    persist(dataObject.inventory, clean(prefix, "inventory"))
     core.body.persist(dataObject.body, prefix)
 }
 
-suspend fun loadFromDisk(path: String, parentLocation: Network? = null): Thing {
+suspend fun load(path: String, parentLocation: Network? = null): Thing {
+    //TODO - need to understand paths
+    val inventory = inventory.load(clean(path, "inventory"))
     val json: ThingP = loadFromPath(path)!!
-    return json.parsed(path, parentLocation)
+    return json.parsed(path, parentLocation, inventory)
 }
-
 
 @Serializable
 data class ThingP(
@@ -58,12 +60,12 @@ data class ThingP(
         PropertiesP(b.properties)
     )
 
-    suspend fun parsed(path: String, parentLocation: Network? = null): Thing {
+    suspend fun parsed(path: String, parentLocation: Network? = null, inventory: Inventory): Thing {
         val folderPath = path.removeSuffix(".json")
 
         val location = parentLocation?.getLocationNodeOrNull(locationName)
             ?: LocationManager.getNetwork(networkName).getLocationNode(locationName)
-        val body = core.body.load(folderPath, bodyName)
+        val body = core.body.load(folderPath, bodyName, inventory)
 
         return thing(name) {
             param(mutableMapOf<String, String>())
@@ -73,6 +75,7 @@ data class ThingP(
             position(position)
             description(description)
             soul(soul.parsed(body))
+            inventory(inventory)
             props(properties.parsed())
         }.build().also {
             it.location = location

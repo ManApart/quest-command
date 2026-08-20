@@ -31,6 +31,7 @@ data class Body(
     fun getDimensions(scale: Double): Vector {
         return (dimensions * scale)
     }
+
     fun getDimensionsUnscaled(): Vector {
         return dimensions
     }

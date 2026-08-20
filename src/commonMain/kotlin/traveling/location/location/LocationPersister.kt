@@ -4,10 +4,8 @@ import core.properties.PropertiesP
 import core.thing.Thing
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
-import crafting.material.MaterialManager
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import system.mapper
 import system.persistance.*
 import traveling.location.network.LocationNode
@@ -18,10 +16,10 @@ suspend fun persist(dataObject: Location, path: String, ignoredThings: List<Thin
     val locationJson = mapper.encodeToString(LocationP(dataObject))
     writeSave(path, saveName, locationJson)
 
-    dataObject.getActivators().forEach { core.thing.persistToDisk(it, clean(prefix, "activators")) }
-    dataObject.getCreatures().filter { !it.isPlayer() }.forEach { core.thing.persistToDisk(it, clean(prefix, "creatures")) }
-    dataObject.getItems().filter { !ignoredThings.contains(it) }.forEach { core.thing.persistToDisk(it, clean(prefix, "items")) }
-    dataObject.getOther().forEach { core.thing.persistToDisk(it, clean(prefix, "other")) }
+    dataObject.getActivators().forEach { core.thing.persist(it, clean(prefix, "activators")) }
+    dataObject.getCreatures().filter { !it.isPlayer() }.forEach { core.thing.persist(it, clean(prefix, "creatures")) }
+    dataObject.getItems().filter { !ignoredThings.contains(it) }.forEach { core.thing.persist(it, clean(prefix, "items")) }
+    dataObject.getOther().forEach { core.thing.persist(it, clean(prefix, "other")) }
     //Persist weather (conditional string)
     //Persist last weather change
 
@@ -33,7 +31,7 @@ suspend fun load(path: String, locationNode: LocationNode): Location {
 }
 
 private suspend fun getThings(folderPath: String, folderName: String, parent: LocationNode): NameSearchableList<Thing> {
-    return getFiles(clean(folderPath, folderName)).map { core.thing.loadFromDisk(it.path, parent.network) }.toNameSearchableList()
+    return getFiles(clean(folderPath, folderName)).map { core.thing.load(it.path, parent.network) }.toNameSearchableList()
 }
 
 

@@ -1,9 +1,7 @@
 package core
 
 import core.thing.ThingP
-import core.thing.thing
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import system.mapper
 import system.persistance.clean
 import system.persistance.cleanPathToFile
@@ -27,6 +25,6 @@ data class PlayerP(
     constructor(b: Player) : this(ThingP(b.thing))
 
     suspend fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
-        return Player(playerName, thing.parsed(path, parentLocation))
+        return Player(playerName, thing.parsed(path, parentLocation, inventory))
     }
 }
