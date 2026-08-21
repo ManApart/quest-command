@@ -18,7 +18,7 @@ class EquipItem : EventListener<EquipItemEvent>() {
             } else {
                 body.equip(event.item)
             }
-            EventManager.postEvent(ItemEquippedEvent(event.creature, event.item, target))
+            EventManager.postEvent(ItemEquippedEvent(event.creature, event.item, target.toEquipTarget()))
             event.creature.addSoundEffect("Equipping", "the tightening of straps and muscle")
         }
     }

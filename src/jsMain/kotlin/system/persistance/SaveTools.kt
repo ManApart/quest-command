@@ -13,6 +13,7 @@ import core.properties.Properties
 import core.properties.PropertiesP
 import getForage
 import getForageKeys
+import inventory.Inventory
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import setForages
@@ -133,7 +134,8 @@ actual suspend fun loadGame(gameName: String) {
 actual suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    return json.parsed(playerName, path, null)
+    //TODO - load inventory
+    return json.parsed(playerName, path, null, Inventory())
 }
 
 actual suspend fun getGamesMetaData(): Properties {

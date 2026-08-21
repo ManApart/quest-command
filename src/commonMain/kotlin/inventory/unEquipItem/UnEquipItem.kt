@@ -11,7 +11,7 @@ class UnEquipItem : EventListener<UnEquipItemEvent>() {
             event.creature.display("${event.item} does not seem to be equipped.")
         } else {
             event.creature.body.unEquip(event.item)
-            EventManager.postEvent(ItemUnEquippedEvent(event.creature, event.item, target))
+            EventManager.postEvent(ItemUnEquippedEvent(event.creature, event.item, target.toEquipTarget()))
         }
     }
 }

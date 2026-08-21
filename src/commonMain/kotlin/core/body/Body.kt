@@ -19,6 +19,7 @@ data class Body(
 ) : Named {
     val core = parts.first()
     val blockHelper = BlockHelper()
+    val equippedItems = mutableMapOf<Thing, EquippedItem>()
 
     override fun toString(): String {
         return name + ": [" + parts.joinToString { it.name } + "]"
@@ -75,12 +76,14 @@ data class Body(
     fun equipToEmpty(item: Thing) = emptyEquipOptions(item).firstOrNull()?.let { equip(item, it) }
     fun equip(item: Thing) = equip(item, getDefaultTarget(item)!!)
     fun equip(item: Thing, part: String, layer: String) = equip(item, EquipTarget(layer, listOf(part)))
-    fun equip(item: Thing, target: EquipTarget): EquipTarget {
-        target.parts.mapNotNull { parts.getOrNull(it) }.forEach {
-            it.unEquip(target.layer)
-            it.equip(item, target.layer)
+    fun equip(item: Thing, target: EquipTarget) = equip(item.toEquippedItem(target, parts))
+    private fun equip(item: EquippedItem): EquippedItem {
+        equippedItems[item.item] = item
+        item.parts.forEach {
+            it.unEquip(item.layer)
+            it.equip(item.item, item.layer)
         }
-        return target
+        return item
     }
 
     fun findEquipTarget(item: Thing, part: String): EquipTarget? {
@@ -102,7 +105,7 @@ data class Body(
     }
 
     fun isEquipped(item: Thing) = getEquipped().contains(item)
-    fun getEquipped() = parts.flatMap { it.getEquipped() }.toSet().toList()
+    fun getEquipped() = equippedItems.values.map { it.item }
 
     fun getEquippedAt(target: EquipTarget): List<Thing> {
         return target.parts.mapNotNull { getEquippedAt(it, target.layer) }
@@ -116,11 +119,10 @@ data class Body(
         return parts.mapNotNull { it.getEquipped(layer) }
     }
 
-    fun getEquippedTarget(item: Thing): EquipTarget? {
-        return item.equipTargets.firstOrNull { getEquippedAt(it).contains(item) }
-    }
+    fun getEquippedTarget(item: Thing) = equippedItems[item]
 
     fun unEquip(item: Thing) {
+        equippedItems.remove(item)
         parts.forEach { it.unEquip(item) }
     }
 

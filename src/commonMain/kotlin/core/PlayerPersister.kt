@@ -1,6 +1,7 @@
 package core
 
 import core.thing.ThingP
+import inventory.Inventory
 import kotlinx.serialization.encodeToString
 import system.mapper
 import system.persistance.clean
@@ -24,7 +25,7 @@ data class PlayerP(
 ) {
     constructor(b: Player) : this(ThingP(b.thing))
 
-    suspend fun parsed(playerName: String, path: String, parentLocation: Network? = null): Player {
+    suspend fun parsed(playerName: String, path: String, parentLocation: Network? = null, inventory: Inventory): Player {
         return Player(playerName, thing.parsed(path, parentLocation, inventory))
     }
 }
