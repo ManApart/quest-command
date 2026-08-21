@@ -7,21 +7,21 @@ import core.utility.lazyM
 import core.utility.toNameSearchableList
 
 object BodyManager {
-    private var bodies2 by lazyM { createBodies2() }
+    private var bodies by lazyM { createBodies() }
 
     fun reset() {
-        bodies2 = createBodies2()
+        bodies = createBodies()
     }
 
-    private fun createBodies2(): NameSearchableList<Body> {
+    private fun createBodies(): NameSearchableList<Body> {
         startupLog("Creating Bodies.")
         return DependencyInjector.getImplementation(BodysCollection::class).values
             .map { it.build() }.toNameSearchableList()
     }
 
     fun bodyExists(name: String): Boolean {
-        return bodies2.firstOrNull { it.name.lowercase() == name.lowercase() } != null
+        return bodies.firstOrNull { it.name.lowercase() == name.lowercase() } != null
     }
 
-    fun getBody(name: String) = bodies2.get(name).copy()
+    fun getBody(name: String) = bodies.get(name).copy()
 }

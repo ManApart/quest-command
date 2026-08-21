@@ -198,7 +198,11 @@ class ThingBuilder(internal val name: String) {
         this.body = body
     }
 
-    fun body(name: String, initializer: BodyBuilder.() -> Unit = {}) {
+    fun body(name: String) {
+        this.bodyName = name
+    }
+
+    fun body(name: String, initializer: BodyBuilder.() -> Unit) {
         this.bodyName = name
         this.bodyBuilder = initializer
     }
@@ -273,7 +277,8 @@ class ThingBuilder(internal val name: String) {
         return when {
             possibleBody != null -> possibleBody
             possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName, bodyMat).apply(builder).build()
-            else -> BodyManager.getBody(possibleBodyName!!)
+            possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
+            else -> NONE
         }
     }
 

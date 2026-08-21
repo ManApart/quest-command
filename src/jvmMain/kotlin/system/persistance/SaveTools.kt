@@ -148,7 +148,6 @@ actual suspend fun loadGame(gameName: String) {
     GameManager.playing = true
 }
 
-
 actual suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!

@@ -17,7 +17,7 @@ data class Body(
     private val dimensions: Vector = NO_VECTOR,
     val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),
 ) : Named {
-    val core = parts.first()
+    val core = parts.firstOrNull() ?: NO_PART
     val blockHelper = BlockHelper()
     val equippedItems = mutableMapOf<Thing, EquippedItem>()
 
@@ -74,7 +74,11 @@ data class Body(
     }
 
     fun equipToEmpty(item: Thing) = emptyEquipOptions(item).firstOrNull()?.let { equip(item, it) }
-    fun equip(item: Thing) = equip(item, getDefaultTarget(item)!!)
+    fun equip(item: Thing): EquippedItem {
+        val target = getDefaultTarget(item) ?: throw IllegalStateException("Could not find equip target for ${item.name} on body $name")
+        return equip(item, target)
+    }
+
     fun equip(item: Thing, part: String, layer: String) = equip(item, EquipTarget(layer, listOf(part)))
     fun equip(item: Thing, target: EquipTarget) = equip(item.toEquippedItem(target, parts))
     private fun equip(item: EquippedItem): EquippedItem {

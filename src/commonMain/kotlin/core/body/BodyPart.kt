@@ -3,8 +3,10 @@ package core.body
 import core.properties.TagStrings.WEAPON
 import core.thing.Thing
 import core.utility.Named
+import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
 
+val NO_PART = BodyPart("None", DEFAULT_MATERIAL)
 
 data class BodyPart(override val name: String, val material: Material) : Named {
     private val equipped = mutableMapOf<Layer, Thing>()
