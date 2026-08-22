@@ -21,7 +21,6 @@ class ThingBuilderTest {
     @BeforeTest
     fun setup() {
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
 
         val behaviorParser = BehaviorsMock(listOf(Behavior("Burnable", ConditionalEvents(LookEvent::class))))

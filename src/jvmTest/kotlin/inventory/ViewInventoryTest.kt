@@ -8,6 +8,7 @@ import core.properties.Properties
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.ITEM
 import core.properties.Tags
+import core.properties.props
 import core.thing.Thing
 import core.thing.thing
 import createClosedChest
@@ -50,17 +51,14 @@ class ViewInventoryTest {
     @Test
     fun listInventoryEquipped() {
         runBlocking {
-            val chest = locationRecipe("chest") { slot("chest") }
-
-            DependencyInjector.setImplementation(BodysCollection::class, BodysMock.fromPart(chest))
-            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
+            DependencyInjector.setImplementation(BodysCollection::class, BodysMock.fromPart("chest"))
             BodyManager.reset()
 
             val creature = thing("Soldier") {
                 body("body")
                 props { tag(CONTAINER) }
             }.build()
-            val item = Thing("Chestplate", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
+            val item = Thing("Chestplate", equipTargets = listOf(EquipTarget("Armor", listOf("chest"))), properties = Properties(tags = Tags(ITEM)))
             creature.add(item)
             creature.body.equip(item)
             val event = ViewInventoryEvent(GameState.player, creature)
@@ -73,13 +71,10 @@ class ViewInventoryTest {
     fun listInventoryEquippedNested() {
         runBlocking {
             val item = createItem("Apple")
-            val pouch = Thing("Pouch", equipSlots = listOf(Slot(listOf("Chest"))), properties = Properties(tags = Tags(ITEM)))
+            val pouch = Thing("Pouch", equipTargets = listOf(EquipTarget("Armor", listOf("chest"))), properties = Properties(tags = Tags(ITEM)))
             pouch.add(item)
 
-            val chest = locationRecipe("Chest") { slot("Chest") }
-
-            DependencyInjector.setImplementation(BodysCollection::class, BodysMock.fromPart(chest))
-            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock.fromPart(chest))
+            DependencyInjector.setImplementation(BodysCollection::class, BodysMock.fromPart("chest"))
             BodyManager.reset()
 
             val creature = thing("Soldier") {

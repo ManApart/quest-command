@@ -25,7 +25,6 @@ class TakeItemTest {
     @BeforeTest
     fun setup() {
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
 
         DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())

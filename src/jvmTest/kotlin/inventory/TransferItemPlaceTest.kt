@@ -37,7 +37,6 @@ class TransferItemPlaceTest {
     fun setup() {
         runBlocking {
             DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
             BodyManager.reset()
 
             val behaviorParser = BehaviorsMock()
@@ -91,27 +90,16 @@ class TransferItemPlaceTest {
     @Test
     fun placeItemInCreatureContainerEquip() {
         runBlocking {
-            val bodyMock = BodysMock(networks {
-                network("body") {
-                    locationNode("Hand")
-                }
-                network("none") {
-                    locationNode("part")
-                }
-            })
-            val bodyPartMock = BodyPartsMock(locations {
-                location("Hand") {
-                    slot("Grip", "Glove")
-                }
-                location("part")
+            val bodyMock = BodysMock(bodies {
+                body("body") { part("Hand") }
+                body("none") { part("part") }
             })
 
             DependencyInjector.setImplementation(BodysCollection::class, bodyMock)
-            DependencyInjector.setImplementation(BodyPartsCollection::class, bodyPartMock)
             BodyManager.reset()
 
             val creature = createChest()
-            val item = Thing("Dagger", equipSlots = listOf(Slot(listOf("Grip"))), properties = Properties(tags = Tags(ITEM)))
+            val item = Thing("Dagger", equipTargets = listOf(EquipTarget("Grip", listOf("Hand"))), properties = Properties(tags = Tags(ITEM)))
             creature.add(item)
 
 

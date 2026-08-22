@@ -1,30 +1,28 @@
 package gameState
 
+
 import core.DependencyInjector
 import core.GameManager
 import core.GameState
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
-import core.body.*
+import core.body.BodyManager
+import core.body.BodysCollection
+import core.body.BodysMock
 import createItem
 import createPouch
 import inventory.Inventory
-import inventory.inventory
 import kotlinx.coroutines.runBlocking
-
-
 import traveling.location.location.LocationManager
-import traveling.location.location.LocationRecipe
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-
-import kotlin.test.Test
 
 class InventoryTest {
 
@@ -32,7 +30,6 @@ class InventoryTest {
     fun setup() {
         runBlocking {
             DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-            DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
             BodyManager.reset()
 
             val behaviorParser = BehaviorsMock()
@@ -54,7 +51,7 @@ class InventoryTest {
             val pouch = createPouch(weight = 2)
             pouch.add(item)
 
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(pouch, 100)
 
             assertEquals(item, inventory.getItem("Apple"))
@@ -68,7 +65,7 @@ class InventoryTest {
             val pouch = createPouch(weight = 1)
             pouch.add(item)
 
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(pouch, 100)
 
             assertTrue(inventory.exists(item))
@@ -79,7 +76,7 @@ class InventoryTest {
     fun removeItem() {
         runBlocking {
             val item = createItem(weight = 2)
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(item, 100)
             inventory.remove(item)
 
@@ -94,7 +91,7 @@ class InventoryTest {
             val pouch = createPouch(weight = 1)
             pouch.add(item)
 
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(pouch, 100)
             inventory.remove(item)
 
@@ -106,7 +103,7 @@ class InventoryTest {
     fun getWeightOfSingleItem() {
         runBlocking {
             val item = createItem(weight = 1)
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(item, 100)
             assertEquals(1, inventory.getWeight())
         }
@@ -119,7 +116,7 @@ class InventoryTest {
             val pouch = createPouch(weight = 1)
             pouch.add(item)
 
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(pouch, 100)
             assertEquals(3, inventory.getWeight())
         }
@@ -131,7 +128,7 @@ class InventoryTest {
             val apple = createItem("Apple", weight = 1)
             val pear = createItem("pear", weight = 2)
 
-            val inventory = inventory()
+            val inventory = Inventory()
             inventory.add(apple, 100)
             inventory.add(apple, 100)
             inventory.add(pear, 100)

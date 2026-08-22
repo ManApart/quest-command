@@ -42,7 +42,6 @@ class ActivatorManagerTest {
         LocationManager.reset()
 
         DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
         BodyManager.reset()
     }
 

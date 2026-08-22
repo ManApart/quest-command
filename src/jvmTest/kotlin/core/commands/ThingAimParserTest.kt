@@ -6,13 +6,26 @@ import assertEqualsByName
 import core.DependencyInjector
 import core.GameState
 import core.body.*
+import core.body.BodyPartStrings.CHEST
+import core.body.BodyPartStrings.HEAD
+import core.body.BodyPartStrings.LEFT_ARM
+import core.body.BodyPartStrings.LEFT_FOOT
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.LEFT_LEG
+import core.body.BodyPartStrings.RIGHT_ARM
+import core.body.BodyPartStrings.RIGHT_FOOT
+import core.body.BodyPartStrings.RIGHT_HAND
+import core.body.BodyPartStrings.RIGHT_LEG
+import core.body.BodyPartStrings.WAIST
 import core.thing.thing
+import crafting.material.MaterialStrings.FLESH
 import createMockedGame
 import kotlinx.coroutines.runBlocking
 
 
 import traveling.location.location.LocationRecipe
 import traveling.location.location.locations
+import traveling.location.network.network
 import traveling.location.network.networks
 import kotlin.test.assertEquals
 
@@ -31,27 +44,17 @@ class ThingAimParserTest {
             createMockedGame()
 
             val bodyCollection = BodysMock(
-                networks {
-                    network("Human") {
-                        locationNode("partA")
+                bodies {
+                    body("Human") {
+                        parts("partA")
                     }
-                    network("testBody") {
-                        locationNode("partA")
-                        locationNode("partB")
-                        locationNode("partC")
+                    body("testBody") {
+                        parts("partA", "partB", "partC")
                     }
-                }
-            )
-            val bodyPartCollection = BodyPartsMock(
-                locations {
-                    location("partA")
-                    location("partB")
-                    location("partC")
                 }
             )
 
             DependencyInjector.setImplementation(BodysCollection::class, bodyCollection)
-            DependencyInjector.setImplementation(BodyPartsCollection::class, bodyPartCollection)
             BodyManager.reset()
         }
 

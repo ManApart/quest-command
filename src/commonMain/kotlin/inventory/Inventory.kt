@@ -55,14 +55,14 @@ class Inventory(items: List<Thing> = emptyList()) {
         items.forEach { add(it, capacity, body) }
     }
 
-    fun add(item: Thing, capacity: Int, body: Body) {
+    fun add(item: Thing, capacity: Int, body: Body? = null) {
         if (!attemptToAdd(item, capacity, body)) {
             addStackOrSingle(item, body)
         }
     }
 
     //Eventually add count of item
-    fun attemptToAdd(item: Thing, capacity: Int, body: Body): Boolean {
+    fun attemptToAdd(item: Thing, capacity: Int, body: Body? = null): Boolean {
         if (hasRoomFor(item, capacity)) {
             addStackOrSingle(item, body)
             return true
@@ -75,19 +75,19 @@ class Inventory(items: List<Thing> = emptyList()) {
         return item.getWeight() + used <= capacity
     }
 
-    private fun addStackOrSingle(item: Thing, body: Body) {
+    private fun addStackOrSingle(item: Thing, body: Body? = null) {
         val match = items.toNameSearchableList().getOrNull(item.name)
         if (match != null && item.isStackable(match)) {
             match.properties.incCount(item.properties.getCount())
             item.inventory.items.forEach { match.inventory.addStackOrSingle(it, match.body) }
         } else {
             items.add(item)
-            body.equipToEmpty(item)
+            body?.equipToEmpty(item)
             item.location = NOWHERE_NODE
         }
     }
 
-    fun remove(item: Thing, count: Int = 1, body: Body): Int {
+    fun remove(item: Thing, count: Int = 1, body: Body? = null): Int {
         return if (items.contains(item)) {
             removeStackOrSingle(item, count, body)
         } else {
@@ -95,13 +95,13 @@ class Inventory(items: List<Thing> = emptyList()) {
         }
     }
 
-    private fun removeStackOrSingle(item: Thing, count: Int, body: Body): Int {
+    private fun removeStackOrSingle(item: Thing, count: Int = 1, body: Body? = null): Int {
         val currentCount = item.properties.getCount()
         val result = currentCount - count
 
         return if (result < 1) {
             items.remove(item)
-            body.unEquip(item)
+            body?.unEquip(item)
             currentCount
         } else {
             item.properties.incCount(-count)

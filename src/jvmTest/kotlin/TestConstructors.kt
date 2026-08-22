@@ -138,8 +138,7 @@ fun createMockedGame() {
         DependencyInjector.setImplementation(BehaviorsCollection::class, BehaviorsMock())
         BehaviorManager.reset()
 
-        DependencyInjector.setImplementation(BodysCollection::class, BodysMock.withFakePlayer())
-        DependencyInjector.setImplementation(BodyPartsCollection::class, BodyPartsMock())
+        DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
         BodyManager.reset()
 
         DependencyInjector.setImplementation(CommandsCollection::class, CommandsMock())
