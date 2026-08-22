@@ -2,6 +2,12 @@ package balance
 
 import combat.DamageType
 import combat.attack.startAttack
+import core.body.BodyPartStrings.CHEST
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.RIGHT_HAND
+import core.body.EquipLayerStrings.GRIP
+import core.body.EquipTarget
+import core.body.body
 import core.properties.Properties
 import core.properties.Tags
 import core.properties.Values
@@ -50,18 +56,19 @@ fun main() {
 }
 
 private suspend fun testAttackTime(agility: Int, strength: Int, weaponSize: String, weaponWeight: Int, otherWeight: Int) {
-    val creature = Thing("Creature")
+    val creature = Thing("Creature", body = body("human", CHEST, RIGHT_HAND, LEFT_HAND))
     creature.soul.addStat(AGILITY, agility)
     creature.soul.addStat(STRENGTH, strength)
 
-    val recipe = LocationRecipe("hand", slots = listOf("hand"))
-    val node = LocationNode("hand")
-    val part = Location(node, recipe = recipe)
-    val weapon = Thing("Weapon", properties = Properties(Values("weight" to weaponWeight.toString()), Tags("Weapon", weaponSize)))
-    creature.inventory.add(weapon)
-    creature.inventory.add(Thing("Dead weight", properties = Properties(Values("weight" to otherWeight.toString()))))
-    part.equipItem("hand", weapon)
+    val weapon = Thing(
+        "Weapon",
+        equipTargets = listOf(EquipTarget(GRIP, listOf(RIGHT_HAND))),
+        properties = Properties(Values("weight" to weaponWeight.toString()), Tags("Weapon", weaponSize))
+    )
+    creature.add(weapon)
+    creature.add(Thing("Dead weight", properties = Properties(Values("weight" to otherWeight.toString()))))
 
+    val part = creature.body.parts.get(RIGHT_HAND)
     val event = startAttack(creature, part, ThingAim(Thing("Thing")), DamageType.SLASH)
 
     println("\t${creature.soul.getCurrent(AGILITY)} \t\t${creature.soul.getCurrent(STRENGTH)} \t\t\t${creature.getEncumbrance()} \t\t\t$weaponSize \t\t\t$weaponWeight \t\t\t\t${event.timeLeft}")

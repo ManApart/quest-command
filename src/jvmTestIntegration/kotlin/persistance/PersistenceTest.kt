@@ -6,12 +6,20 @@ import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Fact
 import core.ai.knowledge.Subject
 import core.body.Body
+import core.body.BodyPartStrings.CHEST
+import core.body.BodyPartStrings.HEAD
+import core.body.BodyPartStrings.LEFT_HAND
+import core.body.BodyPartStrings.RIGHT_HAND
+import core.body.body
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.PropertiesP
 import core.properties.props
 import crafting.material.DEFAULT_MATERIAL
 import crafting.material.MaterialManager
+import crafting.material.MaterialStrings.IRON
+import crafting.material.MaterialStrings.LEATHER
+import crafting.material.MaterialStrings.STONE
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -31,6 +39,7 @@ import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
 import traveling.location.Network
 import traveling.location.location.Location
+import traveling.location.location.location
 import traveling.location.location.locationRecipe
 import traveling.location.network.LocationNode
 import java.io.File
@@ -98,10 +107,10 @@ class PersistenceTest {
     @Test
     fun effect() {
         runBlocking {
-            val locationRecipe = locationRecipe("Head") { }.build()
-            val location = Location(LocationNode("Head"), recipe = locationRecipe)
-            val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
-            val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
+            val body = body("human", HEAD)
+            val head = body.parts.get(HEAD)
+
+            val original = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(head))
             val json = mapper.encodeToString(EffectP(original))
             val parsed: EffectP = mapper.decodeFromString(json)
             assertEffectMatches(original, parsed.parsed(body))
@@ -120,11 +129,10 @@ class PersistenceTest {
     @Test
     fun condition() {
         runBlocking {
-            val locationRecipe = locationRecipe("Head") { }.build()
-            val location = Location(LocationNode("Head"), recipe = locationRecipe)
-            val effect = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(location))
+            val body = body("human", HEAD)
+            val head = body.parts.get(HEAD)
+            val effect = Effect(EffectBase("Base", "thingy"), 1, 2, listOf(head))
             val original = Condition("Fever", effects = listOf(effect))
-            val body = Body("Head", DEFAULT_MATERIAL, Network("Head", locationRecipe))
 
             val json = mapper.encodeToString(ConditionP(original))
             val parsed: ConditionP = mapper.decodeFromString(json)
@@ -154,7 +162,19 @@ class PersistenceTest {
             val fact = Fact(Subject(preLoadPlayer.thing), "Neat")
             preLoadPlayer.mind.learn(fact)
 
-            preLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material = MaterialManager.getMaterial("Stone")
+            val ogDagger = preLoadPlayer.thing.inventory.getItem("Dagger")!!
+            val stoneDagger = ogDagger.copy(body = body("Dagger") {
+                mat(IRON)
+                part("Handle") {
+                    mat(LEATHER)
+                }
+                part("Guard") {
+                    mat(STONE)
+                }
+                parts("Pommel", "Blade")
+            })
+            preLoadPlayer.thing.remove(ogDagger)
+            preLoadPlayer.thing.add(stoneDagger)
 
             EventManager.postEvent(SaveEvent(preLoadPlayer))
             EventManager.processEvents()
@@ -176,7 +196,7 @@ class PersistenceTest {
             assertEquals(equippedItemCount, postLoadPlayer.thing.body.getEquipped().size)
             assertEquals(fact, postLoadPlayer.mind.memory.getFact(fact.source, fact.kind))
 
-            val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.layout.findLocation("Guard").getLocation().material
+            val daggerMat = postLoadPlayer.thing.inventory.getItem("Dagger")!!.body.parts.get("Guard").material
             assertEquals(MaterialManager.getMaterial("Stone"), daggerMat)
 
             CommandParsers.parseCommand(postLoadPlayer, "travel to open field && r")
