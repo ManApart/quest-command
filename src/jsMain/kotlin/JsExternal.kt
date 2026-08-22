@@ -9,19 +9,20 @@ import kotlin.js.unsafeCast
 external object LocalForage {
     fun setItem(key: String, value: Any): Promise<*>
     fun getItem(key: String): Promise<Any?>
+    fun removeItem(key: String): Promise<Any?>
     fun keys(): Promise<Any?>
     fun config(config: LocalForageConfig)
 }
 
 data class LocalForageConfig(val name: String)
 
-suspend fun <T> getForage(key: String) : T? {
+suspend fun <T> getForage(key: String): T? {
     return promise {
         LocalForage.getItem(key) as Promise<T?>
     }
 }
 
-suspend fun getForageKeys() : List<String> {
+suspend fun getForageKeys(): List<String> {
     return promise {
         LocalForage.keys().unsafeCast<Promise<Array<String>>>()
     }!!.toList()
@@ -33,8 +34,14 @@ suspend fun setForage(key: String, value: Any) {
     }
 }
 
-suspend fun setForages(keysToValues: Map<String,String>) {
+suspend fun setForages(keysToValues: Map<String, String?>) {
     promise {
-        Promise.all(keysToValues.map { LocalForage.setItem(it.key, it.value) }.toTypedArray())
+        Promise.all(keysToValues.map { (key, value) ->
+            if (value != null) {
+                LocalForage.setItem(key, value)
+            } else {
+                LocalForage.removeItem(key)
+            }
+        }.toTypedArray())
     }
 }

@@ -10,7 +10,6 @@ import core.history.SessionHistory
 import core.history.TerminalPrinter
 import core.properties.Properties
 import core.properties.PropertiesP
-import inventory.Inventory
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import system.mapper
@@ -151,8 +150,8 @@ actual suspend fun loadGame(gameName: String) {
 actual suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    //TODO - load from inventory
-    return json.parsed(playerName, path, null, Inventory())
+    val inventory = inventory.load(clean(path.removeSuffix(".json"), "inventory"))
+    return json.parsed(playerName, path, null, inventory)
 }
 
 actual suspend fun getGamesMetaData(): Properties {
@@ -168,4 +167,8 @@ actual suspend fun writeSave(directoryName: String, saveName: String, json: Stri
     File(saveName).printWriter().use { out ->
         out.println(json)
     }
+}
+
+actual suspend fun clearFolder(path: String) {
+    JFile(path).deleteRecursively()
 }

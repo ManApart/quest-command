@@ -14,6 +14,7 @@ expect suspend fun loadGame(gameName: String)
 expect suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player
 expect suspend fun getGamesMetaData(): Properties
 expect suspend fun writeSave(directoryName: String, saveName: String, json: String)
+expect suspend fun clearFolder(path: String)
 
 
 expect class File(pathIn: String) {

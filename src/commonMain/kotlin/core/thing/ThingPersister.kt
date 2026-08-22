@@ -28,8 +28,7 @@ suspend fun persist(dataObject: Thing, path: String) {
 }
 
 suspend fun load(path: String, parentLocation: Network? = null): Thing {
-    //TODO - need to understand paths
-    val inventory = inventory.load(clean(path, "inventory"))
+    val inventory = inventory.load(clean(path.removeSuffix(".json"), "inventory"))
     val json: ThingP = loadFromPath(path)!!
     return json.parsed(path, parentLocation, inventory)
 }

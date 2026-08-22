@@ -26,7 +26,7 @@ fun createDB() {
     config(LocalForageConfig("quest-command"))
 }
 
-private val saveUpdates = mutableMapOf<String, String>()
+private val saveUpdates = mutableMapOf<String, String?>()
 
 actual class File actual constructor(pathIn: String) {
     actual val path = pathIn
@@ -134,8 +134,8 @@ actual suspend fun loadGame(gameName: String) {
 actual suspend fun loadCharacter(gameName: String, saveName: String, playerName: String): Player {
     val path = cleanPathToFile(".json", getSaveFolder(), gameName, saveName)
     val json: PlayerP = loadFromPath(path)!!
-    //TODO - load inventory
-    return json.parsed(playerName, path, null, Inventory())
+    val inventory = inventory.load(clean(path.removeSuffix(".json"), "inventory"))
+    return json.parsed(playerName, path, null, inventory)
 }
 
 actual suspend fun getGamesMetaData(): Properties {
@@ -171,4 +171,8 @@ private suspend fun getFolders(path: String, ignoredFileNames: List<String> = li
 suspend fun saveFlush() {
     setForages(saveUpdates)
     saveUpdates.clear()
+}
+
+actual suspend fun clearFolder(path: String) {
+    getForageKeys().filter { it.startsWith(path) }.forEach { saveUpdates[it] = null }
 }

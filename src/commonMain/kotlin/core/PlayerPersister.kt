@@ -2,6 +2,7 @@ package core
 
 import core.thing.ThingP
 import inventory.Inventory
+import inventory.persist
 import kotlinx.serialization.encodeToString
 import system.mapper
 import system.persistance.clean
@@ -16,6 +17,7 @@ suspend fun persist(dataObject: Player, path: String) {
     val data = mapper.encodeToString(playerP)
 
     writeSave(path, saveName, data)
+    persist(dataObject.inventory, clean(prefix, "inventory"))
     core.body.persist(dataObject.thing.body, prefix)
 }
 

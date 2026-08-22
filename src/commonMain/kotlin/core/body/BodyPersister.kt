@@ -12,10 +12,9 @@ import traveling.position.NO_VECTOR
 import traveling.position.Vector
 
 suspend fun persist(dataObject: Body, path: String) {
-    //If Body is none, don't persist
     if (dataObject.name == NONE.name) return
 
-    val prefix = clean(path, dataObject.name)
+    val prefix = clean(path, "Body")
     val saveName = cleanPathToFile("json", prefix)
     val json = mapper.encodeToString(BodyP(dataObject))
     writeSave(path, saveName, json)
@@ -24,7 +23,7 @@ suspend fun persist(dataObject: Body, path: String) {
 suspend fun load(path: String, name: String, inventory: Inventory): Body {
     if (name == NONE.name) return NONE
 
-    val filePath = cleanPathToFile(".json", path, name)
+    val filePath = cleanPathToFile(".json", path, "Body")
     val json: BodyP? = loadFromPath(filePath)
     return json?.parsed(inventory) ?: BodyManager.getBody(name)
 }
