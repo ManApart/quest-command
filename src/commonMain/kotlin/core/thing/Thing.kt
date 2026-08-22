@@ -20,6 +20,7 @@ import explore.listen.getSound
 import inventory.Inventory
 import status.Soul
 import status.stat.AttributeStrings.PERCEPTION
+import status.stat.AttributeStrings.STRENGTH
 import status.stat.SkillStrings.SNEAK
 import system.debug.DebugType
 import traveling.location.location.Location
@@ -90,9 +91,9 @@ data class Thing(
 
     fun getTotalCapacity(): Int {
         return if (soul.hasStat("Strength")) {
-            soul.getCurrent("Strength") * 10
+            soul.getCurrent(STRENGTH) * 10
         } else {
-            properties.values.getInt("Size", 0)
+            properties.values.getInt(SIZE, 0)
         }
     }
 

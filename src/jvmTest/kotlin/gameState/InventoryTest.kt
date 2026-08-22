@@ -126,7 +126,7 @@ class InventoryTest {
     fun getItemsDoesNotIncludeDuplicates() {
         runBlocking {
             val apple = createItem("Apple", weight = 1)
-            val pear = createItem("pear", weight = 2)
+            val pear = createItem("pear", weight = 3)
 
             val inventory = Inventory()
             inventory.add(apple, 100)
@@ -139,7 +139,7 @@ class InventoryTest {
             assertTrue(items.contains(apple))
             assertEquals(2,apple.properties.getCount())
             assertTrue(items.contains(pear))
-            assertEquals(3, inventory.getWeight())
+            assertEquals(5, inventory.getWeight())
         }
     }
 }

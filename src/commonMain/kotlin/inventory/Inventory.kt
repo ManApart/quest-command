@@ -17,6 +17,12 @@ class Inventory(items: List<Thing> = emptyList()) {
         return "${items.size} items"
     }
 
+    override fun hashCode() = items.hashCode()
+    override fun equals(other: Any?): Boolean {
+        return other is Inventory && items == other.items
+    }
+
+
     fun exists(item: Thing): Boolean {
         return items.contains(item) || getAllItems().contains(item)
     }
@@ -71,14 +77,14 @@ class Inventory(items: List<Thing> = emptyList()) {
     }
 
     fun hasRoomFor(item: Thing, capacity: Int): Boolean {
-        val used = getWeight()
-        return item.getWeight() + used <= capacity
+        if (item.getWeight() + getWeight() <= capacity) return true
+        return items.any { it.properties.tags.hasAll(CONTAINER, OPEN) && it.hasRoomFor(item) }
     }
 
     private fun addStackOrSingle(item: Thing, body: Body? = null) {
         val match = items.toNameSearchableList().getOrNull(item.name)
         if (match != null && item.isStackable(match)) {
-            match.properties.incCount(item.properties.getCount())
+            match.properties.incCountWithDefault(item.properties.getCount())
             item.inventory.items.forEach { match.inventory.addStackOrSingle(it, match.body) }
         } else {
             items.add(item)

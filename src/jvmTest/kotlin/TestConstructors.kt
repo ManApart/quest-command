@@ -45,6 +45,7 @@ import magic.spellCommands.SpellCommandsMock
 import quests.QuestManager
 import quests.StoryEventsCollection
 import quests.StoryEventsMock
+import status.Soul
 import status.conditions.ConditionManager
 import status.conditions.ConditionsCollection
 import status.conditions.ConditionsGenerated
@@ -114,8 +115,8 @@ fun createClosedChest(size: Int = 10): Thing {
 fun createPackMule(strength: Int = 1): Thing {
     return Thing(
         "Pack Mule",
+        soul = Soul(mapOf(STRENGTH to strength)),
         properties = Properties(
-            Values(STRENGTH to strength.toString()),
             Tags(CONTAINER, OPEN, TagStrings.CREATURE)
         )
     )

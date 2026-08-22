@@ -18,10 +18,6 @@ data class BodyPart(override val name: String, val material: Material) : Named {
     fun getEquipped() = equipped.values.toSet().toList()
     fun getEquipped(layer: Layer) = equipped[layer]
 
-    fun unEquip(layer: Layer) {
-        equipped.remove(layer)
-    }
-
     fun unEquip(item: Thing) {
         equipped.filter { it.value == item }.forEach { equipped.remove(it.key) }
     }

@@ -57,9 +57,8 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         return other.lowerCaseTags().all { this.lowerCaseTags().contains(it) }
     }
 
-    fun hasAll(other: List<String>): Boolean {
-        return other.map { it.lowercase() }.all { this.lowerCaseTags().contains(it) }
-    }
+    fun hasAll(vararg other: String) = other.all { has(it) }
+    fun hasAll(other: List<String>) = other.all { has(it) }
 
     fun hasAny(other: Tags): Boolean {
         return other.lowerCaseTags().any { this.lowerCaseTags().contains(it) }
@@ -77,7 +76,7 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         return tags.isEmpty()
     }
 
-    fun getMatch(candidates: List<String>): String?{
+    fun getMatch(candidates: List<String>): String? {
         return candidates.firstOrNull { has(it) }
     }
 

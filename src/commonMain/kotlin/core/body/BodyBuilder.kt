@@ -49,5 +49,13 @@ fun body(name: String, vararg parts: String): Body {
 }
 
 fun body(name: String, initializer: BodyBuilder.() -> Unit): Body {
-    return BodyBuilder(name).apply(initializer).build()
+    return bodyB(name, initializer).build()
+}
+
+fun bodyB(name: String, vararg parts: String): BodyBuilder {
+    return BodyBuilder(name).apply { parts(parts.toList()) }
+}
+
+fun bodyB(name: String, initializer: BodyBuilder.() -> Unit): BodyBuilder {
+    return BodyBuilder(name).apply(initializer)
 }

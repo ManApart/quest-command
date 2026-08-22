@@ -108,9 +108,9 @@ class BodyEquipTest {
             body.equip(hatchet, RIGHT_HAND, GRIP)
 
             assertEquals(1, body.getEquipped().size)
-            assertEquals(1, body.getEquippedAt(RIGHT_HAND).size)
+            assertEquals(1, body.getEquippedAt(GRIP).size)
             assertEquals(hatchet, body.getEquippedAt(RIGHT_HAND, GRIP))
-            assertNull(body.getEquippedAt(LEFT_HAND))
+            assertNull(body.getEquippedAt(LEFT_HAND, GRIP))
         }
     }
 
@@ -130,9 +130,10 @@ class BodyEquipTest {
             body.equip(shoe, shoe.equipTargets.first())
 
             assertEquals(1, body.getEquipped().size)
-            assertEquals(0, body.getEquippedAt("Right Leg").size)
-            assertEquals(1, body.getEquippedAt("Right Foot").size)
-            assertEquals(shoe, body.getEquippedAt("Right Foot").first())
+            assertEquals(1, body.getEquippedAt(CLOTHING).size)
+            assertEquals(0, body.getEquippedOn(RIGHT_LEG).size)
+            assertEquals(1, body.getEquippedOn(RIGHT_FOOT).size)
+            assertEquals(shoe, body.getEquippedAt(RIGHT_FOOT, CLOTHING))
         }
     }
 }

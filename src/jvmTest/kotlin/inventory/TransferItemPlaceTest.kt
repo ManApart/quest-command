@@ -101,11 +101,9 @@ class TransferItemPlaceTest {
             val creature = createChest()
             val item = Thing("Dagger", equipTargets = listOf(EquipTarget("Grip", listOf("Hand"))), properties = Properties(tags = Tags(ITEM)))
             creature.add(item)
-
-
             val packMule = createPackMule(1)
 
-            runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, packMule)) }
+            TransferItem().complete(TransferItemEvent(creature, item, creature, packMule))
 
             assertNotNull(packMule.inventory.getItem(item.name))
             assertNull(creature.inventory.getItem(item.name))
@@ -137,7 +135,7 @@ class TransferItemPlaceTest {
             creature.add(item)
 
             val chest = createChest(size = 5)
-            runBlocking { TransferItem().complete(TransferItemEvent(creature, item, creature, chest)) }
+            TransferItem().complete(TransferItemEvent(creature, item, creature, chest))
 
             assertNotNull(chest.inventory.getItem(item.name))
             assertEquals(1, chest.inventory.getItem(item.name)!!.properties.getCount())

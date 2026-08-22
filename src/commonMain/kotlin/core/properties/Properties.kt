@@ -72,6 +72,11 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
         values.inc(COUNT, amount)
     }
 
+    fun incCountWithDefault(amount: Int) {
+        if (!values.has(COUNT)) setCount(getCount())
+        values.inc(COUNT, amount)
+    }
+
     fun setCount(count: Int) {
         values.put(COUNT, count)
     }

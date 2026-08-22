@@ -82,11 +82,14 @@ data class Body(
     fun equip(item: Thing, part: String, layer: String) = equip(item, EquipTarget(layer, listOf(part)))
     fun equip(item: Thing, target: EquipTarget) = equip(item.toEquippedItem(target, parts))
     private fun equip(item: EquippedItem): EquippedItem {
-        equippedItems[item.item] = item
-        item.parts.forEach {
-            it.unEquip(item.layer)
-            it.equip(item.item, item.layer)
+        val toUnequip = mutableListOf<Thing>()
+        item.parts.forEach { p ->
+            p.getEquipped(item.layer)?.let { toUnequip.add(it) }
+            p.equip(item.item, item.layer)
         }
+        toUnequip.forEach { unEquip(it) }
+        equippedItems[item.item] = item
+
         return item
     }
 
@@ -121,6 +124,10 @@ data class Body(
 
     fun getEquippedAt(layer: Layer): List<Thing> {
         return parts.mapNotNull { it.getEquipped(layer) }
+    }
+
+    fun getEquippedOn(part: String): List<Thing> {
+        return parts.getOrNull(part)?.getEquipped() ?: emptyList()
     }
 
     fun getEquippedTarget(item: Thing) = equippedItems[item]

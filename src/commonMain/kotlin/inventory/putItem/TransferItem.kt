@@ -1,6 +1,5 @@
 package inventory.putItem
 
-import core.GameState.properties
 import core.events.EventListener
 import core.events.EventManager
 import core.history.display
@@ -29,24 +28,29 @@ class TransferItem : EventListener<TransferItemEvent>() {
         return container.properties.tags.has("Container") && container.properties.tags.has("Open")
     }
 
-    private suspend fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
-        val newStack = item.copy(count = 1)
-        if (destination.attemptToAdd(newStack)) {
-            removeFromSource(source, item)
-            EventManager.postEvent(ItemPickedUpEvent(destination, newStack, silent))
+    private fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
+
+        if (!destination.hasRoomFor(item)){
+            source.displayToMe("Could not find a place for ${item.name}.")
+            val canHold = destination.properties.values.getString("CanHold").split(",")
+            if (canHold.isNotEmpty()) source.displayToMe("${destination.name} can only hold items that are ${canHold.joinToStringOr()}.")
+            return
+        }
+
+        val initialCount = item.properties.getCount()
+        val leftOvers = if (initialCount > 1) {
+            item.properties.setCount(1)
+            item.copy(count = initialCount - 1)
+        } else null
+
+        if (destination.attemptToAdd(item)) {
+            source.remove(item)
+            leftOvers?.let { source.add(it) }
+            EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
         } else {
             source.displayToMe("Could not find a place for ${item.name}.")
             val canHold = destination.properties.values.getString("CanHold").split(",")
             if (canHold.isNotEmpty()) source.displayToMe("${destination.name} can only hold items that are ${canHold.joinToStringOr()}.")
         }
     }
-
-    private fun removeFromSource(source: Thing, item: Thing) {
-        if (item.properties.getCount() > 1) {
-            item.properties.incCount(-1)
-        } else {
-            source.remove(item)
-        }
-    }
-
 }

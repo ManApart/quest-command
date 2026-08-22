@@ -3,7 +3,10 @@ package inventory
 import core.DependencyInjector
 import core.body.*
 import core.properties.Properties
+import core.properties.TagStrings.CONTAINER
+import core.properties.TagStrings.CREATURE
 import core.properties.TagStrings.ITEM
+import core.properties.TagStrings.OPEN
 import core.properties.Tags
 import core.properties.ValueStrings.COUNT
 import core.properties.Values
@@ -71,7 +74,7 @@ class TakeItemTest {
     fun pickupSingleItemLeavesRestOfStack() {
         runBlocking {
             val creature = getCreatureWithCapacity()
-            val location = runBlocking { creature.location.getLocation() }
+            val location = creature.location.getLocation()
             val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM)))
             location.addThing(item)
 
@@ -89,9 +92,8 @@ class TakeItemTest {
         }
     }
 
-    private suspend fun getCreatureWithCapacity(): Thing {
-        val creature = Thing("Thing", properties = Properties(tags = Tags("Container", "Open", "Creature")))
-//        val pouch = Thing("Pouch", body = createInventoryBody(15), properties = Properties(Tags(ITEM_TAG)))
+    private fun getCreatureWithCapacity(): Thing {
+        val creature = Thing("Thing", properties = Properties(tags = Tags(OPEN, CONTAINER, CREATURE)))
         val pouch = createPouch(15)
         creature.add(pouch)
         return creature
