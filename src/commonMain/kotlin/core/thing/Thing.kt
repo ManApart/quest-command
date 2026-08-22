@@ -119,6 +119,7 @@ data class Thing(
     }
 
     fun add(item: Thing) = inventory.add(item, getTotalCapacity(), body)
+    fun hasRoomFor(item:Thing) = inventory.hasRoomFor(item, getTotalCapacity())
     fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getTotalCapacity(), body)
     fun remove(item: Thing, count: Int = 1) = inventory.remove(item, count, body)
 
@@ -134,7 +135,8 @@ data class Thing(
     }
 
     fun getWeight(): Int {
-        return properties.values.getInt(WEIGHT, 1) + inventory.getWeight()
+        val weight = properties.values.getInt(WEIGHT, 1)
+        return (weight * properties.getCount()) + inventory.getWeight()
     }
 
     fun copy(count: Int): Thing {

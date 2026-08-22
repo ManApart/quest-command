@@ -1,7 +1,6 @@
 package inventory
 
 import core.body.Body
-import core.body.body
 import core.properties.Properties
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
@@ -64,14 +63,14 @@ class Inventory(items: List<Thing> = emptyList()) {
 
     //Eventually add count of item
     fun attemptToAdd(item: Thing, capacity: Int, body: Body): Boolean {
-        if (rootHasRoomFor(item, capacity)) {
+        if (hasRoomFor(item, capacity)) {
             addStackOrSingle(item, body)
             return true
         }
         return getItems().filter { it.isOpenContainer() }.any { it.attemptToAdd(item) }
     }
 
-    private fun rootHasRoomFor(item: Thing, capacity: Int): Boolean {
+    fun hasRoomFor(item: Thing, capacity: Int): Boolean {
         val used = getWeight()
         return item.getWeight() + used <= capacity
     }
@@ -80,6 +79,7 @@ class Inventory(items: List<Thing> = emptyList()) {
         val match = items.toNameSearchableList().getOrNull(item.name)
         if (match != null && item.isStackable(match)) {
             match.properties.incCount(item.properties.getCount())
+            item.inventory.items.forEach { match.inventory.addStackOrSingle(it, match.body) }
         } else {
             items.add(item)
             body.equipToEmpty(item)

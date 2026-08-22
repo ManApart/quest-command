@@ -23,8 +23,8 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
     constructor(vararg tags: String) : this(Values(), Tags(*tags))
     constructor(vararg values: Pair<String, String>) : this(Values(*values), Tags())
     constructor(base: Properties, params: Map<String, String> = mapOf()) : this(
-            Values(base.values, params),
-            Tags(base.tags, params)
+        Values(base.values, params),
+        Tags(base.tags, params)
     )
 
     fun replaceWith(other: Properties) {
@@ -70,6 +70,10 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
 
     fun incCount(amount: Int) {
         values.inc(COUNT, amount)
+    }
+
+    fun setCount(count: Int) {
+        values.put(COUNT, count)
     }
 
     fun isItem(): Boolean {
