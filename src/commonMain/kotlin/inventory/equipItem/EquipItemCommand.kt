@@ -81,7 +81,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private suspend fun getItem(source: Thing, args: Args): Thing? {
+    private fun getItem(source: Thing, args: Args): Thing? {
         if (!args.hasBase()) return null
         val itemName = args.getBaseString()
         return source.inventory.getItem(itemName)
@@ -104,7 +104,7 @@ class EquipItemCommand : Command() {
         }
     }
 
-    private suspend fun getEquipableItems(source: Thing): List<Thing> {
+    private fun getEquipableItems(source: Thing): List<Thing> {
         val body = source.body
         val equippedItems = body.getEquipped()
         return source.inventory.getAllItems().filter { body.canEquip(it) && !equippedItems.contains(it) }

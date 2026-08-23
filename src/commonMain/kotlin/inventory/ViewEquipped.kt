@@ -20,7 +20,7 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
                 val doesNot = target.ifYouWord(source, "don't", "doesn't")
                 source.displayToMe("$subject $doesNot have anything equipped!")
             } else {
-                val itemList = items.joinToStringSuspend("\n\t") { "${it.name} equipped to ${body.getEquippedTarget(it)}" }
+                val itemList = items.joinToString("\n\t") { "${it.name} equipped to ${body.getEquippedTarget(it)?.toEquipTarget() ?: "unknown"}" }
                 val has = target.ifYouWord(source, "have", "has")
                 source.displayToMe("$subject $has the following items equipped:\n\t$itemList")
             }

@@ -21,7 +21,7 @@ data class Body(
 
     val core = parts.firstOrNull() ?: NO_PART
     val blockHelper = BlockHelper()
-    val equippedItems = mutableMapOf<Thing, EquippedItem>()
+    val equippedItems = mutableMapOf<String, EquippedItem>()
 
     override fun toString(): String {
         return name + ": [" + parts.joinToString { it.name } + "]"
@@ -90,7 +90,7 @@ data class Body(
             p.equip(item.item, item.layer)
         }
         toUnequip.forEach { unEquip(it) }
-        equippedItems[item.item] = item
+        equippedItems[item.item.name] = item
 
         return item
     }
@@ -132,10 +132,10 @@ data class Body(
         return parts.getOrNull(part)?.getEquipped() ?: emptyList()
     }
 
-    fun getEquippedTarget(item: Thing) = equippedItems[item]
+    fun getEquippedTarget(item: Thing) = equippedItems[item.name]
 
     fun unEquip(item: Thing) {
-        equippedItems.remove(item)
+        equippedItems.remove(item.name)
         parts.forEach { it.unEquip(item) }
     }
 

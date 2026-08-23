@@ -135,7 +135,7 @@ class CommandComboTest {
         runBlocking { CommandParsers.parseCommand(GameState.player, input) }
         val expected = "Slash what with Rusty Dagger?"
         assertEquals(expected, GameLogger.getMainHistory().getLastOutput())
-        val expectedOptions = "Old Shirt, Brown Pants, Small Pouch, Rusty Dagger, Player, Poor Quality Meat"
+        val expectedOptions = "Brown Pants, Old Shirt, Rusty Dagger, Small Pouch, Player, Poor Quality Meat"
         val options = CommandParsers.getParser(GameState.player).getResponseRequest()?.getOptions()?.joinToString(", ")
         assertEquals(expectedOptions, options)
     }
