@@ -23,5 +23,5 @@ object BodyManager {
         return bodies.firstOrNull { it.name.lowercase() == name.lowercase() } != null
     }
 
-    fun getBody(name: String) = bodies.get(name).copy()
+    fun getBody(name: String) = Body(bodies.get(name))
 }

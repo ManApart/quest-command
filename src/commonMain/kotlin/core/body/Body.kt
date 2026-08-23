@@ -17,6 +17,8 @@ data class Body(
     private val dimensions: Vector = NO_VECTOR,
     val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),
 ) : Named {
+    constructor(source: Body) : this(source.name, source.dimensions.copy(), source.parts.map { it.copy() }.toNameSearchableList())
+
     val core = parts.firstOrNull() ?: NO_PART
     val blockHelper = BlockHelper()
     val equippedItems = mutableMapOf<Thing, EquippedItem>()

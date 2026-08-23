@@ -15,7 +15,7 @@ Y = North/South
 Z = Height
  */
 @Serializable
-class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
+data class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
     /**
      * The direction this vector is relative to 0.0.0
      * The same as calling (0.0.0).calculateDirection(this)
