@@ -6,6 +6,7 @@ import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
 import core.utility.toNameSearchableList
+import crafting.material.Material
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
 import kotlin.math.roundToInt
@@ -18,6 +19,7 @@ data class Body(
     val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),
 ) : Named {
     constructor(source: Body) : this(source.name, source.dimensions.copy(), source.parts.map { it.copy() }.toNameSearchableList())
+    constructor(mat: Material): this(parts = NameSearchableList(BodyPart("None", mat)))
 
     val core = parts.firstOrNull() ?: NO_PART
     val blockHelper = BlockHelper()

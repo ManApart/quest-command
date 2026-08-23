@@ -144,3 +144,4 @@ mods/
 .kotlin/
 src/commonMain/resources/version.txt
 tool-config.json
+.run/

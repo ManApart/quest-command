@@ -20,8 +20,8 @@ class RecipeIngredient(val description: String, val isOptional: Boolean = false,
         return 0
     }
 
-    fun findMatchingIngredient(crafter: Thing, ingredients: List<Thing>, tool: Thing?): Thing? {
-        return ingredients.firstOrNull { matches(crafter, it, tool) }
+    fun findMatchingIngredient(crafter: Thing, possibleIngredients: List<Thing>, tool: Thing?): Thing? {
+        return possibleIngredients.firstOrNull { matches(crafter, it, tool) }
     }
 
 }

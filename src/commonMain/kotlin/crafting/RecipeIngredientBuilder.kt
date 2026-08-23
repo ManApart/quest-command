@@ -9,6 +9,10 @@ import core.utility.capitalize2
 import core.utility.joinToStringAnd
 import core.utility.wrapNonEmpty
 
+private typealias Crafter = Thing
+private typealias PossibleIngredient = Thing
+private typealias Tool = Thing
+
 class RecipeIngredientBuilder {
     private var description = ""
     private var itemName: String? = null
@@ -18,8 +22,7 @@ class RecipeIngredientBuilder {
     private var materialProps = PropsBuilder()
     private var optional = false
 
-    //Crafter, Ingredient, Tool?
-    private var criteria = mutableListOf<(Thing, Thing, Thing?) -> Boolean>()
+    private var criteria = mutableListOf<(Crafter, PossibleIngredient, Tool?) -> Boolean>()
 
     fun name(name: String) {
         this.itemName = name.lowercase()
@@ -96,8 +99,8 @@ class RecipeIngredientBuilder {
 
         if (description.isBlank()) buildDescription(skillMap, properties)
 
-        return RecipeIngredient(description, optional) { crafter, ingredient, tool ->
-            criteria.all { it(crafter, ingredient, tool) }
+        return RecipeIngredient(description, optional) { crafter, possibleIngredient, tool ->
+            criteria.all { it(crafter, possibleIngredient, tool) }
         }
     }
 

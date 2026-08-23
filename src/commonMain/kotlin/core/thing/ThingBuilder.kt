@@ -26,9 +26,9 @@ import core.properties.TagStrings.SOUND_LEVEL
 import core.properties.ValueStrings.WEIGHT
 import core.utility.MapBuilder
 import core.utility.apply
-import core.utility.applyNested
 import core.utility.applySuspending
 import crafting.material.DEFAULT_MATERIAL
+import crafting.material.MaterialManager
 import explore.listen.SOUND_LEVEL_DEFAULT
 import inventory.Inventory
 import status.Soul
@@ -278,6 +278,7 @@ class ThingBuilder(internal val name: String) {
             possibleBody != null -> possibleBody
             possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName, bodyMat).apply(builder).build()
             possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
+            MaterialManager.getMaterial(bodyMat) != DEFAULT_MATERIAL -> Body(MaterialManager.getMaterial(bodyMat))
             else -> NONE
         }
     }
