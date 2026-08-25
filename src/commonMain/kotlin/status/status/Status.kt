@@ -21,7 +21,7 @@ class Status : EventListener<StatusEvent>() {
         event.source.displayToOthers("${event.source.name} examines ${event.examined.name}'s stats.")
     }
 
-    private suspend fun printImportantStats(event: StatusEvent) {
+    private fun printImportantStats(event: StatusEvent) {
         val soul = event.examined.soul
         if (soul.hasStat(HEALTH) || soul.hasStat(STAMINA) || soul.hasStat(FOCUS)) {
             val youHave =
@@ -30,13 +30,14 @@ class Status : EventListener<StatusEvent>() {
             val encumbrancePercent = (event.examined.getEncumbrance() * 100).toInt()
             val additionalEncumbrancePercent = event.examined.properties.values.getInt(ENCUMBRANCE, 0)
             val encumberedStats =
-                "${event.examined.inventory.getWeight()}/${event.examined.getTotalCapacity()} + $additionalEncumbrancePercent% additional encumbrance"
+                "${event.examined.inventory.getWeight()}/${event.examined.getMaxWeight()} + $additionalEncumbrancePercent% additional encumbrance"
+            val capacityStats = "${event.examined.inventory.getUsedCapacity()}/${event.examined.getCapacity()}"
             event.source.displayToMe(
                 "$youHave ${soul.getCurrent(HEALTH)}/${soul.getTotal(HEALTH)} HP, ${
                     soul.getCurrent(
                         FOCUS
                     )
-                }/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre $encumbrancePercent% encumbered ($encumberedStats)."
+                }/${soul.getTotal(FOCUS)} Focus and ${soul.getCurrent(STAMINA)}/${soul.getTotal(STAMINA)} Stamina. $youAre using $capacityStats capacity and $encumbrancePercent% encumbered ($encumberedStats)."
             )
         }
     }

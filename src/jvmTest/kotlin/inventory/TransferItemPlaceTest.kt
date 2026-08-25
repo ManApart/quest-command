@@ -2,7 +2,6 @@ package inventory
 
 
 import core.DependencyInjector
-import core.GameState.properties
 import core.ai.behavior.BehaviorManager
 import core.ai.behavior.BehaviorsCollection
 import core.ai.behavior.BehaviorsMock
@@ -101,7 +100,7 @@ class TransferItemPlaceTest {
             val creature = createChest()
             val item = Thing("Dagger", equipTargets = listOf(EquipTarget("Grip", listOf("Hand"))), properties = Properties(tags = Tags(ITEM)))
             creature.add(item)
-            val packMule = createPackMule(1)
+            val packMule = createPackMule()
 
             TransferItem().complete(TransferItemEvent(creature, item, creature, packMule))
 

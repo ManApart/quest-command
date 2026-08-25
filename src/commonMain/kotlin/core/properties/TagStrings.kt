@@ -9,7 +9,6 @@ object TagStrings {
     const val SOUND_DESCRIPTION = "Sound Description"
     const val SOUND_LEVEL = "Sound Level"
     const val ITEM = "Item"
-    const val SIZE = "Size"
     const val SMALL = "Small"
     const val SHORT = "Short"
     const val MEDIUM = "Medium"

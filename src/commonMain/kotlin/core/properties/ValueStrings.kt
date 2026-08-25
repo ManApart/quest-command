@@ -10,4 +10,5 @@ object ValueStrings {
     const val WEIGHT = "weight"
     const val SCALE = "scale"
     const val SIZE = "size"
+    const val CAPACITY = "capacity"
 }

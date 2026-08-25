@@ -19,8 +19,9 @@ import core.properties.TagStrings
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.ITEM
 import core.properties.TagStrings.OPEN
-import core.properties.TagStrings.SIZE
 import core.properties.Tags
+import core.properties.ValueStrings.CAPACITY
+import core.properties.ValueStrings.SIZE
 import core.properties.ValueStrings.WEIGHT
 import core.properties.Values
 import core.thing.Thing
@@ -83,7 +84,7 @@ fun createPouch(size: Int = 5, weight: Int = 1): Thing {
         "Pouch",
         properties = Properties(
             Values(
-                SIZE to size.toString(),
+                CAPACITY to size.toString(),
                 WEIGHT to weight.toString()
             ),
             Tags(ITEM, CONTAINER, OPEN, ITEM)
@@ -96,7 +97,7 @@ fun createChest(size: Int = 10): Thing {
     return Thing(
         "Chest",
         properties = Properties(
-            Values(SIZE to size.toString()),
+            Values(CAPACITY to size.toString()),
             Tags(CONTAINER, OPEN, ACTIVATOR_TAG)
         )
     )
@@ -106,17 +107,18 @@ fun createClosedChest(size: Int = 10): Thing {
     return Thing(
         "Closed Chest",
         properties = Properties(
-            Values(SIZE to size.toString()),
+            Values(CAPACITY to size.toString()),
             Tags(CONTAINER, ACTIVATOR_TAG)
         )
     )
 }
 
-fun createPackMule(strength: Int = 1): Thing {
+fun createPackMule(strength: Int = 1, capacity: Int = 10): Thing {
     return Thing(
         "Pack Mule",
         soul = Soul(mapOf(STRENGTH to strength)),
         properties = Properties(
+            Values(CAPACITY to capacity.toString()),
             Tags(CONTAINER, OPEN, TagStrings.CREATURE)
         )
     )

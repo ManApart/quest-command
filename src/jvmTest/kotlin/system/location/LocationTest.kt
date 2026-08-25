@@ -24,24 +24,6 @@ class LocationTest {
     }
 
     @Test
-    fun hasRoomForItem() {
-        runBlocking {
-            val item = createItem("Apple", weight = 2)
-            val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
-            assertTrue(location.hasRoomFor(item))
-        }
-    }
-
-    @Test
-    fun doesNotHaveRoomForItem() {
-        runBlocking {
-            val item = createItem("Apple", weight = 5)
-            val location = Location(LocationNode("Loc"), properties = Properties(Values("Size" to "3")))
-            assertFalse(location.hasRoomFor(item))
-        }
-    }
-
-    @Test
     fun getAllSouls() {
         runBlocking {
             val items = listOf(

@@ -32,28 +32,37 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
 
     override suspend fun complete(event: AttemptClimbEvent) {
         val climbed = event.climbThing.thing
-        if (!isWithinRange(event)) {
-            event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${climbed.name}." }
-        } else if (event.creature.climbThing == event.climbThing && event.creature.location == climbed.location && event.creature.position.y >= climbed.getHeight()) {
-            event.creature.displayToMe("You're already at the top of ${climbed.name}.")
-        } else if (isAtDestination(event)) {
-            event.creature.displayToMe("You've already climbed ${climbed.name}.")
-        } else {
-            val distance = climbed.getHeight()
-            val chance = getChance(event.creature, distance)
 
-            event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
-            EventManager.postEvent(StatChangeEvent(event.creature, "Climbing", STAMINA, -distance, event.quiet))
-            if (event.creature.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
-                advance(event, distance, chance)
-            } else {
-                fall(event, distance)
+        when {
+            !isWithinRange(event) ->
+                event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to climb ${climbed.name}." }
+
+            event.creature.climbThing == event.climbThing && event.creature.location == climbed.location && event.creature.position.y >= climbed.getHeight() ->
+                event.creature.displayToMe("You're already at the top of ${climbed.name}.")
+
+            isAtDestination(event) ->
+                event.creature.displayToMe("You've already climbed ${climbed.name}.")
+
+            event.creature.getEncumbrance() >= 1 ->
+                event.creature.displayToMe("You are too encumbered to climb.")
+
+            else -> {
+                val distance = climbed.getHeight()
+                val chance = getChance(event.creature, distance)
+
+                event.creature.addSoundEffect("Climbing", "the rough scuffle of two surfaces scraping over each other")
+                EventManager.postEvent(StatChangeEvent(event.creature, "Climbing", STAMINA, -distance, event.quiet))
+                if (event.creature.getEncumbrance() < 1f && RandomManager.isSuccess(chance)) {
+                    advance(event, distance, chance)
+                } else {
+                    fall(event, distance)
+                }
+                climbed.consume(event)
             }
-            climbed.consume(event)
         }
     }
 
-    private suspend fun isWithinRange(event: AttemptClimbEvent): Boolean {
+    private fun isWithinRange(event: AttemptClimbEvent): Boolean {
         return event.creature.climbThing != null || event.climbThing.thing.isWithinRangeOf(event.creature)
                 || event.climbThing.thing.location != event.creature.location
     }
@@ -102,11 +111,7 @@ class AttemptClimb : EventListener<AttemptClimbEvent>() {
     }
 
     private fun getDirectionString(direction: Direction): String {
-        return if (direction == Direction.NONE) {
-            ""
-        } else {
-            " " + direction.name
-        }
+        return if (direction == Direction.NONE) "" else " " + direction.name
     }
 
     private fun fall(event: AttemptClimbEvent, distance: Int) {

@@ -5,7 +5,7 @@ import core.events.EventManager
 import core.history.display
 import core.properties.Properties
 import core.properties.TagStrings.CONTAINER
-import core.properties.TagStrings.SIZE
+import core.properties.ValueStrings.SIZE
 import core.thing.Thing
 import core.thing.activator.ActivatorManager
 import core.thing.creature.CreatureManager
@@ -83,44 +83,6 @@ data class Location(
 
         changeWeatherIfEnoughTimeHasPassed()
     }
-
-//    fun hasAttachPoint(attachPoint: String): Boolean {
-//        return equippedItems.map { it.key.lowercase() }.contains(attachPoint.lowercase())
-//    }
-//
-//    fun getEquippedItem(slot: String): Thing? {
-//        return equippedItems[slot.lowercase()]
-//    }
-//
-//    fun getEquippedItems(): List<Thing> {
-//        return equippedItems.values.filterNotNull()
-//    }
-//
-//    fun getEquippedItemMap(): Map<String, Thing?> {
-//        return equippedItems
-//    }
-//
-//    fun getEquippedWeapon(): Thing? {
-//        return equippedItems.values.firstOrNull { it?.properties?.tags?.has("Weapon") ?: false }
-//    }
-//
-//    suspend fun equipItem(attachPoint: String, item: Thing) {
-//        if (!equippedItems.containsKey(attachPoint.lowercase())) {
-//            item.display("Couldn't equip $item to $attachPoint of body part ${recipe.name}. This should never happen!")
-//        } else {
-//            equippedItems[attachPoint.lowercase()] = item
-//            addThing(item)
-//        }
-//    }
-
-//    fun unEquip(item: Thing) {
-//        equippedItems.keys.forEach {
-//            if (equippedItems[it] == item) {
-//                equippedItems[it] = null
-//            }
-//        }
-//        removeThing(item)
-//    }
 
     fun isEmpty(): Boolean {
         return getThings().isEmpty()
@@ -284,10 +246,6 @@ data class Location(
         return getThingsByName(items, name)
     }
 
-//    suspend fun getItemsIncludingPlayerInventory(source: Thing, perceivedBy: Thing?): NameSearchableList<Thing> {
-//        return source.inventory.getItems() + getItems(source, perceivedBy)
-//    }
-
     suspend fun getItemsIncludingPlayerInventory(source: Thing): NameSearchableList<Thing> {
         return source.inventory.getItems() + getItems(source)
     }
@@ -323,10 +281,6 @@ data class Location(
         return things.map { it.soul }.toList()
     }
 
-//    fun getAllInventories(): List<Inventory> {
-//        return getThings().asSequence().map { it.inventory }.toList()
-//    }
-
     fun changeWeatherIfEnoughTimeHasPassed() {
         if (lastWeatherChange == 0L || GameState.timeManager.getHoursPassed(lastWeatherChange) >= recipe.weatherChangeFrequency) {
             updateWeather(WeatherManager.getWeather(recipe.getWeatherName()))
@@ -352,24 +306,11 @@ data class Location(
         }
     }
 
-//    suspend fun canHold(item: Thing): Boolean {
-//        return properties.tags.has(CONTAINER) && hasRoomFor(item)
-//                && item.properties.canBeHeldByContainerWithProperties(properties)
-//    }
-
     /**
      * How much do all of the items in this location weigh?
      */
     private suspend fun getWeight(source: Thing): Int {
         return getItems(source).sumOf { it.getWeight() }
-    }
-
-    suspend fun hasRoomFor(thing: Thing): Boolean {
-        if (properties.values.has(SIZE)) {
-            val room = properties.values.getInt(SIZE)
-            return room - getWeight(thing) >= thing.getWeight()
-        }
-        return true
     }
 
     suspend fun isSafeFor(creature: Thing): Boolean {

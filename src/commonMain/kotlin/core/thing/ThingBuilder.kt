@@ -23,6 +23,7 @@ import core.properties.TagStrings.MEDIUM
 import core.properties.TagStrings.SMALL
 import core.properties.TagStrings.SOUND_DESCRIPTION
 import core.properties.TagStrings.SOUND_LEVEL
+import core.properties.ValueStrings.CAPACITY
 import core.properties.ValueStrings.WEIGHT
 import core.utility.MapBuilder
 import core.utility.apply

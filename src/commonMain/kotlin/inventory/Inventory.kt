@@ -76,9 +76,12 @@ class Inventory(items: List<Thing> = emptyList()) {
         return getItems().filter { it.isOpenContainer() }.any { it.attemptToAdd(item) }
     }
 
+    fun getUsedCapacity() = items.size
+
     fun hasRoomFor(item: Thing, capacity: Int): Boolean {
-        if (item.getWeight() + getWeight() <= capacity) return true
-        return items.any { it.properties.tags.hasAll(CONTAINER, OPEN) && it.hasRoomFor(item) }
+        val currentCount = getUsedCapacity()
+        if (currentCount < capacity) return true
+        return items.any { it.hasRoomFor(item) }
     }
 
     private fun addStackOrSingle(item: Thing, body: Body? = null) {

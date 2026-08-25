@@ -9,6 +9,7 @@ import core.GameStateStrings.TEST_SAVE_FOLDER
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.history.GameLogger
+import core.properties.ValueStrings.CAPACITY
 import core.thing.Thing
 import core.thing.item.ItemManager
 import core.thing.thing
@@ -99,6 +100,9 @@ object GameManager {
             playerAI()
             body(body)
             location(location)
+            props {
+                value(CAPACITY, 10)
+            }
         }.build()
 
         with(player.soul) {

@@ -8,6 +8,7 @@ import core.properties.TagStrings.CREATURE
 import core.properties.TagStrings.ITEM
 import core.properties.TagStrings.OPEN
 import core.properties.Tags
+import core.properties.ValueStrings.CAPACITY
 import core.properties.ValueStrings.COUNT
 import core.properties.Values
 import core.thing.Thing
@@ -46,7 +47,7 @@ class TakeItemTest {
     fun pickupItemFromLocation() {
         runBlocking {
             val creature = getCreatureWithCapacity()
-            val location = runBlocking { creature.location.getLocation() }
+            val location = creature.location.getLocation()
             val item = Thing("Apple", properties = Properties(Tags(ITEM)))
             location.addThing(item)
 
@@ -60,7 +61,7 @@ class TakeItemTest {
     fun noPickupItemFromLocationIfNoCapacity() {
         runBlocking {
             val creature = Thing("Thing")
-            val location = runBlocking { creature.location.getLocation() }
+            val location = creature.location.getLocation()
             val item = Thing("Apple")
             location.addThing(item)
 

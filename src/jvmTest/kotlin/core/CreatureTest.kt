@@ -3,14 +3,17 @@ package core
 import core.properties.Properties
 import core.properties.TagStrings.ITEM
 import core.properties.Tags
+import core.properties.ValueStrings.CAPACITY
 import core.properties.Values
 import core.thing.Thing
 import createMockedGame
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertTrue
 import status.stat.AttributeStrings.STRENGTH
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class CreatureTest {
     @BeforeTest
@@ -19,13 +22,42 @@ class CreatureTest {
     }
 
     @Test
+    fun hasRoom() {
+        runBlocking {
+            val creature = Thing("creature")
+            creature.properties.values.put(CAPACITY, 12)
+            creature.add(createItem(0))
+            val item2 = createItem(0)
+
+            assertEquals(12, creature.getCapacity())
+            assertEquals(1, creature.inventory.getUsedCapacity())
+            assertTrue(creature.hasRoomFor(item2))
+        }
+    }
+
+    @Test
+    fun hasNoRoom() {
+        runBlocking {
+            val creature = Thing("creature")
+            creature.properties.values.put(CAPACITY, 1)
+            creature.add(createItem(0))
+            val item2 = createItem(0)
+
+            assertEquals(1, creature.getCapacity())
+            assertEquals(1, creature.inventory.getUsedCapacity())
+            assertFalse(creature.hasRoomFor(item2))
+        }
+    }
+
+
+    @Test
     fun encumbrance0() {
         runBlocking {
             val creature = Thing("creature")
             creature.soul.addStat(STRENGTH, 10)
             creature.add(createItem(0))
 
-            assertEquals(100, creature.getTotalCapacity())
+            assertEquals(100, creature.getMaxWeight())
             assertEquals(0, creature.inventory.getWeight())
             assertEquals(0f, creature.getEncumbrance())
         }
@@ -38,7 +70,7 @@ class CreatureTest {
             creature.soul.addStat(STRENGTH, 10)
             creature.add(createItem(50))
 
-            assertEquals(100, creature.getTotalCapacity())
+            assertEquals(100, creature.getMaxWeight())
             assertEquals(50, creature.inventory.getWeight())
             assertEquals(.5f, creature.getEncumbrance())
         }
@@ -51,7 +83,7 @@ class CreatureTest {
             creature.soul.addStat(STRENGTH, 10)
             creature.add(createItem(75))
 
-            assertEquals(100, creature.getTotalCapacity())
+            assertEquals(100, creature.getMaxWeight())
             assertEquals(75, creature.inventory.getWeight())
             assertEquals(.75f, creature.getEncumbrance())
         }
@@ -64,7 +96,7 @@ class CreatureTest {
             creature.soul.addStat(STRENGTH, 10)
             creature.add(createItem(100))
 
-            assertEquals(100, creature.getTotalCapacity())
+            assertEquals(100, creature.getMaxWeight())
             assertEquals(100, creature.inventory.getWeight())
             assertEquals(1f, creature.getEncumbrance())
         }
@@ -77,7 +109,7 @@ class CreatureTest {
             creature.soul.addStat(STRENGTH, 100)
             creature.add(createItem(500))
 
-            assertEquals(1000, creature.getTotalCapacity())
+            assertEquals(1000, creature.getMaxWeight())
             assertEquals(500, creature.inventory.getWeight())
             assertEquals(.5f, creature.getEncumbrance())
         }

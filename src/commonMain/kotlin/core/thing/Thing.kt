@@ -1,14 +1,17 @@
 package core.thing
 
 import core.GameState
+import core.GameState.properties
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
 import core.body.EquipTarget
+import core.body.body
 import core.events.Event
 import core.properties.ENCUMBRANCE
 import core.properties.IS_CLIMBING
 import core.properties.Properties
+import core.properties.ValueStrings.CAPACITY
 import core.properties.ValueStrings.COUNT
 import core.properties.ValueStrings.SCALE
 import core.properties.ValueStrings.SIZE
@@ -18,12 +21,14 @@ import core.utility.clamp
 import core.utility.max
 import explore.listen.getSound
 import inventory.Inventory
+import kotlinx.coroutines.NonDisposableHandle.parent
 import status.Soul
 import status.stat.AttributeStrings.PERCEPTION
 import status.stat.AttributeStrings.STRENGTH
 import status.stat.SkillStrings.SNEAK
 import system.debug.DebugType
 import traveling.location.location.Location
+import traveling.location.location.location
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
@@ -89,25 +94,22 @@ data class Thing(
         }
     }
 
-    fun getTotalCapacity(): Int {
-        return if (soul.hasStat("Strength")) {
-            soul.getCurrent(STRENGTH) * 10
-        } else {
-            properties.values.getInt(SIZE, 0)
-        }
-    }
+    fun getCapacity() = properties.values.getInt(CAPACITY, 0)
+    fun getMaxWeight() = soul.getCurrent(STRENGTH) * 10
 
     /**
      * Return how encumbered the creature is, as a percent from 0-1
      */
     fun getEncumbrance(): Float {
+        val maxWeight = getMaxWeight().toFloat()
+        val physicalEncumbrance = inventory.getWeight() / maxWeight
         val soulEncumbrance = soul.parent.properties.values.getInt(ENCUMBRANCE, 0) / 100f
-        val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
         return max(0f, min(1f, soulEncumbrance + physicalEncumbrance))
     }
 
     fun getEncumbrancePhysicalOnly(): Float {
-        val physicalEncumbrance = inventory.getWeight() / getTotalCapacity().toFloat()
+        val maxWeight = getMaxWeight().toFloat()
+        val physicalEncumbrance = inventory.getWeight() / maxWeight
         return max(0f, min(1f, physicalEncumbrance))
     }
 
@@ -119,9 +121,9 @@ data class Thing(
         return 1 - getEncumbrance()
     }
 
-    fun add(item: Thing) = inventory.add(item, getTotalCapacity(), body)
-    fun hasRoomFor(item:Thing) = inventory.hasRoomFor(item, getTotalCapacity())
-    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getTotalCapacity(), body)
+    fun add(item: Thing) = inventory.add(item, getCapacity(), body)
+    fun hasRoomFor(item: Thing) = inventory.hasRoomFor(item, getCapacity())
+    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getCapacity(), body)
     fun remove(item: Thing, count: Int = 1) = inventory.remove(item, count, body)
 
     fun getDamage(): Int {
@@ -192,10 +194,6 @@ data class Thing(
     suspend fun currentLocation(): Location {
         return location.getLocation()
     }
-
-//    fun getSize(): Int {
-//        return properties.values.getInt("size", body.getSize().getDistance())
-//    }
 
     fun getSize(): Int {
         return properties.values.getInt(SIZE, getDimensions().getDistance())

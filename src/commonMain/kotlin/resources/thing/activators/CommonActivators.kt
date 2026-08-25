@@ -5,9 +5,9 @@ import core.properties.ParameterStrings.ITEM_NAME
 import core.properties.TagStrings
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
-import core.properties.TagStrings.SIZE
 import core.properties.TagStrings.WOOD
 import core.properties.ValueStrings
+import core.properties.ValueStrings.CAPACITY
 import core.thing.activator.dsl.ActivatorResource
 import core.thing.things
 import crafting.material.MaterialStrings.IRON
@@ -26,6 +26,7 @@ class CommonActivators : ActivatorResource {
             body("tree")
             props {
                 value("chopHealth", 5)
+                value(CAPACITY, 1)
                 value(ValueStrings.FIRE_HEALTH, 5)
                 tag("Climbable", CONTAINER, "Flammable", OPEN, WOOD)
             }
@@ -144,7 +145,7 @@ class CommonActivators : ActivatorResource {
             description("Placing grain in this chute will mill it. The milled grain can be picked up from the grain bin below.")
             body("Grain Chute")
             props {
-                value("size", 3)
+                value(CAPACITY, 3)
                 tag(OPEN, CONTAINER)
             }
             behavior(
@@ -161,7 +162,7 @@ class CommonActivators : ActivatorResource {
             description("Place grain in the chute above to pick up the milled contents here.")
             body("Grain Bin")
             props {
-                value("size", 3)
+                value(CAPACITY, 3)
                 tag(OPEN, CONTAINER)
             }
         }
@@ -215,7 +216,7 @@ class CommonActivators : ActivatorResource {
             body("Medium Container")
             item("Bronze Ingot", "Leather")
             props {
-                value(SIZE to 10)
+                value(CAPACITY to 10)
                 tag(CONTAINER, OPEN)
             }
         }
