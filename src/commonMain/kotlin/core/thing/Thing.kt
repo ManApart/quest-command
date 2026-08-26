@@ -121,9 +121,9 @@ data class Thing(
         return 1 - getEncumbrance()
     }
 
-    fun add(item: Thing) = inventory.add(item, getCapacity(), body)
-    fun hasRoomFor(item: Thing) = inventory.hasRoomFor(item, getCapacity())
-    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(item, getCapacity(), body)
+    fun add(item: Thing) = inventory.add(this, item)
+    fun hasRoomFor(item: Thing) = inventory.hasRoomFor(this, item)
+    fun attemptToAdd(item: Thing) = inventory.attemptToAdd(this, item)
     fun remove(item: Thing, count: Int = 1) = inventory.remove(item, count, body)
 
     fun getDamage(): Int {

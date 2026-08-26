@@ -1,5 +1,8 @@
 package core.properties
 
+import core.properties.TagStrings.LARGE
+import core.properties.TagStrings.MEDIUM
+import core.properties.TagStrings.SMALL
 import core.utility.apply
 
 @kotlinx.serialization.Serializable
@@ -70,6 +73,19 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
 
     fun matches(other: Tags): Boolean {
         return hasAll(other) && other.hasAll(this)
+    }
+
+    fun isAsLargeOrLargerThan(other: Tags) : Boolean {
+        val sizes = listOf(LARGE, MEDIUM, SMALL)
+        val thisSize = sizes.firstOrNull { has(it) }
+        val otherSize = sizes.firstOrNull { has(it) }
+        return when {
+            thisSize == null || otherSize == null -> true
+            thisSize == LARGE -> true
+            thisSize == otherSize -> true
+            thisSize == MEDIUM && otherSize == SMALL -> true
+            else -> false
+        }
     }
 
     fun isEmpty(): Boolean {

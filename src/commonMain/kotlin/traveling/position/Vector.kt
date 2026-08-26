@@ -236,6 +236,10 @@ data class Vector(val x: Int = 0, val y: Int = 0, val z: Int = 0) {
         return getDistance(to) < getDistance(than)
     }
 
+    fun contains(other: Vector): Boolean {
+        return x >= other.x && y >= other.y && z >= other.z
+    }
+
 }
 
 fun Sequence<Vector>.sum(): Vector {

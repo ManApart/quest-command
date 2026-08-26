@@ -51,26 +51,26 @@ class Inventory(items: List<Thing> = emptyList()) {
         return items.toList()
     }
 
-    suspend fun addAllByName(items: List<String>, body: Body) {
+    suspend fun addAllByName(owner: Thing, items: List<String>) {
         if (items.isNotEmpty()) {
-            addAll(ItemManager.getItems(items), 0, body)
+            addAll(owner, ItemManager.getItems(items))
         }
     }
 
-    fun addAll(items: List<Thing>, capacity: Int, body: Body) {
-        items.forEach { add(it, capacity, body) }
+    fun addAll(owner: Thing, items: List<Thing>) {
+        items.forEach { add(owner, it) }
     }
 
-    fun add(item: Thing, capacity: Int, body: Body? = null) {
-        if (!attemptToAdd(item, capacity, body)) {
-            addStackOrSingle(item, body)
+    fun add(owner: Thing, item: Thing) {
+        if (!attemptToAdd(owner, item)) {
+            addStackOrSingle(item, owner.body)
         }
     }
 
     //Eventually add count of item
-    fun attemptToAdd(item: Thing, capacity: Int, body: Body? = null): Boolean {
-        if (hasRoomFor(item, capacity)) {
-            addStackOrSingle(item, body)
+    fun attemptToAdd(owner: Thing, item: Thing): Boolean {
+        if (hasRoomFor(owner, item)) {
+            addStackOrSingle(item, owner.body)
             return true
         }
         return getItems().filter { it.isOpenContainer() }.any { it.attemptToAdd(item) }
@@ -78,9 +78,12 @@ class Inventory(items: List<Thing> = emptyList()) {
 
     fun getUsedCapacity() = items.size
 
-    fun hasRoomFor(item: Thing, capacity: Int): Boolean {
+    fun hasRoomFor(owner: Thing, item: Thing): Boolean {
+        val capacity = owner.getCapacity()
         val currentCount = getUsedCapacity()
-        if (currentCount < capacity) return true
+        val tagLarger = owner.properties.tags.isAsLargeOrLargerThan(item.properties.tags)
+        val bodyLarger = owner.getDimensions().contains(item.getDimensions())
+        if (currentCount < capacity && tagLarger && bodyLarger) return true
         return items.any { it.hasRoomFor(item) }
     }
 

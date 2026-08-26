@@ -1,24 +1,13 @@
 package gameState
 
 
-import core.DependencyInjector
-import core.GameManager
-import core.GameState
-import core.ai.behavior.BehaviorManager
-import core.ai.behavior.BehaviorsCollection
-import core.ai.behavior.BehaviorsMock
-import core.body.BodyManager
-import core.body.BodysCollection
-import core.body.BodysMock
+import core.properties.ValueStrings.CAPACITY
+import core.thing.Thing
+import core.thing.thing
 import createItem
 import createPouch
 import inventory.Inventory
 import kotlinx.coroutines.runBlocking
-import traveling.location.location.LocationManager
-import traveling.location.location.LocationsCollection
-import traveling.location.location.LocationsMock
-import traveling.location.network.NetworksCollection
-import traveling.location.network.NetworksMock
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -26,21 +15,19 @@ import kotlin.test.assertTrue
 
 class InventoryTest {
 
+    private lateinit var holder: Thing
+
     @BeforeTest
     fun setup() {
         runBlocking {
-            DependencyInjector.setImplementation(BodysCollection::class, BodysMock())
-            BodyManager.reset()
-
-            val behaviorParser = BehaviorsMock()
-            DependencyInjector.setImplementation(BehaviorsCollection::class, behaviorParser)
-            BehaviorManager.reset()
-
-            DependencyInjector.setImplementation(NetworksCollection::class, NetworksMock())
-            DependencyInjector.setImplementation(LocationsCollection::class, LocationsMock())
-            LocationManager.reset()
-
-            GameState.putPlayer(GameManager.newPlayer())
+            holder = thing("Holder") {
+                body("Test") {
+                    dimensions(100, 100, 100)
+                }
+                props {
+                    value(CAPACITY, 100)
+                }
+            }.build()
         }
     }
 
@@ -52,7 +39,7 @@ class InventoryTest {
             pouch.add(item)
 
             val inventory = Inventory()
-            inventory.add(pouch, 100)
+            inventory.add(holder, pouch)
 
             assertEquals(item, inventory.getItem("Apple"))
         }
@@ -66,7 +53,7 @@ class InventoryTest {
             pouch.add(item)
 
             val inventory = Inventory()
-            inventory.add(pouch, 100)
+            inventory.add(holder, pouch)
 
             assertTrue(inventory.exists(item))
         }
@@ -77,7 +64,7 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 2)
             val inventory = Inventory()
-            inventory.add(item, 100)
+            inventory.add(holder, item)
             inventory.remove(item)
 
             assertEquals(0, inventory.getAllItems().size)
@@ -92,7 +79,7 @@ class InventoryTest {
             pouch.add(item)
 
             val inventory = Inventory()
-            inventory.add(pouch, 100)
+            inventory.add(holder, pouch)
             inventory.remove(item)
 
             assertEquals(1, inventory.getAllItems().size)
@@ -104,7 +91,7 @@ class InventoryTest {
         runBlocking {
             val item = createItem(weight = 1)
             val inventory = Inventory()
-            inventory.add(item, 100)
+            inventory.add(holder, item)
             assertEquals(1, inventory.getWeight())
         }
     }
@@ -117,7 +104,7 @@ class InventoryTest {
             pouch.add(item)
 
             val inventory = Inventory()
-            inventory.add(pouch, 100)
+            inventory.add(holder, pouch)
             assertEquals(3, inventory.getWeight())
         }
     }
@@ -129,15 +116,15 @@ class InventoryTest {
             val pear = createItem("pear", weight = 3)
 
             val inventory = Inventory()
-            inventory.add(apple, 100)
-            inventory.add(apple, 100)
-            inventory.add(pear, 100)
+            inventory.add(holder, apple)
+            inventory.add(holder, apple)
+            inventory.add(holder, pear)
 
             val items = inventory.getItems()
 
             assertEquals(2, items.size)
             assertTrue(items.contains(apple))
-            assertEquals(2,apple.properties.getCount())
+            assertEquals(2, apple.properties.getCount())
             assertTrue(items.contains(pear))
             assertEquals(5, inventory.getWeight())
         }

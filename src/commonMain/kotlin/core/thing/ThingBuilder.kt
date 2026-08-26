@@ -77,8 +77,6 @@ class ThingBuilder(internal val name: String) {
         val body = discernBody(possibleBody, possibleBodyName, bodyBuilder, bodyMat)
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
-        val allItems = itemNames + bases.flatMap { it.itemNames }
-        inventory.addAllByName(allItems, body)
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
         val mindParsed = mindP?.let { Mind(ai, CreatureMemory(mindP!!.facts.map { it.parsed() }, mindP!!.listFacts.map { it.parsed() })) }
         val mind = this.mind ?: mindParsed ?: basesR.firstNotNullOfOrNull { it.mind } ?: Mind(ai)
@@ -87,6 +85,7 @@ class ThingBuilder(internal val name: String) {
         val equipTargets = (equipTargets + bases.flatMap { it.equipTargets }).toSet().toList()
         val loc = location ?: basesR.firstNotNullOfOrNull { it.location } ?: NOWHERE_NODE
         val pos = position.takeIf { it != NO_VECTOR } ?: basesR.firstNotNullOfOrNull { b -> b.position.takeIf { it != NO_VECTOR } } ?: NO_VECTOR
+        val allItems = itemNames + bases.flatMap { it.itemNames }
 
         return Thing(
             name,
@@ -101,7 +100,10 @@ class ThingBuilder(internal val name: String) {
             equipTargets = equipTargets,
             inventory = inventory,
             properties = props,
-        ).apply { position = pos }
+        ).apply {
+            position = pos
+            inventory.addAllByName(this, allItems)
+        }
     }
 
     private fun calcItemTargets(props: Properties) {
@@ -151,7 +153,7 @@ class ThingBuilder(internal val name: String) {
         this.soulBuilt = soul
     }
 
-    fun inventory(inventory: Inventory){
+    fun inventory(inventory: Inventory) {
         this.inventory = inventory
     }
 
