@@ -58,7 +58,6 @@ data class Location(
 
     var weather: Weather = DEFAULT_WEATHER
     private var lastWeatherChange: Long = GameState.timeManager.getTicks()
-    private var equippedItems: MutableMap<String, Thing?> = recipe.slots.associate { it.lowercase() to null }.toMutableMap()
     val bounds by lazy { calcBounds() }
 
     override val name: String

@@ -9,6 +9,7 @@ import core.thing.item.ItemManager
 import core.utility.NameSearchableList
 import core.utility.toNameSearchableList
 import traveling.location.network.NOWHERE_NODE
+import traveling.position.NO_VECTOR
 
 class Inventory(items: List<Thing> = emptyList()) {
     private val items: MutableList<Thing> = items.toMutableList()
@@ -82,9 +83,19 @@ class Inventory(items: List<Thing> = emptyList()) {
         val capacity = owner.getCapacity()
         val currentCount = getUsedCapacity()
         val tagLarger = owner.properties.tags.isAsLargeOrLargerThan(item.properties.tags)
-        val bodyLarger = owner.getDimensions().contains(item.getDimensions())
+        val bodyLarger = fits(owner, item)
         if (currentCount < capacity && tagLarger && bodyLarger) return true
         return items.any { it.hasRoomFor(item) }
+    }
+
+    private fun fits(owner: Thing, item: Thing): Boolean {
+        val ownerD = owner.getDimensions()
+        val thingD = item.getDimensions()
+        return when {
+            ownerD == NO_VECTOR -> true
+            thingD == NO_VECTOR -> true
+            else -> ownerD.contains(thingD)
+        }
     }
 
     private fun addStackOrSingle(item: Thing, body: Body? = null) {

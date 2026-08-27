@@ -32,6 +32,7 @@ class TransferItem : EventListener<TransferItemEvent>() {
 
         if (!destination.hasRoomFor(item)){
             source.displayToMe("Could not find a place for ${item.name}.")
+            //TODO Move to hasRoomFor
             val canHold = destination.properties.values.getString("CanHold").split(",")
             if (canHold.isNotEmpty()) source.displayToMe("${destination.name} can only hold items that are ${canHold.joinToStringOr()}.")
             return
