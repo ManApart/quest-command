@@ -1,5 +1,6 @@
 package traveling.location.network
 
+import core.GameState.properties
 import core.thing.Thing
 import core.utility.Named
 import kotlinx.serialization.SerialName
@@ -173,5 +174,7 @@ data class LocationNode(
     fun getPositionRelativeTo(neighbor: LocationNode): Vector? {
         return connections.firstOrNull { it.destination.location == neighbor }?.source?.vector?.invert()
     }
+
+    suspend fun hasTag(tag: String) = getLocation().hasTag(tag)
 
 }

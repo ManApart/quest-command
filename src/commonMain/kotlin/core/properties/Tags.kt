@@ -78,7 +78,7 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
     fun isAsLargeOrLargerThan(other: Tags) : Boolean {
         val sizes = listOf(LARGE, MEDIUM, SMALL)
         val thisSize = sizes.firstOrNull { has(it) }
-        val otherSize = sizes.firstOrNull { has(it) }
+        val otherSize = sizes.firstOrNull { other.has(it) }
         return when {
             thisSize == null || otherSize == null -> true
             thisSize == LARGE -> true
@@ -87,6 +87,8 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
             else -> false
         }
     }
+
+    fun getSizeTag() = listOf(LARGE, MEDIUM, SMALL).firstOrNull { has(it) }
 
     fun isEmpty(): Boolean {
         return tags.isEmpty()

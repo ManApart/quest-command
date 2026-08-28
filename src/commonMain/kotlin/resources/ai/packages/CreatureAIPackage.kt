@@ -1,6 +1,5 @@
 package resources.ai.packages
 
-import conversation.dsl.hasTag
 import core.GameState
 import core.HowToUseStrings
 import core.ai.knowledge.clearUseGoal

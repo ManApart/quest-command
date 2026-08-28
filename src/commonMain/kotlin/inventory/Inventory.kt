@@ -11,6 +11,8 @@ import core.utility.toNameSearchableList
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 
+enum class FitReason { FITS, NO_CAPACITY, TAG_TOO_SMALL, BODY_TOO_SMALL }
+
 class Inventory(items: List<Thing> = emptyList()) {
     private val items: MutableList<Thing> = items.toMutableList()
 
@@ -80,12 +82,17 @@ class Inventory(items: List<Thing> = emptyList()) {
     fun getUsedCapacity() = items.size
 
     fun hasRoomFor(owner: Thing, item: Thing): Boolean {
-        val capacity = owner.getCapacity()
-        val currentCount = getUsedCapacity()
+        return hasRoomForExplained(owner, item) == FitReason.FITS || items.filter { it.hasTag(CONTAINER) }.any { it.hasRoomFor(item) }
+    }
+
+    fun hasRoomForExplained(owner: Thing, item: Thing): FitReason {
         val tagLarger = owner.properties.tags.isAsLargeOrLargerThan(item.properties.tags)
-        val bodyLarger = fits(owner, item)
-        if (currentCount < capacity && tagLarger && bodyLarger) return true
-        return items.any { it.hasRoomFor(item) }
+        return when {
+            getUsedCapacity() >= owner.getCapacity() -> FitReason.NO_CAPACITY
+            !tagLarger -> FitReason.TAG_TOO_SMALL
+            !fits(owner, item) -> FitReason.BODY_TOO_SMALL
+            else -> FitReason.FITS
+        }
     }
 
     private fun fits(owner: Thing, item: Thing): Boolean {

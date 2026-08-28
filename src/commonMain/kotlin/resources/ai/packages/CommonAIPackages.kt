@@ -1,6 +1,5 @@
 package resources.ai.packages
 
-import conversation.dsl.hasTag
 import core.FactKindStrings
 import core.GameState
 import core.HowToUseStrings

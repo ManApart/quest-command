@@ -94,6 +94,7 @@ data class Thing(
         }
     }
 
+    fun hasTag(tag: String) = properties.tags.has(tag)
     fun getCapacity() = properties.values.getInt(CAPACITY, 0)
     fun getMaxWeight() = soul.getCurrent(STRENGTH) * 10
 

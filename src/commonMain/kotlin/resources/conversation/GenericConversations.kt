@@ -4,6 +4,7 @@ import conversation.dialogue.DialogueEvent
 import conversation.dsl.*
 import conversation.parsing.QuestionType
 import conversation.parsing.Verb
+import traveling.location.network.LocationNode
 
 class GenericConversations : DialogueTreeResource {
     override suspend fun values() = conversations {
@@ -33,7 +34,10 @@ class GenericConversations : DialogueTreeResource {
         branch {
             question(QuestionType.WHAT)
             verb(Verb.BE)
-            cond { it.subject().hasTag("City") }
+            cond {
+                val s = it.subject()
+                s is LocationNode && s.hasTag("City")
+            }
             line { "${it.subject()} be a city." }
         }
 

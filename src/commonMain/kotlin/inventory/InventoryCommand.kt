@@ -3,16 +3,18 @@ package inventory
 import core.Player
 import core.commands.Args
 import core.commands.Command
+import core.commands.args
 import core.commands.delims
 import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import core.thing.thing
 import traveling.location.location.Location
 
 class InventoryCommand : Command() {
     override fun getAliases(): List<String> {
-        return listOf("Bag", "b", "backpack")
+        return listOf("Bag", "b", "backpack", "fit")
     }
 
     override fun getDescription(): String {
@@ -23,8 +25,8 @@ class InventoryCommand : Command() {
         return """
 	Bag - list items in your inventory.
 	Bag <thing> - list items in the thing's inventory, if possible.
-    Bag fit <item> - Will this item fit in your inventory?
-    Bag fit <item> in <taker> - Will this item fit in taker's inventory?"""
+    Fit <item> - Will this item fit in your inventory?
+    Fit <item> in <taker> - Will this item fit in taker's inventory?"""
     }
 
     override fun getCategory(): List<String> {
@@ -33,7 +35,7 @@ class InventoryCommand : Command() {
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
         return when {
-            args.isEmpty() || args.first() == "fit" -> (source.thing.currentLocation().getActivators(perceivedBy = source.thing) + source.thing.currentLocation()
+            args.isEmpty() || args.first() == "fit" || keyword == "fit" -> (source.thing.currentLocation().getActivators(perceivedBy = source.thing) + source.thing.currentLocation()
                 .getCreatures(perceivedBy = source.thing)).map { it.name }
 
             else -> listOf()
@@ -45,7 +47,7 @@ class InventoryCommand : Command() {
         val allInventories = location.findThingsByTag("Container")
         val argString = args.joinToString(" ")
         val thing = location.getThingsIncludingInventories(argString).firstOrNull()
-        if (args.firstOrNull() == "fit") {
+        if (keyword == "fit" || args.firstOrNull() == "fit") {
             executeFit(source, args, location)
             return
         }

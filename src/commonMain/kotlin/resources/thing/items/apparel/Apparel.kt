@@ -9,6 +9,7 @@ import core.properties.ParameterStrings.FIRE_HEALTH
 import core.properties.ParameterStrings.ITEM_NAME
 import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.OPEN
+import core.properties.ValueStrings.CAPACITY
 import core.properties.ValueStrings.WEIGHT
 import core.thing.item.ItemResource
 import core.thing.things
@@ -54,6 +55,7 @@ class Apparel : ItemResource {
                 tag(OPEN, CONTAINER)
                 value(WEIGHT, 1)
                 value(DEFENSE, 1)
+                value(CAPACITY, 3)
             }
             body("Sack")
             equipTo(BELT, WAIST)

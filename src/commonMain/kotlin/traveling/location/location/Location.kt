@@ -321,4 +321,6 @@ data class Location(
         return Shape(locationNode.getNeighborConnections().map { it.source.vector } + getActivators().map { it.position })
     }
 
+    fun hasTag(tag: String) = properties.tags.has(tag)
+
 }
