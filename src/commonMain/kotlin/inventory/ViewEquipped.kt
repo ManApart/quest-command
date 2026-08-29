@@ -1,8 +1,11 @@
 package inventory
 
+import core.Player
+import core.body.body
 import core.events.EventListener
 import core.history.displayToMe
 import core.history.displayToOthers
+import core.thing.Thing
 import core.utility.asSubject
 import core.utility.asSubjectPossessive
 import core.utility.ifYouWord
@@ -27,5 +30,4 @@ class ViewEquipped : EventListener<ViewEquippedEvent>() {
             source.displayToOthers{"${source.name} looks at ${target.asSubjectPossessive(it)} gear."}
         }
     }
-
 }

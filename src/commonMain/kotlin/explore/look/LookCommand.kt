@@ -31,7 +31,7 @@ class LookCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return when{
+        return when {
             args.isEmpty() -> listOf("all", "body", "hand") + source.getPerceivedThingNames()
             args.last() == "body" || args.last() == "hand" -> listOf("of")
             args.last() == "of" -> source.thing.currentLocation().getThings(perceivedBy = source.thing).map { it.name }
@@ -53,7 +53,7 @@ class LookCommand : Command() {
         when {
             thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
             thing.isLookingAtBody() -> EventManager.postEvent(LookEvent(source, thing.thing, body = thing.thing.body))
-            thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, part = thing.bodyPartThings.first()))
+            thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, thing = thing.thing, part = thing.bodyPartThings.first()))
             else -> EventManager.postEvent(LookEvent(source, thing = thing.thing))
         }
     }
@@ -68,6 +68,7 @@ class LookCommand : Command() {
                 clarifyThing(source)
                 null
             }
+
             else -> {
                 clarifyThings(source, things)
                 null
