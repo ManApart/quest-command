@@ -18,12 +18,12 @@ suspend fun parseThingsFromLocation(source: Thing, arguments: List<String>): Lis
     return parseThings(source, arguments, things)
 }
 
-suspend fun parseThings(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): List<ThingAim> {
+fun parseThings(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): List<ThingAim> {
     val args = Args(arguments, delimiters = listOf("and"))
     return args.getBaseAndGroups("and").mapNotNull { parseThingsInGroup(source, it, things) }
 }
 
-private suspend fun parseThingsInGroup(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): ThingAim? {
+private fun parseThingsInGroup(source: Thing, arguments: List<String>, things: NameSearchableList<Thing>): ThingAim? {
     val args = Args(arguments, delimiters = listOf("of"))
     return when {
         args.hasBase() && args.hasGroup("of") -> parseThingAndParts(args, things)
@@ -32,25 +32,30 @@ private suspend fun parseThingsInGroup(source: Thing, arguments: List<String>, t
             source.displayToMe("Could not parse things for: ${arguments.joinToString(" ")}")
             null
         }
-    }
+    } ?: parseByPart(args, things)
 }
 
 private fun parseThingOnly(name: String, things: NameSearchableList<Thing>): ThingAim? {
-    val thing = parseThing(name, things)
-    return if (thing != null) {
-        ThingAim(thing)
-    } else {
-        null
-    }
+    return parseThing(name, things)?.let { ThingAim(it) }
 }
 
-private suspend fun parseThingAndParts(args: Args, things: NameSearchableList<Thing>): ThingAim? {
+private fun parseThingAndParts(args: Args, things: NameSearchableList<Thing>): ThingAim? {
     val thing = parseThing(args.getString("of"), things)
     if (thing != null) {
         val parts = parseBodyParts(thing, args.getGroup("base"))
         return ThingAim(thing, parts)
     }
     return null
+}
+
+/**
+ Search all things for a part with the given name
+ Only return if only one thing has parts with that name
+ */
+private fun parseByPart(args: Args, things: NameSearchableList<Thing>): ThingAim? {
+    val partName = args.getBaseString()
+    return things.mapNotNull { t -> t.body.parts.getAll(partName).takeIf { it.isNotEmpty() }
+        ?.let { ThingAim(t, it) } }.takeIf { it.size == 1 }?.first()
 }
 
 private fun parseThing(name: String, things: NameSearchableList<Thing>): Thing? {

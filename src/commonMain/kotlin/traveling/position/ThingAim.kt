@@ -2,23 +2,22 @@ package traveling.position
 
 import core.body.BodyPart
 import core.thing.Thing
-import traveling.location.location.Location
 
-class ThingAim(val thing: Thing, val bodyPartThings: List<BodyPart> = listOf()) {
+class ThingAim(val thing: Thing, val parts: List<BodyPart> = listOf()) {
     override fun toString(): String {
-        return if (bodyPartThings.isEmpty()) {
+        return if (parts.isEmpty()) {
             thing.toString()
         } else {
-            bodyPartThings.joinToString(" ") + " of " + thing.toString()
+            parts.joinToString(" ") + " of " + thing.toString()
         }
     }
 
     fun toCommandString(): String {
-        return bodyPartThings.joinToString(" ") { it.name } + " of " + thing.name
+        return parts.joinToString(" ") { it.name } + " of " + thing.name
     }
 
     fun isLookingAtBody(): Boolean {
-        return this.thing.body.parts.size == this.bodyPartThings.size
+        return this.thing.body.parts.size == this.parts.size
     }
 }
 

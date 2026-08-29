@@ -67,7 +67,7 @@ class AttackCommand : Command() {
                 clarifyThing(source, keyword, weaponName)
             } else {
                 //Go ahead and process a thing that has aimed for body parts or no body parts at all
-                if (thing.bodyPartThings.isNotEmpty()) {
+                if (thing.parts.isNotEmpty()) {
                     processAttack(sourceT, arguments, attackType, handHelper, thing)
                 } else {
                     //If we got an alias, process with a default value of the body root part

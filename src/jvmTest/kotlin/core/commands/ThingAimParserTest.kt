@@ -6,27 +6,12 @@ import assertEqualsByName
 import core.DependencyInjector
 import core.GameState
 import core.body.*
-import core.body.BodyPartStrings.CHEST
-import core.body.BodyPartStrings.HEAD
-import core.body.BodyPartStrings.LEFT_ARM
-import core.body.BodyPartStrings.LEFT_FOOT
-import core.body.BodyPartStrings.LEFT_HAND
-import core.body.BodyPartStrings.LEFT_LEG
-import core.body.BodyPartStrings.RIGHT_ARM
-import core.body.BodyPartStrings.RIGHT_FOOT
-import core.body.BodyPartStrings.RIGHT_HAND
-import core.body.BodyPartStrings.RIGHT_LEG
-import core.body.BodyPartStrings.WAIST
 import core.thing.thing
-import crafting.material.MaterialStrings.FLESH
 import createMockedGame
 import kotlinx.coroutines.runBlocking
 
 
 import traveling.location.location.LocationRecipe
-import traveling.location.location.locations
-import traveling.location.network.network
-import traveling.location.network.networks
 import kotlin.test.assertEquals
 
 //TODO - use for more than just spells (attacks, interact etc)
@@ -95,10 +80,10 @@ class ThingAimParserTest {
             val results = parseThingsFromLocation(GameState.player.thing, "partB of thingA".split(" "))
 
             assertEquals(1, results.size)
-            assertEquals(1, results.first().bodyPartThings.size)
+            assertEquals(1, results.first().parts.size)
 
             assertEqualsByName(thingA, results.first().thing)
-            assertEqualsByName(bodyPartB, results.first().bodyPartThings.first())
+            assertEqualsByName(bodyPartB, results.first().parts.first())
         }
     }
 
@@ -108,10 +93,10 @@ class ThingAimParserTest {
             val results = parseThingsFromLocation(GameState.player.thing, "all of thingA".split(" "))
 
             assertEquals(1, results.size)
-            assertEquals(3, results.first().bodyPartThings.size)
+            assertEquals(3, results.first().parts.size)
 
             assertEquals(thingA, results.first().thing)
-            val parts = results.first().bodyPartThings
+            val parts = results.first().parts
             assertContainsByName(parts, bodyPartA)
             assertContainsByName(parts, bodyPartB)
             assertContainsByName(parts, bodyPartC)
@@ -124,10 +109,10 @@ class ThingAimParserTest {
             val results = parseThingsFromLocation(GameState.player.thing, "body of thingA".split(" "))
 
             assertEquals(1, results.size)
-            assertEquals(3, results.first().bodyPartThings.size)
+            assertEquals(3, results.first().parts.size)
 
             assertEquals(thingA, results.first().thing)
-            val parts = results.first().bodyPartThings
+            val parts = results.first().parts
             assertContainsByName(parts, bodyPartA)
             assertContainsByName(parts, bodyPartB)
             assertContainsByName(parts, bodyPartC)
@@ -142,10 +127,10 @@ class ThingAimParserTest {
             assertEquals(1, results.size)
 
             val result = results.first()
-            assertEquals(2, result.bodyPartThings.size)
+            assertEquals(2, result.parts.size)
             assertEquals(thingA, result.thing)
-            assertEqualsByName(bodyPartA, result.bodyPartThings.first())
-            assertEqualsByName(bodyPartB, result.bodyPartThings.last())
+            assertEqualsByName(bodyPartA, result.parts.first())
+            assertEqualsByName(bodyPartB, result.parts.last())
         }
     }
 
@@ -178,11 +163,11 @@ class ThingAimParserTest {
 
             assertEquals(2, results.size)
             assertEquals(thingA, results.first().thing)
-            assertEquals(1, results.first().bodyPartThings.size)
-            assertEqualsByName(bodyPartC, results.first().bodyPartThings.first())
+            assertEquals(1, results.first().parts.size)
+            assertEqualsByName(bodyPartC, results.first().parts.first())
 
             assertEquals(thingB, results.last().thing)
-            assertEquals(0, results.last().bodyPartThings.size)
+            assertEquals(0, results.last().parts.size)
         }
     }
 
@@ -197,14 +182,14 @@ class ThingAimParserTest {
             val resultB = results.last()
 
             assertEquals(thingA, resultA.thing)
-            assertEquals(2, resultA.bodyPartThings.size)
-            assertEqualsByName(bodyPartA, resultA.bodyPartThings.first())
-            assertEqualsByName(bodyPartB, resultA.bodyPartThings.last())
+            assertEquals(2, resultA.parts.size)
+            assertEqualsByName(bodyPartA, resultA.parts.first())
+            assertEqualsByName(bodyPartB, resultA.parts.last())
 
             assertEquals(thingB, resultB.thing)
-            assertEquals(2, resultB.bodyPartThings.size)
-            assertEqualsByName(bodyPartB, resultB.bodyPartThings.first())
-            assertEqualsByName(bodyPartC, resultB.bodyPartThings.last())
+            assertEquals(2, resultB.parts.size)
+            assertEqualsByName(bodyPartB, resultB.parts.first())
+            assertEqualsByName(bodyPartC, resultB.parts.last())
         }
     }
 

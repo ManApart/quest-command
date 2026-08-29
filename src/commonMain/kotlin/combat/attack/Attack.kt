@@ -57,7 +57,7 @@ class Attack : EventListener<AttackEvent>() {
         }
 
         if (attackedParts.isEmpty()) {
-            val missedParts = event.aim.bodyPartThings.joinToString(", ") { it.name }
+            val missedParts = event.aim.parts.joinToString(", ") { it.name }
             source.display { listener ->
                 val subject = source.asSubject(listener)
                 "$subject ${source.isPlayer().then("miss", "misses")} $missedParts!"
@@ -88,7 +88,7 @@ class Attack : EventListener<AttackEvent>() {
         val sourcePosition = source.position
         val range = getRange(source, sourcePart)
         val distance = sourcePosition.getDistance(target.thing.position)
-        return if (range >= distance) target.bodyPartThings else emptyList()
+        return if (range >= distance) target.parts else emptyList()
     }
 
     private fun getRange(source: Thing, sourcePart: BodyPart): Int {

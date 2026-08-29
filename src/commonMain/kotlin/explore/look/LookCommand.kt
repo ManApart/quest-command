@@ -53,7 +53,7 @@ class LookCommand : Command() {
         when {
             thing == null -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
             thing.isLookingAtBody() -> EventManager.postEvent(LookEvent(source, thing.thing, body = thing.thing.body))
-            thing.bodyPartThings.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, thing = thing.thing, part = thing.bodyPartThings.first()))
+            thing.parts.firstOrNull() != null -> EventManager.postEvent(LookEvent(source, thing = thing.thing, part = thing.parts.first()))
             else -> EventManager.postEvent(LookEvent(source, thing = thing.thing))
         }
     }
