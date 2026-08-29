@@ -1,9 +1,11 @@
 package core.properties
 
+import core.properties.TagStrings.CONTAINER
 import core.properties.TagStrings.ITEM
 import core.properties.TagStrings.LARGE
 import core.properties.TagStrings.LONG
 import core.properties.TagStrings.MEDIUM
+import core.properties.TagStrings.OPEN
 import core.properties.TagStrings.RANGED
 import core.properties.TagStrings.SHORT
 import core.properties.TagStrings.SMALL
@@ -93,13 +95,11 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
         return tags.has(TagStrings.CREATURE)
     }
 
+    fun isOpenContainer() = tags.has(CONTAINER) && tags.has(OPEN)
+
     fun canBeHeldByContainerWithProperties(containerProperties: Properties): Boolean {
-        val acceptedTypes = containerProperties.values.getList(CAN_HOLD).toMutableList()
-        return if (acceptedTypes.isEmpty()) {
-            true
-        } else {
-            tags.hasAny(Tags(acceptedTypes))
-        }
+        val acceptedTypes = containerProperties.values.getList(CAN_HOLD)
+        return acceptedTypes.isEmpty() || tags.hasAny(acceptedTypes)
     }
 
     fun getRange(): Int {

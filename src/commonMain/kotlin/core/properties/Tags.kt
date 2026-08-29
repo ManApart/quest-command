@@ -56,13 +56,14 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         other.forEach { remove(it) }
     }
 
+    fun hasAll(vararg other: String) = other.all { has(it) }
+    fun hasAll(other: List<String>) = other.all { has(it) }
     fun hasAll(other: Tags): Boolean {
         return other.lowerCaseTags().all { this.lowerCaseTags().contains(it) }
     }
 
-    fun hasAll(vararg other: String) = other.all { has(it) }
-    fun hasAll(other: List<String>) = other.all { has(it) }
-
+    fun hasAny(vararg other: String) = other.any { has(it) }
+    fun hasAny(other: List<String>) = other.any { has(it) }
     fun hasAny(other: Tags): Boolean {
         return other.lowerCaseTags().any { this.lowerCaseTags().contains(it) }
     }

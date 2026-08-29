@@ -1,7 +1,9 @@
 package gameState
 
 import core.properties.Properties
+import core.properties.TagStrings.SMALL
 import core.properties.Tags
+import core.properties.ValueStrings.CAN_HOLD
 import core.properties.Values
 import core.thing.Thing
 import kotlin.test.Test
@@ -15,7 +17,7 @@ class ItemTest {
     @Test
     fun canBeHeldByContainerWithProperties() {
         val item = Thing("Apple", properties = Properties(tags = Tags("Raw")))
-        val properties = Properties(values = Values("CanHold" to "Raw,Food"))
+        val properties = Properties(values = Values(CAN_HOLD to "Raw,Food"))
         assertTrue(item.properties.canBeHeldByContainerWithProperties(properties))
     }
 
@@ -28,8 +30,8 @@ class ItemTest {
 
     @Test
     fun canBeHeldByContainerWithPropertiesNegative() {
-        val item = Thing("Apple", properties = Properties(tags = Tags("Small")))
-        val properties = Properties(values = Values("CanHold" to "Raw,Food"))
+        val item = Thing("Apple", properties = Properties(tags = Tags(SMALL)))
+        val properties = Properties(values = Values(CAN_HOLD to "Raw,Food"))
         assertFalse(item.properties.canBeHeldByContainerWithProperties(properties))
     }
 }

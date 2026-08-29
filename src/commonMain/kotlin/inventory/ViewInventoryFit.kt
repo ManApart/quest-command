@@ -3,6 +3,7 @@ package inventory
 import core.events.EventListener
 import core.history.displayToMe
 import core.properties.TagStrings.CONTAINER
+import core.properties.ValueStrings.CAN_HOLD
 import core.thing.Thing
 
 class ViewInventoryFit : EventListener<ViewInventoryFitEvent>() {
@@ -25,6 +26,7 @@ class ViewInventoryFit : EventListener<ViewInventoryFitEvent>() {
             FitReason.NO_CAPACITY -> "$t can't hold any more items (${taker.inventory.getUsedCapacity()}/${taker.getCapacity()})."
             FitReason.TAG_TOO_SMALL -> "$i's tagged size is too large for $t. (${item.properties.tags.getSizeTag()}/${taker.properties.tags.getSizeTag()}"
             FitReason.BODY_TOO_SMALL -> "$i doesn't fit within $t's dimensions (${item.getDimensions()}/${taker.getDimensions()})."
+            FitReason.CAN_NOT_HOLD -> "$i can't be held by $t. $t can only hold ${taker.properties.values.getString(CAN_HOLD)}."
         }
     }
 

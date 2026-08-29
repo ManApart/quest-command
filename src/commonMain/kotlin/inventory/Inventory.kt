@@ -11,7 +11,7 @@ import core.utility.toNameSearchableList
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
 
-enum class FitReason { FITS, NO_CAPACITY, TAG_TOO_SMALL, BODY_TOO_SMALL }
+enum class FitReason { FITS, NO_CAPACITY, TAG_TOO_SMALL, BODY_TOO_SMALL, CAN_NOT_HOLD }
 
 class Inventory(items: List<Thing> = emptyList()) {
     private val items: MutableList<Thing> = items.toMutableList()
@@ -82,7 +82,7 @@ class Inventory(items: List<Thing> = emptyList()) {
     fun getUsedCapacity() = items.size
 
     fun hasRoomFor(owner: Thing, item: Thing): Boolean {
-        return hasRoomForExplained(owner, item) == FitReason.FITS || items.filter { it.hasTag(CONTAINER) }.any { it.hasRoomFor(item) }
+        return hasRoomForExplained(owner, item) == FitReason.FITS || items.filter { it.properties.isOpenContainer() }.any { it.hasRoomFor(item) }
     }
 
     fun hasRoomForExplained(owner: Thing, item: Thing): FitReason {
@@ -91,8 +91,13 @@ class Inventory(items: List<Thing> = emptyList()) {
             getUsedCapacity() >= owner.getCapacity() -> FitReason.NO_CAPACITY
             !tagLarger -> FitReason.TAG_TOO_SMALL
             !fits(owner, item) -> FitReason.BODY_TOO_SMALL
+            !canHold(owner,item) -> FitReason.CAN_NOT_HOLD
             else -> FitReason.FITS
         }
+    }
+
+    private fun canHold(owner: Thing, item: Thing): Boolean {
+        return item.properties.canBeHeldByContainerWithProperties(owner.properties)
     }
 
     private fun fits(owner: Thing, item: Thing): Boolean {

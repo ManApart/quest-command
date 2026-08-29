@@ -23,11 +23,9 @@ import kotlinx.coroutines.runBlocking
 import traveling.location.location.LocationManager
 import traveling.location.location.LocationsCollection
 import traveling.location.location.LocationsMock
-import traveling.location.location.locations
 import traveling.location.network.NOWHERE_NODE
 import traveling.location.network.NetworksCollection
 import traveling.location.network.NetworksMock
-import traveling.location.network.networks
 import kotlin.test.*
 
 class TransferItemPlaceTest {

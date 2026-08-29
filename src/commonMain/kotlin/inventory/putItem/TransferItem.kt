@@ -24,17 +24,11 @@ class TransferItem : EventListener<TransferItemEvent>() {
         }
     }
 
-    private fun isOpen(container: Thing): Boolean {
-        return container.properties.tags.has("Container") && container.properties.tags.has("Open")
-    }
+    private fun isOpen(container: Thing) =  container.properties.isOpenContainer()
 
     private fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
-
         if (!destination.hasRoomFor(item)){
-            source.displayToMe("Could not find a place for ${item.name}.")
-            //TODO Move to hasRoomFor
-            val canHold = destination.properties.values.getString("CanHold").split(",")
-            if (canHold.isNotEmpty()) source.displayToMe("${destination.name} can only hold items that are ${canHold.joinToStringOr()}.")
+            source.displayToMe("Could not find a place for ${item.name}. Use the fit command to see why.")
             return
         }
 
