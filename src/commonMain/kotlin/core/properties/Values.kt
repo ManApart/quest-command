@@ -2,6 +2,9 @@ package core.properties
 
 import core.properties.GuardManager.getGuardedValue
 import core.utility.*
+import kotlin.jvm.JvmName
+
+fun values(vararg props: Pair<String, Int>) = Values(props.associate { (k,v) -> k to v.toString() }.toMutableMap())
 
 @kotlinx.serialization.Serializable
 data class Values(private val properties: MutableMap<String, String> = mutableMapOf()) {

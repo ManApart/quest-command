@@ -11,6 +11,7 @@ import core.properties.Tags
 import core.properties.ValueStrings.CAPACITY
 import core.properties.ValueStrings.COUNT
 import core.properties.Values
+import core.properties.values
 import core.thing.Thing
 import createPouch
 import inventory.pickupItem.TakeItem
@@ -90,6 +91,44 @@ class TakeItemTest {
             assertEquals(2, inLocation.properties.values.getInt(COUNT))
             assertEquals(location, inLocation.location.getLocation())
             assertEquals(NOWHERE_NODE, inInventory.location)
+        }
+    }
+
+    @Test
+    fun addItemToInventoryAndThenContainer() {
+        runBlocking {
+            val creature = Thing("Thing", properties = Properties(tags = Tags(OPEN, CONTAINER, CREATURE), values = values(CAPACITY to 1)))
+            val location = creature.location.getLocation()
+            val item = Thing("Apple")
+            location.addThing(item)
+
+            //First Apple goes to inventory
+            TakeItem().complete(TakeItemEvent(creature, item))
+            val takenApple = creature.inventory.getItem(item.name)
+            assertNotNull(takenApple)
+            assertTrue(location.getThings(item.name).isEmpty())
+
+            val item2 = Thing("Apple")
+            location.addThing(item)
+
+            //Second item can't fit in player
+            TakeItem().complete(TakeItemEvent(creature, item2))
+            assertNotNull(takenApple)
+            assertEquals(1, takenApple.properties.getCount())
+            assertTrue(location.getThings(item.name).isNotEmpty())
+
+            val pouch = createPouch(1)
+            creature.add(pouch)
+
+            //Second item fits in pouch
+            TakeItem().complete(TakeItemEvent(creature, item2))
+            val pouchApple = pouch.inventory.getItem(item.name)
+            assertNotNull(takenApple)
+            assertEquals(1, takenApple.properties.getCount())
+            assertNotNull(pouchApple)
+            assertEquals(1, pouchApple.properties.getCount())
+            assertTrue(location.getThings(item.name).isEmpty())
+
         }
     }
 

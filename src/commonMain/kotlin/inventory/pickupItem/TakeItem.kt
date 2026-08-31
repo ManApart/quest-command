@@ -18,7 +18,8 @@ class TakeItem : EventListener<TakeItemEvent>() {
     }
 
     private suspend fun takeItem(taker: Thing, item: Thing, silent: Boolean) {
-        if (!taker.hasRoomFor(item)) {
+        val place = taker.getPlaceFor(item)
+        if (place == null) {
             taker.displayToMe("You don't have room to take ${item.name}.")
             return
         }
@@ -28,7 +29,7 @@ class TakeItem : EventListener<TakeItemEvent>() {
             item.location.getLocation().addThing(leftOvers)
         }
         val previous = item.location
-        if (taker.attemptToAdd(item)) {
+        if (place.attemptToAdd(item)) {
             previous.getLocation().removeThing(item)
             EventManager.postEvent(ItemPickedUpEvent(taker, item, silent))
         } else {

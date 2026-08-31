@@ -27,7 +27,8 @@ class TransferItem : EventListener<TransferItemEvent>() {
     private fun isOpen(container: Thing) =  container.properties.isOpenContainer()
 
     private fun moveItemFromSourceToDest(source: Thing, item: Thing, destination: Thing, silent: Boolean) {
-        if (!destination.hasRoomFor(item)){
+        val place = destination.getPlaceFor(item)
+        if (place == null) {
             source.displayToMe("Could not find a place for ${item.name}. Use the fit command to see why.")
             return
         }
@@ -38,10 +39,10 @@ class TransferItem : EventListener<TransferItemEvent>() {
             item.copy(count = initialCount - 1)
         } else null
 
-        if (destination.attemptToAdd(item)) {
+        if (place.attemptToAdd(item)) {
             source.remove(item)
             leftOvers?.let { source.add(it) }
-            EventManager.postEvent(ItemPickedUpEvent(destination, item, silent))
+            EventManager.postEvent(ItemPickedUpEvent(place, item, silent))
         } else {
             source.displayToMe("Could not find a place for ${item.name}.")
             val canHold = destination.properties.values.getString("CanHold").split(",")

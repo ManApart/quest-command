@@ -14,6 +14,8 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class CreatureTest {
     @BeforeTest
@@ -31,7 +33,7 @@ class CreatureTest {
 
             assertEquals(12, creature.getCapacity())
             assertEquals(1, creature.inventory.getUsedCapacity())
-            assertTrue(creature.hasRoomFor(item2))
+            assertNotNull(creature.getPlaceFor(item2))
         }
     }
 
@@ -45,7 +47,7 @@ class CreatureTest {
 
             assertEquals(1, creature.getCapacity())
             assertEquals(1, creature.inventory.getUsedCapacity())
-            assertFalse(creature.hasRoomFor(item2))
+            assertNull(creature.getPlaceFor(item2))
         }
     }
 

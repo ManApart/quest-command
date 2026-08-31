@@ -1,12 +1,10 @@
 package core.thing
 
 import core.GameState
-import core.GameState.properties
 import core.ai.behavior.Behavior
 import core.ai.knowledge.Mind
 import core.body.Body
 import core.body.EquipTarget
-import core.body.body
 import core.events.Event
 import core.properties.ENCUMBRANCE
 import core.properties.IS_CLIMBING
@@ -21,14 +19,12 @@ import core.utility.clamp
 import core.utility.max
 import explore.listen.getSound
 import inventory.Inventory
-import kotlinx.coroutines.NonDisposableHandle.parent
 import status.Soul
 import status.stat.AttributeStrings.PERCEPTION
 import status.stat.AttributeStrings.STRENGTH
 import status.stat.SkillStrings.SNEAK
 import system.debug.DebugType
 import traveling.location.location.Location
-import traveling.location.location.location
 import traveling.location.network.LocationNode
 import traveling.location.network.NOWHERE_NODE
 import traveling.position.NO_VECTOR
@@ -123,7 +119,12 @@ data class Thing(
     }
 
     fun add(item: Thing) = inventory.add(this, item)
-    fun hasRoomFor(item: Thing) = inventory.hasRoomFor(this, item)
+
+    fun getPlaceFor(item: Thing): Thing? {
+        return if (inventory.hasRoomFor(this, item)) this else {
+            inventory.getAllItems().filter { it.properties.isOpenContainer() }.firstNotNullOfOrNull { it.getPlaceFor(item) }
+        }
+    }
     fun attemptToAdd(item: Thing) = inventory.attemptToAdd(this, item)
     fun remove(item: Thing, count: Int = 1) = inventory.remove(item, count, body)
 

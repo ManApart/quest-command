@@ -82,7 +82,7 @@ class Inventory(items: List<Thing> = emptyList()) {
     fun getUsedCapacity() = items.size
 
     fun hasRoomFor(owner: Thing, item: Thing): Boolean {
-        return hasRoomForExplained(owner, item) == FitReason.FITS || items.filter { it.properties.isOpenContainer() }.any { it.hasRoomFor(item) }
+        return hasRoomForExplained(owner, item) == FitReason.FITS
     }
 
     fun hasRoomForExplained(owner: Thing, item: Thing): FitReason {
