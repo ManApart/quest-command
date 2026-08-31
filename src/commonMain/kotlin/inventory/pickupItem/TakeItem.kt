@@ -11,14 +11,14 @@ import core.utility.isAre
 class TakeItem : EventListener<TakeItemEvent>() {
     override suspend fun complete(event: TakeItemEvent) {
         if (event.creature.canReach(event.item.position)) {
-            takeItem(event.creature, event.item, event.silent)
+            takeItem(event.creature, event.item, event.destination, event.silent)
         } else {
             event.creature.display { event.creature.asSubject(it) + " " + event.creature.isAre(it) + " too far away to take ${event.item}." }
         }
     }
 
-    private suspend fun takeItem(taker: Thing, item: Thing, silent: Boolean) {
-        val place = taker.getPlaceFor(item)
+    private suspend fun takeItem(taker: Thing, item: Thing, destination: Thing, silent: Boolean) {
+        val place = destination.getPlaceFor(item)
         if (place == null) {
             taker.displayToMe("You don't have room to take ${item.name}.")
             return

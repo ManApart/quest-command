@@ -52,7 +52,7 @@ class TakeItemTest {
             val item = Thing("Apple", properties = Properties(Tags(ITEM)))
             location.addThing(item)
 
-            TakeItem().complete(TakeItemEvent(creature, item))
+            take(creature, item)
             assertNotNull(creature.inventory.getItem(item.name))
             assertTrue(location.getThings(item.name).isEmpty())
         }
@@ -66,7 +66,7 @@ class TakeItemTest {
             val item = Thing("Apple")
             location.addThing(item)
 
-            TakeItem().complete(TakeItemEvent(creature, item))
+            take(creature, item)
             assertNull(creature.inventory.getItem(item.name))
             assertTrue(location.getThings(item.name).isNotEmpty())
         }
@@ -80,7 +80,7 @@ class TakeItemTest {
             val item = Thing("Apple", properties = Properties(Values(COUNT to "3"), Tags(ITEM)))
             location.addThing(item)
 
-            TakeItem().complete(TakeItemEvent(creature, item))
+            take(creature, item)
             val inInventory = creature.inventory.getItem(item.name)
             val inLocation = location.getItems(item.name).firstOrNull()
 
@@ -95,15 +95,34 @@ class TakeItemTest {
     }
 
     @Test
+    fun takeItemIntoPouchDirectly() {
+        runBlocking {
+            val creature = getCreatureWithCapacity()
+
+            val location = creature.location.getLocation()
+            val item = Thing("Apple")
+            location.addThing(item)
+
+            val pouch = createPouch(1)
+            creature.add(pouch)
+
+            TakeItem().complete(TakeItemEvent(creature, item, pouch))
+            assertFalse(creature.inventory.getItems().contains(item))
+            assertNotNull(pouch.inventory.getItem(item.name))
+            assertTrue(location.getThings(item.name).isEmpty())
+        }
+    }
+
+    @Test
     fun addItemToInventoryAndThenContainer() {
         runBlocking {
-            val creature = Thing("Thing", properties = Properties(tags = Tags(OPEN, CONTAINER, CREATURE), values = values(CAPACITY to 1)))
+            val creature = getCreatureWithCapacity(1)
             val location = creature.location.getLocation()
             val item = Thing("Apple")
             location.addThing(item)
 
             //First Apple goes to inventory
-            TakeItem().complete(TakeItemEvent(creature, item))
+            take(creature, item)
             val takenApple = creature.inventory.getItem(item.name)
             assertNotNull(takenApple)
             assertTrue(location.getThings(item.name).isEmpty())
@@ -112,7 +131,7 @@ class TakeItemTest {
             location.addThing(item)
 
             //Second item can't fit in player
-            TakeItem().complete(TakeItemEvent(creature, item2))
+            take(creature, item2)
             assertNotNull(takenApple)
             assertEquals(1, takenApple.properties.getCount())
             assertTrue(location.getThings(item.name).isNotEmpty())
@@ -121,7 +140,7 @@ class TakeItemTest {
             creature.add(pouch)
 
             //Second item fits in pouch
-            TakeItem().complete(TakeItemEvent(creature, item2))
+            take(creature, item2)
             val pouchApple = pouch.inventory.getItem(item.name)
             assertNotNull(takenApple)
             assertEquals(1, takenApple.properties.getCount())
@@ -132,11 +151,12 @@ class TakeItemTest {
         }
     }
 
-    private fun getCreatureWithCapacity(): Thing {
-        val creature = Thing("Thing", properties = Properties(tags = Tags(OPEN, CONTAINER, CREATURE)))
-        val pouch = createPouch(15)
-        creature.add(pouch)
-        return creature
+    private fun getCreatureWithCapacity(capacity: Int = 15): Thing {
+        return Thing("Thing", properties = Properties(tags = Tags(OPEN, CONTAINER, CREATURE), values = values(CAPACITY to capacity)))
+    }
+
+    private suspend fun take(creature: Thing, item: Thing) {
+        TakeItem().complete(TakeItemEvent(creature, item, creature))
     }
 
 }

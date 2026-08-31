@@ -31,11 +31,7 @@ class Inventory(items: List<Thing> = emptyList()) {
     }
 
     fun getItem(name: String?): Thing? {
-        return if (name == null) {
-            null
-        } else {
-            getAllItems().toNameSearchableList().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name)
-        }
+        return name?.let { getAllItems().toNameSearchableList().getOrNull(name) ?: NameSearchableList(getAllItems()).getOrNull(name) }
     }
 
     fun getItems(name: String): List<Thing> {

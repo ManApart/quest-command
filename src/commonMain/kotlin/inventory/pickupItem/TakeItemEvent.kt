@@ -6,6 +6,7 @@ import core.thing.Thing
 data class TakeItemEvent(
     override val creature: Thing,
     val item: Thing,
+    val destination: Thing = creature,
     val silent: Boolean = false,
     override var timeLeft: Int = if(creature.isPlayer()) 1 else 0
 ) : TemporalEvent
