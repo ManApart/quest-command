@@ -15,6 +15,7 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
             !event.target.properties.tags.has("Container") -> {
                 event.source.displayToMe("Cannot view inventory of ${event.target.name}")
             }
+
             !event.source.thing.perceives(event.target) -> event.source.displayToMe("You know it's there; you just can't see it.")
             else -> {
                 if (event.target.inventory.getItems().isNotEmpty()) {
@@ -51,7 +52,8 @@ class ViewInventory : EventListener<ViewInventoryEvent>() {
     private fun printItem(item: Thing, body: Body, tabCount: Int): String {
         val asterisk = body.isEquipped(item).then("* ", "")
         val tabs = "\t".repeat(tabCount)
-        return "\n" + tabs + asterisk + item.name
+        val count = item.properties.getCount().let { if (it > 1) " ${it}x " else "" }
+        return "\n" + tabs + asterisk + count + item.name
     }
 
     private fun getSortedInventory(inventory: Inventory, body: Body): List<Thing> {

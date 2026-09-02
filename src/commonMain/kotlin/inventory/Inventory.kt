@@ -107,6 +107,7 @@ class Inventory(items: List<Thing> = emptyList()) {
     }
 
     private fun addStackOrSingle(item: Thing, body: Body? = null) {
+        item.properties.values.clear("locationdescription")
         val match = items.toNameSearchableList().getOrNull(item.name)
         if (match != null && item.isStackable(match)) {
             match.properties.incCountWithDefault(item.properties.getCount())
