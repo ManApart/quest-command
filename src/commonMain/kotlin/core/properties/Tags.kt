@@ -73,7 +73,7 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         return !other.lowerCaseTags().any { this.lowerCaseTags().contains(it) }
     }
 
-    fun matches(other: Tags, excluding: List<String>): Boolean {
+    fun matches(other: Tags, excluding: List<String> = listOf()): Boolean {
         return hasAll(other, excluding) && other.hasAll(this, excluding)
     }
 
