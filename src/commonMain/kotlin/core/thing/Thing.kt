@@ -136,7 +136,7 @@ data class Thing(
     }
 
     fun isStackable(other: Thing): Boolean {
-        return name == other.name && properties.matches(other.properties)
+        return name == other.name && properties.matches(other.properties, COUNT)
     }
 
     fun getWeight(): Int {

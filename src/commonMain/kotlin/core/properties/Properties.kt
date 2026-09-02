@@ -45,8 +45,9 @@ data class Properties(val values: Values = Values(), val tags: Tags = Tags()) {
                 values.toString().wrapNonEmpty("(Values: ", ") ")
     }
 
-    fun matches(other: Properties): Boolean {
-        return tags.matches(other.tags) && values.matches(other.values)
+    fun matches(other: Properties, excluding: String) = matches(other, listOf(excluding))
+    fun matches(other: Properties, excluding: List<String> = listOf()): Boolean {
+        return tags.matches(other.tags, excluding) && values.matches(other.values, excluding)
     }
 
     fun hasAll(other: Properties): Boolean {

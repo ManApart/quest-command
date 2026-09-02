@@ -1,5 +1,6 @@
 package core.properties
 
+import core.commands.removeAll
 import core.properties.TagStrings.LARGE
 import core.properties.TagStrings.MEDIUM
 import core.properties.TagStrings.SMALL
@@ -58,8 +59,8 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
 
     fun hasAll(vararg other: String) = other.all { has(it) }
     fun hasAll(other: List<String>) = other.all { has(it) }
-    fun hasAll(other: Tags): Boolean {
-        return other.lowerCaseTags().all { this.lowerCaseTags().contains(it) }
+    fun hasAll(other: Tags, excluding: List<String> = listOf()): Boolean {
+        return other.lowerCaseTags().removeAll(excluding).all { this.lowerCaseTags().contains(it) }
     }
 
     fun hasAny(vararg other: String) = other.any { has(it) }
@@ -72,8 +73,8 @@ data class Tags(private val tags: MutableList<String> = mutableListOf()) {
         return !other.lowerCaseTags().any { this.lowerCaseTags().contains(it) }
     }
 
-    fun matches(other: Tags): Boolean {
-        return hasAll(other) && other.hasAll(this)
+    fun matches(other: Tags, excluding: List<String>): Boolean {
+        return hasAll(other, excluding) && other.hasAll(this, excluding)
     }
 
     fun isAsLargeOrLargerThan(other: Tags) : Boolean {

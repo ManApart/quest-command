@@ -2,7 +2,6 @@ package core.properties
 
 import core.properties.GuardManager.getGuardedValue
 import core.utility.*
-import kotlin.jvm.JvmName
 
 fun values(vararg props: Pair<String, Int>) = Values(props.associate { (k,v) -> k to v.toString() }.toMutableMap())
 
@@ -101,6 +100,16 @@ data class Values(private val properties: MutableMap<String, String> = mutableMa
 
     fun clear(key: String) {
         properties.remove(key)
+    }
+
+    fun matches(other: Values, excluding: List<String>): Boolean {
+        val filtered = properties.toMutableMap()
+        val otherFiltered = other.properties.toMutableMap()
+        excluding.forEach {
+            filtered.remove(it)
+            otherFiltered.remove(it)
+        }
+        return filtered.matches(otherFiltered)
     }
 
     fun matches(other: Values): Boolean {
