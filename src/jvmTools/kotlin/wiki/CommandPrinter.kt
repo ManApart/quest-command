@@ -35,4 +35,3 @@ private fun generateTable(category: String, commands: List<Command>): String {
     }.replace("\n\n", "\n")
     return tableHeader + rows
 }
-

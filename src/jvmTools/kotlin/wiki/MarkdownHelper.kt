@@ -26,7 +26,7 @@ internal fun prepareManual(manual: String): String {
             val explanation = prepareLines(dashes[1])
             "$command - $explanation"
         }
-    }
+    }.trim()
 
 }
 
