@@ -25,7 +25,7 @@ class TakeItemCommand : core.commands.Command() {
 	Take <item> from <thing> - Take item from thing's inventory, if possible.
 	Take all from <thing> - Take everything you can from thing's inventory, if possible.
     Take <item> into <bag> - Place an item into a specific pouch/bag in your inventory
-""".trimIndent()
+"""
     }
 
     override fun getCategory(): List<String> {
