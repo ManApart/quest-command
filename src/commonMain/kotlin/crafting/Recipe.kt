@@ -73,7 +73,9 @@ data class Recipe(
         tool: Thing?,
         usedIngredients: Map<String, Pair<RecipeIngredient, Thing>>
     ): List<Thing> {
-        return results.map { result ->
+        return results.filter { result ->
+            result.shouldProduce(crafter, tool, usedIngredients)
+        }.map { result ->
             result.getResult(crafter, tool, usedIngredients).also { it.properties.tags.add(ITEM) }
         }
     }

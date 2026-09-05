@@ -9,9 +9,9 @@ import core.utility.capitalize2
 import core.utility.joinToStringAnd
 import core.utility.wrapNonEmpty
 
-private typealias Crafter = Thing
-private typealias PossibleIngredient = Thing
-private typealias Tool = Thing
+typealias Crafter = Thing
+typealias Ingredient = Thing
+typealias Tool = Thing
 
 class RecipeIngredientBuilder {
     private var description = ""
@@ -22,7 +22,7 @@ class RecipeIngredientBuilder {
     private var materialProps = PropsBuilder()
     private var optional = false
 
-    private var criteria = mutableListOf<(Crafter, PossibleIngredient, Tool?) -> Boolean>()
+    private var criteria = mutableListOf<(Crafter, Ingredient, Tool?) -> Boolean>()
 
     fun name(name: String) {
         this.itemName = name.lowercase()
@@ -59,7 +59,7 @@ class RecipeIngredientBuilder {
         this.optional = true
     }
 
-    fun matches(criteria: (Thing, Thing, Thing?) -> Boolean) {
+    fun matches(criteria: (Crafter, Ingredient, Tool?) -> Boolean) {
         this.criteria.add(criteria)
     }
 

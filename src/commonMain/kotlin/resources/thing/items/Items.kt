@@ -105,6 +105,14 @@ class Items : ItemResource {
             }
         }
 
+        thing("Gem") {
+            material("Emerald")
+            description("A shining gemstone.")
+            props {
+                tag( "Gem", SMALL)
+            }
+        }
+
     }
 
 }

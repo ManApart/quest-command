@@ -104,7 +104,7 @@ class CommonRecipes : RecipeResource {
             }
             ingredient("Inlay") {
                 optional()
-                material("Gem")
+                tag("Gem")
                 skill(SMITHING to 10)
             }
             ingredientNamed("Leather") {
@@ -165,11 +165,36 @@ class CommonRecipes : RecipeResource {
                 tag("Forge", "Burning")
             }
             result {
-                description("The blade's metal, smelted down into an ingot.")
+                description("the blade's metal, smelted down into an ingot")
                 produces { _, _, usedIngredients ->
                     val dagger = usedIngredients["Dagger"]!!.second
                     val metalUsed = dagger.body.parts.get("Blade").material.name
                     ItemManager.getItem("$metalUsed Ingot")
+                }
+            }
+            result {
+                shouldProduce { crafter, _, usedIngredients ->
+                    val dagger = usedIngredients["Dagger"]!!.second
+                    if (!canSmith(crafter, dagger, 2.5f)) return@shouldProduce false
+
+                    val daggerParts = dagger.body.parts
+                    if (!daggerParts.exists("Blade") || !daggerParts.exists("Pommel")) return@shouldProduce false
+
+                    val metalUsed = daggerParts.get("Blade").material.name
+                    val inlay = daggerParts.get("Pommel").material.name
+                    metalUsed != inlay
+                }
+                description("the inlaid gem, if it exists")
+                produces { _, _, usedIngredients ->
+                    val dagger = usedIngredients["Dagger"]!!.second
+                    val inlayUsed = dagger.body.parts.get("Pommel").material.name
+                    thing("Gem") {
+                        material(inlayUsed)
+                        description("A shining gemstone.")
+                        props {
+                            tag( "Gem", SMALL)
+                        }
+                    }.build()
                 }
             }
         }

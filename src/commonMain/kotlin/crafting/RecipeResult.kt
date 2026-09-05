@@ -4,7 +4,11 @@ import core.thing.Thing
 import core.thing.item.ItemManager
 
 
-class RecipeResult(val description: String, val getResult: suspend ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
+class RecipeResult(
+    val description: String,
+    val getResult: suspend ((Crafter, Tool?, Map<String, Pair<RecipeIngredient, Ingredient>>) -> Thing),
+    val shouldProduce: suspend (Crafter, Tool?, Map<String, Pair<RecipeIngredient, Ingredient>>) -> Boolean = { _, _, _ -> true}
+) {
     constructor(name: String) : this(name, { _, _, _ -> ItemManager.getItem(name) })
     constructor(reference: String, tagsAdded: List<String>, tagsRemoved: List<String>) : this("Something", { _, _, ingredients ->
         val result = ingredients[reference]!!.second
@@ -27,4 +31,3 @@ class RecipeResult(val description: String, val getResult: suspend ((Thing, Thin
     }
 
 }
-

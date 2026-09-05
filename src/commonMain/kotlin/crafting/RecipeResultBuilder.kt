@@ -13,8 +13,8 @@ class RecipeResultBuilder {
     private val tagsAdded = mutableListOf<String>()
     private val tagsRemoved = mutableListOf<String>()
 
-    //Crafter, Tool? Ingredients
-    private var getItem: (suspend (Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)? = null
+    private var getItem: (suspend (Crafter, Tool?, Map<String, Pair<RecipeIngredient, Ingredient>>) -> Thing)? = null
+    private var shouldProduce: suspend (Crafter, Tool?, Map<String, Pair<RecipeIngredient, Ingredient>>) -> Boolean = { _, _, _ -> true }
 
     /**
      * Get an item by this name
@@ -42,7 +42,11 @@ class RecipeResultBuilder {
         this.tagsRemoved.addAll(tag)
     }
 
-    fun produces(getItem: suspend ((Thing, Thing?, Map<String, Pair<RecipeIngredient, Thing>>) -> Thing)) {
+    fun shouldProduce(optional: suspend (Crafter, Tool?, Map<String, Pair<RecipeIngredient, Ingredient>>) -> Boolean) {
+        this.shouldProduce = optional
+    }
+
+    fun produces(getItem: suspend ((Crafter, Tool?, Map<String, Pair<RecipeIngredient, Ingredient>>) -> Thing)) {
         this.getItem = getItem
     }
 
