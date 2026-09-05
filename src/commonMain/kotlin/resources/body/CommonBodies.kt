@@ -49,7 +49,7 @@ class CommonBodies : BodyResource {
         body("Dagger") {
             mat(IRON)
             part("Handle") {
-                mat(LEATHER)
+                material(LEATHER)
             }
             parts("Pommel", "Guard", "Blade")
         }

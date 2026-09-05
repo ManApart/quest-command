@@ -2,7 +2,6 @@ package core.body
 
 import core.utility.toNameSearchableList
 import crafting.material.DEFAULT_MATERIAL
-import crafting.material.Material
 import crafting.material.MaterialManager
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
@@ -36,7 +35,7 @@ data class BodyBuilder(internal val name: String, private var material: String =
     }
 
     fun part(name: String, material: String) {
-        parts[name] = BodyPartBuilder(name).apply { mat(material) }
+        parts[name] = BodyPartBuilder(name).apply { material(material) }
     }
 
     fun part(name: String, initializer: BodyPartBuilder.() -> Unit) {

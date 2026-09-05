@@ -6,7 +6,7 @@ import crafting.material.MaterialManager
 class BodyPartBuilder(private val name: String) {
     private var material: String? = null
 
-    fun mat(m: String) {
+    fun material(m: String) {
         material = m
     }
 
@@ -17,5 +17,5 @@ class BodyPartBuilder(private val name: String) {
 }
 
 fun unBuild(part: BodyPart): BodyPartBuilder {
-    return BodyPartBuilder(part.name).apply { mat(part.material.name) }
+    return BodyPartBuilder(part.name).apply { material(part.material.name) }
 }

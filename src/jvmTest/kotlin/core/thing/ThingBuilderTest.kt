@@ -15,7 +15,6 @@ import kotlinx.coroutines.runBlocking
 
 
 import quests.ConditionalEvents
-import resources.thing.burnable
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.Test
@@ -32,7 +31,7 @@ class ThingBuilderTest {
             body("Dagger") {
                 mat(IRON)
                 part("Handle") {
-                    mat(LEATHER)
+                    material(LEATHER)
                 }
                 parts("Pommel", "Guard", "Blade")
             }

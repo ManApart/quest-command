@@ -5,17 +5,12 @@ import core.GameState
 import core.ai.behavior.BehaviorRecipe
 import core.ai.knowledge.Fact
 import core.ai.knowledge.Subject
-import core.body.Body
-import core.body.BodyPartStrings.CHEST
 import core.body.BodyPartStrings.HEAD
-import core.body.BodyPartStrings.LEFT_HAND
-import core.body.BodyPartStrings.RIGHT_HAND
 import core.body.body
 import core.commands.CommandParsers
 import core.events.EventManager
 import core.properties.PropertiesP
 import core.properties.props
-import crafting.material.DEFAULT_MATERIAL
 import crafting.material.MaterialManager
 import crafting.material.MaterialStrings.IRON
 import crafting.material.MaterialStrings.LEATHER
@@ -23,7 +18,6 @@ import crafting.material.MaterialStrings.STONE
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -37,11 +31,6 @@ import status.stat.LeveledStatP
 import system.mapper
 import system.persistance.loading.LoadEvent
 import system.persistance.saving.SaveEvent
-import traveling.location.Network
-import traveling.location.location.Location
-import traveling.location.location.location
-import traveling.location.location.locationRecipe
-import traveling.location.network.LocationNode
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -166,10 +155,10 @@ class PersistenceTest {
             val stoneDagger = ogDagger.copy(body = body("Dagger") {
                 mat(IRON)
                 part("Handle") {
-                    mat(LEATHER)
+                    material(LEATHER)
                 }
                 part("Guard") {
-                    mat(STONE)
+                    material(STONE)
                 }
                 parts("Pommel", "Blade")
             })
