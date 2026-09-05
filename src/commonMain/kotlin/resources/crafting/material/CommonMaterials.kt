@@ -15,6 +15,7 @@ import crafting.material.MaterialStrings.IRON
 import crafting.material.MaterialStrings.LEATHER
 import crafting.material.MaterialStrings.MITHRIL
 import crafting.material.MaterialStrings.PLANT
+import crafting.material.MaterialStrings.SILVER
 import crafting.material.MaterialStrings.STEEL
 import crafting.material.MaterialStrings.STONE
 import crafting.material.MaterialStrings.WATER
@@ -51,6 +52,9 @@ class CommonMaterials : MaterialResource {
                 value("Quality", 3)
             }
             material(BLACKENED_STEEL, 85, 15) {
+                value("Quality", 4)
+            }
+            material(SILVER, 85, 15) {
                 value("Quality", 4)
             }
             material(ADAMANT, 90, 10) {

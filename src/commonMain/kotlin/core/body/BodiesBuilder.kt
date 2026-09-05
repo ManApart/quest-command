@@ -12,6 +12,9 @@ class BodiesBuilder {
     fun body(name: String, initializer: BodyBuilder.() -> Unit) {
         children.add(BodyBuilder(name).apply(initializer))
     }
+    fun body(name: String, vararg parts: String) {
+        children.add(BodyBuilder(name).apply { parts(parts.toList()) })
+    }
 }
 
 fun bodies(vararg names: String) = names.map { BodyBuilder(it) }

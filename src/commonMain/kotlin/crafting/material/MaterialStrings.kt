@@ -19,6 +19,7 @@ object MaterialStrings {
     const val IRON = "Iron"
     const val STEEL = "Steel"
     const val BLACKENED_STEEL = "Blackend Steel"
+    const val SILVER = "Silver"
     const val ADAMANT = "Adamant"
     const val MITHRIL = "Mithril"
 }

@@ -74,7 +74,8 @@ class ThingBuilder(internal val name: String) {
         val possibleBodyName = (bodyName ?: basesR.firstNotNullOfOrNull { it.bodyName })
         val possibleBody = body ?: basesR.firstNotNullOfOrNull { it.body }
         val bodyMat = (listOf(bodyMaterial) + basesR.map { it.bodyMaterial }).firstOrNull { it != DEFAULT_MATERIAL.name } ?: DEFAULT_MATERIAL.name
-        val body = discernBody(possibleBody, possibleBodyName, bodyBuilder, bodyMat)
+        val builders = bases.mapNotNull { it.bodyBuilder } + listOfNotNull(bodyBuilder)
+        val body = discernBody(possibleBody, possibleBodyName, builders, bodyMat)
 
         val allBehaviors = (behaviors + bases.flatMap { it.behaviors }).map { BehaviorManager.getBehavior(it) }
         val ai = ai ?: basesR.firstNotNullOfOrNull { it.ai } ?: discernAI(props)
@@ -210,6 +211,10 @@ class ThingBuilder(internal val name: String) {
         this.bodyBuilder = initializer
     }
 
+    fun body(initializer: BodyBuilder.() -> Unit) {
+        this.bodyBuilder = initializer
+    }
+
     fun material(material: String) {
         this.bodyMaterial = material
     }
@@ -265,7 +270,7 @@ class ThingBuilder(internal val name: String) {
             location(t.location)
             t.parent?.let { parent(t.parent) }
             mind(Mind(t.mind.ai.copy(), CreatureMemory(t.mind.memory.getAllFacts(), t.mind.memory.getAllListFacts())))
-            body(t.body.copy())
+            body(t.body.name, unBuild(t.body))
             t.equipTargets.forEach { equipTo(it) }
             item(t.inventory.getAllItems().map { it.name })
             props(t.properties)
@@ -276,11 +281,19 @@ class ThingBuilder(internal val name: String) {
         }
     }
 
-    private fun discernBody(possibleBody: Body?, possibleBodyName: String?, builder: (BodyBuilder.() -> Unit)?, bodyMat: String): Body {
+    private fun discernBody(possibleBody: Body?, possibleBodyName: String?, builders: List<BodyBuilder.() -> Unit>, bodyMat: String): Body {
+        val body = possibleBody ?: possibleBodyName?.takeIf { BodyManager.bodyExists(it) }?.let { BodyManager.getBody(it) }
+
         return when {
-            possibleBody != null -> possibleBody
-            possibleBodyName != null && builder != null -> BodyBuilder(possibleBodyName, bodyMat).apply(builder).build()
-            possibleBodyName != null -> BodyManager.getBody(possibleBodyName)
+            body != null && builders.isNotEmpty() -> {
+                val unbuilt = unBuild(body)
+                val builder = BodyBuilder(body.name, bodyMat)
+                builder.apply(unbuilt)
+                builders.forEach { builder.apply(it) }
+                builder.build()
+            }
+
+            body != null -> body
             MaterialManager.getMaterial(bodyMat) != DEFAULT_MATERIAL -> Body(MaterialManager.getMaterial(bodyMat))
             else -> NONE
         }

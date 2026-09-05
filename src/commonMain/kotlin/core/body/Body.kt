@@ -33,7 +33,7 @@ data class Body(
         return getDimensions(scale).getDistance()
     }
 
-    fun getDimensions(scale: Double): Vector {
+    fun getDimensions(scale: Double = 1.0): Vector {
         return (dimensions * scale)
     }
 

@@ -15,3 +15,7 @@ class BodyPartBuilder(private val name: String) {
         return BodyPart(name, mat)
     }
 }
+
+fun unBuild(part: BodyPart): BodyPartBuilder {
+    return BodyPartBuilder(part.name).apply { mat(part.material.name) }
+}
