@@ -4,6 +4,7 @@ import core.GameState
 import core.Player
 import core.commands.Args
 import core.commands.Command
+import core.commands.args
 import core.commands.parseThingsFromLocation
 import core.events.EventManager
 import core.history.displayToMe
@@ -30,13 +31,16 @@ class DebugCommand : Command() {
     Debug statchanges <on/off> - Toggle whether stats (stamina, focus, health, etc) can be depleted.
     Debug random <on/off> - Toggle random chances always succeeding. 
     Debug map <on/off> - Toggle showing all or just discovered map locations. 
-    Debug clarity <on/off> - Toggle total clarity on or off. Total clarity skips perception checks 
+    Debug clarity <on/off> - Toggle total clarity on or off. Total clarity skips perception checks.
+    Debug recipe <on/off> - Toggle knowing all recipes.
     Debug displayupdates <on/off> - Toggle inline updating display messages (for things like progress bars). 
     Debug stat <stat name> <desired level> on *<thing> - Set a stat to the desired level.
     Debug prop <prop name> <desired level> on *<thing> - Set a property to the desired level.
     Debug tag *<remove> <tag name> on *<thing> - Add (or remove) a tag.
     Debug weather <weather name> - Set weather in current location to the given weather, if it exists.
-    Debug verbose <on/off> - Toggle all the verbose settings on or off 
+    Debug verbose <on/off> - Toggle all the verbose settings on or off.
+    Other options:
+        ${DebugType.entries.joinToString(", "){it.commandName}}
         """
     }
 

@@ -21,7 +21,7 @@ class Weapons : ItemResource {
                 value("slashDamage", 1)
                 value("stabDamage", 2)
                 value("range", 2)
-                tag("Weapon", "Sharp", SMALL)
+                tag("Weapon", "Dagger", "Sharp", SMALL)
             }
         }
         thing("Broken Dagger") {

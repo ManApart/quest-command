@@ -38,6 +38,7 @@ class CraftRecipeCommand : Command() {
         when {
             knownRecipes.isEmpty() -> source.displayToMe("You don't know any recipes.")
             args.isEmpty() -> chooseRecipe(source, knownRecipes)
+            pickedRecipes.size > 1 && pickedRecipes.any { it.name.lowercase() == argString } -> processRecipe(source, pickedRecipes.first())
             pickedRecipes.isEmpty() -> chooseRecipe(source, knownRecipes)
             pickedRecipes.size == 1 -> processRecipe(source, pickedRecipes.first())
             pickedRecipes.size > 1 -> chooseRecipe(source, pickedRecipes)

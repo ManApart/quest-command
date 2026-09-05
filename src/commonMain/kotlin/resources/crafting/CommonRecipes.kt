@@ -1,8 +1,8 @@
 package resources.crafting
 
-import core.GameState.properties
 import core.properties.TagStrings.FOOD
 import core.properties.TagStrings.SMALL
+import core.thing.item.ItemManager
 import core.thing.thing
 import crafting.RecipeResource
 import crafting.material.MaterialStrings.LEATHER
@@ -145,9 +145,31 @@ class CommonRecipes : RecipeResource {
                             value("slashDamage", metalQuality)
                             value("stabDamage", (metalQuality * 1.5).toInt())
                             value("range", 2)
-                            tag("Weapon", "Sharp", SMALL, metalUsed)
+                            tag("Weapon", "Sharp", SMALL, metalUsed, "Dagger")
                         }
                     }.build()
+                }
+            }
+        }
+        recipe("Dagger Components") {
+            ingredient("Dagger") {
+                tag("Dagger")
+                matches { _, ingredient, _ ->
+                    ingredient.body.parts.exists("Blade")
+                }
+                matches { crafter, ingredient, _ ->
+                    canSmith(crafter, ingredient, 2f)
+                }
+            }
+            toolProps {
+                tag("Forge", "Burning")
+            }
+            result {
+                description("The blade's metal, smelted down into an ingot.")
+                produces { _, _, usedIngredients ->
+                    val dagger = usedIngredients["Dagger"]!!.second
+                    val metalUsed = dagger.body.parts.get("Blade").material.name
+                    ItemManager.getItem("$metalUsed Ingot")
                 }
             }
         }
