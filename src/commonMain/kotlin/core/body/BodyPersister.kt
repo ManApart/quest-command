@@ -33,14 +33,15 @@ private typealias ItemName = String
 @Serializable
 data class BodyP(
     val name: String,
+    val baseMaterial: String,
     val dimensions: Vector = NO_VECTOR,
     val parts: List<BodyPartP> = emptyList(),
     val equipped: Map<ItemName, EquipTarget> = emptyMap(),
 ) {
-    constructor(b: Body) : this(b.name, b.getDimensionsUnscaled(), b.parts.map { BodyPartP(it) }, getEquipped(b))
+    constructor(b: Body) : this(b.name, b.baseMaterial.name, b.getDimensionsUnscaled(), b.parts.map { BodyPartP(it) }, getEquipped(b))
 
     fun parsed(inventory: Inventory): Body {
-        return Body(name, dimensions, parts.map { it.parsed() }.toNameSearchableList()).apply {
+        return Body(name, MaterialManager.getMaterial(baseMaterial),dimensions, parts.map { it.parsed() }.toNameSearchableList()).apply {
             equipped.forEach { (itemName, target) ->
                 inventory.getItem(itemName)?.let { equip(it, target) }
             }

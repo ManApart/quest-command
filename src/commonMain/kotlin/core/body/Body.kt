@@ -6,6 +6,7 @@ import core.utility.NameSearchableList
 import core.utility.Named
 import core.utility.max
 import core.utility.toNameSearchableList
+import crafting.material.DEFAULT_MATERIAL
 import crafting.material.Material
 import traveling.position.NO_VECTOR
 import traveling.position.Vector
@@ -15,11 +16,12 @@ val NONE = Body()
 
 data class Body(
     override val name: String = "None",
+    val baseMaterial: Material = DEFAULT_MATERIAL,
     private val dimensions: Vector = NO_VECTOR,
     val parts: NameSearchableList<BodyPart> = emptyList<BodyPart>().toNameSearchableList(),
 ) : Named {
-    constructor(source: Body) : this(source.name, source.dimensions.copy(), source.parts.map { it.copy() }.toNameSearchableList())
-    constructor(mat: Material): this(parts = NameSearchableList(BodyPart("None", mat)))
+    constructor(source: Body) : this(source.name, source.baseMaterial, source.dimensions.copy(), source.parts.map { it.copy() }.toNameSearchableList())
+    constructor(mat: Material): this(baseMaterial = mat, parts = NameSearchableList(BodyPart("None", mat)))
 
     val core = parts.firstOrNull() ?: NO_PART
     val blockHelper = BlockHelper()
@@ -141,6 +143,6 @@ data class Body(
         parts.forEach { it.unEquip(item) }
     }
 
-    fun getAllMaterials() = parts.map { it.material }.toSet().toList()
+    fun getAllMaterials() = listOf(baseMaterial) + parts.map { it.material }.toSet().toList()
 
 }

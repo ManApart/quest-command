@@ -50,7 +50,7 @@ data class BodyBuilder(internal val name: String, private var material: String =
     fun build(): Body {
         val mat = MaterialManager.getMaterial(material)
         val bodyParts = parts.values.map { it.build(mat) }.takeIf { it.isNotEmpty() } ?: listOf(BodyPart(name, mat))
-        return Body(name, dimensions, bodyParts.toNameSearchableList())
+        return Body(name, mat, dimensions, bodyParts.toNameSearchableList())
     }
 }
 
@@ -74,7 +74,7 @@ fun unBuild(body: Body): BodyBuilder.() -> Unit {
     with(body) {
         return {
             dimensions(getDimensions())
-            mat(core.material.name)
+            mat(baseMaterial.name)
             parts.forEach { part(it.name, it.material.name) }
         }
     }

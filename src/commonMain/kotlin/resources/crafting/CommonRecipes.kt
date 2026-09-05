@@ -1,5 +1,6 @@
 package resources.crafting
 
+import core.GameState.properties
 import core.properties.TagStrings.FOOD
 import core.properties.TagStrings.SMALL
 import core.thing.thing
@@ -117,10 +118,10 @@ class CommonRecipes : RecipeResource {
                 description("A dagger of the type of metal given, optionally with its handle inlaid with a gem.")
                 produces { _, _, usedIngredients ->
                     val ingot = usedIngredients["Ingot"]!!.second
-                    val metalUsed = ingot.body.core.material.name
-                    val metalQuality = ingot.body.core.material.properties.values.getInt("Quality")
+                    val metalUsed = ingot.body.baseMaterial.name
+                    val metalQuality = ingot.body.baseMaterial.properties.values.getInt("Quality")
                     val inlay = usedIngredients["Inlay"]?.second
-                    val inlayUsed = inlay?.body?.core?.material?.name ?: metalUsed
+                    val inlayUsed = inlay?.body?.baseMaterial?.name ?: metalUsed
                     val inlayString = if (inlay != null) " inlaid with ${inlay.name}" else ""
                     thing("$metalUsed Dagger") {
                         body("Dagger") {

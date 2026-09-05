@@ -294,6 +294,11 @@ class ThingBuilder(internal val name: String) {
             }
 
             body != null -> body
+            possibleBodyName != null && builders.isNotEmpty() ->{
+                val builder = BodyBuilder(possibleBodyName, bodyMat)
+                builders.forEach { builder.apply(it) }
+                builder.build()
+            }
             MaterialManager.getMaterial(bodyMat) != DEFAULT_MATERIAL -> Body(MaterialManager.getMaterial(bodyMat))
             else -> NONE
         }

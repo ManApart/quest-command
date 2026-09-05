@@ -16,7 +16,7 @@ suspend fun describeBody(source: Player, thing: Thing) {
     val body = thing.body
     if (body.name == NONE.name) source.displayToMe("This has no body.")
     if (body.parts.size == 1) {
-        if (body.core.material != DEFAULT_MATERIAL) source.displayToMe("It is made of ${body.core.material.name}.")
+        if (body.baseMaterial != DEFAULT_MATERIAL) source.displayToMe("It is made of ${body.core.material.name}.")
     } else {
         val parts = body.parts.joinToString(", ") { it.name }
         source.displayToMe("${body.name} body has parts: $parts")
