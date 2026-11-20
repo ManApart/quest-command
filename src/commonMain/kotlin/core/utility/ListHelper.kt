@@ -1,5 +1,9 @@
 package core.utility
 
+import core.Player
+import core.commands.respond
+import core.history.displayToMe
+
 fun List<String>.matches(other: List<String>): Boolean {
     if (size != other.size) {
         return false
@@ -32,6 +36,45 @@ fun List<String>.apply(params: Map<String, String>): List<String> {
     return map {
         it.apply(params)
     }
+}
+
+//Use instead of below, use positional arg to grab second apple tc
+// Or we could have a helper that returns a single thing, clarifies if multiple, clarifies if double, all in one
+fun <E : Named> List<E>.getByName(): Map<String, List<E>> {
+    return groupBy { it.name }
+}
+
+fun <E : Named> List<E>.getNthByName(nth: Int = 0): List<E> {
+    return groupBy { it.name }.map { (_, items) ->
+        if (nth < items.size) items[nth] else items.first()
+    }
+}
+
+fun <E : Named> List<E>.clarifyNamed(source: Player, name: String, verb: String, nth: Int? = null, onFind: (E) -> Unit): E? {
+    val byName = getByName()
+    val first = byName.entries.firstOrNull()?.value
+    when {
+        byName.isEmpty() -> source.displayToMe("Couldn't find $name.")
+        byName.size == 1 && first?.size == 1 -> onFind(first.first())
+        byName.size == 1 && nth != null && (first?.size ?: 0) > nth -> onFind(first!![nth])
+
+        else -> {
+            source.respond("There is nothing for you to $verb.") {
+                message("${verb.capitalize()} which?")
+                displayedOptions(byName.flatMap { (_, items) ->
+                    if (items.size == 1) items.map { it.name } else {
+                        items.mapIndexed { i, item ->  item.name +" ($i)" }
+                    }
+                })
+                options(byName.flatMap { (_, items) ->
+                    if (items.size == 1) items.map { it.name } else {
+                        items.mapIndexed { i, item -> "$verb $item.name $i" }
+                    }
+                })
+            }
+        }
+    }
+    return null
 }
 
 fun <E : Named> List<E>.filterUniqueByName(): List<E> {

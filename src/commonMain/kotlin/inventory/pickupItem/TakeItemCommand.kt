@@ -7,6 +7,7 @@ import core.commands.respond
 import core.events.EventManager
 import core.history.displayToMe
 import core.thing.Thing
+import core.utility.clarifyNamed
 import core.utility.filterUniqueByName
 import inventory.putItem.TransferItemEvent
 
@@ -49,6 +50,15 @@ class TakeItemCommand : core.commands.Command() {
             args.isEmpty() -> pickupWhat(source, source.thing.currentLocation().getItems().filterUniqueByName())
             arguments.hasGroup("from") -> pickupItemFromContainer(source, arguments)
             else -> pickupItemFromScope(source, arguments)
+        }
+    }
+
+    private suspend fun pickupItemFromScope2(source: Player, args: Args) {
+        val items = source.thing.currentLocation().getItems(args.getBaseString())
+        val into = if (args.hasGroup("into")) args.getString("into").let { source.inventory.getItem(it) } ?: source.thing else source.thing
+
+        items.clarifyNamed(source, args.getBaseString(), "take") {
+            EventManager.postEvent(TakeItemEvent(source.thing, it, into))
         }
     }
 
