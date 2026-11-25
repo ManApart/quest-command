@@ -3,6 +3,7 @@ package inventory.putItem
 import core.Player
 import core.commands.ArgDelimiter
 import core.commands.Args
+import core.commands.pickThing
 import core.commands.respond
 import core.commands.respondSuspend
 import core.events.EventManager
@@ -61,24 +62,11 @@ class PutItemCommand : core.commands.Command() {
         val item = source.inventory.getItem(args.getBaseString())
         if (item != null) {
             val thingString = args.getFirstString("in", "to")
-            val destinations = source.thing.currentLocation().getThingsIncludingInventories(thingString).perceivedBy(source.thing).filterUniqueByName()
-            when {
-                thingString.isNotBlank() && destinations.isEmpty() -> source.displayToMe("Couldn't find $thingString")
-                destinations.size == 1 -> EventManager.postEvent(TransferItemEvent(source.thing, item, source.thing, destinations.first(), true))
-                else -> giveToWhat(source, destinations, args.getBaseString())
-            }
+            val destination = source.thing.currentLocation().getThingsIncludingInventories(thingString).perceivedBy(source.thing).pickThing(source, "Give $thingString to what?", {t -> "give $thingString to $t"}) ?: return
+
+            EventManager.postEvent(TransferItemEvent(source.thing, item, source.thing, destination, true))
         } else {
             source.displayToMe("Couldn't find ${args.getBaseString()}")
         }
     }
-
-    private suspend fun giveToWhat(source: Player, creatures: List<Thing>, itemName: String) {
-        source.respond("Couldn't find something to give $itemName to.") {
-            message("Give $itemName to what?")
-            optionsNamed(creatures)
-            command { "give $itemName to $it" }
-        }
-    }
-
-
 }
