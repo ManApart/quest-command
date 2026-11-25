@@ -119,6 +119,10 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return strings.firstOrNull { it.toIntOrNull() != null }?.toIntOrNull()
     }
 
+    fun getNumberOnly(delimiter: String): Int? {
+        return getStrings(delimiter).flatMap { it.split(" ") }.firstOrNull { it.toIntOrNull() != null }?.toIntOrNull()
+    }
+
     fun getNumbers(delimiter: String, includeBaseString: Boolean = false): List<Int?> {
         val strings = if (includeBaseString) {
             getBaseAndStrings(delimiter)
@@ -258,6 +262,10 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
 
     fun getString(delimiter: String): String {
         return getStrings(delimiter).firstOrNull() ?: ""
+    }
+
+    fun getStringOnly(delimiter: String): String {
+        return getStrings(delimiter).firstOrNull()?.split(" ")?.filter { it.toIntOrNull() == null }?.joinToString(" ") ?: ""
     }
 
     fun getStrings(delimiter: String): List<String> {
