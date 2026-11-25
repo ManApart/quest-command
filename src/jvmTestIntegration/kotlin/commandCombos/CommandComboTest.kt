@@ -312,7 +312,19 @@ class CommandComboTest {
         }
     }
 
-    fun assertLast(expected: String){
+    @Test
+    fun dupeNames() {
+        runBlocking {
+            CommandParsers.parseCommand(
+                GameState.player,
+                "drop apple && take apple && use dagger on apple && n && drop apple && take apple && 3"
+            )
+            val apple = GameState.player.inventory.getItem("Apple")!!
+            assertTrue { apple.hasTag("Sliced") }
+        }
+    }
+
+    fun assertLast(expected: String) {
         assertEquals(expected, GameLogger.getMainHistory().getLastOutput())
     }
 

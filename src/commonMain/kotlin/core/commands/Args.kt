@@ -243,7 +243,11 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     fun getBaseString(): String {
-        return getString(BASE)
+        return getString(BASE).split(" ").filter { it.toIntOrNull() == null }.joinToString(" ")
+    }
+
+    fun getBaseNth(): Int? {
+        return getString(BASE).split(" ").firstOrNull { it.toIntOrNull() != null }?.toIntOrNull()
     }
 
     fun getStringIfDelimExists(delimiter: String) = if (hasGroup(delimiter)) getString(delimiter) else null
