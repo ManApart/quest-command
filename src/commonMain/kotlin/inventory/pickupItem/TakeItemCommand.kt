@@ -54,27 +54,17 @@ class TakeItemCommand : core.commands.Command() {
     }
 
     private suspend fun pickupItemFromScope(source: Player, args: Args) {
-        val items = source.thing.currentLocation().getItems(args.getBaseString())
+        val items = source.thing.currentLocation().getItems(args.getBaseStringOnly())
         val into = if (args.hasGroup("into")) args.getString("into").let { source.inventory.getItem(it) } ?: source.thing else source.thing
 
-        items.pickItem(source, args.getBaseString(), "take", args.getBaseNth()) {
+        items.pickItem(source, args.getBaseStringOnly(), "take", args.getBaseNumberOnly()) {
             EventManager.postEvent(TakeItemEvent(source.thing, it, into))
-        }
-    }
-
-    private suspend fun pickupItemFromScope2(source: Player, args: Args) {
-        val items = source.thing.currentLocation().getItems(args.getBaseString()).filterUniqueByName()
-        val into = if (args.hasGroup("into")) args.getString("into").let { source.inventory.getItem(it) } ?: source.thing else source.thing
-        when {
-            items.isEmpty() -> source.displayToMe("Couldn't find ${args.getBaseString()}")
-            items.size == 1 -> EventManager.postEvent(TakeItemEvent(source.thing, items.first(), into))
-            else -> pickupWhat(source, items)
         }
     }
 
     private fun pickupWhat(source: Player, items: List<Thing>) {
         if (items.isEmpty()) {
-            source.displayToMe("Nothing to pickup!")
+            source.displayToMe("Nothing to take!")
         } else {
             source.respond("There are no items for you to take.") {
                 message("Take which item?")

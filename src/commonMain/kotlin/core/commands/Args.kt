@@ -106,6 +106,10 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
         return getBaseString().toIntOrNull()
     }
 
+    fun getBaseNumberOnly(): Int? {
+        return getString(BASE).split(" ").firstOrNull { it.toIntOrNull() != null }?.toIntOrNull()
+    }
+
     fun getNumber(delimiter: String, includeBaseString: Boolean = false): Int? {
         val strings = if (includeBaseString) {
             getBaseAndStrings(delimiter)
@@ -243,11 +247,11 @@ class Args(origArgs: List<String>, private val delimiters: List<ArgDelimiter> = 
     }
 
     fun getBaseString(): String {
-        return getString(BASE).split(" ").filter { it.toIntOrNull() == null }.joinToString(" ")
+        return getString(BASE)
     }
 
-    fun getBaseNth(): Int? {
-        return getString(BASE).split(" ").firstOrNull { it.toIntOrNull() != null }?.toIntOrNull()
+    fun getBaseStringOnly(): String {
+        return getString(BASE).split(" ").filter { it.toIntOrNull() == null }.joinToString(" ")
     }
 
     fun getStringIfDelimExists(delimiter: String) = if (hasGroup(delimiter)) getString(delimiter) else null

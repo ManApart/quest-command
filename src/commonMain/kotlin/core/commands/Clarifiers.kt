@@ -33,7 +33,7 @@ fun <E : Named> List<E>.pickItem(source: Player, name: String, verb: String, nth
                     }
                 })
                 options(byName.flatMap { (_, items) ->
-                    if (items.size == 1) items.map { it.name } else {
+                    if (items.size == 1) items.map { "$verb ${it.name}" } else {
                         items.mapIndexed { i, item ->
                             "$verb ${item.name} ${i + 1}"
                         }
