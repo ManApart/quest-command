@@ -1,8 +1,9 @@
 package status.status
 
 import core.Player
+import core.commands.Args
 import core.commands.Command
-import core.commands.respond
+import core.commands.pickThing
 import core.commands.respondSuspend
 import core.events.EventManager
 import core.history.displayToMe
@@ -28,7 +29,7 @@ class StatusCommand : Command() {
     }
 
     override suspend fun suggest(source: Player, keyword: String, args: List<String>): List<String> {
-        return when{
+        return when {
             args.isEmpty() -> source.getPerceivedThingNames()
             else -> listOf()
         }
@@ -39,9 +40,15 @@ class StatusCommand : Command() {
         when {
             args.isEmpty() && keyword == "status" -> clarifyStatus(source)
             args.isEmpty() -> EventManager.postEvent(StatusEvent(source, source.thing))
-            source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().isNotEmpty()-> EventManager.postEvent(StatusEvent(source, source.thing.currentLocation().getCreatures(argsString).filterUniqueByName().first()))
+            source.thing.currentLocation().getCreatures(argsString).isNotEmpty() -> creatureStatus(source, argsString, Args(args).getBaseNumberOnly())
             else -> source.displayToMe("Couldn't find ${args.joinToString(" ")}.")
         }
+    }
+
+    private suspend fun creatureStatus(source: Player, argsString: String, nth: Int?) {
+        source.thing.currentLocation().getCreatures(argsString)
+            .pickThing(source, "status", argsString, nth)
+            ?.let { EventManager.postEvent(StatusEvent(source, it)) }
     }
 
     private suspend fun clarifyStatus(source: Player) {
